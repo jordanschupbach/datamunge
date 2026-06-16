@@ -1,0 +1,14 @@
+// Used only for Gradle dependency capture (mitm-cache) to generate nix/joctra-gradle-deps.json.
+// Nixpkgs' upstream init-deps.gradle uses `configurations` inside a task action, which
+// delegates to the task and fails on some builds. Be explicit about the project.
+
+gradle.projectsLoaded {
+  rootProject.allprojects { p ->
+    p.tasks.register("nixDownloadDeps") {
+      doLast {
+        p.configurations.findAll { it.canBeResolved }.each { it.resolve() }
+        p.buildscript.configurations.findAll { it.canBeResolved }.each { it.resolve() }
+      }
+    }
+  }
+}

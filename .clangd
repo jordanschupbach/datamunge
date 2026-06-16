@@ -1,0 +1,14 @@
+CompileFlags:
+  Add:
+    # - "-std=c++20"
+    - "-I/home/jordan/dev/data_munge/extern/gismo-dist/include/gismo/"
+    - "-I/home/jordan/dev/datamunge/build/_deps/doctest-src/"
+    - "-I/home/jordan/dev/datamunge-3.0/build/_deps/ensmallen-src/"
+    - "-I/usr/include/datamunge-0.1"
+    - "-I/usr/include/R"
+    - "-I/usr/lib/R/library/Rcpp/include"
+    - "-I/usr/lib/R/library/RInside/include"
+Diagnostics:
+  Suppress:
+    - misc-definitions-in-headers
+    - google-explicit-constructor

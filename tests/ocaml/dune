@@ -1,0 +1,4 @@
+(test
+ (name test_octra)
+ (modules test_octra)
+ (libraries alcotest octraocaml))

@@ -1,0 +1,29 @@
+{
+  "name": "@octra/octrajs",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "node-addon-api": "^8.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "node-gyp": "^10.0.1"
+  },
+  "scripts": {
+    "generate": "node setup.js",
+    "build": "npm run generate && node-gyp configure build",
+    "test": "jest",
+    "start": "node src/index"
+  },
+  "author": "",
+  "license": "unlicense",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordanschupbach/octrajs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jordanschupbach/octra/issues"
+  },
+  "homepage": "https://github.com/jordanschupbach/octra#readme",
+  "description": ""
+}

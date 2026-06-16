@@ -1,0 +1,53 @@
+name: CI (macOS + Windows) [manual]
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# This workflow is intentionally manual-only for now. Once it's stable, add
+# `push` / `pull_request` triggers and (optionally) promote it into the main CI.
+
+jobs:
+  macos-nix-flake-check:
+    name: macOS Nix flake check
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v9
+
+      - name: Run flake checks
+        run: nix flake check -L
+
+  windows-cmake-tests:
+    name: Windows CMake + CTest (no Nix)
+    runs-on: windows-latest
+    env:
+      CPM_SOURCE_CACHE: ${{ github.workspace }}\\.cpm-cache
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache CPM sources
+        uses: actions/cache@v4
+        with:
+          path: .cpm-cache
+          key: cpm-${{ runner.os }}-${{ hashFiles('cmake/CPM.cmake', 'tests/CMakeLists.txt') }}
+          restore-keys: |
+            cpm-${{ runner.os }}-
+
+      - name: Configure
+        run: cmake -S tests -B build\\tests -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build\\tests --config Release
+
+      - name: Test
+        run: ctest --test-dir build\\tests --output-on-failure
