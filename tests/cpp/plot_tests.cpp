@@ -15,6 +15,7 @@ TEST(Plot, SavesSvgWithExpectedElements) {
 
   auto plot = ScatterPlot::create();
   plot.points({0.0, 1.0, 2.0}, {1.0, 3.0, 2.0}, "pts", {37, 99, 235}, 5.0)
+      .line({0.0, 2.0}, {1.0, 2.0}, "fit", {220, 38, 38}, 2.5)
       .title("Test Scatter")
       .x_label("x axis")
       .y_label("y axis");
@@ -29,7 +30,9 @@ TEST(Plot, SavesSvgWithExpectedElements) {
   EXPECT_NE(svg.find("<svg"), std::string::npos);
   EXPECT_NE(svg.find("Test Scatter"), std::string::npos);
   EXPECT_NE(svg.find("<circle"), std::string::npos);
+  EXPECT_NE(svg.find("<polyline"), std::string::npos);
   EXPECT_NE(svg.find("pts"), std::string::npos);
+  EXPECT_NE(svg.find("fit"), std::string::npos);
 
   std::filesystem::remove(path);
 }

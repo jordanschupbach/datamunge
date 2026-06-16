@@ -1110,6 +1110,7 @@
             pkgs.direnv
             pkgs.just
             pkgs.jq
+            pkgs.texliveSmall
 
             # Core library + pkg-config visibility
             datamunge

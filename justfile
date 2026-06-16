@@ -551,6 +551,19 @@ clean:
 
 # {{{ docs commands
 
+org-export INPUT OUTPUT:
+    @echo "Exporting {{ INPUT }} -> {{ OUTPUT }}"
+    @bash -lc 'set -euo pipefail; \
+      export_cmd='\''emacs --batch -Q -l init.el -- "{{ INPUT }}" "{{ OUTPUT }}"'\''; \
+      if command -v nix >/dev/null 2>&1; then \
+        nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
+      else \
+        bash -lc "$export_cmd"; \
+      fi'
+
+org-example FORMAT="html":
+    just org-export examples/org/dense_linear_algebra.org build/org/dense_linear_algebra.{{ FORMAT }}
+
 prebuild-docs-pages:
     @echo "Exporting Org pages -> Markdown"
     @bash -lc 'set -euo pipefail; \

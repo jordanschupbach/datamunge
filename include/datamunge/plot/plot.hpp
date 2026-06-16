@@ -101,6 +101,11 @@ class ScatterPlot final : public Plot {
                       std::string         label = "",
                       RGB                 color = {37, 99, 235},
                       double              marker_size = 4.0);
+  ScatterPlot& line(std::vector<double> x,
+                    std::vector<double> y,
+                    std::string         label = "",
+                    RGB                 color = {220, 38, 38},
+                    double              stroke_width = 2.0);
 };
 
 class LinePlot final : public Plot {
