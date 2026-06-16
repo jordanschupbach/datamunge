@@ -1,82 +1,82 @@
-#include <datamunge/linalg/regression.hpp>
+#include <datamunge/fda/pspline.hpp>
 #include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
 
+#include <cmath>
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <vector>
 
-using datamunge::linalg::DenseMatrix;
-using datamunge::linalg::linear_regression;
-using namespace datamunge::plot;
+using datamunge::fda::PSplineOptions;
+using datamunge::fda::fit_pspline;
+using datamunge::plot::ScatterPlot;
+using datamunge::random::SplitMix64;
 
 int main() {
-  const auto out_dir = std::filesystem::path("build/debug/examples/plot_output");
+  constexpr std::size_t n = 500;
+  constexpr double      xmin = 0.0;
+  constexpr double      xmax = 1.0;
+  constexpr double      noise_sigma = 0.25;
+
+  SplitMix64 rng(0xB51A1EULL);
+
+  std::vector<double> x(n);
+  std::vector<double> y(n);
+  std::vector<double> y_true(n);
+  for (std::size_t i = 0; i < n; ++i) {
+    x[i] = xmin + (xmax - xmin) * static_cast<double>(i) / static_cast<double>(n - 1);
+    y_true[i] = std::sin(20.0 / (x[i] + 0.25));
+    y[i] = y_true[i] + noise_sigma * rng.normal();
+  }
+
+  PSplineOptions opts;
+  opts.lambda = 0.5;
+  opts.penalty_order = 2;
+  const auto fit = fit_pspline(x, y, 3, 300, opts);
+
+  std::vector<double> grid_x(200);
+  for (std::size_t i = 0; i < grid_x.size(); ++i) {
+    grid_x[i] = xmin + (xmax - xmin) * static_cast<double>(i)
+                          / static_cast<double>(grid_x.size() - 1);
+  }
+
+  const auto grid_y = fit.predict(grid_x);
+  std::vector<double> grid_true(grid_x.size());
+  for (std::size_t i = 0; i < grid_x.size(); ++i) {
+    grid_true[i] = std::sin(20.0 / (grid_x[i] + 0.25));
+  }
+
+  const auto out_dir = std::filesystem::path("build/debug/examples");
   std::filesystem::create_directories(out_dir);
 
-  const std::vector<double> scatter_x = {0.3, 0.8, 1.1, 1.7, 2.0, 2.6, 3.0, 3.4};
-  const std::vector<double> scatter_y = {1.4, 1.8, 2.5, 2.7, 3.1, 3.9, 4.2, 4.8};
-
-  DenseMatrix<double> design(scatter_x.size(), 2, 0.0);
-  for (std::size_t i = 0; i < scatter_x.size(); ++i) {
-    design(i, 0) = 1.0;
-    design(i, 1) = scatter_x[i];
-  }
-  const auto fit = linear_regression(design, scatter_y);
-  const double intercept = fit.coefficients[0];
-  const double slope = fit.coefficients[1];
-
-  auto scatter = ScatterPlot::create();
-  scatter.points(scatter_x,
-                 scatter_y,
-                 "samples",
-                 {37, 99, 235},
-                 6.0)
-      .line({scatter_x.front(), scatter_x.back()},
-            {intercept + slope * scatter_x.front(), intercept + slope * scatter_x.back()},
-            "best fit",
-            {220, 38, 38},
-            3.0)
-      .title("Scatter With Linear Fit")
-      .x_label("feature x")
-      .y_label("feature y")
-      .size(960, 640)
+  auto plot = ScatterPlot::create();
+  plot.points(x, y, "samples", {37, 99, 235}, 6.0)
+      .line(grid_x, grid_true, "true signal", {22, 163, 74}, 2.0)
+      .line(grid_x, grid_y, "cubic B-spline fit", {220, 38, 38}, 3.0)
+      .title("Nonlinear Regression With Cubic B-Splines")
+      .x_label("x")
+      .y_label("y")
       .background({250, 250, 252});
 
-  auto line = LinePlot::create();
-  line.line({0, 1, 2, 3, 4, 5},
-            {0.2, 0.9, 1.4, 1.1, 1.9, 2.4},
-            "trend",
-            {220, 38, 38},
-            3.0)
-      .title("Line Plot")
-      .x_label("step")
-      .y_label("value");
+  const auto svg_path = out_dir / "bspline_regression.svg";
+  try {
+    plot.show("datamunge-plot-ex");
+    std::cout << "viewer = shown\n";
+  } catch (const std::exception& ex) {
+    std::cout << "viewer = skipped (" << ex.what() << ")\n";
+  }
 
-  auto bars = BarChart::create();
-  bars.bars({1, 2, 3, 4, 5},
-            {4, 7, 3, 9, 6},
-            "counts",
-            {22, 163, 74},
-            0.7)
-      .title("Bar Chart")
-      .x_label("bucket")
-      .y_label("count");
+  plot.save_svg(svg_path.string());
 
-  scatter.save((out_dir / "scatter.svg").string());
-  scatter.save((out_dir / "scatter.pdf").string());
-  scatter.save((out_dir / "scatter.png").string());
-  line.save((out_dir / "line.svg").string());
-  line.save((out_dir / "line.png").string());
-  bars.save((out_dir / "bars.svg").string());
-  bars.save((out_dir / "bars.pdf").string());
-
-  scatter.show("datamunge-scatter");
-  std::cout << "Wrote plots to " << out_dir << "\n";
   std::cout << std::fixed << std::setprecision(4)
-            << "Best fit: y = " << intercept << " + " << slope << "x"
-            << " (R^2 = " << fit.r_squared << ")\n";
-  std::cout << "Closed scatter plot window\n";
-
+            << "n = " << n << "\n"
+            << "noise sigma = " << noise_sigma << "\n"
+            << "basis functions = " << fit.basis.basis_size() << "\n"
+            << "lambda = " << fit.lambda << "\n"
+            << "effective dof = " << fit.effective_degrees_of_freedom << "\n"
+            << "R^2 = " << fit.r_squared << "\n"
+            << "adj R^2 = " << fit.adjusted_r_squared << "\n"
+            << "svg = " << svg_path.string() << "\n";
   return 0;
 }

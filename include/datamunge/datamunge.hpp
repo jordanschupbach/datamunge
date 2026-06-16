@@ -1,3 +1,4 @@
+#include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/random/random.hpp>
 

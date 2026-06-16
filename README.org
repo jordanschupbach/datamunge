@@ -11,7 +11,7 @@ int main() {
   return 0;
 }
 
-#+END_SRC
+#+END_SR
 
 #+RESULTS:
 | Hello, | World! |
