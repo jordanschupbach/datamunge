@@ -10,30 +10,69 @@ package js.datamunge.jdatamunge;
 
 public class datamunge {
   static { System.loadLibrary("datamunge_jni"); }
+  /**
+   *  Prints a hello message to standard output.
+   */
   public static void hello() {
     datamungeJNI.hello();
   }
 
+  /**
+   *  Invokes a callback with the given value.<br>
+   *  @param x    Input value passed to the callback.<br>
+   *  @param cb   Pointer to a <code>Callback</code> instance; must not be null.<br>
+   *  @return Result of <code>cb-</code>&gt;call(x).
+   */
   public static double call_with_callback(double x, Callback cb) {
     return datamungeJNI.call_with_callback(x, Callback.getCPtr(cb), cb);
   }
 
+  /**
+   *  Applies a callback to every element of a vector.<br>
+   *  @param values Source vector of doubles.<br>
+   *  @param cb     Pointer to a <code>Callback</code> instance; must not be null.<br>
+   *  @return New vector where each element is the result of <code>cb-</code>&gt;call(v)<br>
+   *                for the corresponding element <code>v</code> in <code>values</code>.
+   */
   public static DVector map_dvector_with_callback(DVector values, Callback cb) {
     return new DVector(datamungeJNI.map_dvector_with_callback(DVector.getCPtr(values), values, Callback.getCPtr(cb), cb), true);
   }
 
+  /**
+   *  Constructs a three-element vector from individual values.<br>
+   *  @param a First element.<br>
+   *  @param b Second element.<br>
+   *  @param c Third element.<br>
+   *  @return <code>std::vector</code>&lt;double&gt;{a, b, c}.
+   */
   public static DVector make_dvector(double a, double b, double c) {
     return new DVector(datamungeJNI.make_dvector(a, b, c), true);
   }
 
+  /**
+   *  Computes the sum of all elements in a vector.<br>
+   *  @param values Vector of doubles to sum.<br>
+   *  @return Sum of all elements, or 0.0 if the vector is empty.
+   */
   public static double sum_dvector(DVector values) {
     return datamungeJNI.sum_dvector(DVector.getCPtr(values), values);
   }
 
+  /**
+   *  Constructs a pair of doubles.<br>
+   *  @param a First element.<br>
+   *  @param b Second element.<br>
+   *  @return <code>std::pair</code>&lt;double, double&gt;{a, b}.
+   */
   public static DPair make_dpair(double a, double b) {
     return new DPair(datamungeJNI.make_dpair(a, b), true);
   }
 
+  /**
+   *  Computes the sum of both elements in a pair.<br>
+   *  @param values Pair of doubles.<br>
+   *  @return <code>values.first</code> + values.second.
+   */
   public static double sum_dpair(DPair values) {
     return datamungeJNI.sum_dpair(DPair.getCPtr(values), values);
   }

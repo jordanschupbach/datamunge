@@ -1,5 +1,5 @@
-TARGET := "datamunge_ex"
-BENCH_TARGET := ""
+TARGET := "plot_ex"
+BENCH_TARGET := "linalg_bench"
 JOBS := "20"
 
 NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false"
@@ -85,7 +85,15 @@ run-octave: build-octave
 
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
-    ./build/debug/examples/{{ TARGET }}
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc './build/debug/examples/{{ TARGET }}'
+
+run-plot: examples
+    @echo "Running plot example"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc './build/debug/examples/plot_ex'
+
+view-plot: examples
+    @echo "Running plot example and opening the scatter plot"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc './build/debug/examples/plot_ex'
 
 run-benchmark:
     @echo "Running Benchmarks"
@@ -457,9 +465,18 @@ flamechart:
 
 
 benchmark:
-    @echo "Building Examples"
-    cmake -S benchmarks -B build/benchmarks
-    cmake --build build/benchmarks -j${JOBS} --verbose
+    @echo "Building benchmarks"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/benchmarks -j{{ JOBS }}"
+    @echo "Running {{ BENCH_TARGET }}"
+    ./build/benchmarks/{{ BENCH_TARGET }} --benchmark_format=json \
+        --benchmark_out="benchmarks/results/$(date +%Y%m%d_%H%M%S).json"
+    @echo "Results saved to benchmarks/results/"
+
+benchmark-compare BASE NEW:
+    @echo "Comparing {{ BASE }} vs {{ NEW }}"
+    python3 build/benchmarks/_deps/benchmark-src/tools/compare.py benchmarks \
+        benchmarks/results/{{ BASE }} benchmarks/results/{{ NEW }}
 
 
 memcheck:

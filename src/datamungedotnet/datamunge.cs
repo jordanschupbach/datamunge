@@ -10,37 +10,62 @@
 
 
 public class datamunge {
+  /// <summary>Prints a hello message to standard output.</summary>
   public static void hello() {
     datamungePINVOKE.hello();
   }
 
+  /// <summary>Invokes a callback with the given value.</summary>
+  /// <param name="x">    Input value passed to the callback.</param> 
+  /// <param name="cb">   Pointer to a ``Callback`` instance; must not be null.</param> 
+  /// <returns>Result of ``cb-``>call(x).</returns>
   public static double call_with_callback(double x, Callback cb) {
     double ret = datamungePINVOKE.call_with_callback(x, Callback.getCPtr(cb));
     return ret;
   }
 
+  /// <summary>Applies a callback to every element of a vector.</summary>
+  /// <param name="values"> Source vector of doubles.</param> 
+  /// <param name="cb">     Pointer to a ``Callback`` instance; must not be null.</param> 
+  /// <returns>New vector where each element is the result of ``cb-``>call(v)
+  ///                    for the corresponding element ``v`` in ``values``.</returns>
   public static DVector map_dvector_with_callback(DVector values, Callback cb) {
     DVector ret = new DVector(datamungePINVOKE.map_dvector_with_callback(DVector.getCPtr(values), Callback.getCPtr(cb)), true);
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Constructs a three-element vector from individual values.</summary>
+  /// <param name="a"> First element.</param> 
+  /// <param name="b"> Second element.</param> 
+  /// <param name="c"> Third element.</param> 
+  /// <returns>``std::vector``<double>{a, b, c}.</returns>
   public static DVector make_dvector(double a, double b, double c) {
     DVector ret = new DVector(datamungePINVOKE.make_dvector(a, b, c), true);
     return ret;
   }
 
+  /// <summary>Computes the sum of all elements in a vector.</summary>
+  /// <param name="values"> Vector of doubles to sum.</param> 
+  /// <returns>Sum of all elements, or 0.0 if the vector is empty.</returns>
   public static double sum_dvector(DVector values) {
     double ret = datamungePINVOKE.sum_dvector(DVector.getCPtr(values));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  /// <summary>Constructs a pair of doubles.</summary>
+  /// <param name="a"> First element.</param> 
+  /// <param name="b"> Second element.</param> 
+  /// <returns>``std::pair``<double, double>{a, b}.</returns>
   public static DPair make_dpair(double a, double b) {
     DPair ret = new DPair(datamungePINVOKE.make_dpair(a, b), true);
     return ret;
   }
 
+  /// <summary>Computes the sum of both elements in a pair.</summary>
+  /// <param name="values"> Pair of doubles.</param> 
+  /// <returns>``values.first`` + values.second.</returns>
   public static double sum_dpair(DPair values) {
     double ret = datamungePINVOKE.sum_dpair(DPair.getCPtr(values));
     if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();

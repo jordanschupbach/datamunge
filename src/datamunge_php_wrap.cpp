@@ -1282,11 +1282,11 @@ SWIG_Php_AppendOutput(zval *target, zval *o, int is_void) {
 #define  SWIG_NullReferenceError   -13
 
 
-#define SWIGTYPE_p_difference_type swig_types[0]
-#define SWIGTYPE_p_first_type swig_types[1]
-#define SWIGTYPE_p_int swig_types[2]
-#define SWIGTYPE_p_long_long swig_types[3]
-#define SWIGTYPE_p_datamunge__Callback swig_types[4]
+#define SWIGTYPE_p_datamunge__Callback swig_types[0]
+#define SWIGTYPE_p_difference_type swig_types[1]
+#define SWIGTYPE_p_first_type swig_types[2]
+#define SWIGTYPE_p_int swig_types[3]
+#define SWIGTYPE_p_long_long swig_types[4]
 #define SWIGTYPE_p_second_type swig_types[5]
 #define SWIGTYPE_p_short swig_types[6]
 #define SWIGTYPE_p_signed_char swig_types[7]
@@ -1597,11 +1597,11 @@ static zend_class_entry *SWIG_Php_ce__p_difference_type;
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_signed_char = {"_p_signed_char", "int8_t *|int_fast8_t *|int_least8_t *|signed char *", 0, 0, (void*)0, 0};
@@ -1621,11 +1621,11 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
+  &_swigt__p_datamunge__Callback,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
-  &_swigt__p_datamunge__Callback,
   &_swigt__p_second_type,
   &_swigt__p_short,
   &_swigt__p_signed_char,
@@ -1642,11 +1642,11 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_value_type,
 };
 
+SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -1663,11 +1663,11 @@ SWIGINTERN swig_cast_info _swigc__p_unsigned_short[] = {  {&_swigt__p_unsigned_s
 SWIGINTERN swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
 
 SWIGINTERN swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_datamunge__Callback,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
-  _swigc__p_datamunge__Callback,
   _swigc__p_second_type,
   _swigc__p_short,
   _swigc__p_signed_char,
