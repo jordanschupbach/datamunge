@@ -17,6 +17,7 @@
 
 #if defined(DATAMUNGE_HAVE_X11)
 #include <X11/Xlib.h>
+#include <X11/keysym.h>
 #include <X11/Xutil.h>
 #endif
 
@@ -185,6 +186,17 @@ Layout compute_layout(const Plot& plot) {
     throw std::runtime_error("Plot::save: invalid plot dimensions");
   }
   layout.bounds = compute_bounds(plot);
+  return layout;
+}
+
+Layout compute_layout(const Plot& plot, Bounds bounds) {
+  Layout layout;
+  layout.plot_w = static_cast<double>(plot.width()) - layout.left - layout.right;
+  layout.plot_h = static_cast<double>(plot.height()) - layout.top - layout.bottom;
+  if (layout.plot_w <= 0.0 || layout.plot_h <= 0.0) {
+    throw std::runtime_error("Plot::save: invalid plot dimensions");
+  }
+  layout.bounds = bounds;
   return layout;
 }
 
@@ -540,6 +552,115 @@ Image rasterize(const Plot& plot) {
   return image;
 }
 
+Image rasterize(const Plot& plot, Bounds bounds) {
+  const Layout layout = compute_layout(plot, bounds);
+  Image image(plot.width(), plot.height(), plot.background_color());
+  const RGB axis_color = plot.axes_color();
+
+  if (plot.grid_visible()) {
+    for (int i = 0; i <= 5; ++i) {
+      const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
+      const double ty = layout.top + layout.plot_h * static_cast<double>(i) / 5.0;
+      draw_line(image, tx, layout.top, tx, layout.top + layout.plot_h, plot.major_grid_color(), 1.0);
+      draw_line(image, layout.left, ty, layout.left + layout.plot_w, ty, plot.major_grid_color(), 1.0);
+    }
+  }
+
+  draw_line(image,
+            layout.left,
+            layout.top + layout.plot_h,
+            layout.left + layout.plot_w,
+            layout.top + layout.plot_h,
+            axis_color,
+            2.0);
+  draw_line(image,
+            layout.left,
+            layout.top,
+            layout.left,
+            layout.top + layout.plot_h,
+            axis_color,
+            2.0);
+
+  for (int i = 0; i <= 5; ++i) {
+    const double xv = layout.bounds.x_min
+                    + (layout.bounds.x_max - layout.bounds.x_min) * static_cast<double>(i) / 5.0;
+    const double yv = layout.bounds.y_min
+                    + (layout.bounds.y_max - layout.bounds.y_min) * static_cast<double>(i) / 5.0;
+    const int tx = static_cast<int>(
+        std::lround(layout.left + layout.plot_w * static_cast<double>(i) / 5.0));
+    const int ty = static_cast<int>(
+        std::lround(layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0));
+    const std::string x_label = format_tick(xv);
+    const std::string y_label = format_tick(yv);
+    draw_text(image,
+              tx - static_cast<int>(x_label.size()) * 6,
+              static_cast<int>(layout.top + layout.plot_h + 18.0),
+              x_label,
+              axis_color,
+              2);
+    draw_text(image, 8, ty - 6, y_label, axis_color, 2);
+  }
+
+  const std::string title = plot.title_text();
+  const int title_width = static_cast<int>(title.size()) * 12;
+  draw_text(image, static_cast<int>(plot.width() / 2) - title_width / 2, 18, title, axis_color, 2);
+
+  const std::string x_text = plot.x_label_text();
+  const int x_width = static_cast<int>(x_text.size()) * 12;
+  draw_text(image,
+            static_cast<int>(plot.width() / 2) - x_width / 2,
+            static_cast<int>(plot.height()) - 32,
+            x_text,
+            axis_color,
+            2);
+  draw_vertical_text(image, 24, 72, plot.y_label_text(), axis_color, 2);
+
+  for (const auto& series : plot.series()) {
+    if (series.kind == DataSeries::Kind::Line) {
+      for (std::size_t i = 1; i < series.x.size(); ++i) {
+        draw_line(image,
+                  map_x(layout, series.x[i - 1]),
+                  map_y(layout, series.y[i - 1]),
+                  map_x(layout, series.x[i]),
+                  map_y(layout, series.y[i]),
+                  series.color,
+                  series.stroke_width);
+      }
+    } else if (series.kind == DataSeries::Kind::Scatter) {
+      for (std::size_t i = 0; i < series.x.size(); ++i) {
+        draw_circle(image,
+                    static_cast<int>(std::lround(map_x(layout, series.x[i]))),
+                    static_cast<int>(std::lround(map_y(layout, series.y[i]))),
+                    std::max(1, static_cast<int>(std::lround(series.marker_size))),
+                    series.color);
+      }
+    } else if (series.kind == DataSeries::Kind::Bar) {
+      for (std::size_t i = 0; i < series.x.size(); ++i) {
+        const int x_left = static_cast<int>(
+            std::lround(map_x(layout, series.x[i] - series.bar_width / 2.0)));
+        const int x_right = static_cast<int>(
+            std::lround(map_x(layout, series.x[i] + series.bar_width / 2.0)));
+        const int y0 = static_cast<int>(std::lround(map_y(layout, 0.0)));
+        const int y1 = static_cast<int>(std::lround(map_y(layout, series.y[i])));
+        image.fill_rect(x_left, std::min(y0, y1), x_right, std::max(y0, y1), series.color);
+      }
+    }
+  }
+
+  int legend_y = static_cast<int>(layout.top);
+  for (const auto& series : plot.series()) {
+    if (series.label.empty()) {
+      continue;
+    }
+    const int x0 = static_cast<int>(layout.left + layout.plot_w - 160.0);
+    image.fill_rect(x0, legend_y - 10, x0 + 18, legend_y - 2, series.color);
+    draw_text(image, x0 + 28, legend_y - 16, series.label, axis_color, 2);
+    legend_y += 24;
+  }
+
+  return image;
+}
+
 void write_be32(std::ostream& out, std::uint32_t value) {
   out.put(static_cast<char>((value >> 24U) & 0xFFU));
   out.put(static_cast<char>((value >> 16U) & 0xFFU));
@@ -741,7 +862,190 @@ unsigned long rgb_to_native_pixel(const Visual* visual, RGB color) {
        | expand_component(static_cast<unsigned>(std::clamp(color.b, 0, 255)), visual->blue_mask);
 }
 
-void show_x11_image(const Image& image, const std::string& title_hint) {
+struct ViewerButton {
+  enum class Action {
+    PlotZoomIn,
+    PlotZoomOut,
+    PlotLeft,
+    PlotRight,
+    PlotUp,
+    PlotDown,
+    PlotReset,
+  };
+
+  int         x{0};
+  int         y{0};
+  int         w{0};
+  int         h{0};
+  std::string label;
+  Action      action{Action::PlotZoomIn};
+};
+
+void draw_button(Image& image, const ViewerButton& button) {
+  const RGB border{55, 65, 81};
+  const RGB fill{243, 244, 246};
+  const RGB text{31, 41, 55};
+  image.fill_rect(button.x, button.y, button.x + button.w, button.y + button.h, border);
+  image.fill_rect(
+      button.x + 1, button.y + 1, button.x + button.w - 1, button.y + button.h - 1, fill);
+  const int text_width = static_cast<int>(button.label.size()) * 6;
+  draw_text(image,
+            button.x + std::max(4, (button.w - text_width) / 2),
+            button.y + std::max(3, (button.h - 7) / 2),
+            button.label,
+            text,
+            1);
+}
+
+std::vector<ViewerButton> make_viewer_buttons() {
+  constexpr int x0 = 10;
+  constexpr int y0 = 8;
+  constexpr int h = 26;
+  constexpr int gap = 8;
+  const std::vector<std::pair<std::string, ViewerButton::Action>> specs = {
+      {"PLOT+", ViewerButton::Action::PlotZoomIn},
+      {"PLOT-", ViewerButton::Action::PlotZoomOut},
+      {"LEFT", ViewerButton::Action::PlotLeft},
+      {"RIGHT", ViewerButton::Action::PlotRight},
+      {"UP", ViewerButton::Action::PlotUp},
+      {"DOWN", ViewerButton::Action::PlotDown},
+      {"RESET", ViewerButton::Action::PlotReset},
+  };
+
+  std::vector<ViewerButton> buttons;
+  buttons.reserve(specs.size());
+  int cursor_x = x0;
+  for (const auto& spec : specs) {
+    const int width = 18 + static_cast<int>(spec.first.size()) * 6;
+    buttons.push_back(ViewerButton{cursor_x, y0, width, h, spec.first, spec.second});
+    cursor_x += width + gap;
+  }
+  return buttons;
+}
+
+const ViewerButton* find_button_at(const std::vector<ViewerButton>& buttons, int x, int y) {
+  for (const auto& button : buttons) {
+    if (x >= button.x && x <= button.x + button.w && y >= button.y && y <= button.y + button.h) {
+      return &button;
+    }
+  }
+  return nullptr;
+}
+
+void copy_image_to_ximage(const Image& image, const Visual* visual, XImage* ximage) {
+  for (int y = 0; y < static_cast<int>(image.height); ++y) {
+    for (int x = 0; x < static_cast<int>(image.width); ++x) {
+      const std::size_t idx =
+          (static_cast<std::size_t>(y) * image.width + static_cast<std::size_t>(x)) * 3U;
+      const RGB color{
+          static_cast<int>(image.pixels[idx + 0U]),
+          static_cast<int>(image.pixels[idx + 1U]),
+          static_cast<int>(image.pixels[idx + 2U]),
+      };
+      XPutPixel(ximage, x, y, rgb_to_native_pixel(visual, color));
+    }
+  }
+}
+
+void zoom_bounds(Bounds& bounds, double factor) {
+  const double cx = (bounds.x_min + bounds.x_max) * 0.5;
+  const double cy = (bounds.y_min + bounds.y_max) * 0.5;
+  const double half_width = std::max((bounds.x_max - bounds.x_min) * factor * 0.5, 1e-9);
+  const double half_height = std::max((bounds.y_max - bounds.y_min) * factor * 0.5, 1e-9);
+  bounds.x_min = cx - half_width;
+  bounds.x_max = cx + half_width;
+  bounds.y_min = cy - half_height;
+  bounds.y_max = cy + half_height;
+}
+
+void pan_bounds(Bounds& bounds, double dx_fraction, double dy_fraction) {
+  const double dx = (bounds.x_max - bounds.x_min) * dx_fraction;
+  const double dy = (bounds.y_max - bounds.y_min) * dy_fraction;
+  bounds.x_min += dx;
+  bounds.x_max += dx;
+  bounds.y_min += dy;
+  bounds.y_max += dy;
+}
+
+void blit_scaled_image(const Image& src,
+                       Image&       dst,
+                       int          canvas_x,
+                       int          canvas_y,
+                       int          canvas_w,
+                       int          canvas_h,
+                       double       image_zoom,
+                       double       pan_x,
+                       double       pan_y) {
+  if (src.width == 0 || src.height == 0 || canvas_w <= 0 || canvas_h <= 0) {
+    return;
+  }
+
+  const double fit_scale =
+      std::min(static_cast<double>(canvas_w) / static_cast<double>(src.width),
+               static_cast<double>(canvas_h) / static_cast<double>(src.height));
+  const double scale = std::max(fit_scale * image_zoom, 1e-9);
+  const double draw_w = static_cast<double>(src.width) * scale;
+  const double draw_h = static_cast<double>(src.height) * scale;
+  const double draw_x = canvas_x + (static_cast<double>(canvas_w) - draw_w) * 0.5 + pan_x;
+  const double draw_y = canvas_y + (static_cast<double>(canvas_h) - draw_h) * 0.5 + pan_y;
+
+  const int x_begin = std::max(canvas_x, static_cast<int>(std::floor(draw_x)));
+  const int y_begin = std::max(canvas_y, static_cast<int>(std::floor(draw_y)));
+  const int x_end = std::min(canvas_x + canvas_w, static_cast<int>(std::ceil(draw_x + draw_w)));
+  const int y_end = std::min(canvas_y + canvas_h, static_cast<int>(std::ceil(draw_y + draw_h)));
+
+  for (int y = y_begin; y < y_end; ++y) {
+    for (int x = x_begin; x < x_end; ++x) {
+      const int src_x =
+          static_cast<int>(std::floor((static_cast<double>(x) - draw_x) / scale));
+      const int src_y =
+          static_cast<int>(std::floor((static_cast<double>(y) - draw_y) / scale));
+      if (src_x < 0 || src_y < 0 || src_x >= static_cast<int>(src.width)
+          || src_y >= static_cast<int>(src.height)) {
+        continue;
+      }
+      const std::size_t src_idx =
+          (static_cast<std::size_t>(src_y) * src.width + static_cast<std::size_t>(src_x)) * 3U;
+      dst.set_pixel(x,
+                    y,
+                    RGB{
+                        static_cast<int>(src.pixels[src_idx + 0U]),
+                        static_cast<int>(src.pixels[src_idx + 1U]),
+                        static_cast<int>(src.pixels[src_idx + 2U]),
+                    });
+    }
+  }
+}
+
+Image render_viewer_frame(const Image&                     plot_image,
+                          int                              window_width,
+                          int                              window_height,
+                          const std::vector<ViewerButton>& buttons,
+                          double                           image_zoom,
+                          double                           pan_x,
+                          double                           pan_y) {
+  constexpr int menu_height = 44;
+  const int safe_width = std::max(window_width, 240);
+  const int safe_height = std::max(window_height, 160);
+  Image frame(
+      static_cast<std::size_t>(safe_width), static_cast<std::size_t>(safe_height), {255, 255, 255});
+
+  frame.fill_rect(0, 0, safe_width - 1, menu_height - 1, {229, 231, 235});
+  frame.fill_rect(0, menu_height - 1, safe_width - 1, menu_height - 1, {209, 213, 219});
+  for (const auto& button : buttons) {
+    draw_button(frame, button);
+  }
+
+  const int canvas_y = menu_height;
+  const int canvas_h = safe_height - menu_height;
+  frame.fill_rect(0, canvas_y, safe_width - 1, safe_height - 1, {255, 255, 255});
+  blit_scaled_image(plot_image, frame, 0, canvas_y, safe_width, canvas_h, image_zoom, pan_x, pan_y);
+  return frame;
+}
+
+void show_x11_plot(const Plot& plot, const std::string& title_hint) {
+  constexpr int menu_height = 44;
+  Image plot_image = rasterize(plot);
   Display* display = XOpenDisplay(nullptr);
   if (display == nullptr) {
     throw std::runtime_error("Plot::show: could not connect to the X11 display");
@@ -759,73 +1063,161 @@ void show_x11_image(const Image& image, const std::string& title_hint) {
                                       RootWindow(display, screen),
                                       10,
                                       10,
-                                      static_cast<unsigned int>(image.width),
-                                      static_cast<unsigned int>(image.height),
+                                      static_cast<unsigned int>(plot_image.width),
+                                      static_cast<unsigned int>(plot_image.height + menu_height),
                                       1,
                                       BlackPixel(display, screen),
                                       WhitePixel(display, screen));
   const std::string title = title_hint.empty() ? "datamunge plot" : title_hint;
   XStoreName(display, window, title.c_str());
-  XSelectInput(display, window, ExposureMask | KeyPressMask | StructureNotifyMask);
+  XSelectInput(display, window, ExposureMask | KeyPressMask | StructureNotifyMask | ButtonPressMask);
   Atom wm_delete = XInternAtom(display, "WM_DELETE_WINDOW", False);
   XSetWMProtocols(display, window, &wm_delete, 1);
   XMapWindow(display, window);
 
   GC gc = XCreateGC(display, window, 0, nullptr);
-  XImage* ximage = XCreateImage(display,
-                                visual,
-                                static_cast<unsigned int>(depth),
-                                ZPixmap,
-                                0,
-                                nullptr,
-                                static_cast<unsigned int>(image.width),
-                                static_cast<unsigned int>(image.height),
-                                32,
-                                0);
-  if (ximage == nullptr) {
-    XFreeGC(display, gc);
-    XDestroyWindow(display, window);
-    XCloseDisplay(display);
-    throw std::runtime_error("Plot::show: could not allocate X11 image");
-  }
+  XImage* ximage = nullptr;
+  std::unique_ptr<char[]> buffer;
+  Bounds current_bounds = compute_bounds(plot);
+  const Bounds original_bounds = current_bounds;
+  double image_zoom = 1.0;
+  double image_pan_x = 0.0;
+  double image_pan_y = 0.0;
+  int window_width = static_cast<int>(plot_image.width);
+  int window_height = static_cast<int>(plot_image.height + menu_height);
+  const std::vector<ViewerButton> buttons = make_viewer_buttons();
 
-  const std::size_t buffer_size =
-      static_cast<std::size_t>(ximage->bytes_per_line) * static_cast<std::size_t>(ximage->height);
-  auto buffer = std::make_unique<char[]>(buffer_size);
-  std::fill(buffer.get(), buffer.get() + static_cast<std::ptrdiff_t>(buffer_size), 0);
-  ximage->data = buffer.get();
-
-  for (int y = 0; y < static_cast<int>(image.height); ++y) {
-    for (int x = 0; x < static_cast<int>(image.width); ++x) {
-      const std::size_t idx =
-          (static_cast<std::size_t>(y) * image.width + static_cast<std::size_t>(x)) * 3U;
-      const RGB color{
-          static_cast<int>(image.pixels[idx + 0U]),
-          static_cast<int>(image.pixels[idx + 1U]),
-          static_cast<int>(image.pixels[idx + 2U]),
-      };
-      XPutPixel(ximage, x, y, rgb_to_native_pixel(visual, color));
+  auto recreate_ximage = [&](int width, int height) {
+    if (ximage != nullptr) {
+      ximage->data = nullptr;
+      XDestroyImage(ximage);
+      ximage = nullptr;
+      buffer.reset();
     }
-  }
+    ximage = XCreateImage(display,
+                          visual,
+                          static_cast<unsigned int>(depth),
+                          ZPixmap,
+                          0,
+                          nullptr,
+                          static_cast<unsigned int>(width),
+                          static_cast<unsigned int>(height),
+                          32,
+                          0);
+    if (ximage == nullptr) {
+      throw std::runtime_error("Plot::show: could not allocate X11 image");
+    }
+    const std::size_t buffer_size = static_cast<std::size_t>(ximage->bytes_per_line)
+                                  * static_cast<std::size_t>(ximage->height);
+    buffer = std::make_unique<char[]>(buffer_size);
+    std::fill(buffer.get(), buffer.get() + static_cast<std::ptrdiff_t>(buffer_size), 0);
+    ximage->data = buffer.get();
+  };
+
+  auto rerasterize_plot = [&]() { plot_image = rasterize(plot, current_bounds); };
+
+  auto redraw = [&]() {
+    if (ximage == nullptr || static_cast<int>(ximage->width) != window_width
+        || static_cast<int>(ximage->height) != window_height) {
+      recreate_ximage(window_width, window_height);
+    }
+    const Image frame = render_viewer_frame(
+        plot_image, window_width, window_height, buttons, image_zoom, image_pan_x, image_pan_y);
+    copy_image_to_ximage(frame, visual, ximage);
+    XPutImage(display,
+              window,
+              gc,
+              ximage,
+              0,
+              0,
+              0,
+              0,
+              static_cast<unsigned int>(window_width),
+              static_cast<unsigned int>(window_height));
+    XFlush(display);
+  };
+
+  rerasterize_plot();
+  redraw();
 
   bool running = true;
   while (running) {
     XEvent event;
     XNextEvent(display, &event);
     if (event.type == Expose) {
-      XPutImage(display,
-                window,
-                gc,
-                ximage,
-                0,
-                0,
-                0,
-                0,
-                static_cast<unsigned int>(image.width),
-                static_cast<unsigned int>(image.height));
-      XFlush(display);
+      redraw();
+    } else if (event.type == ConfigureNotify) {
+      if (event.xconfigure.width > 0 && event.xconfigure.height > 0
+          && (event.xconfigure.width != window_width || event.xconfigure.height != window_height)) {
+        window_width = event.xconfigure.width;
+        window_height = event.xconfigure.height;
+        redraw();
+      }
     } else if (event.type == KeyPress) {
-      running = false;
+      bool changed = false;
+      const KeySym keysym = XLookupKeysym(&event.xkey, 0);
+      const bool shift_pressed = (event.xkey.state & ShiftMask) != 0U;
+      if (shift_pressed) {
+        if (keysym == XK_minus || keysym == XK_KP_Subtract) {
+          image_zoom /= 1.25;
+          changed = true;
+        } else if (keysym == XK_equal || keysym == XK_plus || keysym == XK_KP_Add) {
+          image_zoom *= 1.25;
+          changed = true;
+        }
+      } else if (keysym == XK_h || keysym == XK_H || keysym == XK_Left) {
+        image_pan_x -= 40.0;
+        changed = true;
+      } else if (keysym == XK_l || keysym == XK_L || keysym == XK_Right) {
+        image_pan_x += 40.0;
+        changed = true;
+      } else if (keysym == XK_j || keysym == XK_J || keysym == XK_Down) {
+        image_pan_y += 40.0;
+        changed = true;
+      } else if (keysym == XK_k || keysym == XK_K || keysym == XK_Up) {
+        image_pan_y -= 40.0;
+        changed = true;
+      } else if (keysym == XK_0) {
+        image_zoom = 1.0;
+        image_pan_x = 0.0;
+        image_pan_y = 0.0;
+        changed = true;
+      } else if (keysym == XK_q || keysym == XK_Q || keysym == XK_Escape) {
+        running = false;
+      }
+
+      if (changed) {
+        redraw();
+      }
+    } else if (event.type == ButtonPress && event.xbutton.button == Button1) {
+      const ViewerButton* button = find_button_at(buttons, event.xbutton.x, event.xbutton.y);
+      if (button != nullptr) {
+        switch (button->action) {
+          case ViewerButton::Action::PlotZoomIn:
+            zoom_bounds(current_bounds, 0.8);
+            break;
+          case ViewerButton::Action::PlotZoomOut:
+            zoom_bounds(current_bounds, 1.25);
+            break;
+          case ViewerButton::Action::PlotLeft:
+            pan_bounds(current_bounds, -0.1, 0.0);
+            break;
+          case ViewerButton::Action::PlotRight:
+            pan_bounds(current_bounds, 0.1, 0.0);
+            break;
+          case ViewerButton::Action::PlotUp:
+            pan_bounds(current_bounds, 0.0, 0.1);
+            break;
+          case ViewerButton::Action::PlotDown:
+            pan_bounds(current_bounds, 0.0, -0.1);
+            break;
+          case ViewerButton::Action::PlotReset:
+            current_bounds = original_bounds;
+            break;
+        }
+        rerasterize_plot();
+        redraw();
+      }
     } else if (event.type == ClientMessage
                && static_cast<Atom>(event.xclient.data.l[0]) == wm_delete) {
       running = false;
@@ -834,8 +1226,10 @@ void show_x11_image(const Image& image, const std::string& title_hint) {
     }
   }
 
-  ximage->data = nullptr;
-  XDestroyImage(ximage);
+  if (ximage != nullptr) {
+    ximage->data = nullptr;
+    XDestroyImage(ximage);
+  }
   XFreeGC(display, gc);
   XDestroyWindow(display, window);
   XCloseDisplay(display);
@@ -939,7 +1333,7 @@ void Plot::view(const std::string& title_hint) const {
 
 void Plot::show(const std::string& title_hint) const {
 #if defined(DATAMUNGE_HAVE_X11)
-  show_x11_image(rasterize(*this), title_hint);
+  show_x11_plot(*this, title_hint);
 #else
   (void)title_hint;
   throw std::runtime_error("Plot::show: X11 support was not enabled at build time");
@@ -968,6 +1362,23 @@ ScatterPlot& ScatterPlot::points(std::vector<double> x,
   series.label = std::move(label);
   series.color = color;
   series.marker_size = marker_size;
+  add_series(std::move(series));
+  return *this;
+}
+
+ScatterPlot& ScatterPlot::line(std::vector<double> x,
+                               std::vector<double> y,
+                               std::string         label,
+                               RGB                 color,
+                               double              stroke_width) {
+  require_xy_same_size(x, y, "ScatterPlot::line");
+  DataSeries series;
+  series.kind = DataSeries::Kind::Line;
+  series.x = std::move(x);
+  series.y = std::move(y);
+  series.label = std::move(label);
+  series.color = color;
+  series.stroke_width = stroke_width;
   add_series(std::move(series));
   return *this;
 }

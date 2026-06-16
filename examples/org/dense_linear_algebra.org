@@ -1,0 +1,100 @@
+#+title: Dense Linear Algebra
+#+options: toc:nil num:nil
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+
+This example compiles and runs a small C++ program against the local
+=datamunge= headers. The batch exporter in [[file:../../init.el][init.el]]
+loads the repo's =direnv= environment first, so the compiler and other project
+tools are available to the source block.
+
+#+begin_src shell
+mkdir -p build/org
+cat > build/org/dense_linear_algebra.cpp <<'CPP'
+#include <datamunge/linalg/linalg.hpp>
+
+#include <iostream>
+
+using datamunge::linalg::DenseMatrix;
+
+int main() {
+    DenseMatrix<double> a(2, 2, {1, 2, 3, 4});
+    DenseMatrix<double> b(2, 2, {5, 6, 7, 8});
+
+    auto sum = a + b;
+    auto product = a * b;
+
+    std::cout << "sum(0,0) = " << sum(0, 0) << "\n";
+    std::cout << "sum(1,1) = " << sum(1, 1) << "\n";
+    std::cout << "product(0,0) = " << product(0, 0) << "\n";
+    std::cout << "product(1,1) = " << product(1, 1) << "\n";
+    std::cout << "frobenius(a) = " << a.norm_frobenius() << "\n";
+    return 0;
+}
+CPP
+
+c++ -std=c++17 -Iinclude build/org/dense_linear_algebra.cpp \
+  -o build/org/dense_linear_algebra
+
+./build/org/dense_linear_algebra
+#+end_src
+
+This second block defines scatterplot data, fits a linear regression line, and
+renders the result to SVG using =datamunge='s plotting API.
+
+#+begin_src shell
+mkdir -p build/org
+cat > build/org/scatter_regression.cpp <<'CPP'
+#include <datamunge/linalg/regression.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using datamunge::linalg::DenseMatrix;
+using datamunge::linalg::linear_regression;
+using namespace datamunge::plot;
+
+int main() {
+    const std::vector<double> x = {0.3, 0.8, 1.1, 1.7, 2.0, 2.6, 3.0, 3.4};
+    const std::vector<double> y = {1.4, 1.8, 2.5, 2.7, 3.1, 3.9, 4.2, 4.8};
+
+    DenseMatrix<double> design(x.size(), 2, 0.0);
+    for (std::size_t i = 0; i < x.size(); ++i) {
+        design(i, 0) = 1.0;
+        design(i, 1) = x[i];
+    }
+
+    const auto fit = linear_regression(design, y);
+    const double intercept = fit.coefficients[0];
+    const double slope = fit.coefficients[1];
+
+    auto plot = ScatterPlot::create();
+    plot.points(x, y, "samples", {37, 99, 235}, 6.0)
+        .line({x.front(), x.back()},
+              {intercept + slope * x.front(), intercept + slope * x.back()},
+              "best fit",
+              {220, 38, 38},
+              3.0)
+        .title("Scatter Plot With Best-Fit Line")
+        .x_label("x")
+        .y_label("y")
+        .background({250, 250, 252});
+
+    plot.save_svg("build/org/scatter_regression.svg");
+
+    std::cout << std::fixed << std::setprecision(4)
+              << "y = " << intercept << " + " << slope << "x"
+              << " (R^2 = " << fit.r_squared << ")\n";
+    return 0;
+}
+CPP
+
+c++ -std=c++17 build/org/scatter_regression.cpp -o build/org/scatter_regression \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/scatter_regression
+#+end_src
+
+#+ATTR_HTML: :alt Scatter plot with linear regression best-fit line
+[[file:../../build/org/scatter_regression.svg]]

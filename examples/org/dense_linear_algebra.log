@@ -1,0 +1,113 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/nixos.org) (preloaded format=pdflatex 1980.1.1)  15 JUN 2026 23:08
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**dense_linear_algebra.tex
+(.//dense_linear_algebra.tex
+LaTeX2e <2025-06-01> patch level 1
+L3 programming layer <2025-06-09>
+
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/base/article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/base/size11.clo
+File: size11.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count275
+\c@section=\count276
+\c@subsection=\count277
+\c@subsubsection=\count278
+\c@paragraph=\count279
+\c@subparagraph=\count280
+\c@figure=\count281
+\c@table=\count282
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen148
+)
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/base/inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+)
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/base/fontenc.sty
+Package: fontenc 2024/12/21 v2.1c Standard LaTeX package
+)
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/graphics/graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/graphics-def/pdftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen149
+\Gin@req@width=\dimen150
+)
+(/nix/store/x17gm458bk17gwji2g049v2jv8ckf5fx-texlive-2025-env-texmfdist/tex/lat
+ex/tools/longtable.sty
+Package: longtable 2024-12-18 v4.23 Multi-page Table package (DPC)
+\LTleft=\skip51
+\LTright=\skip52
+\LTpre=\skip53
+\LTpost=\skip54
+\LTchunksize=\count283
+\LTcapwidth=\dimen151
+\LT@head=\box53
+\LT@firsthead=\box54
+\LT@foot=\box55
+\LT@lastfoot=\box56
+\LT@gbox=\box57
+\LT@cols=\count284
+\LT@rows=\count285
+\c@LT@tables=\count286
+\c@LT@chunks=\count287
+\LT@p@ftn=\toks20
+)
+
+! LaTeX Error: File `wrapfig.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.9 \usepackage
+               {rotating}^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 1058 strings out of 469362
+ 14910 string characters out of 5460808
+ 425018 words of memory out of 5000000
+ 29455 multiletter control sequences out of 15000+600000
+ 627894 words of font info for 42 fonts, out of 8000000 for 9000
+ 319 hyphenation exceptions out of 8191
+ 57i,0n,65p,219b,38s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!
