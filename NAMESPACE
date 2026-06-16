@@ -1,2 +1,2 @@
 exportPattern("^[^.]")
-useDynLib(octrar, .registration=TRUE)
+useDynLib(datamunger, .registration=TRUE)

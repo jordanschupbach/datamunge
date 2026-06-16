@@ -1,6 +1,6 @@
 # octruby
 
-Ruby bindings for the `octra` C/C++ library generated via SWIG.
+Ruby bindings for the `datamunge` C/C++ library generated via SWIG.
 
 ## Development
 

@@ -1,16 +1,16 @@
 <p align="center">
-    <h1>Octra</h1>
+    <h1>Datamunge</h1>
 </p>
 
 <p align="center">
-  <img src="./assets/octra.png" alt="Logo" style="width: 30%;">
+  <img src="./assets/datamunge.png" alt="Logo" style="width: 30%;">
 </p>
 
 > One C to rule them all, one C to find them, one C to bring them all and in the darkness...
 
 ---
 
-Octra is a C/C++ project that has (nearly) automatically generated bindings for a
+Datamunge is a C/C++ project that has (nearly) automatically generated bindings for a
 variety of languages, including Python, R, JavaScript, Lua, PHP, Java, C#, D
 and Go. It is merely meant to be used as a kickstart template for similar
 projects that need to provide bindings to multiple languages. As such, it is
@@ -66,9 +66,9 @@ just run TARGET=example_name
 
 ## Renaming this template
 
-This repo is intended to be cloned and renamed. All occurrences of the project name are expected to be `octra` (lowercase) unless casing is required by a particular ecosystem.
+This repo is intended to be cloned and renamed. All occurrences of the project name are expected to be `datamunge` (lowercase) unless casing is required by a particular ecosystem.
 
-- Rename everything (file contents + paths): `./rename_octra <new_project_name>`
+- Rename everything (file contents + paths): `./rename_datamunge <new_project_name>`
   - `<new_project_name>` must be lowercase (a-z, 0-9, `_` or `-`)
 
 ## Bindings
@@ -116,24 +116,24 @@ Binding support is (to be) provided for the following languages:
 
 | Language   | Name        | Implemented |
 | ---------- | ----------- | ----------- |
-| C#         | OctraDotNet | ✅          |
-| D          | DOctra      | ✅          |
-| Go         | Gooctra     | ✅          |
-| Guile      | OctraGuile  | ✅          |
-| Java       | Joctra      | ✅          |
-| Javascript | OctraJS     | ✅          |
-| Lua        | Loctra      | ✅          |
-| OCaml      | OctraML     | ✅          |
-| Octave     | MOctra      | ✅          |
-| PHP        | OctraPHP    | ✅          |
-| Perl       | Poctra      | ✅          |
-| Python     | PyOctra     | ✅          |
-| R          | OctraR      | ✅          |
-| Ruby       | RbOctra     | ✅          |
-| Rust       | RustOctra   | ✅          |
-| Tcl/TK     | OctraTK     | ✅          |
+| C#         | DatamungeDotNet | ✅          |
+| D          | DDatamunge      | ✅          |
+| Go         | Godatamunge     | ✅          |
+| Guile      | DatamungeGuile  | ✅          |
+| Java       | Jdatamunge      | ✅          |
+| Javascript | DatamungeJS     | ✅          |
+| Lua        | Ldatamunge      | ✅          |
+| OCaml      | DatamungeML     | ✅          |
+| Octave     | MDatamunge      | ✅          |
+| PHP        | DatamungePHP    | ✅          |
+| Perl       | Pdatamunge      | ✅          |
+| Python     | PyDatamunge     | ✅          |
+| R          | DatamungeR      | ✅          |
+| Ruby       | RbDatamunge     | ✅          |
+| Rust       | RustDatamunge   | ✅          |
+| Tcl/TK     | DatamungeTK     | ✅          |
 
-Each binding lives under `src/` (e.g. `src/rustoctra/`, `src/gooctra/`, `src/octruby/`),
+Each binding lives under `src/` (e.g. `src/rustdatamunge/`, `src/godatamunge/`, `src/octruby/`),
 with SWIG generator inputs kept alongside each binding (typically `src/<binding>/swig/`).
 The C/C++ core remains the single
 source of truth; bindings are (re)generated via the `just prebuild-*` /

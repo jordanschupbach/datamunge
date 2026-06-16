@@ -1,8 +1,8 @@
 {
-  "name": "octrad-example",
-  "description": "Example usage of the octrad bindings.",
+  "name": "datamunged-example",
+  "description": "Example usage of the datamunged bindings.",
   "license": "Unlicense",
   "dependencies": {
-    "octrad": { "path": "../../src/octrad" }
+    "datamunged": { "path": "../../src/datamunged" }
   }
 }

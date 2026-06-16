@@ -14,7 +14,7 @@ namespace Swig {
 }
 
 
-class SwigDirector_Callback : public octra::Callback, public Swig::Director {
+class SwigDirector_Callback : public datamunge::Callback, public Swig::Director {
 
 public:
     SwigDirector_Callback(VALUE self);

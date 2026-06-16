@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14...3.22)
 
-project(OctraTests LANGUAGES C CXX)
+project(DatamungeTests LANGUAGES C CXX)
 
 # ---- Options ----
 
@@ -15,7 +15,7 @@ option(TEST_INSTALLED_VERSION "Test the version found by find_package" OFF)
 
 include(../cmake/CPM.cmake)
 
-CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
+CPMAddPackage(NAME datamunge SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
 # Prefer a preinstalled GTest (offline-friendly), then fall back to fetching.
 find_package(GTest QUIET CONFIG)
@@ -42,7 +42,7 @@ file(GLOB c_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/*.c)
 message(STATUS "c_sources: ${c_sources}")
 message(STATUS "cpp_sources: ${cpp_sources}")
 add_executable(run_tests ${c_sources} ${cpp_sources})
-target_link_libraries(run_tests octra::octra GTest::gtest_main)
+target_link_libraries(run_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_tests PROPERTIES CXX_STANDARD 17)
 
 include(GoogleTest)
@@ -54,10 +54,10 @@ if(ENABLE_TEST_COVERAGE)
     target_compile_options(run_tests PRIVATE -O0 -g --coverage)
     target_link_options(run_tests PRIVATE --coverage)
 
-    # Ensure the octra library (built via CPM in this build) is also instrumented.
-    if(TARGET octra)
-      target_compile_options(octra PRIVATE -O0 -g --coverage)
-      target_link_options(octra PRIVATE --coverage)
+    # Ensure the datamunge library (built via CPM in this build) is also instrumented.
+    if(TARGET datamunge)
+      target_compile_options(datamunge PRIVATE -O0 -g --coverage)
+      target_link_options(datamunge PRIVATE --coverage)
     endif()
   else()
     message(WARNING "ENABLE_TEST_COVERAGE is ON but coverage flags are only wired for Clang/GNU.")

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14...3.22)
 
-project(OctraExamples LANGUAGES C CXX)
+project(DatamungeExamples LANGUAGES C CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS
@@ -22,16 +22,16 @@ option(BUILD_W_INSTALLED "Build w/ the installed version (assumes pkg-config)" O
 message(STATUS "BUILD_W_INSTALLED: ${BUILD_W_INSTALLED}")
 
 if(BUILD_W_INSTALLED)
-  # find_package(octra REQUIRED)
+  # find_package(datamunge REQUIRED)
   find_package(PkgConfig REQUIRED)
-  pkg_search_module(octra REQUIRED IMPORTED_TARGET octra)
-  # if(NOT PkgConfig::octra) message(FATAL_ERROR "Could not find installed octra package via
+  pkg_search_module(datamunge REQUIRED IMPORTED_TARGET datamunge)
+  # if(NOT PkgConfig::datamunge) message(FATAL_ERROR "Could not find installed datamunge package via
   # pkg-config") endif()
 else()
-  CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
+  CPMAddPackage(NAME datamunge SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
 endif()
 
-# CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
+# CPMAddPackage(NAME datamunge SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../..)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLOG_LEVEL_BUILD=LOG_SEV_NOTICE -Wall")
 
@@ -41,11 +41,11 @@ foreach(ENTRY ${EXAMPLES_})
   add_executable(${EXAMPLE_NAME} ${ENTRY})
   set_target_properties(${EXAMPLE_NAME} PROPERTIES CXX_STANDARD 17)
   set_property(TARGET ${EXAMPLE_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
-  # target_link_libraries(${EXAMPLE_NAME} octra::octra)
+  # target_link_libraries(${EXAMPLE_NAME} datamunge::datamunge)
   if(BUILD_W_INSTALLED)
-    target_link_libraries(${EXAMPLE_NAME} PkgConfig::octra)
+    target_link_libraries(${EXAMPLE_NAME} PkgConfig::datamunge)
   else()
-    target_link_libraries(${EXAMPLE_NAME} octra::octra)
+    target_link_libraries(${EXAMPLE_NAME} datamunge::datamunge)
   endif()
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${EXAMPLE_NAME} PRIVATE DEBUG_BUILD)

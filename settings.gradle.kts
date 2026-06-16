@@ -1,8 +1,8 @@
-rootProject.name = "joctra"
-include("joctra-octra")
-include("joctra")
+rootProject.name = "jdatamunge"
+include("jdatamunge-datamunge")
+include("jdatamunge")
 // include("app")
 
 val bindingsDir = file("src")
-project(":joctra-octra").projectDir = file("$bindingsDir/joctra-octra")
-project(":joctra").projectDir = file("$bindingsDir/joctra")
+project(":jdatamunge-datamunge").projectDir = file("$bindingsDir/jdatamunge-datamunge")
+project(":jdatamunge").projectDir = file("$bindingsDir/jdatamunge")

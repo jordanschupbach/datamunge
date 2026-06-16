@@ -1,5 +1,5 @@
 {
-  "name": "@octra/octrajs",
+  "name": "@datamunge/datamungejs",
   "version": "0.0.1",
   "main": "index.js",
   "dependencies": {
@@ -18,7 +18,7 @@
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "<rootDir>/src/octrajs/"
+      "<rootDir>/src/datamungejs/"
     ]
   },
   "author": "",
@@ -27,5 +27,5 @@
     "type": "git"
   },
   "bugs": {},
-  "description": "JavaScript (N-API) bindings for the octra C++ library."
+  "description": "JavaScript (N-API) bindings for the datamunge C++ library."
 }

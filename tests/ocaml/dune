@@ -1,4 +1,4 @@
 (test
- (name test_octra)
- (modules test_octra)
- (libraries alcotest octraocaml))
+ (name test_datamunge)
+ (modules test_datamunge)
+ (libraries alcotest datamungeocaml))

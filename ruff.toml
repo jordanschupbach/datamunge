@@ -9,7 +9,7 @@ exclude = [
   "node_modules",
   "result",
   # Generated (SWIG) Python wrapper.
-  "src/pyoctra/octra.py",
+  "src/pydatamunge/datamunge.py",
   "target",
 ]
 

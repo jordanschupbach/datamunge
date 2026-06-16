@@ -22,7 +22,7 @@ languages=(
 	"ocaml:test-ocaml"
 )
 
-tmpdir="$(mktemp -d "${TMPDIR:-/tmp}/octra-test-all.XXXXXX")"
+tmpdir="$(mktemp -d "${TMPDIR:-/tmp}/datamunge-test-all.XXXXXX")"
 trap 'rm -rf "$tmpdir"' EXIT
 
 failures=0

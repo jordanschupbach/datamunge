@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <octra/octra.hpp>
+#include <datamunge/datamunge.hpp>
 
-TEST(octra, hello_is_callable) {
-  ASSERT_NO_THROW(octra::hello());
+TEST(datamunge, hello_is_callable) {
+  ASSERT_NO_THROW(datamunge::hello());
 }

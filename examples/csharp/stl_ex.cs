@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-// NOTE: if using repl, uncomment the following line to load the octradotnet.dll
+// NOTE: if using repl, uncomment the following line to load the datamungedotnet.dll
 // and then recomment it back when compiling as a standalone program
-// #r "src/octradotnet/bin/Debug/net10.0/octradotnet.dll"
+// #r "src/datamungedotnet/bin/Debug/net10.0/datamungedotnet.dll"
 
 class stl_ex {
   static void Main() {

@@ -11,7 +11,7 @@ ignore: |
   **/target/**
   result/**
   **/result/**
-  src/perloctra/**
+  src/perldatamunge/**
   **/MYMETA.yml
 
 rules:

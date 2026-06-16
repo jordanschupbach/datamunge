@@ -39,8 +39,8 @@ const gypContent = `
 {
   'targets': [
     {
-      'target_name': 'octrajs',
-      'sources': [ ${sourcesFilenames}, 'src/octra_js_wrap.cpp' ],
+      'target_name': 'datamungejs',
+      'sources': [ ${sourcesFilenames}, 'src/datamunge_js_wrap.cpp' ],
       'include_dirs': [
         "include",
         "<!@(node -p \\\"require('node-addon-api').include\\\")",

@@ -1,7 +1,7 @@
 module app;
 
 import std.stdio : writeln;
-import octra;
+import datamunge;
 
 class TimesTwo : Callback {
   override double call(double x) {

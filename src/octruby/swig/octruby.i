@@ -13,10 +13,10 @@
 %template(SizeVector) std::vector<size_t>;
 %template(SVector) std::vector<std::string>;
 
-%feature("director") octra::Callback;
+%feature("director") datamunge::Callback;
 
 %{
-#include "octra/octra.hpp"
+#include "datamunge/datamunge.hpp"
 %}
 
-%include "octra/octra.hpp"
+%include "datamunge/datamunge.hpp"

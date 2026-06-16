@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
   spec.name = "octruby"
   spec.version = "0.0.1"
-  spec.summary = "Ruby bindings to the octra library (SWIG)."
+  spec.summary = "Ruby bindings to the datamunge library (SWIG)."
   spec.license = "Unlicense"
   spec.files = Dir[
     "lib/**/*.rb",

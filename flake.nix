@@ -1,5 +1,5 @@
 {
-  description = "OCTRA";
+  description = "DATAMUNGE";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     systems.url = "github:nix-systems/default";
@@ -25,7 +25,7 @@
         has = builtins.hasAttr;
         nodePackages = if has "nodePackages" pkgs then pkgs.nodePackages else { };
         opt = cond: xs: lib.optionals cond xs;
-        octra = import ./nix/octra.nix { inherit pkgs; };
+        datamunge = import ./nix/datamunge.nix { inherit pkgs; };
         phpPackage = php-from-source.packages.${system}; # Get the custom PHP package
         lua = pkgs.lua5_4 or (pkgs.lua54 or pkgs.lua);
 
@@ -64,7 +64,7 @@
         };
 
         pythonPkgs = pkgs.python3.pkgs;
-        pyoctra = import ./nix/pyoctra.nix {
+        pydatamunge = import ./nix/pydatamunge.nix {
           inherit (pkgs)
             lib
             stdenv
@@ -76,7 +76,7 @@
           inherit (pythonPkgs) buildPythonPackage setuptools;
         };
 
-        octrajs = import ./nix/octrajs.nix {
+        datamungejs = import ./nix/datamungejs.nix {
           inherit (pkgs)
             lib
             buildNpmPackage
@@ -85,8 +85,8 @@
             ;
         };
 
-        octrar = pkgs.rPackages.buildRPackage {
-          name = "octrar";
+        datamunger = pkgs.rPackages.buildRPackage {
+          name = "datamunger";
           src = pkgs.lib.cleanSource ./.;
           buildInputs = [
             pkgs.libxml2
@@ -95,25 +95,25 @@
           ];
         };
 
-        octratcl = import ./nix/octratcl.nix { pkgs = pkgs; };
+        datamungetcl = import ./nix/datamungetcl.nix { pkgs = pkgs; };
         octruby = import ./nix/octruby.nix { pkgs = pkgs; };
-        octralua = import ./nix/octralua.nix { pkgs = pkgs; };
-        octraocaml = import ./nix/octraocaml.nix { pkgs = pkgs; };
-        octraguile = import ./nix/octraguile.nix { pkgs = pkgs; };
-        octraoctave = import ./nix/octraoctave.nix { pkgs = pkgs; };
-        octrad = import ./nix/octrad.nix { pkgs = pkgs; };
+        datamungelua = import ./nix/datamungelua.nix { pkgs = pkgs; };
+        datamungeocaml = import ./nix/datamungeocaml.nix { pkgs = pkgs; };
+        datamungeguile = import ./nix/datamungeguile.nix { pkgs = pkgs; };
+        datamungeoctave = import ./nix/datamungeoctave.nix { pkgs = pkgs; };
+        datamunged = import ./nix/datamunged.nix { pkgs = pkgs; };
 
         # }}} Bindings
 
         gradleWrapped = pkgs.gradle-packages.gradle.wrapped;
-        joctraGradleDeps = gradleWrapped.passthru.fetchDeps {
+        jdatamungeGradleDeps = gradleWrapped.passthru.fetchDeps {
           pkg = pkgs.stdenvNoCC.mkDerivation {
-            pname = "joctra";
+            pname = "jdatamunge";
             version = "0.0.1";
             src = pkgs.emptyDirectory;
             installPhase = "mkdir -p $out";
           };
-          data = ./nix/joctra-gradle-deps.json;
+          data = ./nix/jdatamunge-gradle-deps.json;
         };
 
         formatCheckTools = [
@@ -178,7 +178,7 @@
       {
         checks = {
           format = pkgs.stdenvNoCC.mkDerivation {
-            name = "octra-format-check";
+            name = "datamunge-format-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = formatCheckTools;
             phases = [
@@ -194,7 +194,7 @@
           };
 
           lint = pkgs.stdenvNoCC.mkDerivation {
-            name = "octra-lint";
+            name = "datamunge-lint";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = lintTools;
             phases = [
@@ -210,7 +210,7 @@
           };
 
           cpp = pkgs.stdenv.mkDerivation {
-            name = "octra-cpp-check";
+            name = "datamunge-cpp-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               pkgs.cmake
@@ -236,11 +236,11 @@
           };
 
           python = pkgs.stdenv.mkDerivation {
-            name = "octra-python-check";
+            name = "datamunge-python-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               (pkgs.python3.withPackages (ps: [
-                self.packages.${system}.pyoctra
+                self.packages.${system}.pydatamunge
                 ps.pytest
               ]))
             ];
@@ -257,7 +257,7 @@
           };
 
           r = pkgs.stdenv.mkDerivation {
-            name = "octra-r-check";
+            name = "datamunge-r-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               pkgs.R
@@ -282,10 +282,10 @@
           };
 
           javascript = pkgs.buildNpmPackage {
-            pname = "octra-javascript-check";
+            pname = "datamunge-javascript-check";
             version = "0.0.1";
             src = pkgs.lib.cleanSource ./.;
-            npmDepsHash = "sha256-hPHfLevEm7v3hC/NhK1uF+7+UTlT7trPOuD3+f7avHY=";
+            npmDepsHash = "sha256-3AVJuVdQXXQ9oYoT0Zh9s0hwQMDTFsXyd90sCBTO4aw=";
             nativeBuildInputs = [
               pkgs.python3
               pkgs.pkg-config
@@ -308,7 +308,7 @@
           };
 
           java = pkgs.stdenv.mkDerivation {
-            name = "octra-java-check";
+            name = "datamunge-java-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               gradleWrapped
@@ -321,7 +321,7 @@
             ];
 
             # Provide a deterministic HTTP replay cache for Gradle via mitm-cache.
-            mitmCache = joctraGradleDeps;
+            mitmCache = jdatamungeGradleDeps;
 
             phases = [
               "unpackPhase"
@@ -331,23 +331,23 @@
             ];
             configurePhase = "runHook preConfigure";
             buildPhase = ''
-              cmake -S src/joctra-octra -B src/joctra-octra/build/cmake -DCMAKE_BUILD_TYPE=Release
-              cmake --build src/joctra-octra/build/cmake -j $NIX_BUILD_CORES
-              export LD_LIBRARY_PATH="$PWD/src/joctra-octra/build/cmake:''${LD_LIBRARY_PATH:-}"
+              cmake -S src/jdatamunge-datamunge -B src/jdatamunge-datamunge/build/cmake -DCMAKE_BUILD_TYPE=Release
+              cmake --build src/jdatamunge-datamunge/build/cmake -j $NIX_BUILD_CORES
+              export LD_LIBRARY_PATH="$PWD/src/jdatamunge-datamunge/build/cmake:''${LD_LIBRARY_PATH:-}"
               gradle test --no-configuration-cache
             '';
             installPhase = "mkdir -p $out";
           };
 
           tcl = pkgs.stdenv.mkDerivation {
-            name = "octra-tcl-check";
+            name = "datamunge-tcl-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               pkgs.tcl
               pkgs.tk
             ];
             buildInputs = [
-              octratcl
+              datamungetcl
             ];
             phases = [
               "unpackPhase"
@@ -357,20 +357,20 @@
             doCheck = true;
             checkPhase = ''
               tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
-              export TCLLIBPATH="${octratcl}/lib/$tclVersionDir"
-              tclsh tests/tcl/test_octra.tcl
+              export TCLLIBPATH="${datamungetcl}/lib/$tclVersionDir"
+              tclsh tests/tcl/test_datamunge.tcl
             '';
             installPhase = "mkdir -p $out";
           };
 
           lua = pkgs.stdenv.mkDerivation {
-            name = "octra-lua-check";
+            name = "datamunge-lua-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               lua
             ];
             buildInputs = [
-              octralua
+              datamungelua
             ];
             phases = [
               "unpackPhase"
@@ -385,15 +385,15 @@
                 ${lua}/bin/lua -e 'print("_VERSION=" .. tostring(_VERSION))' >&2
                 exit 1
               fi
-              export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
-              export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
-              ${lua}/bin/lua tests/lua/test_octra.lua
+              export LUA_PATH="${datamungelua}/share/lua/$luaVersion/?.lua;${datamungelua}/share/lua/?.lua;./?.lua;;"
+              export LUA_CPATH="${datamungelua}/lib/lua/$luaVersion/?.so;${datamungelua}/lib/lua/?.so;${datamungelua}/lib64/lua/$luaVersion/?.so;${datamungelua}/lib64/lua/?.so;;"
+              ${lua}/bin/lua tests/lua/test_datamunge.lua
             '';
             installPhase = "mkdir -p $out";
           };
 
           ruby = pkgs.stdenv.mkDerivation {
-            name = "octra-ruby-check";
+            name = "datamunge-ruby-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               pkgs.ruby
@@ -409,19 +409,19 @@
             doCheck = true;
             checkPhase = ''
               export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
-              ruby -I tests/ruby -e 'require "test_octra"'
+              ruby -I tests/ruby -e 'require "test_datamunge"'
             '';
             installPhase = "mkdir -p $out";
           };
 
           guile = pkgs.stdenv.mkDerivation {
-            name = "octra-guile-check";
+            name = "datamunge-guile-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               pkgs.guile
             ];
             buildInputs = [
-              octraguile
+              datamungeguile
             ];
             phases = [
               "unpackPhase"
@@ -435,21 +435,21 @@
                 effectiveVersion="3.0"
               fi
 
-              export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-              export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
-              ${pkgs.guile}/bin/guile -s tests/guile/test_octra.scm
+              export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+              export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+              ${pkgs.guile}/bin/guile -s tests/guile/test_datamunge.scm
             '';
             installPhase = "mkdir -p $out";
           };
 
           octave = pkgs.stdenv.mkDerivation {
-            name = "octra-octave-check";
+            name = "datamunge-octave-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               pkgs.octave
             ];
             buildInputs = [
-              octraoctave
+              datamungeoctave
             ];
             phases = [
               "unpackPhase"
@@ -458,14 +458,14 @@
             ];
             doCheck = true;
             checkPhase = ''
-              export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
-              ${pkgs.octave}/bin/octave -qf --eval 'test("tests/octave/test_octra.m")'
+              export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+              ${pkgs.octave}/bin/octave -qf --eval 'test("tests/octave/test_datamunge.m")'
             '';
             installPhase = "mkdir -p $out";
           };
 
           d = pkgs.stdenv.mkDerivation {
-            name = "octra-d-check";
+            name = "datamunge-d-check";
             src = pkgs.lib.cleanSource ./.;
             nativeBuildInputs = [
               pkgs.dub
@@ -474,8 +474,8 @@
               pkgs.stdenv.cc
             ];
             buildInputs = [
-              octra
-              octrad
+              datamunge
+              datamunged
             ];
             phases = [
               "unpackPhase"
@@ -488,29 +488,29 @@
               export DUB_HOME="$TMPDIR/dub"
               mkdir -p "$DUB_HOME"
 
-              export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-              export OCTRA_PREFIX="$(${pkgs.pkg-config}/bin/pkg-config --variable=prefix octra)"
-              export OCTRA_LIBDIR="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir octra)"
-              export OCTRA_CFLAGS="$(${pkgs.pkg-config}/bin/pkg-config --cflags octra)"
-              export OCTRA_LDFLAGS="$(${pkgs.pkg-config}/bin/pkg-config --libs octra)"
-              export CFLAGS="$OCTRA_CFLAGS ''${CFLAGS:-}"
-              export CXXFLAGS="$OCTRA_CFLAGS ''${CXXFLAGS:-}"
-              export LDFLAGS="$OCTRA_LDFLAGS ''${LDFLAGS:-}"
-              export LIBRARY_PATH="$OCTRA_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
-              export LD_LIBRARY_PATH="${octrad}/lib:$OCTRA_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+              export DATAMUNGE_PREFIX="$(${pkgs.pkg-config}/bin/pkg-config --variable=prefix datamunge)"
+              export DATAMUNGE_LIBDIR="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir datamunge)"
+              export DATAMUNGE_CFLAGS="$(${pkgs.pkg-config}/bin/pkg-config --cflags datamunge)"
+              export DATAMUNGE_LDFLAGS="$(${pkgs.pkg-config}/bin/pkg-config --libs datamunge)"
+              export CFLAGS="$DATAMUNGE_CFLAGS ''${CFLAGS:-}"
+              export CXXFLAGS="$DATAMUNGE_CFLAGS ''${CXXFLAGS:-}"
+              export LDFLAGS="$DATAMUNGE_LDFLAGS ''${LDFLAGS:-}"
+              export LIBRARY_PATH="$DATAMUNGE_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+              export LD_LIBRARY_PATH="${datamunged}/lib:$DATAMUNGE_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
 
-              octradDubPackages="$TMPDIR/dub-packages"
-              mkdir -p "$octradDubPackages"
-              cp -R "${octrad}/share/dub/packages/octrad-0.0.1" "$octradDubPackages/"
-              chmod -R u+w "$octradDubPackages/octrad-0.0.1" || true
-              dub add-path "$octradDubPackages" >/dev/null
+              datamungedDubPackages="$TMPDIR/dub-packages"
+              mkdir -p "$datamungedDubPackages"
+              cp -R "${datamunged}/share/dub/packages/datamunged-0.0.1" "$datamungedDubPackages/"
+              chmod -R u+w "$datamungedDubPackages/datamunged-0.0.1" || true
+              dub add-path "$datamungedDubPackages" >/dev/null
               dub test --root tests/d --compiler=ldc2 --build=release
             '';
             installPhase = "mkdir -p $out";
           };
 
           rust = pkgs.rustPlatform.buildRustPackage {
-            pname = "octra-rust-check";
+            pname = "datamunge-rust-check";
             version = "0.0.1";
             src = pkgs.lib.cleanSource ./.;
             cargoLock = {
@@ -520,15 +520,15 @@
               pkgs.pkg-config
             ];
             buildInputs = [
-              octra
+              datamunge
             ];
             doCheck = true;
             buildPhase = ''
               runHook preBuild
               export HOME="$TMPDIR"
               export CARGO_NET_OFFLINE=true
-              export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir octra)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir datamunge)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
               cargo build --manifest-path tests/rust/Cargo.toml --offline --locked --release
               runHook postBuild
             '';
@@ -536,8 +536,8 @@
               runHook preCheck
               export HOME="$TMPDIR"
               export CARGO_NET_OFFLINE=true
-              export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir octra)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir datamunge)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
               cargo test --manifest-path tests/rust/Cargo.toml --offline --locked --release
               runHook postCheck
             '';
@@ -546,8 +546,8 @@
 
           csharp =
             let
-              nativeOctra = pkgs.stdenv.mkDerivation {
-                pname = "octra-csharp-native";
+              nativeDatamunge = pkgs.stdenv.mkDerivation {
+                pname = "datamunge-csharp-native";
                 version = "0.0.1";
                 src = pkgs.lib.cleanSource ./.;
                 nativeBuildInputs = [
@@ -563,26 +563,26 @@
                   "installPhase"
                 ];
                 buildPhase = ''
-                  cmake -S src/octradotnet -B build -DCMAKE_BUILD_TYPE=Release
+                  cmake -S src/datamungedotnet -B build -DCMAKE_BUILD_TYPE=Release
                   cmake --build build -j $NIX_BUILD_CORES
                 '';
                 installPhase = ''
                   mkdir -p $out/lib
-                  cp -v build/liboctra_csharp.so $out/lib/
-                  cp -v build/_deps/octra-build/liboctra.so $out/lib/
+                  cp -v build/libdatamunge_csharp.so $out/lib/
+                  cp -v build/_deps/datamunge-build/libdatamunge.so $out/lib/
                 '';
               };
             in
             pkgs.buildDotnetModule {
-              name = "octra-csharp-check";
+              name = "datamunge-csharp-check";
               src = pkgs.lib.cleanSourceWith {
                 src = ./.;
                 filter = path: type: builtins.baseNameOf path != "dotnet-tools.json";
               };
               dotnet-sdk = pkgs.dotnet-sdk_10;
               nugetDeps = ./nix/nuget-deps.json;
-              testProjectFile = "src/octradotnet.tests/octradotnet.tests.csproj";
-              runtimeDeps = [ nativeOctra ];
+              testProjectFile = "src/datamungedotnet.tests/datamungedotnet.tests.csproj";
+              runtimeDeps = [ nativeDatamunge ];
               doCheck = true;
               dontDotnetInstall = true;
               installPhase = "mkdir -p $out";
@@ -591,30 +591,30 @@
 
         packages = {
           inherit
-            octra
-            pyoctra
-            octrajs
-            octrar
-            octratcl
+            datamunge
+            pydatamunge
+            datamungejs
+            datamunger
+            datamungetcl
             octruby
-            octralua
-            octraocaml
-            octraguile
-            octraoctave
-            octrad
+            datamungelua
+            datamungeocaml
+            datamungeguile
+            datamungeoctave
+            datamunged
             ;
 
-          rename-octra = pkgs.writeShellApplication {
-            name = "rename-octra";
-            text = ''exec "${./rename_octra}" "$@"'';
+          rename-datamunge = pkgs.writeShellApplication {
+            name = "rename-datamunge";
+            text = ''exec "${./rename_datamunge}" "$@"'';
           };
         };
 
-        apps.rename-octra = {
+        apps.rename-datamunge = {
           type = "app";
-          program = "${self.packages.${system}.rename-octra}/bin/rename-octra";
+          program = "${self.packages.${system}.rename-datamunge}/bin/rename-datamunge";
           meta = {
-            description = "Rename the template project (octra -> <newname>) across files and paths.";
+            description = "Rename the template project (datamunge -> <newname>) across files and paths.";
           };
         };
 
@@ -623,7 +623,7 @@
 
             pkgs.libxml2
 
-            octra
+            datamunge
             pkgs.lcov
             pkgs.clang
             pkgs.doctest
@@ -645,7 +645,7 @@
             swig-jse
 
             # Core library + pkg-config visibility
-            octra
+            datamunge
             pkgs.pkg-config
             pkgs.cmake
             pkgs.gnumake
@@ -653,12 +653,12 @@
             pkgs.swig
 
             # Language runtimes + bindings for runnable examples
-            pyoctra
+            pydatamunge
 
-            octrajs
+            datamungejs
             pkgs.nodejs
 
-            octrar
+            datamunger
             pkgs.R
 
             octruby
@@ -668,16 +668,16 @@
 
             phpPackage
 
-            octralua
+            datamungelua
             lua
 
-            octratcl
+            datamungetcl
             pkgs.tcl
 
-            octraoctave
+            datamungeoctave
             pkgs.octave
 
-            octraguile
+            datamungeguile
             pkgs.guile
 
             # For building/running OCaml + Go examples during export
@@ -689,19 +689,19 @@
           ];
 
           shellHook = ''
-            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
 
             # Octave: make the installed .m files discoverable.
-            export OCTRA_PREFIX="${octra}"
-            export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+            export DATAMUNGE_PREFIX="${datamunge}"
+            export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
 
             # Guile: make the installed module + extension discoverable.
             effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
             if [ -z "$effectiveVersion" ]; then
               effectiveVersion="3.0"
             fi
-            export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-            export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+            export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+            export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
           '';
 
         };
@@ -781,7 +781,7 @@
 
           packages = [
 
-            octra
+            datamunge
             pkgs.just
             pkgs.emacs
             pkgs.direnv
@@ -832,7 +832,7 @@
             pkgs.just
             (pkgs.python3.withPackages (
               python-pkgs: with python-pkgs; [
-                pyoctra
+                pydatamunge
                 ipython
                 pip
                 pytest
@@ -858,7 +858,7 @@
 
         devShells.javascript = pkgs.mkShell {
           packages = [
-            octrajs
+            datamungejs
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.python3
@@ -871,7 +871,7 @@
 
         devShells.r = pkgs.mkShell {
           packages = [
-            octrar
+            datamunger
             pkgs.R
             pkgs.rPackages.testthat
             pkgs.pkg-config
@@ -913,7 +913,7 @@
 
         devShells.rust = pkgs.mkShell {
           packages = [
-            octra
+            datamunge
             pkgs.rustc
             pkgs.cargo
             pkgs.rustfmt
@@ -927,16 +927,16 @@
           ];
 
           shellHook = ''
-            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-            export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
             export LIBCLANG_PATH="${pkgs.llvmPackages.libclang.lib}/lib"
           '';
         };
 
         devShells.d = pkgs.mkShell {
           packages = [
-            octra
-            octrad
+            datamunge
+            datamunged
             pkgs.dub
             pkgs.ldc
             pkgs.swig
@@ -946,27 +946,27 @@
           ];
 
           shellHook = ''
-            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-            export OCTRA_PREFIX="$(pkg-config --variable=prefix octra)"
-            export OCTRA_LIBDIR="$(pkg-config --variable=libdir octra)"
-            export OCTRA_CFLAGS="$(pkg-config --cflags octra)"
-            export OCTRA_LDFLAGS="$(pkg-config --libs octra)"
-            export CFLAGS="$OCTRA_CFLAGS ''${CFLAGS:-}"
-            export CXXFLAGS="$OCTRA_CFLAGS ''${CXXFLAGS:-}"
-            export LDFLAGS="$OCTRA_LDFLAGS ''${LDFLAGS:-}"
-            export LIBRARY_PATH="$OCTRA_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
-            export LD_LIBRARY_PATH="${octrad}/lib:$OCTRA_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export DATAMUNGE_PREFIX="$(pkg-config --variable=prefix datamunge)"
+            export DATAMUNGE_LIBDIR="$(pkg-config --variable=libdir datamunge)"
+            export DATAMUNGE_CFLAGS="$(pkg-config --cflags datamunge)"
+            export DATAMUNGE_LDFLAGS="$(pkg-config --libs datamunge)"
+            export CFLAGS="$DATAMUNGE_CFLAGS ''${CFLAGS:-}"
+            export CXXFLAGS="$DATAMUNGE_CFLAGS ''${CXXFLAGS:-}"
+            export LDFLAGS="$DATAMUNGE_LDFLAGS ''${LDFLAGS:-}"
+            export LIBRARY_PATH="$DATAMUNGE_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+            export LD_LIBRARY_PATH="${datamunged}/lib:$DATAMUNGE_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
 
             export DUB_HOME="$(pwd)/build/dub"
             mkdir -p "$DUB_HOME"
 
-            octradDubPackages="$(pwd)/build/dub-packages"
-            mkdir -p "$octradDubPackages"
-            if [ ! -d "$octradDubPackages/octrad-0.0.1" ]; then
-              cp -R "${octrad}/share/dub/packages/octrad-0.0.1" "$octradDubPackages/"
-              chmod -R u+w "$octradDubPackages/octrad-0.0.1" || true
+            datamungedDubPackages="$(pwd)/build/dub-packages"
+            mkdir -p "$datamungedDubPackages"
+            if [ ! -d "$datamungedDubPackages/datamunged-0.0.1" ]; then
+              cp -R "${datamunged}/share/dub/packages/datamunged-0.0.1" "$datamungedDubPackages/"
+              chmod -R u+w "$datamungedDubPackages/datamunged-0.0.1" || true
             fi
-            dub add-path "$octradDubPackages" >/dev/null 2>&1 || true
+            dub add-path "$datamungedDubPackages" >/dev/null 2>&1 || true
           '';
         };
 
@@ -983,8 +983,8 @@
 
         devShells.tcl = pkgs.mkShell {
           packages = [
-            octra
-            octratcl
+            datamunge
+            datamungetcl
             pkgs.tcl
             pkgs.tk
             pkgs.swig
@@ -995,13 +995,13 @@
 
           shellHook = ''
             tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
-            export TCLLIBPATH="${octratcl}/lib/$tclVersionDir''${TCLLIBPATH:+ $TCLLIBPATH}"
+            export TCLLIBPATH="${datamungetcl}/lib/$tclVersionDir''${TCLLIBPATH:+ $TCLLIBPATH}"
           '';
         };
 
         devShells.ruby = pkgs.mkShell {
           packages = [
-            octra
+            datamunge
             octruby
             pkgs.ruby
             pkgs.swig
@@ -1011,15 +1011,15 @@
           ];
 
           shellHook = ''
-            export OCTRA_PREFIX="${octra}"
+            export DATAMUNGE_PREFIX="${datamunge}"
             export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
           '';
         };
 
         devShells.octave = pkgs.mkShell {
           packages = [
-            octra
-            octraoctave
+            datamunge
+            datamungeoctave
             pkgs.octave
             pkgs.swig
             pkgs.cmake
@@ -1028,15 +1028,15 @@
           ];
 
           shellHook = ''
-            export OCTRA_PREFIX="${octra}"
-            export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+            export DATAMUNGE_PREFIX="${datamunge}"
+            export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
           '';
         };
 
         devShells.lua = pkgs.mkShell {
           packages = [
-            octra
-            octralua
+            datamunge
+            datamungelua
             lua
             pkgs.swig
             pkgs.cmake
@@ -1051,14 +1051,14 @@
               ${lua}/bin/lua -e 'print("_VERSION=" .. tostring(_VERSION))' >&2
               exit 1
             fi
-            export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
-            export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
+            export LUA_PATH="${datamungelua}/share/lua/$luaVersion/?.lua;${datamungelua}/share/lua/?.lua;./?.lua;;"
+            export LUA_CPATH="${datamungelua}/lib/lua/$luaVersion/?.so;${datamungelua}/lib/lua/?.so;${datamungelua}/lib64/lua/$luaVersion/?.so;${datamungelua}/lib64/lua/?.so;;"
           '';
         };
 
         devShells.ocaml = pkgs.mkShell {
           packages = [
-            octra
+            datamunge
             pkgs.swig
             pkgs.pkg-config
             pkgs.stdenv.cc
@@ -1072,18 +1072,18 @@
           ];
 
           shellHook = ''
-            export OCTRA_PREFIX="${octra}"
-            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-            export LD_LIBRARY_PATH="${octra}/lib/octra-0.0.1''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
-            export CAML_LD_LIBRARY_PATH="${octra}/lib/octra-0.0.1''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
+            export DATAMUNGE_PREFIX="${datamunge}"
+            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export LD_LIBRARY_PATH="${datamunge}/lib/datamunge-0.0.1''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            export CAML_LD_LIBRARY_PATH="${datamunge}/lib/datamunge-0.0.1''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
             export XDG_CACHE_HOME="$(pwd)/build/xdg-cache"
           '';
         };
 
         devShells.guile = pkgs.mkShell {
           packages = [
-            octra
-            octraguile
+            datamunge
+            datamungeguile
             pkgs.guile
             pkgs.swig
             pkgs.cmake
@@ -1097,8 +1097,8 @@
               effectiveVersion="3.0"
             fi
 
-            export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-            export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+            export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+            export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
           '';
         };
 
@@ -1111,7 +1111,7 @@
             pkgs.jq
 
             # Core library + pkg-config visibility
-            octra
+            datamunge
             pkgs.pkg-config
             pkgs.cmake
             pkgs.gnumake
@@ -1119,13 +1119,13 @@
             pkgs.swig
 
             # Language runtimes + bindings for runnable examples
-            pyoctra
+            pydatamunge
             pkgs.python3
 
-            octrajs
+            datamungejs
             pkgs.nodejs
 
-            octrar
+            datamunger
             pkgs.R
 
             octruby
@@ -1135,16 +1135,16 @@
 
             phpPackage
 
-            octralua
+            datamungelua
             lua
 
-            octratcl
+            datamungetcl
             pkgs.tcl
 
-            octraoctave
+            datamungeoctave
             pkgs.octave
 
-            octraguile
+            datamungeguile
             pkgs.guile
 
             # For building/running OCaml + Go examples during export
@@ -1156,19 +1156,19 @@
           ];
 
           shellHook = ''
-            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
 
             # Octave: make the installed .m files discoverable.
-            export OCTRA_PREFIX="${octra}"
-            export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+            export DATAMUNGE_PREFIX="${datamunge}"
+            export OCTAVE_PATH="${datamungeoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
 
             # Guile: make the installed module + extension discoverable.
             effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
             if [ -z "$effectiveVersion" ]; then
               effectiveVersion="3.0"
             fi
-            export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
-            export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+            export GUILE_LOAD_PATH="${datamungeguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+            export GUILE_EXTENSION_PATH="${datamungeguile}/lib/guile/$effectiveVersion/extensions:${datamungeguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
           '';
         };
       }

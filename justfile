@@ -1,4 +1,4 @@
-TARGET := "octra_ex"
+TARGET := "datamunge_ex"
 BENCH_TARGET := ""
 JOBS := "20"
 
@@ -29,59 +29,59 @@ fmt: format
 run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave
 
 run-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/octra-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./{{ BINDINGS_DIR }}/octradotnet'
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./{{ BINDINGS_DIR }}/datamungedotnet'
 
 run-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -lc "gradle run --no-configuration-cache --args='{{ TARGET }}'"
 
 run-go: build-go
-  {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/gooctra && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go run ../../examples/go/{{ TARGET }}.go'
+  {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go run ../../examples/go/{{ TARGET }}.go'
 
 run-rust: build-rust
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustoctra/Cargo.toml --example octra_ex'
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example datamunge_ex'
 
 run-d: build-d
   bash -lc 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
     if command -v nix >/dev/null 2>&1; then \
-      {{ NIX_DEVELOP }} .#d --command bash -lc "rm -rf build/dub-packages/octrad-0.0.1 && cd examples/d && dub run $compiler --build=release"; \
+      {{ NIX_DEVELOP }} .#d --command bash -lc "rm -rf build/dub-packages/datamunged-0.0.1 && cd examples/d && dub run $compiler --build=release"; \
     else \
-      rm -rf build/dub-packages/octrad-0.0.1 && cd examples/d && dub run $compiler --build=release; \
+      rm -rf build/dub-packages/datamunged-0.0.1 && cd examples/d && dub run $compiler --build=release; \
     fi'
 
 run-python: build-python
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra-run/bin/python examples/python/{{ TARGET }}.py'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge-run/bin/python examples/python/{{ TARGET }}.py'
 
 run-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'php --php-ini .user.ini examples/php/octra_ex.php'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'php --php-ini .user.ini examples/php/datamunge_ex.php'
 
 run-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/octra_ex.pl'
+  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/datamunge_ex.pl'
 
 run-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/octratcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh examples/tcl/octra_ex.tcl'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh examples/tcl/datamunge_ex.tcl'
 
 run-lua: build-lua
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --install build/octralua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && lua examples/lua/octra_ex.lua'
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && lua examples/lua/datamunge_ex.lua'
 
 run-ruby: build-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/octra_ex.rb'
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/datamunge_ex.rb'
 
 run-r: build-r
-   {{ NIX_DEVELOP }} .#r --command bash -lc 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/octra_ex.r'
+   {{ NIX_DEVELOP }} .#r --command bash -lc 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/datamunge_ex.r'
 
 run-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --install build/octraguile --prefix build/guile/prefix >/dev/null && guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/octra_ex.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/datamunge_ex.scm'
 
 run-javascript: build-javascript
-   {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/octra_ex.js'
+   {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/datamunge_ex.js'
 
 run-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package octraocaml -linkpkg examples/ocaml/octra_ex.ml -o build/ocaml/octra_ex && ./build/ocaml/octra_ex'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package datamungeocaml -linkpkg examples/ocaml/datamunge_ex.ml -o build/ocaml/datamunge_ex && ./build/ocaml/datamunge_ex'
 
 run-octave: build-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octave -qf --path "$(pwd)/build/octraoctave" examples/octave/octra_ex.m'
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octave -qf --path "$(pwd)/build/datamungeoctave" examples/octave/datamunge_ex.m'
 
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
@@ -100,24 +100,24 @@ prebuild-swig: prebuild-python prebuild-javascript prebuild-csharp prebuild-r pr
   @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
 
 prebuild-python:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -python -o ../src/octra_python_wrap.cpp -oh ../src/octra_python_wrap.h ../src/pyoctra/swig/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -python -o ../src/datamunge_python_wrap.cpp -oh ../src/datamunge_python_wrap.h ../src/pydatamunge/swig/pydatamunge.i && mv ../src/datamunge.py ../src/pydatamunge/datamunge.py"
 
 prebuild-javascript:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp -oh ../src/octra_js_wrap.h ../src/octrajs/src/octrajs.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/datamunge_js_wrap.cpp -oh ../src/datamunge_js_wrap.h ../src/datamungejs/src/datamungejs.i"
   # Inject deterministic JS->C callback bridge helpers (SWIG Node backend doesn't support directors here).
-  perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"octra_js_callbacks.inl\"\n/s' src/octra_js_wrap.cpp
-  perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  OctraJS_RegisterCallbackBridge(env, exports);\n/s' src/octra_js_wrap.cpp
+  perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"datamunge_js_callbacks.inl\"\n/s' src/datamunge_js_wrap.cpp
+  perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  DatamungeJS_RegisterCallbackBridge(env, exports);\n/s' src/datamunge_js_wrap.cpp
 
 prebuild-csharp:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./{{ BINDINGS_DIR }}/octradotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -csharp -dllimport octra_csharp -o ../{{ BINDINGS_DIR }}/octradotnet/octra_csharp_wrap.cpp -oh ../{{ BINDINGS_DIR }}/octradotnet/octra_csharp_wrap.h ../src/octradotnet/swig/octradotnet.i"
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"octra\"/DllImport(\"octra_csharp\"/g' ./{{ BINDINGS_DIR }}/octradotnet/octraPINVOKE.cs"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./{{ BINDINGS_DIR }}/datamungedotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -csharp -dllimport datamunge_csharp -o ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.cpp -oh ../{{ BINDINGS_DIR }}/datamungedotnet/datamunge_csharp_wrap.h ../src/datamungedotnet/swig/datamungedotnet.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"datamunge\"/DllImport(\"datamunge_csharp\"/g' ./{{ BINDINGS_DIR }}/datamungedotnet/datamungePINVOKE.cs"
 
 prebuild-r:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp -oh ../src/octra_r_wrap.h ../src/octrar/swig/octrar.i && mv ../src/octrar.R ../R"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/datamunge_r_wrap.cpp -oh ../src/datamunge_r_wrap.h ../src/datamunger/swig/datamunger.i && mv ../src/datamunger.R ../R"
 
 prebuild-perl:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perloctra/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perloctra/Octra_wrap.cxx -oh {{ BINDINGS_DIR }}/perloctra/Octra_wrap.h -outdir {{ BINDINGS_DIR }}/perloctra/lib src/perloctra/swig/perloctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
 
 # Ruby (SWIG)
 prebuild-ruby:
@@ -125,16 +125,16 @@ prebuild-ruby:
 
 # Tcl (SWIG)
 prebuild-tcl:
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx -oh build/octratcl/swig/octra_tcl_wrap.h src/octratcl/swig/octratcl.i"
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/datamungetcl/swig && swig -tcl8 -c++ -Iinclude -o build/datamungetcl/swig/datamunge_tcl_wrap.cxx -oh build/datamungetcl/swig/datamunge_tcl_wrap.h src/datamungetcl/swig/datamungetcl.i"
 
 # Lua (SWIG)
 prebuild-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx -oh build/octralua-swig/octra_lua_wrap.h src/octralua/swig/octralua.i"
+  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/datamungelua-swig && swig -lua -c++ -Iinclude -outdir build/datamungelua-swig -o build/datamungelua-swig/datamunge_lua_wrap.cxx -oh build/datamungelua-swig/datamunge_lua_wrap.h src/datamungelua/swig/datamungelua.i"
 
 # D (SWIG)
 prebuild-d:
   bash -lc 'set -euo pipefail; \
-    cmd="mkdir -p {{ BINDINGS_DIR }}/octrad/source && swig -c++ -d -Iinclude -o {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.cpp -oh {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.h -outdir {{ BINDINGS_DIR }}/octrad/source src/octrad/swig/octrad.i"; \
+    cmd="mkdir -p {{ BINDINGS_DIR }}/datamunged/source && swig -c++ -d -Iinclude -o {{ BINDINGS_DIR }}/datamunged/source/datamunged_wrap.cpp -oh {{ BINDINGS_DIR }}/datamunged/source/datamunged_wrap.h -outdir {{ BINDINGS_DIR }}/datamunged/source src/datamunged/swig/datamunged.i"; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
       {{ NIX_DEVELOP }} .#d --command bash -lc "$cmd"; \
     else \
@@ -143,42 +143,42 @@ prebuild-d:
 
 # Guile (SWIG)
 prebuild-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx -oh build/octraguile-swig/octra_guile_wrap.h src/octraguile/swig/octraguile.i"
+  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/datamungeguile-swig && swig -guile -c++ -Iinclude -o build/datamungeguile-swig/datamunge_guile_wrap.cxx -oh build/datamungeguile-swig/datamunge_guile_wrap.h src/datamungeguile/swig/datamungeguile.i"
 
 prebuild-octave:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx -oh build/octraoctave-swig/octra_octave_wrap.h src/octraoctave/swig/octraoctave.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/datamungeoctave-swig && swig -octave -c++ -Iinclude -o build/datamungeoctave-swig/datamunge_octave_wrap.cxx -oh build/datamungeoctave-swig/datamunge_octave_wrap.h src/datamungeoctave/swig/datamungeoctave.i"
 
 prebuild-go:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.cxx -oh {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.h -outdir {{ BINDINGS_DIR }}/gooctra src/gooctra/swig/gooctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/godatamunge/godatamunge_wrap.h -outdir {{ BINDINGS_DIR }}/godatamunge src/godatamunge/swig/godatamunge.i"
 
 prebuild-php:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp -oh ../src/octra_php_wrap.h ../src/octraPHP/swig/octraPHP.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/datamunge_php_wrap.cpp -oh ../src/datamunge_php_wrap.h ../src/datamungePHP/swig/datamungePHP.i"
 
 prebuild-java:
-    {{ NIX_DEVELOP }} .#java --command bash -lc "find {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path '{{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf {{ BINDINGS_DIR }}/joctra-octra/build/cmake"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -doxygen -c++ -java -o ../{{ BINDINGS_DIR }}/joctra-octra/octra_java_wrap.cpp -oh ../{{ BINDINGS_DIR }}/joctra-octra/octra_java_wrap.h -package js.octra.joctra -outdir ../{{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra ../src/joctra-octra/swig/joctra.i"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"octra\")/System.loadLibrary(\"octra_jni\")/g' {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/App.java {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/examples/StlEx.java"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class octra \\{/public class octra {\\n  static { System.loadLibrary(\"octra_jni\"); }/s' {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/octra.java"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "find {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge -type f -name '*.java' ! -name 'App.java' ! -path '{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/*' -exec rm {} +"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf {{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -doxygen -c++ -java -o ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.cpp -oh ../{{ BINDINGS_DIR }}/jdatamunge-datamunge/datamunge_java_wrap.h -package js.datamunge.jdatamunge -outdir ../{{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge ../src/jdatamunge-datamunge/swig/jdatamunge.i"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"datamunge\")/System.loadLibrary(\"datamunge_jni\")/g' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/App.java {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/examples/StlEx.java"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class datamunge \\{/public class datamunge {\\n  static { System.loadLibrary(\"datamunge_jni\"); }/s' {{ BINDINGS_DIR }}/jdatamunge/src/main/java/js/datamunge/jdatamunge/datamunge.java"
 
 prebuild-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/octraocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/octraocaml/src src/octraocaml/swig/octraocaml.i"
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${DATAMUNGE_PREFIX:-}\" || (echo 'DATAMUNGE_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/datamungeocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/datamungeocaml/src src/datamungeocaml/swig/datamungeocaml.i"
 
 # }}} prebuild commands
 
 # {{{ rust (bindgen) commands
 
 prebuild-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'inc="$(pkg-config --variable=includedir octra)" && bindgen "$inc/octra/octra_c.h" --allowlist-function "octra_.*" --allowlist-type "octra_.*" --no-layout-tests --rustfmt-bindings -o {{ BINDINGS_DIR }}/rustoctra/src/bindings.rs'
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'inc="$(pkg-config --variable=includedir datamunge)" && bindgen "$inc/datamunge/datamunge_c.h" --allowlist-function "datamunge_.*" --allowlist-type "datamunge_.*" --no-layout-tests --rustfmt-bindings -o {{ BINDINGS_DIR }}/rustdatamunge/src/bindings.rs'
 
 # }}} rust (bindgen) commands
 
 # {{{ build commands
 
 build-php: prebuild-php
-  rm -rf build/octraPHP
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake -S src/octraPHP -B build/octraPHP'
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake --build build/octraPHP -j{{ JOBS }} --verbose'
+  rm -rf build/datamungePHP
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake -S src/datamungePHP -B build/datamungePHP'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake --build build/datamungePHP -j{{ JOBS }} --verbose'
 
 
 build: build-debug
@@ -196,7 +196,7 @@ build-debug:
   ln -sf build/debug/compile_commands.json compile_commands.json
 
 build-cpp:
-    @echo "Building octra"
+    @echo "Building datamunge"
     {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S . -B build"
     {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build -j{{ JOBS }} --verbose"
     {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
@@ -204,18 +204,18 @@ build-cpp:
 
 build-csharp: prebuild-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -lc "rm -rf build/dotnet/release"
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake -S ./{{ BINDINGS_DIR }}/octradotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
   {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cd ./{{ BINDINGS_DIR }}/octradotnet && dotnet build"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cd ./{{ BINDINGS_DIR }}/datamungedotnet && dotnet build"
 
 
 build-javascript: prebuild-javascript
     {{ NIX_DEVELOP }} .#jsbuild --command bash -lc "npm --prefix . run build"
 
 build-python: prebuild-python
-  rm -rf build/venv/pyoctra-run
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pyoctra-run'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra-run/bin/python -m pip install -e . --no-build-isolation'
+  rm -rf build/venv/pydatamunge-run
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pydatamunge-run'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge-run/bin/python -m pip install -e . --no-build-isolation'
 
 
 build-java: prebuild-java
@@ -223,27 +223,27 @@ build-java: prebuild-java
   {{ NIX_DEVELOP }} .#java --command bash -lc "gradle build"
 
 build-dotnet:
-    {{ NIX_DEVELOP }} . --command bash -lc "cmake -S {{ BINDINGS_DIR }}/octradotnet -B build/octradotnet"
-    {{ NIX_DEVELOP }} . --command bash -lc "cmake --build build/octradotnet"
-    # nix develop ./octradotnet --command bash -c "just --justfile ./octradotnet/justfile build"
+    {{ NIX_DEVELOP }} . --command bash -lc "cmake -S {{ BINDINGS_DIR }}/datamungedotnet -B build/datamungedotnet"
+    {{ NIX_DEVELOP }} . --command bash -lc "cmake --build build/datamungedotnet"
+    # nix develop ./datamungedotnet --command bash -c "just --justfile ./datamungedotnet/justfile build"
 
 build-go: prebuild-go build-cpp
   # For Go bindings, we need to run go build on the generated files
   # Note: This assumes the SWIG-generated files are already in place from prebuild-go
-  {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/gooctra && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go build'
+  {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/godatamunge && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go build'
 
 build-d: prebuild-d
   bash -lc 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
-      {{ NIX_DEVELOP }} .#d --command bash -lc "cd {{ BINDINGS_DIR }}/octrad && dub build $compiler --build=release --force"; \
+      {{ NIX_DEVELOP }} .#d --command bash -lc "cd {{ BINDINGS_DIR }}/datamunged && dub build $compiler --build=release --force"; \
     else \
-      cd {{ BINDINGS_DIR }}/octrad && dub build $compiler --build=release --force; \
+      cd {{ BINDINGS_DIR }}/datamunged && dub build $compiler --build=release --force; \
     fi'
 
 build-perl: prebuild-perl build-cpp
-  {{ NIX_DEVELOP }} .#perl --command bash -lc 'cd {{ BINDINGS_DIR }}/perloctra && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
+  {{ NIX_DEVELOP }} .#perl --command bash -lc 'cd {{ BINDINGS_DIR }}/perldatamunge && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
 
 build-ruby: prebuild-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -lc "set -euo pipefail; cd {{ BINDINGS_DIR }}/octruby/ext/octruby && ruby extconf.rb && make -j1 && so=\"\$(find . -type f -name 'octruby*.so' -print -quit)\" && test -n \"\$so\" && mkdir -p ../../lib/octruby && cp -f \"\$so\" ../../lib/octruby/octruby.so"
@@ -253,33 +253,33 @@ build-r: prebuild-r
   {{ NIX_DEVELOP }} .#r --command bash -lc 'mkdir -p build/r/library && R CMD INSTALL -l build/r/library .'
 
 build-tcl: prebuild-tcl
-  rm -rf build/octratcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake -S src/octratcl -B build/octratcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake --build build/octratcl -j{{ JOBS }} --verbose'
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cp -v {{ BINDINGS_DIR }}/octratcl/pkgIndex.tcl build/octratcl/'
+  rm -rf build/datamungetcl
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake --build build/datamungetcl -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cp -v {{ BINDINGS_DIR }}/datamungetcl/pkgIndex.tcl build/datamungetcl/'
 
 build-lua: prebuild-lua
-  rm -rf build/octralua
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake -S src/octralua -B build/octralua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --build build/octralua -j{{ JOBS }} --verbose'
+  rm -rf build/datamungelua
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --build build/datamungelua -j{{ JOBS }} --verbose'
 
 build-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustoctra/Cargo.toml'
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'
 
 build-guile: prebuild-guile
-  rm -rf build/octraguile
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake -S src/octraguile -B build/octraguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --build build/octraguile -j{{ JOBS }} --verbose'
+  rm -rf build/datamungeguile
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --build build/datamungeguile -j{{ JOBS }} --verbose'
 
 build-octave: prebuild-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake -S src/octraoctave -B build/octraoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake --build build/octraoctave -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake -S src/datamungeoctave -B build/datamungeoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake --build build/datamungeoctave -j{{ JOBS }} --verbose'
 
 build-ocaml: prebuild-ocaml
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${OCTRA_PREFIX:-}" || (echo "OCTRA_PREFIX is not set" >&2; exit 1) && cd {{ BINDINGS_DIR }}/octraocaml && dune build'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && cd {{ BINDINGS_DIR }}/datamungeocaml && dune build'
 
 install-ocaml: build-ocaml
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${OCTRA_PREFIX:-}" || (echo "OCTRA_PREFIX is not set" >&2; exit 1) && mkdir -p build/ocaml/prefix && cd {{ BINDINGS_DIR }}/octraocaml && dune install --prefix "$(pwd)/../../build/ocaml/prefix"'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${DATAMUNGE_PREFIX:-}" || (echo "DATAMUNGE_PREFIX is not set" >&2; exit 1) && mkdir -p build/ocaml/prefix && cd {{ BINDINGS_DIR }}/datamungeocaml && dune install --prefix "$(pwd)/../../build/ocaml/prefix"'
 
 
 
@@ -304,16 +304,16 @@ repl-perl: build-perl
   {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl -de 1'
 
 repl-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/octra-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo "No C# REPL found (expected dotnet-repl or csi)" >&2; exit 1; fi'
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo "No C# REPL found (expected dotnet-repl or csi)" >&2; exit 1; fi'
 
 repl-java:
-  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/joctra-octra/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/joctra/build/libs/joctra.jar'
+  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./{{ BINDINGS_DIR }}/jdatamunge/build/libs/jdatamunge.jar'
 
 repl-cpp:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'cling $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) -loctra -std=c++17'
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'cling $(pkg-config --cflags datamunge) $(pkg-config --libs-only-L datamunge) -ldatamunge -std=c++17'
 
 repl-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/octratcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'
 
 repl-lua:
   {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua'
@@ -328,10 +328,10 @@ repl-guile:
   {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile'
 
 repl-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd {{ BINDINGS_DIR }}/rustoctra && evcxr'
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd {{ BINDINGS_DIR }}/rustdatamunge && evcxr'
 
 repl-octave:
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m"'
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m"'
 
 repl-d:
   bash -lc 'set -euo pipefail; \
@@ -348,48 +348,48 @@ repl-d:
 # {{{ test commands
 
 test-python-build: prebuild-python
-  rm -rf build/venv/pyoctra-build
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pyoctra-build'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra-build/bin/python setup.py sdist bdist_wheel'
+  rm -rf build/venv/pydatamunge-build
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pydatamunge-build'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge-build/bin/python setup.py sdist bdist_wheel'
 
 test-python: prebuild-python
-  rm -rf build/venv/pyoctra
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pyoctra'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra/bin/python -m pip install -e . --no-build-isolation'
-  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra/bin/python -m pytest -q tests/python'
+  rm -rf build/venv/pydatamunge
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pydatamunge'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge/bin/python -m pip install -e . --no-build-isolation'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge/bin/python -m pytest -q tests/python'
 
 test-r: prebuild-r
   {{ NIX_DEVELOP }} .#r --command bash -lc 'R -q -e "testthat::test_local(\".\")"'
 
 test-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/octra-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet test ./{{ BINDINGS_DIR }}/octradotnet.tests'
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet test ./{{ BINDINGS_DIR }}/datamungedotnet.tests'
 
 test-java: build-java
-  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/joctra-octra/build/cmake:$LD_LIBRARY_PATH && gradle test'
+  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH={{ BINDINGS_DIR }}/jdatamunge-datamunge/build/cmake:$LD_LIBRARY_PATH && gradle test'
 
 test-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo test --manifest-path tests/rust/Cargo.toml'
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo test --manifest-path tests/rust/Cargo.toml'
 
 test-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini tests/php/test_octra.php'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini tests/php/test_datamunge.php'
 
 test-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua tests/lua/test_octra.lua'
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua tests/lua/test_datamunge.lua'
 
 test-perl: build-perl
   {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && prove -l tests/perl'
 
 test-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/octratcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh tests/tcl/test_octra.tcl'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh tests/tcl/test_datamunge.tcl'
 
 test-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I tests/ruby -e "require \"test_octra\""'
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I tests/ruby -e "require \"test_datamunge\""'
 
 test-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile --no-auto-compile -s tests/guile/test_octra.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile --no-auto-compile -s tests/guile/test_datamunge.scm'
 
 test-octave:
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m" --eval '"'"'test("tests/octave/test_octra.m")'"'"''
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'datamungeoctave_prefix="$(nix eval --raw .#datamungeoctave)" && octave -qf --path "$datamungeoctave_prefix/share/octave/site/m" --eval '"'"'test("tests/octave/test_datamunge.m")'"'"''
 
 test-d: prebuild-d
   bash -lc 'set -euo pipefail; \
@@ -403,7 +403,7 @@ test-d: prebuild-d
 
 
 test-go: build-go
-    {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/gooctra && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go test ./...'
+    {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go test ./...'
 
 
 test-javascript: build-javascript
@@ -433,7 +433,7 @@ test-cpp:
 # {{{ utilities
 
 rename NEW:
-  ./rename_octra {{ NEW }}
+  ./rename_datamunge {{ NEW }}
 
 jq:
     {{ NIX_DEVELOP }} . --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
@@ -486,7 +486,7 @@ test-coverage: coverage
     @bash -lc 'set -euo pipefail; \
       info="build/coverage/coverage.info"; \
       test -f "$info"; \
-      awk -v want1="$(pwd)/src/octra/octra.cpp" -v want2="$(pwd)/src/octra/octra_c.cpp" '\'' \
+      awk -v want1="$(pwd)/src/datamunge/datamunge.cpp" -v want2="$(pwd)/src/datamunge/datamunge_c.cpp" '\'' \
         function finish() { \
           if (!in_wanted) return; \
           if (total == 0) { \
@@ -513,21 +513,21 @@ test-coverage: coverage
           next; \
         } \
         /^end_of_record/ { finish(); in_wanted=0; next } \
-        END { finish(); print "coverage: OK (octra.cpp and octra_c.cpp are 100%)" } \
+        END { finish(); print "coverage: OK (datamunge.cpp and datamunge_c.cpp are 100%)" } \
       '\'' "$info"'
 
 
 
 debuggable:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'clang++ -g -O0 debug.cpp -o debug $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) $(pkg-config --cflags libxml-2.0) $(pkg-config --libs-only-L libxml-2.0) -std=c++20 -loctra -lxml2'
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'clang++ -g -O0 debug.cpp -o debug $(pkg-config --cflags datamunge) $(pkg-config --libs-only-L datamunge) $(pkg-config --cflags libxml-2.0) $(pkg-config --libs-only-L libxml-2.0) -std=c++20 -ldatamunge -lxml2'
 
 
 clean:
     rm -rf build/
-    rm -rf {{ BINDINGS_DIR }}/octradotnet/bin
-    rm -rf {{ BINDINGS_DIR }}/octradotnet/obj
-    rm -rf {{ BINDINGS_DIR }}/joctra-octra/build/
-    rm -rf {{ BINDINGS_DIR }}/joctra/build/
+    rm -rf {{ BINDINGS_DIR }}/datamungedotnet/bin
+    rm -rf {{ BINDINGS_DIR }}/datamungedotnet/obj
+    rm -rf {{ BINDINGS_DIR }}/jdatamunge-datamunge/build/
+    rm -rf {{ BINDINGS_DIR }}/jdatamunge/build/
 
 
 # }}} utilities
@@ -576,7 +576,7 @@ example EXAMPLE:
     ./build/debug/examples/{{ EXAMPLE }}
 
 example-python:
-    {{ NIX_DEVELOP }} .#python --command bash -lc "python examples/python/octra_ex.py"
+    {{ NIX_DEVELOP }} .#python --command bash -lc "python examples/python/datamunge_ex.py"
 
 # }}} example commands
 
@@ -604,11 +604,11 @@ windows-run: build
 test-nix:
   nix flake check --accept-flake-config -L
 
-build-nix PACKAGE="octra":
+build-nix PACKAGE="datamunge":
   nix build --accept-flake-config ".#{{ PACKAGE }}"
 
 update-java-deps:
-  nix/update-joctra-gradle-deps.sh
+  nix/update-jdatamunge-gradle-deps.sh
 
 update-csharp-deps:
   nix/update-nuget-deps.sh

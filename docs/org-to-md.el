@@ -27,12 +27,12 @@
  '((emacs-lisp . t)
    (shell . t)))
 
-(defun octra--ensure-parent-dir (path)
+(defun datamunge--ensure-parent-dir (path)
   (let ((parent (file-name-directory (expand-file-name path))))
     (unless (file-directory-p parent)
       (make-directory parent t))))
 
-(defun octra--direnv-root (start-dir)
+(defun datamunge--direnv-root (start-dir)
   "Find nearest directory at/above START-DIR that contains an .envrc."
   (let ((dir (file-name-as-directory (expand-file-name start-dir)))
         (prev nil)
@@ -44,10 +44,10 @@
       (setq dir (file-name-directory (directory-file-name dir))))
     found))
 
-(defun octra--apply-direnv (workdir)
+(defun datamunge--apply-direnv (workdir)
   "Apply `direnv export json` for WORKDIR, if possible."
   (let ((direnv (executable-find "direnv"))
-        (root (octra--direnv-root workdir)))
+        (root (datamunge--direnv-root workdir)))
     (when (and direnv root)
       (let ((default-directory root))
         (with-temp-buffer
@@ -67,7 +67,7 @@
                               (append (parse-colon-path path) (list exec-directory))))))
                 (error nil)))))))))
 
-(defun octra--execute-babel-best-effort ()
+(defun datamunge--execute-babel-best-effort ()
   "Execute all src blocks in the current Org buffer; don't fail on errors."
   (let ((errors '()))
     (org-babel-map-src-blocks (buffer-file-name)
@@ -83,25 +83,25 @@
         (dolist (e (reverse errors))
           (insert "- " e "\n"))))))
 
-(defun octra-org-to-md (input-org output-md)
+(defun datamunge-org-to-md (input-org output-md)
   "Execute babel in INPUT-ORG and export it to OUTPUT-MD."
   (let ((input (expand-file-name input-org))
         (output (expand-file-name output-md)))
     (unless (file-exists-p input)
       (error "Input Org file not found: %s" input))
-    (octra--ensure-parent-dir output)
-    (octra--apply-direnv (file-name-directory input))
+    (datamunge--ensure-parent-dir output)
+    (datamunge--apply-direnv (file-name-directory input))
     (with-current-buffer (find-file-noselect input)
       (unwind-protect
           (progn
             (org-mode)
             (setq-local org-export-with-toc nil)
             (setq-local org-export-with-section-numbers nil)
-            (octra--execute-babel-best-effort)
+            (datamunge--execute-babel-best-effort)
             (org-export-to-file 'md output nil nil nil nil))
         (kill-buffer (current-buffer))))))
 
-(defun octra--print-usage-and-exit ()
+(defun datamunge--print-usage-and-exit ()
   (princ "Usage: emacs --batch -Q -l docs/org-to-md.el -- <input.org> <output.md>\n")
   (kill-emacs 2))
 
@@ -112,9 +112,9 @@
      ((= (length args) 2)
       (let ((in (nth 0 args))
             (out (nth 1 args)))
-        (octra-org-to-md in out)
+        (datamunge-org-to-md in out)
         (princ (format "Wrote %s\n" out))))
      ((= (length args) 0)
       nil)
      (t
-      (octra--print-usage-and-exit)))))
+      (datamunge--print-usage-and-exit)))))

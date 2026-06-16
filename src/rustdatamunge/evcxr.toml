@@ -1,0 +1,3 @@
+[dependencies]
+rustdatamunge = { path = "." }
+

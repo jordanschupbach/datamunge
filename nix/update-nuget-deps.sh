@@ -16,7 +16,7 @@ mkdir -p "$NUGET_PACKAGES"
 
 nix develop --accept-flake-config "$REPO_ROOT"#csharp --command bash -lc "\
   set -euo pipefail; \
-  dotnet restore \"$REPO_ROOT/src/octradotnet.tests/octradotnet.tests.csproj\" \
+  dotnet restore \"$REPO_ROOT/src/datamungedotnet.tests/datamungedotnet.tests.csproj\" \
 "
 
 nix shell --accept-flake-config nixpkgs#nuget-to-json nixpkgs#dotnet-sdk_10 --command bash -lc "\

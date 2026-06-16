@@ -9,10 +9,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66"
 
 [[package]]
-name = "octra-rust-binding-tests"
+name = "datamunge-rust-binding-tests"
 version = "0.0.1"
 dependencies = [
- "rustoctra",
+ "rustdatamunge",
 ]
 
 [[package]]
@@ -22,7 +22,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19f132c84eca552bf34cab8ec81f1c1dcc229b811638f9d283dceabe58c5569e"
 
 [[package]]
-name = "rustoctra"
+name = "rustdatamunge"
 version = "0.0.1"
 dependencies = [
  "libc",
