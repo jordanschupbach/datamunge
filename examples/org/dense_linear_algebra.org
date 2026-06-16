@@ -38,12 +38,15 @@ c++ -std=c++17 -Iinclude build/org/dense_linear_algebra.cpp \
 ./build/org/dense_linear_algebra
 #+end_src
 
-This second block defines scatterplot data, fits a linear regression line, and
-renders the result to SVG using =datamunge='s plotting API.
+This second block fits a nonlinear regression curve using a cubic B-spline basis.
+The basis matrix is evaluated sparsely by default, the coefficients are fit with
+=sparse_linear_regression=, and the resulting smooth curve is rendered to SVG.
 
 #+begin_src shell
 mkdir -p build/org
-cat > build/org/scatter_regression.cpp <<'CPP'
+cat > build/org/bspline_regression.cpp <<'CPP'
+#include <datamunge/fda/bspline.hpp>
+#include <datamunge/linalg/csr.hpp>
 #include <datamunge/linalg/regression.hpp>
 #include <datamunge/plot/plot.hpp>
 
@@ -51,50 +54,61 @@ cat > build/org/scatter_regression.cpp <<'CPP'
 #include <iostream>
 #include <vector>
 
-using datamunge::linalg::DenseMatrix;
-using datamunge::linalg::linear_regression;
+using datamunge::fda::BSplineBasis;
+using datamunge::linalg::sparse_linear_regression;
 using namespace datamunge::plot;
 
 int main() {
-    const std::vector<double> x = {0.3, 0.8, 1.1, 1.7, 2.0, 2.6, 3.0, 3.4};
-    const std::vector<double> y = {1.4, 1.8, 2.5, 2.7, 3.1, 3.9, 4.2, 4.8};
+    const std::vector<double> x = {0.00, 0.10, 0.22, 0.35, 0.48, 0.62, 0.76, 0.90,
+                                   1.05, 1.20, 1.38, 1.55, 1.72, 1.88, 2.00};
+    const std::vector<double> y = {0.18, 0.52, 0.91, 1.05, 0.82, 0.22, -0.41, -0.88,
+                                   -0.97, -0.62, 0.03, 0.71, 1.02, 0.79, 0.28};
 
-    DenseMatrix<double> design(x.size(), 2, 0.0);
-    for (std::size_t i = 0; i < x.size(); ++i) {
-        design(i, 0) = 1.0;
-        design(i, 1) = x[i];
-    }
+    const auto basis = BSplineBasis::open_uniform(3, 8, x.front(), x.back());
+    const auto design_sparse = basis.evaluate(x);
+    auto fit = sparse_linear_regression(design_sparse, y);
 
-    const auto fit = linear_regression(design, y);
-    const double intercept = fit.coefficients[0];
-    const double slope = fit.coefficients[1];
+    std::vector<double> grid_x(200);
+    const double xmin = x.front();
+    const double xmax = x.back();
+    for (std::size_t i = 0; i < grid_x.size(); ++i)
+        grid_x[i] = xmin + (xmax - xmin) * static_cast<double>(i)
+                          / static_cast<double>(grid_x.size() - 1);
+
+    const auto grid_design = datamunge::linalg::to_csr(basis.evaluate(grid_x));
+    const auto grid_y = grid_design.spmv(fit.coefficients);
 
     auto plot = ScatterPlot::create();
     plot.points(x, y, "samples", {37, 99, 235}, 6.0)
-        .line({x.front(), x.back()},
-              {intercept + slope * x.front(), intercept + slope * x.back()},
-              "best fit",
+        .line(grid_x,
+              grid_y,
+              "cubic B-spline fit",
               {220, 38, 38},
               3.0)
-        .title("Scatter Plot With Best-Fit Line")
+        .title("Nonlinear Regression With Cubic B-Splines")
         .x_label("x")
         .y_label("y")
         .background({250, 250, 252});
 
-    plot.save_svg("build/org/scatter_regression.svg");
+    plot.save_svg("build/org/bspline_regression.svg");
 
     std::cout << std::fixed << std::setprecision(4)
-              << "y = " << intercept << " + " << slope << "x"
-              << " (R^2 = " << fit.r_squared << ")\n";
+              << "basis functions = " << basis.basis_size() << "\n"
+              << "degrees of freedom = " << fit.degrees_of_freedom << "\n"
+              << "R^2 = " << fit.r_squared << "\n"
+              << "adj R^2 = " << fit.adjusted_r_squared << "\n";
     return 0;
 }
 CPP
 
-c++ -std=c++17 build/org/scatter_regression.cpp -o build/org/scatter_regression \
-  $(pkg-config --cflags --libs datamunge)
+c++ -std=c++17 -Iinclude \
+  build/org/bspline_regression.cpp \
+  src/datamunge/fda/bspline.cpp \
+  src/datamunge/plot.cpp \
+  -o build/org/bspline_regression
 
-./build/org/scatter_regression
+./build/org/bspline_regression
 #+end_src
 
-#+ATTR_HTML: :alt Scatter plot with linear regression best-fit line
-[[file:../../build/org/scatter_regression.svg]]
+#+ATTR_HTML: :alt Nonlinear regression with cubic B-spline basis
+[[file:../../build/org/bspline_regression.svg]]
