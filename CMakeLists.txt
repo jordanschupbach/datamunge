@@ -51,6 +51,12 @@ target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                          $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
+find_package(X11 QUIET)
+if(X11_FOUND)
+  target_include_directories(${PROJECT_NAME} PRIVATE ${X11_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES})
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_X11=1)
+endif()
 
 string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
 # Package the C library

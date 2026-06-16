@@ -4027,11 +4027,11 @@ namespace Swig {
 #endif
 #define SWIGTYPE_p_allocator_type swig_types[0]
 #define SWIGTYPE_p_char swig_types[1]
-#define SWIGTYPE_p_difference_type swig_types[2]
-#define SWIGTYPE_p_first_type swig_types[3]
-#define SWIGTYPE_p_int swig_types[4]
-#define SWIGTYPE_p_long_long swig_types[5]
-#define SWIGTYPE_p_datamunge__Callback swig_types[6]
+#define SWIGTYPE_p_datamunge__Callback swig_types[2]
+#define SWIGTYPE_p_difference_type swig_types[3]
+#define SWIGTYPE_p_first_type swig_types[4]
+#define SWIGTYPE_p_int swig_types[5]
+#define SWIGTYPE_p_long_long swig_types[6]
 #define SWIGTYPE_p_p_PyObject swig_types[7]
 #define SWIGTYPE_p_second_type swig_types[8]
 #define SWIGTYPE_p_short swig_types[9]
@@ -16383,19 +16383,72 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_SVector", _wrap_delete_SVector, METH_O, NULL},
 	 { "SVector_swigregister", SVector_swigregister, METH_O, NULL},
 	 { "SVector_swiginit", SVector_swiginit, METH_VARARGS, NULL},
-	 { "hello", _wrap_hello, METH_NOARGS, NULL},
-	 { "delete_Callback", _wrap_delete_Callback, METH_O, NULL},
-	 { "Callback_call", _wrap_Callback_call, METH_VARARGS, NULL},
+	 { "hello", _wrap_hello, METH_NOARGS, "Prints a hello message to standard output."},
+	 { "delete_Callback", _wrap_delete_Callback, METH_O, "Virtual destructor — ensures proper cleanup of derived objects."},
+	 { "Callback_call", _wrap_Callback_call, METH_VARARGS, "\n"
+		"Applies the callback to a single value.\n"
+		":type x: float\n"
+		":param x: Input value.\n"
+		":rtype: float\n"
+		":return: Transformed value; the default implementation returns ``x`` unchanged.\n"
+		""},
 	 { "new_Callback", _wrap_new_Callback, METH_O, NULL},
 	 { "disown_Callback", _wrap_disown_Callback, METH_O, NULL},
 	 { "Callback_swigregister", Callback_swigregister, METH_O, NULL},
 	 { "Callback_swiginit", Callback_swiginit, METH_VARARGS, NULL},
-	 { "call_with_callback", _wrap_call_with_callback, METH_VARARGS, NULL},
-	 { "map_dvector_with_callback", _wrap_map_dvector_with_callback, METH_VARARGS, NULL},
-	 { "make_dvector", _wrap_make_dvector, METH_VARARGS, NULL},
-	 { "sum_dvector", _wrap_sum_dvector, METH_O, NULL},
-	 { "make_dpair", _wrap_make_dpair, METH_VARARGS, NULL},
-	 { "sum_dpair", _wrap_sum_dpair, METH_O, NULL},
+	 { "call_with_callback", _wrap_call_with_callback, METH_VARARGS, "\n"
+		"Invokes a callback with the given value.\n"
+		":type x: float\n"
+		":param x:    Input value passed to the callback.\n"
+		":type cb: :py:class:`Callback`\n"
+		":param cb:   Pointer to a ``Callback`` instance; must not be null.\n"
+		":rtype: float\n"
+		":return: Result of ``cb-``>call(x).\n"
+		""},
+	 { "map_dvector_with_callback", _wrap_map_dvector_with_callback, METH_VARARGS, "\n"
+		"Applies a callback to every element of a vector.\n"
+		":type values: std::vector< double,std::allocator< double > >\n"
+		":param values: Source vector of doubles.\n"
+		":type cb: :py:class:`Callback`\n"
+		":param cb:     Pointer to a ``Callback`` instance; must not be null.\n"
+		":rtype: std::vector< double,std::allocator< double > >\n"
+		":return: New vector where each element is the result of ``cb-``>call(v)\n"
+		"                  for the corresponding element ``v`` in ``values``.\n"
+		""},
+	 { "make_dvector", _wrap_make_dvector, METH_VARARGS, "\n"
+		"Constructs a three-element vector from individual values.\n"
+		":type a: float\n"
+		":param a: First element.\n"
+		":type b: float\n"
+		":param b: Second element.\n"
+		":type c: float\n"
+		":param c: Third element.\n"
+		":rtype: std::vector< double,std::allocator< double > >\n"
+		":return: ``std::vector``<double>{a, b, c}.\n"
+		""},
+	 { "sum_dvector", _wrap_sum_dvector, METH_O, "\n"
+		"Computes the sum of all elements in a vector.\n"
+		":type values: std::vector< double,std::allocator< double > >\n"
+		":param values: Vector of doubles to sum.\n"
+		":rtype: float\n"
+		":return: Sum of all elements, or 0.0 if the vector is empty.\n"
+		""},
+	 { "make_dpair", _wrap_make_dpair, METH_VARARGS, "\n"
+		"Constructs a pair of doubles.\n"
+		":type a: float\n"
+		":param a: First element.\n"
+		":type b: float\n"
+		":param b: Second element.\n"
+		":rtype: std::pair< double,double >\n"
+		":return: ``std::pair``<double, double>{a, b}.\n"
+		""},
+	 { "sum_dpair", _wrap_sum_dpair, METH_O, "\n"
+		"Computes the sum of both elements in a pair.\n"
+		":type values: std::pair< double,double >\n"
+		":param values: Pair of doubles.\n"
+		":rtype: float\n"
+		":return: ``values.first`` + values.second.\n"
+		""},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -16410,11 +16463,11 @@ static swig_const_info swig_const_table[] = {
 
 SWIGINTERN swig_type_info _swigt__p_allocator_type = {"_p_allocator_type", "allocator_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_p_PyObject = {"_p_p_PyObject", "PyObject **", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
@@ -16445,11 +16498,11 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 
   &_swigt__p_allocator_type,
   &_swigt__p_char,
+  &_swigt__p_datamunge__Callback,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
-  &_swigt__p_datamunge__Callback,
   &_swigt__p_p_PyObject,
   &_swigt__p_second_type,
   &_swigt__p_short,
@@ -16477,11 +16530,11 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 
 SWIGINTERN swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_p_PyObject[] = {  {&_swigt__p_p_PyObject, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
@@ -16509,11 +16562,11 @@ SWIGINTERN swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0,
 SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_allocator_type,
   _swigc__p_char,
+  _swigc__p_datamunge__Callback,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
-  _swigc__p_datamunge__Callback,
   _swigc__p_p_PyObject,
   _swigc__p_second_type,
   _swigc__p_short,

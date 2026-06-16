@@ -8,6 +8,12 @@
 
 package js.datamunge.jdatamunge;
 
+/**
+ *  Base class for user-defined callbacks invoked by datamunge functions.<br>
+ * <br>
+ *  Derive from this class and override <code>call()</code> to supply custom behavior<br>
+ *  wherever a <code>Callback*</code> is accepted.
+ */
 public class Callback {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -48,6 +54,11 @@ public class Callback {
     }
   }
 
+  /**
+   *  Applies the callback to a single value.<br>
+   *  @param x Input value.<br>
+   *  @return Transformed value; the default implementation returns <code>x</code> unchanged.
+   */
   public double call(double x) {
     return datamungeJNI.Callback_call(swigCPtr, this, x);
   }

@@ -1,3 +1,6 @@
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
 #include <utility>
 #include <vector>
 

@@ -622,13 +622,28 @@ class SVector(object):
 _datamunge.SVector_swigregister(SVector)
 
 def hello():
+    r"""Prints a hello message to standard output."""
     return _datamunge.hello()
 class Callback(object):
+    r"""
+    Base class for user-defined callbacks invoked by datamunge functions.
+
+    Derive from this class and override ``call()`` to supply custom behavior
+    wherever a ``Callback*`` is accepted.
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     __swig_destroy__ = _datamunge.delete_Callback
 
     def call(self, x):
+        r"""
+        Applies the callback to a single value.
+        :type x: float
+        :param x: Input value.
+        :rtype: float
+        :return: Transformed value; the default implementation returns ``x`` unchanged.
+        """
         return _datamunge.Callback_call(self, x)
 
     def __init__(self):
@@ -646,20 +661,73 @@ class Callback(object):
 _datamunge.Callback_swigregister(Callback)
 
 def call_with_callback(x, cb):
+    r"""
+    Invokes a callback with the given value.
+    :type x: float
+    :param x:    Input value passed to the callback.
+    :type cb: :py:class:`Callback`
+    :param cb:   Pointer to a ``Callback`` instance; must not be null.
+    :rtype: float
+    :return: Result of ``cb-``>call(x).
+    """
     return _datamunge.call_with_callback(x, cb)
 
 def map_dvector_with_callback(values, cb):
+    r"""
+    Applies a callback to every element of a vector.
+    :type values: std::vector< double,std::allocator< double > >
+    :param values: Source vector of doubles.
+    :type cb: :py:class:`Callback`
+    :param cb:     Pointer to a ``Callback`` instance; must not be null.
+    :rtype: std::vector< double,std::allocator< double > >
+    :return: New vector where each element is the result of ``cb-``>call(v)
+                      for the corresponding element ``v`` in ``values``.
+    """
     return _datamunge.map_dvector_with_callback(values, cb)
 
 def make_dvector(a, b, c):
+    r"""
+    Constructs a three-element vector from individual values.
+    :type a: float
+    :param a: First element.
+    :type b: float
+    :param b: Second element.
+    :type c: float
+    :param c: Third element.
+    :rtype: std::vector< double,std::allocator< double > >
+    :return: ``std::vector``<double>{a, b, c}.
+    """
     return _datamunge.make_dvector(a, b, c)
 
 def sum_dvector(values):
+    r"""
+    Computes the sum of all elements in a vector.
+    :type values: std::vector< double,std::allocator< double > >
+    :param values: Vector of doubles to sum.
+    :rtype: float
+    :return: Sum of all elements, or 0.0 if the vector is empty.
+    """
     return _datamunge.sum_dvector(values)
 
 def make_dpair(a, b):
+    r"""
+    Constructs a pair of doubles.
+    :type a: float
+    :param a: First element.
+    :type b: float
+    :param b: Second element.
+    :rtype: std::pair< double,double >
+    :return: ``std::pair``<double, double>{a, b}.
+    """
     return _datamunge.make_dpair(a, b)
 
 def sum_dpair(values):
+    r"""
+    Computes the sum of both elements in a pair.
+    :type values: std::pair< double,double >
+    :param values: Pair of doubles.
+    :rtype: float
+    :return: ``values.first`` + values.second.
+    """
     return _datamunge.sum_dpair(values)
 

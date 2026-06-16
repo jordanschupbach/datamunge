@@ -8,6 +8,9 @@
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
 
+/// <summary>Base class for user-defined callbacks invoked by datamunge functions.</summary>
+///  Derive from this class and override ``call()`` to supply custom behavior
+///  wherever a ``Callback*`` is accepted.
 
 public class Callback : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
@@ -56,6 +59,9 @@ public class Callback : global::System.IDisposable {
     }
   }
 
+  /// <summary>Applies the callback to a single value.</summary>
+  /// <param name="x"> Input value.</param> 
+  /// <returns>Transformed value; the default implementation returns ``x`` unchanged.</returns>
   public virtual double call(double x) {
     double ret = datamungePINVOKE.Callback_call(swigCPtr, x);
     return ret;

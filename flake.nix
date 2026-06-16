@@ -802,6 +802,7 @@
             pkgs.graphviz
             pkgs.doctest
             pkgs.cmake
+            pkgs.xorg.libX11
 
             # pkgs.nodejs
             # pkgs.prefetch-npm-deps
