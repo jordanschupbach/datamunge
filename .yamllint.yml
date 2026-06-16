@@ -1,0 +1,24 @@
+extends: default
+
+ignore: |
+  .direnv/**
+  node_modules/**
+  build/**
+  **/build/**
+  dist/**
+  **/dist/**
+  target/**
+  **/target/**
+  result/**
+  **/result/**
+  src/perloctra/**
+  **/MYMETA.yml
+
+rules:
+  line-length:
+    max: 120
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+  truthy:
+    allowed-values: ["true", "false", "on", "off", "yes", "no"]
+  document-start: disable

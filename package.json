@@ -1,0 +1,31 @@
+{
+  "name": "@octra/octrajs",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "node-addon-api": "^8.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "node-gyp": "^10.0.1"
+  },
+  "scripts": {
+    "generate": "node setup.js",
+    "build": "npm run generate && node-gyp configure build",
+    "pretest": "npm run build",
+    "test": "jest tests/javascript",
+    "start": "node src/index"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/src/octrajs/"
+    ]
+  },
+  "author": "",
+  "license": "Unlicense",
+  "repository": {
+    "type": "git"
+  },
+  "bugs": {},
+  "description": "JavaScript (N-API) bindings for the octra C++ library."
+}

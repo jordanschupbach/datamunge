@@ -1,0 +1,8 @@
+[package]
+name = "octra-rust-binding-tests"
+version = "0.0.1"
+edition = "2021"
+publish = false
+
+[dependencies]
+rustoctra = { path = "../../src/rustoctra" }

@@ -1,0 +1,7 @@
+(lang dune 3.11)
+(name octraocaml)
+
+(package
+ (name octraocaml)
+ (synopsis "OCaml (SWIG) bindings for the octra library")
+ (depends alcotest))

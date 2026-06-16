@@ -1,0 +1,12 @@
+# https://github.com/cpm-cmake/CPM.cmake
+CPM_VERSION := '0.42.0'
+
+# https://github.com/TheLartians/PackageProject.cmake
+PackageProject_Version := '1.13.0'
+
+pull_dependencies:
+    @echo "Pulling dependencies..."
+    wget https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/refs/tags/v{{CPM_VERSION}}/cmake/CPM.cmake -O CPM.cmake
+    wget https://raw.githubusercontent.com/TheLartians/PackageProject.cmake/refs/tags/v{{PackageProject_Version}}/CMakeLists.txt -O PackageProject.cmake
+    wget https://raw.githubusercontent.com/TheLartians/PackageProject.cmake/refs/tags/v{{PackageProject_Version}}/Config.cmake.in -O Config.cmake.in
+    wget https://raw.githubusercontent.com/TheLartians/PackageProject.cmake/refs/tags/v{{PackageProject_Version}}/version.h.in -O version.h.in

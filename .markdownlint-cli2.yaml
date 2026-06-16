@@ -1,0 +1,20 @@
+config:
+  # This repo intentionally uses long lines and some inline HTML in READMEs/docs.
+  MD013: false # line-length
+  MD033: false # inline HTML
+  MD041: false # first-line-heading
+  MD025: false # single H1
+  MD010: false # no-hard-tabs
+
+globs:
+  - "**/*.md"
+
+ignores:
+  - ".direnv/**"
+  - ".git/**"
+  - "node_modules/**"
+  - "build/**"
+  - "dist/**"
+  - "target/**"
+  - "result/**"
+  - "current_prompt.md"

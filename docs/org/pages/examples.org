@@ -1,0 +1,534 @@
+#+TITLE: Examples
+#+OPTIONS: toc:nil num:nil
+#+PROPERTY: header-args :exports both
+#+PROPERTY: header-args :noweb yes
+#+PROPERTY: header-args:shell :results output :shebang "#!/usr/bin/env bash" :prologue "set -euo pipefail" :dir ../../../
+
+* Org → Markdown (with Babel)
+
+This page is authored in Org mode and exported to Markdown via `docs/org-to-md.el`.
+During export, all Babel code blocks are executed and their results are embedded
+into the generated Markdown in `docs/pages/`.
+
+* Examples (by language)
+
+Each section below contains the canonical `octra_ex.*` example for that language.
+During `just prebuild-docs-pages`, hidden shell blocks execute these examples
+best-effort (printing `SKIP` when the relevant runtime/binding is unavailable).
+
+** Sanity (executed)
+
+#+begin_src emacs-lisp :results value
+(+ 40 2)
+#+end_src
+
+#+begin_src shell
+echo "Org Babel is executing blocks."
+#+end_src
+
+** C++
+
+#+name: octra_ex_cpp
+#+begin_src c++ :eval no
+#include <octra/octra.hpp>
+
+int main(void) {
+  octra::hello();
+  return 0;
+}
+#+end_src
+
+#+begin_src shell :exports results
+if command -v g++ >/dev/null 2>&1 && command -v pkg-config >/dev/null 2>&1 && pkg-config --exists octra; then
+  tmp="$(mktemp -d)"
+  cat >"$tmp/octra_ex.cpp" <<'CPP'
+<<octra_ex_cpp>>
+CPP
+  g++ -std=c++20 -O0 "$tmp/octra_ex.cpp" -o "$tmp/octra_ex" $(pkg-config --cflags --libs octra) >/dev/null 2>&1 \
+    || { echo "SKIP: C++ example failed to compile (octra not installed?)"; exit 0; }
+  "$tmp/octra_ex"
+else
+  echo "SKIP: C++ toolchain/pkg-config/octra not available"
+fi
+#+end_src
+
+** Python
+
+#+name: octra_ex_python
+#+begin_src python :eval no
+from pyoctra import octra
+
+# dir(octra)
+
+octra.hello()
+
+dp = octra.DPair(1, 2)
+
+s = octra.SVector(3)
+s[0] = "1"
+s[1] = "2"
+s[2] = "3"
+# s[3] = "4"  # <- Gets index out of bounds error
+
+
+class TimesTwo(octra.Callback):
+    def call(self, x):
+        return x * 2.0
+
+
+class TimesThree(octra.Callback):
+    def call(self, x):
+        return x * 3.0
+
+
+# cb = TimesTwo()
+cb = TimesThree()
+print("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb))
+v = octra.make_dvector(1.0, 2.0, 3.0)
+v2 = octra.map_dvector_with_callback(v, cb)
+print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
+#+end_src
+
+#+begin_src shell :exports results
+if command -v python >/dev/null 2>&1; then
+  PYTHONPATH="$(pwd)/src/pyoctra:${PYTHONPATH:-}" \
+    python - <<'PY' || { echo "SKIP: python binding not importable"; exit 0; }
+<<octra_ex_python>>
+PY
+else
+  echo "SKIP: python not available"
+fi
+#+end_src
+
+** JavaScript (Node)
+
+#+name: octra_ex_javascript
+#+begin_src javascript :eval no
+// Local dev: build first (`just build-javascript`), then run this example.
+const octra = require("../../index.js");
+
+octra.hello();
+
+// Note: SWIG's Node/JavaScript backend does not support directors/virtual-method
+// overrides the same way as Python/Ruby/Perl. `Callback` can still be passed,
+// but the default implementation is identity.
+const cb = new octra.Callback();
+console.log("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb));
+const v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb);
+console.log("sum_dvector(map_dvector_with_callback) =", octra.sum_dvector(v2));
+
+// Bridging: pass a JS function into native code (via C callback trampoline).
+console.log("call_with_function(3.0) =", octra.call_with_function(3.0, (x) => x * 2.0));
+const out = octra.map_array_with_function([1.0, 2.0, 3.0], (x) => x * 2.0);
+console.log("map_array_with_function([1,2,3]) =", out);
+#+end_src
+
+#+begin_src shell :exports results
+if command -v node >/dev/null 2>&1; then
+  (cd examples/javascript && node - <<'JS') || { echo "SKIP: node binding not loadable"; exit 0; }
+<<octra_ex_javascript>>
+JS
+else
+  echo "SKIP: node not available"
+fi
+#+end_src
+
+** R
+
+#+name: octra_ex_r
+#+begin_src R :eval no
+library(octrar)
+
+octrar::hello()
+
+# Can only coerce (can't use methods directly without a wrapper)
+v <- octrar::DVector(c(0.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 1.0, 0.0,
+    0.0, 1.0, 0.0))
+
+# This works as expected
+p <- octrar::DPair(1.1, 2.2)
+p$first
+p$second
+
+# This works as expected
+p <- octrar::IPair(1.1, 2.2) # converts to integer
+p$first
+p$second
+#+end_src
+
+#+begin_src shell :exports results
+if command -v R >/dev/null 2>&1; then
+  Rscript - <<'RSCRIPT' || { echo "SKIP: R binding not loadable"; exit 0; }
+<<octra_ex_r>>
+RSCRIPT
+else
+  echo "SKIP: R not available"
+fi
+#+end_src
+
+** Ruby
+
+#+name: octra_ex_ruby
+#+begin_src ruby :eval no
+require "octruby"
+
+Octra.hello
+
+dp = Octra::DPair.new(1.0, 2.0)
+dp.first
+dp.second
+puts "DPair created: #{dp.inspect}"
+dp.delete if dp.respond_to?(:delete)
+
+class TimesTwo < Octra::Callback
+  def call(x)
+    x * 2.0
+  end
+end
+
+cb = TimesTwo.new
+puts "call_with_callback(3.0) = #{Octra.call_with_callback(3.0, cb)}"
+v = Octra.make_dvector(1.0, 2.0, 3.0)
+v2 = Octra.map_dvector_with_callback(v, cb)
+puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
+#+end_src
+
+#+begin_src shell :exports results
+if command -v ruby >/dev/null 2>&1; then
+  # Prefer in-repo Ruby extension if present.
+  if [ -d src/octruby/lib ]; then
+    RUBYLIB="$(pwd)/src/octruby/lib:${RUBYLIB:-}" ruby - <<'RB' || { echo "SKIP: ruby binding not loadable"; exit 0; }
+<<octra_ex_ruby>>
+RB
+  else
+    ruby - <<'RB' || { echo "SKIP: ruby binding not loadable"; exit 0; }
+<<octra_ex_ruby>>
+RB
+  fi
+else
+  echo "SKIP: ruby not available"
+fi
+#+end_src
+
+** Perl
+
+#+name: octra_ex_perl
+#+begin_src perl :eval no
+use strict;
+use warnings;
+
+use Octra;
+
+Octra::hello();
+
+my $dp = Octra::DPair->new(1.0, 2.0);
+print "DPair: First=" . $dp->swig_first_get() . ", Second=" . $dp->swig_second_get() . "\n";
+
+{
+  package TimesTwo;
+  our @ISA = ('Octra::Callback');
+
+  sub call {
+    my ($self, $x) = @_;
+    return $x * 2.0;
+  }
+}
+
+my $cb = TimesTwo->new();
+print "call_with_callback(3.0) = ", Octra::call_with_callback(3.0, $cb), "\n";
+my $v = Octra::make_dvector(1.0, 2.0, 3.0);
+my $v2 = Octra::map_dvector_with_callback($v, $cb);
+print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Octra::sum_dvector($v2), "\n";
+#+end_src
+
+#+begin_src shell :exports results
+if command -v perl >/dev/null 2>&1; then
+  if [ ! -f build/perl/lib/perl5/Octra.pm ]; then
+    if command -v just >/dev/null 2>&1; then
+      just build-perl >/dev/null 2>&1 || { echo "SKIP: perl binding build failed"; exit 0; }
+    else
+      echo "SKIP: just not available to build perl binding"
+      exit 0
+    fi
+  fi
+  export PERL5LIB="$(pwd)/build/perl/lib/perl5${PERL5LIB:+:}${PERL5LIB:-}"
+  export LD_LIBRARY_PATH="$(pwd)/build${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH:-}"
+  perl examples/perl/octra_ex.pl || { echo "SKIP: perl binding not loadable"; exit 0; }
+else
+  echo "SKIP: perl not available"
+fi
+#+end_src
+
+** PHP
+
+#+name: octra_ex_php
+#+begin_src php :eval no
+<?php
+
+
+$n = 100;
+$v = new DVector($n);
+for($i = 0; $i < 10; $i += 1) {
+    $v->set($i, $i * 1.5);
+}
+for($i = 0; $i < 10; $i += 1) {
+    print($v->get($i) . "\n");
+}
+
+$v2 = new IVector($n);
+for($i = 0; $i < 10; $i += 1) {
+    $v2->set($i, $i * 1.5); // NOTE: Type coercion happens implicitly
+}
+
+for($i = 0; $i < 10; $i += 1) {
+    print($v2->get($i) . "\n");
+}
+
+hello()
+
+?>
+#+end_src
+
+#+begin_src shell :exports results
+if command -v php >/dev/null 2>&1; then
+  if [ ! -f build/octraPHP/liboctraPHP.so ]; then
+    if command -v just >/dev/null 2>&1; then
+      just build-php >/dev/null 2>&1 || { echo "SKIP: php binding build failed"; exit 0; }
+    else
+      echo "SKIP: just not available to build php binding"
+      exit 0
+    fi
+  fi
+  php --php-ini .user.ini examples/php/octra_ex.php || { echo "SKIP: php binding not loadable"; exit 0; }
+else
+  echo "SKIP: php not available"
+fi
+#+end_src
+
+** Lua
+
+#+name: octra_ex_lua
+#+begin_src lua :eval no
+local octra = require("octra")
+octra.hello()
+
+local v = octra.make_dvector(1.0, 2.0, 3.0)
+print("sum_dvector:", octra.sum_dvector(v))
+
+local p = octra.make_dpair(1.25, 2.75)
+print("sum_dpair:", octra.sum_dpair(p))
+
+local cb = octra.Callback()
+print("call_with_callback(3.0):", octra.call_with_callback(3.0, cb))
+local v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb)
+print("sum_dvector(map_dvector_with_callback(1,2,3)):", octra.sum_dvector(v2))
+#+end_src
+
+#+begin_src shell :exports results
+if command -v lua >/dev/null 2>&1; then
+  lua - <<'LUA' || { echo "SKIP: lua binding not loadable"; exit 0; }
+<<octra_ex_lua>>
+LUA
+else
+  echo "SKIP: lua not available"
+fi
+#+end_src
+
+** Tcl
+
+#+name: octra_ex_tcl
+#+begin_src tcl :eval no
+package require Octra 0.0.1
+
+octra::hello
+
+set v [octra::new_DVector]
+octra::DVector_push_back $v 1.25
+octra::DVector_push_back $v 2.5
+puts "DVector size: [octra::DVector_size $v]"
+puts [format {DVector[0]: %s} [octra::DVector_get $v 0]]
+octra::delete_DVector $v
+
+set p [octra::new_DPair 3.0 4.5]
+puts "DPair: ([octra::DPair_first_get $p], [octra::DPair_second_get $p])"
+octra::delete_DPair $p
+
+puts "Octra Tcl example ran successfully."
+#+end_src
+
+#+begin_src shell :exports results
+if command -v tclsh >/dev/null 2>&1; then
+  tclsh - <<'TCL' || { echo "SKIP: tcl binding not loadable"; exit 0; }
+<<octra_ex_tcl>>
+TCL
+else
+  echo "SKIP: tclsh not available"
+fi
+#+end_src
+
+** Octave
+
+#+name: octra_ex_octave
+#+begin_src octave :eval no
+1;
+
+octra;
+
+hello ();
+
+v = DVector ();
+v.append (1.0);
+v.append (2.0);
+v.append (3.5);
+printf ("vector size: %d\n", v.size ());
+printf ("vector[0]=%f vector[1]=%f\n", v.__paren__ (0), v.__paren__ (1));
+
+p = DPair (10.0, 25.5);
+printf ("pair sum: %f\n", p.first + p.second);
+#+end_src
+
+#+begin_src shell :exports results
+if command -v octave >/dev/null 2>&1; then
+  tmp="$(mktemp -d)"
+  cat >"$tmp/octra_ex.m" <<'OCT'
+<<octra_ex_octave>>
+OCT
+  octave --quiet "$tmp/octra_ex.m" || { echo "SKIP: octave binding not loadable"; exit 0; }
+else
+  echo "SKIP: octave not available"
+fi
+#+end_src
+
+** Guile
+
+#+name: octra_ex_guile
+#+begin_src scheme :eval no
+(use-modules (octra))
+
+(display "Hello from Guile + Octra\n")
+(hello)
+
+(let ((v (make_dvector 10.0 20.0 30.0)))
+  (format #t "sum_dvector = ~a\n" (sum_dvector v)))
+
+(let ((p (make_dpair 4.0 5.0)))
+  (format #t "sum_dpair = ~a\n" (sum_dpair p)))
+#+end_src
+
+#+begin_src shell :exports results
+if command -v guile >/dev/null 2>&1; then
+  tmp="$(mktemp -d)"
+  cat >"$tmp/octra_ex.scm" <<'SCM'
+<<octra_ex_guile>>
+SCM
+  guile "$tmp/octra_ex.scm" || { echo "SKIP: guile binding not loadable"; exit 0; }
+else
+  echo "SKIP: guile not available"
+fi
+#+end_src
+
+** OCaml
+
+#+name: octra_ex_ocaml
+#+begin_src ocaml :eval no
+let () =
+  let open Swig in
+  ignore (Octra._hello C_void);
+  print_endline "octra: _hello() ok";
+
+  let p = Octra.new_DPair (C_list [ C_double 1.25; C_double 2.5 ]) in
+  let p_first = get_float (invoke p "[first]" C_void) in
+  let p_second = get_float (invoke p "[second]" C_void) in
+  let p_sum = get_float (Octra._sum_dpair p) in
+  Printf.printf "DPair: first=%g second=%g sum=%g\n" p_first p_second p_sum;
+
+  let v = Octra.new_DVector C_void in
+  ignore (invoke v "push_back" (C_double 3.0));
+  ignore (invoke v "push_back" (C_double 4.5));
+  let v0 = get_float (invoke v "[]" (C_int 0)) in
+  let v1 = get_float (invoke v "[]" (C_int 1)) in
+  let v_sum = get_float (Octra._sum_dvector v) in
+  Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum
+#+end_src
+
+#+begin_src shell :exports results
+if command -v ocaml >/dev/null 2>&1 && command -v ocamlfind >/dev/null 2>&1; then
+  if command -v just >/dev/null 2>&1; then
+    just install-ocaml >/dev/null 2>&1 || { echo "SKIP: OCaml binding build/install failed"; exit 0; }
+  else
+    echo "SKIP: just not available to build OCaml binding"
+    exit 0
+  fi
+
+  export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH"
+  tmp="$(mktemp -d)"
+  cat >"$tmp/octra_ex.ml" <<'ML'
+<<octra_ex_ocaml>>
+ML
+  ocamlfind ocamlopt -package octraocaml -linkpkg "$tmp/octra_ex.ml" -o "$tmp/octra_ex" >/dev/null 2>&1 \
+    || { echo "SKIP: OCaml example failed to compile"; exit 0; }
+  "$tmp/octra_ex" || { echo "SKIP: OCaml example failed to run"; exit 0; }
+else
+  echo "SKIP: ocaml/ocamlfind not available"
+fi
+#+end_src
+
+** Go
+
+#+name: octra_ex_go
+#+begin_src go :eval no
+package main
+
+import (
+	"fmt"
+	"octra"
+)
+
+func main() {
+	octra.Hello()
+
+	dp := octra.NewDPair(1.0, 2.0)
+	fmt.Printf("DPair: First=%v, Second=%v\n", dp.GetFirst(), dp.GetSecond())
+
+	s := octra.NewSVector(int64(3))
+	s.Set(0, "1")
+	s.Set(1, "2")
+	s.Set(2, "3")
+	fmt.Printf("SVector: [0]=%v, [1]=%v, [2]=%v\n", s.Get(0), s.Get(1), s.Get(2))
+
+	// Clean up
+	octra.DeleteDPair(dp)
+	octra.DeleteSVector(s)
+}
+#+end_src
+
+#+begin_src shell :exports results
+if command -v go >/dev/null 2>&1; then
+  if command -v just >/dev/null 2>&1; then
+    # Build the Go binding (and the core library) if missing.
+    if [ ! -f src/gooctra/go.mod ] || [ ! -f src/gooctra/octra.go ]; then
+      echo "SKIP: Go binding sources not present"
+      exit 0
+    fi
+    just build-go >/dev/null 2>&1 || { echo "SKIP: Go binding build failed"; exit 0; }
+  else
+    echo "SKIP: just not available to build Go binding"
+    exit 0
+  fi
+
+  (cd src/gooctra && \
+    export LD_LIBRARY_PATH="$(pwd)/../../build${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH:-}" && \
+    export CGO_CPPFLAGS="-I$(pwd)/../../include" && \
+    export CGO_LDFLAGS="-L$(pwd)/../../build -loctra" && \
+    go run ../../examples/go/octra_ex.go) \
+    || { echo "SKIP: Go example failed to run"; exit 0; }
+else
+  echo "SKIP: go not available"
+fi
+#+end_src
+
+* Using Octra
+
+See `README.md` for language bindings and build/test commands.

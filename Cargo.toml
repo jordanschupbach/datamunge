@@ -1,0 +1,7 @@
+[workspace]
+members = [
+  "src/rustoctra",
+  "tests/rust",
+]
+resolver = "2"
+

@@ -1,0 +1,12 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "node_modules/**"
+    - "build/**"
+    - "dist/**"
+    - "target/**"
+    - "result/**"
+    - "src/**/*_wrap.*"
+
+Layout/LineLength:
+  Max: 100

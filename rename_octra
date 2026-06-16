@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	cat >&2 <<'EOF'
+Usage:
+  rename_octra <new_project_name>
+
+Notes:
+  - <new_project_name> must be lowercase (a-z, 0-9, '_' or '-').
+  - Replaces occurrences of: octra / Octra / OCTRA in file contents.
+  - Renames files/directories containing: octra / Octra / OCTRA.
+EOF
+}
+
+if [[ ${1-} == "" || ${1-} == "-h" || ${1-} == "--help" ]]; then
+	usage
+	exit 2
+fi
+
+replacement="$1"
+
+if [[ "$replacement" == *"/"* ]]; then
+	echo "Error: new project name must not contain '/'." >&2
+	exit 2
+fi
+
+if [[ ! "$replacement" =~ ^[a-z0-9_-]+$ ]]; then
+	echo "Error: new project name must match ^[a-z0-9_-]+$." >&2
+	exit 2
+fi
+
+if [[ "$replacement" != "${replacement,,}" ]]; then
+	echo "Error: new project name must be lowercase." >&2
+	exit 2
+fi
+
+replacement_pascal="${replacement^}"
+replacement_upper="${replacement^^}"
+
+repo_root="$(pwd)"
+
+list_files_with_matches() {
+	if command -v rg >/dev/null 2>&1; then
+		rg -l -0 --hidden \
+			--glob '!.git/**' \
+			--glob '!.direnv/**' \
+			--glob '!build/**' \
+			--glob '!dist/**' \
+			--glob '!node_modules/**' \
+			--glob '!rename_octra' \
+			"octra|Octra|OCTRA" "$repo_root" || true
+	else
+		find "$repo_root" -type f \
+			-not -path '*/.git/*' \
+			-not -path '*/.direnv/*' \
+			-not -path '*/build/*' \
+			-not -path '*/dist/*' \
+			-not -path '*/node_modules/*' \
+			-not -name 'rename_octra' -print0 |
+			xargs -0 grep -IlZ -E "octra|Octra|OCTRA" 2>/dev/null || true
+	fi
+}
+
+if command -v perl >/dev/null 2>&1; then
+	while IFS= read -r -d '' file; do
+		perl -0777 -i -pe \
+			"s/\\boctra\\b/\Q$replacement\E/g; s/\\bOctra\\b/\Q$replacement_pascal\E/g; s/\\bOCTRA\\b/\Q$replacement_upper\E/g; s/octra/\Q$replacement\E/g; s/Octra/\Q$replacement_pascal\E/g; s/OCTRA/\Q$replacement_upper\E/g" \
+			"$file"
+	done < <(list_files_with_matches)
+else
+	while IFS= read -r -d '' file; do
+		sed -i \
+			-e "s/octra/${replacement}/g" \
+			-e "s/Octra/${replacement_pascal}/g" \
+			-e "s/OCTRA/${replacement_upper}/g" \
+			"$file"
+	done < <(list_files_with_matches)
+fi
+
+while IFS= read -r -d '' path; do
+	base="$(basename "$path")"
+	dir="$(dirname "$path")"
+	newbase="${base//octra/$replacement}"
+	newbase="${newbase//Octra/$replacement_pascal}"
+	newbase="${newbase//OCTRA/$replacement_upper}"
+	if [[ "$newbase" != "$base" ]]; then
+		mv -n -- "$path" "$dir/$newbase"
+	fi
+done < <(
+	find "$repo_root" -depth \
+		-not -path '*/.git/*' \
+		-not -path '*/.direnv/*' \
+		-not -path '*/build/*' \
+		-not -path '*/dist/*' \
+		-not -path '*/node_modules/*' \
+		\( -name '*octra*' -o -name '*Octra*' -o -name '*OCTRA*' \) -print0
+)
+
+echo "Done. Renamed project 'octra' -> '$replacement' (including Octra/OCTRA variants)."

@@ -1,0 +1,6 @@
+include README.md
+include src/octra_python_wrap.cpp
+include src/octra_python_wrap.h
+recursive-include include *.h *.hpp
+recursive-include source *.c *.cc *.cpp *.cxx
+

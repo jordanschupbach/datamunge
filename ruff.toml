@@ -1,0 +1,17 @@
+exclude = [
+  ".cache",
+  ".direnv",
+  ".gradle",
+  ".git",
+  ".pytest_cache",
+  "build",
+  "dist",
+  "node_modules",
+  "result",
+  # Generated (SWIG) Python wrapper.
+  "src/pyoctra/octra.py",
+  "target",
+]
+
+[format]
+line-ending = "lf"

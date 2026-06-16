@@ -1,0 +1,21 @@
+
+
+# TODO: fix this to remove empty lines and comments from lib_sources.txt
+SOURCES = $(shell sed 's|^|../src/|; s|$$|.cpp|' ../lib_sources.txt) octra_r_wrap.cpp 
+# SOURCES = $(wildcard $(shell find ../src/octra -name '*.cpp')) octra_r_wrap.cpp 
+OBJECTS = $(SOURCES:%.cpp=%.o)
+
+
+$(SHLIB):
+  @echo "SOURCES: $(SOURCES)"
+  @echo "OBJECTS: $(OBJECTS)"
+	R CMD SHLIB $(SOURCES)
+	R CMD SHLIB -o octrar.so $(OBJECTS)
+
+#  octra/octra.cpp octra/octra.cpp
+
+PKG_CPPFLAGS +=  -I$(CURDIR)/../include # $(shell pkg-config --cflags libxml-2.0)
+# PKG_LIBS += $(shell pkg-config --libs libxml-2.0)
+
+clean:
+	rm -f ./*.o ./octra_r_wrap.o ./octrar.so ./octra/*.o ./octra/*.so
