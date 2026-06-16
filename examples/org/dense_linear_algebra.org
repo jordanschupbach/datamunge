@@ -38,48 +38,68 @@ c++ -std=c++17 -Iinclude build/org/dense_linear_algebra.cpp \
 ./build/org/dense_linear_algebra
 #+end_src
 
-This second block fits a nonlinear regression curve using a cubic B-spline basis.
-The basis matrix is evaluated sparsely by default, the coefficients are fit with
-=sparse_linear_regression=, and the resulting smooth curve is rendered to SVG.
+This second block fits a nonlinear regression curve using penalized cubic
+B-splines (P-splines). The synthetic response is sampled from
+=f(x) = 20 / sin(x + 0.15)= with additive Gaussian noise, and the fit uses many
+basis functions plus a second-difference roughness penalty to stabilize the
+curve.
 
 #+begin_src shell
 mkdir -p build/org
 cat > build/org/bspline_regression.cpp <<'CPP'
-#include <datamunge/fda/bspline.hpp>
-#include <datamunge/linalg/csr.hpp>
-#include <datamunge/linalg/regression.hpp>
+#include <datamunge/fda/pspline.hpp>
 #include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
 
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <vector>
 
-using datamunge::fda::BSplineBasis;
-using datamunge::linalg::sparse_linear_regression;
+using datamunge::fda::PSplineOptions;
+using datamunge::fda::fit_pspline;
+using datamunge::random::SplitMix64;
 using namespace datamunge::plot;
 
 int main() {
-    const std::vector<double> x = {0.00, 0.10, 0.22, 0.35, 0.48, 0.62, 0.76, 0.90,
-                                   1.05, 1.20, 1.38, 1.55, 1.72, 1.88, 2.00};
-    const std::vector<double> y = {0.18, 0.52, 0.91, 1.05, 0.82, 0.22, -0.41, -0.88,
-                                   -0.97, -0.62, 0.03, 0.71, 1.02, 0.79, 0.28};
+    constexpr std::size_t n = 500;
+    constexpr double xmin = 0.0;
+    constexpr double xmax = 1.0;
+    constexpr double noise_sigma = 0.25;
 
-    const auto basis = BSplineBasis::open_uniform(3, 8, x.front(), x.back());
-    const auto design_sparse = basis.evaluate(x);
-    auto fit = sparse_linear_regression(design_sparse, y);
+    SplitMix64 rng(0xB51A1EULL);
+
+    std::vector<double> x(n);
+    std::vector<double> y(n);
+    std::vector<double> y_true(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        x[i] = xmin + (xmax - xmin) * static_cast<double>(i) / static_cast<double>(n - 1);
+        y_true[i] = std::sin(20.0 / (x[i] + 0.25));
+        y[i] = y_true[i] + noise_sigma * rng.normal();
+    }
+
+    PSplineOptions opts;
+    opts.lambda = 0.5;
+    opts.penalty_order = 2;
+    const auto fit = fit_pspline(x, y, 3, 300, opts);
 
     std::vector<double> grid_x(200);
-    const double xmin = x.front();
-    const double xmax = x.back();
     for (std::size_t i = 0; i < grid_x.size(); ++i)
         grid_x[i] = xmin + (xmax - xmin) * static_cast<double>(i)
                           / static_cast<double>(grid_x.size() - 1);
 
-    const auto grid_design = datamunge::linalg::to_csr(basis.evaluate(grid_x));
-    const auto grid_y = grid_design.spmv(fit.coefficients);
+    const auto grid_y = fit.predict(grid_x);
+    std::vector<double> grid_true(grid_x.size());
+    for (std::size_t i = 0; i < grid_x.size(); ++i)
+        grid_true[i] = std::sin(20.0 / (grid_x[i] + 0.25));
 
     auto plot = ScatterPlot::create();
     plot.points(x, y, "samples", {37, 99, 235}, 6.0)
+        .line(grid_x,
+              grid_true,
+              "true signal",
+              {22, 163, 74},
+              2.0)
         .line(grid_x,
               grid_y,
               "cubic B-spline fit",
@@ -93,8 +113,11 @@ int main() {
     plot.save_svg("build/org/bspline_regression.svg");
 
     std::cout << std::fixed << std::setprecision(4)
-              << "basis functions = " << basis.basis_size() << "\n"
-              << "degrees of freedom = " << fit.degrees_of_freedom << "\n"
+              << "n = " << n << "\n"
+              << "noise sigma = " << noise_sigma << "\n"
+              << "basis functions = " << fit.basis.basis_size() << "\n"
+              << "lambda = " << fit.lambda << "\n"
+              << "effective dof = " << fit.effective_degrees_of_freedom << "\n"
               << "R^2 = " << fit.r_squared << "\n"
               << "adj R^2 = " << fit.adjusted_r_squared << "\n";
     return 0;
@@ -104,7 +127,9 @@ CPP
 c++ -std=c++17 -Iinclude \
   build/org/bspline_regression.cpp \
   src/datamunge/fda/bspline.cpp \
+  src/datamunge/fda/pspline.cpp \
   src/datamunge/plot.cpp \
+  src/datamunge/random.cpp \
   -o build/org/bspline_regression
 
 ./build/org/bspline_regression
