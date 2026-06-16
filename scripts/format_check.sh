@@ -54,13 +54,13 @@ run_find_xargs() {
 }
 
 check_cpp() {
-	if [ ! -d ./include ] && [ ! -d ./src/octra ] && [ ! -d ./tests/cpp ]; then
+	if [ ! -d ./include ] && [ ! -d ./src/datamunge ] && [ ! -d ./tests/cpp ]; then
 		return 0
 	fi
 	require_cmd clang-format
 	# Only enforce formatting on the canonical core + C++ tests.
 	# Generated SWIG wrappers are intentionally excluded.
-	find ./include ./src/octra ./tests/cpp \
+	find ./include ./src/datamunge ./tests/cpp \
 		-type f \( \
 		-name '*.c' -o -name '*.h' -o -name '*.cc' -o -name '*.hh' -o -name '*.cpp' -o -name '*.hpp' -o -name '*.cxx' -o -name '*.hxx' \
 		\) -print0 2>/dev/null | xargs -0 clang-format --dry-run --Werror
@@ -96,15 +96,15 @@ check_nix() {
 }
 
 check_shell() {
-	if ! has_files '*.sh' && [ ! -f ./rename_octra ]; then
+	if ! has_files '*.sh' && [ ! -f ./rename_datamunge ]; then
 		return 0
 	fi
 	require_cmd shfmt
 	if has_files '*.sh'; then
 		run_find_xargs -type f -name '*.sh' -print0 | xargs -0 shfmt -d
 	fi
-	if [ -f ./rename_octra ]; then
-		shfmt -d ./rename_octra
+	if [ -f ./rename_datamunge ]; then
+		shfmt -d ./rename_datamunge
 	fi
 }
 
@@ -194,8 +194,8 @@ check_csharp() {
 		return 0
 	fi
 	require_cmd dotnet
-	if [ -f src/octradotnet.tests/octradotnet.tests.csproj ]; then
-		dotnet format src/octradotnet.tests/octradotnet.tests.csproj --verify-no-changes --verbosity minimal || true
+	if [ -f src/datamungedotnet.tests/datamungedotnet.tests.csproj ]; then
+		dotnet format src/datamungedotnet.tests/datamungedotnet.tests.csproj --verify-no-changes --verbosity minimal || true
 	fi
 }
 

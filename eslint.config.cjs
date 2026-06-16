@@ -8,8 +8,8 @@ module.exports = [
       "**/target/**",
       "**/result/**",
       "src/**/*_wrap.*",
-      "src/octrajs/**",
-      "src/joctra/**",
+      "src/datamungejs/**",
+      "src/jdatamunge/**",
     ],
     languageOptions: {
       ecmaVersion: "latest",

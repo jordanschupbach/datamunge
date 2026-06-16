@@ -1,13 +1,13 @@
-* OCTRA
+* DATAMUNGE
 
 
-#+BEGIN_SRC cpp :flags "$(pkg-config --cflags --libs octra)"
+#+BEGIN_SRC cpp :flags "$(pkg-config --cflags --libs datamunge)"
 #include <iostream>
-#include <octra/octra.hpp>
+#include <datamunge/datamunge.hpp>
 
 int main() {
   std::cout << "Hello, World!" << std::endl;
-  octra::hello();
+  datamunge::hello();
   return 0;
 }
 
@@ -15,7 +15,7 @@ int main() {
 
 #+RESULTS:
 | Hello, | World! |
-| Hello  | octra  |
+| Hello  | datamunge  |
 
 * Test drive
 ** NixOS
@@ -41,7 +41,7 @@ just run TARGET=example_name
 
 * Renaming this template
 #+BEGIN_SRC bash
-./rename_octra <new_project_name>
+./rename_datamunge <new_project_name>
 #+END_SRC
 
 * Bindings
@@ -81,19 +81,19 @@ just test-rust
 * Binding examples
 These blocks replicate the per-language examples under =examples/=.
 
-** C/C++ (=examples/cpp/source/octra_ex.cpp=)
+** C/C++ (=examples/cpp/source/datamunge_ex.cpp=)
 
-#+BEGIN_SRC cpp :results output :exports both :flags "$(pkg-config --cflags --libs octra)"
-#include <octra/octra.hpp>
+#+BEGIN_SRC cpp :results output :exports both :flags "$(pkg-config --cflags --libs datamunge)"
+#include <datamunge/datamunge.hpp>
 
 int main(void) {
-  octra::hello();
+  datamunge::hello();
   return 0;
 }
 #+END_SRC
 
 #+RESULTS:
-: Hello octra
+: Hello datamunge
 
 ** C# (=examples/csharp/stl_ex.cs=)
 #+BEGIN_SRC csharp :results output :exports both
@@ -101,9 +101,9 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-// NOTE: if using repl, uncomment the following line to load the octradotnet.dll
+// NOTE: if using repl, uncomment the following line to load the datamungedotnet.dll
 // and then recomment it back when compiling as a standalone program
-// #r "src/octradotnet/bin/Debug/net10.0/octradotnet.dll"
+// #r "src/datamungedotnet/bin/Debug/net10.0/datamungedotnet.dll"
 
 class stl_ex {
   static void Main() {
@@ -141,7 +141,7 @@ class stl_ex {
 module app;
 
 import std.stdio : writeln;
-import octra;
+import datamunge;
 
 class TimesTwo : Callback {
   override double call(double x) {
@@ -165,30 +165,30 @@ void main() {
 }
 #+END_SRC
 
-** Go (=examples/go/octra_ex.go=)
+** Go (=examples/go/datamunge_ex.go=)
 #+BEGIN_SRC go :results output :exports both
 package main
 
 import (
 	"fmt"
-	"octra"
+	"datamunge"
 )
 
 func main() {
-	octra.Hello()
+	datamunge.Hello()
 
-	dp := octra.NewDPair(1.0, 2.0)
+	dp := datamunge.NewDPair(1.0, 2.0)
 	fmt.Printf("DPair: First=%v, Second=%v\n", dp.GetFirst(), dp.GetSecond())
 
-	s := octra.NewSVector(int64(3))
+	s := datamunge.NewSVector(int64(3))
 	s.Set(0, "1")
 	s.Set(1, "2")
 	s.Set(2, "3")
 	fmt.Printf("SVector: [0]=%v, [1]=%v, [2]=%v\n", s.Get(0), s.Get(1), s.Get(2))
 
 	// Clean up
-	octra.DeleteDPair(dp)
-	octra.DeleteSVector(s)
+	datamunge.DeleteDPair(dp)
+	datamunge.DeleteSVector(s)
 }
 #+END_SRC
 
@@ -197,11 +197,11 @@ func main() {
 
 
 
-** Guile/Scheme (=examples/guile/octra_ex.scm=)
+** Guile/Scheme (=examples/guile/datamunge_ex.scm=)
 #+BEGIN_SRC scheme :results output :exports both
-(use-modules (octra))
+(use-modules (datamunge))
 
-(display "Hello from Guile + Octra\n")
+(display "Hello from Guile + Datamunge\n")
 (hello)
 
 (let ((v (make_dvector 10.0 20.0 30.0)))
@@ -213,13 +213,13 @@ func main() {
 
 ** Java (=examples/java/StlEx.java=)
 #+BEGIN_SRC java :results output :exports both
-import js.octra.joctra.DVector;
-import js.octra.joctra.IVector;
-import js.octra.joctra.DPair;
-import js.octra.joctra.IPair;
+import js.datamunge.jdatamunge.DVector;
+import js.datamunge.jdatamunge.IVector;
+import js.datamunge.jdatamunge.DPair;
+import js.datamunge.jdatamunge.IPair;
 
 public class StlEx {
-  static { System.loadLibrary("octra_jni"); }
+  static { System.loadLibrary("datamunge_jni"); }
 
   public static void main(String[] args) {
     run();
@@ -251,80 +251,80 @@ public class StlEx {
 
 #+RESULTS:
 
-** JavaScript (=examples/javascript/octra_ex.js=)
+** JavaScript (=examples/javascript/datamunge_ex.js=)
 #+BEGIN_SRC js :results output :exports both
 // Local dev: build first (`just build-javascript`), then run this example.
-const octra = require("../../index.js");
+const datamunge = require("../../index.js");
 
-octra.hello();
+datamunge.hello();
 
 // Note: SWIG's Node/JavaScript backend does not support directors/virtual-method
 // overrides the same way as Python/Ruby/Perl. `Callback` can still be passed,
 // but the default implementation is identity.
-const cb = new octra.Callback();
-console.log("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb));
-const v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb);
-console.log("sum_dvector(map_dvector_with_callback) =", octra.sum_dvector(v2));
+const cb = new datamunge.Callback();
+console.log("call_with_callback(3.0) =", datamunge.call_with_callback(3.0, cb));
+const v2 = datamunge.map_dvector_with_callback(datamunge.make_dvector(1.0, 2.0, 3.0), cb);
+console.log("sum_dvector(map_dvector_with_callback) =", datamunge.sum_dvector(v2));
 
 // Bridging: pass a JS function into native code (via C callback trampoline).
-console.log("call_with_function(3.0) =", octra.call_with_function(3.0, (x) => x * 2.0));
-const out = octra.map_array_with_function([1.0, 2.0, 3.0], (x) => x * 2.0);
+console.log("call_with_function(3.0) =", datamunge.call_with_function(3.0, (x) => x * 2.0));
+const out = datamunge.map_array_with_function([1.0, 2.0, 3.0], (x) => x * 2.0);
 console.log("map_array_with_function([1,2,3]) =", out);
 #+END_SRC
 
 #+RESULTS:
 
-** Lua (=examples/lua/octra_ex.lua=)
+** Lua (=examples/lua/datamunge_ex.lua=)
 #+BEGIN_SRC lua :results output :exports both
-local octra = require("octra")
-octra.hello()
+local datamunge = require("datamunge")
+datamunge.hello()
 
-local v = octra.make_dvector(1.0, 2.0, 3.0)
-print("sum_dvector:", octra.sum_dvector(v))
+local v = datamunge.make_dvector(1.0, 2.0, 3.0)
+print("sum_dvector:", datamunge.sum_dvector(v))
 
-local p = octra.make_dpair(1.25, 2.75)
-print("sum_dpair:", octra.sum_dpair(p))
+local p = datamunge.make_dpair(1.25, 2.75)
+print("sum_dpair:", datamunge.sum_dpair(p))
 
-local cb = octra.Callback()
-print("call_with_callback(3.0):", octra.call_with_callback(3.0, cb))
-local v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb)
-print("sum_dvector(map_dvector_with_callback(1,2,3)):", octra.sum_dvector(v2))
+local cb = datamunge.Callback()
+print("call_with_callback(3.0):", datamunge.call_with_callback(3.0, cb))
+local v2 = datamunge.map_dvector_with_callback(datamunge.make_dvector(1.0, 2.0, 3.0), cb)
+print("sum_dvector(map_dvector_with_callback(1,2,3)):", datamunge.sum_dvector(v2))
 #+END_SRC
 
 #+RESULTS:
-: Hello octra
+: Hello datamunge
 : sum_dvector:	6.0
 : sum_dpair:	4.0
 : call_with_callback(3.0):	3.0
 : sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
 
-** OCaml (=examples/ocaml/octra_ex.ml=)
+** OCaml (=examples/ocaml/datamunge_ex.ml=)
 #+BEGIN_SRC ocaml :results output :exports both
 let () =
   let open Swig in
-  ignore (Octra._hello C_void);
-  print_endline "octra: _hello() ok";
+  ignore (Datamunge._hello C_void);
+  print_endline "datamunge: _hello() ok";
 
-  let p = Octra.new_DPair (C_list [ C_double 1.25; C_double 2.5 ]) in
+  let p = Datamunge.new_DPair (C_list [ C_double 1.25; C_double 2.5 ]) in
   let p_first = get_float (invoke p "[first]" C_void) in
   let p_second = get_float (invoke p "[second]" C_void) in
-  let p_sum = get_float (Octra._sum_dpair p) in
+  let p_sum = get_float (Datamunge._sum_dpair p) in
   Printf.printf "DPair: first=%g second=%g sum=%g\n" p_first p_second p_sum;
 
-  let v = Octra.new_DVector C_void in
+  let v = Datamunge.new_DVector C_void in
   ignore (invoke v "push_back" (C_double 3.0));
   ignore (invoke v "push_back" (C_double 4.5));
   let v0 = get_float (invoke v "[]" (C_int 0)) in
   let v1 = get_float (invoke v "[]" (C_int 1)) in
-  let v_sum = get_float (Octra._sum_dvector v) in
+  let v_sum = get_float (Datamunge._sum_dvector v) in
   Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum
 #+END_SRC
 
-** Octave (=examples/octave/octra_ex.m=)
+** Octave (=examples/octave/datamunge_ex.m=)
 #+BEGIN_SRC octave :results output :exports both
 1;
 
-octra;
+datamunge;
 
 hello ();
 
@@ -340,26 +340,26 @@ printf ("pair sum: %f\n", p.first + p.second);
 #+END_SRC
 
 #+RESULTS:
-: Hello octra
+: Hello datamunge
 : vector size: 3
 : vector[0]=1.000000 vector[1]=2.000000
 : pair sum: 35.500000
 
-** Perl (=examples/perl/octra_ex.pl=)
+** Perl (=examples/perl/datamunge_ex.pl=)
 #+BEGIN_SRC perl :results output :exports both
 use strict;
 use warnings;
 
-use Octra;
+use Datamunge;
 
-Octra::hello();
+Datamunge::hello();
 
-my $dp = Octra::DPair->new(1.0, 2.0);
+my $dp = Datamunge::DPair->new(1.0, 2.0);
 print "DPair: First=" . $dp->swig_first_get() . ", Second=" . $dp->swig_second_get() . "\n";
 
 {
   package TimesTwo;
-  our @ISA = ('Octra::Callback');
+  our @ISA = ('Datamunge::Callback');
 
   sub call {
     my ($self, $x) = @_;
@@ -368,15 +368,15 @@ print "DPair: First=" . $dp->swig_first_get() . ", Second=" . $dp->swig_second_g
 }
 
 my $cb = TimesTwo->new();
-print "call_with_callback(3.0) = ", Octra::call_with_callback(3.0, $cb), "\n";
-my $v = Octra::make_dvector(1.0, 2.0, 3.0);
-my $v2 = Octra::map_dvector_with_callback($v, $cb);
-print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Octra::sum_dvector($v2), "\n";
+print "call_with_callback(3.0) = ", Datamunge::call_with_callback(3.0, $cb), "\n";
+my $v = Datamunge::make_dvector(1.0, 2.0, 3.0);
+my $v2 = Datamunge::map_dvector_with_callback($v, $cb);
+print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Datamunge::sum_dvector($v2), "\n";
 #+END_SRC
 
 #+RESULTS:
 
-** PHP (=examples/php/octra_ex.php=)
+** PHP (=examples/php/datamunge_ex.php=)
 #+BEGIN_SRC php :results output :exports both
 <?php
 
@@ -404,120 +404,120 @@ hello()
 ?>
 #+END_SRC
 
-** Python (=examples/python/octra_ex.py=)
+** Python (=examples/python/datamunge_ex.py=)
 #+BEGIN_SRC python :results output :exports both
-from pyoctra import octra
+from pydatamunge import datamunge
 
-# dir(octra)
+# dir(datamunge)
 
-octra.hello()
+datamunge.hello()
 
-dp = octra.DPair(1, 2)
+dp = datamunge.DPair(1, 2)
 
-s = octra.SVector(3)
+s = datamunge.SVector(3)
 s[0] = "1"
 s[1] = "2"
 s[2] = "3"
 # s[3] = "4"  # <- Gets index out of bounds error
 
 
-class TimesTwo(octra.Callback):
+class TimesTwo(datamunge.Callback):
     def call(self, x):
         return x * 2.0
 
 
-class TimesThree(octra.Callback):
+class TimesThree(datamunge.Callback):
     def call(self, x):
         return x * 3.0
 
 
 # cb = TimesTwo()
 cb = TimesThree()
-print("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb))
-v = octra.make_dvector(1.0, 2.0, 3.0)
-v2 = octra.map_dvector_with_callback(v, cb)
-print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
+print("call_with_callback(3.0) =", datamunge.call_with_callback(3.0, cb))
+v = datamunge.make_dvector(1.0, 2.0, 3.0)
+v2 = datamunge.map_dvector_with_callback(v, cb)
+print("sum_dvector(map_dvector_with_callback(1,2,3)) =", datamunge.sum_dvector(v2))
 #+END_SRC
 
 #+RESULTS:
-: Hello octra
+: Hello datamunge
 : call_with_callback(3.0) = 9.0
 : sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
 
-** R (=examples/r/octra_ex.r=)
+** R (=examples/r/datamunge_ex.r=)
 #+BEGIN_SRC R :results output :exports both
-library(octrar)
+library(datamunger)
 
-octrar::hello()
+datamunger::hello()
 
 # Can only coerce (can't use methods directly without a wrapper)
-v <- octrar::DVector(c(0.0, 0.0, 0.0,
+v <- datamunger::DVector(c(0.0, 0.0, 0.0,
     1.0, 0.0, 0.0,
     1.0, 1.0, 0.0,
     0.0, 1.0, 0.0))
 
 # This works as expected
-p <- octrar::DPair(1.1, 2.2)
+p <- datamunger::DPair(1.1, 2.2)
 p$first
 p$second
 
 # This works as expected
-p <- octrar::IPair(1.1, 2.2) # converts to integer
+p <- datamunger::IPair(1.1, 2.2) # converts to integer
 p$first
 p$second
 #+END_SRC
 
 #+RESULTS:
-: Hello octra
+: Hello datamunge
 : NULL
 : [1] 1.1
 : [1] 2.2
 : [1] 1
 : [1] 2
 
-** Ruby (=examples/ruby/octra_ex.rb=)
+** Ruby (=examples/ruby/datamunge_ex.rb=)
 #+BEGIN_SRC ruby :results output :exports both
 require "octruby"
 
-Octra.hello
+Datamunge.hello
 
-dp = Octra::DPair.new(1.0, 2.0)
+dp = Datamunge::DPair.new(1.0, 2.0)
 dp.first
 dp.second
 puts "DPair created: #{dp.inspect}"
 dp.delete if dp.respond_to?(:delete)
 
-class TimesTwo < Octra::Callback
+class TimesTwo < Datamunge::Callback
   def call(x)
     x * 2.0
   end
 end
 
 cb = TimesTwo.new
-puts "call_with_callback(3.0) = #{Octra.call_with_callback(3.0, cb)}"
-v = Octra.make_dvector(1.0, 2.0, 3.0)
-v2 = Octra.map_dvector_with_callback(v, cb)
-puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
+puts "call_with_callback(3.0) = #{Datamunge.call_with_callback(3.0, cb)}"
+v = Datamunge.make_dvector(1.0, 2.0, 3.0)
+v2 = Datamunge.map_dvector_with_callback(v, cb)
+puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Datamunge.sum_dvector(v2)}"
 #+END_SRC
 
 #+RESULTS:
 
-** Tcl (=examples/tcl/octra_ex.tcl=)
+** Tcl (=examples/tcl/datamunge_ex.tcl=)
 #+BEGIN_SRC tcl :results output :exports both
-package require Octra 0.0.1
+package require Datamunge 0.0.1
 
-octra::hello
+datamunge::hello
 
-set v [octra::new_DVector]
-octra::DVector_push_back $v 1.25
-octra::DVector_push_back $v 2.5
-puts "DVector size: [octra::DVector_size $v]"
-puts [format {DVector[0]: %s} [octra::DVector_get $v 0]]
-octra::delete_DVector $v
+set v [datamunge::new_DVector]
+datamunge::DVector_push_back $v 1.25
+datamunge::DVector_push_back $v 2.5
+puts "DVector size: [datamunge::DVector_size $v]"
+puts [format {DVector[0]: %s} [datamunge::DVector_get $v 0]]
+datamunge::delete_DVector $v
 
-set p [octra::new_DPair 3.0 4.5]
-puts "DPair: ([octra::DPair_first_get $p], [octra::DPair_second_get $p])"
-octra::delete_DPair $p
+set p [datamunge::new_DPair 3.0 4.5]
+puts "DPair: ([datamunge::DPair_first_get $p], [datamunge::DPair_second_get $p])"
+datamunge::delete_DPair $p
 
-puts "Octra Tcl example ran successfully."
+puts "Datamunge Tcl example ran successfully."
 #+END_SRC

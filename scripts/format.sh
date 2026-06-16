@@ -76,15 +76,15 @@ format_nix() {
 }
 
 format_shell() {
-	if ! has_files '*.sh' && [ ! -f ./rename_octra ]; then
+	if ! has_files '*.sh' && [ ! -f ./rename_datamunge ]; then
 		return 0
 	fi
 	require_cmd shfmt
 	if has_files '*.sh'; then
 		run_find_xargs -type f -name '*.sh' -print0 | xargs -0 shfmt -w
 	fi
-	if [ -f ./rename_octra ]; then
-		shfmt -w ./rename_octra
+	if [ -f ./rename_datamunge ]; then
+		shfmt -w ./rename_datamunge
 	fi
 }
 
@@ -161,8 +161,8 @@ format_csharp() {
 		return 0
 	fi
 	require_cmd dotnet
-	if [ -f src/octradotnet.tests/octradotnet.tests.csproj ]; then
-		dotnet format src/octradotnet.tests/octradotnet.tests.csproj --no-restore --verbosity minimal || true
+	if [ -f src/datamungedotnet.tests/datamungedotnet.tests.csproj ]; then
+		dotnet format src/datamungedotnet.tests/datamungedotnet.tests.csproj --no-restore --verbosity minimal || true
 	fi
 }
 

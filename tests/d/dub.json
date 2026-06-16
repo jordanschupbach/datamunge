@@ -1,10 +1,10 @@
 {
-  "name": "octrad-tests",
-  "description": "Binding smoke tests for octrad.",
+  "name": "datamunged-tests",
+  "description": "Binding smoke tests for datamunged.",
   "license": "Unlicense",
   "dependencies": {
-    "octrad": {
-      "path": "../../src/octrad"
+    "datamunged": {
+      "path": "../../src/datamunged"
     }
   }
 }

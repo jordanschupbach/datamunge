@@ -1,8 +1,8 @@
 const path = require("path");
 
 // Load the compiled native addon
-const addonPath = path.join(__dirname, "build", "Release", "octrajs.node");
-const octrajs = require(addonPath);
+const addonPath = path.join(__dirname, "build", "Release", "datamungejs.node");
+const datamungejs = require(addonPath);
 
 // Export the addon or wrap it as needed
-module.exports = octrajs;
+module.exports = datamungejs;

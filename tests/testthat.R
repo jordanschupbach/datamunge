@@ -1,5 +1,5 @@
 library(testthat)
-library(octrar)
+library(datamunger)
 
-test_check("octrar")
+test_check("datamunger")
 

@@ -28,7 +28,7 @@ def find_cpp_sources(directory):
     return sources
 
 
-sources = find_cpp_sources("src") + ["src/octra_python_wrap.cpp"]
+sources = find_cpp_sources("src") + ["src/datamunge_python_wrap.cpp"]
 
 
 def get_pkgconfig_include_dirs(package):
@@ -49,12 +49,12 @@ def get_pkgconfig_include_dirs(package):
         return []
 
 
-# sources = find_cpp_sources('source/octra')
-# sources = [ 'source/octra/octra.cpp', 'src/octra_python_wrap.cpp' ]
+# sources = find_cpp_sources('source/datamunge')
+# sources = [ 'source/datamunge/datamunge.cpp', 'src/datamunge_python_wrap.cpp' ]
 include_dirs = ["include/"]  # + get_pkgconfig_include_dirs('libxml-2.0')
 ext_modules = [
     Extension(
-        "pyoctra._octra",
+        "pydatamunge._datamunge",
         sources=sources,
         include_dirs=include_dirs,
         libraries=[],  # 'xml2'
@@ -63,14 +63,14 @@ ext_modules = [
 ]
 
 setup(
-    name="pyoctra",
+    name="pydatamunge",
     version="0.0.1",
     author="Jordan Schupbach",
     author_email="jordan.schupbach@montana.edu",
-    description="A Python interface to the octra C/C++ library",
+    description="A Python interface to the datamunge C/C++ library",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/jordanschupbach/octra",
+    url="https://github.com/jordanschupbach/datamunge",
     # packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -78,7 +78,7 @@ setup(
     ],
     python_requires=">=3.6",
     license="Unlicense",
-    packages=["pyoctra"],
+    packages=["pydatamunge"],
     package_dir={"": "src/"},
     ext_modules=ext_modules,
 )
@@ -108,8 +108,8 @@ setup(
 #
 # ext_modules = [
 #     Extension(
-#         "pyoctra._octra",
-#         sources=['source/octra/octra.cpp', 'src/octra_python_wrap.cpp'],
+#         "pydatamunge._datamunge",
+#         sources=['source/datamunge/datamunge.cpp', 'src/datamunge_python_wrap.cpp'],
 #         include_dirs=include_dirs,
 #         libraries=['xml2'],
 #         extra_compile_args=["-O3", "-std=c++23"]
@@ -117,15 +117,15 @@ setup(
 # ]
 
 # setup(
-#     name="pyoctra",
+#     name="pydatamunge",
 #     version="0.0.1",
-#     packages=["pyoctra"],
+#     packages=["pydatamunge"],
 #     ext_modules=ext_modules,
 #     # Other setuptools parameters
 # )
 
 # setup(
-#     name="pyoctra",
+#     name="pydatamunge",
 #     version="0.0.1",
 #     ext_modules=ext_modules,
 #     package_dir={"": "src"},
@@ -155,14 +155,14 @@ setup(
 #         return []
 #
 #
-# sources = find_cpp_sources('source/octra')
+# sources = find_cpp_sources('source/datamunge')
 # include_dirs = ["include/"] + get_pkgconfig_include_dirs('libxml-2.0')
 #
 # print("Sources:", sources)
 # print("Include dirs:", include_dirs)
 # ext_modules = [
 #     Extension(
-#         'pyoctra._octra',
+#         'pydatamunge._datamunge',
 #         sources=sources,
 #         include_dirs=include_dirs,
 #         libraries=['xml2'],
@@ -171,7 +171,7 @@ setup(
 # ]
 
 # setup(
-#     name="pyoctra",
+#     name="pydatamunge",
 #     version="0.0.1",
 #     ext_modules=ext_modules,
 #     package_dir={"": "src"},

@@ -1,0 +1,9 @@
+{
+  "name": "datamunged",
+  "description": "D (SWIG) bindings for the datamunge library.",
+  "license": "Unlicense",
+  "version": "0.0.1",
+  "targetType": "library",
+  "sourcePaths": ["source"],
+  "importPaths": ["source"]
+}

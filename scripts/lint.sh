@@ -54,12 +54,12 @@ lint_shell() {
 	local -a files=()
 	while IFS= read -r -d '' f; do
 		case "$f" in
-		./nix/update-joctra-gradle-deps.sh | ./nix/update-nuget-deps.sh) continue ;;
+		./nix/update-jdatamunge-gradle-deps.sh | ./nix/update-nuget-deps.sh) continue ;;
 		esac
 		files+=("$f")
 	done < <(run_find_xargs -type f -name '*.sh' -print0)
-	if [ -f ./rename_octra ]; then
-		files+=("./rename_octra")
+	if [ -f ./rename_datamunge ]; then
+		files+=("./rename_datamunge")
 	fi
 	if [ "${#files[@]}" -gt 0 ]; then
 		shellcheck -x "${files[@]}"
@@ -79,7 +79,7 @@ lint_nix() {
 
 lint_cpp() {
 	# Keep this focused on the canonical core (exclude generated SWIG wrappers).
-	if [ ! -d include ] && [ ! -d src/octra ]; then
+	if [ ! -d include ] && [ ! -d src/datamunge ]; then
 		return 0
 	fi
 	require_cmd cppcheck
@@ -89,14 +89,14 @@ lint_cpp() {
 		--inline-suppr \
 		--std=c++20 \
 		-I include \
-		src/octra include tests/cpp
+		src/datamunge include tests/cpp
 
 	if command -v clang-tidy >/dev/null 2>&1; then
 		require_cmd cmake
 		rm -rf build/tidy
 		cmake -S . -B build/tidy -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON >/dev/null
 		# Run clang-tidy only on core sources.
-		clang-tidy -p build/tidy src/octra/octra.cpp src/octra/octra_c.cpp
+		clang-tidy -p build/tidy src/datamunge/datamunge.cpp src/datamunge/datamunge_c.cpp
 	fi
 }
 
@@ -137,29 +137,29 @@ lint_markdown_yaml_actions() {
 }
 
 lint_go() {
-	if [ ! -f src/gooctra/go.mod ]; then
+	if [ ! -f src/godatamunge/go.mod ]; then
 		return 0
 	fi
 	require_cmd go
-	# Go bindings rely on CGO + the native lib; only run build-based checks if `octra`
+	# Go bindings rely on CGO + the native lib; only run build-based checks if `datamunge`
 	# is available via pkg-config (e.g. in the Nix `.#go`/`.#default` shells).
-	if command -v pkg-config >/dev/null 2>&1 && pkg-config --exists octra 2>/dev/null; then
+	if command -v pkg-config >/dev/null 2>&1 && pkg-config --exists datamunge 2>/dev/null; then
 		(
-			cd src/gooctra
+			cd src/godatamunge
 			cache="${TMPDIR:-/tmp}/go-build"
 			mkdir -p "$cache"
 			HOME="${TMPDIR:-/tmp}" GOCACHE="$cache" go test ./...
 		)
 		if command -v golangci-lint >/dev/null 2>&1; then
 			(
-				cd src/gooctra
+				cd src/godatamunge
 				cache="${TMPDIR:-/tmp}/go-build"
 				mkdir -p "$cache"
 				HOME="${TMPDIR:-/tmp}" GOCACHE="$cache" golangci-lint run
 			)
 		fi
 	else
-		echo "Skipping Go build checks: 'octra' not available via pkg-config" >&2
+		echo "Skipping Go build checks: 'datamunge' not available via pkg-config" >&2
 	fi
 }
 
@@ -169,9 +169,9 @@ lint_rust() {
 	fi
 	require_cmd cargo
 	# Rust bindings need the native library via pkg-config; only run clippy when
-	# `octra` is available (e.g. in the Nix `.#default` shell after a build).
-	if ! (command -v pkg-config >/dev/null 2>&1 && pkg-config --exists octra 2>/dev/null); then
-		echo "Skipping Rust clippy: 'octra' not available via pkg-config" >&2
+	# `datamunge` is available (e.g. in the Nix `.#default` shell after a build).
+	if ! (command -v pkg-config >/dev/null 2>&1 && pkg-config --exists datamunge 2>/dev/null); then
+		echo "Skipping Rust clippy: 'datamunge' not available via pkg-config" >&2
 		return 0
 	fi
 	if ! (cargo fetch --locked --offline >/dev/null 2>&1); then

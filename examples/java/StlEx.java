@@ -1,11 +1,11 @@
-import js.octra.joctra.DPair;
-import js.octra.joctra.DVector;
-import js.octra.joctra.IPair;
-import js.octra.joctra.IVector;
+import js.datamunge.jdatamunge.DPair;
+import js.datamunge.jdatamunge.DVector;
+import js.datamunge.jdatamunge.IPair;
+import js.datamunge.jdatamunge.IVector;
 
 public class StlEx {
   static {
-    System.loadLibrary("octra_jni");
+    System.loadLibrary("datamunge_jni");
   }
 
   public static void main(String[] args) {

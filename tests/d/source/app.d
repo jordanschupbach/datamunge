@@ -1,8 +1,8 @@
 module app;
 
-import octra;
+import datamunge;
 
-class TimesTwo : octra.Callback {
+class TimesTwo : datamunge.Callback {
   override double call(double x) {
     return x * 2.0;
   }

@@ -1,6 +1,6 @@
 [workspace]
 members = [
-  "src/rustoctra",
+  "src/rustdatamunge",
   "tests/rust",
 ]
 resolver = "2"

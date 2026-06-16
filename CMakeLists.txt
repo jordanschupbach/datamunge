@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(
-  octra
+  datamunge
   VERSION 0.0.1
   LANGUAGES CXX
 )
@@ -35,9 +35,9 @@ endif()
 
 # Gather source files
 file(GLOB_RECURSE c_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
-file(GLOB_RECURSE c_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/octra/*.c")
+file(GLOB_RECURSE c_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/datamunge/*.c")
 file(GLOB_RECURSE cxx_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
-file(GLOB_RECURSE cxx_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/octra/*.cpp")
+file(GLOB_RECURSE cxx_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/datamunge/*.cpp")
 
 # message(DEBUG "c_headers: ${c_headers}") message(DEBUG "c_sources: ${c_sources}") message(DEBUG
 # "cxx_headers: ${cxx_headers}") message(DEBUG "cxx_sources: ${cxx_sources}")
@@ -69,8 +69,8 @@ packageProject(
 set(PKG_CONFIG_VERSION "${PROJECT_VERSION}")
 set(PKG_CONFIG_LIBS "-l${PROJECT_NAME}")
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/octra.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/octra.pc" @ONLY
+  "${CMAKE_CURRENT_SOURCE_DIR}/datamunge.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/datamunge.pc" @ONLY
 )
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/octra.pc"
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/datamunge.pc"
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
 )

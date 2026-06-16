@@ -1,0 +1,53 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(
+  datamungeoctave
+  VERSION 0.0.1
+  LANGUAGES CXX
+)
+
+include(GNUInstallDirs)
+
+find_package(datamunge CONFIG REQUIRED)
+
+find_program(SWIG_EXECUTABLE swig REQUIRED)
+find_program(MKOCTFILE_EXECUTABLE mkoctfile REQUIRED)
+
+set(SWIG_INTERFACE_FILE "${CMAKE_CURRENT_LIST_DIR}/swig/datamungeoctave.i")
+set(GENERATED_WRAPPER "${CMAKE_CURRENT_BINARY_DIR}/datamunge_octave_wrap.cxx")
+set(GENERATED_OCTFILE "${CMAKE_CURRENT_BINARY_DIR}/datamunge.oct")
+
+get_target_property(DATAMUNGE_INSTALLED_INCLUDE_DIRS datamunge::datamunge INTERFACE_INCLUDE_DIRECTORIES)
+if(NOT DATAMUNGE_INSTALLED_INCLUDE_DIRS)
+  get_filename_component(DATAMUNGE_REPO_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/../../include" REALPATH)
+  set(DATAMUNGE_INSTALLED_INCLUDE_DIRS "${DATAMUNGE_REPO_INCLUDE_DIR}")
+endif()
+
+set(DATAMUNGE_SWIG_INCLUDE_FLAGS "")
+set(DATAMUNGE_CXX_INCLUDE_FLAGS "")
+foreach(incdir IN LISTS DATAMUNGE_INSTALLED_INCLUDE_DIRS)
+  list(APPEND DATAMUNGE_SWIG_INCLUDE_FLAGS "-I${incdir}")
+  list(APPEND DATAMUNGE_CXX_INCLUDE_FLAGS "-I${incdir}")
+endforeach()
+
+add_custom_command(
+  OUTPUT "${GENERATED_WRAPPER}"
+  COMMAND "${SWIG_EXECUTABLE}" -octave -c++ ${DATAMUNGE_SWIG_INCLUDE_FLAGS} -o "${GENERATED_WRAPPER}"
+          "${SWIG_INTERFACE_FILE}"
+  DEPENDS "${SWIG_INTERFACE_FILE}"
+  VERBATIM
+)
+
+add_custom_command(
+  OUTPUT "${GENERATED_OCTFILE}"
+  COMMAND
+    "${MKOCTFILE_EXECUTABLE}" -v -std=c++17 ${DATAMUNGE_CXX_INCLUDE_FLAGS}
+    -L$<TARGET_FILE_DIR:datamunge::datamunge> -Wl,-rpath,$<TARGET_FILE_DIR:datamunge::datamunge> -ldatamunge -o
+    "${GENERATED_OCTFILE}" "${GENERATED_WRAPPER}"
+  DEPENDS "${GENERATED_WRAPPER}"
+  VERBATIM
+)
+
+add_custom_target(datamunge_octave ALL DEPENDS "${GENERATED_OCTFILE}")
+
+install(FILES "${GENERATED_OCTFILE}" DESTINATION "${CMAKE_INSTALL_DATADIR}/octave/site/m")

@@ -28,9 +28,9 @@ python:
 
 
 CLING_COMPILE_FLAGS:="-std=c++17"
-CLING_LINK_FLAGS += "-I/usr/include/octra-0.0.1/"
-CLING_LINK_FLAGS += "-L/usr/lib/octra-0.0.1/liboctra.so"
-# CLING_LINK_FLAGS += "-loctra"
+CLING_LINK_FLAGS += "-I/usr/include/datamunge-0.0.1/"
+CLING_LINK_FLAGS += "-L/usr/lib/datamunge-0.0.1/libdatamunge.so"
+# CLING_LINK_FLAGS += "-ldatamunge"
 
 
 repl:

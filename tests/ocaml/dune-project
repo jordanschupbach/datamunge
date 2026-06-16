@@ -1,7 +1,7 @@
 (lang dune 3.11)
-(name octraocaml_tests)
+(name datamungeocaml_tests)
 
 (package
- (name octraocaml_tests)
- (synopsis "Tests for octra OCaml bindings")
- (depends alcotest octraocaml))
+ (name datamungeocaml_tests)
+ (synopsis "Tests for datamunge OCaml bindings")
+ (depends alcotest datamungeocaml))

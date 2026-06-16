@@ -2297,7 +2297,7 @@ namespace Swig {
 #define SWIGTYPE_p_first_type swig_types[3]
 #define SWIGTYPE_p_int swig_types[4]
 #define SWIGTYPE_p_long_long swig_types[5]
-#define SWIGTYPE_p_octra__Callback swig_types[6]
+#define SWIGTYPE_p_datamunge__Callback swig_types[6]
 #define SWIGTYPE_p_p_void swig_types[7]
 #define SWIGTYPE_p_second_type swig_types[8]
 #define SWIGTYPE_p_short swig_types[9]
@@ -6556,7 +6556,7 @@ SWIGINTERN VALUE std_vector_Sl_std_string_Sg____delete__(std::vector< std::strin
     return r;
   }
 
-#include "octra/octra.hpp"
+#include "datamunge/datamunge.hpp"
 
 /* ---------------------------------------------------
  * C++ director class helpers
@@ -6570,7 +6570,7 @@ SWIGINTERN VALUE std_vector_Sl_std_string_Sg____delete__(std::vector< std::strin
 
 #include "octruby_wrap.h"
 
-SwigDirector_Callback::SwigDirector_Callback(VALUE self): octra::Callback(), Swig::Director(self) {
+SwigDirector_Callback::SwigDirector_Callback(VALUE self): datamunge::Callback(), Swig::Director(self) {
   
 }
 
@@ -17856,7 +17856,7 @@ _wrap_hello(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
   }
-  octra::hello();
+  datamunge::hello();
   return Qnil;
 fail:
   return Qnil;
@@ -17866,14 +17866,14 @@ fail:
 static swig_class SwigClassCallback;
 
 SWIGINTERN void
-free_octra_Callback(void *self) {
-    octra::Callback *arg1 = (octra::Callback *)self;
+free_datamunge_Callback(void *self) {
+    datamunge::Callback *arg1 = (datamunge::Callback *)self;
     delete arg1;
 }
 
 SWIGINTERN VALUE
 _wrap_Callback_call(int argc, VALUE *argv, VALUE self) {
-  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  datamunge::Callback *arg1 = (datamunge::Callback *) 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -17887,11 +17887,11 @@ _wrap_Callback_call(int argc, VALUE *argv, VALUE self) {
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__Callback, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "octra::Callback *","call", 1, self )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback *","call", 1, self )); 
   }
-  arg1 = reinterpret_cast< octra::Callback * >(argp1);
+  arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
   ecode2 = SWIG_AsVal_double(argv[0], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","call", 2, argv[0] ));
@@ -17901,7 +17901,7 @@ _wrap_Callback_call(int argc, VALUE *argv, VALUE self) {
   upcall = (director && (director->swig_get_self() == self));
   try {
     if (upcall) {
-      result = (double)(arg1)->octra::Callback::call(arg2);
+      result = (double)(arg1)->datamunge::Callback::call(arg2);
     } else {
       result = (double)(arg1)->call(arg2);
     }
@@ -17923,7 +17923,7 @@ _wrap_Callback_allocate(VALUE self)
 _wrap_Callback_allocate(int argc, VALUE *argv, VALUE self)
 #endif
 {
-  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_octra__Callback);
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__Callback);
 #ifndef HAVE_RB_DEFINE_ALLOC_FUNC
   rb_obj_call_init(vresult, argc, argv);
 #endif
@@ -17935,7 +17935,7 @@ SWIGINTERN VALUE
 _wrap_new_Callback(int argc, VALUE *argv, VALUE self) {
   VALUE arg1 = (VALUE) 0 ;
   const char *classname SWIGUNUSED = "Octruby::Callback";
-  octra::Callback *result = 0 ;
+  datamunge::Callback *result = 0 ;
   
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
@@ -17943,9 +17943,9 @@ _wrap_new_Callback(int argc, VALUE *argv, VALUE self) {
   arg1 = self;
   if ( strcmp(rb_obj_classname(self), classname) != 0 ) {
     /* subclassed */
-    result = (octra::Callback *)new SwigDirector_Callback(arg1); 
+    result = (datamunge::Callback *)new SwigDirector_Callback(arg1); 
   } else {
-    result = (octra::Callback *)new octra::Callback(); 
+    result = (datamunge::Callback *)new datamunge::Callback(); 
   }
   
   DATA_PTR(self) = result;
@@ -17957,18 +17957,18 @@ fail:
 
 SWIGINTERN VALUE
 _wrap_disown_Callback(int argc, VALUE *argv, VALUE self) {
-  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  datamunge::Callback *arg1 = (datamunge::Callback *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   
   if ((argc < 1) || (argc > 1)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
   }
-  res1 = SWIG_ConvertPtr(argv[0], &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  res1 = SWIG_ConvertPtr(argv[0], &argp1,SWIGTYPE_p_datamunge__Callback, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "octra::Callback *","disown_Callback", 1, argv[0] )); 
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::Callback *","disown_Callback", 1, argv[0] )); 
   }
-  arg1 = reinterpret_cast< octra::Callback * >(argp1);
+  arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
   {
     Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
     if (director) director->swig_disown();
@@ -17983,7 +17983,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_call_with_callback(int argc, VALUE *argv, VALUE self) {
   double arg1 ;
-  octra::Callback *arg2 = (octra::Callback *) 0 ;
+  datamunge::Callback *arg2 = (datamunge::Callback *) 0 ;
   double val1 ;
   int ecode1 = 0 ;
   void *argp2 = 0 ;
@@ -17996,15 +17996,15 @@ _wrap_call_with_callback(int argc, VALUE *argv, VALUE self) {
   }
   ecode1 = SWIG_AsVal_double(argv[0], &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","octra::call_with_callback", 1, argv[0] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::call_with_callback", 1, argv[0] ));
   } 
   arg1 = static_cast< double >(val1);
-  res2 = SWIG_ConvertPtr(argv[1], &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  res2 = SWIG_ConvertPtr(argv[1], &argp2,SWIGTYPE_p_datamunge__Callback, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "octra::Callback *","octra::call_with_callback", 2, argv[1] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::Callback *","datamunge::call_with_callback", 2, argv[1] )); 
   }
-  arg2 = reinterpret_cast< octra::Callback * >(argp2);
-  result = (double)octra::call_with_callback(arg1,arg2);
+  arg2 = reinterpret_cast< datamunge::Callback * >(argp2);
+  result = (double)datamunge::call_with_callback(arg1,arg2);
   vresult = SWIG_From_double(static_cast< double >(result));
   return vresult;
 fail:
@@ -18015,7 +18015,7 @@ fail:
 SWIGINTERN VALUE
 _wrap_map_dvector_with_callback(int argc, VALUE *argv, VALUE self) {
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
-  octra::Callback *arg2 = (octra::Callback *) 0 ;
+  datamunge::Callback *arg2 = (datamunge::Callback *) 0 ;
   int res1 = SWIG_OLDOBJ ;
   void *argp2 = 0 ;
   int res2 = 0 ;
@@ -18029,19 +18029,19 @@ _wrap_map_dvector_with_callback(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     res1 = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","octra::map_dvector_with_callback", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::map_dvector_with_callback", 1, argv[0] )); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","octra::map_dvector_with_callback", 1, argv[0])); 
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::map_dvector_with_callback", 1, argv[0])); 
     }
     arg1 = ptr;
   }
-  res2 = SWIG_ConvertPtr(argv[1], &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  res2 = SWIG_ConvertPtr(argv[1], &argp2,SWIGTYPE_p_datamunge__Callback, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "octra::Callback *","octra::map_dvector_with_callback", 2, argv[1] )); 
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::Callback *","datamunge::map_dvector_with_callback", 2, argv[1] )); 
   }
-  arg2 = reinterpret_cast< octra::Callback * >(argp2);
-  result = octra::map_dvector_with_callback((std::vector< double,std::allocator< double > > const &)*arg1,arg2);
+  arg2 = reinterpret_cast< datamunge::Callback * >(argp2);
+  result = datamunge::map_dvector_with_callback((std::vector< double,std::allocator< double > > const &)*arg1,arg2);
   vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
   if (SWIG_IsNewObj(res1)) delete arg1;
   return vresult;
@@ -18070,20 +18070,20 @@ _wrap_make_dvector(int argc, VALUE *argv, VALUE self) {
   }
   ecode1 = SWIG_AsVal_double(argv[0], &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","octra::make_dvector", 1, argv[0] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::make_dvector", 1, argv[0] ));
   } 
   arg1 = static_cast< double >(val1);
   ecode2 = SWIG_AsVal_double(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","octra::make_dvector", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::make_dvector", 2, argv[1] ));
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(argv[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","octra::make_dvector", 3, argv[2] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","datamunge::make_dvector", 3, argv[2] ));
   } 
   arg3 = static_cast< double >(val3);
-  result = octra::make_dvector(arg1,arg2,arg3);
+  result = datamunge::make_dvector(arg1,arg2,arg3);
   vresult = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
   return vresult;
 fail:
@@ -18105,14 +18105,14 @@ _wrap_sum_dvector(int argc, VALUE *argv, VALUE self) {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     res1 = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","octra::sum_dvector", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","datamunge::sum_dvector", 1, argv[0] )); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","octra::sum_dvector", 1, argv[0])); 
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","datamunge::sum_dvector", 1, argv[0])); 
     }
     arg1 = ptr;
   }
-  result = (double)octra::sum_dvector((std::vector< double,std::allocator< double > > const &)*arg1);
+  result = (double)datamunge::sum_dvector((std::vector< double,std::allocator< double > > const &)*arg1);
   vresult = SWIG_From_double(static_cast< double >(result));
   if (SWIG_IsNewObj(res1)) delete arg1;
   return vresult;
@@ -18138,15 +18138,15 @@ _wrap_make_dpair(int argc, VALUE *argv, VALUE self) {
   }
   ecode1 = SWIG_AsVal_double(argv[0], &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","octra::make_dpair", 1, argv[0] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "double","datamunge::make_dpair", 1, argv[0] ));
   } 
   arg1 = static_cast< double >(val1);
   ecode2 = SWIG_AsVal_double(argv[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","octra::make_dpair", 2, argv[1] ));
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "double","datamunge::make_dpair", 2, argv[1] ));
   } 
   arg2 = static_cast< double >(val2);
-  result = octra::make_dpair(arg1,arg2);
+  result = datamunge::make_dpair(arg1,arg2);
   vresult = swig::from(static_cast< std::pair< double,double > >(result));
   return vresult;
 fail:
@@ -18168,14 +18168,14 @@ _wrap_sum_dpair(int argc, VALUE *argv, VALUE self) {
     std::pair< double,double > *ptr = (std::pair< double,double > *)0;
     res1 = swig::asptr(argv[0], &ptr);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::pair< double,double > const &","octra::sum_dpair", 1, argv[0] )); 
+      SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::pair< double,double > const &","datamunge::sum_dpair", 1, argv[0] )); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::pair< double,double > const &","octra::sum_dpair", 1, argv[0])); 
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::pair< double,double > const &","datamunge::sum_dpair", 1, argv[0])); 
     }
     arg1 = ptr;
   }
-  result = (double)octra::sum_dpair((std::pair< double,double > const &)*arg1);
+  result = (double)datamunge::sum_dpair((std::pair< double,double > const &)*arg1);
   vresult = SWIG_From_double(static_cast< double >(result));
   if (SWIG_IsNewObj(res1)) delete arg1;
   return vresult;
@@ -18197,7 +18197,7 @@ static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "differ
 static swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "octra::Callback *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_void = {"_p_p_void", "VALUE *|void **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
@@ -18231,7 +18231,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
-  &_swigt__p_octra__Callback,
+  &_swigt__p_datamunge__Callback,
   &_swigt__p_p_void,
   &_swigt__p_second_type,
   &_swigt__p_short,
@@ -18265,7 +18265,7 @@ static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_ty
 static swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_void[] = {  {&_swigt__p_p_void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
@@ -18299,7 +18299,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
-  _swigc__p_octra__Callback,
+  _swigc__p_datamunge__Callback,
   _swigc__p_p_void,
   _swigc__p_second_type,
   _swigc__p_short,
@@ -18867,12 +18867,12 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_module_function(mOctruby, "disown_Callback", VALUEFUNC(_wrap_disown_Callback), -1);
   
   SwigClassCallback.klass = rb_define_class_under(mOctruby, "Callback", rb_cObject);
-  SWIG_TypeClientData(SWIGTYPE_p_octra__Callback, (void *) &SwigClassCallback);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__Callback, (void *) &SwigClassCallback);
   rb_define_alloc_func(SwigClassCallback.klass, _wrap_Callback_allocate);
   rb_define_method(SwigClassCallback.klass, "initialize", VALUEFUNC(_wrap_new_Callback), -1);
   rb_define_method(SwigClassCallback.klass, "call", VALUEFUNC(_wrap_Callback_call), -1);
   SwigClassCallback.mark = 0;
-  SwigClassCallback.destroy = (void (*)(void *)) free_octra_Callback;
+  SwigClassCallback.destroy = (void (*)(void *)) free_datamunge_Callback;
   SwigClassCallback.trackObjects = 0;
   rb_define_module_function(mOctruby, "call_with_callback", VALUEFUNC(_wrap_call_with_callback), -1);
   rb_define_module_function(mOctruby, "map_dvector_with_callback", VALUEFUNC(_wrap_map_dvector_with_callback), -1);

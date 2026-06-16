@@ -10,29 +10,29 @@ build
 compile_commands.json
 .dub
 **/.dub
-octradotnet/bin
-octradotnet/obj
-octradotnet.tests/bin
-octradotnet.tests/obj
+datamungedotnet/bin
+datamungedotnet/obj
+datamungedotnet.tests/bin
+datamungedotnet.tests/obj
 ./buildSrc/.gradle/
 .gradle
 dist
-src/pyoctra.egg-info
+src/pydatamunge.egg-info
 result
 _build
 .merlin
 bindings_tests/rust/target
 bindings/rust/target
-rustoctra/target
-octrad/liboctrad.a
+rustdatamunge/target
+datamunged/libdatamunged.a
 **/.null-ls*
 
-src/rustoctra/target
-src/octradotnet/bin
-src/octradotnet/obj
+src/rustdatamunge/target
+src/datamungedotnet/bin
+src/datamungedotnet/obj
 
-src/octradotnet.tests/bin
-src/octradotnet.tests/obj
+src/datamungedotnet.tests/bin
+src/datamungedotnet.tests/obj
 tests/rust/target
 target
 src/octruby/ext/octruby/Makefile
@@ -44,5 +44,5 @@ src/octruby/ext/octruby/mkmf.log
 .\#*
 .DS_Store
 
-examples/ocaml/octra_ex.cmi
-examples/ocaml/octra_ex.cmx
+examples/ocaml/datamunge_ex.cmi
+examples/ocaml/datamunge_ex.cmx
