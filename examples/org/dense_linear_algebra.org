@@ -110,6 +110,13 @@ int main() {
         .y_label("y")
         .background({250, 250, 252});
 
+    try {
+        plot.show("datamunge-plot-ex");
+        std::cout << "viewer = shown\n";
+    } catch (const std::exception& ex) {
+        std::cout << "viewer = skipped (" << ex.what() << ")\n";
+    }
+
     plot.save_svg("build/org/bspline_regression.svg");
 
     std::cout << std::fixed << std::setprecision(4)
