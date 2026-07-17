@@ -1,4 +1,4 @@
-TARGET := "plot_ex"
+TARGET := "dataframe_ex"
 BENCH_TARGET := "linalg_bench"
 JOBS := "20"
 
@@ -38,7 +38,7 @@ run-go: build-go
   {{ NIX_DEVELOP }} .#go --command bash -lc 'cd {{ BINDINGS_DIR }}/godatamunge && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -ldatamunge" go run ../../examples/go/{{ TARGET }}.go'
 
 run-rust: build-rust
-  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example datamunge_ex'
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example {{ TARGET }}'
 
 run-d: build-d
   bash -lc 'set -euo pipefail; \
@@ -54,34 +54,34 @@ run-python: build-python
   {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pydatamunge-run/bin/python examples/python/{{ TARGET }}.py'
 
 run-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -lc 'php --php-ini .user.ini examples/php/datamunge_ex.php'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'php --php-ini .user.ini examples/php/{{ TARGET }}.php'
 
 run-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/datamunge_ex.pl'
+  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/{{ TARGET }}.pl'
 
 run-tcl: build-tcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh examples/tcl/datamunge_ex.tcl'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/datamungetcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh examples/tcl/{{ TARGET }}.tcl'
 
 run-lua: build-lua
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && lua examples/lua/datamunge_ex.lua'
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && lua examples/lua/{{ TARGET }}.lua'
 
 run-ruby: build-ruby
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/datamunge_ex.rb'
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/{{ TARGET }}.rb'
 
 run-r: build-r
-   {{ NIX_DEVELOP }} .#r --command bash -lc 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/datamunge_ex.r'
+   {{ NIX_DEVELOP }} .#r --command bash -lc 'R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER" Rscript examples/r/{{ TARGET }}.r'
 
 run-guile: build-guile
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/datamunge_ex.scm'
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --install build/datamungeguile --prefix build/guile/prefix >/dev/null && guile_effective="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || echo 3.0)" && export GUILE_LOAD_PATH="$(pwd)/build/guile/prefix/share/guile/site/$guile_effective${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH" && export LD_LIBRARY_PATH="$(pwd)/build/guile/prefix/lib/guile/$guile_effective/extensions:$(pwd)/build${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && guile --no-auto-compile -s examples/guile/{{ TARGET }}.scm'
 
 run-javascript: build-javascript
-   {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/datamunge_ex.js'
+   {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/{{ TARGET }}.js'
 
 run-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package datamungeocaml -linkpkg examples/ocaml/datamunge_ex.ml -o build/ocaml/datamunge_ex && ./build/ocaml/datamunge_ex'
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package datamungeocaml -linkpkg examples/ocaml/{{ TARGET }}.ml -o build/ocaml/{{ TARGET }} && ./build/ocaml/{{ TARGET }}'
 
 run-octave: build-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octave -qf --path "$(pwd)/build/datamungeoctave" examples/octave/datamunge_ex.m'
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octave -qf --path "$(pwd)/build/datamungeoctave" examples/octave/{{ TARGET }}.m'
 
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
@@ -268,7 +268,7 @@ build-tcl: prebuild-tcl
 
 build-lua: prebuild-lua
   rm -rf build/datamungelua
-  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
   {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --build build/datamungelua -j{{ JOBS }} --verbose'
 
 build-rust:

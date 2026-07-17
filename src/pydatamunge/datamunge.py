@@ -60,7 +60,6 @@ class _SwigNonDynamicMeta(type):
 
 import weakref
 
-SHARED_PTR_DISOWN = _datamunge.SHARED_PTR_DISOWN
 class SwigPyIterator(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
@@ -730,4 +729,88 @@ def sum_dpair(values):
     :return: ``values.first`` + values.second.
     """
     return _datamunge.sum_dpair(values)
+class DataFrame(object):
+    r"""SWIG-friendly facade for the C++ dataframe API exposed to bindings."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        _datamunge.DataFrame_swiginit(self, _datamunge.new_DataFrame())
+
+    def nrows(self):
+        return _datamunge.DataFrame_nrows(self)
+
+    def ncols(self):
+        return _datamunge.DataFrame_ncols(self)
+
+    def shape(self):
+        return _datamunge.DataFrame_shape(self)
+
+    def columns(self):
+        return _datamunge.DataFrame_columns(self)
+
+    def add_numeric_column(self, *args):
+        return _datamunge.DataFrame_add_numeric_column(self, *args)
+
+    def add_string_column(self, *args):
+        return _datamunge.DataFrame_add_string_column(self, *args)
+
+    def add_string_column_encoded(self, *args):
+        return _datamunge.DataFrame_add_string_column_encoded(self, *args)
+
+    def fill_null_numeric(self, column_name, value):
+        return _datamunge.DataFrame_fill_null_numeric(self, column_name, value)
+
+    def fill_null_string(self, column_name, value):
+        return _datamunge.DataFrame_fill_null_string(self, column_name, value)
+
+    def select(self, selected_columns):
+        return _datamunge.DataFrame_select(self, selected_columns)
+
+    def select_encoded(self, encoded_columns):
+        return _datamunge.DataFrame_select_encoded(self, encoded_columns)
+
+    def sort_by(self, column_name, ascending=True):
+        return _datamunge.DataFrame_sort_by(self, column_name, ascending)
+
+    def drop_duplicates(self, *args):
+        return _datamunge.DataFrame_drop_duplicates(self, *args)
+
+    def drop_duplicates_encoded(self, encoded_subset):
+        return _datamunge.DataFrame_drop_duplicates_encoded(self, encoded_subset)
+
+    def group_by_sum(self, key_columns, value_columns):
+        return _datamunge.DataFrame_group_by_sum(self, key_columns, value_columns)
+
+    def group_by_sum_encoded(self, encoded_key_columns, encoded_value_columns):
+        return _datamunge.DataFrame_group_by_sum_encoded(self, encoded_key_columns, encoded_value_columns)
+
+    def join(self, right, left_key, right_key, left_join=False):
+        return _datamunge.DataFrame_join(self, right, left_key, right_key, left_join)
+
+    def numeric_count(self, column_name):
+        return _datamunge.DataFrame_numeric_count(self, column_name)
+
+    def numeric_null_count(self, column_name):
+        return _datamunge.DataFrame_numeric_null_count(self, column_name)
+
+    def numeric_sum(self, column_name):
+        return _datamunge.DataFrame_numeric_sum(self, column_name)
+
+    def numeric_mean(self, column_name):
+        return _datamunge.DataFrame_numeric_mean(self, column_name)
+
+    def numeric_min(self, column_name):
+        return _datamunge.DataFrame_numeric_min(self, column_name)
+
+    def numeric_max(self, column_name):
+        return _datamunge.DataFrame_numeric_max(self, column_name)
+
+    def to_string(self, max_rows=10):
+        return _datamunge.DataFrame_to_string(self, max_rows)
+    __swig_destroy__ = _datamunge.delete_DataFrame
+
+# Register DataFrame in _datamunge:
+_datamunge.DataFrame_swigregister(DataFrame)
 

@@ -2294,37 +2294,39 @@ namespace Swig {
 #define SWIGTYPE_p_allocator_type swig_types[0]
 #define SWIGTYPE_p_char swig_types[1]
 #define SWIGTYPE_p_datamunge__Callback swig_types[2]
-#define SWIGTYPE_p_difference_type swig_types[3]
-#define SWIGTYPE_p_first_type swig_types[4]
-#define SWIGTYPE_p_int swig_types[5]
-#define SWIGTYPE_p_long_long swig_types[6]
-#define SWIGTYPE_p_p_void swig_types[7]
-#define SWIGTYPE_p_second_type swig_types[8]
-#define SWIGTYPE_p_short swig_types[9]
-#define SWIGTYPE_p_signed_char swig_types[10]
-#define SWIGTYPE_p_size_type swig_types[11]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[12]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[13]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[14]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[15]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[16]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[17]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[18]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[19]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[20]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[21]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[22]
-#define SWIGTYPE_p_swig__ConstIterator swig_types[23]
-#define SWIGTYPE_p_swig__GC_VALUE swig_types[24]
-#define SWIGTYPE_p_swig__Iterator swig_types[25]
-#define SWIGTYPE_p_unsigned_char swig_types[26]
-#define SWIGTYPE_p_unsigned_int swig_types[27]
-#define SWIGTYPE_p_unsigned_long_long swig_types[28]
-#define SWIGTYPE_p_unsigned_short swig_types[29]
-#define SWIGTYPE_p_value_type swig_types[30]
-#define SWIGTYPE_p_void swig_types[31]
-static swig_type_info *swig_types[33];
-static swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__DataFrame swig_types[3]
+#define SWIGTYPE_p_difference_type swig_types[4]
+#define SWIGTYPE_p_first_type swig_types[5]
+#define SWIGTYPE_p_int swig_types[6]
+#define SWIGTYPE_p_long_long swig_types[7]
+#define SWIGTYPE_p_p_void swig_types[8]
+#define SWIGTYPE_p_second_type swig_types[9]
+#define SWIGTYPE_p_short swig_types[10]
+#define SWIGTYPE_p_signed_char swig_types[11]
+#define SWIGTYPE_p_size_type swig_types[12]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[13]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[14]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[15]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[16]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[17]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[18]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[19]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[20]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[21]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[22]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[23]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[24]
+#define SWIGTYPE_p_swig__ConstIterator swig_types[25]
+#define SWIGTYPE_p_swig__GC_VALUE swig_types[26]
+#define SWIGTYPE_p_swig__Iterator swig_types[27]
+#define SWIGTYPE_p_unsigned_char swig_types[28]
+#define SWIGTYPE_p_unsigned_int swig_types[29]
+#define SWIGTYPE_p_unsigned_long_long swig_types[30]
+#define SWIGTYPE_p_unsigned_short swig_types[31]
+#define SWIGTYPE_p_value_type swig_types[32]
+#define SWIGTYPE_p_void swig_types[33]
+static swig_type_info *swig_types[35];
+static swig_module_info swig_module = {swig_types, 34, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -6557,6 +6559,26 @@ SWIGINTERN VALUE std_vector_Sl_std_string_Sg____delete__(std::vector< std::strin
   }
 
 #include "datamunge/datamunge.hpp"
+
+
+SWIGINTERN int
+SWIG_AsVal_bool (VALUE obj, bool *val)
+{
+  if (obj == Qtrue) {
+    if (val) *val = true;
+    return SWIG_OK;
+  } else if (obj == Qfalse) {
+    if (val) *val = false;
+    return SWIG_OK;
+  } else {
+    int res = 0;
+    if (SWIG_AsVal_int (obj, &res) == SWIG_OK) {    
+      if (val) *val = res ? true : false;
+      return SWIG_OK;
+    }
+  }  
+  return SWIG_TypeError;
+}
 
 /* ---------------------------------------------------
  * C++ director class helpers
@@ -18185,6 +18207,1786 @@ fail:
 }
 
 
+static swig_class SwigClassDataFrame;
+
+SWIGINTERN VALUE
+#ifdef HAVE_RB_DEFINE_ALLOC_FUNC
+_wrap_DataFrame_allocate(VALUE self)
+#else
+_wrap_DataFrame_allocate(int argc, VALUE *argv, VALUE self)
+#endif
+{
+  VALUE vresult = SWIG_NewClassInstance(self, SWIGTYPE_p_datamunge__DataFrame);
+#ifndef HAVE_RB_DEFINE_ALLOC_FUNC
+  rb_obj_call_init(vresult, argc, argv);
+#endif
+  return vresult;
+}
+
+
+SWIGINTERN VALUE
+_wrap_new_DataFrame(int argc, VALUE *argv, VALUE self) {
+  const char *classname SWIGUNUSED = "Octruby::DataFrame";
+  datamunge::DataFrame *result = 0 ;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  result = (datamunge::DataFrame *)new datamunge::DataFrame();
+  DATA_PTR(self) = result;
+  return self;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_nrows(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","nrows", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = ((datamunge::DataFrame const *)arg1)->nrows();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_ncols(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","ncols", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = ((datamunge::DataFrame const *)arg1)->ncols();
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_shape(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","shape", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = ((datamunge::DataFrame const *)arg1)->shape();
+  vresult = SWIG_NewPointerObj((new std::vector< std::size_t,std::allocator< std::size_t > >(result)), SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, SWIG_POINTER_OWN |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_columns(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","columns", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = ((datamunge::DataFrame const *)arg1)->columns();
+  vresult = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_add_numeric_column__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","add_numeric_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","add_numeric_column", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_numeric_column", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","add_numeric_column", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","add_numeric_column", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< int,std::allocator< int > > const &","add_numeric_column", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< int,std::allocator< int > > const &","add_numeric_column", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_add_numeric_column__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","add_numeric_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","add_numeric_column", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_numeric_column", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< double,std::allocator< double > > const &","add_numeric_column", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< double,std::allocator< double > > const &","add_numeric_column", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_add_numeric_column(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_add_numeric_column__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< int,std::allocator< int > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_add_numeric_column__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "DataFrame.add_numeric_column", 
+    "    void DataFrame.add_numeric_column(std::string const &column_name, std::vector< double,std::allocator< double > > const &values, std::vector< int,std::allocator< int > > const &valid_mask)\n"
+    "    void DataFrame.add_numeric_column(std::string const &column_name, std::vector< double,std::allocator< double > > const &values)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_add_string_column__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","add_string_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","add_string_column", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_string_column", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","add_string_column", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","add_string_column", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< int,std::allocator< int > > const &","add_string_column", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< int,std::allocator< int > > const &","add_string_column", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_add_string_column__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","add_string_column", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","add_string_column", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_string_column", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","add_string_column", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","add_string_column", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_add_string_column(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_add_string_column__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< int,std::allocator< int > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_add_string_column__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "DataFrame.add_string_column", 
+    "    void DataFrame.add_string_column(std::string const &column_name, std::vector< std::string,std::allocator< std::string > > const &values, std::vector< int,std::allocator< int > > const &valid_mask)\n"
+    "    void DataFrame.add_string_column(std::string const &column_name, std::vector< std::string,std::allocator< std::string > > const &values)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_add_string_column_encoded__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","add_string_column_encoded", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","add_string_column_encoded", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_string_column_encoded", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::string const &","add_string_column_encoded", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_string_column_encoded", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::vector< int,std::allocator< int > > const &","add_string_column_encoded", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< int,std::allocator< int > > const &","add_string_column_encoded", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_add_string_column_encoded__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","add_string_column_encoded", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","add_string_column_encoded", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_string_column_encoded", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::string const &","add_string_column_encoded", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","add_string_column_encoded", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_add_string_column_encoded(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[5];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 5) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_add_string_column_encoded__SWIG_1(nargs, args, self);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< int,std::allocator< int > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_add_string_column_encoded__SWIG_0(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 5, "DataFrame.add_string_column_encoded", 
+    "    void DataFrame.add_string_column_encoded(std::string const &column_name, std::string const &encoded_values, std::vector< int,std::allocator< int > > const &valid_mask)\n"
+    "    void DataFrame.add_string_column_encoded(std::string const &column_name, std::string const &encoded_values)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_fill_null_numeric(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","fill_null_numeric", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","fill_null_numeric", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","fill_null_numeric", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "double","fill_null_numeric", 3, argv[1] ));
+  } 
+  arg3 = static_cast< double >(val3);
+  (arg1)->fill_null_numeric((std::string const &)*arg2,arg3);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_fill_null_string(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame *","fill_null_string", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","fill_null_string", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","fill_null_string", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::string const &","fill_null_string", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","fill_null_string", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  (arg1)->fill_null_string((std::string const &)*arg2,(std::string const &)*arg3);
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+/*
+  Document-method: Octruby::DataFrame.select
+
+  call-seq:
+    select(selected_columns) -> DataFrame
+
+Iterate thru each element in the DataFrame and select those that match a condition.  A block must be provided.
+*/
+SWIGINTERN VALUE
+_wrap_DataFrame_select(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","select", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","select", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","select", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_select_encoded(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","select_encoded", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","select_encoded", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","select_encoded", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select_encoded((std::string const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_sort_by__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","sort_by", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","sort_by", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","sort_by", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_bool(argv[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "bool","sort_by", 3, argv[1] ));
+  } 
+  arg3 = static_cast< bool >(val3);
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2,arg3);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_sort_by__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","sort_by", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","sort_by", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","sort_by", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_sort_by(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[4];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 4) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_sort_by__SWIG_1(nargs, args, self);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_bool(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_DataFrame_sort_by__SWIG_0(nargs, args, self);
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 4, "DataFrame.sort_by", 
+    "    datamunge::DataFrame DataFrame.sort_by(std::string const &column_name, bool ascending)\n"
+    "    datamunge::DataFrame * DataFrame.sort_by(std::string const &column_name)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_drop_duplicates__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","drop_duplicates", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","drop_duplicates", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","drop_duplicates", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_drop_duplicates__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","drop_duplicates", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates();
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_drop_duplicates(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataFrame_drop_duplicates__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_drop_duplicates__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "DataFrame.drop_duplicates", 
+    "    datamunge::DataFrame DataFrame.drop_duplicates(std::vector< std::string,std::allocator< std::string > > const &subset)\n"
+    "    datamunge::DataFrame * DataFrame.drop_duplicates()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_drop_duplicates_encoded(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","drop_duplicates_encoded", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","drop_duplicates_encoded", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","drop_duplicates_encoded", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates_encoded((std::string const &)*arg2);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_group_by_sum(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","group_by_sum", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","group_by_sum", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","group_by_sum", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::vector< std::string,std::allocator< std::string > > const &","group_by_sum", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::vector< std::string,std::allocator< std::string > > const &","group_by_sum", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_group_by_sum_encoded(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 2) || (argc > 2)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 2)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","group_by_sum_encoded", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","group_by_sum_encoded", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","group_by_sum_encoded", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::string const &","group_by_sum_encoded", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","group_by_sum_encoded", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_join__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  bool val5 ;
+  int ecode5 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 4) || (argc > 4)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 4)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","join", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","join", 2, argv[0] )); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","join", 2, argv[0])); 
+  }
+  arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::string const &","join", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","join", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","join", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","join", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_bool(argv[3], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), Ruby_Format_TypeError( "", "bool","join", 5, argv[3] ));
+  } 
+  arg5 = static_cast< bool >(val5);
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_join__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","join", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  res2 = SWIG_ConvertPtr(argv[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "datamunge::DataFrame const &","join", 2, argv[0] )); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "datamunge::DataFrame const &","join", 2, argv[0])); 
+  }
+  arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(argv[1], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), Ruby_Format_TypeError( "", "std::string const &","join", 3, argv[1] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","join", 3, argv[1])); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(argv[2], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), Ruby_Format_TypeError( "", "std::string const &","join", 4, argv[2] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","join", 4, argv[2])); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  vresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_join(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[6];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 6) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_join__SWIG_1(nargs, args, self);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            {
+              int res = SWIG_AsVal_bool(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_DataFrame_join__SWIG_0(nargs, args, self);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 6, "DataFrame.join", 
+    "    datamunge::DataFrame DataFrame.join(datamunge::DataFrame const &right, std::string const &left_key, std::string const &right_key, bool left_join)\n"
+    "    datamunge::DataFrame * DataFrame.join(datamunge::DataFrame const &right, std::string const &left_key, std::string const &right_key)\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_numeric_count(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","numeric_count", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","numeric_count", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","numeric_count", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DataFrame const *)arg1)->numeric_count((std::string const &)*arg2);
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_numeric_null_count(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  std::size_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","numeric_null_count", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","numeric_null_count", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","numeric_null_count", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DataFrame const *)arg1)->numeric_null_count((std::string const &)*arg2);
+  vresult = SWIG_From_size_t(static_cast< size_t >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_numeric_sum(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","numeric_sum", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","numeric_sum", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","numeric_sum", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_sum((std::string const &)*arg2);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_numeric_mean(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","numeric_mean", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","numeric_mean", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","numeric_mean", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_mean((std::string const &)*arg2);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_numeric_min(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","numeric_min", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","numeric_min", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","numeric_min", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_min((std::string const &)*arg2);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_numeric_max(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","numeric_max", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(argv[0], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), Ruby_Format_TypeError( "", "std::string const &","numeric_max", 2, argv[0] )); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::string const &","numeric_max", 2, argv[0])); 
+    }
+    arg2 = ptr;
+  }
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_max((std::string const &)*arg2);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return vresult;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_to_string__SWIG_0(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","to_string", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","to_string", 2, argv[0] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::DataFrame const *)arg1)->to_string(SWIG_STD_MOVE(arg2));
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_DataFrame_to_string__SWIG_1(int argc, VALUE *argv, VALUE self) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 0) || (argc > 0)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "datamunge::DataFrame const *","to_string", 1, self )); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = ((datamunge::DataFrame const *)arg1)->to_string();
+  vresult = SWIG_From_std_string(static_cast< std::string >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE _wrap_DataFrame_to_string(int nargs, VALUE *args, VALUE self) {
+  int argc;
+  VALUE argv[3];
+  int ii;
+  
+  argc = nargs + 1;
+  argv[0] = self;
+  if (argc > 3) SWIG_fail;
+  for (ii = 1; (ii < argc); ++ii) {
+    argv[ii] = args[ii-1];
+  }
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataFrame_to_string__SWIG_1(nargs, args, self);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_DataFrame_to_string__SWIG_0(nargs, args, self);
+      }
+    }
+  }
+  
+fail:
+  Ruby_Format_OverloadedError( argc, 3, "DataFrame.to_string", 
+    "    std::string DataFrame.to_string(std::size_t max_rows)\n"
+    "    std::string DataFrame.to_string()\n");
+  
+  return Qnil;
+}
+
+
+SWIGINTERN void
+free_datamunge_DataFrame(void *self) {
+    datamunge::DataFrame *arg1 = (datamunge::DataFrame *)self;
+    delete arg1;
+}
+
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
@@ -18194,6 +19996,7 @@ static void *_p_swig__IteratorTo_p_swig__ConstIterator(void *x, int *SWIGUNUSEDP
 static swig_type_info _swigt__p_allocator_type = {"_p_allocator_type", "allocator_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
@@ -18213,6 +20016,7 @@ static swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_std_
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double,std::allocator< double > > *|std::vector< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int,std::allocator< int > > *|std::vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t,std::allocator< size_t > > *|std::vector< size_t > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t = {"_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t", "std::vector< std::size_t,std::allocator< std::size_t > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string,std::allocator< std::string > > *|std::vector< std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_swig__ConstIterator = {"_p_swig__ConstIterator", "swig::ConstIterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_swig__GC_VALUE = {"_p_swig__GC_VALUE", "swig::GC_VALUE *", 0, 0, (void*)0, 0};
@@ -18228,6 +20032,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_allocator_type,
   &_swigt__p_char,
   &_swigt__p_datamunge__Callback,
+  &_swigt__p_datamunge__DataFrame,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
@@ -18247,6 +20052,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_size_t_t,
+  &_swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_swig__ConstIterator,
   &_swigt__p_swig__GC_VALUE,
@@ -18262,6 +20068,7 @@ static swig_type_info *swig_type_initial[] = {
 static swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -18281,6 +20088,7 @@ static swig_cast_info _swigc__p_std__pairT_std__string_std__string_t[] = {  {&_s
 static swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_swig__ConstIterator[] = {  {&_swigt__p_swig__ConstIterator, 0, 0, 0},  {&_swigt__p_swig__Iterator, _p_swig__IteratorTo_p_swig__ConstIterator, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_swig__GC_VALUE[] = {  {&_swigt__p_swig__GC_VALUE, 0, 0, 0},{0, 0, 0, 0}};
@@ -18296,6 +20104,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_allocator_type,
   _swigc__p_char,
   _swigc__p_datamunge__Callback,
+  _swigc__p_datamunge__DataFrame,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
@@ -18315,6 +20124,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_size_t_t,
+  _swigc__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_swig__ConstIterator,
   _swigc__p_swig__GC_VALUE,
@@ -18880,5 +20690,37 @@ SWIGEXPORT void Init_octruby(void) {
   rb_define_module_function(mOctruby, "sum_dvector", VALUEFUNC(_wrap_sum_dvector), -1);
   rb_define_module_function(mOctruby, "make_dpair", VALUEFUNC(_wrap_make_dpair), -1);
   rb_define_module_function(mOctruby, "sum_dpair", VALUEFUNC(_wrap_sum_dpair), -1);
+  
+  SwigClassDataFrame.klass = rb_define_class_under(mOctruby, "DataFrame", rb_cObject);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__DataFrame, (void *) &SwigClassDataFrame);
+  rb_define_alloc_func(SwigClassDataFrame.klass, _wrap_DataFrame_allocate);
+  rb_define_method(SwigClassDataFrame.klass, "initialize", VALUEFUNC(_wrap_new_DataFrame), -1);
+  rb_define_method(SwigClassDataFrame.klass, "nrows", VALUEFUNC(_wrap_DataFrame_nrows), -1);
+  rb_define_method(SwigClassDataFrame.klass, "ncols", VALUEFUNC(_wrap_DataFrame_ncols), -1);
+  rb_define_method(SwigClassDataFrame.klass, "shape", VALUEFUNC(_wrap_DataFrame_shape), -1);
+  rb_define_method(SwigClassDataFrame.klass, "columns", VALUEFUNC(_wrap_DataFrame_columns), -1);
+  rb_define_method(SwigClassDataFrame.klass, "add_numeric_column", VALUEFUNC(_wrap_DataFrame_add_numeric_column), -1);
+  rb_define_method(SwigClassDataFrame.klass, "add_string_column", VALUEFUNC(_wrap_DataFrame_add_string_column), -1);
+  rb_define_method(SwigClassDataFrame.klass, "add_string_column_encoded", VALUEFUNC(_wrap_DataFrame_add_string_column_encoded), -1);
+  rb_define_method(SwigClassDataFrame.klass, "fill_null_numeric", VALUEFUNC(_wrap_DataFrame_fill_null_numeric), -1);
+  rb_define_method(SwigClassDataFrame.klass, "fill_null_string", VALUEFUNC(_wrap_DataFrame_fill_null_string), -1);
+  rb_define_method(SwigClassDataFrame.klass, "select", VALUEFUNC(_wrap_DataFrame_select), -1);
+  rb_define_method(SwigClassDataFrame.klass, "select_encoded", VALUEFUNC(_wrap_DataFrame_select_encoded), -1);
+  rb_define_method(SwigClassDataFrame.klass, "sort_by", VALUEFUNC(_wrap_DataFrame_sort_by), -1);
+  rb_define_method(SwigClassDataFrame.klass, "drop_duplicates", VALUEFUNC(_wrap_DataFrame_drop_duplicates), -1);
+  rb_define_method(SwigClassDataFrame.klass, "drop_duplicates_encoded", VALUEFUNC(_wrap_DataFrame_drop_duplicates_encoded), -1);
+  rb_define_method(SwigClassDataFrame.klass, "group_by_sum", VALUEFUNC(_wrap_DataFrame_group_by_sum), -1);
+  rb_define_method(SwigClassDataFrame.klass, "group_by_sum_encoded", VALUEFUNC(_wrap_DataFrame_group_by_sum_encoded), -1);
+  rb_define_method(SwigClassDataFrame.klass, "join", VALUEFUNC(_wrap_DataFrame_join), -1);
+  rb_define_method(SwigClassDataFrame.klass, "numeric_count", VALUEFUNC(_wrap_DataFrame_numeric_count), -1);
+  rb_define_method(SwigClassDataFrame.klass, "numeric_null_count", VALUEFUNC(_wrap_DataFrame_numeric_null_count), -1);
+  rb_define_method(SwigClassDataFrame.klass, "numeric_sum", VALUEFUNC(_wrap_DataFrame_numeric_sum), -1);
+  rb_define_method(SwigClassDataFrame.klass, "numeric_mean", VALUEFUNC(_wrap_DataFrame_numeric_mean), -1);
+  rb_define_method(SwigClassDataFrame.klass, "numeric_min", VALUEFUNC(_wrap_DataFrame_numeric_min), -1);
+  rb_define_method(SwigClassDataFrame.klass, "numeric_max", VALUEFUNC(_wrap_DataFrame_numeric_max), -1);
+  rb_define_method(SwigClassDataFrame.klass, "to_string", VALUEFUNC(_wrap_DataFrame_to_string), -1);
+  SwigClassDataFrame.mark = 0;
+  SwigClassDataFrame.destroy = (void (*)(void *)) free_datamunge_DataFrame;
+  SwigClassDataFrame.trackObjects = 0;
 }
 

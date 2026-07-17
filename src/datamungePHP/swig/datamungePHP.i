@@ -9,6 +9,9 @@
 %include <std_string.i>
 %include <std_pair.i>
 
+%ignore datamunge::dstruct::NullableColumn;
+%ignore datamunge::dstruct::DataFrame;
+
 %template(IPair) std::pair<int, int>;
 %template(DPair) std::pair<double, double>;
 %template(DVector) std::vector<double>;

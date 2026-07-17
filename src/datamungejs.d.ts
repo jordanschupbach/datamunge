@@ -170,4 +170,71 @@ export function make_dpair(a: number, b: number): any;
 
 export function sum_dpair(values: any): number;
 
+export  class DataFrame {
+
+  constructor();
+
+  nrows(): any;
+
+  ncols(): any;
+
+  shape(): any;
+
+  columns(): any;
+
+  add_numeric_column(column_name: string, values: any, valid_mask: any): void;
+
+  add_numeric_column(column_name: string, values: any): void;
+
+  add_string_column(column_name: string, values: any, valid_mask: any): void;
+
+  add_string_column(column_name: string, values: any): void;
+
+  add_string_column_encoded(column_name: string, encoded_values: string, valid_mask: any): void;
+
+  add_string_column_encoded(column_name: string, encoded_values: string): void;
+
+  fill_null_numeric(column_name: string, value: number): void;
+
+  fill_null_string(column_name: string, value: string): void;
+
+  select(selected_columns: any): DataFrame;
+
+  select_encoded(encoded_columns: string): DataFrame;
+
+  sort_by(column_name: string, ascending: boolean): DataFrame;
+
+  sort_by(column_name: string): DataFrame;
+
+  drop_duplicates(subset: any): DataFrame;
+
+  drop_duplicates(): DataFrame;
+
+  drop_duplicates_encoded(encoded_subset: string): DataFrame;
+
+  group_by_sum(key_columns: any, value_columns: any): DataFrame;
+
+  group_by_sum_encoded(encoded_key_columns: string, encoded_value_columns: string): DataFrame;
+
+  join(right: DataFrame, left_key: string, right_key: string, left_join: boolean): DataFrame;
+
+  join(right: DataFrame, left_key: string, right_key: string): DataFrame;
+
+  numeric_count(column_name: string): any;
+
+  numeric_null_count(column_name: string): any;
+
+  numeric_sum(column_name: string): number;
+
+  numeric_mean(column_name: string): number;
+
+  numeric_min(column_name: string): number;
+
+  numeric_max(column_name: string): number;
+
+  to_string(max_rows: any): string;
+
+  to_string(): string;
+}
+
 

@@ -931,30 +931,32 @@ public:
 
 #define SWIGTYPE_p_char swig_types[0]
 #define SWIGTYPE_p_datamunge__Callback swig_types[1]
-#define SWIGTYPE_p_difference_type swig_types[2]
-#define SWIGTYPE_p_first_type swig_types[3]
-#define SWIGTYPE_p_int swig_types[4]
-#define SWIGTYPE_p_long_long swig_types[5]
-#define SWIGTYPE_p_second_type swig_types[6]
-#define SWIGTYPE_p_short swig_types[7]
-#define SWIGTYPE_p_signed_char swig_types[8]
-#define SWIGTYPE_p_size_type swig_types[9]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[10]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[11]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[12]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[13]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[14]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[15]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[16]
-#define SWIGTYPE_p_unsigned_char swig_types[17]
-#define SWIGTYPE_p_unsigned_int swig_types[18]
-#define SWIGTYPE_p_unsigned_long_long swig_types[19]
-#define SWIGTYPE_p_unsigned_short swig_types[20]
-#define SWIGTYPE_p_value_type swig_types[21]
+#define SWIGTYPE_p_datamunge__DataFrame swig_types[2]
+#define SWIGTYPE_p_difference_type swig_types[3]
+#define SWIGTYPE_p_first_type swig_types[4]
+#define SWIGTYPE_p_int swig_types[5]
+#define SWIGTYPE_p_long_long swig_types[6]
+#define SWIGTYPE_p_second_type swig_types[7]
+#define SWIGTYPE_p_short swig_types[8]
+#define SWIGTYPE_p_signed_char swig_types[9]
+#define SWIGTYPE_p_size_type swig_types[10]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[11]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[12]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[13]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[14]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[15]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[16]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[17]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[18]
+#define SWIGTYPE_p_unsigned_char swig_types[19]
+#define SWIGTYPE_p_unsigned_int swig_types[20]
+#define SWIGTYPE_p_unsigned_long_long swig_types[21]
+#define SWIGTYPE_p_unsigned_short swig_types[22]
+#define SWIGTYPE_p_value_type swig_types[23]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[23];
-SWIGINTERN swig_module_info swig_module = {swig_types, 22, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[25];
+SWIGINTERN swig_module_info swig_module = {swig_types, 24, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -1296,6 +1298,10 @@ Napi::Value _wrap_make_dpair(const Napi::CallbackInfo &info);
 // js_global_declaration
 Napi::Value _wrap_sum_dpair(const Napi::CallbackInfo &info);
 
+SWIGINTERN
+int SWIG_AsVal_bool (Napi::Value obj, bool *val);
+
+
 #define SWIG_NAPI_INIT datamungejs_initialize
 
 
@@ -1600,6 +1606,105 @@ public:
     Napi::Env,
     std::map<std::string, _exports_Callback_templ::PropertyDescriptor> &,
     std::map<std::string, _exports_Callback_templ::PropertyDescriptor> &
+    );
+  static Napi::Function GetClass(Napi::Env);
+};
+// jsnapi_class_prologue_template
+template <typename SWIG_OBJ_WRAP>
+class _exports_DataFrame_templ : public SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP> {
+public:
+  _exports_DataFrame_templ(const Napi::CallbackInfo &);
+_exports_DataFrame_templ(bool, const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_new_DataFrame(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_nrows(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_ncols(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_shape(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_columns(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_add_numeric_column__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_add_numeric_column__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame__wrap_DataFrame_add_numeric_column(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_add_string_column__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_add_string_column__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame__wrap_DataFrame_add_string_column(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_add_string_column_encoded__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_add_string_column_encoded__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame__wrap_DataFrame_add_string_column_encoded(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_fill_null_numeric(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_fill_null_string(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_select(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_select_encoded(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_sort_by__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_sort_by__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame__wrap_DataFrame_sort_by(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_drop_duplicates__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_drop_duplicates__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame__wrap_DataFrame_drop_duplicates(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_drop_duplicates_encoded(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_group_by_sum(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_group_by_sum_encoded(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_join__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_join__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame__wrap_DataFrame_join(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_numeric_count(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_numeric_null_count(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_numeric_sum(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_numeric_mean(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_numeric_min(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_numeric_max(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_to_string__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame_to_string__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_DataFrame__wrap_DataFrame_to_string(const Napi::CallbackInfo &);
+virtual ~_exports_DataFrame_templ();
+// jsnapi_class_epilogue_template
+};
+// jsnapi_class_instance
+class _exports_DataFrame_inst : public _exports_DataFrame_templ<_exports_DataFrame_inst> {
+public:
+  using _exports_DataFrame_templ::_exports_DataFrame_templ;
+  virtual ~_exports_DataFrame_inst() = default;
+  static void GetMembers(
+    Napi::Env,
+    std::map<std::string, _exports_DataFrame_templ::PropertyDescriptor> &,
+    std::map<std::string, _exports_DataFrame_templ::PropertyDescriptor> &
     );
   static Napi::Function GetClass(Napi::Env);
 };
@@ -5903,6 +6008,2782 @@ _exports_Callback_templ<SWIG_OBJ_WRAP>::_exports_Callback_templ(bool, const Napi
 }
 
 
+template <typename SWIG_OBJ_WRAP>
+// js_ctor
+// This is the main constructor
+_exports_DataFrame_templ<SWIG_OBJ_WRAP>::_exports_DataFrame_templ(const Napi::CallbackInfo &info)
+:SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP>(true, info) {
+  Napi::Env env = info.Env();
+  
+  this->info = SWIGTYPE_p_datamunge__DataFrame;
+  if (info.Length() == 1 && info[0].IsExternal()) {
+    // This constructor has been called internally from C++/SWIG
+    // to wrap an already existing C++ object in JS
+    this->self = info[0].As<Napi::External<void>>().Data();
+    this->owned = false;
+    return;
+  }
+  this->owned = true;
+  
+  datamunge::DataFrame *result;
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_DataFrame.");
+    }
+    result = (datamunge::DataFrame *)new datamunge::DataFrame();
+    
+    
+    this->self = result;
+    
+    return;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+fail:
+  
+  return;
+#endif
+}
+
+// This is the bypass constructor to be used from child classes
+template <typename SWIG_OBJ_WRAP>
+_exports_DataFrame_templ<SWIG_OBJ_WRAP>::_exports_DataFrame_templ(bool, const Napi::CallbackInfo &info)
+:SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP>(true, info) {
+  
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_nrows(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_nrows.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_nrows" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->nrows();
+    
+    
+    
+    jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_ncols(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_ncols.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_ncols" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->ncols();
+    
+    
+    
+    jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_shape(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t > > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_shape.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_shape" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->shape();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< std::size_t >(result)), SWIGTYPE_p_std__vectorT_std__size_t_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_columns(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_columns.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_columns" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->columns();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< std::string >(result)), SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_add_numeric_column__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_add_numeric_column" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_add_numeric_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_numeric_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_std__vectorT_double_t,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_add_numeric_column" "', argument " "3"" of type '" "std::vector< double > const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_numeric_column" "', argument " "3"" of type '" "std::vector< double > const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< double > * >(argp3);res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_std__vectorT_int_t,  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_add_numeric_column" "', argument " "4"" of type '" "std::vector< int > const &""'"); 
+    }
+    if (!argp4) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_numeric_column" "', argument " "4"" of type '" "std::vector< int > const &""'"); 
+    }
+    arg4 = reinterpret_cast< std::vector< int > * >(argp4);
+    
+    
+    
+    
+    (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< int > const &)*arg4);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_add_numeric_column__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_add_numeric_column" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_add_numeric_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_numeric_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_std__vectorT_double_t,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_add_numeric_column" "', argument " "3"" of type '" "std::vector< double > const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_numeric_column" "', argument " "3"" of type '" "std::vector< double > const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< double > * >(argp3);
+    
+    
+    
+    
+    (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double > const &)*arg3);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame__wrap_DataFrame_add_numeric_column(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 3 && static_cast<int>(info.Length()) <= 3) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_add_numeric_column__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_add_numeric_column__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 2 && static_cast<int>(info.Length()) <= 2) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_add_numeric_column__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_add_numeric_column__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function add_numeric_column.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_add_string_column__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_add_string_column" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_add_string_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_add_string_column" "', argument " "3"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column" "', argument " "3"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< std::string > * >(argp3);res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_std__vectorT_int_t,  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_add_string_column" "', argument " "4"" of type '" "std::vector< int > const &""'"); 
+    }
+    if (!argp4) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column" "', argument " "4"" of type '" "std::vector< int > const &""'"); 
+    }
+    arg4 = reinterpret_cast< std::vector< int > * >(argp4);
+    
+    
+    
+    
+    (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string > const &)*arg3,(std::vector< int > const &)*arg4);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_add_string_column__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_add_string_column" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_add_string_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_add_string_column" "', argument " "3"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column" "', argument " "3"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< std::string > * >(argp3);
+    
+    
+    
+    
+    (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string > const &)*arg3);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame__wrap_DataFrame_add_string_column(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 3 && static_cast<int>(info.Length()) <= 3) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_add_string_column__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_add_string_column__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 2 && static_cast<int>(info.Length()) <= 2) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_add_string_column__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_add_string_column__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function add_string_column.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_add_string_column_encoded__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_add_string_column_encoded" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_add_string_column_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    {
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_add_string_column_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    res4 = SWIG_ConvertPtr(info[2], &argp4, SWIGTYPE_p_std__vectorT_int_t,  0 );
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_add_string_column_encoded" "', argument " "4"" of type '" "std::vector< int > const &""'"); 
+    }
+    if (!argp4) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column_encoded" "', argument " "4"" of type '" "std::vector< int > const &""'"); 
+    }
+    arg4 = reinterpret_cast< std::vector< int > * >(argp4);
+    
+    
+    
+    
+    (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< int > const &)*arg4);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_add_string_column_encoded__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_add_string_column_encoded" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_add_string_column_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    {
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_add_string_column_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_add_string_column_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame__wrap_DataFrame_add_string_column_encoded(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 3 && static_cast<int>(info.Length()) <= 3) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_add_string_column_encoded__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_add_string_column_encoded__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 2 && static_cast<int>(info.Length()) <= 2) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_add_string_column_encoded__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_add_string_column_encoded__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function add_string_column_encoded.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_fill_null_numeric(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_fill_null_numeric.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_fill_null_numeric" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_fill_null_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_fill_null_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    ecode3 = SWIG_AsVal_double(info[1], &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DataFrame_fill_null_numeric" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    
+    
+    
+    
+    (arg1)->fill_null_numeric((std::string const &)*arg2,arg3);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_fill_null_string(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_fill_null_string.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_fill_null_string" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_fill_null_string" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_fill_null_string" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    {
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_fill_null_string" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_fill_null_string" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    (arg1)->fill_null_string((std::string const &)*arg2,(std::string const &)*arg3);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_select(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_select.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_select" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_select" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_select" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select((std::vector< std::string > const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_select_encoded(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_select_encoded.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_select_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_select_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_select_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select_encoded((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_sort_by__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_sort_by" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_sort_by" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_sort_by" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    ecode3 = SWIG_AsVal_bool(info[1], &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DataFrame_sort_by" "', argument " "3"" of type '" "bool""'");
+    } 
+    arg3 = static_cast< bool >(val3);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2,arg3);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_sort_by__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_sort_by" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_sort_by" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_sort_by" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame__wrap_DataFrame_sort_by(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 2 && static_cast<int>(info.Length()) <= 2) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_sort_by__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_sort_by__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 1 && static_cast<int>(info.Length()) <= 1) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_sort_by__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_sort_by__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function sort_by.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_drop_duplicates__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_drop_duplicates" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_drop_duplicates" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_drop_duplicates" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates((std::vector< std::string > const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_drop_duplicates__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_drop_duplicates" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame__wrap_DataFrame_drop_duplicates(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 1 && static_cast<int>(info.Length()) <= 1) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_drop_duplicates__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_drop_duplicates__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 0 && static_cast<int>(info.Length()) <= 0) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_drop_duplicates__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_drop_duplicates__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function drop_duplicates.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_drop_duplicates_encoded(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_drop_duplicates_encoded.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_drop_duplicates_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_drop_duplicates_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_drop_duplicates_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates_encoded((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_group_by_sum(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_group_by_sum.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_group_by_sum" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_group_by_sum" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_group_by_sum" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);res3 = SWIG_ConvertPtr(info[1], &argp3, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_group_by_sum" "', argument " "3"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_group_by_sum" "', argument " "3"" of type '" "std::vector< std::string > const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< std::string > * >(argp3);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum((std::vector< std::string > const &)*arg2,(std::vector< std::string > const &)*arg3);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_group_by_sum_encoded(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_group_by_sum_encoded.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_group_by_sum_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_group_by_sum_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_group_by_sum_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    {
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_group_by_sum_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_group_by_sum_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_join__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  bool val5 ;
+  int ecode5 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_join" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);{
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    {
+      {
+        std::string *ptr = (std::string *)0;
+        res4 = SWIG_AsPtr_std_string(info[2], &ptr);
+        if (!SWIG_IsOK(res4)) {
+          SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+        }
+        arg4 = ptr;
+      }
+    }
+    ecode5 = SWIG_AsVal_bool(info[3], &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "bool""'");
+    } 
+    arg5 = static_cast< bool >(val5);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_join__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_join" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);{
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    {
+      {
+        std::string *ptr = (std::string *)0;
+        res4 = SWIG_AsPtr_std_string(info[2], &ptr);
+        if (!SWIG_IsOK(res4)) {
+          SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+        }
+        arg4 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame__wrap_DataFrame_join(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 4 && static_cast<int>(info.Length()) <= 4) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_join__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_join__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 3 && static_cast<int>(info.Length()) <= 3) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_join__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_join__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function join.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_numeric_count(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  std::size_t result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_numeric_count.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_numeric_count" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_numeric_count" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_numeric_count" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->numeric_count((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_numeric_null_count(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  std::size_t result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_numeric_null_count.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_numeric_null_count" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_numeric_null_count" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_numeric_null_count" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->numeric_null_count((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_numeric_sum(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_numeric_sum.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_numeric_sum" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_numeric_sum" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_numeric_sum" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (double)((datamunge::DataFrame const *)arg1)->numeric_sum((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_numeric_mean(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_numeric_mean.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_numeric_mean" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_numeric_mean" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_numeric_mean" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (double)((datamunge::DataFrame const *)arg1)->numeric_mean((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_numeric_min(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_numeric_min.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_numeric_min" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_numeric_min" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_numeric_min" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (double)((datamunge::DataFrame const *)arg1)->numeric_min((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_numeric_max(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_DataFrame_numeric_max.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_numeric_max" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_numeric_max" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_numeric_max" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (double)((datamunge::DataFrame const *)arg1)->numeric_max((std::string const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_to_string__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  std::string result;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_to_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);ecode2 = SWIG_AsVal_size_t(info[0], &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataFrame_to_string" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->to_string(SWIG_STD_MOVE(arg2));
+    
+    
+    
+    jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame_to_string__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_to_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::DataFrame const *)arg1)->to_string();
+    
+    
+    
+    jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_DataFrame_templ<SWIG_OBJ_WRAP>::_wrap_DataFrame__wrap_DataFrame_to_string(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 1 && static_cast<int>(info.Length()) <= 1) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_to_string__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_to_string__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 0 && static_cast<int>(info.Length()) <= 0) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_DataFrame_to_string__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_DataFrame_to_string__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function to_string.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_dtoroverride
+template <typename SWIG_OBJ_WRAP>
+_exports_DataFrame_templ<SWIG_OBJ_WRAP>::~_exports_DataFrame_templ() {
+  this->SWIG_Finalize();
+  auto arg1 = reinterpret_cast<datamunge::DataFrame *>(this->self);
+  if (this->owned && arg1) {
+    delete arg1;
+    this->self = SWIG_NULLPTR;
+  }
+}
+
+
 /* -----------------------------------------------------------------------------
  * swigrun_body.swg
  *
@@ -6912,6 +9793,23 @@ Napi::Value SWIG_From_bool(Napi::Env env, bool val)
 }
 
 
+SWIGINTERN
+int SWIG_AsVal_bool (Napi::Value obj, bool *val)
+{
+  if(!obj.IsBoolean()) {
+    return SWIG_TypeError;
+  }
+
+  Napi::Boolean b;
+  NAPI_CHECK_RESULT(obj.ToBoolean(), b);
+  if (val) *val = b.Value();
+  return SWIG_OK;
+  goto fail;
+fail:
+  return SWIG_ERROR;
+}
+
+
 /* Class: IVector (_exports_IVector) */
 // jsnapi_getclass
 Napi::Function _exports_IVector_inst::GetClass(Napi::Env env) {
@@ -7156,6 +10054,235 @@ void _exports_DVector_inst::GetMembers(
     "set",
       _exports_DVector_templ::InstanceMethod("set",
         &_exports_DVector_templ::_wrap_DVector_set,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  
+  /* add static class functions and variables */
+  
+  
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+  return;
+#endif
+}
+
+/* Class: DataFrame (_exports_DataFrame) */
+// jsnapi_getclass
+Napi::Function _exports_DataFrame_inst::GetClass(Napi::Env env) {
+  std::map<std::string, _exports_DataFrame_templ::PropertyDescriptor> members, staticMembers;
+  GetMembers(env, members, staticMembers);
+  
+  std::vector<_exports_DataFrame_inst::PropertyDescriptor> symbolTable;
+  for (auto it = members.begin(); it != members.end(); it++)
+  symbolTable.push_back(it->second);
+  for (auto it = staticMembers.begin(); it != staticMembers.end(); it++)
+  symbolTable.push_back(it->second);
+  
+  return Napi::ObjectWrap<_exports_DataFrame_inst>::DefineClass(env, "DataFrame", symbolTable);
+}
+
+void _exports_DataFrame_inst::GetMembers(
+  Napi::Env env,
+  std::map<std::string, _exports_DataFrame_templ::PropertyDescriptor> &members,
+  std::map<std::string, _exports_DataFrame_templ::PropertyDescriptor> &staticMembers
+  ) {
+  std::map<std::string, SWIG_NAPI_ObjectWrap_templ<SWIG_NAPI_ObjectWrap_inst>::PropertyDescriptor> baseMembers, baseStaticMembers;
+  SWIG_NAPI_ObjectWrap_inst::GetMembers(env, baseMembers, baseStaticMembers);
+  members.insert(baseMembers.begin(), baseMembers.end());
+  staticMembers.insert(staticMembers.begin(), staticMembers.end());
+  
+  /* register wrapper functions */
+  // jsnapi_register_member_function
+  members.erase("nrows");
+  members.insert({
+    "nrows",
+      _exports_DataFrame_templ::InstanceMethod("nrows",
+        &_exports_DataFrame_templ::_wrap_DataFrame_nrows,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("ncols");
+  members.insert({
+    "ncols",
+      _exports_DataFrame_templ::InstanceMethod("ncols",
+        &_exports_DataFrame_templ::_wrap_DataFrame_ncols,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("shape");
+  members.insert({
+    "shape",
+      _exports_DataFrame_templ::InstanceMethod("shape",
+        &_exports_DataFrame_templ::_wrap_DataFrame_shape,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("columns");
+  members.insert({
+    "columns",
+      _exports_DataFrame_templ::InstanceMethod("columns",
+        &_exports_DataFrame_templ::_wrap_DataFrame_columns,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("add_numeric_column");
+  members.insert({
+    "add_numeric_column",
+      _exports_DataFrame_templ::InstanceMethod("add_numeric_column",
+        &_exports_DataFrame_templ::_wrap_DataFrame__wrap_DataFrame_add_numeric_column,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("add_string_column");
+  members.insert({
+    "add_string_column",
+      _exports_DataFrame_templ::InstanceMethod("add_string_column",
+        &_exports_DataFrame_templ::_wrap_DataFrame__wrap_DataFrame_add_string_column,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("add_string_column_encoded");
+  members.insert({
+    "add_string_column_encoded",
+      _exports_DataFrame_templ::InstanceMethod("add_string_column_encoded",
+        &_exports_DataFrame_templ::_wrap_DataFrame__wrap_DataFrame_add_string_column_encoded,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("fill_null_numeric");
+  members.insert({
+    "fill_null_numeric",
+      _exports_DataFrame_templ::InstanceMethod("fill_null_numeric",
+        &_exports_DataFrame_templ::_wrap_DataFrame_fill_null_numeric,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("fill_null_string");
+  members.insert({
+    "fill_null_string",
+      _exports_DataFrame_templ::InstanceMethod("fill_null_string",
+        &_exports_DataFrame_templ::_wrap_DataFrame_fill_null_string,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("select");
+  members.insert({
+    "select",
+      _exports_DataFrame_templ::InstanceMethod("select",
+        &_exports_DataFrame_templ::_wrap_DataFrame_select,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("select_encoded");
+  members.insert({
+    "select_encoded",
+      _exports_DataFrame_templ::InstanceMethod("select_encoded",
+        &_exports_DataFrame_templ::_wrap_DataFrame_select_encoded,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("sort_by");
+  members.insert({
+    "sort_by",
+      _exports_DataFrame_templ::InstanceMethod("sort_by",
+        &_exports_DataFrame_templ::_wrap_DataFrame__wrap_DataFrame_sort_by,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("drop_duplicates");
+  members.insert({
+    "drop_duplicates",
+      _exports_DataFrame_templ::InstanceMethod("drop_duplicates",
+        &_exports_DataFrame_templ::_wrap_DataFrame__wrap_DataFrame_drop_duplicates,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("drop_duplicates_encoded");
+  members.insert({
+    "drop_duplicates_encoded",
+      _exports_DataFrame_templ::InstanceMethod("drop_duplicates_encoded",
+        &_exports_DataFrame_templ::_wrap_DataFrame_drop_duplicates_encoded,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("group_by_sum");
+  members.insert({
+    "group_by_sum",
+      _exports_DataFrame_templ::InstanceMethod("group_by_sum",
+        &_exports_DataFrame_templ::_wrap_DataFrame_group_by_sum,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("group_by_sum_encoded");
+  members.insert({
+    "group_by_sum_encoded",
+      _exports_DataFrame_templ::InstanceMethod("group_by_sum_encoded",
+        &_exports_DataFrame_templ::_wrap_DataFrame_group_by_sum_encoded,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("join");
+  members.insert({
+    "join",
+      _exports_DataFrame_templ::InstanceMethod("join",
+        &_exports_DataFrame_templ::_wrap_DataFrame__wrap_DataFrame_join,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("numeric_count");
+  members.insert({
+    "numeric_count",
+      _exports_DataFrame_templ::InstanceMethod("numeric_count",
+        &_exports_DataFrame_templ::_wrap_DataFrame_numeric_count,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("numeric_null_count");
+  members.insert({
+    "numeric_null_count",
+      _exports_DataFrame_templ::InstanceMethod("numeric_null_count",
+        &_exports_DataFrame_templ::_wrap_DataFrame_numeric_null_count,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("numeric_sum");
+  members.insert({
+    "numeric_sum",
+      _exports_DataFrame_templ::InstanceMethod("numeric_sum",
+        &_exports_DataFrame_templ::_wrap_DataFrame_numeric_sum,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("numeric_mean");
+  members.insert({
+    "numeric_mean",
+      _exports_DataFrame_templ::InstanceMethod("numeric_mean",
+        &_exports_DataFrame_templ::_wrap_DataFrame_numeric_mean,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("numeric_min");
+  members.insert({
+    "numeric_min",
+      _exports_DataFrame_templ::InstanceMethod("numeric_min",
+        &_exports_DataFrame_templ::_wrap_DataFrame_numeric_min,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("numeric_max");
+  members.insert({
+    "numeric_max",
+      _exports_DataFrame_templ::InstanceMethod("numeric_max",
+        &_exports_DataFrame_templ::_wrap_DataFrame_numeric_max,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("to_string");
+  members.insert({
+    "to_string",
+      _exports_DataFrame_templ::InstanceMethod("to_string",
+        &_exports_DataFrame_templ::_wrap_DataFrame__wrap_DataFrame_to_string,
         static_cast<napi_property_attributes>(napi_writable | napi_configurable))
     });
   
@@ -7802,6 +10929,7 @@ fail:
 
 SWIGINTERN swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "p_datamunge__Callback|datamunge::Callback *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *|p_datamunge__DataFrame", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
@@ -7816,6 +10944,7 @@ SWIGINTERN swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *|p_std__vectorT_double_t", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *|p_std__vectorT_int_t", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t > *|p_std__vectorT_size_t_t", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "std::vector< std::size_t > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "p_std__vectorT_std__string_t|std::vector< std::string > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "uint8_t *|uint_fast8_t *|uint_least8_t *|unsigned char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint32_t *|uint_fast16_t *|uint_fast32_t *|uint_least32_t *|uintptr_t *|unsigned int *", 0, 0, (void*)0, 0};
@@ -7829,6 +10958,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 
   &_swigt__p_char,
   &_swigt__p_datamunge__Callback,
+  &_swigt__p_datamunge__DataFrame,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
@@ -7843,6 +10973,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_size_t_t,
+  &_swigt__p_std__vectorT_std__size_t_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_unsigned_char,
   &_swigt__p_unsigned_int,
@@ -7853,6 +10984,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 
 SWIGINTERN swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -7867,6 +10999,7 @@ SWIGINTERN swig_cast_info _swigc__p_std__pairT_std__string_std__string_t[] = {  
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__size_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_char[] = {  {&_swigt__p_unsigned_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_int[] = {  {&_swigt__p_unsigned_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -7877,6 +11010,7 @@ SWIGINTERN swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0,
 SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
   _swigc__p_datamunge__Callback,
+  _swigc__p_datamunge__DataFrame,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
@@ -7891,6 +11025,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_size_t_t,
+  _swigc__p_std__vectorT_std__size_t_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_unsigned_char,
   _swigc__p_unsigned_int,
@@ -8541,6 +11676,16 @@ if (SWIGTYPE_p_datamunge__Callback->clientdata == SWIG_NULLPTR) {
 Napi::FunctionReference *_exports_Callback_ctor_ref = new Napi::FunctionReference();
 *_exports_Callback_ctor_ref = Napi::Persistent(_exports_Callback_ctor);
 env.GetInstanceData<EnvInstanceData>()->ctor[7] = _exports_Callback_ctor_ref;
+/* Class: DataFrame (_exports_DataFrame) */
+// jsnapi_registerclass
+Napi::Function _exports_DataFrame_ctor = _exports_DataFrame_inst::GetClass(env);
+exports.Set("DataFrame", _exports_DataFrame_ctor);
+if (SWIGTYPE_p_datamunge__DataFrame->clientdata == SWIG_NULLPTR) {
+  SWIGTYPE_p_datamunge__DataFrame->clientdata = new size_t(8);
+}
+Napi::FunctionReference *_exports_DataFrame_ctor_ref = new Napi::FunctionReference();
+*_exports_DataFrame_ctor_ref = Napi::Persistent(_exports_DataFrame_ctor);
+env.GetInstanceData<EnvInstanceData>()->ctor[8] = _exports_DataFrame_ctor_ref;
 
 
   /* initialize the inheritance helpers */
@@ -8676,6 +11821,21 @@ do {
   NAPI_CHECK_RESULT(SWIG_NAPI_ObjectWrap_ctor.Get("prototype"), protoBase);
   NAPI_CHECK_MAYBE(setProto.Call({
     _exports_Callback_ctor, SWIG_NAPI_ObjectWrap_ctor
+  }));
+  NAPI_CHECK_MAYBE(setProto.Call({
+    protoSub, protoBase
+  }));
+} while (0);
+
+
+// Inheritance for _exports_DataFrame (DataFrame) <- SWIG_NAPI_ObjectWrap
+// jsnapi_setup_inheritance
+do {
+  Napi::Value protoBase, protoSub;
+  NAPI_CHECK_RESULT(_exports_DataFrame_ctor.Get("prototype"), protoSub);
+  NAPI_CHECK_RESULT(SWIG_NAPI_ObjectWrap_ctor.Get("prototype"), protoBase);
+  NAPI_CHECK_MAYBE(setProto.Call({
+    _exports_DataFrame_ctor, SWIG_NAPI_ObjectWrap_ctor
   }));
   NAPI_CHECK_MAYBE(setProto.Call({
     protoSub, protoBase
