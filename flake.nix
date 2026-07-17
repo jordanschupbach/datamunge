@@ -217,6 +217,7 @@
               pkgs.pkg-config
               pkgs.clang
               pkgs.gtest
+              pkgs.arrow-cpp
             ];
             phases = [
               "unpackPhase"
@@ -797,6 +798,7 @@
             pkgs.clang
             pkgs.libxml2
             pkgs.pkg-config
+            pkgs.arrow-cpp
             pkgs.cling
             pkgs.doxygen
             pkgs.graphviz
@@ -1039,6 +1041,7 @@
             datamunge
             datamungelua
             lua
+            pkgs.arrow-cpp
             pkgs.swig
             pkgs.cmake
             pkgs.pkg-config

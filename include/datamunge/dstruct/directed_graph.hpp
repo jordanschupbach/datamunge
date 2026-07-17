@@ -174,7 +174,7 @@ class DirectedGraph {
       order.push_back(current);
 
       for (const auto& neighbor : outgoing_.at(current)) {
-        if (visited.contains(neighbor)) {
+        if (visited.find(neighbor) != visited.end()) {
           continue;
         }
         visited.emplace(neighbor, true);
@@ -195,7 +195,7 @@ class DirectedGraph {
     while (!stack.empty()) {
       Vertex current = std::move(stack.back());
       stack.pop_back();
-      if (visited.contains(current)) {
+      if (visited.find(current) != visited.end()) {
         continue;
       }
 
@@ -204,7 +204,7 @@ class DirectedGraph {
 
       const auto& neighbors = outgoing_.at(current);
       for (auto it = neighbors.rbegin(); it != neighbors.rend(); ++it) {
-        if (!visited.contains(*it)) {
+        if (visited.find(*it) == visited.end()) {
           stack.push_back(*it);
         }
       }

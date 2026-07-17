@@ -1,70 +1,52 @@
-#include <datamunge/fda/pspline.hpp>
-#include <datamunge/plot/plot.hpp>
-#include <datamunge/random/random.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
 
-#include <cmath>
-#include <iomanip>
 #include <iostream>
+#include <optional>
+#include <string>
 #include <vector>
 
-using datamunge::fda::PSplineOptions;
-using datamunge::fda::fit_pspline;
-using datamunge::plot::ScatterPlot;
-using datamunge::random::SplitMix64;
+using datamunge::dstruct::DataFrame;
 
 int main() {
-    constexpr std::size_t n = 500;
-    constexpr double xmin = 0.0;
-    constexpr double xmax = 1.0;
-    constexpr double noise_sigma = 0.25;
+  DataFrame sales{{{"region", DataFrame::string_column_type(std::vector<std::optional<std::string>>{
+                             "west", "west", "east", "south", "south", "south"})},
+                   {"product", DataFrame::string_column_type(std::vector<std::optional<std::string>>{
+                              "widget", "widget", "widget", "gizmo", "gizmo", "gizmo"})},
+                   {"sales", DataFrame::numeric_column_type(
+                                 std::vector<std::optional<double>>{10.0, 10.0, 14.0, 8.0, std::nullopt, 11.0})},
+                   {"quarter", DataFrame::string_column_type(std::vector<std::optional<std::string>>{
+                              "Q1", "Q1", "Q1", "Q2", "Q2", std::nullopt})}}};
 
-    SplitMix64 rng(0xB51A1EULL);
+  std::cout << "raw data\n" << sales.to_string() << "\n\n";
 
-    std::vector<double> x(n);
-    std::vector<double> y(n);
-    std::vector<double> y_true(n);
-    for (std::size_t i = 0; i < n; ++i) {
-        x[i] = xmin + (xmax - xmin) * static_cast<double>(i) / static_cast<double>(n - 1);
-        y_true[i] = std::sin(20.0 / (x[i] + 0.25));
-        y[i] = y_true[i] + noise_sigma * rng.normal();
-    }
+  auto cleaned = sales.drop_duplicates({"region", "product", "sales", "quarter"});
+  cleaned.fill_null("quarter", "unknown");
+  cleaned.fill_null("sales", 0.0);
+  std::cout << "after drop_duplicates + fill_null\n" << cleaned.to_string() << "\n\n";
 
-    PSplineOptions opts;
-    opts.lambda = 0.5;
-    opts.penalty_order = 2;
-    const auto fit = fit_pspline(x, y, 3, 300, opts);
+  const auto selected = cleaned.select({"region", "sales", "quarter"}).sort_by("sales", false);
+  std::cout << "selected + sorted\n" << selected.to_string() << "\n\n";
 
-    std::vector<double> grid_x(200);
-    for (std::size_t i = 0; i < grid_x.size(); ++i) {
-        grid_x[i] = xmin + (xmax - xmin) * static_cast<double>(i)
-                              / static_cast<double>(grid_x.size() - 1);
-    }
+  const auto grouped = cleaned.group_by_sum({"region"}, {"sales"}).sort_by("sales", false);
+  std::cout << "group_by_sum(region)\n" << grouped.to_string() << "\n\n";
 
-    const auto grid_y = fit.predict(grid_x);
-    std::vector<double> grid_true(grid_x.size());
-    for (std::size_t i = 0; i < grid_x.size(); ++i) {
-        grid_true[i] = std::sin(20.0 / (grid_x[i] + 0.25));
-    }
+  DataFrame targets{{{"region", DataFrame::string_column_type(std::vector<std::string>{"west", "east", "south"})},
+                     {"target", DataFrame::numeric_column_type(std::vector<double>{18.0, 12.0, 25.0})}}};
+  const auto joined = grouped.join(targets, "region", "region", DataFrame::JoinType::Left);
+  std::cout << "joined with targets\n" << joined.to_string() << "\n\n";
 
-    auto plot = ScatterPlot::create();
-    plot.points(x, y, "samples", {37, 99, 235}, 6.0)
-        .line(grid_x, grid_true, "true signal", {22, 163, 74}, 2.0)
-        .line(grid_x, grid_y, "cubic B-spline fit", {220, 38, 38}, 3.0)
-        .title("Nonlinear Regression With Cubic B-Splines")
-        .x_label("x")
-        .y_label("y")
-        .background({250, 250, 252});
+  const auto summary = cleaned.describe_numeric("sales");
+  const auto [rows, cols] = cleaned.shape();
+  std::cout << "shape = (" << rows << ", " << cols << ")\n"
+            << "sales count = " << summary.count << "\n"
+            << "sales nulls = " << summary.null_count << "\n"
+            << "sales sum = " << summary.sum << "\n"
+            << "sales mean = " << summary.mean << "\n";
 
-    plot.save_svg("build/debug/examples/datamunge_ex_pspline.svg");
+#ifdef DATAMUNGE_HAVE_ARROW
+  const auto table = cleaned.to_arrow();
+  std::cout << "arrow rows = " << table->num_rows() << ", cols = " << table->num_columns() << "\n";
+#endif
 
-    std::cout << std::fixed << std::setprecision(4)
-              << "n = " << n << "\n"
-              << "noise sigma = " << noise_sigma << "\n"
-              << "basis functions = " << fit.basis.basis_size() << "\n"
-              << "lambda = " << fit.lambda << "\n"
-              << "effective dof = " << fit.effective_degrees_of_freedom << "\n"
-              << "R^2 = " << fit.r_squared << "\n"
-              << "adj R^2 = " << fit.adjusted_r_squared << "\n"
-              << "svg = build/debug/examples/datamunge_ex_pspline.svg\n";
-    return 0;
+  return 0;
 }

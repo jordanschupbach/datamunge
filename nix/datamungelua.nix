@@ -21,13 +21,15 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = [
     datamunge
+    pkgs.arrow-cpp
     lua
   ];
 
   configurePhase = ''
+    export CMAKE_PREFIX_PATH="${datamunge}:${pkgs.arrow-cpp}''${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
     cmake -S src/datamungelua -B build/datamungelua \
       -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_PREFIX_PATH="${datamunge}"
+      -DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH"
   '';
 
   buildPhase = ''

@@ -185,7 +185,9 @@ setClass("std::pair<(double,double)>",
 setClass('_p_std__vectorT_int_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_double_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_size_t_t', contains = 'C++Reference')
+setClass('_p_std__vectorT_std__string_t', contains = 'C++Reference')
 setClass('_p_datamunge__Callback', contains = 'C++Reference')
+setClass('_p_datamunge__DataFrame', contains = 'C++Reference')
 
 
 
@@ -2326,6 +2328,572 @@ setMethod('$', '_p_std__vectorT_size_t_t', function(x, name)
 );
 # end of accessor method for std::vector< size_t >
 setMethod('delete', '_p_std__vectorT_size_t_t', function(obj) {delete_std__vectorT_size_t_t(obj)})
+# Start of SVector___nonzero__
+
+`SVector___nonzero__` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector___nonzero__', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector___nonzero__`, 'returnType') = 'logical'
+attr(`SVector___nonzero__`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector___nonzero__`) = c("SWIGFunction", class('SVector___nonzero__'))
+
+# Start of SVector___len__
+
+`SVector___len__` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector___len__', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector___len__`, 'returnType') = 'integer'
+attr(`SVector___len__`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector___len__`) = c("SWIGFunction", class('SVector___len__'))
+
+# Start of SVector_pop
+
+`SVector_pop` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_pop', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_pop`, 'returnType') = 'character'
+attr(`SVector_pop`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_pop`) = c("SWIGFunction", class('SVector_pop'))
+
+# Start of SVector___getslice__
+
+`SVector___getslice__` = function(self, i, j)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  ;ans = .Call('R_swig_SVector___getslice__', self, i, j, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__string_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`SVector___getslice__`, 'returnType') = '_p_std__vectorT_std__string_t'
+attr(`SVector___getslice__`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer', 'integer')
+class(`SVector___getslice__`) = c("SWIGFunction", class('SVector___getslice__'))
+
+# Start of SVector___setslice__
+
+`SVector___setslice__` = function(self, i, j, is)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  if (inherits(is, "ExternalReference")) is = slot(is,"ref"); 
+  ;.Call('R_swig_SVector___setslice__', self, i, j, is, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector___setslice__`, 'returnType') = 'void'
+attr(`SVector___setslice__`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer', 'integer', '_p_std__vectorT_std__string_t')
+class(`SVector___setslice__`) = c("SWIGFunction", class('SVector___setslice__'))
+
+# Start of SVector___delslice__
+
+`SVector___delslice__` = function(self, i, j)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  ;.Call('R_swig_SVector___delslice__', self, i, j, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector___delslice__`, 'returnType') = 'void'
+attr(`SVector___delslice__`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer', 'integer')
+class(`SVector___delslice__`) = c("SWIGFunction", class('SVector___delslice__'))
+
+# Start of SVector___delitem__
+
+`SVector___delitem__` = function(self, i)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  ;.Call('R_swig_SVector___delitem__', self, i, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector___delitem__`, 'returnType') = 'void'
+attr(`SVector___delitem__`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer')
+class(`SVector___delitem__`) = c("SWIGFunction", class('SVector___delitem__'))
+
+# Start of SVector___getitem__
+
+`SVector___getitem__` = function(self, i, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  ;.Call('R_swig_SVector___getitem__', self, i, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector___getitem__`, 'returnType') = 'character'
+attr(`SVector___getitem__`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer')
+class(`SVector___getitem__`) = c("SWIGFunction", class('SVector___getitem__'))
+
+# Start of SVector___setitem__
+
+`SVector___setitem__` = function(self, i, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  x = as(x, "character"); 
+  ;.Call('R_swig_SVector___setitem__', self, i, x, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector___setitem__`, 'returnType') = 'void'
+attr(`SVector___setitem__`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer', 'character')
+class(`SVector___setitem__`) = c("SWIGFunction", class('SVector___setitem__'))
+
+# Start of SVector_append
+
+`SVector_append` = function(self, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as(x, "character"); 
+  ;.Call('R_swig_SVector_append', self, x, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_append`, 'returnType') = 'void'
+attr(`SVector_append`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'character')
+class(`SVector_append`) = c("SWIGFunction", class('SVector_append'))
+
+# Start of new_SVector
+
+`SVector__SWIG_0` = function()
+{
+  ;ans = .Call('R_swig_new_SVector__SWIG_0', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__string_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SVector);
+  ans
+  
+}
+
+attr(`SVector__SWIG_0`, 'returnType') = '_p_std__vectorT_std__string_t'
+class(`SVector__SWIG_0`) = c("SWIGFunction", class('SVector__SWIG_0'))
+
+# Start of new_SVector
+
+`SVector__SWIG_1` = function(other)
+{
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_new_SVector__SWIG_1', other, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__string_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SVector);
+  ans
+  
+}
+
+attr(`SVector__SWIG_1`, 'returnType') = '_p_std__vectorT_std__string_t'
+attr(`SVector__SWIG_1`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector__SWIG_1`) = c("SWIGFunction", class('SVector__SWIG_1'))
+
+# Start of SVector_empty
+
+`SVector_empty` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_empty', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_empty`, 'returnType') = 'logical'
+attr(`SVector_empty`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_empty`) = c("SWIGFunction", class('SVector_empty'))
+
+# Start of SVector_size
+
+`SVector_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_size`, 'returnType') = 'integer'
+attr(`SVector_size`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_size`) = c("SWIGFunction", class('SVector_size'))
+
+# Start of SVector_swap
+
+`SVector_swap` = function(self, v)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(v, "ExternalReference")) v = slot(v,"ref"); 
+  ;.Call('R_swig_SVector_swap', self, v, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_swap`, 'returnType') = 'void'
+attr(`SVector_swap`, "inputTypes") = c('_p_std__vectorT_std__string_t', '_p_std__vectorT_std__string_t')
+class(`SVector_swap`) = c("SWIGFunction", class('SVector_swap'))
+
+# Start of SVector_clear
+
+`SVector_clear` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_clear', self, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_clear`, 'returnType') = 'void'
+attr(`SVector_clear`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_clear`) = c("SWIGFunction", class('SVector_clear'))
+
+# Start of SVector_get_allocator
+
+`SVector_get_allocator` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_SVector_get_allocator', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__allocatorT_std__string_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`SVector_get_allocator`, 'returnType') = '_p_std__allocatorT_std__string_t'
+attr(`SVector_get_allocator`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_get_allocator`) = c("SWIGFunction", class('SVector_get_allocator'))
+
+# Start of new_SVector
+
+`SVector__SWIG_2` = function(size)
+{
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  ;ans = .Call('R_swig_new_SVector__SWIG_2', size, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__string_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SVector);
+  ans
+  
+}
+
+attr(`SVector__SWIG_2`, 'returnType') = '_p_std__vectorT_std__string_t'
+attr(`SVector__SWIG_2`, "inputTypes") = c('integer')
+class(`SVector__SWIG_2`) = c("SWIGFunction", class('SVector__SWIG_2'))
+
+# Start of SVector_pop_back
+
+`SVector_pop_back` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_pop_back', self, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_pop_back`, 'returnType') = 'void'
+attr(`SVector_pop_back`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_pop_back`) = c("SWIGFunction", class('SVector_pop_back'))
+
+# Start of SVector_resize
+
+`SVector_resize__SWIG_0` = function(self, new_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  new_size = as.integer(new_size);
+  
+  if(length(new_size) > 1) {
+    warning("using only the first element of new_size");
+  };
+  
+  ;.Call('R_swig_SVector_resize__SWIG_0', self, new_size, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_resize__SWIG_0`, 'returnType') = 'void'
+attr(`SVector_resize__SWIG_0`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer')
+class(`SVector_resize__SWIG_0`) = c("SWIGFunction", class('SVector_resize__SWIG_0'))
+
+# Start of new_SVector
+
+`SVector__SWIG_3` = function(size, value)
+{
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  value = as(value, "character"); 
+  ;ans = .Call('R_swig_new_SVector__SWIG_3', size, value, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__string_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SVector);
+  ans
+  
+}
+
+attr(`SVector__SWIG_3`, 'returnType') = '_p_std__vectorT_std__string_t'
+attr(`SVector__SWIG_3`, "inputTypes") = c('integer', 'character')
+class(`SVector__SWIG_3`) = c("SWIGFunction", class('SVector__SWIG_3'))
+
+`SVector` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 0) {
+    f <- SVector__SWIG_0; 
+  } else if (argc == 1) {
+    if ( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) {
+      f <- SVector__SWIG_2; 
+    }
+    else if ( extends(argtypes[1], '_p_std__vectorT_std__string_t') && length(argv[[1]]) == 1 ) {
+      f <- SVector__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- SVector__SWIG_3; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for SVector with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of SVector_push_back
+
+`SVector_push_back` = function(self, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  x = as(x, "character"); 
+  ;.Call('R_swig_SVector_push_back', self, x, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_push_back`, 'returnType') = 'void'
+attr(`SVector_push_back`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'character')
+class(`SVector_push_back`) = c("SWIGFunction", class('SVector_push_back'))
+
+# Start of SVector_front
+
+`SVector_front` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_front', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_front`, 'returnType') = 'character'
+attr(`SVector_front`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_front`) = c("SWIGFunction", class('SVector_front'))
+
+# Start of SVector_back
+
+`SVector_back` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_back', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_back`, 'returnType') = 'character'
+attr(`SVector_back`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_back`) = c("SWIGFunction", class('SVector_back'))
+
+# Start of SVector_assign
+
+`SVector_assign` = function(self, n, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  x = as(x, "character"); 
+  ;.Call('R_swig_SVector_assign', self, n, x, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_assign`, 'returnType') = 'void'
+attr(`SVector_assign`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer', 'character')
+class(`SVector_assign`) = c("SWIGFunction", class('SVector_assign'))
+
+# Start of SVector_resize
+
+`SVector_resize__SWIG_1` = function(self, new_size, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  new_size = as.integer(new_size);
+  
+  if(length(new_size) > 1) {
+    warning("using only the first element of new_size");
+  };
+  
+  x = as(x, "character"); 
+  ;.Call('R_swig_SVector_resize__SWIG_1', self, new_size, x, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_resize__SWIG_1`, 'returnType') = 'void'
+attr(`SVector_resize__SWIG_1`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer', 'character')
+class(`SVector_resize__SWIG_1`) = c("SWIGFunction", class('SVector_resize__SWIG_1'))
+
+`SVector_resize` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_std__vectorT_std__string_t') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- SVector_resize__SWIG_0; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_std__vectorT_std__string_t') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- SVector_resize__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for SVector_resize with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of SVector_reserve
+
+`SVector_reserve` = function(self, n)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;.Call('R_swig_SVector_reserve', self, n, PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_reserve`, 'returnType') = 'void'
+attr(`SVector_reserve`, "inputTypes") = c('_p_std__vectorT_std__string_t', 'integer')
+class(`SVector_reserve`) = c("SWIGFunction", class('SVector_reserve'))
+
+# Start of SVector_capacity
+
+`SVector_capacity` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SVector_capacity', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SVector_capacity`, 'returnType') = 'integer'
+attr(`SVector_capacity`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`SVector_capacity`) = c("SWIGFunction", class('SVector_capacity'))
+
+# Start of delete_SVector
+
+`delete_SVector` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SVector', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SVector`, 'returnType') = 'void'
+attr(`delete_SVector`, "inputTypes") = c('_p_std__vectorT_std__string_t')
+class(`delete_SVector`) = c("SWIGFunction", class('delete_SVector'))
+
+# Start of accessor method for std::vector< std::string >
+setMethod('$', '_p_std__vectorT_std__string_t', function(x, name)
+
+{
+  accessorFuns = list('__nonzero__' = SVector___nonzero__, '__len__' = SVector___len__, 'pop' = SVector_pop, '__getslice__' = SVector___getslice__, '__setslice__' = SVector___setslice__, '__delslice__' = SVector___delslice__, '__delitem__' = SVector___delitem__, '__getitem__' = SVector___getitem__, '__setitem__' = SVector___setitem__, 'append' = SVector_append, 'empty' = SVector_empty, 'size' = SVector_size, 'swap' = SVector_swap, 'clear' = SVector_clear, 'get_allocator' = SVector_get_allocator, 'pop_back' = SVector_pop_back, 'resize' = SVector_resize, 'push_back' = SVector_push_back, 'front' = SVector_front, 'back' = SVector_back, 'assign' = SVector_assign, 'reserve' = SVector_reserve, 'capacity' = SVector_capacity);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for std::vector< std::string >
+setMethod('delete', '_p_std__vectorT_std__string_t', function(obj) {delete_std__vectorT_std__string_t(obj)})
 # Start of hello
 
 `hello` = function()
@@ -2479,5 +3047,706 @@ attr(`sum_dpair`, 'returnType') = 'numeric'
 attr(`sum_dpair`, "inputTypes") = c('_p_std__pairT_double_double_t')
 class(`sum_dpair`) = c("SWIGFunction", class('sum_dpair'))
 
+# Start of new_DataFrame
+
+`DataFrame` = function()
+{
+  ;ans = .Call('R_swig_new_DataFrame', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_DataFrame);
+  ans
+  
+}
+
+attr(`DataFrame`, 'returnType') = '_p_datamunge__DataFrame'
+class(`DataFrame`) = c("SWIGFunction", class('DataFrame'))
+
+# Start of DataFrame_nrows
+
+`DataFrame_nrows` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_DataFrame_nrows', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_nrows`, 'returnType') = 'integer'
+attr(`DataFrame_nrows`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`DataFrame_nrows`) = c("SWIGFunction", class('DataFrame_nrows'))
+
+# Start of DataFrame_ncols
+
+`DataFrame_ncols` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_DataFrame_ncols', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_ncols`, 'returnType') = 'integer'
+attr(`DataFrame_ncols`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`DataFrame_ncols`) = c("SWIGFunction", class('DataFrame_ncols'))
+
+# Start of DataFrame_shape
+
+`DataFrame_shape` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_DataFrame_shape', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_shape`, 'returnType') = '_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t'
+attr(`DataFrame_shape`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`DataFrame_shape`) = c("SWIGFunction", class('DataFrame_shape'))
+
+# Start of DataFrame_columns
+
+`DataFrame_columns` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_DataFrame_columns', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_columns`, 'returnType') = 'character'
+attr(`DataFrame_columns`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`DataFrame_columns`) = c("SWIGFunction", class('DataFrame_columns'))
+
+# Start of DataFrame_add_numeric_column
+
+`DataFrame_add_numeric_column__SWIG_0` = function(self, column_name, values, valid_mask)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  values = as.numeric(values);
+  valid_mask = as.integer(valid_mask);
+  ;.Call('R_swig_DataFrame_add_numeric_column__SWIG_0', self, column_name, values, valid_mask, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_add_numeric_column__SWIG_0`, 'returnType') = 'void'
+attr(`DataFrame_add_numeric_column__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', '_p_std__vectorT_double_t', '_p_std__vectorT_int_t')
+class(`DataFrame_add_numeric_column__SWIG_0`) = c("SWIGFunction", class('DataFrame_add_numeric_column__SWIG_0'))
+
+# Start of DataFrame_add_numeric_column
+
+`DataFrame_add_numeric_column__SWIG_1` = function(self, column_name, values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  values = as.numeric(values);
+  ;.Call('R_swig_DataFrame_add_numeric_column__SWIG_1', self, column_name, values, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_add_numeric_column__SWIG_1`, 'returnType') = 'void'
+attr(`DataFrame_add_numeric_column__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', '_p_std__vectorT_double_t')
+class(`DataFrame_add_numeric_column__SWIG_1`) = c("SWIGFunction", class('DataFrame_add_numeric_column__SWIG_1'))
+
+`DataFrame_add_numeric_column` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) )) {
+      f <- DataFrame_add_numeric_column__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) ) && ( is.integer(argv[[4]]) || is.numeric(argv[[4]]) )) {
+      f <- DataFrame_add_numeric_column__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_add_numeric_column with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_add_string_column
+
+`DataFrame_add_string_column__SWIG_0` = function(self, column_name, values, valid_mask)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  if (inherits(values, "ExternalReference")) values = slot(values,"ref"); 
+  valid_mask = as.integer(valid_mask);
+  ;.Call('R_swig_DataFrame_add_string_column__SWIG_0', self, column_name, values, valid_mask, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_add_string_column__SWIG_0`, 'returnType') = 'void'
+attr(`DataFrame_add_string_column__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', '_p_std__vectorT_std__string_t', '_p_std__vectorT_int_t')
+class(`DataFrame_add_string_column__SWIG_0`) = c("SWIGFunction", class('DataFrame_add_string_column__SWIG_0'))
+
+# Start of DataFrame_add_string_column
+
+`DataFrame_add_string_column__SWIG_1` = function(self, column_name, values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  if (inherits(values, "ExternalReference")) values = slot(values,"ref"); 
+  ;.Call('R_swig_DataFrame_add_string_column__SWIG_1', self, column_name, values, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_add_string_column__SWIG_1`, 'returnType') = 'void'
+attr(`DataFrame_add_string_column__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', '_p_std__vectorT_std__string_t')
+class(`DataFrame_add_string_column__SWIG_1`) = c("SWIGFunction", class('DataFrame_add_string_column__SWIG_1'))
+
+`DataFrame_add_string_column` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_std__string_t') && length(argv[[3]]) == 1 )) {
+      f <- DataFrame_add_string_column__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_std__string_t') && length(argv[[3]]) == 1 ) && ( is.integer(argv[[4]]) || is.numeric(argv[[4]]) )) {
+      f <- DataFrame_add_string_column__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_add_string_column with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_add_string_column_encoded
+
+`DataFrame_add_string_column_encoded__SWIG_0` = function(self, column_name, encoded_values, valid_mask)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  encoded_values = as(encoded_values, "character"); 
+  valid_mask = as.integer(valid_mask);
+  ;.Call('R_swig_DataFrame_add_string_column_encoded__SWIG_0', self, column_name, encoded_values, valid_mask, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_add_string_column_encoded__SWIG_0`, 'returnType') = 'void'
+attr(`DataFrame_add_string_column_encoded__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', '_p_std__vectorT_int_t')
+class(`DataFrame_add_string_column_encoded__SWIG_0`) = c("SWIGFunction", class('DataFrame_add_string_column_encoded__SWIG_0'))
+
+# Start of DataFrame_add_string_column_encoded
+
+`DataFrame_add_string_column_encoded__SWIG_1` = function(self, column_name, encoded_values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  encoded_values = as(encoded_values, "character"); 
+  ;.Call('R_swig_DataFrame_add_string_column_encoded__SWIG_1', self, column_name, encoded_values, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_add_string_column_encoded__SWIG_1`, 'returnType') = 'void'
+attr(`DataFrame_add_string_column_encoded__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character')
+class(`DataFrame_add_string_column_encoded__SWIG_1`) = c("SWIGFunction", class('DataFrame_add_string_column_encoded__SWIG_1'))
+
+`DataFrame_add_string_column_encoded` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- DataFrame_add_string_column_encoded__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.integer(argv[[4]]) || is.numeric(argv[[4]]) )) {
+      f <- DataFrame_add_string_column_encoded__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_add_string_column_encoded with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_fill_null_numeric
+
+`DataFrame_fill_null_numeric` = function(self, column_name, value)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  
+  ;.Call('R_swig_DataFrame_fill_null_numeric', self, column_name, value, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_fill_null_numeric`, 'returnType') = 'void'
+attr(`DataFrame_fill_null_numeric`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'numeric')
+class(`DataFrame_fill_null_numeric`) = c("SWIGFunction", class('DataFrame_fill_null_numeric'))
+
+# Start of DataFrame_fill_null_string
+
+`DataFrame_fill_null_string` = function(self, column_name, value)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  value = as(value, "character"); 
+  ;.Call('R_swig_DataFrame_fill_null_string', self, column_name, value, PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_fill_null_string`, 'returnType') = 'void'
+attr(`DataFrame_fill_null_string`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character')
+class(`DataFrame_fill_null_string`) = c("SWIGFunction", class('DataFrame_fill_null_string'))
+
+# Start of DataFrame_select
+
+`DataFrame_select` = function(self, selected_columns)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(selected_columns, "ExternalReference")) selected_columns = slot(selected_columns,"ref"); 
+  ;ans = .Call('R_swig_DataFrame_select', self, selected_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_select`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_select`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t')
+class(`DataFrame_select`) = c("SWIGFunction", class('DataFrame_select'))
+
+# Start of DataFrame_select_encoded
+
+`DataFrame_select_encoded` = function(self, encoded_columns)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  encoded_columns = as(encoded_columns, "character"); 
+  ;ans = .Call('R_swig_DataFrame_select_encoded', self, encoded_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_select_encoded`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_select_encoded`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_select_encoded`) = c("SWIGFunction", class('DataFrame_select_encoded'))
+
+# Start of DataFrame_sort_by
+
+`DataFrame_sort_by__SWIG_0` = function(self, column_name, ascending)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ascending = as.logical(ascending);
+  ;ans = .Call('R_swig_DataFrame_sort_by__SWIG_0', self, column_name, ascending, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_sort_by__SWIG_0`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_sort_by__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'logical')
+class(`DataFrame_sort_by__SWIG_0`) = c("SWIGFunction", class('DataFrame_sort_by__SWIG_0'))
+
+# Start of DataFrame_sort_by
+
+`DataFrame_sort_by__SWIG_1` = function(self, column_name)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ;ans = .Call('R_swig_DataFrame_sort_by__SWIG_1', self, column_name, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_sort_by__SWIG_1`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_sort_by__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_sort_by__SWIG_1`) = c("SWIGFunction", class('DataFrame_sort_by__SWIG_1'))
+
+`DataFrame_sort_by` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- DataFrame_sort_by__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.logical(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- DataFrame_sort_by__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_sort_by with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_drop_duplicates
+
+`DataFrame_drop_duplicates__SWIG_0` = function(self, subset)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(subset, "ExternalReference")) subset = slot(subset,"ref"); 
+  ;ans = .Call('R_swig_DataFrame_drop_duplicates__SWIG_0', self, subset, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_drop_duplicates__SWIG_0`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_drop_duplicates__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t')
+class(`DataFrame_drop_duplicates__SWIG_0`) = c("SWIGFunction", class('DataFrame_drop_duplicates__SWIG_0'))
+
+# Start of DataFrame_drop_duplicates
+
+`DataFrame_drop_duplicates__SWIG_1` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_DataFrame_drop_duplicates__SWIG_1', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_drop_duplicates__SWIG_1`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_drop_duplicates__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`DataFrame_drop_duplicates__SWIG_1`) = c("SWIGFunction", class('DataFrame_drop_duplicates__SWIG_1'))
+
+`DataFrame_drop_duplicates` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) {
+      f <- DataFrame_drop_duplicates__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_std__vectorT_std__string_t') && length(argv[[2]]) == 1 )) {
+      f <- DataFrame_drop_duplicates__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_drop_duplicates with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_drop_duplicates_encoded
+
+`DataFrame_drop_duplicates_encoded` = function(self, encoded_subset)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  encoded_subset = as(encoded_subset, "character"); 
+  ;ans = .Call('R_swig_DataFrame_drop_duplicates_encoded', self, encoded_subset, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_drop_duplicates_encoded`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_drop_duplicates_encoded`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_drop_duplicates_encoded`) = c("SWIGFunction", class('DataFrame_drop_duplicates_encoded'))
+
+# Start of DataFrame_group_by_sum
+
+`DataFrame_group_by_sum` = function(self, key_columns, value_columns)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(key_columns, "ExternalReference")) key_columns = slot(key_columns,"ref"); 
+  if (inherits(value_columns, "ExternalReference")) value_columns = slot(value_columns,"ref"); 
+  ;ans = .Call('R_swig_DataFrame_group_by_sum', self, key_columns, value_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_group_by_sum`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_group_by_sum`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_std__vectorT_std__string_t', '_p_std__vectorT_std__string_t')
+class(`DataFrame_group_by_sum`) = c("SWIGFunction", class('DataFrame_group_by_sum'))
+
+# Start of DataFrame_group_by_sum_encoded
+
+`DataFrame_group_by_sum_encoded` = function(self, encoded_key_columns, encoded_value_columns)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  encoded_key_columns = as(encoded_key_columns, "character"); 
+  encoded_value_columns = as(encoded_value_columns, "character"); 
+  ;ans = .Call('R_swig_DataFrame_group_by_sum_encoded', self, encoded_key_columns, encoded_value_columns, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_group_by_sum_encoded`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_group_by_sum_encoded`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character')
+class(`DataFrame_group_by_sum_encoded`) = c("SWIGFunction", class('DataFrame_group_by_sum_encoded'))
+
+# Start of DataFrame_join
+
+`DataFrame_join__SWIG_0` = function(self, right, left_key, right_key, left_join)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(right, "ExternalReference")) right = slot(right,"ref"); 
+  left_key = as(left_key, "character"); 
+  right_key = as(right_key, "character"); 
+  left_join = as.logical(left_join);
+  ;ans = .Call('R_swig_DataFrame_join__SWIG_0', self, right, left_key, right_key, left_join, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_join__SWIG_0`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_join__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_datamunge__DataFrame', 'character', 'character', 'logical')
+class(`DataFrame_join__SWIG_0`) = c("SWIGFunction", class('DataFrame_join__SWIG_0'))
+
+# Start of DataFrame_join
+
+`DataFrame_join__SWIG_1` = function(self, right, left_key, right_key)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(right, "ExternalReference")) right = slot(right,"ref"); 
+  left_key = as(left_key, "character"); 
+  right_key = as(right_key, "character"); 
+  ;ans = .Call('R_swig_DataFrame_join__SWIG_1', self, right, left_key, right_key, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`DataFrame_join__SWIG_1`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`DataFrame_join__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', '_p_datamunge__DataFrame', 'character', 'character')
+class(`DataFrame_join__SWIG_1`) = c("SWIGFunction", class('DataFrame_join__SWIG_1'))
+
+`DataFrame_join` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__DataFrame') && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- DataFrame_join__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__DataFrame') && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.logical(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- DataFrame_join__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_join with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of DataFrame_numeric_count
+
+`DataFrame_numeric_count` = function(self, column_name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ;.Call('R_swig_DataFrame_numeric_count', self, column_name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_numeric_count`, 'returnType') = 'integer'
+attr(`DataFrame_numeric_count`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_numeric_count`) = c("SWIGFunction", class('DataFrame_numeric_count'))
+
+# Start of DataFrame_numeric_null_count
+
+`DataFrame_numeric_null_count` = function(self, column_name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ;.Call('R_swig_DataFrame_numeric_null_count', self, column_name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_numeric_null_count`, 'returnType') = 'integer'
+attr(`DataFrame_numeric_null_count`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_numeric_null_count`) = c("SWIGFunction", class('DataFrame_numeric_null_count'))
+
+# Start of DataFrame_numeric_sum
+
+`DataFrame_numeric_sum` = function(self, column_name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ;.Call('R_swig_DataFrame_numeric_sum', self, column_name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_numeric_sum`, 'returnType') = 'numeric'
+attr(`DataFrame_numeric_sum`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_numeric_sum`) = c("SWIGFunction", class('DataFrame_numeric_sum'))
+
+# Start of DataFrame_numeric_mean
+
+`DataFrame_numeric_mean` = function(self, column_name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ;.Call('R_swig_DataFrame_numeric_mean', self, column_name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_numeric_mean`, 'returnType') = 'numeric'
+attr(`DataFrame_numeric_mean`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_numeric_mean`) = c("SWIGFunction", class('DataFrame_numeric_mean'))
+
+# Start of DataFrame_numeric_min
+
+`DataFrame_numeric_min` = function(self, column_name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ;.Call('R_swig_DataFrame_numeric_min', self, column_name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_numeric_min`, 'returnType') = 'numeric'
+attr(`DataFrame_numeric_min`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_numeric_min`) = c("SWIGFunction", class('DataFrame_numeric_min'))
+
+# Start of DataFrame_numeric_max
+
+`DataFrame_numeric_max` = function(self, column_name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  column_name = as(column_name, "character"); 
+  ;.Call('R_swig_DataFrame_numeric_max', self, column_name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_numeric_max`, 'returnType') = 'numeric'
+attr(`DataFrame_numeric_max`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`DataFrame_numeric_max`) = c("SWIGFunction", class('DataFrame_numeric_max'))
+
+# Start of DataFrame_to_string
+
+`DataFrame_to_string__SWIG_0` = function(self, max_rows, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  max_rows = as.integer(max_rows);
+  
+  if(length(max_rows) > 1) {
+    warning("using only the first element of max_rows");
+  };
+  
+  ;.Call('R_swig_DataFrame_to_string__SWIG_0', self, max_rows, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_to_string__SWIG_0`, 'returnType') = 'character'
+attr(`DataFrame_to_string__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'integer')
+class(`DataFrame_to_string__SWIG_0`) = c("SWIGFunction", class('DataFrame_to_string__SWIG_0'))
+
+# Start of DataFrame_to_string
+
+`DataFrame_to_string__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_DataFrame_to_string__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`DataFrame_to_string__SWIG_1`, 'returnType') = 'character'
+attr(`DataFrame_to_string__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`DataFrame_to_string__SWIG_1`) = c("SWIGFunction", class('DataFrame_to_string__SWIG_1'))
+
+`DataFrame_to_string` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) {
+      f <- DataFrame_to_string__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- DataFrame_to_string__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for DataFrame_to_string with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of delete_DataFrame
+
+`delete_DataFrame` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_DataFrame', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_DataFrame`, 'returnType') = 'void'
+attr(`delete_DataFrame`, "inputTypes") = c('_p_datamunge__DataFrame')
+class(`delete_DataFrame`) = c("SWIGFunction", class('delete_DataFrame'))
+
+# Start of accessor method for datamunge::DataFrame
+setMethod('$', '_p_datamunge__DataFrame', function(x, name)
+
+{
+  accessorFuns = list('nrows' = DataFrame_nrows, 'ncols' = DataFrame_ncols, 'shape' = DataFrame_shape, 'columns' = DataFrame_columns, 'add_numeric_column' = DataFrame_add_numeric_column, 'add_string_column' = DataFrame_add_string_column, 'add_string_column_encoded' = DataFrame_add_string_column_encoded, 'fill_null_numeric' = DataFrame_fill_null_numeric, 'fill_null_string' = DataFrame_fill_null_string, 'select' = DataFrame_select, 'select_encoded' = DataFrame_select_encoded, 'sort_by' = DataFrame_sort_by, 'drop_duplicates' = DataFrame_drop_duplicates, 'drop_duplicates_encoded' = DataFrame_drop_duplicates_encoded, 'group_by_sum' = DataFrame_group_by_sum, 'group_by_sum_encoded' = DataFrame_group_by_sum_encoded, 'join' = DataFrame_join, 'numeric_count' = DataFrame_numeric_count, 'numeric_null_count' = DataFrame_numeric_null_count, 'numeric_sum' = DataFrame_numeric_sum, 'numeric_mean' = DataFrame_numeric_mean, 'numeric_min' = DataFrame_numeric_min, 'numeric_max' = DataFrame_numeric_max, 'to_string' = DataFrame_to_string);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::DataFrame
+setMethod('delete', '_p_datamunge__DataFrame', function(obj) {delete_datamunge__DataFrame(obj)})
 
 

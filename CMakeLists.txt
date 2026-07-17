@@ -6,6 +6,8 @@ project(
   LANGUAGES CXX
 )
 
+option(DATAMUNGE_ENABLE_ARROW "Enable Apache Arrow integration when available" ON)
+
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(
     FATAL_ERROR
@@ -17,6 +19,8 @@ include(GNUInstallDirs)
 
 include(cmake/CPM.cmake)
 include(cmake/PackageProject.cmake)
+
+set(DATAMUNGE_PACKAGE_DEPENDENCIES "")
 
 # CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
 
@@ -51,6 +55,25 @@ target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                          $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
+
+if(DATAMUNGE_ENABLE_ARROW)
+  find_package(Arrow CONFIG QUIET)
+  if(Arrow_FOUND)
+    if(TARGET Arrow::arrow_shared)
+      target_link_libraries(${PROJECT_NAME} PUBLIC Arrow::arrow_shared)
+    elseif(TARGET Arrow::arrow_static)
+      target_link_libraries(${PROJECT_NAME} PUBLIC Arrow::arrow_static)
+    elseif(TARGET Arrow::arrow)
+      target_link_libraries(${PROJECT_NAME} PUBLIC Arrow::arrow)
+    else()
+      message(WARNING "Arrow was found, but no supported Arrow target was exported.")
+    endif()
+    target_compile_definitions(${PROJECT_NAME} PUBLIC DATAMUNGE_HAVE_ARROW=1)
+    set(DATAMUNGE_PACKAGE_DEPENDENCIES "Arrow CONFIG")
+  else()
+    message(STATUS "Apache Arrow not found; building without Arrow integration.")
+  endif()
+endif()
 find_package(X11 QUIET)
 if(X11_FOUND)
   target_include_directories(${PROJECT_NAME} PRIVATE ${X11_INCLUDE_DIR})
@@ -69,7 +92,7 @@ packageProject(
   INCLUDE_DESTINATION include/${PROJECT_NAME}-${PROJECT_VERSION}
   VERSION_HEADER "${VERSION_HEADER_LOCATION}"
   COMPATIBILITY SameMajorVersion
-  DEPENDENCIES ""
+  DEPENDENCIES "${DATAMUNGE_PACKAGE_DEPENDENCIES}"
 )
 
 set(PKG_CONFIG_VERSION "${PROJECT_VERSION}")
