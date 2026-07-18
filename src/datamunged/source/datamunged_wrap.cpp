@@ -388,6 +388,9 @@ template <typename T> T SwigValueInit() {
 #include <stdexcept>
 
 
+#include <string>
+
+
 SWIGINTERN void SWIG_DThrowException(int code, const char *msg) {
   SWIG_DExceptionCodes exception_code;
   switch(code) {
@@ -474,6 +477,168 @@ SWIGINTERN std::vector< double >::const_reference std_vector_Sl_double_Sg__getEl
         return (*self)[index];
       }
 SWIGINTERN void std_vector_Sl_double_Sg__setElement(std::vector< double > *self,std::vector< double >::size_type index,double const &val){
+        if ((index < 0) || (self->size() <= index)) {
+          throw std::out_of_range("Tried to set value of element with invalid index.");
+        }
+        (*self)[index] = val;
+      }
+SWIGINTERN std::vector< int > *new_std_vector_Sl_int_Sg___SWIG_2(std::vector< int >::size_type capacity){
+        std::vector< int >* pv = 0;
+        pv = new std::vector< int >();
+
+        // Might throw std::length_error.
+        pv->reserve(capacity);
+
+        return pv;
+      }
+SWIGINTERN std::vector< int >::const_reference std_vector_Sl_int_Sg__remove__SWIG_0(std::vector< int > *self){
+        if (self->empty()) {
+          throw std::out_of_range("Tried to remove last element from empty vector.");
+        }
+
+        std::vector< int >::const_reference value = self->back();
+        self->pop_back();
+        return value;
+      }
+SWIGINTERN std::vector< int >::const_reference std_vector_Sl_int_Sg__remove__SWIG_1(std::vector< int > *self,std::vector< int >::size_type index){
+        if (index >= self->size()) {
+          throw std::out_of_range("Tried to remove element with invalid index.");
+        }
+
+        std::vector< int >::iterator it = self->begin() + index;
+        std::vector< int >::const_reference value = *it;
+        self->erase(it);
+        return value;
+      }
+SWIGINTERN void std_vector_Sl_int_Sg__removeBack(std::vector< int > *self,std::vector< int >::size_type how_many){
+        std::vector< int >::iterator end = self->end();
+        std::vector< int >::iterator start = end - how_many;
+        self->erase(start, end);
+      }
+SWIGINTERN void std_vector_Sl_int_Sg__linearRemove(std::vector< int > *self,std::vector< int >::size_type start_index,std::vector< int >::size_type end_index){
+        std::vector< int >::iterator start = self->begin() + start_index;
+        std::vector< int >::iterator end = self->begin() + end_index;
+        self->erase(start, end);
+      }
+SWIGINTERN void std_vector_Sl_int_Sg__insertAt(std::vector< int > *self,std::vector< int >::size_type index,int const &x){
+        std::vector< int >::iterator it = self->begin() + index;
+        self->insert(it, x);
+      }
+SWIGINTERN std::vector< int >::const_reference std_vector_Sl_int_Sg__getElement(std::vector< int > *self,std::vector< int >::size_type index){
+        if ((index < 0) || (self->size() <= index)) {
+          throw std::out_of_range("Tried to get value of element with invalid index.");
+        }
+        return (*self)[index];
+      }
+SWIGINTERN void std_vector_Sl_int_Sg__setElement(std::vector< int > *self,std::vector< int >::size_type index,int const &val){
+        if ((index < 0) || (self->size() <= index)) {
+          throw std::out_of_range("Tried to set value of element with invalid index.");
+        }
+        (*self)[index] = val;
+      }
+SWIGINTERN std::vector< size_t > *new_std_vector_Sl_size_t_Sg___SWIG_2(std::vector< size_t >::size_type capacity){
+        std::vector< size_t >* pv = 0;
+        pv = new std::vector< size_t >();
+
+        // Might throw std::length_error.
+        pv->reserve(capacity);
+
+        return pv;
+      }
+SWIGINTERN std::vector< size_t >::const_reference std_vector_Sl_size_t_Sg__remove__SWIG_0(std::vector< size_t > *self){
+        if (self->empty()) {
+          throw std::out_of_range("Tried to remove last element from empty vector.");
+        }
+
+        std::vector< size_t >::const_reference value = self->back();
+        self->pop_back();
+        return value;
+      }
+SWIGINTERN std::vector< size_t >::const_reference std_vector_Sl_size_t_Sg__remove__SWIG_1(std::vector< size_t > *self,std::vector< size_t >::size_type index){
+        if (index >= self->size()) {
+          throw std::out_of_range("Tried to remove element with invalid index.");
+        }
+
+        std::vector< size_t >::iterator it = self->begin() + index;
+        std::vector< size_t >::const_reference value = *it;
+        self->erase(it);
+        return value;
+      }
+SWIGINTERN void std_vector_Sl_size_t_Sg__removeBack(std::vector< size_t > *self,std::vector< size_t >::size_type how_many){
+        std::vector< size_t >::iterator end = self->end();
+        std::vector< size_t >::iterator start = end - how_many;
+        self->erase(start, end);
+      }
+SWIGINTERN void std_vector_Sl_size_t_Sg__linearRemove(std::vector< size_t > *self,std::vector< size_t >::size_type start_index,std::vector< size_t >::size_type end_index){
+        std::vector< size_t >::iterator start = self->begin() + start_index;
+        std::vector< size_t >::iterator end = self->begin() + end_index;
+        self->erase(start, end);
+      }
+SWIGINTERN void std_vector_Sl_size_t_Sg__insertAt(std::vector< size_t > *self,std::vector< size_t >::size_type index,size_t const &x){
+        std::vector< size_t >::iterator it = self->begin() + index;
+        self->insert(it, x);
+      }
+SWIGINTERN std::vector< size_t >::const_reference std_vector_Sl_size_t_Sg__getElement(std::vector< size_t > *self,std::vector< size_t >::size_type index){
+        if ((index < 0) || (self->size() <= index)) {
+          throw std::out_of_range("Tried to get value of element with invalid index.");
+        }
+        return (*self)[index];
+      }
+SWIGINTERN void std_vector_Sl_size_t_Sg__setElement(std::vector< size_t > *self,std::vector< size_t >::size_type index,size_t const &val){
+        if ((index < 0) || (self->size() <= index)) {
+          throw std::out_of_range("Tried to set value of element with invalid index.");
+        }
+        (*self)[index] = val;
+      }
+SWIGINTERN std::vector< std::string > *new_std_vector_Sl_std_string_Sg___SWIG_2(std::vector< std::string >::size_type capacity){
+        std::vector< std::string >* pv = 0;
+        pv = new std::vector< std::string >();
+
+        // Might throw std::length_error.
+        pv->reserve(capacity);
+
+        return pv;
+      }
+SWIGINTERN std::vector< std::string >::const_reference std_vector_Sl_std_string_Sg__remove__SWIG_0(std::vector< std::string > *self){
+        if (self->empty()) {
+          throw std::out_of_range("Tried to remove last element from empty vector.");
+        }
+
+        std::vector< std::string >::const_reference value = self->back();
+        self->pop_back();
+        return value;
+      }
+SWIGINTERN std::vector< std::string >::const_reference std_vector_Sl_std_string_Sg__remove__SWIG_1(std::vector< std::string > *self,std::vector< std::string >::size_type index){
+        if (index >= self->size()) {
+          throw std::out_of_range("Tried to remove element with invalid index.");
+        }
+
+        std::vector< std::string >::iterator it = self->begin() + index;
+        std::vector< std::string >::const_reference value = *it;
+        self->erase(it);
+        return value;
+      }
+SWIGINTERN void std_vector_Sl_std_string_Sg__removeBack(std::vector< std::string > *self,std::vector< std::string >::size_type how_many){
+        std::vector< std::string >::iterator end = self->end();
+        std::vector< std::string >::iterator start = end - how_many;
+        self->erase(start, end);
+      }
+SWIGINTERN void std_vector_Sl_std_string_Sg__linearRemove(std::vector< std::string > *self,std::vector< std::string >::size_type start_index,std::vector< std::string >::size_type end_index){
+        std::vector< std::string >::iterator start = self->begin() + start_index;
+        std::vector< std::string >::iterator end = self->begin() + end_index;
+        self->erase(start, end);
+      }
+SWIGINTERN void std_vector_Sl_std_string_Sg__insertAt(std::vector< std::string > *self,std::vector< std::string >::size_type index,std::string const &x){
+        std::vector< std::string >::iterator it = self->begin() + index;
+        self->insert(it, x);
+      }
+SWIGINTERN std::vector< std::string >::const_reference std_vector_Sl_std_string_Sg__getElement(std::vector< std::string > *self,std::vector< std::string >::size_type index){
+        if ((index < 0) || (self->size() <= index)) {
+          throw std::out_of_range("Tried to get value of element with invalid index.");
+        }
+        return (*self)[index];
+      }
+SWIGINTERN void std_vector_Sl_std_string_Sg__setElement(std::vector< std::string > *self,std::vector< std::string >::size_type index,std::string const &val){
         if ((index < 0) || (self->size() <= index)) {
           throw std::out_of_range("Tried to set value of element with invalid index.");
         }
@@ -874,6 +1039,780 @@ SWIGEXPORT void D_delete_DVector(void * jarg1) {
 }
 
 
+SWIGEXPORT unsigned int D_IVector_empty(void * jarg1) {
+  unsigned int jresult ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  bool result;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  result = (bool)((std::vector< int > const *)arg1)->empty();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_IVector_clear(void * jarg1) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  (arg1)->clear();
+}
+
+
+SWIGEXPORT void D_IVector_push_back(void * jarg1, int jarg2) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  int *arg2 = 0 ;
+  int temp2 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  temp2 = (int)jarg2;
+  arg2 = &temp2; 
+  (arg1)->push_back((int const &)*arg2);
+}
+
+
+SWIGEXPORT void D_IVector_pop_back(void * jarg1) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  (arg1)->pop_back();
+}
+
+
+SWIGEXPORT size_t D_IVector_size(void * jarg1) {
+  size_t jresult ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type result;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  result = ((std::vector< int > const *)arg1)->size();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_IVector_capacity(void * jarg1) {
+  size_t jresult ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type result;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  result = ((std::vector< int > const *)arg1)->capacity();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_IVector_reserve(void * jarg1, size_t jarg2) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  arg2 = (std::vector< int >::size_type)jarg2;
+  try {
+    (arg1)->reserve(SWIG_STD_MOVE(arg2));
+  } catch(std::length_error &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void * D_new_IVector__SWIG_0() {
+  void * jresult ;
+  std::vector< int > *result = 0 ;
+  
+  result = (std::vector< int > *)new std::vector< int >();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_IVector__SWIG_1(void * jarg1) {
+  void * jresult ;
+  std::vector< int > *arg1 = 0 ;
+  std::vector< int > *result = 0 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< int > const & is null");
+    return 0;
+  } 
+  result = (std::vector< int > *)new std::vector< int >((std::vector< int > const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_IVector__SWIG_2(size_t jarg1) {
+  void * jresult ;
+  std::vector< int >::size_type arg1 ;
+  std::vector< int > *result = 0 ;
+  
+  arg1 = (std::vector< int >::size_type)jarg1;
+  try {
+    result = (std::vector< int > *)new_std_vector_Sl_int_Sg___SWIG_2(SWIG_STD_MOVE(arg1));
+  } catch(std::length_error &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT int D_IVector_remove__SWIG_0(void * jarg1) {
+  int jresult ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  try {
+    result = (std::vector< int >::value_type *) &std_vector_Sl_int_Sg__remove__SWIG_0(arg1);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = *result;
+  return jresult;
+}
+
+
+SWIGEXPORT int D_IVector_remove__SWIG_1(void * jarg1, size_t jarg2) {
+  int jresult ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  std::vector< int >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  arg2 = (std::vector< int >::size_type)jarg2;
+  try {
+    result = (std::vector< int >::value_type *) &std_vector_Sl_int_Sg__remove__SWIG_1(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = *result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_IVector_removeBack(void * jarg1, size_t jarg2) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  arg2 = (std::vector< int >::size_type)jarg2;
+  try {
+    std_vector_Sl_int_Sg__removeBack(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_IVector_linearRemove(void * jarg1, size_t jarg2, size_t jarg3) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  std::vector< int >::size_type arg3 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  arg2 = (std::vector< int >::size_type)jarg2;
+  arg3 = (std::vector< int >::size_type)jarg3;
+  try {
+    std_vector_Sl_int_Sg__linearRemove(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_IVector_insertAt(void * jarg1, size_t jarg2, int jarg3) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  int *arg3 = 0 ;
+  int temp3 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  arg2 = (std::vector< int >::size_type)jarg2;
+  temp3 = (int)jarg3;
+  arg3 = &temp3; 
+  try {
+    std_vector_Sl_int_Sg__insertAt(arg1,SWIG_STD_MOVE(arg2),(int const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT int D_IVector_getElement(void * jarg1, size_t jarg2) {
+  int jresult ;
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  std::vector< int >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  arg2 = (std::vector< int >::size_type)jarg2;
+  try {
+    result = (std::vector< int >::value_type *) &std_vector_Sl_int_Sg__getElement(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = *result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_IVector_setElement(void * jarg1, size_t jarg2, int jarg3) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  std::vector< int >::size_type arg2 ;
+  int *arg3 = 0 ;
+  int temp3 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  arg2 = (std::vector< int >::size_type)jarg2;
+  temp3 = (int)jarg3;
+  arg3 = &temp3; 
+  try {
+    std_vector_Sl_int_Sg__setElement(arg1,SWIG_STD_MOVE(arg2),(int const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_delete_IVector(void * jarg1) {
+  std::vector< int > *arg1 = (std::vector< int > *) 0 ;
+  
+  arg1 = (std::vector< int > *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT unsigned int D_SizeVector_empty(void * jarg1) {
+  unsigned int jresult ;
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  bool result;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  result = (bool)((std::vector< size_t > const *)arg1)->empty();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SizeVector_clear(void * jarg1) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  (arg1)->clear();
+}
+
+
+SWIGEXPORT void D_SizeVector_push_back(void * jarg1, size_t jarg2) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  size_t *arg2 = 0 ;
+  size_t temp2 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  temp2 = (size_t)jarg2;
+  arg2 = &temp2; 
+  (arg1)->push_back((size_t const &)*arg2);
+}
+
+
+SWIGEXPORT void D_SizeVector_pop_back(void * jarg1) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  (arg1)->pop_back();
+}
+
+
+SWIGEXPORT size_t D_SizeVector_size(void * jarg1) {
+  size_t jresult ;
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type result;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  result = ((std::vector< size_t > const *)arg1)->size();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_SizeVector_capacity(void * jarg1) {
+  size_t jresult ;
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type result;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  result = ((std::vector< size_t > const *)arg1)->capacity();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SizeVector_reserve(void * jarg1, size_t jarg2) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type arg2 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  arg2 = (std::vector< size_t >::size_type)jarg2;
+  try {
+    (arg1)->reserve(SWIG_STD_MOVE(arg2));
+  } catch(std::length_error &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void * D_new_SizeVector__SWIG_0() {
+  void * jresult ;
+  std::vector< size_t > *result = 0 ;
+  
+  result = (std::vector< size_t > *)new std::vector< size_t >();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_SizeVector__SWIG_1(void * jarg1) {
+  void * jresult ;
+  std::vector< size_t > *arg1 = 0 ;
+  std::vector< size_t > *result = 0 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< size_t > const & is null");
+    return 0;
+  } 
+  result = (std::vector< size_t > *)new std::vector< size_t >((std::vector< size_t > const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_SizeVector__SWIG_2(size_t jarg1) {
+  void * jresult ;
+  std::vector< size_t >::size_type arg1 ;
+  std::vector< size_t > *result = 0 ;
+  
+  arg1 = (std::vector< size_t >::size_type)jarg1;
+  try {
+    result = (std::vector< size_t > *)new_std_vector_Sl_size_t_Sg___SWIG_2(SWIG_STD_MOVE(arg1));
+  } catch(std::length_error &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_SizeVector_remove__SWIG_0(void * jarg1) {
+  size_t jresult ;
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  try {
+    result = (std::vector< size_t >::value_type *) &std_vector_Sl_size_t_Sg__remove__SWIG_0(arg1);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = *result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_SizeVector_remove__SWIG_1(void * jarg1, size_t jarg2) {
+  size_t jresult ;
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type arg2 ;
+  std::vector< size_t >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  arg2 = (std::vector< size_t >::size_type)jarg2;
+  try {
+    result = (std::vector< size_t >::value_type *) &std_vector_Sl_size_t_Sg__remove__SWIG_1(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = *result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SizeVector_removeBack(void * jarg1, size_t jarg2) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type arg2 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  arg2 = (std::vector< size_t >::size_type)jarg2;
+  try {
+    std_vector_Sl_size_t_Sg__removeBack(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_SizeVector_linearRemove(void * jarg1, size_t jarg2, size_t jarg3) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type arg2 ;
+  std::vector< size_t >::size_type arg3 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  arg2 = (std::vector< size_t >::size_type)jarg2;
+  arg3 = (std::vector< size_t >::size_type)jarg3;
+  try {
+    std_vector_Sl_size_t_Sg__linearRemove(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_SizeVector_insertAt(void * jarg1, size_t jarg2, size_t jarg3) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type arg2 ;
+  size_t *arg3 = 0 ;
+  size_t temp3 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  arg2 = (std::vector< size_t >::size_type)jarg2;
+  temp3 = (size_t)jarg3;
+  arg3 = &temp3; 
+  try {
+    std_vector_Sl_size_t_Sg__insertAt(arg1,SWIG_STD_MOVE(arg2),(size_t const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT size_t D_SizeVector_getElement(void * jarg1, size_t jarg2) {
+  size_t jresult ;
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type arg2 ;
+  std::vector< size_t >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  arg2 = (std::vector< size_t >::size_type)jarg2;
+  try {
+    result = (std::vector< size_t >::value_type *) &std_vector_Sl_size_t_Sg__getElement(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = *result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SizeVector_setElement(void * jarg1, size_t jarg2, size_t jarg3) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  std::vector< size_t >::size_type arg2 ;
+  size_t *arg3 = 0 ;
+  size_t temp3 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  arg2 = (std::vector< size_t >::size_type)jarg2;
+  temp3 = (size_t)jarg3;
+  arg3 = &temp3; 
+  try {
+    std_vector_Sl_size_t_Sg__setElement(arg1,SWIG_STD_MOVE(arg2),(size_t const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_delete_SizeVector(void * jarg1) {
+  std::vector< size_t > *arg1 = (std::vector< size_t > *) 0 ;
+  
+  arg1 = (std::vector< size_t > *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT unsigned int D_SVector_empty(void * jarg1) {
+  unsigned int jresult ;
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  bool result;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  result = (bool)((std::vector< std::string > const *)arg1)->empty();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SVector_clear(void * jarg1) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  (arg1)->clear();
+}
+
+
+SWIGEXPORT void D_SVector_push_back(void * jarg1, char * jarg2) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  (arg1)->push_back((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_SVector_pop_back(void * jarg1) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  (arg1)->pop_back();
+}
+
+
+SWIGEXPORT size_t D_SVector_size(void * jarg1) {
+  size_t jresult ;
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type result;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  result = ((std::vector< std::string > const *)arg1)->size();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_SVector_capacity(void * jarg1) {
+  size_t jresult ;
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type result;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  result = ((std::vector< std::string > const *)arg1)->capacity();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SVector_reserve(void * jarg1, size_t jarg2) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type arg2 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  arg2 = (std::vector< std::string >::size_type)jarg2;
+  try {
+    (arg1)->reserve(SWIG_STD_MOVE(arg2));
+  } catch(std::length_error &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void * D_new_SVector__SWIG_0() {
+  void * jresult ;
+  std::vector< std::string > *result = 0 ;
+  
+  result = (std::vector< std::string > *)new std::vector< std::string >();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_SVector__SWIG_1(void * jarg1) {
+  void * jresult ;
+  std::vector< std::string > *arg1 = 0 ;
+  std::vector< std::string > *result = 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (std::vector< std::string > *)new std::vector< std::string >((std::vector< std::string > const &)*arg1);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_SVector__SWIG_2(size_t jarg1) {
+  void * jresult ;
+  std::vector< std::string >::size_type arg1 ;
+  std::vector< std::string > *result = 0 ;
+  
+  arg1 = (std::vector< std::string >::size_type)jarg1;
+  try {
+    result = (std::vector< std::string > *)new_std_vector_Sl_std_string_Sg___SWIG_2(SWIG_STD_MOVE(arg1));
+  } catch(std::length_error &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_SVector_remove__SWIG_0(void * jarg1) {
+  char * jresult ;
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  try {
+    result = (std::vector< std::string >::value_type *) &std_vector_Sl_std_string_Sg__remove__SWIG_0(arg1);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = SWIG_d_string_callback(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_SVector_remove__SWIG_1(void * jarg1, size_t jarg2) {
+  char * jresult ;
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type arg2 ;
+  std::vector< std::string >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  arg2 = (std::vector< std::string >::size_type)jarg2;
+  try {
+    result = (std::vector< std::string >::value_type *) &std_vector_Sl_std_string_Sg__remove__SWIG_1(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = SWIG_d_string_callback(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SVector_removeBack(void * jarg1, size_t jarg2) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type arg2 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  arg2 = (std::vector< std::string >::size_type)jarg2;
+  try {
+    std_vector_Sl_std_string_Sg__removeBack(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_SVector_linearRemove(void * jarg1, size_t jarg2, size_t jarg3) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type arg2 ;
+  std::vector< std::string >::size_type arg3 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  arg2 = (std::vector< std::string >::size_type)jarg2;
+  arg3 = (std::vector< std::string >::size_type)jarg3;
+  try {
+    std_vector_Sl_std_string_Sg__linearRemove(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_SVector_insertAt(void * jarg1, size_t jarg2, char * jarg3) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type arg2 ;
+  std::string *arg3 = 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  arg2 = (std::vector< std::string >::size_type)jarg2;
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  try {
+    std_vector_Sl_std_string_Sg__insertAt(arg1,SWIG_STD_MOVE(arg2),(std::string const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT char * D_SVector_getElement(void * jarg1, size_t jarg2) {
+  char * jresult ;
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type arg2 ;
+  std::vector< std::string >::value_type *result = 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  arg2 = (std::vector< std::string >::size_type)jarg2;
+  try {
+    result = (std::vector< std::string >::value_type *) &std_vector_Sl_std_string_Sg__getElement(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return 0;
+  }
+  jresult = SWIG_d_string_callback(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_SVector_setElement(void * jarg1, size_t jarg2, char * jarg3) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  std::vector< std::string >::size_type arg2 ;
+  std::string *arg3 = 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  arg2 = (std::vector< std::string >::size_type)jarg2;
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  try {
+    std_vector_Sl_std_string_Sg__setElement(arg1,SWIG_STD_MOVE(arg2),(std::string const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_DSetPendingException(SWIG_DNoSuchElementException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void D_delete_SVector(void * jarg1) {
+  std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
+  
+  arg1 = (std::vector< std::string > *)jarg1;
+  delete arg1;
+}
+
+
 SWIGEXPORT void D_hello() {
   datamunge::hello();
 }
@@ -1023,6 +1962,1187 @@ SWIGEXPORT double D_sum_dpair(void * jarg1) {
   result = (double)datamunge::sum_dpair((std::pair< double,double > const &)*arg1);
   jresult = result;
   return jresult;
+}
+
+
+SWIGEXPORT void * D_new_DataFrame() {
+  void * jresult ;
+  datamunge::DataFrame *result = 0 ;
+  
+  result = (datamunge::DataFrame *)new datamunge::DataFrame();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_DataFrame_nrows(void * jarg1) {
+  size_t jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  result = ((datamunge::DataFrame const *)arg1)->nrows();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_DataFrame_ncols(void * jarg1) {
+  size_t jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  result = ((datamunge::DataFrame const *)arg1)->ncols();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_shape(void * jarg1) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  SwigValueWrapper< std::vector< std::size_t > > result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  result = ((datamunge::DataFrame const *)arg1)->shape();
+  jresult = new std::vector< std::size_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_columns(void * jarg1) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  result = ((datamunge::DataFrame const *)arg1)->columns();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_DataFrame_add_numeric_column__SWIG_0(void * jarg1, char * jarg2, void * jarg3, void * jarg4) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return ;
+  } 
+  arg4 = (std::vector< int > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< int > const & is null");
+    return ;
+  } 
+  (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< int > const &)*arg4);
+}
+
+
+SWIGEXPORT void D_DataFrame_add_numeric_column__SWIG_1(void * jarg1, char * jarg2, void * jarg3) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return ;
+  } 
+  (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double > const &)*arg3);
+}
+
+
+SWIGEXPORT void D_DataFrame_add_string_column__SWIG_0(void * jarg1, char * jarg2, void * jarg3, void * jarg4) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  arg3 = (std::vector< std::string > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return ;
+  } 
+  arg4 = (std::vector< int > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< int > const & is null");
+    return ;
+  } 
+  (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string > const &)*arg3,(std::vector< int > const &)*arg4);
+}
+
+
+SWIGEXPORT void D_DataFrame_add_string_column__SWIG_1(void * jarg1, char * jarg2, void * jarg3) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  arg3 = (std::vector< std::string > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return ;
+  } 
+  (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string > const &)*arg3);
+}
+
+
+SWIGEXPORT void D_DataFrame_add_string_column_encoded__SWIG_0(void * jarg1, char * jarg2, char * jarg3, void * jarg4) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  arg4 = (std::vector< int > *)jarg4;
+  if (!arg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< int > const & is null");
+    return ;
+  } 
+  (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< int > const &)*arg4);
+}
+
+
+SWIGEXPORT void D_DataFrame_add_string_column_encoded__SWIG_1(void * jarg1, char * jarg2, char * jarg3) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+}
+
+
+SWIGEXPORT void D_DataFrame_fill_null_numeric(void * jarg1, char * jarg2, double jarg3) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  arg3 = (double)jarg3;
+  (arg1)->fill_null_numeric((std::string const &)*arg2,arg3);
+}
+
+
+SWIGEXPORT void D_DataFrame_fill_null_string(void * jarg1, char * jarg2, char * jarg3) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  (arg1)->fill_null_string((std::string const &)*arg2,(std::string const &)*arg3);
+}
+
+
+SWIGEXPORT void * D_DataFrame_select(void * jarg1, void * jarg2) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  arg2 = (std::vector< std::string > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select((std::vector< std::string > const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_select_encoded(void * jarg1, char * jarg2) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select_encoded((std::string const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_sort_by__SWIG_0(void * jarg1, char * jarg2, unsigned int jarg3) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  arg3 = jarg3 ? true : false;
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2,arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_sort_by__SWIG_1(void * jarg1, char * jarg2) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_drop_duplicates__SWIG_0(void * jarg1, void * jarg2) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  arg2 = (std::vector< std::string > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates((std::vector< std::string > const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_drop_duplicates__SWIG_1(void * jarg1) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_drop_duplicates_encoded(void * jarg1, char * jarg2) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates_encoded((std::string const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_group_by_sum(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  arg2 = (std::vector< std::string > *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::vector< std::string > *)jarg3;
+  if (!arg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum((std::vector< std::string > const &)*arg2,(std::vector< std::string > const &)*arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_group_by_sum_encoded(void * jarg1, char * jarg2, char * jarg3) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_join__SWIG_0(void * jarg1, void * jarg2, char * jarg3, char * jarg4, unsigned int jarg5) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = jarg5 ? true : false;
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_DataFrame_join__SWIG_1(void * jarg1, void * jarg2, char * jarg3, char * jarg4) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_DataFrame_numeric_count(void * jarg1, char * jarg2) {
+  size_t jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = ((datamunge::DataFrame const *)arg1)->numeric_count((std::string const &)*arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_DataFrame_numeric_null_count(void * jarg1, char * jarg2) {
+  size_t jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = ((datamunge::DataFrame const *)arg1)->numeric_null_count((std::string const &)*arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_DataFrame_numeric_sum(void * jarg1, char * jarg2) {
+  double jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_sum((std::string const &)*arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_DataFrame_numeric_mean(void * jarg1, char * jarg2) {
+  double jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_mean((std::string const &)*arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_DataFrame_numeric_min(void * jarg1, char * jarg2) {
+  double jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_min((std::string const &)*arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_DataFrame_numeric_max(void * jarg1, char * jarg2) {
+  double jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string *arg2 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_max((std::string const &)*arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_DataFrame_to_string__SWIG_0(void * jarg1, size_t jarg2) {
+  char * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::size_t arg2 ;
+  std::string result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  arg2 = (std::size_t)jarg2;
+  result = ((datamunge::DataFrame const *)arg1)->to_string(SWIG_STD_MOVE(arg2));
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_DataFrame_to_string__SWIG_1(void * jarg1) {
+  char * jresult ;
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  result = ((datamunge::DataFrame const *)arg1)->to_string();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_delete_DataFrame(void * jarg1) {
+  datamunge::DataFrame *arg1 = (datamunge::DataFrame *) 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT void * D_new_LM__SWIG_0(void * jarg1, char * jarg2, char * jarg3) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::LM *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_LM__SWIG_1(void * jarg1, char * jarg2) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::LM *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_LM_formula_text(void * jarg1) {
+  char * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->formula_text();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int D_LM_has_intercept(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  bool result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = (bool)((datamunge::LM const *)arg1)->has_intercept();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_LM_observations(void * jarg1) {
+  size_t jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->observations();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_LM_rank(void * jarg1) {
+  size_t jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->rank();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT size_t D_LM_degrees_of_freedom(void * jarg1) {
+  size_t jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->degrees_of_freedom();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_coefficients(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->coefficients();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_coefficient_names(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->coefficient_names();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_fitted_values(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->fitted_values();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_residuals(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->residuals();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_standard_errors(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->standard_errors();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_t_values(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->t_values();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_p_values(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->p_values();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT double D_LM_r_squared(void * jarg1) {
+  double jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = (double)((datamunge::LM const *)arg1)->r_squared();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_LM_adjusted_r_squared(void * jarg1) {
+  double jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = (double)((datamunge::LM const *)arg1)->adjusted_r_squared();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_LM_sigma(void * jarg1) {
+  double jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = (double)((datamunge::LM const *)arg1)->sigma();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_LM_f_statistic(void * jarg1) {
+  double jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = (double)((datamunge::LM const *)arg1)->f_statistic();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_LM_f_p_value(void * jarg1) {
+  double jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = (double)((datamunge::LM const *)arg1)->f_p_value();
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_confidence_interval_lower__SWIG_0(void * jarg1, double jarg2) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  double arg2 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  arg2 = (double)jarg2;
+  result = ((datamunge::LM const *)arg1)->confidence_interval_lower(arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_confidence_interval_lower__SWIG_1(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->confidence_interval_lower();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_confidence_interval_upper__SWIG_0(void * jarg1, double jarg2) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  double arg2 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  arg2 = (double)jarg2;
+  result = ((datamunge::LM const *)arg1)->confidence_interval_upper(arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_confidence_interval_upper__SWIG_1(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->confidence_interval_upper();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_leverage(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->leverage();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_standardized_residuals(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->standardized_residuals();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_studentized_residuals(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->studentized_residuals();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_cooks_distance(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->cooks_distance();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT char * D_LM_summary(void * jarg1) {
+  char * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->summary();
+  jresult = SWIG_d_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_LM_print_summary(void * jarg1) {
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  ((datamunge::LM const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT void * D_LM_predict(void * jarg1, void * jarg2) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::LM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_predict_frame__SWIG_0(void * jarg1, void * jarg2, char * jarg3, double jarg4) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  arg4 = (double)jarg4;
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,arg4);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_predict_frame__SWIG_1(void * jarg1, void * jarg2, char * jarg3) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if (!jarg3) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_predict_frame__SWIG_2(void * jarg1, void * jarg2) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_anova(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->anova();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_plot_residuals_vs_fitted(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
+  jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_plot_normal_qq(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->plot_normal_qq();
+  jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_plot_scale_location(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->plot_scale_location();
+  jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_LM_plot_residuals_vs_leverage(void * jarg1) {
+  void * jresult ;
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
+  jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void D_LM_save_diagnostic_plots(void * jarg1, char * jarg2) {
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  if (!jarg2) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "null string");
+    return ;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  ((datamunge::LM const *)arg1)->save_diagnostic_plots((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void D_delete_LM(void * jarg1) {
+  datamunge::LM *arg1 = (datamunge::LM *) 0 ;
+  
+  arg1 = (datamunge::LM *)jarg1;
+  delete arg1;
 }
 
 

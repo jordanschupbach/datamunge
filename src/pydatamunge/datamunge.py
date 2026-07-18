@@ -809,8 +809,382 @@ class DataFrame(object):
 
     def to_string(self, max_rows=10):
         return _datamunge.DataFrame_to_string(self, max_rows)
+
+    @staticmethod
+    def iris():
+        return _datamunge.DataFrame_iris()
+
+    @staticmethod
+    def penguins():
+        return _datamunge.DataFrame_penguins()
     __swig_destroy__ = _datamunge.delete_DataFrame
 
 # Register DataFrame in _datamunge:
 _datamunge.DataFrame_swigregister(DataFrame)
+class LM(object):
+    r"""SWIG-friendly facade for datamunge::stats::LM — R-`lm()`-style linear models fit from a DataFrame."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type weights_column: string, optional
+        :param weights_column: Optional column name enabling weighted least squares; pass "" (the default) for OLS.
+        """
+        _datamunge.LM_swiginit(self, _datamunge.new_LM(*args))
+
+    def formula_text(self):
+        return _datamunge.LM_formula_text(self)
+
+    def has_intercept(self):
+        return _datamunge.LM_has_intercept(self)
+
+    def observations(self):
+        return _datamunge.LM_observations(self)
+
+    def rank(self):
+        return _datamunge.LM_rank(self)
+
+    def degrees_of_freedom(self):
+        return _datamunge.LM_degrees_of_freedom(self)
+
+    def coefficients(self):
+        return _datamunge.LM_coefficients(self)
+
+    def coefficient_names(self):
+        return _datamunge.LM_coefficient_names(self)
+
+    def fitted_values(self):
+        return _datamunge.LM_fitted_values(self)
+
+    def residuals(self):
+        return _datamunge.LM_residuals(self)
+
+    def standard_errors(self):
+        return _datamunge.LM_standard_errors(self)
+
+    def t_values(self):
+        return _datamunge.LM_t_values(self)
+
+    def p_values(self):
+        return _datamunge.LM_p_values(self)
+
+    def r_squared(self):
+        return _datamunge.LM_r_squared(self)
+
+    def adjusted_r_squared(self):
+        return _datamunge.LM_adjusted_r_squared(self)
+
+    def sigma(self):
+        return _datamunge.LM_sigma(self)
+
+    def f_statistic(self):
+        return _datamunge.LM_f_statistic(self)
+
+    def f_p_value(self):
+        return _datamunge.LM_f_p_value(self)
+
+    def confidence_interval_lower(self, level=0.95):
+        return _datamunge.LM_confidence_interval_lower(self, level)
+
+    def confidence_interval_upper(self, level=0.95):
+        return _datamunge.LM_confidence_interval_upper(self, level)
+
+    def leverage(self):
+        return _datamunge.LM_leverage(self)
+
+    def standardized_residuals(self):
+        return _datamunge.LM_standardized_residuals(self)
+
+    def studentized_residuals(self):
+        return _datamunge.LM_studentized_residuals(self)
+
+    def cooks_distance(self):
+        return _datamunge.LM_cooks_distance(self)
+
+    def summary(self):
+        return _datamunge.LM_summary(self)
+
+    def print_summary(self):
+        return _datamunge.LM_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.LM_predict(self, newdata)
+
+    def predict_frame(self, *args):
+        r"""
+        :type interval_kind: string, optional
+        :param interval_kind: One of "none", "confidence", "prediction". Returned DataFrame has a "fit" column,
+                                 plus "se_fit"/"lwr"/"upr" when an interval is requested.
+        """
+        return _datamunge.LM_predict_frame(self, *args)
+
+    def anova(self):
+        r"""
+        Sequential (Type I) analysis-of-variance table as a DataFrame with columns
+               term/df/sum_sq/mean_sq/f_value/p_value.
+        """
+        return _datamunge.LM_anova(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.LM_plot_residuals_vs_fitted(self)
+
+    def plot_normal_qq(self):
+        return _datamunge.LM_plot_normal_qq(self)
+
+    def plot_scale_location(self):
+        return _datamunge.LM_plot_scale_location(self)
+
+    def plot_residuals_vs_leverage(self):
+        return _datamunge.LM_plot_residuals_vs_leverage(self)
+
+    def save_diagnostic_plots(self, path_prefix):
+        r"""Saves all four diagnostic plots as "<path_prefix>_<name>.svg"."""
+        return _datamunge.LM_save_diagnostic_plots(self, path_prefix)
+    __swig_destroy__ = _datamunge.delete_LM
+
+# Register LM in _datamunge:
+_datamunge.LM_swigregister(LM)
+class LDA(object):
+    r"""SWIG-friendly facade for datamunge::stats::LDA — R-`MASS::lda()`-style linear discriminant analysis."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type priors: std::vector< double,std::allocator< double > >, optional
+        :param priors: Optional class prior probabilities (must sum to 1, ordered as classes() once sorted
+                          alphabetically); pass an empty vector (the default) to use observed class proportions.
+        """
+        _datamunge.LDA_swiginit(self, _datamunge.new_LDA(*args))
+
+    def classes(self):
+        return _datamunge.LDA_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.LDA_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.LDA_observations(self)
+
+    def num_discriminants(self):
+        return _datamunge.LDA_num_discriminants(self)
+
+    def priors(self):
+        return _datamunge.LDA_priors(self)
+
+    def group_means(self):
+        r"""One row per class, one numeric column per predictor."""
+        return _datamunge.LDA_group_means(self)
+
+    def scaling(self):
+        r"""One row per predictor, one numeric column per linear discriminant (LD1, LD2, ...)."""
+        return _datamunge.LDA_scaling(self)
+
+    def proportion_of_trace(self):
+        return _datamunge.LDA_proportion_of_trace(self)
+
+    def training_accuracy(self):
+        return _datamunge.LDA_training_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes()."""
+        return _datamunge.LDA_confusion_matrix(self)
+
+    def summary(self):
+        return _datamunge.LDA_summary(self)
+
+    def print_summary(self):
+        return _datamunge.LDA_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.LDA_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column, LD1/LD2/... discriminant scores, and posterior_<class> probability columns."""
+        return _datamunge.LDA_predict_frame(self, newdata)
+
+    def plot_discriminants(self):
+        return _datamunge.LDA_plot_discriminants(self)
+
+    def save_discriminant_plot(self, path):
+        return _datamunge.LDA_save_discriminant_plot(self, path)
+    __swig_destroy__ = _datamunge.delete_LDA
+
+# Register LDA in _datamunge:
+_datamunge.LDA_swigregister(LDA)
+class SVM(object):
+    r"""SWIG-friendly facade for datamunge::stats::SVM — R-`e1071::svm()`-style multi-class SVM classification."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type kernel: string, optional
+        :param kernel: One of "linear", "polynomial", "radial" (default), "sigmoid".
+        :type gamma: float, optional
+        :param gamma:  <= 0 means "auto" = 1 / number of predictors.
+        """
+        _datamunge.SVM_swiginit(self, _datamunge.new_SVM(*args))
+
+    def classes(self):
+        return _datamunge.SVM_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.SVM_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.SVM_observations(self)
+
+    def num_support_vectors(self):
+        return _datamunge.SVM_num_support_vectors(self)
+
+    def training_accuracy(self):
+        return _datamunge.SVM_training_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes()."""
+        return _datamunge.SVM_confusion_matrix(self)
+
+    def summary(self):
+        return _datamunge.SVM_summary(self)
+
+    def print_summary(self):
+        return _datamunge.SVM_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.SVM_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column plus one numeric vote-count column per class (votes_<class>)."""
+        return _datamunge.SVM_predict_frame(self, newdata)
+    __swig_destroy__ = _datamunge.delete_SVM
+
+# Register SVM in _datamunge:
+_datamunge.SVM_swigregister(SVM)
+class DecisionTreeClassifier(object):
+    r"""SWIG-friendly facade for datamunge::stats::DecisionTreeClassifier — a CART-style classification tree."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type criterion: string, optional
+        :param criterion: "gini" (default) or "entropy".
+        """
+        _datamunge.DecisionTreeClassifier_swiginit(self, _datamunge.new_DecisionTreeClassifier(*args))
+
+    def classes(self):
+        return _datamunge.DecisionTreeClassifier_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.DecisionTreeClassifier_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.DecisionTreeClassifier_observations(self)
+
+    def node_count(self):
+        return _datamunge.DecisionTreeClassifier_node_count(self)
+
+    def leaf_count(self):
+        return _datamunge.DecisionTreeClassifier_leaf_count(self)
+
+    def depth(self):
+        return _datamunge.DecisionTreeClassifier_depth(self)
+
+    def feature_importance(self):
+        return _datamunge.DecisionTreeClassifier_feature_importance(self)
+
+    def training_accuracy(self):
+        return _datamunge.DecisionTreeClassifier_training_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes()."""
+        return _datamunge.DecisionTreeClassifier_confusion_matrix(self)
+
+    def summary(self):
+        return _datamunge.DecisionTreeClassifier_summary(self)
+
+    def print_summary(self):
+        return _datamunge.DecisionTreeClassifier_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.DecisionTreeClassifier_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column plus one numeric probability column per class (prob_<class>)."""
+        return _datamunge.DecisionTreeClassifier_predict_frame(self, newdata)
+
+    def plot_classification(self, data, x_feature, y_feature):
+        r"""
+        Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+               points overlaid in a distinct marker.
+        """
+        return _datamunge.DecisionTreeClassifier_plot_classification(self, data, x_feature, y_feature)
+
+    def plot_decision_regions(self, x_feature, y_feature, grid_resolution=60):
+        r"""Background grid of predicted class regions plus training points; requires exactly 2 predictors."""
+        return _datamunge.DecisionTreeClassifier_plot_decision_regions(self, x_feature, y_feature, grid_resolution)
+    __swig_destroy__ = _datamunge.delete_DecisionTreeClassifier
+
+# Register DecisionTreeClassifier in _datamunge:
+_datamunge.DecisionTreeClassifier_swigregister(DecisionTreeClassifier)
+class DecisionTreeRegressor(object):
+    r"""SWIG-friendly facade for datamunge::stats::DecisionTreeRegressor — a CART-style regression tree."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, max_depth=5, min_samples_split=2, min_samples_leaf=1):
+        _datamunge.DecisionTreeRegressor_swiginit(self, _datamunge.new_DecisionTreeRegressor(data, formula, max_depth, min_samples_split, min_samples_leaf))
+
+    def predictor_names(self):
+        return _datamunge.DecisionTreeRegressor_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.DecisionTreeRegressor_observations(self)
+
+    def node_count(self):
+        return _datamunge.DecisionTreeRegressor_node_count(self)
+
+    def leaf_count(self):
+        return _datamunge.DecisionTreeRegressor_leaf_count(self)
+
+    def depth(self):
+        return _datamunge.DecisionTreeRegressor_depth(self)
+
+    def feature_importance(self):
+        return _datamunge.DecisionTreeRegressor_feature_importance(self)
+
+    def fitted_values(self):
+        return _datamunge.DecisionTreeRegressor_fitted_values(self)
+
+    def r_squared(self):
+        return _datamunge.DecisionTreeRegressor_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.DecisionTreeRegressor_rmse(self)
+
+    def summary(self):
+        return _datamunge.DecisionTreeRegressor_summary(self)
+
+    def print_summary(self):
+        return _datamunge.DecisionTreeRegressor_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.DecisionTreeRegressor_predict(self, newdata)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.DecisionTreeRegressor_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.DecisionTreeRegressor_plot_residuals_vs_fitted(self)
+    __swig_destroy__ = _datamunge.delete_DecisionTreeRegressor
+
+# Register DecisionTreeRegressor in _datamunge:
+_datamunge.DecisionTreeRegressor_swigregister(DecisionTreeRegressor)
 

@@ -1,4 +1,4 @@
-TARGET := "dataframe_ex"
+TARGET := "glm_iris_ex"
 BENCH_TARGET := "linalg_bench"
 JOBS := "20"
 

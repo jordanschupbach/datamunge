@@ -414,6 +414,137 @@ sub STORE {
     return $self->$member_func($newval);
 }
 
+############# Class : Datamunge::DataFrame ##############
+
+package Datamunge::DataFrame;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_DataFrame(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*nrows = *Datamungec::DataFrame_nrows;
+*ncols = *Datamungec::DataFrame_ncols;
+*shape = *Datamungec::DataFrame_shape;
+*columns = *Datamungec::DataFrame_columns;
+*add_numeric_column = *Datamungec::DataFrame_add_numeric_column;
+*add_string_column = *Datamungec::DataFrame_add_string_column;
+*add_string_column_encoded = *Datamungec::DataFrame_add_string_column_encoded;
+*fill_null_numeric = *Datamungec::DataFrame_fill_null_numeric;
+*fill_null_string = *Datamungec::DataFrame_fill_null_string;
+*select = *Datamungec::DataFrame_select;
+*select_encoded = *Datamungec::DataFrame_select_encoded;
+*sort_by = *Datamungec::DataFrame_sort_by;
+*drop_duplicates = *Datamungec::DataFrame_drop_duplicates;
+*drop_duplicates_encoded = *Datamungec::DataFrame_drop_duplicates_encoded;
+*group_by_sum = *Datamungec::DataFrame_group_by_sum;
+*group_by_sum_encoded = *Datamungec::DataFrame_group_by_sum_encoded;
+*join = *Datamungec::DataFrame_join;
+*numeric_count = *Datamungec::DataFrame_numeric_count;
+*numeric_null_count = *Datamungec::DataFrame_numeric_null_count;
+*numeric_sum = *Datamungec::DataFrame_numeric_sum;
+*numeric_mean = *Datamungec::DataFrame_numeric_mean;
+*numeric_min = *Datamungec::DataFrame_numeric_min;
+*numeric_max = *Datamungec::DataFrame_numeric_max;
+*to_string = *Datamungec::DataFrame_to_string;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_DataFrame($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::LM ##############
+
+package Datamunge::LM;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_LM(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*formula_text = *Datamungec::LM_formula_text;
+*has_intercept = *Datamungec::LM_has_intercept;
+*observations = *Datamungec::LM_observations;
+*rank = *Datamungec::LM_rank;
+*degrees_of_freedom = *Datamungec::LM_degrees_of_freedom;
+*coefficients = *Datamungec::LM_coefficients;
+*coefficient_names = *Datamungec::LM_coefficient_names;
+*fitted_values = *Datamungec::LM_fitted_values;
+*residuals = *Datamungec::LM_residuals;
+*standard_errors = *Datamungec::LM_standard_errors;
+*t_values = *Datamungec::LM_t_values;
+*p_values = *Datamungec::LM_p_values;
+*r_squared = *Datamungec::LM_r_squared;
+*adjusted_r_squared = *Datamungec::LM_adjusted_r_squared;
+*sigma = *Datamungec::LM_sigma;
+*f_statistic = *Datamungec::LM_f_statistic;
+*f_p_value = *Datamungec::LM_f_p_value;
+*confidence_interval_lower = *Datamungec::LM_confidence_interval_lower;
+*confidence_interval_upper = *Datamungec::LM_confidence_interval_upper;
+*leverage = *Datamungec::LM_leverage;
+*standardized_residuals = *Datamungec::LM_standardized_residuals;
+*studentized_residuals = *Datamungec::LM_studentized_residuals;
+*cooks_distance = *Datamungec::LM_cooks_distance;
+*summary = *Datamungec::LM_summary;
+*print_summary = *Datamungec::LM_print_summary;
+*predict = *Datamungec::LM_predict;
+*predict_frame = *Datamungec::LM_predict_frame;
+*anova = *Datamungec::LM_anova;
+*plot_residuals_vs_fitted = *Datamungec::LM_plot_residuals_vs_fitted;
+*plot_normal_qq = *Datamungec::LM_plot_normal_qq;
+*plot_scale_location = *Datamungec::LM_plot_scale_location;
+*plot_residuals_vs_leverage = *Datamungec::LM_plot_residuals_vs_leverage;
+*save_diagnostic_plots = *Datamungec::LM_save_diagnostic_plots;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_LM($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 # ------- VARIABLE STUBS --------
 
 package Datamunge;

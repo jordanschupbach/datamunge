@@ -237,4 +237,85 @@ export  class DataFrame {
   to_string(): string;
 }
 
+export  class LM {
+
+  constructor(data: DataFrame, formula: string, weights_column: string);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  has_intercept(): boolean;
+
+  observations(): any;
+
+  rank(): any;
+
+  degrees_of_freedom(): any;
+
+  coefficients(): any;
+
+  coefficient_names(): any;
+
+  fitted_values(): any;
+
+  residuals(): any;
+
+  standard_errors(): any;
+
+  t_values(): any;
+
+  p_values(): any;
+
+  r_squared(): number;
+
+  adjusted_r_squared(): number;
+
+  sigma(): number;
+
+  f_statistic(): number;
+
+  f_p_value(): number;
+
+  confidence_interval_lower(level: number): any;
+
+  confidence_interval_lower(): any;
+
+  confidence_interval_upper(level: number): any;
+
+  confidence_interval_upper(): any;
+
+  leverage(): any;
+
+  standardized_residuals(): any;
+
+  studentized_residuals(): any;
+
+  cooks_distance(): any;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame, interval_kind: string, level: number): DataFrame;
+
+  predict_frame(newdata: DataFrame, interval_kind: string): DataFrame;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  anova(): DataFrame;
+
+  plot_residuals_vs_fitted(): any;
+
+  plot_normal_qq(): any;
+
+  plot_scale_location(): any;
+
+  plot_residuals_vs_leverage(): any;
+
+  save_diagnostic_plots(path_prefix: string): void;
+}
+
 

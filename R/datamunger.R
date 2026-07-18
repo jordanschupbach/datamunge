@@ -188,6 +188,7 @@ setClass('_p_std__vectorT_size_t_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_std__string_t', contains = 'C++Reference')
 setClass('_p_datamunge__Callback', contains = 'C++Reference')
 setClass('_p_datamunge__DataFrame', contains = 'C++Reference')
+setClass('_p_datamunge__LM', contains = 'C++Reference')
 
 
 
@@ -3748,5 +3749,690 @@ setMethod('$', '_p_datamunge__DataFrame', function(x, name)
 );
 # end of accessor method for datamunge::DataFrame
 setMethod('delete', '_p_datamunge__DataFrame', function(obj) {delete_datamunge__DataFrame(obj)})
+# Start of new_LM
+
+`LM__SWIG_0` = function(data, formula, weights_column)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  weights_column = as(weights_column, "character"); 
+  ;ans = .Call('R_swig_new_LM__SWIG_0', data, formula, weights_column, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LM", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_LM);
+  ans
+  
+}
+
+attr(`LM__SWIG_0`, 'returnType') = '_p_datamunge__LM'
+attr(`LM__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character')
+class(`LM__SWIG_0`) = c("SWIGFunction", class('LM__SWIG_0'))
+
+# Start of new_LM
+
+`LM__SWIG_1` = function(data, formula)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  ;ans = .Call('R_swig_new_LM__SWIG_1', data, formula, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LM", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_LM);
+  ans
+  
+}
+
+attr(`LM__SWIG_1`, 'returnType') = '_p_datamunge__LM'
+attr(`LM__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`LM__SWIG_1`) = c("SWIGFunction", class('LM__SWIG_1'))
+
+`LM` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- LM__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- LM__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LM with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of LM_formula_text
+
+`LM_formula_text` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_formula_text', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_formula_text`, 'returnType') = 'character'
+attr(`LM_formula_text`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_formula_text`) = c("SWIGFunction", class('LM_formula_text'))
+
+# Start of LM_has_intercept
+
+`LM_has_intercept` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_has_intercept', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_has_intercept`, 'returnType') = 'logical'
+attr(`LM_has_intercept`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_has_intercept`) = c("SWIGFunction", class('LM_has_intercept'))
+
+# Start of LM_observations
+
+`LM_observations` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_observations', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_observations`, 'returnType') = 'integer'
+attr(`LM_observations`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_observations`) = c("SWIGFunction", class('LM_observations'))
+
+# Start of LM_rank
+
+`LM_rank` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_rank', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_rank`, 'returnType') = 'integer'
+attr(`LM_rank`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_rank`) = c("SWIGFunction", class('LM_rank'))
+
+# Start of LM_degrees_of_freedom
+
+`LM_degrees_of_freedom` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_degrees_of_freedom', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_degrees_of_freedom`, 'returnType') = 'integer'
+attr(`LM_degrees_of_freedom`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_degrees_of_freedom`) = c("SWIGFunction", class('LM_degrees_of_freedom'))
+
+# Start of LM_coefficients
+
+`LM_coefficients` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_coefficients', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_coefficients`, 'returnType') = 'numeric'
+attr(`LM_coefficients`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_coefficients`) = c("SWIGFunction", class('LM_coefficients'))
+
+# Start of LM_coefficient_names
+
+`LM_coefficient_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_coefficient_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_coefficient_names`, 'returnType') = 'character'
+attr(`LM_coefficient_names`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_coefficient_names`) = c("SWIGFunction", class('LM_coefficient_names'))
+
+# Start of LM_fitted_values
+
+`LM_fitted_values` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_fitted_values', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_fitted_values`, 'returnType') = 'numeric'
+attr(`LM_fitted_values`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_fitted_values`) = c("SWIGFunction", class('LM_fitted_values'))
+
+# Start of LM_residuals
+
+`LM_residuals` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_residuals', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_residuals`, 'returnType') = 'numeric'
+attr(`LM_residuals`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_residuals`) = c("SWIGFunction", class('LM_residuals'))
+
+# Start of LM_standard_errors
+
+`LM_standard_errors` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_standard_errors', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_standard_errors`, 'returnType') = 'numeric'
+attr(`LM_standard_errors`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_standard_errors`) = c("SWIGFunction", class('LM_standard_errors'))
+
+# Start of LM_t_values
+
+`LM_t_values` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_t_values', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_t_values`, 'returnType') = 'numeric'
+attr(`LM_t_values`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_t_values`) = c("SWIGFunction", class('LM_t_values'))
+
+# Start of LM_p_values
+
+`LM_p_values` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_p_values', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_p_values`, 'returnType') = 'numeric'
+attr(`LM_p_values`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_p_values`) = c("SWIGFunction", class('LM_p_values'))
+
+# Start of LM_r_squared
+
+`LM_r_squared` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_r_squared', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_r_squared`, 'returnType') = 'numeric'
+attr(`LM_r_squared`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_r_squared`) = c("SWIGFunction", class('LM_r_squared'))
+
+# Start of LM_adjusted_r_squared
+
+`LM_adjusted_r_squared` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_adjusted_r_squared', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_adjusted_r_squared`, 'returnType') = 'numeric'
+attr(`LM_adjusted_r_squared`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_adjusted_r_squared`) = c("SWIGFunction", class('LM_adjusted_r_squared'))
+
+# Start of LM_sigma
+
+`LM_sigma` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_sigma', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_sigma`, 'returnType') = 'numeric'
+attr(`LM_sigma`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_sigma`) = c("SWIGFunction", class('LM_sigma'))
+
+# Start of LM_f_statistic
+
+`LM_f_statistic` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_f_statistic', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_f_statistic`, 'returnType') = 'numeric'
+attr(`LM_f_statistic`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_f_statistic`) = c("SWIGFunction", class('LM_f_statistic'))
+
+# Start of LM_f_p_value
+
+`LM_f_p_value` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_f_p_value', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_f_p_value`, 'returnType') = 'numeric'
+attr(`LM_f_p_value`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_f_p_value`) = c("SWIGFunction", class('LM_f_p_value'))
+
+# Start of LM_confidence_interval_lower
+
+`LM_confidence_interval_lower__SWIG_0` = function(self, level, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_LM_confidence_interval_lower__SWIG_0', self, level, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_confidence_interval_lower__SWIG_0`, 'returnType') = 'numeric'
+attr(`LM_confidence_interval_lower__SWIG_0`, "inputTypes") = c('_p_datamunge__LM', 'numeric')
+class(`LM_confidence_interval_lower__SWIG_0`) = c("SWIGFunction", class('LM_confidence_interval_lower__SWIG_0'))
+
+# Start of LM_confidence_interval_lower
+
+`LM_confidence_interval_lower__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_confidence_interval_lower__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_confidence_interval_lower__SWIG_1`, 'returnType') = 'numeric'
+attr(`LM_confidence_interval_lower__SWIG_1`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_confidence_interval_lower__SWIG_1`) = c("SWIGFunction", class('LM_confidence_interval_lower__SWIG_1'))
+
+`LM_confidence_interval_lower` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__LM') || is.null(argv[[1]]) ) {
+      f <- LM_confidence_interval_lower__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__LM') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- LM_confidence_interval_lower__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LM_confidence_interval_lower with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of LM_confidence_interval_upper
+
+`LM_confidence_interval_upper__SWIG_0` = function(self, level, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_LM_confidence_interval_upper__SWIG_0', self, level, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_confidence_interval_upper__SWIG_0`, 'returnType') = 'numeric'
+attr(`LM_confidence_interval_upper__SWIG_0`, "inputTypes") = c('_p_datamunge__LM', 'numeric')
+class(`LM_confidence_interval_upper__SWIG_0`) = c("SWIGFunction", class('LM_confidence_interval_upper__SWIG_0'))
+
+# Start of LM_confidence_interval_upper
+
+`LM_confidence_interval_upper__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_confidence_interval_upper__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_confidence_interval_upper__SWIG_1`, 'returnType') = 'numeric'
+attr(`LM_confidence_interval_upper__SWIG_1`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_confidence_interval_upper__SWIG_1`) = c("SWIGFunction", class('LM_confidence_interval_upper__SWIG_1'))
+
+`LM_confidence_interval_upper` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__LM') || is.null(argv[[1]]) ) {
+      f <- LM_confidence_interval_upper__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__LM') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- LM_confidence_interval_upper__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LM_confidence_interval_upper with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of LM_leverage
+
+`LM_leverage` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_leverage', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_leverage`, 'returnType') = 'numeric'
+attr(`LM_leverage`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_leverage`) = c("SWIGFunction", class('LM_leverage'))
+
+# Start of LM_standardized_residuals
+
+`LM_standardized_residuals` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_standardized_residuals', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_standardized_residuals`, 'returnType') = 'numeric'
+attr(`LM_standardized_residuals`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_standardized_residuals`) = c("SWIGFunction", class('LM_standardized_residuals'))
+
+# Start of LM_studentized_residuals
+
+`LM_studentized_residuals` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_studentized_residuals', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_studentized_residuals`, 'returnType') = 'numeric'
+attr(`LM_studentized_residuals`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_studentized_residuals`) = c("SWIGFunction", class('LM_studentized_residuals'))
+
+# Start of LM_cooks_distance
+
+`LM_cooks_distance` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_cooks_distance', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_cooks_distance`, 'returnType') = 'numeric'
+attr(`LM_cooks_distance`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_cooks_distance`) = c("SWIGFunction", class('LM_cooks_distance'))
+
+# Start of LM_summary
+
+`LM_summary` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_summary', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_summary`, 'returnType') = 'character'
+attr(`LM_summary`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_summary`) = c("SWIGFunction", class('LM_summary'))
+
+# Start of LM_print_summary
+
+`LM_print_summary` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LM_print_summary', self, PACKAGE='datamunger');
+  
+}
+
+attr(`LM_print_summary`, 'returnType') = 'void'
+attr(`LM_print_summary`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_print_summary`) = c("SWIGFunction", class('LM_print_summary'))
+
+# Start of LM_predict
+
+`LM_predict` = function(self, newdata, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(newdata, "ExternalReference")) newdata = slot(newdata,"ref"); 
+  ;.Call('R_swig_LM_predict', self, newdata, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LM_predict`, 'returnType') = 'numeric'
+attr(`LM_predict`, "inputTypes") = c('_p_datamunge__LM', '_p_datamunge__DataFrame')
+class(`LM_predict`) = c("SWIGFunction", class('LM_predict'))
+
+# Start of LM_predict_frame
+
+`LM_predict_frame__SWIG_0` = function(self, newdata, interval_kind, level)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(newdata, "ExternalReference")) newdata = slot(newdata,"ref"); 
+  interval_kind = as(interval_kind, "character"); 
+  
+  ;ans = .Call('R_swig_LM_predict_frame__SWIG_0', self, newdata, interval_kind, level, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_predict_frame__SWIG_0`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`LM_predict_frame__SWIG_0`, "inputTypes") = c('_p_datamunge__LM', '_p_datamunge__DataFrame', 'character', 'numeric')
+class(`LM_predict_frame__SWIG_0`) = c("SWIGFunction", class('LM_predict_frame__SWIG_0'))
+
+# Start of LM_predict_frame
+
+`LM_predict_frame__SWIG_1` = function(self, newdata, interval_kind)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(newdata, "ExternalReference")) newdata = slot(newdata,"ref"); 
+  interval_kind = as(interval_kind, "character"); 
+  ;ans = .Call('R_swig_LM_predict_frame__SWIG_1', self, newdata, interval_kind, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_predict_frame__SWIG_1`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`LM_predict_frame__SWIG_1`, "inputTypes") = c('_p_datamunge__LM', '_p_datamunge__DataFrame', 'character')
+class(`LM_predict_frame__SWIG_1`) = c("SWIGFunction", class('LM_predict_frame__SWIG_1'))
+
+# Start of LM_predict_frame
+
+`LM_predict_frame__SWIG_2` = function(self, newdata)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(newdata, "ExternalReference")) newdata = slot(newdata,"ref"); 
+  ;ans = .Call('R_swig_LM_predict_frame__SWIG_2', self, newdata, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_predict_frame__SWIG_2`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`LM_predict_frame__SWIG_2`, "inputTypes") = c('_p_datamunge__LM', '_p_datamunge__DataFrame')
+class(`LM_predict_frame__SWIG_2`) = c("SWIGFunction", class('LM_predict_frame__SWIG_2'))
+
+`LM_predict_frame` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__LM') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__DataFrame') && length(argv[[2]]) == 1 )) {
+      f <- LM_predict_frame__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__LM') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__DataFrame') && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- LM_predict_frame__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__LM') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__DataFrame') && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- LM_predict_frame__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LM_predict_frame with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of LM_anova
+
+`LM_anova` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LM_anova', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__DataFrame", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_anova`, 'returnType') = '_p_datamunge__DataFrame'
+attr(`LM_anova`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_anova`) = c("SWIGFunction", class('LM_anova'))
+
+# Start of LM_plot_residuals_vs_fitted
+
+`LM_plot_residuals_vs_fitted` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LM_plot_residuals_vs_fitted', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__ScatterPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_plot_residuals_vs_fitted`, 'returnType') = '_p_datamunge__plot__ScatterPlot'
+attr(`LM_plot_residuals_vs_fitted`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_plot_residuals_vs_fitted`) = c("SWIGFunction", class('LM_plot_residuals_vs_fitted'))
+
+# Start of LM_plot_normal_qq
+
+`LM_plot_normal_qq` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LM_plot_normal_qq', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__ScatterPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_plot_normal_qq`, 'returnType') = '_p_datamunge__plot__ScatterPlot'
+attr(`LM_plot_normal_qq`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_plot_normal_qq`) = c("SWIGFunction", class('LM_plot_normal_qq'))
+
+# Start of LM_plot_scale_location
+
+`LM_plot_scale_location` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LM_plot_scale_location', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__ScatterPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_plot_scale_location`, 'returnType') = '_p_datamunge__plot__ScatterPlot'
+attr(`LM_plot_scale_location`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_plot_scale_location`) = c("SWIGFunction", class('LM_plot_scale_location'))
+
+# Start of LM_plot_residuals_vs_leverage
+
+`LM_plot_residuals_vs_leverage` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LM_plot_residuals_vs_leverage', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__plot__ScatterPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LM_plot_residuals_vs_leverage`, 'returnType') = '_p_datamunge__plot__ScatterPlot'
+attr(`LM_plot_residuals_vs_leverage`, "inputTypes") = c('_p_datamunge__LM')
+class(`LM_plot_residuals_vs_leverage`) = c("SWIGFunction", class('LM_plot_residuals_vs_leverage'))
+
+# Start of LM_save_diagnostic_plots
+
+`LM_save_diagnostic_plots` = function(self, path_prefix)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path_prefix = as(path_prefix, "character"); 
+  ;.Call('R_swig_LM_save_diagnostic_plots', self, path_prefix, PACKAGE='datamunger');
+  
+}
+
+attr(`LM_save_diagnostic_plots`, 'returnType') = 'void'
+attr(`LM_save_diagnostic_plots`, "inputTypes") = c('_p_datamunge__LM', 'character')
+class(`LM_save_diagnostic_plots`) = c("SWIGFunction", class('LM_save_diagnostic_plots'))
+
+# Start of delete_LM
+
+`delete_LM` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_LM', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_LM`, 'returnType') = 'void'
+attr(`delete_LM`, "inputTypes") = c('_p_datamunge__LM')
+class(`delete_LM`) = c("SWIGFunction", class('delete_LM'))
+
+# Start of accessor method for datamunge::LM
+setMethod('$', '_p_datamunge__LM', function(x, name)
+
+{
+  accessorFuns = list('formula_text' = LM_formula_text, 'has_intercept' = LM_has_intercept, 'observations' = LM_observations, 'rank' = LM_rank, 'degrees_of_freedom' = LM_degrees_of_freedom, 'coefficients' = LM_coefficients, 'coefficient_names' = LM_coefficient_names, 'fitted_values' = LM_fitted_values, 'residuals' = LM_residuals, 'standard_errors' = LM_standard_errors, 't_values' = LM_t_values, 'p_values' = LM_p_values, 'r_squared' = LM_r_squared, 'adjusted_r_squared' = LM_adjusted_r_squared, 'sigma' = LM_sigma, 'f_statistic' = LM_f_statistic, 'f_p_value' = LM_f_p_value, 'confidence_interval_lower' = LM_confidence_interval_lower, 'confidence_interval_upper' = LM_confidence_interval_upper, 'leverage' = LM_leverage, 'standardized_residuals' = LM_standardized_residuals, 'studentized_residuals' = LM_studentized_residuals, 'cooks_distance' = LM_cooks_distance, 'summary' = LM_summary, 'print_summary' = LM_print_summary, 'predict' = LM_predict, 'predict_frame' = LM_predict_frame, 'anova' = LM_anova, 'plot_residuals_vs_fitted' = LM_plot_residuals_vs_fitted, 'plot_normal_qq' = LM_plot_normal_qq, 'plot_scale_location' = LM_plot_scale_location, 'plot_residuals_vs_leverage' = LM_plot_residuals_vs_leverage, 'save_diagnostic_plots' = LM_save_diagnostic_plots);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::LM
+setMethod('delete', '_p_datamunge__LM', function(obj) {delete_datamunge__LM(obj)})
 
 
