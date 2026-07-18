@@ -932,31 +932,33 @@ public:
 #define SWIGTYPE_p_char swig_types[0]
 #define SWIGTYPE_p_datamunge__Callback swig_types[1]
 #define SWIGTYPE_p_datamunge__DataFrame swig_types[2]
-#define SWIGTYPE_p_difference_type swig_types[3]
-#define SWIGTYPE_p_first_type swig_types[4]
-#define SWIGTYPE_p_int swig_types[5]
-#define SWIGTYPE_p_long_long swig_types[6]
-#define SWIGTYPE_p_second_type swig_types[7]
-#define SWIGTYPE_p_short swig_types[8]
-#define SWIGTYPE_p_signed_char swig_types[9]
-#define SWIGTYPE_p_size_type swig_types[10]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[11]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[12]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[13]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[14]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[15]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[16]
-#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[17]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[18]
-#define SWIGTYPE_p_unsigned_char swig_types[19]
-#define SWIGTYPE_p_unsigned_int swig_types[20]
-#define SWIGTYPE_p_unsigned_long_long swig_types[21]
-#define SWIGTYPE_p_unsigned_short swig_types[22]
-#define SWIGTYPE_p_value_type swig_types[23]
+#define SWIGTYPE_p_datamunge__LM swig_types[3]
+#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[4]
+#define SWIGTYPE_p_difference_type swig_types[5]
+#define SWIGTYPE_p_first_type swig_types[6]
+#define SWIGTYPE_p_int swig_types[7]
+#define SWIGTYPE_p_long_long swig_types[8]
+#define SWIGTYPE_p_second_type swig_types[9]
+#define SWIGTYPE_p_short swig_types[10]
+#define SWIGTYPE_p_signed_char swig_types[11]
+#define SWIGTYPE_p_size_type swig_types[12]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[13]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[14]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[15]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[16]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[17]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[18]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[19]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[20]
+#define SWIGTYPE_p_unsigned_char swig_types[21]
+#define SWIGTYPE_p_unsigned_int swig_types[22]
+#define SWIGTYPE_p_unsigned_long_long swig_types[23]
+#define SWIGTYPE_p_unsigned_short swig_types[24]
+#define SWIGTYPE_p_value_type swig_types[25]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[25];
-SWIGINTERN swig_module_info swig_module = {swig_types, 24, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[27];
+SWIGINTERN swig_module_info swig_module = {swig_types, 26, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -1705,6 +1707,111 @@ public:
     Napi::Env,
     std::map<std::string, _exports_DataFrame_templ::PropertyDescriptor> &,
     std::map<std::string, _exports_DataFrame_templ::PropertyDescriptor> &
+    );
+  static Napi::Function GetClass(Napi::Env);
+};
+// jsnapi_class_prologue_template
+template <typename SWIG_OBJ_WRAP>
+class _exports_LM_templ : public SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP> {
+public:
+  _exports_LM_templ(const Napi::CallbackInfo &);
+_exports_LM_templ(bool, const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_new_LM__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_new_LM__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_formula_text(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_has_intercept(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_observations(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_rank(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_degrees_of_freedom(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_coefficients(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_coefficient_names(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_fitted_values(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_residuals(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_standard_errors(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_t_values(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_p_values(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_r_squared(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_adjusted_r_squared(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_sigma(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_f_statistic(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_f_p_value(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_confidence_interval_lower__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_confidence_interval_lower__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM__wrap_LM_confidence_interval_lower(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_confidence_interval_upper__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_confidence_interval_upper__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM__wrap_LM_confidence_interval_upper(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_leverage(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_standardized_residuals(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_studentized_residuals(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_cooks_distance(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_summary(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_print_summary(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_predict(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_predict_frame__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_predict_frame__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_predict_frame__SWIG_2(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM__wrap_LM_predict_frame(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_anova(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_plot_residuals_vs_fitted(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_plot_normal_qq(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_plot_scale_location(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_plot_residuals_vs_leverage(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_LM_save_diagnostic_plots(const Napi::CallbackInfo &);
+virtual ~_exports_LM_templ();
+// jsnapi_class_epilogue_template
+};
+// jsnapi_class_instance
+class _exports_LM_inst : public _exports_LM_templ<_exports_LM_inst> {
+public:
+  using _exports_LM_templ::_exports_LM_templ;
+  virtual ~_exports_LM_inst() = default;
+  static void GetMembers(
+    Napi::Env,
+    std::map<std::string, _exports_LM_templ::PropertyDescriptor> &,
+    std::map<std::string, _exports_LM_templ::PropertyDescriptor> &
     );
   static Napi::Function GetClass(Napi::Env);
 };
@@ -8784,6 +8891,2455 @@ _exports_DataFrame_templ<SWIG_OBJ_WRAP>::~_exports_DataFrame_templ() {
 }
 
 
+// js_overloaded_ctor
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_new_LM__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Object self;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::LM *result;
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    NAPI_CHECK_RESULT(info.This().ToObject(), self);
+    this->owned = true;
+    if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_LM__SWIG_0.");
+    }
+    res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    {
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[2], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_LM" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    
+    
+    this->self = result;
+    
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+#endif
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  
+  return Napi::Value();
+}
+
+
+// js_overloaded_ctor
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_new_LM__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Object self;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::LM *result;
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    NAPI_CHECK_RESULT(info.This().ToObject(), self);
+    this->owned = true;
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_LM__SWIG_1.");
+    }
+    res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+    
+    
+    this->self = result;
+    
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+#endif
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+  return Napi::Value();
+}
+
+
+// js_ctor_dispatcher
+template <typename SWIG_OBJ_WRAP>
+_exports_LM_templ<SWIG_OBJ_WRAP>::_exports_LM_templ(const Napi::CallbackInfo &info)
+:SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP>(true, info) {
+  Napi::Env env = info.Env();
+  Napi::Object self;
+  NAPI_CHECK_RESULT(info.This().ToObject(), self);
+  this->info = SWIGTYPE_p_datamunge__LM;
+  if (info.Length() == 1 && info[0].IsExternal()) {
+    // This constructor has been called internally from C++/SWIG
+    // to wrap an already existing C++ object in JS
+    this->self = info[0].As<Napi::External<void>>().Data();
+    this->owned = false;
+    return;
+  }
+  
+  // switch all cases by means of series of if-returns.
+  
+  // js_ctor_dispatch_case
+  if(static_cast<int>(info.Length()) >= 3 && static_cast<int>(info.Length()) <= 3) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      _wrap_new_LM__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return;
+#else
+    _wrap_new_LM__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return;
+    }
+#endif
+  }
+  
+  // js_ctor_dispatch_case
+  if(static_cast<int>(info.Length()) >= 2 && static_cast<int>(info.Length()) <= 2) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      _wrap_new_LM__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return;
+#else
+    _wrap_new_LM__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return;
+    }
+#endif
+  }
+  
+  
+  // default:
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for construction of _exports_LM");
+  
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+  return;
+#endif
+}
+
+// This is the extendable constructor to be used from child classes
+template <typename SWIG_OBJ_WRAP>
+_exports_LM_templ<SWIG_OBJ_WRAP>::_exports_LM_templ(bool, const Napi::CallbackInfo &info)
+:SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP>(true, info) {
+  
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_formula_text(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_formula_text.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_formula_text" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->formula_text();
+    
+    
+    
+    jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_has_intercept(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_has_intercept.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_has_intercept" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = (bool)((datamunge::LM const *)arg1)->has_intercept();
+    
+    
+    
+    jsresult = SWIG_From_bool  SWIG_NAPI_FROM_CALL_ARGS(static_cast< bool >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_observations(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_observations.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_observations" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->observations();
+    
+    
+    
+    jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_rank(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_rank.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_rank" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->rank();
+    
+    
+    
+    jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_degrees_of_freedom(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::size_t result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_degrees_of_freedom.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_degrees_of_freedom" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->degrees_of_freedom();
+    
+    
+    
+    jsresult = SWIG_From_size_t  SWIG_NAPI_FROM_CALL_ARGS(static_cast< size_t >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_coefficients(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_coefficients.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_coefficients" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->coefficients();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_coefficient_names(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< std::string > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_coefficient_names.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_coefficient_names" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->coefficient_names();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< std::string >(result)), SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_fitted_values(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_fitted_values.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_fitted_values" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->fitted_values();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_residuals(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_residuals.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_residuals" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->residuals();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_standard_errors(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_standard_errors.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_standard_errors" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->standard_errors();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_t_values(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_t_values.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_t_values" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->t_values();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_p_values(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_p_values.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_p_values" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->p_values();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_r_squared(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_r_squared.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_r_squared" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = (double)((datamunge::LM const *)arg1)->r_squared();
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_adjusted_r_squared(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_adjusted_r_squared.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_adjusted_r_squared" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = (double)((datamunge::LM const *)arg1)->adjusted_r_squared();
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_sigma(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_sigma.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_sigma" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = (double)((datamunge::LM const *)arg1)->sigma();
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_f_statistic(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_f_statistic.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_f_statistic" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = (double)((datamunge::LM const *)arg1)->f_statistic();
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_f_p_value(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_f_p_value.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_f_p_value" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = (double)((datamunge::LM const *)arg1)->f_p_value();
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_confidence_interval_lower__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  std::vector< double > result;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_lower" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LM_confidence_interval_lower" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->confidence_interval_lower(arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_confidence_interval_lower__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_lower" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->confidence_interval_lower();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM__wrap_LM_confidence_interval_lower(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 1 && static_cast<int>(info.Length()) <= 1) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_LM_confidence_interval_lower__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_LM_confidence_interval_lower__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 0 && static_cast<int>(info.Length()) <= 0) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_LM_confidence_interval_lower__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_LM_confidence_interval_lower__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function confidence_interval_lower.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_confidence_interval_upper__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  std::vector< double > result;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_upper" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LM_confidence_interval_upper" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->confidence_interval_upper(arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_confidence_interval_upper__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_upper" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->confidence_interval_upper();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM__wrap_LM_confidence_interval_upper(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 1 && static_cast<int>(info.Length()) <= 1) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_LM_confidence_interval_upper__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_LM_confidence_interval_upper__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 0 && static_cast<int>(info.Length()) <= 0) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_LM_confidence_interval_upper__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_LM_confidence_interval_upper__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function confidence_interval_upper.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_leverage(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_leverage.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_leverage" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->leverage();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_standardized_residuals(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_standardized_residuals.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_standardized_residuals" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->standardized_residuals();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_studentized_residuals(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_studentized_residuals.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_studentized_residuals" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->studentized_residuals();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_cooks_distance(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_cooks_distance.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_cooks_distance" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->cooks_distance();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_summary(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_summary.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_summary" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->summary();
+    
+    
+    
+    jsresult = SWIG_From_std_string  SWIG_NAPI_FROM_CALL_ARGS(static_cast< std::string >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_print_summary(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_print_summary.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_print_summary" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    ((datamunge::LM const *)arg1)->print_summary();
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_predict(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_predict.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_predict_frame__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  double val4 ;
+  int ecode4 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict_frame" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);{
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    ecode4 = SWIG_AsVal_double(info[2], &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "LM_predict_frame" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,arg4);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_predict_frame__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict_frame" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);{
+      {
+        std::string *ptr = (std::string *)0;
+        res3 = SWIG_AsPtr_std_string(info[1], &ptr);
+        if (!SWIG_IsOK(res3)) {
+          SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+        }
+        arg3 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_predict_frame__SWIG_2(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict_frame" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);res2 = SWIG_ConvertPtr(info[0], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM__wrap_LM_predict_frame(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 3 && static_cast<int>(info.Length()) <= 3) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_LM_predict_frame__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_LM_predict_frame__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 2 && static_cast<int>(info.Length()) <= 2) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_LM_predict_frame__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_LM_predict_frame__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 1 && static_cast<int>(info.Length()) <= 1) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_LM_predict_frame__SWIG_2(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_LM_predict_frame__SWIG_2(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function predict_frame.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_anova(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_anova.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_anova" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->anova();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_residuals_vs_fitted(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_residuals_vs_fitted.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_normal_qq(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_normal_qq.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_normal_qq" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->plot_normal_qq();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_scale_location(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_scale_location.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_scale_location" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->plot_scale_location();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_plot_residuals_vs_leverage(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_plot_residuals_vs_leverage.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_residuals_vs_leverage" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    
+    
+    
+    
+    result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_LM_templ<SWIG_OBJ_WRAP>::_wrap_LM_save_diagnostic_plots(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::LM *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_LM_save_diagnostic_plots.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_save_diagnostic_plots" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_save_diagnostic_plots" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_save_diagnostic_plots" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    ((datamunge::LM const *)arg1)->save_diagnostic_plots((std::string const &)*arg2);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_dtoroverride
+template <typename SWIG_OBJ_WRAP>
+_exports_LM_templ<SWIG_OBJ_WRAP>::~_exports_LM_templ() {
+  this->SWIG_Finalize();
+  auto arg1 = reinterpret_cast<datamunge::LM *>(this->self);
+  if (this->owned && arg1) {
+    delete arg1;
+    this->self = SWIG_NULLPTR;
+  }
+}
+
+
 /* -----------------------------------------------------------------------------
  * swigrun_body.swg
  *
@@ -10930,6 +13486,8 @@ fail:
 SWIGINTERN swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "p_datamunge__Callback|datamunge::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *|p_datamunge__DataFrame", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__LM = {"_p_datamunge__LM", "p_datamunge__LM|datamunge::LM *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ScatterPlot = {"_p_datamunge__plot__ScatterPlot", "datamunge::plot::ScatterPlot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
@@ -10959,6 +13517,8 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_char,
   &_swigt__p_datamunge__Callback,
   &_swigt__p_datamunge__DataFrame,
+  &_swigt__p_datamunge__LM,
+  &_swigt__p_datamunge__plot__ScatterPlot,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
@@ -10985,6 +13545,8 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 SWIGINTERN swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__LM[] = {  {&_swigt__p_datamunge__LM, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ScatterPlot[] = {  {&_swigt__p_datamunge__plot__ScatterPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -11011,6 +13573,8 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
   _swigc__p_datamunge__Callback,
   _swigc__p_datamunge__DataFrame,
+  _swigc__p_datamunge__LM,
+  _swigc__p_datamunge__plot__ScatterPlot,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
@@ -11126,6 +13690,307 @@ void _exports_SVector_inst::GetMembers(
     "set",
       _exports_SVector_templ::InstanceMethod("set",
         &_exports_SVector_templ::_wrap_SVector_set,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  
+  /* add static class functions and variables */
+  
+  
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+  return;
+#endif
+}
+
+/* Class: LM (_exports_LM) */
+// jsnapi_getclass
+Napi::Function _exports_LM_inst::GetClass(Napi::Env env) {
+  std::map<std::string, _exports_LM_templ::PropertyDescriptor> members, staticMembers;
+  GetMembers(env, members, staticMembers);
+  
+  std::vector<_exports_LM_inst::PropertyDescriptor> symbolTable;
+  for (auto it = members.begin(); it != members.end(); it++)
+  symbolTable.push_back(it->second);
+  for (auto it = staticMembers.begin(); it != staticMembers.end(); it++)
+  symbolTable.push_back(it->second);
+  
+  return Napi::ObjectWrap<_exports_LM_inst>::DefineClass(env, "LM", symbolTable);
+}
+
+void _exports_LM_inst::GetMembers(
+  Napi::Env env,
+  std::map<std::string, _exports_LM_templ::PropertyDescriptor> &members,
+  std::map<std::string, _exports_LM_templ::PropertyDescriptor> &staticMembers
+  ) {
+  std::map<std::string, SWIG_NAPI_ObjectWrap_templ<SWIG_NAPI_ObjectWrap_inst>::PropertyDescriptor> baseMembers, baseStaticMembers;
+  SWIG_NAPI_ObjectWrap_inst::GetMembers(env, baseMembers, baseStaticMembers);
+  members.insert(baseMembers.begin(), baseMembers.end());
+  staticMembers.insert(staticMembers.begin(), staticMembers.end());
+  
+  /* register wrapper functions */
+  // jsnapi_register_member_function
+  members.erase("formula_text");
+  members.insert({
+    "formula_text",
+      _exports_LM_templ::InstanceMethod("formula_text",
+        &_exports_LM_templ::_wrap_LM_formula_text,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("has_intercept");
+  members.insert({
+    "has_intercept",
+      _exports_LM_templ::InstanceMethod("has_intercept",
+        &_exports_LM_templ::_wrap_LM_has_intercept,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("observations");
+  members.insert({
+    "observations",
+      _exports_LM_templ::InstanceMethod("observations",
+        &_exports_LM_templ::_wrap_LM_observations,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("rank");
+  members.insert({
+    "rank",
+      _exports_LM_templ::InstanceMethod("rank",
+        &_exports_LM_templ::_wrap_LM_rank,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("degrees_of_freedom");
+  members.insert({
+    "degrees_of_freedom",
+      _exports_LM_templ::InstanceMethod("degrees_of_freedom",
+        &_exports_LM_templ::_wrap_LM_degrees_of_freedom,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("coefficients");
+  members.insert({
+    "coefficients",
+      _exports_LM_templ::InstanceMethod("coefficients",
+        &_exports_LM_templ::_wrap_LM_coefficients,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("coefficient_names");
+  members.insert({
+    "coefficient_names",
+      _exports_LM_templ::InstanceMethod("coefficient_names",
+        &_exports_LM_templ::_wrap_LM_coefficient_names,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("fitted_values");
+  members.insert({
+    "fitted_values",
+      _exports_LM_templ::InstanceMethod("fitted_values",
+        &_exports_LM_templ::_wrap_LM_fitted_values,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("residuals");
+  members.insert({
+    "residuals",
+      _exports_LM_templ::InstanceMethod("residuals",
+        &_exports_LM_templ::_wrap_LM_residuals,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("standard_errors");
+  members.insert({
+    "standard_errors",
+      _exports_LM_templ::InstanceMethod("standard_errors",
+        &_exports_LM_templ::_wrap_LM_standard_errors,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("t_values");
+  members.insert({
+    "t_values",
+      _exports_LM_templ::InstanceMethod("t_values",
+        &_exports_LM_templ::_wrap_LM_t_values,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("p_values");
+  members.insert({
+    "p_values",
+      _exports_LM_templ::InstanceMethod("p_values",
+        &_exports_LM_templ::_wrap_LM_p_values,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("r_squared");
+  members.insert({
+    "r_squared",
+      _exports_LM_templ::InstanceMethod("r_squared",
+        &_exports_LM_templ::_wrap_LM_r_squared,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("adjusted_r_squared");
+  members.insert({
+    "adjusted_r_squared",
+      _exports_LM_templ::InstanceMethod("adjusted_r_squared",
+        &_exports_LM_templ::_wrap_LM_adjusted_r_squared,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("sigma");
+  members.insert({
+    "sigma",
+      _exports_LM_templ::InstanceMethod("sigma",
+        &_exports_LM_templ::_wrap_LM_sigma,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("f_statistic");
+  members.insert({
+    "f_statistic",
+      _exports_LM_templ::InstanceMethod("f_statistic",
+        &_exports_LM_templ::_wrap_LM_f_statistic,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("f_p_value");
+  members.insert({
+    "f_p_value",
+      _exports_LM_templ::InstanceMethod("f_p_value",
+        &_exports_LM_templ::_wrap_LM_f_p_value,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("confidence_interval_lower");
+  members.insert({
+    "confidence_interval_lower",
+      _exports_LM_templ::InstanceMethod("confidence_interval_lower",
+        &_exports_LM_templ::_wrap_LM__wrap_LM_confidence_interval_lower,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("confidence_interval_upper");
+  members.insert({
+    "confidence_interval_upper",
+      _exports_LM_templ::InstanceMethod("confidence_interval_upper",
+        &_exports_LM_templ::_wrap_LM__wrap_LM_confidence_interval_upper,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("leverage");
+  members.insert({
+    "leverage",
+      _exports_LM_templ::InstanceMethod("leverage",
+        &_exports_LM_templ::_wrap_LM_leverage,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("standardized_residuals");
+  members.insert({
+    "standardized_residuals",
+      _exports_LM_templ::InstanceMethod("standardized_residuals",
+        &_exports_LM_templ::_wrap_LM_standardized_residuals,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("studentized_residuals");
+  members.insert({
+    "studentized_residuals",
+      _exports_LM_templ::InstanceMethod("studentized_residuals",
+        &_exports_LM_templ::_wrap_LM_studentized_residuals,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("cooks_distance");
+  members.insert({
+    "cooks_distance",
+      _exports_LM_templ::InstanceMethod("cooks_distance",
+        &_exports_LM_templ::_wrap_LM_cooks_distance,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("summary");
+  members.insert({
+    "summary",
+      _exports_LM_templ::InstanceMethod("summary",
+        &_exports_LM_templ::_wrap_LM_summary,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("print_summary");
+  members.insert({
+    "print_summary",
+      _exports_LM_templ::InstanceMethod("print_summary",
+        &_exports_LM_templ::_wrap_LM_print_summary,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("predict");
+  members.insert({
+    "predict",
+      _exports_LM_templ::InstanceMethod("predict",
+        &_exports_LM_templ::_wrap_LM_predict,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("predict_frame");
+  members.insert({
+    "predict_frame",
+      _exports_LM_templ::InstanceMethod("predict_frame",
+        &_exports_LM_templ::_wrap_LM__wrap_LM_predict_frame,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("anova");
+  members.insert({
+    "anova",
+      _exports_LM_templ::InstanceMethod("anova",
+        &_exports_LM_templ::_wrap_LM_anova,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("plot_residuals_vs_fitted");
+  members.insert({
+    "plot_residuals_vs_fitted",
+      _exports_LM_templ::InstanceMethod("plot_residuals_vs_fitted",
+        &_exports_LM_templ::_wrap_LM_plot_residuals_vs_fitted,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("plot_normal_qq");
+  members.insert({
+    "plot_normal_qq",
+      _exports_LM_templ::InstanceMethod("plot_normal_qq",
+        &_exports_LM_templ::_wrap_LM_plot_normal_qq,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("plot_scale_location");
+  members.insert({
+    "plot_scale_location",
+      _exports_LM_templ::InstanceMethod("plot_scale_location",
+        &_exports_LM_templ::_wrap_LM_plot_scale_location,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("plot_residuals_vs_leverage");
+  members.insert({
+    "plot_residuals_vs_leverage",
+      _exports_LM_templ::InstanceMethod("plot_residuals_vs_leverage",
+        &_exports_LM_templ::_wrap_LM_plot_residuals_vs_leverage,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("save_diagnostic_plots");
+  members.insert({
+    "save_diagnostic_plots",
+      _exports_LM_templ::InstanceMethod("save_diagnostic_plots",
+        &_exports_LM_templ::_wrap_LM_save_diagnostic_plots,
         static_cast<napi_property_attributes>(napi_writable | napi_configurable))
     });
   
@@ -11686,6 +14551,16 @@ if (SWIGTYPE_p_datamunge__DataFrame->clientdata == SWIG_NULLPTR) {
 Napi::FunctionReference *_exports_DataFrame_ctor_ref = new Napi::FunctionReference();
 *_exports_DataFrame_ctor_ref = Napi::Persistent(_exports_DataFrame_ctor);
 env.GetInstanceData<EnvInstanceData>()->ctor[8] = _exports_DataFrame_ctor_ref;
+/* Class: LM (_exports_LM) */
+// jsnapi_registerclass
+Napi::Function _exports_LM_ctor = _exports_LM_inst::GetClass(env);
+exports.Set("LM", _exports_LM_ctor);
+if (SWIGTYPE_p_datamunge__LM->clientdata == SWIG_NULLPTR) {
+  SWIGTYPE_p_datamunge__LM->clientdata = new size_t(9);
+}
+Napi::FunctionReference *_exports_LM_ctor_ref = new Napi::FunctionReference();
+*_exports_LM_ctor_ref = Napi::Persistent(_exports_LM_ctor);
+env.GetInstanceData<EnvInstanceData>()->ctor[9] = _exports_LM_ctor_ref;
 
 
   /* initialize the inheritance helpers */
@@ -11836,6 +14711,21 @@ do {
   NAPI_CHECK_RESULT(SWIG_NAPI_ObjectWrap_ctor.Get("prototype"), protoBase);
   NAPI_CHECK_MAYBE(setProto.Call({
     _exports_DataFrame_ctor, SWIG_NAPI_ObjectWrap_ctor
+  }));
+  NAPI_CHECK_MAYBE(setProto.Call({
+    protoSub, protoBase
+  }));
+} while (0);
+
+
+// Inheritance for _exports_LM (LM) <- SWIG_NAPI_ObjectWrap
+// jsnapi_setup_inheritance
+do {
+  Napi::Value protoBase, protoSub;
+  NAPI_CHECK_RESULT(_exports_LM_ctor.Get("prototype"), protoSub);
+  NAPI_CHECK_RESULT(SWIG_NAPI_ObjectWrap_ctor.Get("prototype"), protoBase);
+  NAPI_CHECK_MAYBE(setProto.Call({
+    _exports_LM_ctor, SWIG_NAPI_ObjectWrap_ctor
   }));
   NAPI_CHECK_MAYBE(setProto.Call({
     protoSub, protoBase

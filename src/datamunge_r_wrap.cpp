@@ -1468,36 +1468,38 @@ SWIGINTERN void SWIG_R_Raise(SEXP obj, const char *msg) {
 #define SWIGTYPE_p_char swig_types[1]
 #define SWIGTYPE_p_datamunge__Callback swig_types[2]
 #define SWIGTYPE_p_datamunge__DataFrame swig_types[3]
-#define SWIGTYPE_p_difference_type swig_types[4]
-#define SWIGTYPE_p_first_type swig_types[5]
-#define SWIGTYPE_p_int swig_types[6]
-#define SWIGTYPE_p_long_long swig_types[7]
-#define SWIGTYPE_p_second_type swig_types[8]
-#define SWIGTYPE_p_short swig_types[9]
-#define SWIGTYPE_p_signed_char swig_types[10]
-#define SWIGTYPE_p_size_type swig_types[11]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[12]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[13]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[14]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[15]
-#define SWIGTYPE_p_std__invalid_argument swig_types[16]
-#define SWIGTYPE_p_std__out_of_range swig_types[17]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[18]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[19]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[20]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[21]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[22]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[23]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[24]
-#define SWIGTYPE_p_unsigned_char swig_types[25]
-#define SWIGTYPE_p_unsigned_int swig_types[26]
-#define SWIGTYPE_p_unsigned_long_long swig_types[27]
-#define SWIGTYPE_p_unsigned_short swig_types[28]
-#define SWIGTYPE_p_value_type swig_types[29]
+#define SWIGTYPE_p_datamunge__LM swig_types[4]
+#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[5]
+#define SWIGTYPE_p_difference_type swig_types[6]
+#define SWIGTYPE_p_first_type swig_types[7]
+#define SWIGTYPE_p_int swig_types[8]
+#define SWIGTYPE_p_long_long swig_types[9]
+#define SWIGTYPE_p_second_type swig_types[10]
+#define SWIGTYPE_p_short swig_types[11]
+#define SWIGTYPE_p_signed_char swig_types[12]
+#define SWIGTYPE_p_size_type swig_types[13]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[14]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[15]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[16]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[17]
+#define SWIGTYPE_p_std__invalid_argument swig_types[18]
+#define SWIGTYPE_p_std__out_of_range swig_types[19]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[20]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[21]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[22]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[23]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[24]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[25]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[26]
+#define SWIGTYPE_p_unsigned_char swig_types[27]
+#define SWIGTYPE_p_unsigned_int swig_types[28]
+#define SWIGTYPE_p_unsigned_long_long swig_types[29]
+#define SWIGTYPE_p_unsigned_short swig_types[30]
+#define SWIGTYPE_p_value_type swig_types[31]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[31];
-SWIGINTERN swig_module_info swig_module = {swig_types, 30, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[33];
+SWIGINTERN swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -10173,6 +10175,1350 @@ R_swig_delete_DataFrame ( SEXP self)
 }
 
 
+SWIGEXPORT SEXP
+R_swig_new_LM__SWIG_0 ( SEXP data, SEXP formula, SEXP weights_column)
+{
+  {
+    datamunge::LM *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(weights_column, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_LM" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__LM, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_LM__SWIG_1 ( SEXP data, SEXP formula)
+{
+  {
+    datamunge::LM *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LM" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__LM, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_formula_text ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_formula_text" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->formula_text();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_has_intercept ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_has_intercept" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = (bool)((datamunge::LM const *)arg1)->has_intercept();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_observations ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_observations" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->observations();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_rank ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_rank" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->rank();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_degrees_of_freedom ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_degrees_of_freedom" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->degrees_of_freedom();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_coefficients ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_coefficients" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->coefficients();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_coefficient_names ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::string,std::allocator< std::string > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_coefficient_names" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->coefficient_names();
+    r_ans = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_fitted_values ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_fitted_values" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->fitted_values();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_residuals ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_residuals" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->residuals();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_standard_errors ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_standard_errors" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->standard_errors();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_t_values ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_t_values" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->t_values();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_p_values ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_p_values" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->p_values();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_r_squared ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_r_squared" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = (double)((datamunge::LM const *)arg1)->r_squared();
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_adjusted_r_squared ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_adjusted_r_squared" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = (double)((datamunge::LM const *)arg1)->adjusted_r_squared();
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_sigma ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_sigma" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = (double)((datamunge::LM const *)arg1)->sigma();
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_f_statistic ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_f_statistic" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = (double)((datamunge::LM const *)arg1)->f_statistic();
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_f_p_value ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_f_p_value" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = (double)((datamunge::LM const *)arg1)->f_p_value();
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_confidence_interval_lower__SWIG_0 ( SEXP self, SEXP level, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_lower" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    arg2 = static_cast< double >(REAL(level)[0]);
+    result = ((datamunge::LM const *)arg1)->confidence_interval_lower(arg2);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_confidence_interval_lower__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_lower" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->confidence_interval_lower();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_confidence_interval_upper__SWIG_0 ( SEXP self, SEXP level, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_upper" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    arg2 = static_cast< double >(REAL(level)[0]);
+    result = ((datamunge::LM const *)arg1)->confidence_interval_upper(arg2);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_confidence_interval_upper__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_confidence_interval_upper" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->confidence_interval_upper();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_leverage ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_leverage" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->leverage();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_standardized_residuals ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_standardized_residuals" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->standardized_residuals();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_studentized_residuals ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_studentized_residuals" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->studentized_residuals();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_cooks_distance ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_cooks_distance" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->cooks_distance();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_summary ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_summary" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->summary();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_print_summary ( SEXP self)
+{
+  {
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_print_summary" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    ((datamunge::LM const *)arg1)->print_summary();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_predict ( SEXP self, SEXP newdata, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::LM *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    res2 = SWIG_R_ConvertPtr(newdata, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    result = ((datamunge::LM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_predict_frame__SWIG_0 ( SEXP self, SEXP newdata, SEXP interval_kind, SEXP level)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::LM *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict_frame" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    res2 = SWIG_R_ConvertPtr(newdata, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(interval_kind, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    arg4 = static_cast< double >(REAL(level)[0]);
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_predict_frame__SWIG_1 ( SEXP self, SEXP newdata, SEXP interval_kind)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::LM *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict_frame" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    res2 = SWIG_R_ConvertPtr(newdata, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(interval_kind, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_predict_frame__SWIG_2 ( SEXP self, SEXP newdata)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::LM *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_predict_frame" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    res2 = SWIG_R_ConvertPtr(newdata, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_predict_frame" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_anova ( SEXP self)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_anova" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->anova();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::ScatterPlot result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_residuals_vs_fitted" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_plot_normal_qq ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::ScatterPlot result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_normal_qq" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->plot_normal_qq();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_plot_scale_location ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::ScatterPlot result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_scale_location" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->plot_scale_location();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_plot_residuals_vs_leverage ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::ScatterPlot result;
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_plot_residuals_vs_leverage" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LM_save_diagnostic_plots ( SEXP self, SEXP path_prefix)
+{
+  {
+    datamunge::LM *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LM_save_diagnostic_plots" "', argument " "1"" of type '" "datamunge::LM const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(path_prefix, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LM_save_diagnostic_plots" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LM_save_diagnostic_plots" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::LM const *)arg1)->save_diagnostic_plots((std::string const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_LM ( SEXP self)
+{
+  {
+    datamunge::LM *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__LM, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LM" "', argument " "1"" of type '" "datamunge::LM *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::LM * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
 #ifdef __cplusplus
 }
 #endif
@@ -10183,6 +11529,8 @@ SWIGINTERN swig_type_info _swigt__p_allocator_type = {"_p_allocator_type", "allo
 SWIGINTERN swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__LM = {"_p_datamunge__LM", "datamunge::LM *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ScatterPlot = {"_p_datamunge__plot__ScatterPlot", "datamunge::plot::ScatterPlot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
@@ -10218,6 +11566,8 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_char,
   &_swigt__p_datamunge__Callback,
   &_swigt__p_datamunge__DataFrame,
+  &_swigt__p_datamunge__LM,
+  &_swigt__p_datamunge__plot__ScatterPlot,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
@@ -10250,6 +11600,8 @@ SWIGINTERN swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_
 SWIGINTERN swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__LM[] = {  {&_swigt__p_datamunge__LM, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ScatterPlot[] = {  {&_swigt__p_datamunge__plot__ScatterPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -10282,6 +11634,8 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
   _swigc__p_datamunge__Callback,
   _swigc__p_datamunge__DataFrame,
+  _swigc__p_datamunge__LM,
+  _swigc__p_datamunge__plot__ScatterPlot,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
@@ -10742,7 +12096,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataFrame_numeric_sum", (DL_FUNC) &R_swig_DataFrame_numeric_sum, 3},
    {"R_swig_IVector_pop_back", (DL_FUNC) &R_swig_IVector_pop_back, 1},
    {"R_swig_SizeVector_pop", (DL_FUNC) &R_swig_SizeVector_pop, 2},
+   {"R_swig_LM_coefficient_names", (DL_FUNC) &R_swig_LM_coefficient_names, 2},
    {"R_swig_DVector_pop", (DL_FUNC) &R_swig_DVector_pop, 2},
+   {"R_swig_LM_formula_text", (DL_FUNC) &R_swig_LM_formula_text, 2},
    {"R_swig_new_IPair__SWIG_0", (DL_FUNC) &R_swig_new_IPair__SWIG_0, 0},
    {"R_swig_new_IPair__SWIG_1", (DL_FUNC) &R_swig_new_IPair__SWIG_1, 2},
    {"R_swig_SVector___delitem__", (DL_FUNC) &R_swig_SVector___delitem__, 2},
@@ -10755,15 +12111,21 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SizeVector___delslice__", (DL_FUNC) &R_swig_SizeVector___delslice__, 3},
    {"R_swig_new_SVector__SWIG_3", (DL_FUNC) &R_swig_new_SVector__SWIG_3, 2},
    {"R_swig_SVector_swap", (DL_FUNC) &R_swig_SVector_swap, 2},
+   {"R_swig_LM_predict_frame__SWIG_0", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_0, 4},
+   {"R_swig_LM_predict_frame__SWIG_1", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_1, 3},
+   {"R_swig_LM_predict_frame__SWIG_2", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_2, 2},
    {"R_swig_DVector___len__", (DL_FUNC) &R_swig_DVector___len__, 2},
    {"R_swig_DVector_assign", (DL_FUNC) &R_swig_DVector_assign, 3},
+   {"R_swig_LM_residuals", (DL_FUNC) &R_swig_LM_residuals, 2},
    {"R_swig_IPair_first_get", (DL_FUNC) &R_swig_IPair_first_get, 2},
    {"R_swig_IVector_get_allocator", (DL_FUNC) &R_swig_IVector_get_allocator, 2},
+   {"R_swig_LM_standardized_residuals", (DL_FUNC) &R_swig_LM_standardized_residuals, 2},
    {"R_swig_SizeVector_assign", (DL_FUNC) &R_swig_SizeVector_assign, 3},
    {"R_swig_DataFrame_fill_null_numeric", (DL_FUNC) &R_swig_DataFrame_fill_null_numeric, 3},
    {"R_swig_SizeVector_back", (DL_FUNC) &R_swig_SizeVector_back, 2},
    {"R_swig_SizeVector___getslice__", (DL_FUNC) &R_swig_SizeVector___getslice__, 3},
    {"R_swig_SizeVector_reserve", (DL_FUNC) &R_swig_SizeVector_reserve, 2},
+   {"R_swig_LM_standard_errors", (DL_FUNC) &R_swig_LM_standard_errors, 2},
    {"R_swig_DataFrame_add_string_column_encoded__SWIG_0", (DL_FUNC) &R_swig_DataFrame_add_string_column_encoded__SWIG_0, 4},
    {"R_swig_IVector_clear", (DL_FUNC) &R_swig_IVector_clear, 1},
    {"R_swig_DataFrame_add_string_column_encoded__SWIG_1", (DL_FUNC) &R_swig_DataFrame_add_string_column_encoded__SWIG_1, 3},
@@ -10773,8 +12135,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector_empty", (DL_FUNC) &R_swig_IVector_empty, 2},
    {"R_swig_IVector___getitem__", (DL_FUNC) &R_swig_IVector___getitem__, 3},
    {"R_swig_map_dvector_with_callback", (DL_FUNC) &R_swig_map_dvector_with_callback, 3},
+   {"R_swig_LM_coefficients", (DL_FUNC) &R_swig_LM_coefficients, 2},
    {"R_swig_IVector_front", (DL_FUNC) &R_swig_IVector_front, 2},
    {"R_swig_SVector_clear", (DL_FUNC) &R_swig_SVector_clear, 1},
+   {"R_swig_LM_f_p_value", (DL_FUNC) &R_swig_LM_f_p_value, 2},
    {"R_swig_IPair_first_set", (DL_FUNC) &R_swig_IPair_first_set, 2},
    {"R_swig_DVector_pop_back", (DL_FUNC) &R_swig_DVector_pop_back, 1},
    {"R_swig_SizeVector_size", (DL_FUNC) &R_swig_SizeVector_size, 2},
@@ -10791,8 +12155,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataFrame_join__SWIG_1", (DL_FUNC) &R_swig_DataFrame_join__SWIG_1, 4},
    {"R_swig_DataFrame_numeric_count", (DL_FUNC) &R_swig_DataFrame_numeric_count, 3},
    {"R_swig_IVector___delslice__", (DL_FUNC) &R_swig_IVector___delslice__, 3},
+   {"R_swig_delete_LM", (DL_FUNC) &R_swig_delete_LM, 1},
    {"R_swig_SVector_front", (DL_FUNC) &R_swig_SVector_front, 2},
    {"R_swig_SizeVector_clear", (DL_FUNC) &R_swig_SizeVector_clear, 1},
+   {"R_swig_LM_observations", (DL_FUNC) &R_swig_LM_observations, 2},
    {"R_swig_DVector_resize__SWIG_0", (DL_FUNC) &R_swig_DVector_resize__SWIG_0, 2},
    {"R_swig_DVector___delitem__", (DL_FUNC) &R_swig_DVector___delitem__, 2},
    {"R_swig_DataFrame_fill_null_string", (DL_FUNC) &R_swig_DataFrame_fill_null_string, 3},
@@ -10804,6 +12170,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataFrame_numeric_null_count", (DL_FUNC) &R_swig_DataFrame_numeric_null_count, 3},
    {"R_swig_SizeVector_front", (DL_FUNC) &R_swig_SizeVector_front, 2},
    {"R_swig_IVector___nonzero__", (DL_FUNC) &R_swig_IVector___nonzero__, 2},
+   {"R_swig_LM_predict", (DL_FUNC) &R_swig_LM_predict, 3},
    {"R_swig_SVector_get_allocator", (DL_FUNC) &R_swig_SVector_get_allocator, 2},
    {"R_swig_SVector___setitem__", (DL_FUNC) &R_swig_SVector___setitem__, 3},
    {"R_swig_DVector___getslice__", (DL_FUNC) &R_swig_DVector___getslice__, 3},
@@ -10811,36 +12178,48 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SVector_back", (DL_FUNC) &R_swig_SVector_back, 2},
    {"R_swig_DataFrame_select_encoded", (DL_FUNC) &R_swig_DataFrame_select_encoded, 2},
    {"R_swig_SVector___getslice__", (DL_FUNC) &R_swig_SVector___getslice__, 3},
+   {"R_swig_LM_confidence_interval_lower__SWIG_0", (DL_FUNC) &R_swig_LM_confidence_interval_lower__SWIG_0, 3},
    {"R_swig_IVector_size", (DL_FUNC) &R_swig_IVector_size, 2},
+   {"R_swig_LM_confidence_interval_lower__SWIG_1", (DL_FUNC) &R_swig_LM_confidence_interval_lower__SWIG_1, 2},
    {"R_swig_DVector_get_allocator", (DL_FUNC) &R_swig_DVector_get_allocator, 2},
    {"R_swig_DVector_swap", (DL_FUNC) &R_swig_DVector_swap, 2},
    {"R_swig_DPair_first_set", (DL_FUNC) &R_swig_DPair_first_set, 2},
    {"R_swig_IVector_assign", (DL_FUNC) &R_swig_IVector_assign, 3},
    {"R_swig_IVector_reserve", (DL_FUNC) &R_swig_IVector_reserve, 2},
+   {"R_swig_LM_f_statistic", (DL_FUNC) &R_swig_LM_f_statistic, 2},
+   {"R_swig_LM_plot_normal_qq", (DL_FUNC) &R_swig_LM_plot_normal_qq, 2},
    {"R_swig_new_DPair__SWIG_0", (DL_FUNC) &R_swig_new_DPair__SWIG_0, 0},
    {"R_swig_DataFrame_ncols", (DL_FUNC) &R_swig_DataFrame_ncols, 2},
    {"R_swig_new_DPair__SWIG_1", (DL_FUNC) &R_swig_new_DPair__SWIG_1, 2},
    {"R_swig_DataFrame_numeric_min", (DL_FUNC) &R_swig_DataFrame_numeric_min, 3},
+   {"R_swig_LM_has_intercept", (DL_FUNC) &R_swig_LM_has_intercept, 2},
    {"R_swig_new_DPair__SWIG_2", (DL_FUNC) &R_swig_new_DPair__SWIG_2, 1},
    {"R_swig_SVector___nonzero__", (DL_FUNC) &R_swig_SVector___nonzero__, 2},
+   {"R_swig_LM_studentized_residuals", (DL_FUNC) &R_swig_LM_studentized_residuals, 2},
    {"R_swig_delete_SVector", (DL_FUNC) &R_swig_delete_SVector, 1},
+   {"R_swig_LM_p_values", (DL_FUNC) &R_swig_LM_p_values, 2},
    {"R_swig_SizeVector___delitem__", (DL_FUNC) &R_swig_SizeVector___delitem__, 2},
    {"R_swig_DVector___setslice__", (DL_FUNC) &R_swig_DVector___setslice__, 4},
    {"R_swig_SVector_size", (DL_FUNC) &R_swig_SVector_size, 2},
    {"R_swig_IPair_second_set", (DL_FUNC) &R_swig_IPair_second_set, 2},
    {"R_swig_SVector_capacity", (DL_FUNC) &R_swig_SVector_capacity, 2},
+   {"R_swig_LM_print_summary", (DL_FUNC) &R_swig_LM_print_summary, 1},
    {"R_swig_DVector_append", (DL_FUNC) &R_swig_DVector_append, 2},
    {"R_swig_DataFrame_columns", (DL_FUNC) &R_swig_DataFrame_columns, 2},
    {"R_swig_SVector___setslice__", (DL_FUNC) &R_swig_SVector___setslice__, 4},
    {"R_swig_SizeVector_get_allocator", (DL_FUNC) &R_swig_SizeVector_get_allocator, 2},
+   {"R_swig_LM_leverage", (DL_FUNC) &R_swig_LM_leverage, 2},
    {"R_swig_DataFrame_select", (DL_FUNC) &R_swig_DataFrame_select, 2},
    {"R_swig_SizeVector_append", (DL_FUNC) &R_swig_SizeVector_append, 2},
+   {"R_swig_LM_confidence_interval_upper__SWIG_0", (DL_FUNC) &R_swig_LM_confidence_interval_upper__SWIG_0, 3},
    {"R_swig_SizeVector___setitem__", (DL_FUNC) &R_swig_SizeVector___setitem__, 3},
    {"R_swig_DataFrame_sort_by__SWIG_0", (DL_FUNC) &R_swig_DataFrame_sort_by__SWIG_0, 3},
+   {"R_swig_LM_confidence_interval_upper__SWIG_1", (DL_FUNC) &R_swig_LM_confidence_interval_upper__SWIG_1, 2},
    {"R_swig_DataFrame_sort_by__SWIG_1", (DL_FUNC) &R_swig_DataFrame_sort_by__SWIG_1, 2},
    {"R_swig_hello", (DL_FUNC) &R_swig_hello, 0},
    {"R_swig_SizeVector___setslice__", (DL_FUNC) &R_swig_SizeVector___setslice__, 4},
    {"R_swig_delete_IVector", (DL_FUNC) &R_swig_delete_IVector, 1},
+   {"R_swig_LM_r_squared", (DL_FUNC) &R_swig_LM_r_squared, 2},
    {"R_swig_delete_IPair", (DL_FUNC) &R_swig_delete_IPair, 1},
    {"R_swig_DPair_second_get", (DL_FUNC) &R_swig_DPair_second_get, 2},
    {"R_swig_SVector_pop", (DL_FUNC) &R_swig_SVector_pop, 2},
@@ -10855,9 +12234,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector_clear", (DL_FUNC) &R_swig_DVector_clear, 1},
    {"R_swig_DVector___getitem__", (DL_FUNC) &R_swig_DVector___getitem__, 3},
    {"R_swig_make_dvector", (DL_FUNC) &R_swig_make_dvector, 4},
+   {"R_swig_new_LM__SWIG_0", (DL_FUNC) &R_swig_new_LM__SWIG_0, 3},
    {"R_swig_delete_DPair", (DL_FUNC) &R_swig_delete_DPair, 1},
+   {"R_swig_new_LM__SWIG_1", (DL_FUNC) &R_swig_new_LM__SWIG_1, 2},
+   {"R_swig_LM_t_values", (DL_FUNC) &R_swig_LM_t_values, 2},
+   {"R_swig_LM_cooks_distance", (DL_FUNC) &R_swig_LM_cooks_distance, 2},
    {"R_swig_new_Callback", (DL_FUNC) &R_swig_new_Callback, 0},
    {"R_swig_DVector_empty", (DL_FUNC) &R_swig_DVector_empty, 2},
+   {"R_swig_LM_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_LM_plot_residuals_vs_fitted, 2},
    {"R_swig_make_dpair", (DL_FUNC) &R_swig_make_dpair, 3},
    {"R_swig_DataFrame_group_by_sum", (DL_FUNC) &R_swig_DataFrame_group_by_sum, 3},
    {"R_swig_DVector_capacity", (DL_FUNC) &R_swig_DVector_capacity, 2},
@@ -10878,10 +12262,13 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector_resize__SWIG_0", (DL_FUNC) &R_swig_IVector_resize__SWIG_0, 2},
    {"R_swig_IVector_resize__SWIG_1", (DL_FUNC) &R_swig_IVector_resize__SWIG_1, 3},
    {"R_swig_SVector_push_back", (DL_FUNC) &R_swig_SVector_push_back, 2},
+   {"R_swig_LM_summary", (DL_FUNC) &R_swig_LM_summary, 2},
    {"R_swig_SVector_reserve", (DL_FUNC) &R_swig_SVector_reserve, 2},
    {"R_swig_SVector_pop_back", (DL_FUNC) &R_swig_SVector_pop_back, 1},
    {"R_swig_DPair_second_set", (DL_FUNC) &R_swig_DPair_second_set, 2},
+   {"R_swig_LM_fitted_values", (DL_FUNC) &R_swig_LM_fitted_values, 2},
    {"R_swig_DataFrame_nrows", (DL_FUNC) &R_swig_DataFrame_nrows, 2},
+   {"R_swig_LM_plot_scale_location", (DL_FUNC) &R_swig_LM_plot_scale_location, 2},
    {"R_swig_delete_Callback", (DL_FUNC) &R_swig_delete_Callback, 1},
    {"R_swig_SizeVector_swap", (DL_FUNC) &R_swig_SizeVector_swap, 2},
    {"R_swig_DataFrame_drop_duplicates_encoded", (DL_FUNC) &R_swig_DataFrame_drop_duplicates_encoded, 2},
@@ -10889,9 +12276,15 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector___nonzero__", (DL_FUNC) &R_swig_DVector___nonzero__, 2},
    {"R_swig_SizeVector___getitem__", (DL_FUNC) &R_swig_SizeVector___getitem__, 3},
    {"R_swig_DataFrame_numeric_mean", (DL_FUNC) &R_swig_DataFrame_numeric_mean, 3},
+   {"R_swig_LM_sigma", (DL_FUNC) &R_swig_LM_sigma, 2},
    {"R_swig_IVector___setslice__", (DL_FUNC) &R_swig_IVector___setslice__, 4},
    {"R_swig_SVector_assign", (DL_FUNC) &R_swig_SVector_assign, 3},
+   {"R_swig_LM_degrees_of_freedom", (DL_FUNC) &R_swig_LM_degrees_of_freedom, 2},
+   {"R_swig_LM_anova", (DL_FUNC) &R_swig_LM_anova, 1},
+   {"R_swig_LM_rank", (DL_FUNC) &R_swig_LM_rank, 2},
    {"R_swig_IVector___len__", (DL_FUNC) &R_swig_IVector___len__, 2},
+   {"R_swig_LM_save_diagnostic_plots", (DL_FUNC) &R_swig_LM_save_diagnostic_plots, 2},
+   {"R_swig_LM_adjusted_r_squared", (DL_FUNC) &R_swig_LM_adjusted_r_squared, 2},
    {"R_swig_SVector_resize__SWIG_0", (DL_FUNC) &R_swig_SVector_resize__SWIG_0, 2},
    {"R_swig_new_DVector__SWIG_0", (DL_FUNC) &R_swig_new_DVector__SWIG_0, 0},
    {"R_swig_delete_SizeVector", (DL_FUNC) &R_swig_delete_SizeVector, 1},
@@ -10902,6 +12295,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_DVector__SWIG_2", (DL_FUNC) &R_swig_new_DVector__SWIG_2, 1},
    {"R_swig_DVector_size", (DL_FUNC) &R_swig_DVector_size, 2},
    {"R_swig_new_DVector__SWIG_3", (DL_FUNC) &R_swig_new_DVector__SWIG_3, 2},
+   {"R_swig_LM_plot_residuals_vs_leverage", (DL_FUNC) &R_swig_LM_plot_residuals_vs_leverage, 2},
    {"R_swig_DataFrame_numeric_max", (DL_FUNC) &R_swig_DataFrame_numeric_max, 3},
    {"R_swig_call_with_callback", (DL_FUNC) &R_swig_call_with_callback, 3},
    {NULL, NULL, 0}

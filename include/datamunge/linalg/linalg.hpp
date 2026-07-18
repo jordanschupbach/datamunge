@@ -12,3 +12,4 @@
 #include <datamunge/linalg/solvers.hpp>
 #include <datamunge/linalg/dense.hpp>
 #include <datamunge/linalg/regression.hpp>
+#include <datamunge/linalg/tensor.hpp>

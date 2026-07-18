@@ -1,9 +1,16 @@
+#include <datamunge/autodiff/autodiff.hpp>
+#include <datamunge/bayes/bayes.hpp>
 #include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/linalg/tensor.hpp>
+#include <datamunge/optim/optim.hpp>
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/random/random.hpp>
+#include <datamunge/stats/stats.hpp>
 
 #include <cstddef>
+#include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -103,7 +110,34 @@ class DataFrame {
   [[nodiscard]] double numeric_max(const std::string& column_name) const;
   [[nodiscard]] std::string to_string(std::size_t max_rows = 10) const;
 
+  // Bundled sample datasets.
+  [[nodiscard]] static DataFrame* iris();
+  [[nodiscard]] static DataFrame* penguins();
+
  private:
+  friend class LM;
+  friend class LDA;
+  friend class SVM;
+  friend class DecisionTreeClassifier;
+  friend class DecisionTreeRegressor;
+  friend class RandomForestClassifier;
+  friend class RandomForestRegressor;
+  friend class ElasticNet;
+  friend class Ridge;
+  friend class Lasso;
+  friend class KNNClassifier;
+  friend class KNNRegressor;
+  friend class GBMClassifier;
+  friend class GBMRegressor;
+  friend class XGBoostClassifier;
+  friend class XGBoostRegressor;
+  friend class KernelRegression;
+  friend class GaussianProcessRegression;
+  friend class NaiveBayesClassifier;
+  friend class GLM;
+  friend class LMM;
+  friend class GLMM;
+
   explicit DataFrame(dstruct::DataFrame frame);
 
   template <typename T>
@@ -111,6 +145,1137 @@ class DataFrame {
   static std::vector<std::string> split_encoded_strings(const std::string& encoded_values);
 
   dstruct::DataFrame frame_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::LM — R-`lm()`-style linear models fit from a DataFrame.
+class LM {
+ public:
+  /// @param weights_column Optional column name enabling weighted least squares; pass "" (the default) for OLS.
+  LM(const DataFrame& data, const std::string& formula, const std::string& weights_column = "");
+
+  [[nodiscard]] std::string  formula_text() const;
+  [[nodiscard]] bool         has_intercept() const;
+  [[nodiscard]] std::size_t  observations() const;
+  [[nodiscard]] std::size_t  rank() const;
+  [[nodiscard]] std::size_t  degrees_of_freedom() const;
+
+  [[nodiscard]] std::vector<double>      coefficients() const;
+  [[nodiscard]] std::vector<std::string> coefficient_names() const;
+  [[nodiscard]] std::vector<double>      fitted_values() const;
+  [[nodiscard]] std::vector<double>      residuals() const;
+  [[nodiscard]] std::vector<double>      standard_errors() const;
+  [[nodiscard]] std::vector<double>      t_values() const;
+  [[nodiscard]] std::vector<double>      p_values() const;
+
+  [[nodiscard]] double r_squared() const;
+  [[nodiscard]] double adjusted_r_squared() const;
+  [[nodiscard]] double sigma() const;
+  [[nodiscard]] double f_statistic() const;
+  [[nodiscard]] double f_p_value() const;
+
+  [[nodiscard]] std::vector<double> confidence_interval_lower(double level = 0.95) const;
+  [[nodiscard]] std::vector<double> confidence_interval_upper(double level = 0.95) const;
+
+  [[nodiscard]] std::vector<double> leverage() const;
+  [[nodiscard]] std::vector<double> standardized_residuals() const;
+  [[nodiscard]] std::vector<double> studentized_residuals() const;
+  [[nodiscard]] std::vector<double> cooks_distance() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  /// @param interval_kind One of "none", "confidence", "prediction". Returned DataFrame has a "fit" column,
+  ///                      plus "se_fit"/"lwr"/"upr" when an interval is requested.
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
+                                        double level = 0.95) const;
+
+  /// @brief Sequential (Type I) analysis-of-variance table as a DataFrame with columns
+  ///        term/df/sum_sq/mean_sq/f_value/p_value.
+  [[nodiscard]] DataFrame* anova() const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_normal_qq() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_scale_location() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_leverage() const;
+
+  /// @brief Saves all four diagnostic plots as "<path_prefix>_<name>.svg".
+  void save_diagnostic_plots(const std::string& path_prefix) const;
+
+ private:
+  stats::LM lm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::LMM — a linear mixed model fit by
+///        (RE)ML, with a single grouping factor, e.g. "score ~ x1 + (1 + x1 | school)".
+class LMM {
+ public:
+  /// @param reml REML (default) or maximum likelihood.
+  /// @param theta_bound Box-constraint magnitude (relative to the residual SD) for the
+  ///                     DifferentialEvolution search over variance-component parameters.
+  LMM(const DataFrame& data, const std::string& formula, bool reml = true,
+      std::size_t de_population_size = 40, std::size_t de_max_generations = 300, double theta_bound = 5.0,
+      std::size_t seed = 42);
+
+  [[nodiscard]] std::string formula_text() const;
+  [[nodiscard]] std::string group_variable() const;
+  [[nodiscard]] bool        has_random_intercept() const;
+  [[nodiscard]] std::vector<std::string> random_effect_names() const;
+  [[nodiscard]] bool         is_reml() const;
+  [[nodiscard]] std::size_t  observations() const;
+  [[nodiscard]] std::size_t  num_groups() const;
+  [[nodiscard]] std::size_t  rank() const;
+
+  [[nodiscard]] std::vector<double>      coefficients() const;
+  [[nodiscard]] std::vector<std::string> coefficient_names() const;
+  [[nodiscard]] std::vector<double>      standard_errors() const;
+  [[nodiscard]] std::vector<double>      z_values() const;
+  [[nodiscard]] std::vector<double>      p_values() const;
+  [[nodiscard]] std::vector<double>      fitted_values() const;
+  [[nodiscard]] std::vector<double>      residuals() const;
+
+  [[nodiscard]] double residual_variance() const;
+  [[nodiscard]] double residual_std_dev() const;
+  [[nodiscard]] std::vector<double> random_effect_std_devs() const;
+  [[nodiscard]] double              random_effect_correlation(std::size_t i, std::size_t j) const;
+
+  [[nodiscard]] std::vector<std::string> group_labels() const;
+  /// @brief The BLUP random-effect vector for the group at @p group_index (see group_labels()),
+  ///        in the same order as random_effect_names().
+  [[nodiscard]] std::vector<double> random_effects_for_group(std::size_t group_index) const;
+
+  [[nodiscard]] double log_likelihood() const;
+  [[nodiscard]] double deviance() const;
+  [[nodiscard]] double aic() const;
+  [[nodiscard]] double bic() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+ private:
+  stats::LMM lmm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::GLMM — a generalized linear mixed model
+///        fit by penalized quasi-likelihood, with a single grouping factor, e.g.
+///        "success ~ x1 + (1 | school)" with family="binomial".
+class GLMM {
+ public:
+  /// @param family One of "binomial" (logit link) or "poisson" (log link).
+  GLMM(const DataFrame& data, const std::string& formula, const std::string& family = "binomial",
+      std::size_t max_iterations = 20, double tol = 1e-6, std::size_t de_population_size = 30,
+      std::size_t de_max_generations = 150, double theta_bound = 5.0, std::size_t seed = 42);
+
+  [[nodiscard]] std::string formula_text() const;
+  [[nodiscard]] std::string family() const;
+  [[nodiscard]] std::string group_variable() const;
+  [[nodiscard]] bool        has_random_intercept() const;
+  [[nodiscard]] std::vector<std::string> random_effect_names() const;
+  [[nodiscard]] std::size_t  observations() const;
+  [[nodiscard]] std::size_t  num_groups() const;
+  [[nodiscard]] std::size_t  rank() const;
+  [[nodiscard]] std::size_t  iterations() const;
+
+  [[nodiscard]] std::vector<double>      coefficients() const;
+  [[nodiscard]] std::vector<std::string> coefficient_names() const;
+  [[nodiscard]] std::vector<double>      standard_errors() const;
+  [[nodiscard]] std::vector<double>      z_values() const;
+  [[nodiscard]] std::vector<double>      p_values() const;
+  [[nodiscard]] std::vector<double>      fitted_values() const;
+
+  [[nodiscard]] std::vector<double> random_effect_std_devs() const;
+  [[nodiscard]] double              random_effect_correlation(std::size_t i, std::size_t j) const;
+
+  [[nodiscard]] std::vector<std::string> group_labels() const;
+  /// @brief The BLUP random-effect vector for the group at @p group_index (see group_labels()),
+  ///        in the same order as random_effect_names().
+  [[nodiscard]] std::vector<double> random_effects_for_group(std::size_t group_index) const;
+
+  [[nodiscard]] double deviance() const;
+  [[nodiscard]] double aic() const;
+  [[nodiscard]] double bic() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+ private:
+  stats::GLMM glmm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::LDA — R-`MASS::lda()`-style linear discriminant analysis.
+class LDA {
+ public:
+  /// @param priors Optional class prior probabilities (must sum to 1, ordered as classes() once sorted
+  ///               alphabetically); pass an empty vector (the default) to use observed class proportions.
+  LDA(const DataFrame& data, const std::string& formula, const std::vector<double>& priors = {});
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              num_discriminants() const;
+  [[nodiscard]] std::vector<double>      priors() const;
+
+  /// @brief One row per class, one numeric column per predictor.
+  [[nodiscard]] DataFrame* group_means() const;
+  /// @brief One row per predictor, one numeric column per linear discriminant (LD1, LD2, ...).
+  [[nodiscard]] DataFrame* scaling() const;
+  [[nodiscard]] std::vector<double> proportion_of_trace() const;
+
+  [[nodiscard]] double training_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes().
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column, LD1/LD2/... discriminant scores, and posterior_<class> probability columns.
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_discriminants() const;
+  void                                       save_discriminant_plot(const std::string& path) const;
+
+ private:
+  stats::LDA lda_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::SVM — R-`e1071::svm()`-style multi-class SVM classification.
+class SVM {
+ public:
+  /// @param kernel One of "linear", "polynomial", "radial" (default), "sigmoid".
+  /// @param gamma  <= 0 means "auto" = 1 / number of predictors.
+  SVM(const DataFrame& data, const std::string& formula, const std::string& kernel = "radial", double cost = 1.0,
+      double gamma = -1.0, double coef0 = 0.0, int degree = 3, bool scale = true);
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              num_support_vectors() const;
+
+  [[nodiscard]] double     training_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes().
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column plus one numeric vote-count column per class (votes_<class>).
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+ private:
+  stats::SVM svm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::DecisionTreeClassifier — a CART-style classification tree.
+class DecisionTreeClassifier {
+ public:
+  /// @param criterion "gini" (default) or "entropy".
+  DecisionTreeClassifier(const DataFrame& data, const std::string& formula, std::size_t max_depth = 5,
+                          std::size_t min_samples_split = 2, std::size_t min_samples_leaf = 1,
+                          const std::string& criterion = "gini");
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              node_count() const;
+  [[nodiscard]] std::size_t              leaf_count() const;
+  [[nodiscard]] std::size_t              depth() const;
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] double     training_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes().
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column plus one numeric probability column per class (prob_<class>).
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+  /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+  ///        points overlaid in a distinct marker.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+                                                                  const std::string& y_feature) const;
+  /// @brief Background grid of predicted class regions plus training points; requires exactly 2 predictors.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+                                                                   const std::string& y_feature,
+                                                                   std::size_t grid_resolution = 60) const;
+
+ private:
+  stats::DecisionTreeClassifier tree_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::DecisionTreeRegressor — a CART-style regression tree.
+class DecisionTreeRegressor {
+ public:
+  DecisionTreeRegressor(const DataFrame& data, const std::string& formula, std::size_t max_depth = 5,
+                         std::size_t min_samples_split = 2, std::size_t min_samples_leaf = 1);
+
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              node_count() const;
+  [[nodiscard]] std::size_t              leaf_count() const;
+  [[nodiscard]] std::size_t              depth() const;
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+
+ private:
+  stats::DecisionTreeRegressor tree_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::RandomForestClassifier — a bagged ensemble of CART trees,
+///        each fit on a bootstrap sample with a random subset of predictors considered at every split.
+class RandomForestClassifier {
+ public:
+  /// @param criterion "gini" (default) or "entropy".
+  /// @param max_features 0 = auto (floor(sqrt(number of predictors))).
+  RandomForestClassifier(const DataFrame& data, const std::string& formula, std::size_t n_trees = 100,
+                          std::size_t max_depth = 10, std::size_t min_samples_split = 2,
+                          std::size_t min_samples_leaf = 1, std::size_t max_features = 0,
+                          const std::string& criterion = "gini", bool bootstrap = true,
+                          double sample_fraction = 1.0, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_trees() const;
+  [[nodiscard]] std::size_t              max_features_used() const;
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] double     training_accuracy() const;
+  /// @brief Out-of-bag accuracy estimate (majority vote among trees that did not train on each row).
+  [[nodiscard]] double     oob_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes().
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column plus one numeric vote-share column per class (votes_<class>).
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+  /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+  ///        points overlaid in a distinct marker.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+                                                                  const std::string& y_feature) const;
+  /// @brief Background grid of majority-vote predicted class regions plus training points; requires exactly 2
+  ///        predictors.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+                                                                   const std::string& y_feature,
+                                                                   std::size_t grid_resolution = 60) const;
+
+ private:
+  stats::RandomForestClassifier forest_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::RandomForestRegressor — a bagged ensemble of CART regression
+///        trees, each fit on a bootstrap sample with a random subset of predictors considered at every split.
+class RandomForestRegressor {
+ public:
+  /// @param max_features 0 = auto (floor(number of predictors / 3)).
+  RandomForestRegressor(const DataFrame& data, const std::string& formula, std::size_t n_trees = 100,
+                         std::size_t max_depth = 10, std::size_t min_samples_split = 2,
+                         std::size_t min_samples_leaf = 1, std::size_t max_features = 0, bool bootstrap = true,
+                         double sample_fraction = 1.0, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_trees() const;
+  [[nodiscard]] std::size_t              max_features_used() const;
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+  [[nodiscard]] double              oob_r_squared() const;
+  [[nodiscard]] double              oob_rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+
+ private:
+  stats::RandomForestRegressor forest_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::ElasticNet — regularized linear regression fit by
+///        coordinate descent (alpha=0 is ridge, alpha=1 is lasso); see also the Ridge and Lasso convenience
+///        facades below.
+class ElasticNet {
+ public:
+  /// @param alpha L1/L2 mixing: 0 = ridge, 1 = lasso, in between = elastic net.
+  /// @param lambda Regularization strength; pass a negative value (the default) to select it automatically via
+  ///                cross-validation.
+  ElasticNet(const DataFrame& data, const std::string& formula, double alpha = 0.5, double lambda = -1.0,
+             std::size_t n_lambda = 100, std::size_t cv_folds = 5, bool standardize = true,
+             std::uint64_t seed = 42);
+
+  [[nodiscard]] std::string              formula_text() const;
+  [[nodiscard]] bool                     has_intercept() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+
+  [[nodiscard]] double alpha() const;
+  /// @brief The lambda actually used to produce coefficients() -- either the caller-supplied value or the
+  ///        cross-validation-selected one.
+  [[nodiscard]] double lambda() const;
+  [[nodiscard]] bool   lambda_was_selected() const;
+  [[nodiscard]] std::vector<double> lambda_path() const;
+  [[nodiscard]] std::vector<double> cv_mean_squared_error() const;
+
+  [[nodiscard]] std::vector<double> coefficients() const;
+  [[nodiscard]] double              intercept() const;
+  [[nodiscard]] std::size_t         non_zero_coefficients() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] std::vector<double> residuals() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  /// @brief Coefficient trace (one series per predictor) across the lambda path; throws unless lambda was
+  ///        auto-selected.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_coefficient_path() const;
+  /// @brief Cross-validated MSE across the lambda path with the selected lambda marked; throws unless lambda
+  ///        was auto-selected.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+
+ private:
+  stats::ElasticNet net_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::Ridge — pure L2-penalized ("ridge") regression, a special
+///        case of ElasticNet with alpha fixed to 0. Shrinks coefficients toward zero without ever zeroing them.
+class Ridge {
+ public:
+  Ridge(const DataFrame& data, const std::string& formula, double lambda = -1.0, std::size_t n_lambda = 100,
+        std::size_t cv_folds = 5, bool standardize = true, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::string              formula_text() const;
+  [[nodiscard]] bool                     has_intercept() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+
+  [[nodiscard]] double lambda() const;
+  [[nodiscard]] bool   lambda_was_selected() const;
+  [[nodiscard]] std::vector<double> lambda_path() const;
+  [[nodiscard]] std::vector<double> cv_mean_squared_error() const;
+
+  [[nodiscard]] std::vector<double> coefficients() const;
+  [[nodiscard]] double              intercept() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] std::vector<double> residuals() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+
+ private:
+  stats::Ridge ridge_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::Lasso — pure L1-penalized ("lasso") regression, a special
+///        case of ElasticNet with alpha fixed to 1. Can shrink coefficients exactly to zero, performing
+///        variable selection.
+class Lasso {
+ public:
+  Lasso(const DataFrame& data, const std::string& formula, double lambda = -1.0, std::size_t n_lambda = 100,
+        std::size_t cv_folds = 5, bool standardize = true, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::string              formula_text() const;
+  [[nodiscard]] bool                     has_intercept() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+
+  [[nodiscard]] double lambda() const;
+  [[nodiscard]] bool   lambda_was_selected() const;
+  [[nodiscard]] std::vector<double> lambda_path() const;
+  [[nodiscard]] std::vector<double> cv_mean_squared_error() const;
+
+  [[nodiscard]] std::vector<double> coefficients() const;
+  [[nodiscard]] double              intercept() const;
+  [[nodiscard]] std::size_t         non_zero_coefficients() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] std::vector<double> residuals() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+
+ private:
+  stats::Lasso lasso_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::KNNClassifier — k-nearest-neighbors classification.
+///        Since a training point's nearest neighbor is always itself, training_accuracy()/confusion_matrix()
+///        report leave-one-out performance rather than a trivial resubstitution fit.
+class KNNClassifier {
+ public:
+  /// @param metric "euclidean" (default) or "manhattan".
+  KNNClassifier(const DataFrame& data, const std::string& formula, std::size_t k = 5,
+                const std::string& metric = "euclidean", bool weighted = false, bool standardize = true);
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              k() const;
+
+  [[nodiscard]] double     training_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes(); leave-one-out.
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column plus one numeric vote-share column per class (votes_<class>).
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+  /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+  ///        points overlaid in a distinct marker.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+                                                                  const std::string& y_feature) const;
+  /// @brief Background grid of predicted class regions plus training points; requires exactly 2 predictors.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+                                                                   const std::string& y_feature,
+                                                                   std::size_t grid_resolution = 60) const;
+
+ private:
+  stats::KNNClassifier knn_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::KNNRegressor — k-nearest-neighbors regression. As with
+///        KNNClassifier, fitted_values()/r_squared()/rmse() report leave-one-out performance.
+class KNNRegressor {
+ public:
+  /// @param metric "euclidean" (default) or "manhattan".
+  KNNRegressor(const DataFrame& data, const std::string& formula, std::size_t k = 5,
+              const std::string& metric = "euclidean", bool weighted = false, bool standardize = true);
+
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              k() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+
+ private:
+  stats::KNNRegressor knn_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::GBMClassifier — multiclass gradient boosting (a sequence
+///        of shallow trees, one per class per round, fit to the current multinomial-deviance gradient).
+class GBMClassifier {
+ public:
+  GBMClassifier(const DataFrame& data, const std::string& formula, std::size_t n_trees = 100,
+                double learning_rate = 0.1, std::size_t max_depth = 3, std::size_t min_samples_split = 2,
+                std::size_t min_samples_leaf = 1, double subsample = 1.0, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_trees() const;
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] double     training_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes().
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+  /// @brief Multinomial deviance on the training set after each boosting round (length n_trees()).
+  [[nodiscard]] std::vector<double> training_deviance() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column plus one numeric probability column per class (prob_<class>).
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+                                                                  const std::string& y_feature) const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+                                                                   const std::string& y_feature,
+                                                                   std::size_t grid_resolution = 60) const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+
+ private:
+  stats::GBMClassifier gbm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::GBMRegressor — a sequence of shallow regression trees,
+///        each fit to the residuals of the current ensemble (gradient boosting on squared error).
+class GBMRegressor {
+ public:
+  GBMRegressor(const DataFrame& data, const std::string& formula, std::size_t n_trees = 100,
+              double learning_rate = 0.1, std::size_t max_depth = 3, std::size_t min_samples_split = 2,
+              std::size_t min_samples_leaf = 1, double subsample = 1.0, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_trees() const;
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+  /// @brief Mean squared error on the training set after each boosting round (length n_trees()).
+  [[nodiscard]] std::vector<double> training_deviance() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+
+ private:
+  stats::GBMRegressor gbm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::XGBoostClassifier — regularized, second-order (gradient +
+///        Hessian) multiclass gradient boosting, using the same regularized-gain tree-growing objective as the
+///        XGBoost algorithm (L1/L2 leaf regularization plus a per-split complexity penalty).
+class XGBoostClassifier {
+ public:
+  XGBoostClassifier(const DataFrame& data, const std::string& formula, std::size_t n_trees = 100,
+                    double learning_rate = 0.3, std::size_t max_depth = 6, double lambda = 1.0, double alpha = 0.0,
+                    double gamma = 0.0, double min_child_weight = 1.0, std::size_t min_samples_leaf = 1,
+                    double subsample = 1.0, double colsample_bytree = 1.0, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_trees() const;
+  /// @brief Gain-based importance (XGBoost's default "gain" metric), normalized to sum to 1.
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] double     training_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes().
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+  /// @brief Multinomial deviance on the training set after each boosting round (length n_trees()).
+  [[nodiscard]] std::vector<double> training_deviance() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column plus one numeric probability column per class (prob_<class>).
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+                                                                  const std::string& y_feature) const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+                                                                   const std::string& y_feature,
+                                                                   std::size_t grid_resolution = 60) const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+
+ private:
+  stats::XGBoostClassifier xgb_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::XGBoostRegressor — regularized, second-order gradient
+///        boosting regression with the same tree-growing objective as the XGBoost algorithm.
+class XGBoostRegressor {
+ public:
+  XGBoostRegressor(const DataFrame& data, const std::string& formula, std::size_t n_trees = 100,
+                   double learning_rate = 0.3, std::size_t max_depth = 6, double lambda = 1.0, double alpha = 0.0,
+                   double gamma = 0.0, double min_child_weight = 1.0, std::size_t min_samples_leaf = 1,
+                   double subsample = 1.0, double colsample_bytree = 1.0, std::uint64_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_trees() const;
+  [[nodiscard]] std::vector<double>      feature_importance() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+  [[nodiscard]] std::vector<double> training_deviance() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+
+ private:
+  stats::XGBoostRegressor xgb_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::KernelRegression — Nadaraya-Watson kernel regression, a
+///        nonparametric fit where each prediction is a kernel-weighted average of training responses.
+class KernelRegression {
+ public:
+  /// @param kernel "gaussian" (default), "epanechnikov", "uniform", or "triangular".
+  /// @param bandwidth Bandwidth in standardized-predictor units; pass a negative value (the default) to select
+  ///                   it automatically via leave-one-out cross-validation.
+  KernelRegression(const DataFrame& data, const std::string& formula, const std::string& kernel = "gaussian",
+                   double bandwidth = -1.0, std::size_t n_bandwidth = 50, bool standardize = true);
+
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+
+  /// @brief The bandwidth actually used -- either the caller-supplied value or the cross-validation-selected one.
+  [[nodiscard]] double bandwidth() const;
+  [[nodiscard]] bool   bandwidth_was_selected() const;
+  [[nodiscard]] std::vector<double> bandwidth_grid() const;
+  [[nodiscard]] std::vector<double> cv_mean_squared_error() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  /// @brief Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200) const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
+
+ private:
+  stats::KernelRegression kernel_regression_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::GaussianProcessRegression — exact Gaussian process
+///        regression with an RBF kernel, fit via Cholesky decomposition. Unlike every other regressor here,
+///        predictions come with a principled posterior confidence interval; see predict_frame().
+class GaussianProcessRegression {
+ public:
+  /// @param length_scale RBF kernel length scale in standardized-predictor units; pass a negative value (the
+  ///                       default) to select it automatically by maximizing the log marginal likelihood.
+  /// @param noise_ratio noise_variance / signal_variance; pass a negative value (the default) to select it
+  ///                     automatically the same way (0 is a legal fixed value: a noiseless/interpolating GP).
+  GaussianProcessRegression(const DataFrame& data, const std::string& formula, double length_scale = -1.0,
+                            double noise_ratio = -1.0, std::size_t n_length_scale_grid = 20,
+                            std::size_t n_noise_grid = 15, bool standardize = true);
+
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+
+  [[nodiscard]] double length_scale() const;
+  [[nodiscard]] double signal_variance() const;
+  [[nodiscard]] double noise_variance() const;
+  [[nodiscard]] double log_marginal_likelihood() const;
+  [[nodiscard]] bool   length_scale_was_selected() const;
+  [[nodiscard]] bool   noise_ratio_was_selected() const;
+  [[nodiscard]] std::vector<double> length_scale_grid() const;
+  [[nodiscard]] std::vector<double> length_scale_profile_log_likelihood() const;
+
+  [[nodiscard]] std::vector<double> fitted_values() const;
+  [[nodiscard]] double              r_squared() const;
+  [[nodiscard]] double              rmse() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+  /// @param interval_kind One of "none" or "confidence". Returned DataFrame has a "fit" column, plus
+  ///                      "se_fit"/"lwr"/"upr" when an interval is requested.
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
+                                        double level = 0.95) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200,
+                                                       double level = 0.95) const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_length_scale_profile() const;
+
+ private:
+  stats::GaussianProcessRegression gpr_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::NaiveBayesClassifier — a Naive Bayes classifier that
+///        models numeric predictors with per-class Gaussians and categorical predictors with per-class
+///        frequency tables (each categorical predictor's levels modeled jointly as one variable, not as
+///        separate independent dummy features).
+class NaiveBayesClassifier {
+ public:
+  NaiveBayesClassifier(const DataFrame& data, const std::string& formula, double laplace_smoothing = 1.0,
+                       double var_smoothing = 1e-9);
+
+  [[nodiscard]] std::vector<std::string> classes() const;
+  [[nodiscard]] std::vector<std::string> predictor_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::vector<double>      class_priors() const;
+
+  [[nodiscard]] double     training_accuracy() const;
+  /// @brief "actual" column plus one numeric column per class (counts), both ordered as classes().
+  [[nodiscard]] DataFrame* confusion_matrix() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<std::string> predict(const DataFrame& newdata) const;
+  /// @brief "class" column plus one numeric probability column per class (prob_<class>).
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+                                                                  const std::string& y_feature) const;
+  /// @brief Background grid of predicted class regions; requires exactly two predictors, both numeric.
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+                                                                   const std::string& y_feature,
+                                                                   std::size_t grid_resolution = 60) const;
+
+ private:
+  stats::NaiveBayesClassifier nb_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::GLM — a generalized linear model (gaussian, binomial,
+///        poisson, or Gamma family with its canonical link, matching R's glm() defaults) fit by iteratively
+///        reweighted least squares.
+class GLM {
+ public:
+  /// @param family One of "gaussian" (identity link), "binomial" (logit link), "poisson" (log link), or
+  ///                "Gamma" (inverse link).
+  /// @param weights_column Optional column name enabling prior weights; pass "" (the default) for none.
+  GLM(const DataFrame& data, const std::string& formula, const std::string& family = "gaussian",
+      const std::string& weights_column = "", std::size_t max_iter = 25, double tol = 1e-8);
+
+  [[nodiscard]] std::string  formula_text() const;
+  [[nodiscard]] std::string  family() const;
+  [[nodiscard]] bool         has_intercept() const;
+  [[nodiscard]] std::size_t  observations() const;
+  [[nodiscard]] std::size_t  rank() const;
+  [[nodiscard]] std::size_t  degrees_of_freedom() const;
+
+  [[nodiscard]] std::vector<double>      coefficients() const;
+  [[nodiscard]] std::vector<std::string> coefficient_names() const;
+  [[nodiscard]] std::vector<double>      fitted_values() const;      // response scale
+  [[nodiscard]] std::vector<double>      linear_predictors() const;
+  [[nodiscard]] std::vector<double>      residuals() const;          // deviance residuals
+  [[nodiscard]] std::vector<double>      pearson_residuals() const;
+  [[nodiscard]] std::vector<double>      standardized_residuals() const;
+  [[nodiscard]] std::vector<double>      leverage() const;
+  [[nodiscard]] std::vector<double>      standard_errors() const;
+  [[nodiscard]] std::vector<double>      test_statistics() const;
+  [[nodiscard]] std::vector<double>      p_values() const;
+
+  [[nodiscard]] double deviance() const;
+  [[nodiscard]] double null_deviance() const;
+  [[nodiscard]] double dispersion() const;
+  [[nodiscard]] double aic() const;
+
+  [[nodiscard]] std::vector<double> confidence_interval_lower(double level = 0.95) const;
+  [[nodiscard]] std::vector<double> confidence_interval_upper(double level = 0.95) const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  /// @brief Response-scale predictions (back-transformed through the inverse link).
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+  /// @param interval_kind One of "none" or "confidence". Returned DataFrame has a "fit" column, plus
+  ///                      "se_fit"/"lwr"/"upr" when an interval is requested.
+  [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
+                                        double level = 0.95) const;
+
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_normal_qq() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_scale_location() const;
+  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_leverage() const;
+  void                                        save_diagnostic_plots(const std::string& path_prefix) const;
+
+ private:
+  stats::GLM glm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::linalg::Tensor -- a dense, row-major, N-dimensional
+///        array that can hold float64, bool, or string elements (chosen at construction).
+class Tensor {
+ public:
+  /// @param dtype One of "float64", "bool", or "string".
+  explicit Tensor(const std::vector<std::size_t>& shape, const std::string& dtype = "float64");
+
+  [[nodiscard]] static Tensor* zeros(const std::vector<std::size_t>& shape);
+  [[nodiscard]] static Tensor* ones(const std::vector<std::size_t>& shape);
+  [[nodiscard]] static Tensor* full(const std::vector<std::size_t>& shape, double value);
+  [[nodiscard]] static Tensor* from_values(const std::vector<std::size_t>& shape, const std::vector<double>& values);
+  [[nodiscard]] static Tensor* from_bool_values(const std::vector<std::size_t>& shape, const std::vector<int>& values);
+  [[nodiscard]] static Tensor* from_string_values(const std::vector<std::size_t>& shape,
+                                                  const std::vector<std::string>& values);
+  [[nodiscard]] static Tensor* arange(double start, double stop, double step = 1.0);
+  [[nodiscard]] static Tensor* eye(std::size_t n);
+
+  [[nodiscard]] std::size_t              ndim() const;
+  [[nodiscard]] std::vector<std::size_t> shape() const;
+  [[nodiscard]] std::size_t              size() const;
+  [[nodiscard]] std::string              dtype_name() const;
+
+  [[nodiscard]] double      at(const std::vector<std::size_t>& index) const;
+  void                      set(const std::vector<std::size_t>& index, double value);
+  [[nodiscard]] std::string string_at(const std::vector<std::size_t>& index) const;
+  void                      set_string(const std::vector<std::size_t>& index, const std::string& value);
+  [[nodiscard]] double      at_flat(std::size_t i) const;
+  void                      set_flat(std::size_t i, double value);
+  [[nodiscard]] std::string string_at_flat(std::size_t i) const;
+  void                      set_string_flat(std::size_t i, const std::string& value);
+
+  [[nodiscard]] Tensor* reshape(const std::vector<std::size_t>& new_shape) const;
+  [[nodiscard]] Tensor* flatten() const;
+  [[nodiscard]] Tensor* transpose(const std::vector<std::size_t>& permutation = {}) const;
+  [[nodiscard]] Tensor* squeeze() const;
+  [[nodiscard]] Tensor* squeeze_axis(std::size_t axis) const;
+  [[nodiscard]] Tensor* expand_dims(std::size_t axis) const;
+  [[nodiscard]] Tensor* slice(std::size_t axis, std::size_t start, std::size_t stop, std::size_t step = 1) const;
+  [[nodiscard]] Tensor* index_select(std::size_t axis, const std::vector<std::size_t>& indices) const;
+
+  /// @brief Concatenates two tensors along an existing axis (shapes must match on every other axis).
+  [[nodiscard]] static Tensor* concatenate2(const Tensor& a, const Tensor& b, std::size_t axis);
+  /// @brief Stacks two same-shaped tensors along a new axis inserted at position @p axis.
+  [[nodiscard]] static Tensor* stack2(const Tensor& a, const Tensor& b, std::size_t axis);
+
+  [[nodiscard]] Tensor* add(const Tensor& other) const;
+  [[nodiscard]] Tensor* subtract(const Tensor& other) const;
+  [[nodiscard]] Tensor* multiply(const Tensor& other) const;
+  [[nodiscard]] Tensor* divide(const Tensor& other) const;
+  [[nodiscard]] Tensor* power(const Tensor& other) const;
+
+  [[nodiscard]] Tensor* add_scalar(double scalar) const;
+  [[nodiscard]] Tensor* subtract_scalar(double scalar) const;
+  [[nodiscard]] Tensor* multiply_scalar(double scalar) const;
+  [[nodiscard]] Tensor* divide_scalar(double scalar) const;
+  [[nodiscard]] Tensor* power_scalar(double exponent) const;
+
+  [[nodiscard]] Tensor* negate() const;
+  [[nodiscard]] Tensor* abs() const;
+  [[nodiscard]] Tensor* sqrt() const;
+  [[nodiscard]] Tensor* exp() const;
+  [[nodiscard]] Tensor* log() const;
+
+  /// @brief Applies a user-supplied Callback elementwise. Requires a numeric dtype; result is float64.
+  [[nodiscard]] Tensor* apply(Callback* callback) const;
+
+  [[nodiscard]] Tensor* equal(const Tensor& other) const;
+  [[nodiscard]] Tensor* not_equal(const Tensor& other) const;
+  [[nodiscard]] Tensor* less(const Tensor& other) const;
+  [[nodiscard]] Tensor* less_equal(const Tensor& other) const;
+  [[nodiscard]] Tensor* greater(const Tensor& other) const;
+  [[nodiscard]] Tensor* greater_equal(const Tensor& other) const;
+
+  [[nodiscard]] double      sum() const;
+  [[nodiscard]] double      mean() const;
+  [[nodiscard]] double      max() const;
+  [[nodiscard]] double      min() const;
+  [[nodiscard]] double      prod() const;
+  [[nodiscard]] std::size_t argmax() const;
+  [[nodiscard]] std::size_t argmin() const;
+  [[nodiscard]] bool        all() const;
+  [[nodiscard]] bool        any() const;
+
+  [[nodiscard]] Tensor* sum_axis(std::size_t axis, bool keepdims = false) const;
+  [[nodiscard]] Tensor* mean_axis(std::size_t axis, bool keepdims = false) const;
+  [[nodiscard]] Tensor* max_axis(std::size_t axis, bool keepdims = false) const;
+  [[nodiscard]] Tensor* min_axis(std::size_t axis, bool keepdims = false) const;
+  [[nodiscard]] Tensor* prod_axis(std::size_t axis, bool keepdims = false) const;
+  [[nodiscard]] Tensor* argmax_axis(std::size_t axis, bool keepdims = false) const;
+  [[nodiscard]] Tensor* argmin_axis(std::size_t axis, bool keepdims = false) const;
+
+  [[nodiscard]] Tensor* matmul(const Tensor& other) const;
+  [[nodiscard]] double  dot(const Tensor& other) const;
+  [[nodiscard]] Tensor* outer(const Tensor& other) const;
+
+  [[nodiscard]] std::string to_string(std::size_t max_elements = 100) const;
+
+ private:
+  explicit Tensor(linalg::Tensor tensor);
+
+  linalg::Tensor tensor_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::autodiff::Dual -- a first-order forward-mode
+///        dual number. Build an expression out of named operations (starting from a seed
+///        with derivative=1) to read off an exact derivative alongside the value.
+class Dual {
+ public:
+  explicit Dual(double value, double derivative = 0.0);
+
+  [[nodiscard]] double value() const;
+  [[nodiscard]] double derivative() const;
+
+  [[nodiscard]] Dual add(const Dual& other) const;
+  [[nodiscard]] Dual subtract(const Dual& other) const;
+  [[nodiscard]] Dual multiply(const Dual& other) const;
+  [[nodiscard]] Dual divide(const Dual& other) const;
+  [[nodiscard]] Dual negate() const;
+
+  [[nodiscard]] Dual add_scalar(double scalar) const;
+  [[nodiscard]] Dual subtract_scalar(double scalar) const;
+  [[nodiscard]] Dual multiply_scalar(double scalar) const;
+  [[nodiscard]] Dual divide_scalar(double scalar) const;
+
+  [[nodiscard]] Dual pow(double exponent) const;
+  [[nodiscard]] Dual exp() const;
+  [[nodiscard]] Dual log() const;
+  [[nodiscard]] Dual sqrt() const;
+  [[nodiscard]] Dual sin() const;
+  [[nodiscard]] Dual cos() const;
+  [[nodiscard]] Dual tan() const;
+  [[nodiscard]] Dual tanh() const;
+  [[nodiscard]] Dual abs() const;
+
+ private:
+  explicit Dual(autodiff::Dual dual);
+
+  autodiff::Dual dual_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::autodiff::HyperDual -- a second-order
+///        forward-mode dual number carrying two independent derivative directions plus
+///        their exact mixed second partial, for computing Hessian entries.
+class HyperDual {
+ public:
+  explicit HyperDual(double value, double eps1 = 0.0, double eps2 = 0.0, double eps1eps2 = 0.0);
+
+  [[nodiscard]] double value() const;
+  [[nodiscard]] double eps1() const;
+  [[nodiscard]] double eps2() const;
+  [[nodiscard]] double eps1eps2() const;
+
+  [[nodiscard]] HyperDual add(const HyperDual& other) const;
+  [[nodiscard]] HyperDual subtract(const HyperDual& other) const;
+  [[nodiscard]] HyperDual multiply(const HyperDual& other) const;
+  [[nodiscard]] HyperDual divide(const HyperDual& other) const;
+  [[nodiscard]] HyperDual negate() const;
+
+  [[nodiscard]] HyperDual add_scalar(double scalar) const;
+  [[nodiscard]] HyperDual subtract_scalar(double scalar) const;
+  [[nodiscard]] HyperDual multiply_scalar(double scalar) const;
+  [[nodiscard]] HyperDual divide_scalar(double scalar) const;
+
+  [[nodiscard]] HyperDual pow(double exponent) const;
+  [[nodiscard]] HyperDual exp() const;
+  [[nodiscard]] HyperDual log() const;
+  [[nodiscard]] HyperDual sqrt() const;
+  [[nodiscard]] HyperDual sin() const;
+  [[nodiscard]] HyperDual cos() const;
+  [[nodiscard]] HyperDual tan() const;
+  [[nodiscard]] HyperDual tanh() const;
+
+ private:
+  explicit HyperDual(autodiff::HyperDual dual);
+
+  autodiff::HyperDual dual_;
+};
+
+class Var;
+
+/// @brief SWIG-friendly facade for datamunge::autodiff::Tape -- a reverse-mode
+///        ("backpropagation") computation tape. Create leaf Vars against a Tape, build an
+///        expression out of named Var operations, then call backward() on the output Var
+///        to get the derivative of that output with respect to every node on the tape
+///        (index a leaf's own index() into the result to read its gradient).
+class Tape {
+ public:
+  Tape() = default;
+
+  [[nodiscard]] std::size_t size() const;
+  [[nodiscard]] double value_at(std::size_t index) const;
+  [[nodiscard]] std::vector<double> backward(const Var& output) const;
+
+ private:
+  friend class Var;
+  autodiff::Tape tape_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::autodiff::Var -- a handle into a Tape.
+class Var {
+ public:
+  /// @brief Records a new independent leaf variable on @p tape.
+  explicit Var(Tape& tape, double value);
+
+  [[nodiscard]] double      value() const;
+  [[nodiscard]] std::size_t index() const;
+
+  [[nodiscard]] Var add(const Var& other) const;
+  [[nodiscard]] Var subtract(const Var& other) const;
+  [[nodiscard]] Var multiply(const Var& other) const;
+  [[nodiscard]] Var divide(const Var& other) const;
+  [[nodiscard]] Var negate() const;
+
+  [[nodiscard]] Var add_scalar(double scalar) const;
+  [[nodiscard]] Var subtract_scalar(double scalar) const;
+  [[nodiscard]] Var multiply_scalar(double scalar) const;
+  [[nodiscard]] Var divide_scalar(double scalar) const;
+
+  [[nodiscard]] Var pow(double exponent) const;
+  [[nodiscard]] Var exp() const;
+  [[nodiscard]] Var log() const;
+  [[nodiscard]] Var sqrt() const;
+  [[nodiscard]] Var sin() const;
+  [[nodiscard]] Var cos() const;
+  [[nodiscard]] Var tan() const;
+  [[nodiscard]] Var tanh() const;
+  [[nodiscard]] Var abs() const;
+
+ private:
+  friend class Tape;
+  explicit Var(autodiff::Var var);
+
+  autodiff::Var var_;
 };
 
 } // namespace datamunge

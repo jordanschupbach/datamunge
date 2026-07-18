@@ -87,6 +87,78 @@ inline double poisson_pdf_nonneg(std::size_t k, double lambda) {
   return std::exp(-lambda + static_cast<double>(k) * std::log(lambda) - std::lgamma(static_cast<double>(k) + 1.0));
 }
 
+inline double log_beta(double a, double b) {
+  return std::lgamma(a) + std::lgamma(b) - std::lgamma(a + b);
+}
+
+// Continued-fraction expansion (Numerical Recipes' betacf) used by
+// regularized_incomplete_beta for the region x < (a+1)/(a+b+2).
+inline double incomplete_beta_cf(double a, double b, double x) {
+  constexpr int    max_iterations = 200;
+  constexpr double epsilon        = 3.0e-16;
+  constexpr double tiny           = 1.0e-300;
+
+  const double qab = a + b;
+  const double qap = a + 1.0;
+  const double qam = a - 1.0;
+
+  double c = 1.0;
+  double d = 1.0 - qab * x / qap;
+  if (std::abs(d) < tiny) d = tiny;
+  d = 1.0 / d;
+  double h = d;
+
+  for (int m = 1; m <= max_iterations; ++m) {
+    const double m2 = 2.0 * m;
+
+    double aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    d = 1.0 + aa * d; if (std::abs(d) < tiny) d = tiny;
+    c = 1.0 + aa / c; if (std::abs(c) < tiny) c = tiny;
+    d = 1.0 / d;
+    h *= d * c;
+
+    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+    d = 1.0 + aa * d; if (std::abs(d) < tiny) d = tiny;
+    c = 1.0 + aa / c; if (std::abs(c) < tiny) c = tiny;
+    d = 1.0 / d;
+    const double delta = d * c;
+    h *= delta;
+
+    if (std::abs(delta - 1.0) < epsilon) break;
+  }
+  return h;
+}
+
+// Regularized incomplete beta function I_x(a, b), used to derive the
+// Student-t and F cumulative distribution functions from the incomplete
+// beta relation (Abramowitz & Stegun 26.5.28 / 26.6.2).
+inline double regularized_incomplete_beta(double a, double b, double x) {
+  if (!(a > 0.0) || !(b > 0.0))
+    throw std::invalid_argument("regularized_incomplete_beta: a and b must be > 0");
+  if (x < 0.0 || x > 1.0)
+    throw std::invalid_argument("regularized_incomplete_beta: x must be in [0, 1]");
+  if (x == 0.0 || x == 1.0) return x;
+
+  const double front = std::exp(a * std::log(x) + b * std::log1p(-x) - log_beta(a, b));
+  if (x < (a + 1.0) / (a + b + 2.0))
+    return front * incomplete_beta_cf(a, b, x) / a;
+  return 1.0 - front * incomplete_beta_cf(b, a, 1.0 - x) / b;
+}
+
+// Bisection on a monotonically increasing CDF, expanding the bracket until
+// it contains p. Used for quantile functions without a closed form.
+template <typename CdfFn>
+inline double invert_monotonic_cdf(double p, CdfFn cdf, double lo, double hi) {
+  while (cdf(lo) > p) lo *= 2.0;
+  while (cdf(hi) < p) hi *= 2.0;
+  for (int iteration = 0; iteration < 200; ++iteration) {
+    const double mid = 0.5 * (lo + hi);
+    if (cdf(mid) < p) lo = mid; else hi = mid;
+    if (hi - lo < 1e-12 * (std::abs(hi) + 1.0)) break;
+  }
+  return 0.5 * (lo + hi);
+}
+
 } // namespace detail
 
 inline double uniform_pdf(double x, double a = 0.0, double b = 1.0) {
@@ -373,6 +445,62 @@ inline std::size_t poisson_quantile(double q, double lambda) {
     cumulative += detail::poisson_pdf_nonneg(k, lambda);
     if (cumulative >= q || cumulative >= 1.0 - 1e-15) return k;
   }
+}
+
+inline double student_t_pdf(double x, double df) {
+  detail::require_positive(df, "student_t_pdf", "df");
+  const double half_df = 0.5 * df;
+  const double log_norm = std::lgamma(half_df + 0.5) - std::lgamma(half_df)
+                         - 0.5 * std::log(df * detail::pi);
+  return std::exp(log_norm - (half_df + 0.5) * std::log1p(x * x / df));
+}
+
+inline double student_t_cdf(double x, double df) {
+  detail::require_positive(df, "student_t_cdf", "df");
+  const double xt = df / (df + x * x);
+  const double tail = 0.5 * detail::regularized_incomplete_beta(0.5 * df, 0.5, xt);
+  return (x >= 0.0) ? (1.0 - tail) : tail;
+}
+
+inline double student_t_quantile(double p, double df) {
+  detail::require_probability(p, "student_t_quantile");
+  detail::require_positive(df, "student_t_quantile", "df");
+  if (p == 0.0) return -std::numeric_limits<double>::infinity();
+  if (p == 1.0) return std::numeric_limits<double>::infinity();
+  if (p == 0.5) return 0.0;
+  return detail::invert_monotonic_cdf(
+      p, [df](double x) { return student_t_cdf(x, df); }, -1.0, 1.0);
+}
+
+inline double f_pdf(double x, double df1, double df2) {
+  detail::require_positive(df1, "f_pdf", "df1");
+  detail::require_positive(df2, "f_pdf", "df2");
+  if (x < 0.0) return 0.0;
+  if (x == 0.0) return (df1 < 2.0) ? std::numeric_limits<double>::infinity() : 0.0;
+  const double half1 = 0.5 * df1;
+  const double half2 = 0.5 * df2;
+  const double log_pdf = half1 * std::log(df1 / df2) + (half1 - 1.0) * std::log(x)
+                        - (half1 + half2) * std::log1p(df1 * x / df2)
+                        - detail::log_beta(half1, half2);
+  return std::exp(log_pdf);
+}
+
+inline double f_cdf(double x, double df1, double df2) {
+  detail::require_positive(df1, "f_cdf", "df1");
+  detail::require_positive(df2, "f_cdf", "df2");
+  if (x <= 0.0) return 0.0;
+  const double xt = df1 * x / (df1 * x + df2);
+  return detail::regularized_incomplete_beta(0.5 * df1, 0.5 * df2, xt);
+}
+
+inline double f_quantile(double p, double df1, double df2) {
+  detail::require_probability(p, "f_quantile");
+  detail::require_positive(df1, "f_quantile", "df1");
+  detail::require_positive(df2, "f_quantile", "df2");
+  if (p == 0.0) return 0.0;
+  if (p == 1.0) return std::numeric_limits<double>::infinity();
+  return detail::invert_monotonic_cdf(
+      p, [df1, df2](double x) { return f_cdf(x, df1, df2); }, 1e-6, 1.0);
 }
 
 } // namespace datamunge::random

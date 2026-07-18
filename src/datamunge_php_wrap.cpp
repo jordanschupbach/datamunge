@@ -1283,28 +1283,33 @@ SWIG_Php_AppendOutput(zval *target, zval *o, int is_void) {
 
 
 #define SWIGTYPE_p_datamunge__Callback swig_types[0]
-#define SWIGTYPE_p_difference_type swig_types[1]
-#define SWIGTYPE_p_first_type swig_types[2]
-#define SWIGTYPE_p_int swig_types[3]
-#define SWIGTYPE_p_long_long swig_types[4]
-#define SWIGTYPE_p_second_type swig_types[5]
-#define SWIGTYPE_p_short swig_types[6]
-#define SWIGTYPE_p_signed_char swig_types[7]
-#define SWIGTYPE_p_size_type swig_types[8]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[9]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[10]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[11]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[12]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[13]
-#define SWIGTYPE_p_unsigned_char swig_types[14]
-#define SWIGTYPE_p_unsigned_int swig_types[15]
-#define SWIGTYPE_p_unsigned_long_long swig_types[16]
-#define SWIGTYPE_p_unsigned_short swig_types[17]
-#define SWIGTYPE_p_value_type swig_types[18]
+#define SWIGTYPE_p_datamunge__DataFrame swig_types[1]
+#define SWIGTYPE_p_datamunge__LM swig_types[2]
+#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[3]
+#define SWIGTYPE_p_difference_type swig_types[4]
+#define SWIGTYPE_p_first_type swig_types[5]
+#define SWIGTYPE_p_int swig_types[6]
+#define SWIGTYPE_p_long_long swig_types[7]
+#define SWIGTYPE_p_second_type swig_types[8]
+#define SWIGTYPE_p_short swig_types[9]
+#define SWIGTYPE_p_signed_char swig_types[10]
+#define SWIGTYPE_p_size_type swig_types[11]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[12]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[13]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[14]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[15]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[16]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[17]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[18]
+#define SWIGTYPE_p_unsigned_char swig_types[19]
+#define SWIGTYPE_p_unsigned_int swig_types[20]
+#define SWIGTYPE_p_unsigned_long_long swig_types[21]
+#define SWIGTYPE_p_unsigned_short swig_types[22]
+#define SWIGTYPE_p_value_type swig_types[23]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[20];
-SWIGINTERN swig_module_info swig_module = {swig_types, 19, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[25];
+SWIGINTERN swig_module_info swig_module = {swig_types, 24, 0, 0, 0, 0};
 /* header section */
 #define SWIG_name  "datamunge"
 #ifdef __cplusplus
@@ -1555,49 +1560,73 @@ static zend_object_handlers Callback_object_handlers;
 static zend_object *SWIG_Php_create_object_Callback(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &Callback_object_handlers);}
 static void SWIG_Php_free_obj_Callback(zend_object *object) {delete (datamunge::Callback *)SWIG_Php_free_obj(object);}
 
-/* class entry for pointer to _p_int */
-static zend_class_entry *SWIG_Php_ce__p_int;
+static zend_class_entry *SWIG_Php_ce_DataFrame;
 
-/* class entry for pointer to _p_size_type */
-static zend_class_entry *SWIG_Php_ce__p_size_type;
+static zend_object_handlers DataFrame_object_handlers;
+static zend_object *SWIG_Php_create_object_DataFrame(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &DataFrame_object_handlers);}
+static void SWIG_Php_free_obj_DataFrame(zend_object *object) {delete (datamunge::DataFrame *)SWIG_Php_free_obj(object);}
 
-/* class entry for pointer to _p_value_type */
-static zend_class_entry *SWIG_Php_ce__p_value_type;
+static zend_class_entry *SWIG_Php_ce_LM;
+
+static zend_object_handlers LM_object_handlers;
+static zend_object *SWIG_Php_create_object_LM(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &LM_object_handlers);}
+static void SWIG_Php_free_obj_LM(zend_object *object) {delete (datamunge::LM *)SWIG_Php_free_obj(object);}
 
 /* class entry for pointer to _p_unsigned_char */
 static zend_class_entry *SWIG_Php_ce__p_unsigned_char;
 
-/* class entry for pointer to _p_unsigned_short */
-static zend_class_entry *SWIG_Php_ce__p_unsigned_short;
-
-/* class entry for pointer to _p_signed_char */
-static zend_class_entry *SWIG_Php_ce__p_signed_char;
-
-/* class entry for pointer to _p_long_long */
-static zend_class_entry *SWIG_Php_ce__p_long_long;
-
-/* class entry for pointer to _p_unsigned_int */
-static zend_class_entry *SWIG_Php_ce__p_unsigned_int;
-
-/* class entry for pointer to _p_first_type */
-static zend_class_entry *SWIG_Php_ce__p_first_type;
-
-/* class entry for pointer to _p_unsigned_long_long */
-static zend_class_entry *SWIG_Php_ce__p_unsigned_long_long;
+/* class entry for pointer to _p_value_type */
+static zend_class_entry *SWIG_Php_ce__p_value_type;
 
 /* class entry for pointer to _p_short */
 static zend_class_entry *SWIG_Php_ce__p_short;
 
-/* class entry for pointer to _p_second_type */
-static zend_class_entry *SWIG_Php_ce__p_second_type;
+/* class entry for pointer to _p_size_type */
+static zend_class_entry *SWIG_Php_ce__p_size_type;
+
+/* class entry for pointer to _p_long_long */
+static zend_class_entry *SWIG_Php_ce__p_long_long;
+
+/* class entry for pointer to _p_std__vectorT_std__size_t_t */
+static zend_class_entry *SWIG_Php_ce__p_std__vectorT_std__size_t_t;
+
+/* class entry for pointer to _p_int */
+static zend_class_entry *SWIG_Php_ce__p_int;
+
+/* class entry for pointer to _p_first_type */
+static zend_class_entry *SWIG_Php_ce__p_first_type;
+
+/* class entry for pointer to _p_unsigned_int */
+static zend_class_entry *SWIG_Php_ce__p_unsigned_int;
+
+/* class entry for pointer to _p_datamunge__plot__ScatterPlot */
+static zend_class_entry *SWIG_Php_ce__p_datamunge__plot__ScatterPlot;
+
+/* class entry for pointer to _p_signed_char */
+static zend_class_entry *SWIG_Php_ce__p_signed_char;
 
 /* class entry for pointer to _p_difference_type */
 static zend_class_entry *SWIG_Php_ce__p_difference_type;
+
+/* class entry for pointer to _p_unsigned_long_long */
+static zend_class_entry *SWIG_Php_ce__p_unsigned_long_long;
+
+/* class entry for pointer to _p_second_type */
+static zend_class_entry *SWIG_Php_ce__p_second_type;
+
+/* class entry for pointer to _p_unsigned_short */
+static zend_class_entry *SWIG_Php_ce__p_unsigned_short;
+
+/* class entry for pointer to _p_std__vectorT_std__string_t */
+static zend_class_entry *SWIG_Php_ce__p_std__vectorT_std__string_t;
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 SWIGINTERN swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__DataFrame = {"_p_datamunge__DataFrame", "datamunge::DataFrame *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__LM = {"_p_datamunge__LM", "datamunge::LM *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ScatterPlot = {"_p_datamunge__plot__ScatterPlot", "datamunge::plot::ScatterPlot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
@@ -1611,6 +1640,8 @@ SWIGINTERN swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_i
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "std::vector< std::size_t > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "uint8_t *|uint_fast8_t *|uint_least8_t *|unsigned char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint32_t *|uint_fast16_t *|uint_fast32_t *|uint_least32_t *|uintptr_t *|unsigned int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
@@ -1622,6 +1653,9 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 /* -------- TYPES TABLE (BEGIN) -------- */
 
   &_swigt__p_datamunge__Callback,
+  &_swigt__p_datamunge__DataFrame,
+  &_swigt__p_datamunge__LM,
+  &_swigt__p_datamunge__plot__ScatterPlot,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
   &_swigt__p_int,
@@ -1635,6 +1669,8 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_size_t_t,
+  &_swigt__p_std__vectorT_std__size_t_t,
+  &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_unsigned_char,
   &_swigt__p_unsigned_int,
   &_swigt__p_unsigned_long_long,
@@ -1643,6 +1679,9 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 };
 
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Callback[] = {  {&_swigt__p_datamunge__Callback, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__DataFrame[] = {  {&_swigt__p_datamunge__DataFrame, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__LM[] = {  {&_swigt__p_datamunge__LM, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ScatterPlot[] = {  {&_swigt__p_datamunge__plot__ScatterPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -1656,6 +1695,8 @@ SWIGINTERN swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std_
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__size_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_char[] = {  {&_swigt__p_unsigned_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_int[] = {  {&_swigt__p_unsigned_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_long_long[] = {  {&_swigt__p_unsigned_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -1664,6 +1705,9 @@ SWIGINTERN swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0,
 
 SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__Callback,
+  _swigc__p_datamunge__DataFrame,
+  _swigc__p_datamunge__LM,
+  _swigc__p_datamunge__plot__ScatterPlot,
   _swigc__p_difference_type,
   _swigc__p_first_type,
   _swigc__p_int,
@@ -1677,6 +1721,8 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_size_t_t,
+  _swigc__p_std__vectorT_std__size_t_t,
+  _swigc__p_std__vectorT_std__string_t,
   _swigc__p_unsigned_char,
   _swigc__p_unsigned_int,
   _swigc__p_unsigned_long_long,
@@ -3924,6 +3970,2421 @@ fail:
 }
 
 
+static PHP_METHOD(DataFrame,__construct) {
+  datamunge::DataFrame *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::DataFrame *)new datamunge::DataFrame();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 1);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,nrows) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::DataFrame const *)arg1)->nrows();
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,ncols) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::DataFrame const *)arg1)->ncols();
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,shape) {
+  datamunge::DataFrame *arg1 = 0 ;
+  SwigValueWrapper< std::vector< std::size_t > > result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::DataFrame const *)arg1)->shape();
+  {
+    std::vector< std::size_t > * resultobj = new std::vector< std::size_t >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_std__size_t_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,columns) {
+  datamunge::DataFrame *arg1 = 0 ;
+  SwigValueWrapper< std::vector< std::string > > result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::DataFrame const *)arg1)->columns();
+  {
+    std::vector< std::string > * resultobj = new std::vector< std::string >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_std__string_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_add_numeric_column__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  std::string temp2 ;
+  zval args[3];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of DataFrame_add_numeric_column");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &arg4, SWIGTYPE_p_std__vectorT_int_t, 0) < 0 || arg4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_int_t for argument 4 of DataFrame_add_numeric_column");
+    return;
+  }
+  
+  (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double > const &)*arg3,(std::vector< int > const &)*arg4);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_add_numeric_column__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::string temp2 ;
+  zval args[2];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of DataFrame_add_numeric_column");
+    return;
+  }
+  
+  (arg1)->add_numeric_column((std::string const &)*arg2,(std::vector< double > const &)*arg3);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,add_numeric_column) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void**)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_DataFrame_add_numeric_column__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void**)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void**)&tmp, SWIGTYPE_p_std__vectorT_int_t, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_DataFrame_add_numeric_column__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'DataFrame_add_numeric_column'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_add_string_column__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  std::string temp2 ;
+  zval args[3];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 3 of DataFrame_add_string_column");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &arg4, SWIGTYPE_p_std__vectorT_int_t, 0) < 0 || arg4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_int_t for argument 4 of DataFrame_add_string_column");
+    return;
+  }
+  
+  (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string > const &)*arg3,(std::vector< int > const &)*arg4);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_add_string_column__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  std::string temp2 ;
+  zval args[2];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 3 of DataFrame_add_string_column");
+    return;
+  }
+  
+  (arg1)->add_string_column((std::string const &)*arg2,(std::vector< std::string > const &)*arg3);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,add_string_column) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void**)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_DataFrame_add_string_column__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void**)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void**)&tmp, SWIGTYPE_p_std__vectorT_int_t, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_DataFrame_add_string_column__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'DataFrame_add_string_column'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_add_string_column_encoded__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< int > *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[3];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &arg4, SWIGTYPE_p_std__vectorT_int_t, 0) < 0 || arg4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_int_t for argument 4 of DataFrame_add_string_column_encoded");
+    return;
+  }
+  
+  (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< int > const &)*arg4);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_add_string_column_encoded__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[2];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  (arg1)->add_string_column_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,add_string_column_encoded) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_DataFrame_add_string_column_encoded__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void**)&tmp, SWIGTYPE_p_std__vectorT_int_t, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_DataFrame_add_string_column_encoded__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'DataFrame_add_string_column_encoded'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,fill_null_numeric) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::string temp2 ;
+  zval args[2];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  (arg1)->fill_null_numeric((std::string const &)*arg2,arg3);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,fill_null_string) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[2];
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  (arg1)->fill_null_string((std::string const &)*arg2,(std::string const &)*arg3);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,select) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  zval args[1];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of DataFrame_select");
+    return;
+  }
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select((std::vector< std::string > const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,select_encoded) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select_encoded((std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_sort_by__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  std::string temp2 ;
+  zval args[2];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,2,CONVERT_BOOL_IN@*/
+  arg3 = (bool) zval_is_true(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2,arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_sort_by__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,sort_by) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _wrap_DataFrame_sort_by__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_TRUE || Z_TYPE(argv[1]) == IS_FALSE);
+      if (_v) {
+        _wrap_DataFrame_sort_by__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'DataFrame_sort_by'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_drop_duplicates__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  zval args[1];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of DataFrame_drop_duplicates");
+    return;
+  }
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates((std::vector< std::string > const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_drop_duplicates__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,drop_duplicates) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_DataFrame_drop_duplicates__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_DataFrame_drop_duplicates__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'DataFrame_drop_duplicates'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,drop_duplicates_encoded) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->drop_duplicates_encoded((std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,group_by_sum) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::vector< std::string > *arg3 = 0 ;
+  zval args[2];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of DataFrame_group_by_sum");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 3 of DataFrame_group_by_sum");
+    return;
+  }
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum((std::vector< std::string > const &)*arg2,(std::vector< std::string > const &)*arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,group_by_sum_encoded) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[2];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->group_by_sum_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_join__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[4];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 2 of DataFrame_join");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[2]);
+  temp4.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg4 = &temp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,2,CONVERT_BOOL_IN@*/
+  arg5 = (bool) zval_is_true(&args[3]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_join__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[3];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 2 of DataFrame_join");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[2]);
+  temp4.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg4 = &temp4;
+  
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,join) {
+  int argc;
+  zval argv[4];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_DataFrame_join__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_TRUE || Z_TYPE(argv[3]) == IS_FALSE);
+          if (_v) {
+            _wrap_DataFrame_join__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'DataFrame_join'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,numeric_count) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = ((datamunge::DataFrame const *)arg1)->numeric_count((std::string const &)*arg2);
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,numeric_null_count) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  std::size_t result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = ((datamunge::DataFrame const *)arg1)->numeric_null_count((std::string const &)*arg2);
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,numeric_sum) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_sum((std::string const &)*arg2);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,numeric_mean) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_mean((std::string const &)*arg2);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,numeric_min) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_min((std::string const &)*arg2);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,numeric_max) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  double result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_max((std::string const &)*arg2);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_to_string__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  std::string result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  result = ((datamunge::DataFrame const *)arg1)->to_string(SWIG_STD_MOVE(arg2));
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_DataFrame_to_string__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::DataFrame *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::DataFrame const *)arg1)->to_string();
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataFrame,to_string) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_DataFrame_to_string__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_LONG &&
+      (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[0])) &&
+      ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[0])));
+    
+    if (_v) {
+      _wrap_DataFrame_to_string__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'DataFrame_to_string'", 0);
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(DataFrame,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(DataFrame,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(DataFrame,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_LM__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[3];
+  datamunge::LM *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_LM");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__LM, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_LM__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[2];
+  datamunge::LM *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_LM");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  result = (datamunge::LM *)new datamunge::LM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__LM, 1);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,__construct) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_new_LM__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_new_LM__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'new_LM'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,formula_text) {
+  datamunge::LM *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->formula_text();
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,has_intercept) {
+  datamunge::LM *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (bool)((datamunge::LM const *)arg1)->has_intercept();
+  
+  RETVAL_BOOL((result) ? 1 : 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,observations) {
+  datamunge::LM *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->observations();
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,rank) {
+  datamunge::LM *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->rank();
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,degrees_of_freedom) {
+  datamunge::LM *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->degrees_of_freedom();
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,coefficients) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->coefficients();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,coefficient_names) {
+  datamunge::LM *arg1 = 0 ;
+  SwigValueWrapper< std::vector< std::string > > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->coefficient_names();
+  {
+    std::vector< std::string > * resultobj = new std::vector< std::string >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_std__string_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,fitted_values) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->fitted_values();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,residuals) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->residuals();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,standard_errors) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->standard_errors();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,t_values) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->t_values();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,p_values) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->p_values();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,r_squared) {
+  datamunge::LM *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double)((datamunge::LM const *)arg1)->r_squared();
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,adjusted_r_squared) {
+  datamunge::LM *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double)((datamunge::LM const *)arg1)->adjusted_r_squared();
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,sigma) {
+  datamunge::LM *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double)((datamunge::LM const *)arg1)->sigma();
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,f_statistic) {
+  datamunge::LM *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double)((datamunge::LM const *)arg1)->f_statistic();
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,f_p_value) {
+  datamunge::LM *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double)((datamunge::LM const *)arg1)->f_p_value();
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_LM_confidence_interval_lower__SWIG_0) {
+  datamunge::LM *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  result = ((datamunge::LM const *)arg1)->confidence_interval_lower(arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_LM_confidence_interval_lower__SWIG_1) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->confidence_interval_lower();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,confidence_interval_lower) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_LM_confidence_interval_lower__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _wrap_LM_confidence_interval_lower__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'LM_confidence_interval_lower'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_LM_confidence_interval_upper__SWIG_0) {
+  datamunge::LM *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  result = ((datamunge::LM const *)arg1)->confidence_interval_upper(arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_LM_confidence_interval_upper__SWIG_1) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->confidence_interval_upper();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,confidence_interval_upper) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_LM_confidence_interval_upper__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _wrap_LM_confidence_interval_upper__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'LM_confidence_interval_upper'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,leverage) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->leverage();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,standardized_residuals) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->standardized_residuals();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,studentized_residuals) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->studentized_residuals();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,cooks_distance) {
+  datamunge::LM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->cooks_distance();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,summary) {
+  datamunge::LM *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->summary();
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,print_summary) {
+  datamunge::LM *arg1 = 0 ;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  ((datamunge::LM const *)arg1)->print_summary();
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,predict) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  zval args[1];
+  std::vector< double > result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 2 of LM_predict");
+    return;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_LM_predict_frame__SWIG_0) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  std::string temp3 ;
+  zval args[3];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 2 of LM_predict_frame");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,arg4);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_LM_predict_frame__SWIG_1) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp3 ;
+  zval args[2];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 2 of LM_predict_frame");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_LM_predict_frame__SWIG_2) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  zval args[1];
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 2 of LM_predict_frame");
+    return;
+  }
+  
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,predict_frame) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_LM_predict_frame__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_LM_predict_frame__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _wrap_LM_predict_frame__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'LM_predict_frame'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,anova) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::DataFrame *)((datamunge::LM const *)arg1)->anova();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__DataFrame, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,plot_residuals_vs_fitted) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
+  {
+    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,plot_normal_qq) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->plot_normal_qq();
+  {
+    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,plot_scale_location) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->plot_scale_location();
+  {
+    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,plot_residuals_vs_leverage) {
+  datamunge::LM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
+  {
+    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LM,save_diagnostic_plots) {
+  datamunge::LM *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  ((datamunge::LM const *)arg1)->save_diagnostic_plots((std::string const &)*arg2);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(LM,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(LM,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(LM,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
 /* class object handlers for pointer wrappers */
 static zend_object_handlers swig_ptr_object_handlers;
 
@@ -4025,6 +6486,77 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DVector_set, 0, 2, MAY_BE_V
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_DVector_size swig_arginfo_DVector_capacity
+#define swig_arginfo_new_DataFrame swig_arginfo_new_Callback
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_add_numeric_column, 0, 2, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,IVector,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_add_string_column, 0, 2, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,SWIG\\_p_std__vectorT_std__string_t,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,IVector,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_add_string_column_encoded, 0, 2, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,IVector,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_columns, 0, 0, SWIG\\_std__vectorT_std__string_t, 0)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_drop_duplicates, 0, 0, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_std__vectorT_std__string_t,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_drop_duplicates_encoded, 0, 1, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_fill_null_numeric, 0, 2, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_fill_null_string, 0, 2, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_group_by_sum, 0, 2, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_std__vectorT_std__string_t,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,SWIG\\_p_std__vectorT_std__string_t,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_group_by_sum_encoded, 0, 2, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_join, 0, 3, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_BOOL,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_DataFrame_ncols swig_arginfo_DVector_capacity
+#define swig_arginfo_DataFrame_nrows swig_arginfo_DVector_capacity
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_numeric_count, 0, 1, MAY_BE_LONG)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_numeric_max, 0, 1, MAY_BE_DOUBLE)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_DataFrame_numeric_mean swig_arginfo_DataFrame_numeric_max
+#define swig_arginfo_DataFrame_numeric_min swig_arginfo_DataFrame_numeric_max
+#define swig_arginfo_DataFrame_numeric_null_count swig_arginfo_DataFrame_numeric_count
+#define swig_arginfo_DataFrame_numeric_sum swig_arginfo_DataFrame_numeric_max
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_select, 0, 1, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_std__vectorT_std__string_t,0,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_DataFrame_select_encoded swig_arginfo_DataFrame_drop_duplicates_encoded
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_shape, 0, 0, SWIG\\_std__vectorT_std__size_t_t, 0)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataFrame_sort_by, 0, 1, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_BOOL,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_to_string, 0, 0, MAY_BE_STRING)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_IPair, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,IPair,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
@@ -4050,6 +6582,58 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_IVector_set, 0, 2, MAY_BE_V
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_IVector_size swig_arginfo_DVector_capacity
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_LM, 0, 0, 2)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_LM_adjusted_r_squared swig_arginfo_DPair_first_get
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LM_anova, 0, 0, DataFrame, MAY_BE_NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_LM_coefficient_names swig_arginfo_DataFrame_columns
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LM_coefficients, 0, 0, DVector, 0)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LM_confidence_interval_lower, 0, 0, DVector, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_LM_confidence_interval_upper swig_arginfo_LM_confidence_interval_lower
+#define swig_arginfo_LM_cooks_distance swig_arginfo_LM_coefficients
+#define swig_arginfo_LM_degrees_of_freedom swig_arginfo_DVector_capacity
+#define swig_arginfo_LM_f_p_value swig_arginfo_DPair_first_get
+#define swig_arginfo_LM_f_statistic swig_arginfo_DPair_first_get
+#define swig_arginfo_LM_fitted_values swig_arginfo_LM_coefficients
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_LM_formula_text, 0, 0, MAY_BE_STRING)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_LM_has_intercept swig_arginfo_DVector_is_empty
+#define swig_arginfo_LM_leverage swig_arginfo_LM_coefficients
+#define swig_arginfo_LM_observations swig_arginfo_DVector_capacity
+#define swig_arginfo_LM_p_values swig_arginfo_LM_coefficients
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LM_plot_normal_qq, 0, 0, SWIG\\_datamunge__plot__ScatterPlot, 0)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_LM_plot_residuals_vs_fitted swig_arginfo_LM_plot_normal_qq
+#define swig_arginfo_LM_plot_residuals_vs_leverage swig_arginfo_LM_plot_normal_qq
+#define swig_arginfo_LM_plot_scale_location swig_arginfo_LM_plot_normal_qq
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LM_predict, 0, 1, DVector, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LM_predict_frame, 0, 1, DataFrame, MAY_BE_NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_LM_print_summary swig_arginfo_hello
+#define swig_arginfo_LM_r_squared swig_arginfo_DPair_first_get
+#define swig_arginfo_LM_rank swig_arginfo_DVector_capacity
+#define swig_arginfo_LM_residuals swig_arginfo_LM_coefficients
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_LM_save_diagnostic_plots, 0, 1, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_LM_sigma swig_arginfo_DPair_first_get
+#define swig_arginfo_LM_standard_errors swig_arginfo_LM_coefficients
+#define swig_arginfo_LM_standardized_residuals swig_arginfo_LM_coefficients
+#define swig_arginfo_LM_studentized_residuals swig_arginfo_LM_coefficients
+#define swig_arginfo_LM_summary swig_arginfo_LM_formula_text
+#define swig_arginfo_LM_t_values swig_arginfo_LM_coefficients
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_SizeVector, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SizeVector,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
@@ -4146,6 +6730,79 @@ static const zend_function_entry class_Callback_functions[] = {
  PHP_ME(Callback,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
  PHP_ME(Callback,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
  PHP_ME(Callback,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_DataFrame_functions[] = {
+ PHP_ME(DataFrame,__construct,swig_arginfo_new_DataFrame,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(DataFrame,nrows,swig_arginfo_DataFrame_nrows,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,ncols,swig_arginfo_DataFrame_ncols,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,shape,swig_arginfo_DataFrame_shape,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,columns,swig_arginfo_DataFrame_columns,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,add_numeric_column,swig_arginfo_DataFrame_add_numeric_column,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,add_string_column,swig_arginfo_DataFrame_add_string_column,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,add_string_column_encoded,swig_arginfo_DataFrame_add_string_column_encoded,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,fill_null_numeric,swig_arginfo_DataFrame_fill_null_numeric,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,fill_null_string,swig_arginfo_DataFrame_fill_null_string,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,select,swig_arginfo_DataFrame_select,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,select_encoded,swig_arginfo_DataFrame_select_encoded,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,sort_by,swig_arginfo_DataFrame_sort_by,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,drop_duplicates,swig_arginfo_DataFrame_drop_duplicates,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,drop_duplicates_encoded,swig_arginfo_DataFrame_drop_duplicates_encoded,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,group_by_sum,swig_arginfo_DataFrame_group_by_sum,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,group_by_sum_encoded,swig_arginfo_DataFrame_group_by_sum_encoded,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,join,swig_arginfo_DataFrame_join,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,numeric_count,swig_arginfo_DataFrame_numeric_count,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,numeric_null_count,swig_arginfo_DataFrame_numeric_null_count,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,numeric_sum,swig_arginfo_DataFrame_numeric_sum,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,numeric_mean,swig_arginfo_DataFrame_numeric_mean,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,numeric_min,swig_arginfo_DataFrame_numeric_min,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,numeric_max,swig_arginfo_DataFrame_numeric_max,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,to_string,swig_arginfo_DataFrame_to_string,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(DataFrame,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_LM_functions[] = {
+ PHP_ME(LM,__construct,swig_arginfo_new_LM,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(LM,formula_text,swig_arginfo_LM_formula_text,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,has_intercept,swig_arginfo_LM_has_intercept,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,observations,swig_arginfo_LM_observations,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,rank,swig_arginfo_LM_rank,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,degrees_of_freedom,swig_arginfo_LM_degrees_of_freedom,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,coefficients,swig_arginfo_LM_coefficients,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,coefficient_names,swig_arginfo_LM_coefficient_names,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,fitted_values,swig_arginfo_LM_fitted_values,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,residuals,swig_arginfo_LM_residuals,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,standard_errors,swig_arginfo_LM_standard_errors,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,t_values,swig_arginfo_LM_t_values,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,p_values,swig_arginfo_LM_p_values,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,r_squared,swig_arginfo_LM_r_squared,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,adjusted_r_squared,swig_arginfo_LM_adjusted_r_squared,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,sigma,swig_arginfo_LM_sigma,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,f_statistic,swig_arginfo_LM_f_statistic,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,f_p_value,swig_arginfo_LM_f_p_value,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,confidence_interval_lower,swig_arginfo_LM_confidence_interval_lower,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,confidence_interval_upper,swig_arginfo_LM_confidence_interval_upper,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,leverage,swig_arginfo_LM_leverage,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,standardized_residuals,swig_arginfo_LM_standardized_residuals,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,studentized_residuals,swig_arginfo_LM_studentized_residuals,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,cooks_distance,swig_arginfo_LM_cooks_distance,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,summary,swig_arginfo_LM_summary,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,print_summary,swig_arginfo_LM_print_summary,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,predict,swig_arginfo_LM_predict,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,predict_frame,swig_arginfo_LM_predict_frame,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,anova,swig_arginfo_LM_anova,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,plot_residuals_vs_fitted,swig_arginfo_LM_plot_residuals_vs_fitted,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,plot_normal_qq,swig_arginfo_LM_plot_normal_qq,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,plot_scale_location,swig_arginfo_LM_plot_scale_location,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,plot_residuals_vs_leverage,swig_arginfo_LM_plot_residuals_vs_leverage,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,save_diagnostic_plots,swig_arginfo_LM_save_diagnostic_plots,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(LM,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
  ZEND_FE_END
 };
 
@@ -4694,22 +7351,42 @@ SWIG_php_minit {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__Callback,SWIG_Php_ce_Callback);
 #endif
 
+  INIT_CLASS_ENTRY(internal_ce, "DataFrame", class_DataFrame_functions);
+  SWIG_Php_ce_DataFrame = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_DataFrame->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_DataFrame, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_DataFrame->create_object = SWIG_Php_create_object_DataFrame;
+  DataFrame_object_handlers = Swig_Php_base_object_handlers;
+  DataFrame_object_handlers.free_obj = SWIG_Php_free_obj_DataFrame;
+#ifdef SWIGTYPE_p_datamunge__DataFrame
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__DataFrame,SWIG_Php_ce_DataFrame);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "LM", class_LM_functions);
+  SWIG_Php_ce_LM = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_LM->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_LM, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_LM->create_object = SWIG_Php_create_object_LM;
+  LM_object_handlers = Swig_Php_base_object_handlers;
+  LM_object_handlers.free_obj = SWIG_Php_free_obj_LM;
+#ifdef SWIGTYPE_p_datamunge__LM
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__LM,SWIG_Php_ce_LM);
+#endif
+
 
   /* Register classes to represent non-class pointer types */
   swig_ptr_object_handlers = *zend_get_std_object_handlers();
   swig_ptr_object_handlers.offset = XtOffsetOf(swig_object_wrapper, std);
   swig_ptr_object_handlers.cast_object = swig_ptr_cast_object;
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_int", NULL);
-  SWIG_Php_ce__p_int = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_int->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_int, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_int,SWIG_Php_ce__p_int);
-
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_size_type", NULL);
-  SWIG_Php_ce__p_size_type = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_size_type->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_size_type, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_size_type,SWIG_Php_ce__p_size_type);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_char", NULL);
+  SWIG_Php_ce__p_unsigned_char = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_unsigned_char->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_char, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_unsigned_char,SWIG_Php_ce__p_unsigned_char);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_value_type", NULL);
   SWIG_Php_ce__p_value_type = zend_register_internal_class(&internal_ce);
@@ -4717,23 +7394,17 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_value_type, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_value_type,SWIG_Php_ce__p_value_type);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_char", NULL);
-  SWIG_Php_ce__p_unsigned_char = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_unsigned_char->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_char, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_unsigned_char,SWIG_Php_ce__p_unsigned_char);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_short", NULL);
+  SWIG_Php_ce__p_short = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_short->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_short, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_short,SWIG_Php_ce__p_short);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_short", NULL);
-  SWIG_Php_ce__p_unsigned_short = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_unsigned_short->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_short, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_unsigned_short,SWIG_Php_ce__p_unsigned_short);
-
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_signed_char", NULL);
-  SWIG_Php_ce__p_signed_char = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_signed_char->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_signed_char, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_signed_char,SWIG_Php_ce__p_signed_char);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_size_type", NULL);
+  SWIG_Php_ce__p_size_type = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_size_type->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_size_type, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_size_type,SWIG_Php_ce__p_size_type);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_long_long", NULL);
   SWIG_Php_ce__p_long_long = zend_register_internal_class(&internal_ce);
@@ -4741,11 +7412,17 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_long_long, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_long_long,SWIG_Php_ce__p_long_long);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_int", NULL);
-  SWIG_Php_ce__p_unsigned_int = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_unsigned_int->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_int, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_unsigned_int,SWIG_Php_ce__p_unsigned_int);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_std__vectorT_std__size_t_t", NULL);
+  SWIG_Php_ce__p_std__vectorT_std__size_t_t = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_std__vectorT_std__size_t_t->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_std__vectorT_std__size_t_t, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_std__size_t_t,SWIG_Php_ce__p_std__vectorT_std__size_t_t);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_int", NULL);
+  SWIG_Php_ce__p_int = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_int->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_int, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_int,SWIG_Php_ce__p_int);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_first_type", NULL);
   SWIG_Php_ce__p_first_type = zend_register_internal_class(&internal_ce);
@@ -4753,17 +7430,35 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_first_type, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_first_type,SWIG_Php_ce__p_first_type);
 
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_int", NULL);
+  SWIG_Php_ce__p_unsigned_int = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_unsigned_int->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_int, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_unsigned_int,SWIG_Php_ce__p_unsigned_int);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_datamunge__plot__ScatterPlot", NULL);
+  SWIG_Php_ce__p_datamunge__plot__ScatterPlot = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_datamunge__plot__ScatterPlot->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_datamunge__plot__ScatterPlot, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__ScatterPlot,SWIG_Php_ce__p_datamunge__plot__ScatterPlot);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_signed_char", NULL);
+  SWIG_Php_ce__p_signed_char = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_signed_char->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_signed_char, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_signed_char,SWIG_Php_ce__p_signed_char);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_difference_type", NULL);
+  SWIG_Php_ce__p_difference_type = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_difference_type->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_difference_type, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_difference_type,SWIG_Php_ce__p_difference_type);
+
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_long_long", NULL);
   SWIG_Php_ce__p_unsigned_long_long = zend_register_internal_class(&internal_ce);
   SWIG_Php_ce__p_unsigned_long_long->create_object = swig_ptr_object_new;
   zend_do_implement_interface(SWIG_Php_ce__p_unsigned_long_long, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_unsigned_long_long,SWIG_Php_ce__p_unsigned_long_long);
-
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_short", NULL);
-  SWIG_Php_ce__p_short = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_short->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_short, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_short,SWIG_Php_ce__p_short);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_second_type", NULL);
   SWIG_Php_ce__p_second_type = zend_register_internal_class(&internal_ce);
@@ -4771,11 +7466,17 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_second_type, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_second_type,SWIG_Php_ce__p_second_type);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_difference_type", NULL);
-  SWIG_Php_ce__p_difference_type = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_difference_type->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_difference_type, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_difference_type,SWIG_Php_ce__p_difference_type);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_short", NULL);
+  SWIG_Php_ce__p_unsigned_short = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_unsigned_short->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_short, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_unsigned_short,SWIG_Php_ce__p_unsigned_short);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_std__vectorT_std__string_t", NULL);
+  SWIG_Php_ce__p_std__vectorT_std__string_t = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_std__vectorT_std__string_t->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_std__vectorT_std__string_t, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_std__string_t,SWIG_Php_ce__p_std__vectorT_std__string_t);
 
   /* end oinit subsection */
 

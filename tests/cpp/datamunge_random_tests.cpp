@@ -86,3 +86,36 @@ TEST(RandomDistributions, BernoulliAndGeometricBasicValues) {
   EXPECT_NEAR(datamunge::random::geometric_cdf(2, 0.25), 0.578125, 1e-15);
   EXPECT_EQ(datamunge::random::geometric_quantile(0.57, 0.25), 2u);
 }
+
+TEST(RandomDistributions, StudentTMatchesKnownRValues) {
+  using namespace datamunge::random;
+
+  // Reference values from R: qt(), pt(), dt().
+  EXPECT_NEAR(student_t_quantile(0.975, 10.0), 2.228139, 1e-5);
+  EXPECT_NEAR(student_t_quantile(0.95, 1.0), 6.313752, 1e-4);
+  EXPECT_NEAR(student_t_quantile(0.5, 7.0), 0.0, 1e-12);
+
+  EXPECT_NEAR(student_t_cdf(2.228139, 10.0), 0.975, 1e-5);
+  EXPECT_NEAR(student_t_cdf(0.0, 5.0), 0.5, 1e-12);
+  EXPECT_NEAR(student_t_cdf(-1.812461, 10.0), 0.05, 1e-5);
+
+  EXPECT_NEAR(student_t_pdf(0.0, 1.0), 1.0 / M_PI, 1e-12);
+
+  // Large df should approach the standard normal distribution.
+  EXPECT_NEAR(student_t_cdf(1.959964, 1.0e7), normal_cdf(1.959964), 1e-4);
+}
+
+TEST(RandomDistributions, FDistributionMatchesKnownRValues) {
+  using namespace datamunge::random;
+
+  // Reference values from R: qf(), pf().
+  EXPECT_NEAR(f_quantile(0.95, 1.0, 10.0), 4.964603, 1e-4);
+  EXPECT_NEAR(f_quantile(0.95, 5.0, 20.0), 2.710894, 1e-4);
+
+  EXPECT_NEAR(f_cdf(4.964603, 1.0, 10.0), 0.95, 1e-5);
+  EXPECT_NEAR(f_cdf(1.0, 5.0, 5.0), 0.5, 1e-9);
+
+  // F(1, df2) is the square of a t(df2) variable: relate the two CDFs.
+  const double t_stat = student_t_quantile(0.975, 12.0);
+  EXPECT_NEAR(f_cdf(t_stat * t_stat, 1.0, 12.0), 0.95, 1e-5);
+}

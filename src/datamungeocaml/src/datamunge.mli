@@ -42,6 +42,27 @@ val _delete_DVector : c_obj -> c_obj
 val create_std_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
 
 
+val new_IVector : c_obj -> c_obj
+val _new_IVector : c_obj -> c_obj
+val _delete_IVector : c_obj -> c_obj
+
+val create_std_xxvector_xx_ldbrace_xx_lparenint_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
+
+
+val new_SizeVector : c_obj -> c_obj
+val _new_SizeVector : c_obj -> c_obj
+val _delete_SizeVector : c_obj -> c_obj
+
+val create_std_xxvector_xx_ldbrace_xx_lparensize_t_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
+
+
+val new_SVector : c_obj -> c_obj
+val _new_SVector : c_obj -> c_obj
+val _delete_SVector : c_obj -> c_obj
+
+val create_std_xxvector_xx_ldbrace_xx_lparenstd_xxstring_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
+
+
 val _hello : c_obj -> c_obj
 val _delete_Callback : c_obj -> c_obj
 val new_Callback : c_obj -> c_obj
@@ -56,6 +77,20 @@ val _make_dvector : c_obj -> c_obj
 val _sum_dvector : c_obj -> c_obj
 val _make_dpair : c_obj -> c_obj
 val _sum_dpair : c_obj -> c_obj
+val new_DataFrame : c_obj -> c_obj
+val _new_DataFrame : c_obj -> c_obj
+val _delete_DataFrame : c_obj -> c_obj
+
+val create_datamunge_xxDataFrame_from_ptr : c_obj -> c_obj
+
+
+val new_LM : c_obj -> c_obj
+val _new_LM : c_obj -> c_obj
+val _delete_LM : c_obj -> c_obj
+
+val create_datamunge_xxLM_from_ptr : c_obj -> c_obj
+
+
 val enum_to_int : c_enum_type -> c_obj -> Swig.c_obj
 val int_to_enum : c_enum_type -> int -> c_obj
 
