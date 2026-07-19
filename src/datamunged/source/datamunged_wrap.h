@@ -25,5 +25,90 @@ private:
     SWIG_Callback0_t swig_callback_call;
 };
 
+class SwigDirector_ArbitraryFunction : public datamunge::optim::ArbitraryFunction, public Swig::Director {
+
+public:
+    SwigDirector_ArbitraryFunction();
+    virtual ~SwigDirector_ArbitraryFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+};
+
+class SwigDirector_DifferentiableFunction : public datamunge::optim::DifferentiableFunction, public Swig::Director {
+
+public:
+    SwigDirector_DifferentiableFunction();
+    virtual ~SwigDirector_DifferentiableFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback1_t)(void *dobj, void *);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate, SWIG_Callback1_t callbackgradient);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+    SWIG_Callback1_t swig_callback_gradient;
+};
+
+class SwigDirector_SeparableFunction : public datamunge::optim::SeparableFunction, public Swig::Director {
+
+public:
+    SwigDirector_SeparableFunction();
+    virtual ~SwigDirector_SeparableFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::size_t num_functions() const;
+    virtual double evaluate_term(std::vector< double > const &coordinates,std::size_t i);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef size_t (* SWIG_Callback1_t)(void *dobj);
+    typedef double (* SWIG_Callback2_t)(void *dobj, void *, size_t);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate, SWIG_Callback1_t callbacknum_functions, SWIG_Callback2_t callbackevaluate_term);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+    SWIG_Callback1_t swig_callback_num_functions;
+    SWIG_Callback2_t swig_callback_evaluate_term;
+};
+
+class SwigDirector_DifferentiableSeparableFunction : public datamunge::optim::DifferentiableSeparableFunction, public Swig::Director {
+
+public:
+    SwigDirector_DifferentiableSeparableFunction();
+    virtual ~SwigDirector_DifferentiableSeparableFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::size_t num_functions() const;
+    virtual double evaluate_term(std::vector< double > const &coordinates,std::size_t i);
+    virtual std::vector< double > gradient_term(std::vector< double > const &coordinates,std::size_t i);
+
+    typedef double (* SWIG_Callback0_t)(void *dobj, void *);
+    typedef void * (* SWIG_Callback1_t)(void *dobj, void *);
+    typedef size_t (* SWIG_Callback2_t)(void *dobj);
+    typedef double (* SWIG_Callback3_t)(void *dobj, void *, size_t);
+    typedef void * (* SWIG_Callback4_t)(void *dobj, void *, size_t);
+    void swig_connect_director(void* dobj, SWIG_Callback0_t callbackevaluate, SWIG_Callback1_t callbackgradient, SWIG_Callback2_t callbacknum_functions, SWIG_Callback3_t callbackevaluate_term, SWIG_Callback4_t callbackgradient_term);
+
+private:
+    void swig_init_callbacks();
+    void *d_object;
+    SWIG_Callback0_t swig_callback_evaluate;
+    SWIG_Callback1_t swig_callback_gradient;
+    SWIG_Callback2_t swig_callback_num_functions;
+    SWIG_Callback3_t swig_callback_evaluate_term;
+    SWIG_Callback4_t swig_callback_gradient_term;
+};
+
 
 #endif

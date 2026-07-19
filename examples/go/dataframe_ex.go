@@ -17,7 +17,7 @@ func encodeStrings(values []string) string {
 }
 
 func dvector(values []float64) datamunge.DVector {
-	out := datamunge.NewDVector(len(values))
+	out := datamunge.NewDVector(int64(len(values)))
 	for index, value := range values {
 		out.Set(index, value)
 	}
@@ -25,7 +25,7 @@ func dvector(values []float64) datamunge.DVector {
 }
 
 func ivector(values []int) datamunge.IVector {
-	out := datamunge.NewIVector(len(values))
+	out := datamunge.NewIVector(int64(len(values)))
 	for index, value := range values {
 		out.Set(index, value)
 	}

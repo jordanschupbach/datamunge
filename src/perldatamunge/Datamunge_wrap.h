@@ -33,4 +33,91 @@ private:
     mutable std::map<std::string, bool> swig_inner;
 };
 
+class SwigDirector_ArbitraryFunction : public datamunge::optim::ArbitraryFunction, public Swig::Director {
+
+public:
+    SwigDirector_ArbitraryFunction(SV *self);
+    virtual ~SwigDirector_ArbitraryFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_DifferentiableFunction : public datamunge::optim::DifferentiableFunction, public Swig::Director {
+
+public:
+    SwigDirector_DifferentiableFunction(SV *self);
+    virtual ~SwigDirector_DifferentiableFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_SeparableFunction : public datamunge::optim::SeparableFunction, public Swig::Director {
+
+public:
+    SwigDirector_SeparableFunction(SV *self);
+    virtual ~SwigDirector_SeparableFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::size_t num_functions() const;
+    virtual double evaluate_term(std::vector< double > const &coordinates,std::size_t i);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
+class SwigDirector_DifferentiableSeparableFunction : public datamunge::optim::DifferentiableSeparableFunction, public Swig::Director {
+
+public:
+    SwigDirector_DifferentiableSeparableFunction(SV *self);
+    virtual ~SwigDirector_DifferentiableSeparableFunction();
+    virtual double evaluate(std::vector< double > const &coordinates);
+    virtual std::vector< double > gradient(std::vector< double > const &coordinates);
+    virtual std::size_t num_functions() const;
+    virtual double evaluate_term(std::vector< double > const &coordinates,std::size_t i);
+    virtual std::vector< double > gradient_term(std::vector< double > const &coordinates,std::size_t i);
+
+/* Internal director utilities */
+public:
+    bool swig_get_inner(const char *swig_protected_method_name) const {
+      std::map<std::string, bool>::const_iterator iv = swig_inner.find(swig_protected_method_name);
+      return (iv != swig_inner.end() ? iv->second : false);
+    }
+    void swig_set_inner(const char *swig_protected_method_name, bool swig_val) const {
+      swig_inner[swig_protected_method_name] = swig_val;
+    }
+private:
+    mutable std::map<std::string, bool> swig_inner;
+};
+
 #endif

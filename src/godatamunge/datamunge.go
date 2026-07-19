@@ -52,15 +52,15 @@ typedef long long swig_type_22;
 typedef long long swig_type_23;
 typedef long long swig_type_24;
 typedef long long swig_type_25;
-typedef _gostring_ swig_type_26;
-typedef _gostring_ swig_type_27;
-typedef _gostring_ swig_type_28;
+typedef long long swig_type_26;
+typedef long long swig_type_27;
+typedef long long swig_type_28;
 typedef long long swig_type_29;
-typedef long long swig_type_30;
+typedef _gostring_ swig_type_30;
 typedef _gostring_ swig_type_31;
 typedef _gostring_ swig_type_32;
-typedef _gostring_ swig_type_33;
-typedef _gostring_ swig_type_34;
+typedef long long swig_type_33;
+typedef long long swig_type_34;
 typedef _gostring_ swig_type_35;
 typedef _gostring_ swig_type_36;
 typedef _gostring_ swig_type_37;
@@ -78,185 +78,2147 @@ typedef _gostring_ swig_type_48;
 typedef _gostring_ swig_type_49;
 typedef _gostring_ swig_type_50;
 typedef _gostring_ swig_type_51;
-typedef long long swig_type_52;
+typedef _gostring_ swig_type_52;
 typedef _gostring_ swig_type_53;
-typedef long long swig_type_54;
+typedef _gostring_ swig_type_54;
 typedef _gostring_ swig_type_55;
-typedef _gostring_ swig_type_56;
+typedef long long swig_type_56;
 typedef _gostring_ swig_type_57;
-typedef _gostring_ swig_type_58;
+typedef long long swig_type_58;
 typedef _gostring_ swig_type_59;
 typedef _gostring_ swig_type_60;
-typedef long long swig_type_61;
+typedef _gostring_ swig_type_61;
 typedef _gostring_ swig_type_62;
 typedef _gostring_ swig_type_63;
 typedef _gostring_ swig_type_64;
-typedef _gostring_ swig_type_65;
+typedef long long swig_type_65;
 typedef _gostring_ swig_type_66;
-typedef long long swig_type_67;
-typedef long long swig_type_68;
+typedef _gostring_ swig_type_67;
+typedef _gostring_ swig_type_68;
 typedef long long swig_type_69;
 typedef _gostring_ swig_type_70;
-typedef _gostring_ swig_type_71;
+typedef long long swig_type_71;
 typedef _gostring_ swig_type_72;
 typedef _gostring_ swig_type_73;
-extern void _wrap_Swig_free_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_Swig_malloc_datamunge_2f7022b1be4fe143(swig_intgo arg1);
-extern uintptr_t _wrap_new_IPair__SWIG_0_datamunge_2f7022b1be4fe143(void);
-extern uintptr_t _wrap_new_IPair__SWIG_1_datamunge_2f7022b1be4fe143(swig_intgo arg1, swig_intgo arg2);
-extern uintptr_t _wrap_new_IPair__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_IPair_first_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_IPair_first_get_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_IPair_second_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_IPair_second_get_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_delete_IPair_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_DPair__SWIG_0_datamunge_2f7022b1be4fe143(void);
-extern uintptr_t _wrap_new_DPair__SWIG_1_datamunge_2f7022b1be4fe143(double arg1, double arg2);
-extern uintptr_t _wrap_new_DPair__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_DPair_first_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, double arg2);
-extern double _wrap_DPair_first_get_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_DPair_second_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, double arg2);
-extern double _wrap_DPair_second_get_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_delete_DPair_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_SPair__SWIG_0_datamunge_2f7022b1be4fe143(void);
-extern uintptr_t _wrap_new_SPair__SWIG_1_datamunge_2f7022b1be4fe143(swig_type_1 arg1, swig_type_2 arg2);
-extern uintptr_t _wrap_new_SPair__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SPair_first_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_3 arg2);
-extern swig_type_4 _wrap_SPair_first_get_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SPair_second_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_5 arg2);
-extern swig_type_6 _wrap_SPair_second_get_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_delete_SPair_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_IVector__SWIG_0_datamunge_2f7022b1be4fe143(void);
-extern uintptr_t _wrap_new_IVector__SWIG_1_datamunge_2f7022b1be4fe143(swig_type_7 arg1);
-extern uintptr_t _wrap_new_IVector__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_8 _wrap_IVector_size_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_9 _wrap_IVector_capacity_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_IVector_reserve_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_10 arg2);
-extern _Bool _wrap_IVector_isEmpty_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_IVector_clear_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_IVector_add_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_IVector_get_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2);
-extern void _wrap_IVector_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
-extern void _wrap_delete_IVector_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_DVector__SWIG_0_datamunge_2f7022b1be4fe143(void);
-extern uintptr_t _wrap_new_DVector__SWIG_1_datamunge_2f7022b1be4fe143(swig_type_11 arg1);
-extern uintptr_t _wrap_new_DVector__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_12 _wrap_DVector_size_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_13 _wrap_DVector_capacity_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_DVector_reserve_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_14 arg2);
-extern _Bool _wrap_DVector_isEmpty_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_DVector_clear_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_DVector_add_datamunge_2f7022b1be4fe143(uintptr_t arg1, double arg2);
-extern double _wrap_DVector_get_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2);
-extern void _wrap_DVector_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2, double arg3);
-extern void _wrap_delete_DVector_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_SizeVector__SWIG_0_datamunge_2f7022b1be4fe143(void);
-extern uintptr_t _wrap_new_SizeVector__SWIG_1_datamunge_2f7022b1be4fe143(swig_type_15 arg1);
-extern uintptr_t _wrap_new_SizeVector__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_16 _wrap_SizeVector_size_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_17 _wrap_SizeVector_capacity_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SizeVector_reserve_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_18 arg2);
-extern _Bool _wrap_SizeVector_isEmpty_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SizeVector_clear_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SizeVector_add_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_19 arg2);
-extern swig_type_20 _wrap_SizeVector_get_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2);
-extern void _wrap_SizeVector_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2, swig_type_21 arg3);
-extern void _wrap_delete_SizeVector_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_SVector__SWIG_0_datamunge_2f7022b1be4fe143(void);
-extern uintptr_t _wrap_new_SVector__SWIG_1_datamunge_2f7022b1be4fe143(swig_type_22 arg1);
-extern uintptr_t _wrap_new_SVector__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_23 _wrap_SVector_size_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_24 _wrap_SVector_capacity_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SVector_reserve_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_25 arg2);
-extern _Bool _wrap_SVector_isEmpty_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SVector_clear_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_SVector_add_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_26 arg2);
-extern swig_type_27 _wrap_SVector_get_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2);
-extern void _wrap_SVector_set_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_intgo arg2, swig_type_28 arg3);
-extern void _wrap_delete_SVector_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_hello_datamunge_2f7022b1be4fe143(void);
-extern void _wrap_delete_Callback_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern double _wrap_Callback_call_datamunge_2f7022b1be4fe143(uintptr_t arg1, double arg2);
-extern uintptr_t _wrap_new_Callback_datamunge_2f7022b1be4fe143(void);
-extern double _wrap_call_with_callback_datamunge_2f7022b1be4fe143(double arg1, uintptr_t arg2);
-extern uintptr_t _wrap_map_dvector_with_callback_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_make_dvector_datamunge_2f7022b1be4fe143(double arg1, double arg2, double arg3);
-extern double _wrap_sum_dvector_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_make_dpair_datamunge_2f7022b1be4fe143(double arg1, double arg2);
-extern double _wrap_sum_dpair_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_DataFrame_datamunge_2f7022b1be4fe143(void);
-extern swig_type_29 _wrap_DataFrame_nrows_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_30 _wrap_DataFrame_ncols_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_DataFrame_shape_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_DataFrame_columns_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_DataFrame_add_numeric_column__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_31 arg2, uintptr_t arg3, uintptr_t arg4);
-extern void _wrap_DataFrame_add_numeric_column__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_32 arg2, uintptr_t arg3);
-extern void _wrap_DataFrame_add_string_column__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_33 arg2, uintptr_t arg3, uintptr_t arg4);
-extern void _wrap_DataFrame_add_string_column__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_34 arg2, uintptr_t arg3);
-extern void _wrap_DataFrame_add_string_column_encoded__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_35 arg2, swig_type_36 arg3, uintptr_t arg4);
-extern void _wrap_DataFrame_add_string_column_encoded__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_37 arg2, swig_type_38 arg3);
-extern void _wrap_DataFrame_fill_null_numeric_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_39 arg2, double arg3);
-extern void _wrap_DataFrame_fill_null_string_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_40 arg2, swig_type_41 arg3);
-extern uintptr_t _wrap_DataFrame_Xselect_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_DataFrame_select_encoded_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_42 arg2);
-extern uintptr_t _wrap_DataFrame_sort_by__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_43 arg2, _Bool arg3);
-extern uintptr_t _wrap_DataFrame_sort_by__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_44 arg2);
-extern uintptr_t _wrap_DataFrame_drop_duplicates__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_DataFrame_drop_duplicates__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_DataFrame_drop_duplicates_encoded_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_45 arg2);
-extern uintptr_t _wrap_DataFrame_group_by_sum_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
-extern uintptr_t _wrap_DataFrame_group_by_sum_encoded_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_46 arg2, swig_type_47 arg3);
-extern uintptr_t _wrap_DataFrame_join__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2, swig_type_48 arg3, swig_type_49 arg4, _Bool arg5);
-extern uintptr_t _wrap_DataFrame_join__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2, swig_type_50 arg3, swig_type_51 arg4);
-extern swig_type_52 _wrap_DataFrame_numeric_count_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_53 arg2);
-extern swig_type_54 _wrap_DataFrame_numeric_null_count_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_55 arg2);
-extern double _wrap_DataFrame_numeric_sum_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_56 arg2);
-extern double _wrap_DataFrame_numeric_mean_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_57 arg2);
-extern double _wrap_DataFrame_numeric_min_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_58 arg2);
-extern double _wrap_DataFrame_numeric_max_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_59 arg2);
-extern swig_type_60 _wrap_DataFrame_to_string__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_61 arg2);
-extern swig_type_62 _wrap_DataFrame_to_string__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_delete_DataFrame_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_new_LM__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_63 arg2, swig_type_64 arg3);
-extern uintptr_t _wrap_new_LM__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_65 arg2);
-extern swig_type_66 _wrap_LM_formula_text_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern _Bool _wrap_LM_has_intercept_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_67 _wrap_LM_observations_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_68 _wrap_LM_rank_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_69 _wrap_LM_degrees_of_freedom_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_coefficients_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_coefficient_names_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_fitted_values_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_residuals_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_standard_errors_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_t_values_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_p_values_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern double _wrap_LM_r_squared_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern double _wrap_LM_adjusted_r_squared_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern double _wrap_LM_sigma_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern double _wrap_LM_f_statistic_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern double _wrap_LM_f_p_value_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_confidence_interval_lower__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, double arg2);
-extern uintptr_t _wrap_LM_confidence_interval_lower__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_confidence_interval_upper__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, double arg2);
-extern uintptr_t _wrap_LM_confidence_interval_upper__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_leverage_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_standardized_residuals_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_studentized_residuals_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_cooks_distance_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern swig_type_70 _wrap_LM_summary_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_LM_print_summary_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_predict_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_LM_predict_frame__SWIG_0_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2, swig_type_71 arg3, double arg4);
-extern uintptr_t _wrap_LM_predict_frame__SWIG_1_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2, swig_type_72 arg3);
-extern uintptr_t _wrap_LM_predict_frame__SWIG_2_datamunge_2f7022b1be4fe143(uintptr_t arg1, uintptr_t arg2);
-extern uintptr_t _wrap_LM_anova_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_plot_residuals_vs_fitted_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_plot_normal_qq_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_plot_scale_location_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern uintptr_t _wrap_LM_plot_residuals_vs_leverage_datamunge_2f7022b1be4fe143(uintptr_t arg1);
-extern void _wrap_LM_save_diagnostic_plots_datamunge_2f7022b1be4fe143(uintptr_t arg1, swig_type_73 arg2);
-extern void _wrap_delete_LM_datamunge_2f7022b1be4fe143(uintptr_t arg1);
+typedef long long swig_type_74;
+typedef _gostring_ swig_type_75;
+typedef _gostring_ swig_type_76;
+typedef _gostring_ swig_type_77;
+typedef _gostring_ swig_type_78;
+typedef long long swig_type_79;
+typedef long long swig_type_80;
+typedef long long swig_type_81;
+typedef _gostring_ swig_type_82;
+typedef _gostring_ swig_type_83;
+typedef _gostring_ swig_type_84;
+typedef _gostring_ swig_type_85;
+typedef _gostring_ swig_type_86;
+typedef long long swig_type_87;
+typedef long long swig_type_88;
+typedef long long swig_type_89;
+typedef _gostring_ swig_type_90;
+typedef long long swig_type_91;
+typedef long long swig_type_92;
+typedef _gostring_ swig_type_93;
+typedef long long swig_type_94;
+typedef long long swig_type_95;
+typedef _gostring_ swig_type_96;
+typedef long long swig_type_97;
+typedef _gostring_ swig_type_98;
+typedef _gostring_ swig_type_99;
+typedef _gostring_ swig_type_100;
+typedef _gostring_ swig_type_101;
+typedef long long swig_type_102;
+typedef long long swig_type_103;
+typedef long long swig_type_104;
+typedef long long swig_type_105;
+typedef long long swig_type_106;
+typedef long long swig_type_107;
+typedef _gostring_ swig_type_108;
+typedef _gostring_ swig_type_109;
+typedef _gostring_ swig_type_110;
+typedef long long swig_type_111;
+typedef long long swig_type_112;
+typedef long long swig_type_113;
+typedef long long swig_type_114;
+typedef _gostring_ swig_type_115;
+typedef _gostring_ swig_type_116;
+typedef long long swig_type_117;
+typedef long long swig_type_118;
+typedef long long swig_type_119;
+typedef _gostring_ swig_type_120;
+typedef _gostring_ swig_type_121;
+typedef long long swig_type_122;
+typedef long long swig_type_123;
+typedef long long swig_type_124;
+typedef _gostring_ swig_type_125;
+typedef _gostring_ swig_type_126;
+typedef long long swig_type_127;
+typedef long long swig_type_128;
+typedef _gostring_ swig_type_129;
+typedef _gostring_ swig_type_130;
+typedef long long swig_type_131;
+typedef _gostring_ swig_type_132;
+typedef _gostring_ swig_type_133;
+typedef long long swig_type_134;
+typedef _gostring_ swig_type_135;
+typedef _gostring_ swig_type_136;
+typedef _gostring_ swig_type_137;
+typedef _gostring_ swig_type_138;
+typedef _gostring_ swig_type_139;
+typedef _gostring_ swig_type_140;
+typedef long long swig_type_141;
+typedef long long swig_type_142;
+typedef long long swig_type_143;
+typedef long long swig_type_144;
+typedef long long swig_type_145;
+typedef long long swig_type_146;
+typedef long long swig_type_147;
+typedef _gostring_ swig_type_148;
+typedef _gostring_ swig_type_149;
+typedef _gostring_ swig_type_150;
+typedef long long swig_type_151;
+typedef long long swig_type_152;
+typedef _gostring_ swig_type_153;
+typedef _gostring_ swig_type_154;
+typedef _gostring_ swig_type_155;
+typedef _gostring_ swig_type_156;
+typedef _gostring_ swig_type_157;
+typedef _gostring_ swig_type_158;
+typedef _gostring_ swig_type_159;
+typedef _gostring_ swig_type_160;
+typedef _gostring_ swig_type_161;
+typedef _gostring_ swig_type_162;
+typedef _gostring_ swig_type_163;
+typedef _gostring_ swig_type_164;
+typedef _gostring_ swig_type_165;
+typedef _gostring_ swig_type_166;
+typedef _gostring_ swig_type_167;
+typedef long long swig_type_168;
+typedef long long swig_type_169;
+typedef _gostring_ swig_type_170;
+typedef _gostring_ swig_type_171;
+typedef long long swig_type_172;
+typedef long long swig_type_173;
+typedef long long swig_type_174;
+typedef _gostring_ swig_type_175;
+typedef _gostring_ swig_type_176;
+typedef long long swig_type_177;
+typedef long long swig_type_178;
+typedef long long swig_type_179;
+typedef _gostring_ swig_type_180;
+typedef long long swig_type_181;
+typedef long long swig_type_182;
+typedef _gostring_ swig_type_183;
+typedef long long swig_type_184;
+typedef _gostring_ swig_type_185;
+typedef long long swig_type_186;
+typedef long long swig_type_187;
+typedef long long swig_type_188;
+typedef long long swig_type_189;
+typedef _gostring_ swig_type_190;
+typedef _gostring_ swig_type_191;
+typedef _gostring_ swig_type_192;
+typedef _gostring_ swig_type_193;
+typedef _gostring_ swig_type_194;
+typedef long long swig_type_195;
+typedef _gostring_ swig_type_196;
+typedef _gostring_ swig_type_197;
+typedef _gostring_ swig_type_198;
+typedef long long swig_type_199;
+typedef long long swig_type_200;
+typedef long long swig_type_201;
+typedef _gostring_ swig_type_202;
+typedef long long swig_type_203;
+typedef long long swig_type_204;
+typedef _gostring_ swig_type_205;
+typedef long long swig_type_206;
+typedef _gostring_ swig_type_207;
+typedef long long swig_type_208;
+typedef long long swig_type_209;
+typedef long long swig_type_210;
+typedef long long swig_type_211;
+typedef _gostring_ swig_type_212;
+typedef _gostring_ swig_type_213;
+typedef long long swig_type_214;
+typedef long long swig_type_215;
+typedef long long swig_type_216;
+typedef long long swig_type_217;
+typedef long long swig_type_218;
+typedef _gostring_ swig_type_219;
+typedef long long swig_type_220;
+typedef _gostring_ swig_type_221;
+typedef long long swig_type_222;
+typedef long long swig_type_223;
+typedef long long swig_type_224;
+typedef long long swig_type_225;
+typedef long long swig_type_226;
+typedef _gostring_ swig_type_227;
+typedef _gostring_ swig_type_228;
+typedef long long swig_type_229;
+typedef long long swig_type_230;
+typedef long long swig_type_231;
+typedef long long swig_type_232;
+typedef long long swig_type_233;
+typedef _gostring_ swig_type_234;
+typedef _gostring_ swig_type_235;
+typedef long long swig_type_236;
+typedef long long swig_type_237;
+typedef long long swig_type_238;
+typedef long long swig_type_239;
+typedef long long swig_type_240;
+typedef _gostring_ swig_type_241;
+typedef _gostring_ swig_type_242;
+typedef long long swig_type_243;
+typedef long long swig_type_244;
+typedef long long swig_type_245;
+typedef long long swig_type_246;
+typedef long long swig_type_247;
+typedef _gostring_ swig_type_248;
+typedef long long swig_type_249;
+typedef long long swig_type_250;
+typedef long long swig_type_251;
+typedef long long swig_type_252;
+typedef _gostring_ swig_type_253;
+typedef long long swig_type_254;
+typedef long long swig_type_255;
+typedef long long swig_type_256;
+typedef _gostring_ swig_type_257;
+typedef long long swig_type_258;
+typedef long long swig_type_259;
+typedef _gostring_ swig_type_260;
+typedef long long swig_type_261;
+typedef _gostring_ swig_type_262;
+typedef long long swig_type_263;
+typedef long long swig_type_264;
+typedef long long swig_type_265;
+typedef _gostring_ swig_type_266;
+typedef _gostring_ swig_type_267;
+typedef _gostring_ swig_type_268;
+typedef _gostring_ swig_type_269;
+typedef _gostring_ swig_type_270;
+typedef long long swig_type_271;
+typedef _gostring_ swig_type_272;
+typedef _gostring_ swig_type_273;
+typedef _gostring_ swig_type_274;
+typedef long long swig_type_275;
+typedef long long swig_type_276;
+typedef long long swig_type_277;
+typedef long long swig_type_278;
+typedef long long swig_type_279;
+typedef long long swig_type_280;
+typedef _gostring_ swig_type_281;
+typedef long long swig_type_282;
+typedef long long swig_type_283;
+typedef long long swig_type_284;
+typedef long long swig_type_285;
+typedef long long swig_type_286;
+typedef _gostring_ swig_type_287;
+typedef long long swig_type_288;
+typedef long long swig_type_289;
+typedef long long swig_type_290;
+typedef long long swig_type_291;
+typedef long long swig_type_292;
+typedef _gostring_ swig_type_293;
+typedef long long swig_type_294;
+typedef long long swig_type_295;
+typedef long long swig_type_296;
+typedef long long swig_type_297;
+typedef long long swig_type_298;
+typedef _gostring_ swig_type_299;
+typedef long long swig_type_300;
+typedef long long swig_type_301;
+typedef long long swig_type_302;
+typedef long long swig_type_303;
+typedef _gostring_ swig_type_304;
+typedef long long swig_type_305;
+typedef long long swig_type_306;
+typedef long long swig_type_307;
+typedef _gostring_ swig_type_308;
+typedef long long swig_type_309;
+typedef long long swig_type_310;
+typedef _gostring_ swig_type_311;
+typedef long long swig_type_312;
+typedef _gostring_ swig_type_313;
+typedef long long swig_type_314;
+typedef long long swig_type_315;
+typedef long long swig_type_316;
+typedef _gostring_ swig_type_317;
+typedef _gostring_ swig_type_318;
+typedef long long swig_type_319;
+typedef long long swig_type_320;
+typedef long long swig_type_321;
+typedef _gostring_ swig_type_322;
+typedef long long swig_type_323;
+typedef long long swig_type_324;
+typedef _gostring_ swig_type_325;
+typedef long long swig_type_326;
+typedef long long swig_type_327;
+typedef _gostring_ swig_type_328;
+typedef long long swig_type_329;
+typedef _gostring_ swig_type_330;
+typedef _gostring_ swig_type_331;
+typedef _gostring_ swig_type_332;
+typedef _gostring_ swig_type_333;
+typedef long long swig_type_334;
+typedef long long swig_type_335;
+typedef _gostring_ swig_type_336;
+typedef _gostring_ swig_type_337;
+typedef long long swig_type_338;
+typedef long long swig_type_339;
+typedef long long swig_type_340;
+typedef _gostring_ swig_type_341;
+typedef long long swig_type_342;
+typedef long long swig_type_343;
+typedef _gostring_ swig_type_344;
+typedef long long swig_type_345;
+typedef long long swig_type_346;
+typedef _gostring_ swig_type_347;
+typedef long long swig_type_348;
+typedef _gostring_ swig_type_349;
+typedef _gostring_ swig_type_350;
+typedef _gostring_ swig_type_351;
+typedef long long swig_type_352;
+typedef _gostring_ swig_type_353;
+typedef _gostring_ swig_type_354;
+typedef long long swig_type_355;
+typedef long long swig_type_356;
+typedef long long swig_type_357;
+typedef _gostring_ swig_type_358;
+typedef long long swig_type_359;
+typedef long long swig_type_360;
+typedef _gostring_ swig_type_361;
+typedef long long swig_type_362;
+typedef long long swig_type_363;
+typedef _gostring_ swig_type_364;
+typedef long long swig_type_365;
+typedef _gostring_ swig_type_366;
+typedef _gostring_ swig_type_367;
+typedef _gostring_ swig_type_368;
+typedef long long swig_type_369;
+typedef long long swig_type_370;
+typedef _gostring_ swig_type_371;
+typedef _gostring_ swig_type_372;
+typedef long long swig_type_373;
+typedef _gostring_ swig_type_374;
+typedef _gostring_ swig_type_375;
+typedef long long swig_type_376;
+typedef _gostring_ swig_type_377;
+typedef _gostring_ swig_type_378;
+typedef long long swig_type_379;
+typedef _gostring_ swig_type_380;
+typedef _gostring_ swig_type_381;
+typedef long long swig_type_382;
+typedef _gostring_ swig_type_383;
+typedef long long swig_type_384;
+typedef long long swig_type_385;
+typedef _gostring_ swig_type_386;
+typedef _gostring_ swig_type_387;
+typedef _gostring_ swig_type_388;
+typedef _gostring_ swig_type_389;
+typedef _gostring_ swig_type_390;
+typedef long long swig_type_391;
+typedef _gostring_ swig_type_392;
+typedef _gostring_ swig_type_393;
+typedef _gostring_ swig_type_394;
+typedef long long swig_type_395;
+typedef _gostring_ swig_type_396;
+typedef _gostring_ swig_type_397;
+typedef long long swig_type_398;
+typedef _gostring_ swig_type_399;
+typedef _gostring_ swig_type_400;
+typedef long long swig_type_401;
+typedef _gostring_ swig_type_402;
+typedef _gostring_ swig_type_403;
+typedef long long swig_type_404;
+typedef _gostring_ swig_type_405;
+typedef long long swig_type_406;
+typedef long long swig_type_407;
+typedef _gostring_ swig_type_408;
+typedef long long swig_type_409;
+typedef long long swig_type_410;
+typedef long long swig_type_411;
+typedef long long swig_type_412;
+typedef long long swig_type_413;
+typedef long long swig_type_414;
+typedef long long swig_type_415;
+typedef long long swig_type_416;
+typedef long long swig_type_417;
+typedef long long swig_type_418;
+typedef long long swig_type_419;
+typedef long long swig_type_420;
+typedef long long swig_type_421;
+typedef _gostring_ swig_type_422;
+typedef long long swig_type_423;
+typedef long long swig_type_424;
+typedef long long swig_type_425;
+typedef long long swig_type_426;
+typedef _gostring_ swig_type_427;
+typedef long long swig_type_428;
+typedef long long swig_type_429;
+typedef long long swig_type_430;
+typedef _gostring_ swig_type_431;
+typedef long long swig_type_432;
+typedef long long swig_type_433;
+typedef long long swig_type_434;
+typedef _gostring_ swig_type_435;
+typedef long long swig_type_436;
+typedef long long swig_type_437;
+typedef _gostring_ swig_type_438;
+typedef long long swig_type_439;
+typedef _gostring_ swig_type_440;
+typedef long long swig_type_441;
+typedef long long swig_type_442;
+typedef long long swig_type_443;
+typedef long long swig_type_444;
+typedef _gostring_ swig_type_445;
+typedef long long swig_type_446;
+typedef _gostring_ swig_type_447;
+typedef _gostring_ swig_type_448;
+typedef long long swig_type_449;
+typedef _gostring_ swig_type_450;
+typedef long long swig_type_451;
+typedef _gostring_ swig_type_452;
+typedef long long swig_type_453;
+typedef _gostring_ swig_type_454;
+typedef _gostring_ swig_type_455;
+typedef _gostring_ swig_type_456;
+typedef long long swig_type_457;
+typedef _gostring_ swig_type_458;
+typedef _gostring_ swig_type_459;
+typedef long long swig_type_460;
+typedef _gostring_ swig_type_461;
+typedef long long swig_type_462;
+typedef long long swig_type_463;
+typedef long long swig_type_464;
+typedef long long swig_type_465;
+typedef long long swig_type_466;
+typedef long long swig_type_467;
+typedef long long swig_type_468;
+typedef long long swig_type_469;
+typedef long long swig_type_470;
+typedef long long swig_type_471;
+typedef _gostring_ swig_type_472;
+typedef long long swig_type_473;
+typedef _gostring_ swig_type_474;
+typedef long long swig_type_475;
+typedef _gostring_ swig_type_476;
+typedef long long swig_type_477;
+typedef _gostring_ swig_type_478;
+typedef _gostring_ swig_type_479;
+typedef long long swig_type_480;
+typedef _gostring_ swig_type_481;
+typedef _gostring_ swig_type_482;
+typedef long long swig_type_483;
+typedef long long swig_type_484;
+typedef long long swig_type_485;
+typedef _gostring_ swig_type_486;
+typedef _gostring_ swig_type_487;
+typedef long long swig_type_488;
+typedef long long swig_type_489;
+typedef long long swig_type_490;
+typedef long long swig_type_491;
+typedef long long swig_type_492;
+typedef _gostring_ swig_type_493;
+typedef long long swig_type_494;
+typedef long long swig_type_495;
+typedef long long swig_type_496;
+typedef long long swig_type_497;
+typedef _gostring_ swig_type_498;
+typedef long long swig_type_499;
+typedef long long swig_type_500;
+typedef long long swig_type_501;
+typedef long long swig_type_502;
+typedef _gostring_ swig_type_503;
+typedef long long swig_type_504;
+typedef long long swig_type_505;
+typedef long long swig_type_506;
+typedef _gostring_ swig_type_507;
+typedef long long swig_type_508;
+typedef long long swig_type_509;
+typedef _gostring_ swig_type_510;
+typedef long long swig_type_511;
+typedef _gostring_ swig_type_512;
+typedef long long swig_type_513;
+typedef _gostring_ swig_type_514;
+typedef long long swig_type_515;
+typedef long long swig_type_516;
+typedef _gostring_ swig_type_517;
+typedef _gostring_ swig_type_518;
+typedef _gostring_ swig_type_519;
+typedef _gostring_ swig_type_520;
+typedef _gostring_ swig_type_521;
+typedef long long swig_type_522;
+typedef _gostring_ swig_type_523;
+typedef _gostring_ swig_type_524;
+typedef _gostring_ swig_type_525;
+typedef long long swig_type_526;
+typedef long long swig_type_527;
+typedef long long swig_type_528;
+typedef long long swig_type_529;
+typedef long long swig_type_530;
+typedef _gostring_ swig_type_531;
+typedef long long swig_type_532;
+typedef long long swig_type_533;
+typedef long long swig_type_534;
+typedef long long swig_type_535;
+typedef _gostring_ swig_type_536;
+typedef long long swig_type_537;
+typedef long long swig_type_538;
+typedef long long swig_type_539;
+typedef long long swig_type_540;
+typedef _gostring_ swig_type_541;
+typedef long long swig_type_542;
+typedef long long swig_type_543;
+typedef long long swig_type_544;
+typedef _gostring_ swig_type_545;
+typedef long long swig_type_546;
+typedef long long swig_type_547;
+typedef _gostring_ swig_type_548;
+typedef long long swig_type_549;
+typedef _gostring_ swig_type_550;
+typedef long long swig_type_551;
+typedef _gostring_ swig_type_552;
+typedef long long swig_type_553;
+typedef long long swig_type_554;
+typedef _gostring_ swig_type_555;
+typedef _gostring_ swig_type_556;
+typedef long long swig_type_557;
+typedef long long swig_type_558;
+typedef long long swig_type_559;
+typedef long long swig_type_560;
+typedef _gostring_ swig_type_561;
+typedef long long swig_type_562;
+typedef long long swig_type_563;
+typedef long long swig_type_564;
+typedef _gostring_ swig_type_565;
+typedef long long swig_type_566;
+typedef long long swig_type_567;
+typedef long long swig_type_568;
+typedef _gostring_ swig_type_569;
+typedef long long swig_type_570;
+typedef long long swig_type_571;
+typedef long long swig_type_572;
+typedef _gostring_ swig_type_573;
+typedef long long swig_type_574;
+typedef long long swig_type_575;
+typedef _gostring_ swig_type_576;
+typedef long long swig_type_577;
+typedef long long swig_type_578;
+typedef _gostring_ swig_type_579;
+typedef long long swig_type_580;
+typedef long long swig_type_581;
+typedef _gostring_ swig_type_582;
+typedef long long swig_type_583;
+typedef long long swig_type_584;
+typedef _gostring_ swig_type_585;
+typedef long long swig_type_586;
+typedef long long swig_type_587;
+typedef _gostring_ swig_type_588;
+typedef long long swig_type_589;
+typedef _gostring_ swig_type_590;
+typedef long long swig_type_591;
+typedef _gostring_ swig_type_592;
+typedef long long swig_type_593;
+typedef long long swig_type_594;
+typedef _gostring_ swig_type_595;
+typedef _gostring_ swig_type_596;
+typedef _gostring_ swig_type_597;
+typedef _gostring_ swig_type_598;
+typedef _gostring_ swig_type_599;
+typedef long long swig_type_600;
+typedef _gostring_ swig_type_601;
+typedef _gostring_ swig_type_602;
+typedef _gostring_ swig_type_603;
+typedef long long swig_type_604;
+typedef long long swig_type_605;
+typedef long long swig_type_606;
+typedef long long swig_type_607;
+typedef _gostring_ swig_type_608;
+typedef long long swig_type_609;
+typedef long long swig_type_610;
+typedef long long swig_type_611;
+typedef _gostring_ swig_type_612;
+typedef long long swig_type_613;
+typedef long long swig_type_614;
+typedef long long swig_type_615;
+typedef _gostring_ swig_type_616;
+typedef long long swig_type_617;
+typedef long long swig_type_618;
+typedef long long swig_type_619;
+typedef _gostring_ swig_type_620;
+typedef long long swig_type_621;
+typedef long long swig_type_622;
+typedef _gostring_ swig_type_623;
+typedef long long swig_type_624;
+typedef long long swig_type_625;
+typedef _gostring_ swig_type_626;
+typedef long long swig_type_627;
+typedef long long swig_type_628;
+typedef _gostring_ swig_type_629;
+typedef long long swig_type_630;
+typedef long long swig_type_631;
+typedef _gostring_ swig_type_632;
+typedef long long swig_type_633;
+typedef long long swig_type_634;
+typedef _gostring_ swig_type_635;
+typedef long long swig_type_636;
+typedef _gostring_ swig_type_637;
+typedef long long swig_type_638;
+typedef _gostring_ swig_type_639;
+typedef long long swig_type_640;
+typedef long long swig_type_641;
+typedef _gostring_ swig_type_642;
+typedef _gostring_ swig_type_643;
+typedef _gostring_ swig_type_644;
+typedef long long swig_type_645;
+typedef _gostring_ swig_type_646;
+typedef _gostring_ swig_type_647;
+typedef long long swig_type_648;
+typedef _gostring_ swig_type_649;
+typedef _gostring_ swig_type_650;
+typedef _gostring_ swig_type_651;
+typedef _gostring_ swig_type_652;
+typedef _gostring_ swig_type_653;
+typedef long long swig_type_654;
+typedef _gostring_ swig_type_655;
+typedef long long swig_type_656;
+typedef _gostring_ swig_type_657;
+typedef long long swig_type_658;
+typedef long long swig_type_659;
+typedef _gostring_ swig_type_660;
+typedef long long swig_type_661;
+typedef long long swig_type_662;
+typedef _gostring_ swig_type_663;
+typedef long long swig_type_664;
+typedef _gostring_ swig_type_665;
+typedef _gostring_ swig_type_666;
+typedef _gostring_ swig_type_667;
+typedef long long swig_type_668;
+typedef _gostring_ swig_type_669;
+typedef _gostring_ swig_type_670;
+typedef _gostring_ swig_type_671;
+typedef long long swig_type_672;
+typedef long long swig_type_673;
+typedef _gostring_ swig_type_674;
+typedef _gostring_ swig_type_675;
+typedef _gostring_ swig_type_676;
+typedef long long swig_type_677;
+typedef _gostring_ swig_type_678;
+typedef _gostring_ swig_type_679;
+typedef _gostring_ swig_type_680;
+typedef _gostring_ swig_type_681;
+typedef _gostring_ swig_type_682;
+typedef long long swig_type_683;
+typedef _gostring_ swig_type_684;
+typedef _gostring_ swig_type_685;
+typedef _gostring_ swig_type_686;
+typedef _gostring_ swig_type_687;
+typedef _gostring_ swig_type_688;
+typedef long long swig_type_689;
+typedef _gostring_ swig_type_690;
+typedef _gostring_ swig_type_691;
+typedef _gostring_ swig_type_692;
+typedef long long swig_type_693;
+typedef _gostring_ swig_type_694;
+typedef _gostring_ swig_type_695;
+typedef _gostring_ swig_type_696;
+typedef _gostring_ swig_type_697;
+typedef _gostring_ swig_type_698;
+typedef _gostring_ swig_type_699;
+typedef _gostring_ swig_type_700;
+typedef _gostring_ swig_type_701;
+typedef long long swig_type_702;
+typedef long long swig_type_703;
+typedef long long swig_type_704;
+typedef _gostring_ swig_type_705;
+typedef _gostring_ swig_type_706;
+typedef _gostring_ swig_type_707;
+typedef _gostring_ swig_type_708;
+typedef _gostring_ swig_type_709;
+typedef long long swig_type_710;
+typedef long long swig_type_711;
+typedef long long swig_type_712;
+typedef _gostring_ swig_type_713;
+typedef _gostring_ swig_type_714;
+typedef _gostring_ swig_type_715;
+typedef long long swig_type_716;
+typedef long long swig_type_717;
+typedef _gostring_ swig_type_718;
+typedef long long swig_type_719;
+typedef long long swig_type_720;
+typedef _gostring_ swig_type_721;
+typedef long long swig_type_722;
+typedef long long swig_type_723;
+typedef long long swig_type_724;
+typedef long long swig_type_725;
+typedef long long swig_type_726;
+typedef long long swig_type_727;
+typedef long long swig_type_728;
+typedef long long swig_type_729;
+typedef long long swig_type_730;
+typedef long long swig_type_731;
+typedef long long swig_type_732;
+typedef long long swig_type_733;
+typedef long long swig_type_734;
+typedef long long swig_type_735;
+typedef long long swig_type_736;
+typedef long long swig_type_737;
+typedef long long swig_type_738;
+typedef long long swig_type_739;
+typedef long long swig_type_740;
+typedef long long swig_type_741;
+typedef long long swig_type_742;
+typedef long long swig_type_743;
+typedef long long swig_type_744;
+typedef long long swig_type_745;
+typedef long long swig_type_746;
+typedef long long swig_type_747;
+typedef long long swig_type_748;
+typedef long long swig_type_749;
+typedef _gostring_ swig_type_750;
+typedef long long swig_type_751;
+typedef _gostring_ swig_type_752;
+typedef long long swig_type_753;
+typedef long long swig_type_754;
+typedef long long swig_type_755;
+typedef _gostring_ swig_type_756;
+typedef _gostring_ swig_type_757;
+typedef long long swig_type_758;
+typedef long long swig_type_759;
+typedef _gostring_ swig_type_760;
+typedef _gostring_ swig_type_761;
+typedef _gostring_ swig_type_762;
+typedef long long swig_type_763;
+typedef long long swig_type_764;
+typedef _gostring_ swig_type_765;
+typedef _gostring_ swig_type_766;
+typedef _gostring_ swig_type_767;
+typedef _gostring_ swig_type_768;
+typedef _gostring_ swig_type_769;
+typedef _gostring_ swig_type_770;
+typedef _gostring_ swig_type_771;
+typedef _gostring_ swig_type_772;
+typedef _gostring_ swig_type_773;
+typedef _gostring_ swig_type_774;
+typedef _gostring_ swig_type_775;
+typedef _gostring_ swig_type_776;
+typedef _gostring_ swig_type_777;
+typedef long long swig_type_778;
+typedef long long swig_type_779;
+typedef _gostring_ swig_type_780;
+typedef _gostring_ swig_type_781;
+typedef _gostring_ swig_type_782;
+typedef long long swig_type_783;
+typedef long long swig_type_784;
+typedef _gostring_ swig_type_785;
+typedef _gostring_ swig_type_786;
+typedef _gostring_ swig_type_787;
+typedef _gostring_ swig_type_788;
+typedef _gostring_ swig_type_789;
+typedef _gostring_ swig_type_790;
+typedef _gostring_ swig_type_791;
+typedef _gostring_ swig_type_792;
+typedef _gostring_ swig_type_793;
+typedef _gostring_ swig_type_794;
+typedef long long swig_type_795;
+typedef long long swig_type_796;
+typedef _gostring_ swig_type_797;
+typedef _gostring_ swig_type_798;
+typedef _gostring_ swig_type_799;
+typedef _gostring_ swig_type_800;
+typedef _gostring_ swig_type_801;
+typedef _gostring_ swig_type_802;
+typedef long long swig_type_803;
+typedef long long swig_type_804;
+typedef _gostring_ swig_type_805;
+typedef _gostring_ swig_type_806;
+typedef _gostring_ swig_type_807;
+typedef long long swig_type_808;
+typedef long long swig_type_809;
+typedef long long swig_type_810;
+typedef long long swig_type_811;
+typedef long long swig_type_812;
+typedef long long swig_type_813;
+typedef long long swig_type_814;
+typedef long long swig_type_815;
+typedef long long swig_type_816;
+typedef long long swig_type_817;
+typedef long long swig_type_818;
+typedef long long swig_type_819;
+typedef long long swig_type_820;
+typedef long long swig_type_821;
+typedef long long swig_type_822;
+typedef long long swig_type_823;
+typedef long long swig_type_824;
+typedef long long swig_type_825;
+typedef long long swig_type_826;
+typedef long long swig_type_827;
+typedef long long swig_type_828;
+typedef long long swig_type_829;
+typedef long long swig_type_830;
+typedef long long swig_type_831;
+typedef long long swig_type_832;
+typedef long long swig_type_833;
+typedef long long swig_type_834;
+typedef long long swig_type_835;
+typedef long long swig_type_836;
+typedef long long swig_type_837;
+typedef long long swig_type_838;
+typedef long long swig_type_839;
+typedef long long swig_type_840;
+typedef long long swig_type_841;
+typedef _gostring_ swig_type_842;
+typedef _gostring_ swig_type_843;
+typedef long long swig_type_844;
+typedef long long swig_type_845;
+typedef long long swig_type_846;
+typedef long long swig_type_847;
+typedef long long swig_type_848;
+typedef long long swig_type_849;
+typedef long long swig_type_850;
+typedef long long swig_type_851;
+typedef long long swig_type_852;
+typedef long long swig_type_853;
+typedef long long swig_type_854;
+typedef long long swig_type_855;
+typedef long long swig_type_856;
+typedef long long swig_type_857;
+typedef long long swig_type_858;
+typedef long long swig_type_859;
+typedef long long swig_type_860;
+typedef long long swig_type_861;
+typedef long long swig_type_862;
+typedef long long swig_type_863;
+typedef long long swig_type_864;
+typedef long long swig_type_865;
+typedef long long swig_type_866;
+typedef long long swig_type_867;
+typedef long long swig_type_868;
+typedef long long swig_type_869;
+typedef long long swig_type_870;
+typedef long long swig_type_871;
+typedef long long swig_type_872;
+typedef long long swig_type_873;
+typedef long long swig_type_874;
+typedef long long swig_type_875;
+typedef long long swig_type_876;
+typedef long long swig_type_877;
+typedef long long swig_type_878;
+typedef long long swig_type_879;
+typedef long long swig_type_880;
+typedef long long swig_type_881;
+typedef long long swig_type_882;
+typedef long long swig_type_883;
+typedef long long swig_type_884;
+typedef long long swig_type_885;
+typedef long long swig_type_886;
+typedef long long swig_type_887;
+typedef long long swig_type_888;
+typedef long long swig_type_889;
+extern void _wrap_Swig_free_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Swig_malloc_datamunge_cd205fa85b728fed(swig_intgo arg1);
+extern uintptr_t _wrap_new_IPair__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_IPair__SWIG_1_datamunge_cd205fa85b728fed(swig_intgo arg1, swig_intgo arg2);
+extern uintptr_t _wrap_new_IPair__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_IPair_first_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_IPair_first_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_IPair_second_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_IPair_second_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_IPair_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DPair__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_DPair__SWIG_1_datamunge_cd205fa85b728fed(double arg1, double arg2);
+extern uintptr_t _wrap_new_DPair__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DPair_first_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_DPair_first_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DPair_second_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_DPair_second_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_DPair_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DVectorPair__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_DVectorPair__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_new_DVectorPair__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVectorPair_first_set_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DVectorPair_first_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVectorPair_second_set_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DVectorPair_second_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_DVectorPair_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_SPair__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_SPair__SWIG_1_datamunge_cd205fa85b728fed(swig_type_1 arg1, swig_type_2 arg2);
+extern uintptr_t _wrap_new_SPair__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SPair_first_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_3 arg2);
+extern swig_type_4 _wrap_SPair_first_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SPair_second_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_5 arg2);
+extern swig_type_6 _wrap_SPair_second_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_SPair_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_IVector__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_IVector__SWIG_1_datamunge_cd205fa85b728fed(swig_type_7 arg1);
+extern uintptr_t _wrap_new_IVector__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_8 _wrap_IVector_size_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_9 _wrap_IVector_capacity_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_IVector_reserve_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_10 arg2);
+extern _Bool _wrap_IVector_isEmpty_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_IVector_clear_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_IVector_add_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_IVector_get_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_IVector_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
+extern void _wrap_delete_IVector_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DVector__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_DVector__SWIG_1_datamunge_cd205fa85b728fed(swig_type_11 arg1);
+extern uintptr_t _wrap_new_DVector__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_12 _wrap_DVector_size_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_13 _wrap_DVector_capacity_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVector_reserve_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_14 arg2);
+extern _Bool _wrap_DVector_isEmpty_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVector_clear_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVector_add_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_DVector_get_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_DVector_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2, double arg3);
+extern void _wrap_delete_DVector_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DVectorVector__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_DVectorVector__SWIG_1_datamunge_cd205fa85b728fed(swig_type_15 arg1);
+extern uintptr_t _wrap_new_DVectorVector__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_16 _wrap_DVectorVector_size_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_17 _wrap_DVectorVector_capacity_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVectorVector_reserve_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_18 arg2);
+extern _Bool _wrap_DVectorVector_isEmpty_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVectorVector_clear_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DVectorVector_add_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DVectorVector_get_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_DVectorVector_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2, uintptr_t arg3);
+extern void _wrap_delete_DVectorVector_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_SizeVector__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_SizeVector__SWIG_1_datamunge_cd205fa85b728fed(swig_type_19 arg1);
+extern uintptr_t _wrap_new_SizeVector__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_20 _wrap_SizeVector_size_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_21 _wrap_SizeVector_capacity_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SizeVector_reserve_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_22 arg2);
+extern _Bool _wrap_SizeVector_isEmpty_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SizeVector_clear_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SizeVector_add_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_23 arg2);
+extern swig_type_24 _wrap_SizeVector_get_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_SizeVector_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2, swig_type_25 arg3);
+extern void _wrap_delete_SizeVector_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_SVector__SWIG_0_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_new_SVector__SWIG_1_datamunge_cd205fa85b728fed(swig_type_26 arg1);
+extern uintptr_t _wrap_new_SVector__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_27 _wrap_SVector_size_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_28 _wrap_SVector_capacity_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SVector_reserve_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_29 arg2);
+extern _Bool _wrap_SVector_isEmpty_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SVector_clear_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SVector_add_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_30 arg2);
+extern swig_type_31 _wrap_SVector_get_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_SVector_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2, swig_type_32 arg3);
+extern void _wrap_delete_SVector_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_hello_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_Callback_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Callback_call_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_new_Callback_datamunge_cd205fa85b728fed(void);
+extern double _wrap_call_with_callback_datamunge_cd205fa85b728fed(double arg1, uintptr_t arg2);
+extern uintptr_t _wrap_map_dvector_with_callback_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_make_dvector_datamunge_cd205fa85b728fed(double arg1, double arg2, double arg3);
+extern double _wrap_sum_dvector_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_make_dpair_datamunge_cd205fa85b728fed(double arg1, double arg2);
+extern double _wrap_sum_dpair_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DataFrame_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_DataFrame_empty_datamunge_cd205fa85b728fed(void);
+extern swig_type_33 _wrap_DataFrame_nrows_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_34 _wrap_DataFrame_ncols_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DataFrame_shape_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DataFrame_columns_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataFrame_add_numeric_column__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_35 arg2, uintptr_t arg3, uintptr_t arg4);
+extern void _wrap_DataFrame_add_numeric_column__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_36 arg2, uintptr_t arg3);
+extern void _wrap_DataFrame_add_string_column__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_37 arg2, uintptr_t arg3, uintptr_t arg4);
+extern void _wrap_DataFrame_add_string_column__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_38 arg2, uintptr_t arg3);
+extern void _wrap_DataFrame_add_string_column_encoded__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_39 arg2, swig_type_40 arg3, uintptr_t arg4);
+extern void _wrap_DataFrame_add_string_column_encoded__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_41 arg2, swig_type_42 arg3);
+extern void _wrap_DataFrame_fill_null_numeric_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_43 arg2, double arg3);
+extern void _wrap_DataFrame_fill_null_string_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_44 arg2, swig_type_45 arg3);
+extern uintptr_t _wrap_DataFrame_Xselect_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DataFrame_select_encoded_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_46 arg2);
+extern uintptr_t _wrap_DataFrame_sort_by__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_47 arg2, _Bool arg3);
+extern uintptr_t _wrap_DataFrame_sort_by__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_48 arg2);
+extern uintptr_t _wrap_DataFrame_drop_duplicates__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DataFrame_drop_duplicates__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DataFrame_drop_duplicates_encoded_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_49 arg2);
+extern uintptr_t _wrap_DataFrame_group_by_sum_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
+extern uintptr_t _wrap_DataFrame_group_by_sum_encoded_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_50 arg2, swig_type_51 arg3);
+extern uintptr_t _wrap_DataFrame_join__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_52 arg3, swig_type_53 arg4, _Bool arg5);
+extern uintptr_t _wrap_DataFrame_join__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_54 arg3, swig_type_55 arg4);
+extern swig_type_56 _wrap_DataFrame_numeric_count_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_57 arg2);
+extern swig_type_58 _wrap_DataFrame_numeric_null_count_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_59 arg2);
+extern double _wrap_DataFrame_numeric_sum_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_60 arg2);
+extern double _wrap_DataFrame_numeric_mean_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_61 arg2);
+extern double _wrap_DataFrame_numeric_min_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_62 arg2);
+extern double _wrap_DataFrame_numeric_max_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_63 arg2);
+extern swig_type_64 _wrap_DataFrame_to_string__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_65 arg2);
+extern swig_type_66 _wrap_DataFrame_to_string__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_DataFrame_is_numeric_column_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_67 arg2);
+extern _Bool _wrap_DataFrame_is_null_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_68 arg2, swig_type_69 arg3);
+extern double _wrap_DataFrame_numeric_at_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_70 arg2, swig_type_71 arg3);
+extern swig_type_72 _wrap_DataFrame_string_at_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_73 arg2, swig_type_74 arg3);
+extern uintptr_t _wrap_DataFrame_iris_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_DataFrame_penguins_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_DataFrame_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_LM__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_75 arg2, swig_type_76 arg3);
+extern uintptr_t _wrap_new_LM__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_77 arg2);
+extern swig_type_78 _wrap_LM_formula_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_LM_has_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_79 _wrap_LM_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_80 _wrap_LM_rank_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_81 _wrap_LM_degrees_of_freedom_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_coefficient_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_standard_errors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_t_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_p_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LM_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LM_adjusted_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LM_sigma_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LM_f_statistic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LM_f_p_value_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_confidence_interval_lower__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_LM_confidence_interval_lower__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_confidence_interval_upper__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_LM_confidence_interval_upper__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_leverage_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_standardized_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_studentized_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_cooks_distance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_82 _wrap_LM_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_LM_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_LM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_83 arg3, double arg4);
+extern uintptr_t _wrap_LM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_84 arg3);
+extern uintptr_t _wrap_LM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_LM_anova_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_plot_normal_qq_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_plot_scale_location_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LM_plot_residuals_vs_leverage_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_LM_save_diagnostic_plots_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_85 arg2);
+extern void _wrap_delete_LM_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_LMM__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_86 arg2, _Bool arg3, swig_type_87 arg4, swig_type_88 arg5, double arg6, swig_type_89 arg7);
+extern uintptr_t _wrap_new_LMM__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_90 arg2, _Bool arg3, swig_type_91 arg4, swig_type_92 arg5, double arg6);
+extern uintptr_t _wrap_new_LMM__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_93 arg2, _Bool arg3, swig_type_94 arg4, swig_type_95 arg5);
+extern uintptr_t _wrap_new_LMM__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_96 arg2, _Bool arg3, swig_type_97 arg4);
+extern uintptr_t _wrap_new_LMM__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_98 arg2, _Bool arg3);
+extern uintptr_t _wrap_new_LMM__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_99 arg2);
+extern swig_type_100 _wrap_LMM_formula_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_101 _wrap_LMM_group_variable_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_LMM_has_random_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_random_effect_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_LMM_is_reml_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_102 _wrap_LMM_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_103 _wrap_LMM_num_groups_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_104 _wrap_LMM_rank_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_coefficient_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_standard_errors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_z_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_p_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LMM_residual_variance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LMM_residual_std_dev_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_random_effect_std_devs_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LMM_random_effect_correlation_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_105 arg2, swig_type_106 arg3);
+extern uintptr_t _wrap_LMM_group_labels_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_random_effects_for_group_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_107 arg2);
+extern double _wrap_LMM_log_likelihood_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LMM_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LMM_aic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LMM_bic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_108 _wrap_LMM_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_LMM_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LMM_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern void _wrap_delete_LMM_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_GLMM__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_109 arg2, swig_type_110 arg3, swig_type_111 arg4, double arg5, swig_type_112 arg6, swig_type_113 arg7, double arg8, swig_type_114 arg9);
+extern uintptr_t _wrap_new_GLMM__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_115 arg2, swig_type_116 arg3, swig_type_117 arg4, double arg5, swig_type_118 arg6, swig_type_119 arg7, double arg8);
+extern uintptr_t _wrap_new_GLMM__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_120 arg2, swig_type_121 arg3, swig_type_122 arg4, double arg5, swig_type_123 arg6, swig_type_124 arg7);
+extern uintptr_t _wrap_new_GLMM__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_125 arg2, swig_type_126 arg3, swig_type_127 arg4, double arg5, swig_type_128 arg6);
+extern uintptr_t _wrap_new_GLMM__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_129 arg2, swig_type_130 arg3, swig_type_131 arg4, double arg5);
+extern uintptr_t _wrap_new_GLMM__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_132 arg2, swig_type_133 arg3, swig_type_134 arg4);
+extern uintptr_t _wrap_new_GLMM__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_135 arg2, swig_type_136 arg3);
+extern uintptr_t _wrap_new_GLMM__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_137 arg2);
+extern swig_type_138 _wrap_GLMM_formula_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_139 _wrap_GLMM_family_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_140 _wrap_GLMM_group_variable_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_GLMM_has_random_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_random_effect_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_141 _wrap_GLMM_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_142 _wrap_GLMM_num_groups_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_143 _wrap_GLMM_rank_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_144 _wrap_GLMM_iterations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_coefficient_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_standard_errors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_z_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_p_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_random_effect_std_devs_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GLMM_random_effect_correlation_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_145 arg2, swig_type_146 arg3);
+extern uintptr_t _wrap_GLMM_group_labels_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_random_effects_for_group_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_147 arg2);
+extern double _wrap_GLMM_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GLMM_aic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GLMM_bic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_148 _wrap_GLMM_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_GLMM_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLMM_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern void _wrap_delete_GLMM_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_LDA__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_149 arg2, uintptr_t arg3);
+extern uintptr_t _wrap_new_LDA__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_150 arg2);
+extern uintptr_t _wrap_LDA_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LDA_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_151 _wrap_LDA_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_152 _wrap_LDA_num_discriminants_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LDA_priors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LDA_group_means_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LDA_scaling_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LDA_proportion_of_trace_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_LDA_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LDA_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_153 _wrap_LDA_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_LDA_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LDA_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_LDA_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_LDA_plot_discriminants_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_LDA_save_discriminant_plot_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_154 arg2);
+extern void _wrap_delete_LDA_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_SVM__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_155 arg2, swig_type_156 arg3, double arg4, double arg5, double arg6, swig_intgo arg7, _Bool arg8);
+extern uintptr_t _wrap_new_SVM__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_157 arg2, swig_type_158 arg3, double arg4, double arg5, double arg6, swig_intgo arg7);
+extern uintptr_t _wrap_new_SVM__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_159 arg2, swig_type_160 arg3, double arg4, double arg5, double arg6);
+extern uintptr_t _wrap_new_SVM__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_161 arg2, swig_type_162 arg3, double arg4, double arg5);
+extern uintptr_t _wrap_new_SVM__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_163 arg2, swig_type_164 arg3, double arg4);
+extern uintptr_t _wrap_new_SVM__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_165 arg2, swig_type_166 arg3);
+extern uintptr_t _wrap_new_SVM__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_167 arg2);
+extern uintptr_t _wrap_SVM_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_SVM_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_168 _wrap_SVM_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_169 _wrap_SVM_num_support_vectors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_SVM_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_SVM_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_170 _wrap_SVM_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_SVM_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_SVM_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_SVM_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern void _wrap_delete_SVM_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DecisionTreeClassifier__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_171 arg2, swig_type_172 arg3, swig_type_173 arg4, swig_type_174 arg5, swig_type_175 arg6);
+extern uintptr_t _wrap_new_DecisionTreeClassifier__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_176 arg2, swig_type_177 arg3, swig_type_178 arg4, swig_type_179 arg5);
+extern uintptr_t _wrap_new_DecisionTreeClassifier__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_180 arg2, swig_type_181 arg3, swig_type_182 arg4);
+extern uintptr_t _wrap_new_DecisionTreeClassifier__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_183 arg2, swig_type_184 arg3);
+extern uintptr_t _wrap_new_DecisionTreeClassifier__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_185 arg2);
+extern uintptr_t _wrap_DecisionTreeClassifier_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeClassifier_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_186 _wrap_DecisionTreeClassifier_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_187 _wrap_DecisionTreeClassifier_node_count_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_188 _wrap_DecisionTreeClassifier_leaf_count_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_189 _wrap_DecisionTreeClassifier_depth_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeClassifier_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_DecisionTreeClassifier_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeClassifier_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_190 _wrap_DecisionTreeClassifier_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DecisionTreeClassifier_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeClassifier_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DecisionTreeClassifier_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DecisionTreeClassifier_plot_classification_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_191 arg3, swig_type_192 arg4);
+extern uintptr_t _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_193 arg2, swig_type_194 arg3, swig_type_195 arg4);
+extern uintptr_t _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_196 arg2, swig_type_197 arg3);
+extern void _wrap_delete_DecisionTreeClassifier_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DecisionTreeRegressor__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_198 arg2, swig_type_199 arg3, swig_type_200 arg4, swig_type_201 arg5);
+extern uintptr_t _wrap_new_DecisionTreeRegressor__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_202 arg2, swig_type_203 arg3, swig_type_204 arg4);
+extern uintptr_t _wrap_new_DecisionTreeRegressor__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_205 arg2, swig_type_206 arg3);
+extern uintptr_t _wrap_new_DecisionTreeRegressor__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_207 arg2);
+extern uintptr_t _wrap_DecisionTreeRegressor_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_208 _wrap_DecisionTreeRegressor_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_209 _wrap_DecisionTreeRegressor_node_count_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_210 _wrap_DecisionTreeRegressor_leaf_count_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_211 _wrap_DecisionTreeRegressor_depth_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeRegressor_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeRegressor_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_DecisionTreeRegressor_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_DecisionTreeRegressor_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_212 _wrap_DecisionTreeRegressor_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DecisionTreeRegressor_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeRegressor_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DecisionTreeRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DecisionTreeRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_DecisionTreeRegressor_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_213 arg2, swig_type_214 arg3, swig_type_215 arg4, swig_type_216 arg5, swig_type_217 arg6, swig_type_218 arg7, swig_type_219 arg8, _Bool arg9, double arg10, swig_type_220 arg11);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_221 arg2, swig_type_222 arg3, swig_type_223 arg4, swig_type_224 arg5, swig_type_225 arg6, swig_type_226 arg7, swig_type_227 arg8, _Bool arg9, double arg10);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_228 arg2, swig_type_229 arg3, swig_type_230 arg4, swig_type_231 arg5, swig_type_232 arg6, swig_type_233 arg7, swig_type_234 arg8, _Bool arg9);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_235 arg2, swig_type_236 arg3, swig_type_237 arg4, swig_type_238 arg5, swig_type_239 arg6, swig_type_240 arg7, swig_type_241 arg8);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_242 arg2, swig_type_243 arg3, swig_type_244 arg4, swig_type_245 arg5, swig_type_246 arg6, swig_type_247 arg7);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_248 arg2, swig_type_249 arg3, swig_type_250 arg4, swig_type_251 arg5, swig_type_252 arg6);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_253 arg2, swig_type_254 arg3, swig_type_255 arg4, swig_type_256 arg5);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_257 arg2, swig_type_258 arg3, swig_type_259 arg4);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_8_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_260 arg2, swig_type_261 arg3);
+extern uintptr_t _wrap_new_RandomForestClassifier__SWIG_9_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_262 arg2);
+extern uintptr_t _wrap_RandomForestClassifier_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestClassifier_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_263 _wrap_RandomForestClassifier_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_264 _wrap_RandomForestClassifier_n_trees_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_265 _wrap_RandomForestClassifier_max_features_used_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestClassifier_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_RandomForestClassifier_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_RandomForestClassifier_oob_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestClassifier_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_266 _wrap_RandomForestClassifier_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_RandomForestClassifier_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestClassifier_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_RandomForestClassifier_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_RandomForestClassifier_plot_classification_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_267 arg3, swig_type_268 arg4);
+extern uintptr_t _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_269 arg2, swig_type_270 arg3, swig_type_271 arg4);
+extern uintptr_t _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_272 arg2, swig_type_273 arg3);
+extern void _wrap_delete_RandomForestClassifier_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_274 arg2, swig_type_275 arg3, swig_type_276 arg4, swig_type_277 arg5, swig_type_278 arg6, swig_type_279 arg7, _Bool arg8, double arg9, swig_type_280 arg10);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_281 arg2, swig_type_282 arg3, swig_type_283 arg4, swig_type_284 arg5, swig_type_285 arg6, swig_type_286 arg7, _Bool arg8, double arg9);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_287 arg2, swig_type_288 arg3, swig_type_289 arg4, swig_type_290 arg5, swig_type_291 arg6, swig_type_292 arg7, _Bool arg8);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_293 arg2, swig_type_294 arg3, swig_type_295 arg4, swig_type_296 arg5, swig_type_297 arg6, swig_type_298 arg7);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_299 arg2, swig_type_300 arg3, swig_type_301 arg4, swig_type_302 arg5, swig_type_303 arg6);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_304 arg2, swig_type_305 arg3, swig_type_306 arg4, swig_type_307 arg5);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_308 arg2, swig_type_309 arg3, swig_type_310 arg4);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_311 arg2, swig_type_312 arg3);
+extern uintptr_t _wrap_new_RandomForestRegressor__SWIG_8_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_313 arg2);
+extern uintptr_t _wrap_RandomForestRegressor_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_314 _wrap_RandomForestRegressor_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_315 _wrap_RandomForestRegressor_n_trees_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_316 _wrap_RandomForestRegressor_max_features_used_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestRegressor_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestRegressor_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_RandomForestRegressor_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_RandomForestRegressor_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_RandomForestRegressor_oob_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_RandomForestRegressor_oob_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_317 _wrap_RandomForestRegressor_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_RandomForestRegressor_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestRegressor_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_RandomForestRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_RandomForestRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_RandomForestRegressor_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_ElasticNet__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_318 arg2, double arg3, double arg4, swig_type_319 arg5, swig_type_320 arg6, _Bool arg7, swig_type_321 arg8);
+extern uintptr_t _wrap_new_ElasticNet__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_322 arg2, double arg3, double arg4, swig_type_323 arg5, swig_type_324 arg6, _Bool arg7);
+extern uintptr_t _wrap_new_ElasticNet__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_325 arg2, double arg3, double arg4, swig_type_326 arg5, swig_type_327 arg6);
+extern uintptr_t _wrap_new_ElasticNet__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_328 arg2, double arg3, double arg4, swig_type_329 arg5);
+extern uintptr_t _wrap_new_ElasticNet__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_330 arg2, double arg3, double arg4);
+extern uintptr_t _wrap_new_ElasticNet__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_331 arg2, double arg3);
+extern uintptr_t _wrap_new_ElasticNet__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_332 arg2);
+extern swig_type_333 _wrap_ElasticNet_formula_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_ElasticNet_has_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_334 _wrap_ElasticNet_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ElasticNet_alpha_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ElasticNet_lambda_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_ElasticNet_lambda_was_selected_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_lambda_path_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_cv_mean_squared_error_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ElasticNet_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_335 _wrap_ElasticNet_non_zero_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ElasticNet_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ElasticNet_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_336 _wrap_ElasticNet_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ElasticNet_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_ElasticNet_plot_coefficient_path_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_plot_cv_curve_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ElasticNet_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_ElasticNet_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_Ridge__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_337 arg2, double arg3, swig_type_338 arg4, swig_type_339 arg5, _Bool arg6, swig_type_340 arg7);
+extern uintptr_t _wrap_new_Ridge__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_341 arg2, double arg3, swig_type_342 arg4, swig_type_343 arg5, _Bool arg6);
+extern uintptr_t _wrap_new_Ridge__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_344 arg2, double arg3, swig_type_345 arg4, swig_type_346 arg5);
+extern uintptr_t _wrap_new_Ridge__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_347 arg2, double arg3, swig_type_348 arg4);
+extern uintptr_t _wrap_new_Ridge__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_349 arg2, double arg3);
+extern uintptr_t _wrap_new_Ridge__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_350 arg2);
+extern swig_type_351 _wrap_Ridge_formula_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Ridge_has_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_352 _wrap_Ridge_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Ridge_lambda_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Ridge_lambda_was_selected_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_lambda_path_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_cv_mean_squared_error_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Ridge_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Ridge_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Ridge_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_353 _wrap_Ridge_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_Ridge_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Ridge_plot_coefficient_path_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_plot_cv_curve_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Ridge_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_Ridge_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_Lasso__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_354 arg2, double arg3, swig_type_355 arg4, swig_type_356 arg5, _Bool arg6, swig_type_357 arg7);
+extern uintptr_t _wrap_new_Lasso__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_358 arg2, double arg3, swig_type_359 arg4, swig_type_360 arg5, _Bool arg6);
+extern uintptr_t _wrap_new_Lasso__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_361 arg2, double arg3, swig_type_362 arg4, swig_type_363 arg5);
+extern uintptr_t _wrap_new_Lasso__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_364 arg2, double arg3, swig_type_365 arg4);
+extern uintptr_t _wrap_new_Lasso__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_366 arg2, double arg3);
+extern uintptr_t _wrap_new_Lasso__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_367 arg2);
+extern swig_type_368 _wrap_Lasso_formula_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Lasso_has_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_369 _wrap_Lasso_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Lasso_lambda_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Lasso_lambda_was_selected_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_lambda_path_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_cv_mean_squared_error_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Lasso_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_370 _wrap_Lasso_non_zero_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Lasso_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Lasso_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_371 _wrap_Lasso_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_Lasso_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Lasso_plot_coefficient_path_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_plot_cv_curve_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Lasso_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_Lasso_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_KNNClassifier__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_372 arg2, swig_type_373 arg3, swig_type_374 arg4, _Bool arg5, _Bool arg6);
+extern uintptr_t _wrap_new_KNNClassifier__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_375 arg2, swig_type_376 arg3, swig_type_377 arg4, _Bool arg5);
+extern uintptr_t _wrap_new_KNNClassifier__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_378 arg2, swig_type_379 arg3, swig_type_380 arg4);
+extern uintptr_t _wrap_new_KNNClassifier__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_381 arg2, swig_type_382 arg3);
+extern uintptr_t _wrap_new_KNNClassifier__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_383 arg2);
+extern uintptr_t _wrap_KNNClassifier_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KNNClassifier_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_384 _wrap_KNNClassifier_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_385 _wrap_KNNClassifier_k_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_KNNClassifier_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KNNClassifier_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_386 _wrap_KNNClassifier_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_KNNClassifier_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KNNClassifier_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_KNNClassifier_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_KNNClassifier_plot_classification_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_387 arg3, swig_type_388 arg4);
+extern uintptr_t _wrap_KNNClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_389 arg2, swig_type_390 arg3, swig_type_391 arg4);
+extern uintptr_t _wrap_KNNClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_392 arg2, swig_type_393 arg3);
+extern void _wrap_delete_KNNClassifier_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_KNNRegressor__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_394 arg2, swig_type_395 arg3, swig_type_396 arg4, _Bool arg5, _Bool arg6);
+extern uintptr_t _wrap_new_KNNRegressor__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_397 arg2, swig_type_398 arg3, swig_type_399 arg4, _Bool arg5);
+extern uintptr_t _wrap_new_KNNRegressor__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_400 arg2, swig_type_401 arg3, swig_type_402 arg4);
+extern uintptr_t _wrap_new_KNNRegressor__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_403 arg2, swig_type_404 arg3);
+extern uintptr_t _wrap_new_KNNRegressor__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_405 arg2);
+extern uintptr_t _wrap_KNNRegressor_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_406 _wrap_KNNRegressor_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_407 _wrap_KNNRegressor_k_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KNNRegressor_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_KNNRegressor_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_KNNRegressor_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_408 _wrap_KNNRegressor_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_KNNRegressor_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KNNRegressor_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_KNNRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KNNRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_KNNRegressor_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_KMeans__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_409 arg3, swig_type_410 arg4, swig_type_411 arg5, double arg6, swig_type_412 arg7);
+extern uintptr_t _wrap_new_KMeans__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_413 arg3, swig_type_414 arg4, swig_type_415 arg5, double arg6);
+extern uintptr_t _wrap_new_KMeans__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_416 arg3, swig_type_417 arg4, swig_type_418 arg5);
+extern uintptr_t _wrap_new_KMeans__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_419 arg3, swig_type_420 arg4);
+extern uintptr_t _wrap_new_KMeans__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_421 arg3);
+extern uintptr_t _wrap_new_KMeans__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_new_KMeans__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_422 arg2, swig_type_423 arg3, swig_type_424 arg4, swig_type_425 arg5, double arg6, swig_type_426 arg7);
+extern uintptr_t _wrap_new_KMeans__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_427 arg2, swig_type_428 arg3, swig_type_429 arg4, swig_type_430 arg5, double arg6);
+extern uintptr_t _wrap_new_KMeans__SWIG_8_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_431 arg2, swig_type_432 arg3, swig_type_433 arg4, swig_type_434 arg5);
+extern uintptr_t _wrap_new_KMeans__SWIG_9_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_435 arg2, swig_type_436 arg3, swig_type_437 arg4);
+extern uintptr_t _wrap_new_KMeans__SWIG_10_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_438 arg2, swig_type_439 arg3);
+extern uintptr_t _wrap_new_KMeans__SWIG_11_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_440 arg2);
+extern uintptr_t _wrap_KMeans_feature_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_441 _wrap_KMeans_n_clusters_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_442 _wrap_KMeans_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_443 _wrap_KMeans_iterations_used_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KMeans_labels_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_KMeans_inertia_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KMeans_cluster_center_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_444 arg2);
+extern uintptr_t _wrap_KMeans_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern swig_type_445 _wrap_KMeans_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_KMeans_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_KMeans_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_446 arg3, swig_type_447 arg4, swig_type_448 arg5);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_449 arg3, swig_type_450 arg4);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_451 arg3);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_452 arg2, swig_type_453 arg3, swig_type_454 arg4, swig_type_455 arg5);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_456 arg2, swig_type_457 arg3, swig_type_458 arg4);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_459 arg2, swig_type_460 arg3);
+extern uintptr_t _wrap_new_AgglomerativeClustering__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_461 arg2);
+extern uintptr_t _wrap_AgglomerativeClustering_feature_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_462 _wrap_AgglomerativeClustering_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_AgglomerativeClustering_labels_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_AgglomerativeClustering_cut_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_463 arg2);
+extern swig_type_464 _wrap_AgglomerativeClustering_num_merges_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_465 _wrap_AgglomerativeClustering_merge_cluster_a_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_466 arg2);
+extern swig_type_467 _wrap_AgglomerativeClustering_merge_cluster_b_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_468 arg2);
+extern double _wrap_AgglomerativeClustering_merge_distance_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_469 arg2);
+extern swig_type_470 _wrap_AgglomerativeClustering_merge_size_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_471 arg2);
+extern swig_type_472 _wrap_AgglomerativeClustering_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_AgglomerativeClustering_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_AgglomerativeClustering_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, double arg3, swig_type_473 arg4, swig_type_474 arg5);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, double arg3, swig_type_475 arg4);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, double arg3);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_476 arg2, double arg3, swig_type_477 arg4, swig_type_478 arg5);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_479 arg2, double arg3, swig_type_480 arg4);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_481 arg2, double arg3);
+extern uintptr_t _wrap_new_DBSCAN__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_482 arg2);
+extern uintptr_t _wrap_DBSCAN_feature_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_483 _wrap_DBSCAN_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_484 _wrap_DBSCAN_n_clusters_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_485 _wrap_DBSCAN_n_noise_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_DBSCAN_labels_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_486 _wrap_DBSCAN_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DBSCAN_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_DBSCAN_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_487 arg2, swig_type_488 arg3, double arg4, swig_type_489 arg5, swig_type_490 arg6, swig_type_491 arg7, double arg8, swig_type_492 arg9);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_493 arg2, swig_type_494 arg3, double arg4, swig_type_495 arg5, swig_type_496 arg6, swig_type_497 arg7, double arg8);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_498 arg2, swig_type_499 arg3, double arg4, swig_type_500 arg5, swig_type_501 arg6, swig_type_502 arg7);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_503 arg2, swig_type_504 arg3, double arg4, swig_type_505 arg5, swig_type_506 arg6);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_507 arg2, swig_type_508 arg3, double arg4, swig_type_509 arg5);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_510 arg2, swig_type_511 arg3, double arg4);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_512 arg2, swig_type_513 arg3);
+extern uintptr_t _wrap_new_GBMClassifier__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_514 arg2);
+extern uintptr_t _wrap_GBMClassifier_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMClassifier_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_515 _wrap_GBMClassifier_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_516 _wrap_GBMClassifier_n_trees_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMClassifier_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GBMClassifier_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMClassifier_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMClassifier_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_517 _wrap_GBMClassifier_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_GBMClassifier_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMClassifier_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GBMClassifier_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GBMClassifier_plot_classification_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_518 arg3, swig_type_519 arg4);
+extern uintptr_t _wrap_GBMClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_520 arg2, swig_type_521 arg3, swig_type_522 arg4);
+extern uintptr_t _wrap_GBMClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_523 arg2, swig_type_524 arg3);
+extern uintptr_t _wrap_GBMClassifier_plot_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_GBMClassifier_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_525 arg2, swig_type_526 arg3, double arg4, swig_type_527 arg5, swig_type_528 arg6, swig_type_529 arg7, double arg8, swig_type_530 arg9);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_531 arg2, swig_type_532 arg3, double arg4, swig_type_533 arg5, swig_type_534 arg6, swig_type_535 arg7, double arg8);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_536 arg2, swig_type_537 arg3, double arg4, swig_type_538 arg5, swig_type_539 arg6, swig_type_540 arg7);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_541 arg2, swig_type_542 arg3, double arg4, swig_type_543 arg5, swig_type_544 arg6);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_545 arg2, swig_type_546 arg3, double arg4, swig_type_547 arg5);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_548 arg2, swig_type_549 arg3, double arg4);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_550 arg2, swig_type_551 arg3);
+extern uintptr_t _wrap_new_GBMRegressor__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_552 arg2);
+extern uintptr_t _wrap_GBMRegressor_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_553 _wrap_GBMRegressor_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_554 _wrap_GBMRegressor_n_trees_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMRegressor_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMRegressor_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GBMRegressor_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GBMRegressor_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMRegressor_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_555 _wrap_GBMRegressor_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_GBMRegressor_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMRegressor_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GBMRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GBMRegressor_plot_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_GBMRegressor_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_556 arg2, swig_type_557 arg3, double arg4, swig_type_558 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_559 arg10, double arg11, double arg12, swig_type_560 arg13);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_561 arg2, swig_type_562 arg3, double arg4, swig_type_563 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_564 arg10, double arg11, double arg12);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_565 arg2, swig_type_566 arg3, double arg4, swig_type_567 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_568 arg10, double arg11);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_569 arg2, swig_type_570 arg3, double arg4, swig_type_571 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_572 arg10);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_573 arg2, swig_type_574 arg3, double arg4, swig_type_575 arg5, double arg6, double arg7, double arg8, double arg9);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_576 arg2, swig_type_577 arg3, double arg4, swig_type_578 arg5, double arg6, double arg7, double arg8);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_579 arg2, swig_type_580 arg3, double arg4, swig_type_581 arg5, double arg6, double arg7);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_582 arg2, swig_type_583 arg3, double arg4, swig_type_584 arg5, double arg6);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_8_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_585 arg2, swig_type_586 arg3, double arg4, swig_type_587 arg5);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_9_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_588 arg2, swig_type_589 arg3, double arg4);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_10_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_590 arg2, swig_type_591 arg3);
+extern uintptr_t _wrap_new_XGBoostClassifier__SWIG_11_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_592 arg2);
+extern uintptr_t _wrap_XGBoostClassifier_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostClassifier_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_593 _wrap_XGBoostClassifier_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_594 _wrap_XGBoostClassifier_n_trees_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostClassifier_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_XGBoostClassifier_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostClassifier_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostClassifier_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_595 _wrap_XGBoostClassifier_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_XGBoostClassifier_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostClassifier_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_XGBoostClassifier_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_XGBoostClassifier_plot_classification_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_596 arg3, swig_type_597 arg4);
+extern uintptr_t _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_598 arg2, swig_type_599 arg3, swig_type_600 arg4);
+extern uintptr_t _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_601 arg2, swig_type_602 arg3);
+extern uintptr_t _wrap_XGBoostClassifier_plot_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_XGBoostClassifier_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_603 arg2, swig_type_604 arg3, double arg4, swig_type_605 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_606 arg10, double arg11, double arg12, swig_type_607 arg13);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_608 arg2, swig_type_609 arg3, double arg4, swig_type_610 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_611 arg10, double arg11, double arg12);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_612 arg2, swig_type_613 arg3, double arg4, swig_type_614 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_615 arg10, double arg11);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_616 arg2, swig_type_617 arg3, double arg4, swig_type_618 arg5, double arg6, double arg7, double arg8, double arg9, swig_type_619 arg10);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_620 arg2, swig_type_621 arg3, double arg4, swig_type_622 arg5, double arg6, double arg7, double arg8, double arg9);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_623 arg2, swig_type_624 arg3, double arg4, swig_type_625 arg5, double arg6, double arg7, double arg8);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_6_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_626 arg2, swig_type_627 arg3, double arg4, swig_type_628 arg5, double arg6, double arg7);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_7_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_629 arg2, swig_type_630 arg3, double arg4, swig_type_631 arg5, double arg6);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_8_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_632 arg2, swig_type_633 arg3, double arg4, swig_type_634 arg5);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_9_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_635 arg2, swig_type_636 arg3, double arg4);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_10_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_637 arg2, swig_type_638 arg3);
+extern uintptr_t _wrap_new_XGBoostRegressor__SWIG_11_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_639 arg2);
+extern uintptr_t _wrap_XGBoostRegressor_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_640 _wrap_XGBoostRegressor_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_641 _wrap_XGBoostRegressor_n_trees_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostRegressor_feature_importance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostRegressor_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_XGBoostRegressor_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_XGBoostRegressor_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostRegressor_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_642 _wrap_XGBoostRegressor_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_XGBoostRegressor_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostRegressor_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_XGBoostRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_XGBoostRegressor_plot_training_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_XGBoostRegressor_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_KernelRegression__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_643 arg2, swig_type_644 arg3, double arg4, swig_type_645 arg5, _Bool arg6);
+extern uintptr_t _wrap_new_KernelRegression__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_646 arg2, swig_type_647 arg3, double arg4, swig_type_648 arg5);
+extern uintptr_t _wrap_new_KernelRegression__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_649 arg2, swig_type_650 arg3, double arg4);
+extern uintptr_t _wrap_new_KernelRegression__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_651 arg2, swig_type_652 arg3);
+extern uintptr_t _wrap_new_KernelRegression__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_653 arg2);
+extern uintptr_t _wrap_KernelRegression_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_654 _wrap_KernelRegression_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_KernelRegression_bandwidth_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_KernelRegression_bandwidth_was_selected_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KernelRegression_bandwidth_grid_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KernelRegression_cv_mean_squared_error_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KernelRegression_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_KernelRegression_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_KernelRegression_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_655 _wrap_KernelRegression_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_KernelRegression_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KernelRegression_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_KernelRegression_plot_fit__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_656 arg3);
+extern uintptr_t _wrap_KernelRegression_plot_fit__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_KernelRegression_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KernelRegression_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_KernelRegression_plot_cv_curve_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_KernelRegression_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_GaussianProcessRegression__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_657 arg2, double arg3, double arg4, swig_type_658 arg5, swig_type_659 arg6, _Bool arg7);
+extern uintptr_t _wrap_new_GaussianProcessRegression__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_660 arg2, double arg3, double arg4, swig_type_661 arg5, swig_type_662 arg6);
+extern uintptr_t _wrap_new_GaussianProcessRegression__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_663 arg2, double arg3, double arg4, swig_type_664 arg5);
+extern uintptr_t _wrap_new_GaussianProcessRegression__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_665 arg2, double arg3, double arg4);
+extern uintptr_t _wrap_new_GaussianProcessRegression__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_666 arg2, double arg3);
+extern uintptr_t _wrap_new_GaussianProcessRegression__SWIG_5_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_667 arg2);
+extern uintptr_t _wrap_GaussianProcessRegression_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_668 _wrap_GaussianProcessRegression_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GaussianProcessRegression_length_scale_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GaussianProcessRegression_signal_variance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GaussianProcessRegression_noise_variance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GaussianProcessRegression_log_marginal_likelihood_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_GaussianProcessRegression_length_scale_was_selected_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_GaussianProcessRegression_noise_ratio_was_selected_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GaussianProcessRegression_length_scale_grid_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GaussianProcessRegression_length_scale_profile_log_likelihood_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GaussianProcessRegression_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GaussianProcessRegression_r_squared_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GaussianProcessRegression_rmse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_669 _wrap_GaussianProcessRegression_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_GaussianProcessRegression_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GaussianProcessRegression_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GaussianProcessRegression_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_670 arg3, double arg4);
+extern uintptr_t _wrap_GaussianProcessRegression_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_671 arg3);
+extern uintptr_t _wrap_GaussianProcessRegression_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GaussianProcessRegression_plot_fit__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_672 arg3, double arg4);
+extern uintptr_t _wrap_GaussianProcessRegression_plot_fit__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_673 arg3);
+extern uintptr_t _wrap_GaussianProcessRegression_plot_fit__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GaussianProcessRegression_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GaussianProcessRegression_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GaussianProcessRegression_plot_length_scale_profile_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_GaussianProcessRegression_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_NaiveBayesClassifier__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_674 arg2, double arg3, double arg4);
+extern uintptr_t _wrap_new_NaiveBayesClassifier__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_675 arg2, double arg3);
+extern uintptr_t _wrap_new_NaiveBayesClassifier__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_676 arg2);
+extern uintptr_t _wrap_NaiveBayesClassifier_classes_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_NaiveBayesClassifier_predictor_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_677 _wrap_NaiveBayesClassifier_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_NaiveBayesClassifier_class_priors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_NaiveBayesClassifier_training_accuracy_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_NaiveBayesClassifier_confusion_matrix_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_678 _wrap_NaiveBayesClassifier_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_NaiveBayesClassifier_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_NaiveBayesClassifier_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_NaiveBayesClassifier_predict_frame_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_NaiveBayesClassifier_plot_classification_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_679 arg3, swig_type_680 arg4);
+extern uintptr_t _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_681 arg2, swig_type_682 arg3, swig_type_683 arg4);
+extern uintptr_t _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_684 arg2, swig_type_685 arg3);
+extern void _wrap_delete_NaiveBayesClassifier_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_GLM__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_686 arg2, swig_type_687 arg3, swig_type_688 arg4, swig_type_689 arg5, double arg6);
+extern uintptr_t _wrap_new_GLM__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_690 arg2, swig_type_691 arg3, swig_type_692 arg4, swig_type_693 arg5);
+extern uintptr_t _wrap_new_GLM__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_694 arg2, swig_type_695 arg3, swig_type_696 arg4);
+extern uintptr_t _wrap_new_GLM__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_697 arg2, swig_type_698 arg3);
+extern uintptr_t _wrap_new_GLM__SWIG_4_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_699 arg2);
+extern swig_type_700 _wrap_GLM_formula_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_701 _wrap_GLM_family_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_GLM_has_intercept_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_702 _wrap_GLM_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_703 _wrap_GLM_rank_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_704 _wrap_GLM_degrees_of_freedom_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_coefficient_names_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_linear_predictors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_pearson_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_standardized_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_leverage_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_standard_errors_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_test_statistics_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_p_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GLM_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GLM_null_deviance_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GLM_dispersion_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_GLM_aic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_confidence_interval_lower__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_GLM_confidence_interval_lower__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_confidence_interval_upper__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_GLM_confidence_interval_upper__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_705 _wrap_GLM_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_GLM_print_summary_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_predict_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GLM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_706 arg3, double arg4);
+extern uintptr_t _wrap_GLM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_707 arg3);
+extern uintptr_t _wrap_GLM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_GLM_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_plot_normal_qq_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_plot_scale_location_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_GLM_plot_residuals_vs_leverage_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_GLM_save_diagnostic_plots_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_708 arg2);
+extern void _wrap_delete_GLM_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_Tensor__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_709 arg2);
+extern uintptr_t _wrap_new_Tensor__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_zeros_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_ones_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_full_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Tensor_from_values_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_from_bool_values_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_from_string_values_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_arange__SWIG_0_datamunge_cd205fa85b728fed(double arg1, double arg2, double arg3);
+extern uintptr_t _wrap_Tensor_arange__SWIG_1_datamunge_cd205fa85b728fed(double arg1, double arg2);
+extern uintptr_t _wrap_Tensor_eye_datamunge_cd205fa85b728fed(swig_type_710 arg1);
+extern swig_type_711 _wrap_Tensor_ndim_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_shape_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_712 _wrap_Tensor_size_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_713 _wrap_Tensor_dtype_name_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Tensor_at_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern void _wrap_Tensor_set_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, double arg3);
+extern swig_type_714 _wrap_Tensor_string_at_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern void _wrap_Tensor_set_string_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_715 arg3);
+extern double _wrap_Tensor_at_flat_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_716 arg2);
+extern void _wrap_Tensor_set_flat_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_717 arg2, double arg3);
+extern swig_type_718 _wrap_Tensor_string_at_flat_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_719 arg2);
+extern void _wrap_Tensor_set_string_flat_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_720 arg2, swig_type_721 arg3);
+extern uintptr_t _wrap_Tensor_reshape_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_flatten_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_transpose__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_transpose__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_squeeze_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_squeeze_axis_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_722 arg2);
+extern uintptr_t _wrap_Tensor_expand_dims_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_723 arg2);
+extern uintptr_t _wrap_Tensor_slice__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_724 arg2, swig_type_725 arg3, swig_type_726 arg4, swig_type_727 arg5);
+extern uintptr_t _wrap_Tensor_slice__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_728 arg2, swig_type_729 arg3, swig_type_730 arg4);
+extern uintptr_t _wrap_Tensor_index_select_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_731 arg2, uintptr_t arg3);
+extern uintptr_t _wrap_Tensor_concatenate2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_732 arg3);
+extern uintptr_t _wrap_Tensor_stack2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_type_733 arg3);
+extern uintptr_t _wrap_Tensor_add_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_subtract_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_multiply_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_divide_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_power_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_add_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Tensor_subtract_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Tensor_multiply_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Tensor_divide_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Tensor_power_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Tensor_negate_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_abs_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_sqrt_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_exp_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_log_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_apply_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_equal_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_not_equal_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_less_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_less_equal_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_greater_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_greater_equal_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern double _wrap_Tensor_sum_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Tensor_mean_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Tensor_max_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Tensor_min_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Tensor_prod_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_734 _wrap_Tensor_argmax_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_735 _wrap_Tensor_argmin_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Tensor_all_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Tensor_any_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Tensor_sum_axis__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_736 arg2, _Bool arg3);
+extern uintptr_t _wrap_Tensor_sum_axis__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_737 arg2);
+extern uintptr_t _wrap_Tensor_mean_axis__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_738 arg2, _Bool arg3);
+extern uintptr_t _wrap_Tensor_mean_axis__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_739 arg2);
+extern uintptr_t _wrap_Tensor_max_axis__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_740 arg2, _Bool arg3);
+extern uintptr_t _wrap_Tensor_max_axis__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_741 arg2);
+extern uintptr_t _wrap_Tensor_min_axis__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_742 arg2, _Bool arg3);
+extern uintptr_t _wrap_Tensor_min_axis__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_743 arg2);
+extern uintptr_t _wrap_Tensor_prod_axis__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_744 arg2, _Bool arg3);
+extern uintptr_t _wrap_Tensor_prod_axis__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_745 arg2);
+extern uintptr_t _wrap_Tensor_argmax_axis__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_746 arg2, _Bool arg3);
+extern uintptr_t _wrap_Tensor_argmax_axis__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_747 arg2);
+extern uintptr_t _wrap_Tensor_argmin_axis__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_748 arg2, _Bool arg3);
+extern uintptr_t _wrap_Tensor_argmin_axis__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_749 arg2);
+extern uintptr_t _wrap_Tensor_matmul_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern double _wrap_Tensor_dot_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Tensor_outer_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern swig_type_750 _wrap_Tensor_to_string__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_751 arg2);
+extern swig_type_752 _wrap_Tensor_to_string__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_Tensor_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_Dual__SWIG_0_datamunge_cd205fa85b728fed(double arg1, double arg2);
+extern uintptr_t _wrap_new_Dual__SWIG_1_datamunge_cd205fa85b728fed(double arg1);
+extern double _wrap_Dual_value_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Dual_derivative_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_add_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Dual_subtract_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Dual_multiply_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Dual_divide_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Dual_negate_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_add_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Dual_subtract_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Dual_multiply_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Dual_divide_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Dual_pow_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Dual_exp_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_log_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_sqrt_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_sin_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_cos_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_tan_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_tanh_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Dual_abs_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_Dual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_HyperDual__SWIG_0_datamunge_cd205fa85b728fed(double arg1, double arg2, double arg3, double arg4);
+extern uintptr_t _wrap_new_HyperDual__SWIG_1_datamunge_cd205fa85b728fed(double arg1, double arg2, double arg3);
+extern uintptr_t _wrap_new_HyperDual__SWIG_2_datamunge_cd205fa85b728fed(double arg1, double arg2);
+extern uintptr_t _wrap_new_HyperDual__SWIG_3_datamunge_cd205fa85b728fed(double arg1);
+extern double _wrap_HyperDual_value_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_HyperDual_eps1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_HyperDual_eps2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_HyperDual_eps1eps2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_add_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_HyperDual_subtract_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_HyperDual_multiply_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_HyperDual_divide_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_HyperDual_negate_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_add_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_HyperDual_subtract_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_HyperDual_multiply_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_HyperDual_divide_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_HyperDual_pow_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_HyperDual_exp_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_log_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_sqrt_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_sin_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_cos_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_tan_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_HyperDual_tanh_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_HyperDual_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_Tape_datamunge_cd205fa85b728fed(void);
+extern swig_type_753 _wrap_Tape_size_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Tape_value_at_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_754 arg2);
+extern uintptr_t _wrap_Tape_backward_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern void _wrap_delete_Tape_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_Var_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_Var_value_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_755 _wrap_Var_index_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_add_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Var_subtract_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Var_multiply_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Var_divide_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Var_negate_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_add_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Var_subtract_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Var_multiply_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Var_divide_scalar_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Var_pow_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_Var_exp_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_log_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_sqrt_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_sin_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_cos_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_tan_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_tanh_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Var_abs_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_Var_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_RGB_r_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_RGB_r_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_RGB_g_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_RGB_g_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_RGB_b_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_RGB_b_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_RGB_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_RGB_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_intgo _wrap_Kind_Scatter_DataSeries_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_Kind_Line_DataSeries_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_Kind_Bar_DataSeries_datamunge_cd205fa85b728fed(void);
+extern void _wrap_DataSeries_kind_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_DataSeries_kind_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataSeries_x_set_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DataSeries_x_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataSeries_y_set_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DataSeries_y_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataSeries_label_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_756 arg2);
+extern swig_type_757 _wrap_DataSeries_label_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataSeries_color_set_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_DataSeries_color_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataSeries_stroke_width_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_DataSeries_stroke_width_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataSeries_marker_size_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_DataSeries_marker_size_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_DataSeries_bar_width_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_DataSeries_bar_width_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_DataSeries_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_DataSeries_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_delete_Plot_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Plot_size_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_758 arg2, swig_type_759 arg3);
+extern uintptr_t _wrap_Plot_title_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_760 arg2);
+extern uintptr_t _wrap_Plot_x_label_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_761 arg2);
+extern uintptr_t _wrap_Plot_y_label_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_762 arg2);
+extern uintptr_t _wrap_Plot_background_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Plot_axis_color_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Plot_grid_color_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_Plot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, _Bool arg2);
+extern uintptr_t _wrap_Plot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Plot_x_limits_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2, double arg3);
+extern uintptr_t _wrap_Plot_y_limits_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2, double arg3);
+extern swig_type_763 _wrap_Plot_width_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_764 _wrap_Plot_height_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_765 _wrap_Plot_title_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_766 _wrap_Plot_x_label_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_767 _wrap_Plot_y_label_text_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Plot_series_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Plot_background_color_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Plot_axes_color_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_Plot_major_grid_color_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Plot_grid_visible_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Plot_has_x_limits_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern _Bool _wrap_Plot_has_y_limits_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Plot_x_min_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Plot_x_max_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Plot_y_min_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_Plot_y_max_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_Plot_save_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_768 arg2);
+extern void _wrap_Plot_save_svg_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_769 arg2);
+extern void _wrap_Plot_view__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_770 arg2);
+extern void _wrap_Plot_view__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_Plot_show__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_771 arg2);
+extern void _wrap_Plot_show__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_Plot_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_ScatterPlot_create_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_ScatterPlot_points__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_772 arg4, uintptr_t arg5, double arg6);
+extern uintptr_t _wrap_ScatterPlot_points__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_773 arg4, uintptr_t arg5);
+extern uintptr_t _wrap_ScatterPlot_points__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_774 arg4);
+extern uintptr_t _wrap_ScatterPlot_points__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
+extern uintptr_t _wrap_ScatterPlot_line__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_775 arg4, uintptr_t arg5, double arg6);
+extern uintptr_t _wrap_ScatterPlot_line__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_776 arg4, uintptr_t arg5);
+extern uintptr_t _wrap_ScatterPlot_line__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_777 arg4);
+extern uintptr_t _wrap_ScatterPlot_line__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
+extern uintptr_t _wrap_new_ScatterPlot_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_ScatterPlot_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ScatterPlot_size_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_778 arg1, swig_type_779 arg2);
+extern uintptr_t _wrap_ScatterPlot_title_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_780 arg1);
+extern uintptr_t _wrap_ScatterPlot_x_label_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_781 arg1);
+extern uintptr_t _wrap_ScatterPlot_y_label_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_782 arg1);
+extern uintptr_t _wrap_ScatterPlot_background_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_ScatterPlot_axis_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_ScatterPlot_grid_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_ScatterPlot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, _Bool arg1);
+extern uintptr_t _wrap_ScatterPlot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_ScatterPlot_x_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base, double arg1, double arg2);
+extern uintptr_t _wrap_ScatterPlot_y_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base, double arg1, double arg2);
+extern swig_type_783 _wrap_ScatterPlot_width_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_784 _wrap_ScatterPlot_height_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_785 _wrap_ScatterPlot_title_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_786 _wrap_ScatterPlot_x_label_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_787 _wrap_ScatterPlot_y_label_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_ScatterPlot_series_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_ScatterPlot_background_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_ScatterPlot_axes_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_ScatterPlot_major_grid_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_ScatterPlot_grid_visible_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_ScatterPlot_has_x_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_ScatterPlot_has_y_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_ScatterPlot_x_min_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_ScatterPlot_x_max_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_ScatterPlot_y_min_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_ScatterPlot_y_max_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern void _wrap_ScatterPlot_save_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_788 arg1);
+extern void _wrap_ScatterPlot_save_svg_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_789 arg1);
+extern void _wrap_ScatterPlot_view__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_790 arg1);
+extern void _wrap_ScatterPlot_view__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern void _wrap_ScatterPlot_show__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_791 arg1);
+extern void _wrap_ScatterPlot_show__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_LinePlot_create_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_LinePlot_line__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_792 arg4, uintptr_t arg5, double arg6);
+extern uintptr_t _wrap_LinePlot_line__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_793 arg4, uintptr_t arg5);
+extern uintptr_t _wrap_LinePlot_line__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_794 arg4);
+extern uintptr_t _wrap_LinePlot_line__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
+extern uintptr_t _wrap_new_LinePlot_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_LinePlot_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_LinePlot_size_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_778 arg1, swig_type_779 arg2);
+extern uintptr_t _wrap_LinePlot_title_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_780 arg1);
+extern uintptr_t _wrap_LinePlot_x_label_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_781 arg1);
+extern uintptr_t _wrap_LinePlot_y_label_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_782 arg1);
+extern uintptr_t _wrap_LinePlot_background_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_LinePlot_axis_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_LinePlot_grid_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_LinePlot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, _Bool arg1);
+extern uintptr_t _wrap_LinePlot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_LinePlot_x_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base, double arg1, double arg2);
+extern uintptr_t _wrap_LinePlot_y_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base, double arg1, double arg2);
+extern swig_type_795 _wrap_LinePlot_width_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_796 _wrap_LinePlot_height_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_797 _wrap_LinePlot_title_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_798 _wrap_LinePlot_x_label_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_799 _wrap_LinePlot_y_label_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_LinePlot_series_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_LinePlot_background_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_LinePlot_axes_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_LinePlot_major_grid_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_LinePlot_grid_visible_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_LinePlot_has_x_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_LinePlot_has_y_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_LinePlot_x_min_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_LinePlot_x_max_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_LinePlot_y_min_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_LinePlot_y_max_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern void _wrap_LinePlot_save_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_788 arg1);
+extern void _wrap_LinePlot_save_svg_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_789 arg1);
+extern void _wrap_LinePlot_view__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_790 arg1);
+extern void _wrap_LinePlot_view__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern void _wrap_LinePlot_show__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_791 arg1);
+extern void _wrap_LinePlot_show__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_BarChart_create_datamunge_cd205fa85b728fed(void);
+extern uintptr_t _wrap_BarChart_bars__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_800 arg4, uintptr_t arg5, double arg6);
+extern uintptr_t _wrap_BarChart_bars__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_801 arg4, uintptr_t arg5);
+extern uintptr_t _wrap_BarChart_bars__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, swig_type_802 arg4);
+extern uintptr_t _wrap_BarChart_bars__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
+extern uintptr_t _wrap_new_BarChart_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_BarChart_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_BarChart_size_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_778 arg1, swig_type_779 arg2);
+extern uintptr_t _wrap_BarChart_title_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_780 arg1);
+extern uintptr_t _wrap_BarChart_x_label_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_781 arg1);
+extern uintptr_t _wrap_BarChart_y_label_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_782 arg1);
+extern uintptr_t _wrap_BarChart_background_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_BarChart_axis_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_BarChart_grid_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base, uintptr_t arg1);
+extern uintptr_t _wrap_BarChart_show_grid__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, _Bool arg1);
+extern uintptr_t _wrap_BarChart_show_grid__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_BarChart_x_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base, double arg1, double arg2);
+extern uintptr_t _wrap_BarChart_y_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base, double arg1, double arg2);
+extern swig_type_803 _wrap_BarChart_width_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_804 _wrap_BarChart_height_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_805 _wrap_BarChart_title_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_806 _wrap_BarChart_x_label_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern swig_type_807 _wrap_BarChart_y_label_text_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_BarChart_series_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_BarChart_background_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_BarChart_axes_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern uintptr_t _wrap_BarChart_major_grid_color_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_BarChart_grid_visible_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_BarChart_has_x_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern _Bool _wrap_BarChart_has_y_limits_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_BarChart_x_min_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_BarChart_x_max_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_BarChart_y_min_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern double _wrap_BarChart_y_max_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern void _wrap_BarChart_save_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_788 arg1);
+extern void _wrap_BarChart_save_svg_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_789 arg1);
+extern void _wrap_BarChart_view__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_790 arg1);
+extern void _wrap_BarChart_view__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern void _wrap_BarChart_show__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t _swig_base, swig_type_791 arg1);
+extern void _wrap_BarChart_show__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t _swig_base);
+extern void _wrap_ARIMAOptions_p_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_808 arg2);
+extern swig_type_809 _wrap_ARIMAOptions_p_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_d_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_810 arg2);
+extern swig_type_811 _wrap_ARIMAOptions_d_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_q_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_812 arg2);
+extern swig_type_813 _wrap_ARIMAOptions_q_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_seasonal_p_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_814 arg2);
+extern swig_type_815 _wrap_ARIMAOptions_seasonal_p_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_seasonal_d_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_816 arg2);
+extern swig_type_817 _wrap_ARIMAOptions_seasonal_d_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_seasonal_q_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_818 arg2);
+extern swig_type_819 _wrap_ARIMAOptions_seasonal_q_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_seasonal_period_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_820 arg2);
+extern swig_type_821 _wrap_ARIMAOptions_seasonal_period_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_include_mean_set_datamunge_cd205fa85b728fed(uintptr_t arg1, _Bool arg2);
+extern _Bool _wrap_ARIMAOptions_include_mean_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_de_population_size_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_822 arg2);
+extern swig_type_823 _wrap_ARIMAOptions_de_population_size_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_de_max_generations_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_824 arg2);
+extern swig_type_825 _wrap_ARIMAOptions_de_max_generations_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_coefficient_bound_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_ARIMAOptions_coefficient_bound_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ARIMAOptions_seed_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_826 arg2);
+extern swig_type_827 _wrap_ARIMAOptions_seed_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_ARIMAOptions_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_ARIMAOptions_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_ARIMA__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_new_ARIMA__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_options_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_ar_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_ma_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_seasonal_ar_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_seasonal_ma_coefficients_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ARIMA_mean_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_828 _wrap_ARIMA_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_829 _wrap_ARIMA_n_used_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ARIMA_sigma2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ARIMA_log_likelihood_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ARIMA_aic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ARIMA_bic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ARIMA_forecast_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_830 arg2);
+extern uintptr_t _wrap_ARIMA_forecast_with_intervals_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_831 arg2);
+extern void _wrap_delete_ARIMA_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_intgo _wrap_TrendType_None_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_TrendType_Additive_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_TrendType_AdditiveDamped_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_SeasonalType_None_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_SeasonalType_Additive_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_SeasonalType_Multiplicative_datamunge_cd205fa85b728fed(void);
+extern void _wrap_ExponentialSmoothingOptions_trend_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_ExponentialSmoothingOptions_trend_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_seasonal_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_ExponentialSmoothingOptions_seasonal_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_seasonal_period_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_832 arg2);
+extern swig_type_833 _wrap_ExponentialSmoothingOptions_seasonal_period_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_alpha_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_ExponentialSmoothingOptions_alpha_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_beta_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_ExponentialSmoothingOptions_beta_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_gamma_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_ExponentialSmoothingOptions_gamma_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_phi_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_ExponentialSmoothingOptions_phi_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_de_population_size_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_834 arg2);
+extern swig_type_835 _wrap_ExponentialSmoothingOptions_de_population_size_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_de_max_generations_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_836 arg2);
+extern swig_type_837 _wrap_ExponentialSmoothingOptions_de_max_generations_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_ExponentialSmoothingOptions_seed_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_838 arg2);
+extern swig_type_839 _wrap_ExponentialSmoothingOptions_seed_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_ExponentialSmoothingOptions_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_ExponentialSmoothingOptions_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_ExponentialSmoothing__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_new_ExponentialSmoothing__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ExponentialSmoothing_options_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_alpha_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_beta_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_gamma_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_phi_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_type_840 _wrap_ExponentialSmoothing_observations_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_sse_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_sigma2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_log_likelihood_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_aic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern double _wrap_ExponentialSmoothing_bic_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ExponentialSmoothing_fitted_values_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ExponentialSmoothing_residuals_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ExponentialSmoothing_forecast_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_841 arg2);
+extern void _wrap_delete_ExponentialSmoothing_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern swig_intgo _wrap_Alternative_TwoSided_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_Alternative_Less_datamunge_cd205fa85b728fed(void);
+extern swig_intgo _wrap_Alternative_Greater_datamunge_cd205fa85b728fed(void);
+extern void _wrap_HypothesisTestResult_statistic_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_statistic_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_parameter1_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_parameter1_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_parameter2_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_parameter2_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_p_value_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_p_value_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_estimate1_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_estimate1_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_estimate2_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_estimate2_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_conf_int_lower_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_conf_int_lower_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_conf_int_upper_set_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern double _wrap_HypothesisTestResult_conf_int_upper_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_has_conf_int_set_datamunge_cd205fa85b728fed(uintptr_t arg1, _Bool arg2);
+extern _Bool _wrap_HypothesisTestResult_has_conf_int_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_alternative_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_HypothesisTestResult_alternative_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern void _wrap_HypothesisTestResult_method_set_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_842 arg2);
+extern swig_type_843 _wrap_HypothesisTestResult_method_get_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_new_HypothesisTestResult_datamunge_cd205fa85b728fed(void);
+extern void _wrap_delete_HypothesisTestResult_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_t_test_one_sample__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2, swig_intgo arg3, double arg4);
+extern uintptr_t _wrap_t_test_one_sample__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2, swig_intgo arg3);
+extern uintptr_t _wrap_t_test_one_sample__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_t_test_one_sample__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_t_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, _Bool arg3, swig_intgo arg4, double arg5);
+extern uintptr_t _wrap_t_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, _Bool arg3, swig_intgo arg4);
+extern uintptr_t _wrap_t_test_two_sample__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, _Bool arg3);
+extern uintptr_t _wrap_t_test_two_sample__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_t_test_paired__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3, double arg4);
+extern uintptr_t _wrap_t_test_paired__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3);
+extern uintptr_t _wrap_t_test_paired__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_wilcoxon_signed_rank_test__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2, swig_intgo arg3);
+extern uintptr_t _wrap_wilcoxon_signed_rank_test__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_wilcoxon_signed_rank_test__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_wilcoxon_rank_sum_test__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3);
+extern uintptr_t _wrap_wilcoxon_rank_sum_test__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_ks_test_one_sample_normal__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2, double arg3, swig_intgo arg4);
+extern uintptr_t _wrap_ks_test_one_sample_normal__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2, double arg3);
+extern uintptr_t _wrap_ks_test_one_sample_normal__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_ks_test_one_sample_normal__SWIG_3_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_ks_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3);
+extern uintptr_t _wrap_ks_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_chi_squared_goodness_of_fit__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_chi_squared_goodness_of_fit__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1);
+extern uintptr_t _wrap_chi_squared_test_independence__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_844 arg2, swig_type_845 arg3, _Bool arg4);
+extern uintptr_t _wrap_chi_squared_test_independence__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, swig_type_846 arg2, swig_type_847 arg3);
+extern uintptr_t _wrap_one_way_anova_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_kruskal_wallis_test_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_pearson_correlation_test__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3, double arg4);
+extern uintptr_t _wrap_pearson_correlation_test__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3);
+extern uintptr_t _wrap_pearson_correlation_test__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_spearman_correlation_test__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3);
+extern uintptr_t _wrap_spearman_correlation_test__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_f_test_variance__SWIG_0_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3, double arg4);
+extern uintptr_t _wrap_f_test_variance__SWIG_1_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2, swig_intgo arg3);
+extern uintptr_t _wrap_f_test_variance__SWIG_2_datamunge_cd205fa85b728fed(uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t _wrap_proportion_test_one_sample__SWIG_0_datamunge_cd205fa85b728fed(swig_type_848 arg1, swig_type_849 arg2, double arg3, swig_intgo arg4, _Bool arg5, double arg6);
+extern uintptr_t _wrap_proportion_test_one_sample__SWIG_1_datamunge_cd205fa85b728fed(swig_type_850 arg1, swig_type_851 arg2, double arg3, swig_intgo arg4, _Bool arg5);
+extern uintptr_t _wrap_proportion_test_one_sample__SWIG_2_datamunge_cd205fa85b728fed(swig_type_852 arg1, swig_type_853 arg2, double arg3, swig_intgo arg4);
+extern uintptr_t _wrap_proportion_test_one_sample__SWIG_3_datamunge_cd205fa85b728fed(swig_type_854 arg1, swig_type_855 arg2, double arg3);
+extern uintptr_t _wrap_proportion_test_one_sample__SWIG_4_datamunge_cd205fa85b728fed(swig_type_856 arg1, swig_type_857 arg2);
+extern uintptr_t _wrap_proportion_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(swig_type_858 arg1, swig_type_859 arg2, swig_type_860 arg3, swig_type_861 arg4, swig_intgo arg5, _Bool arg6, double arg7);
+extern uintptr_t _wrap_proportion_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(swig_type_862 arg1, swig_type_863 arg2, swig_type_864 arg3, swig_type_865 arg4, swig_intgo arg5, _Bool arg6);
+extern uintptr_t _wrap_proportion_test_two_sample__SWIG_2_datamunge_cd205fa85b728fed(swig_type_866 arg1, swig_type_867 arg2, swig_type_868 arg3, swig_type_869 arg4, swig_intgo arg5);
+extern uintptr_t _wrap_proportion_test_two_sample__SWIG_3_datamunge_cd205fa85b728fed(swig_type_870 arg1, swig_type_871 arg2, swig_type_872 arg3, swig_type_873 arg4);
+extern uintptr_t _wrap_binomial_test__SWIG_0_datamunge_cd205fa85b728fed(swig_type_874 arg1, swig_type_875 arg2, double arg3, swig_intgo arg4, double arg5);
+extern uintptr_t _wrap_binomial_test__SWIG_1_datamunge_cd205fa85b728fed(swig_type_876 arg1, swig_type_877 arg2, double arg3, swig_intgo arg4);
+extern uintptr_t _wrap_binomial_test__SWIG_2_datamunge_cd205fa85b728fed(swig_type_878 arg1, swig_type_879 arg2, double arg3);
+extern uintptr_t _wrap_binomial_test__SWIG_3_datamunge_cd205fa85b728fed(swig_type_880 arg1, swig_type_881 arg2);
+extern uintptr_t _wrap_fisher_exact_test_2x2__SWIG_0_datamunge_cd205fa85b728fed(swig_type_882 arg1, swig_type_883 arg2, swig_type_884 arg3, swig_type_885 arg4, swig_intgo arg5);
+extern uintptr_t _wrap_fisher_exact_test_2x2__SWIG_1_datamunge_cd205fa85b728fed(swig_type_886 arg1, swig_type_887 arg2, swig_type_888 arg3, swig_type_889 arg4);
+extern uintptr_t _wrap_shapiro_francia_test_datamunge_cd205fa85b728fed(uintptr_t arg1);
 #undef intgo
 */
 import "C"
@@ -288,8 +2250,8 @@ func getSwigcptr(v interface { Swigcptr() uintptr }) uintptr {
 
 type _ sync.Mutex
 
-//export cgo_panic__datamunge_2f7022b1be4fe143
-func cgo_panic__datamunge_2f7022b1be4fe143(p *byte) {
+//export cgo_panic__datamunge_cd205fa85b728fed
+func cgo_panic__datamunge_cd205fa85b728fed(p *byte) {
 	s := (*[1024]byte)(unsafe.Pointer(p))[:]
 	for i, b := range s {
 		if b == 0 {
@@ -310,13 +2272,13 @@ func swigCopyString(s string) string {
 
 func Swig_free(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_Swig_free_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_Swig_free_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 func Swig_malloc(arg1 int) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_Swig_malloc_datamunge_2f7022b1be4fe143(C.swig_intgo(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_Swig_malloc_datamunge_cd205fa85b728fed(C.swig_intgo(_swig_i_0)))
 	return swig_r
 }
 
@@ -331,7 +2293,7 @@ func (p SwigcptrIPair) SwigIsIPair() {
 
 func NewIPair__SWIG_0() (_swig_ret IPair) {
 	var swig_r IPair
-	swig_r = (IPair)(SwigcptrIPair(C._wrap_new_IPair__SWIG_0_datamunge_2f7022b1be4fe143()))
+	swig_r = (IPair)(SwigcptrIPair(C._wrap_new_IPair__SWIG_0_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
@@ -339,14 +2301,14 @@ func NewIPair__SWIG_1(arg1 int, arg2 int) (_swig_ret IPair) {
 	var swig_r IPair
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (IPair)(SwigcptrIPair(C._wrap_new_IPair__SWIG_1_datamunge_2f7022b1be4fe143(C.swig_intgo(_swig_i_0), C.swig_intgo(_swig_i_1))))
+	swig_r = (IPair)(SwigcptrIPair(C._wrap_new_IPair__SWIG_1_datamunge_cd205fa85b728fed(C.swig_intgo(_swig_i_0), C.swig_intgo(_swig_i_1))))
 	return swig_r
 }
 
 func NewIPair__SWIG_2(arg1 IPair) (_swig_ret IPair) {
 	var swig_r IPair
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (IPair)(SwigcptrIPair(C._wrap_new_IPair__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (IPair)(SwigcptrIPair(C._wrap_new_IPair__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -367,32 +2329,32 @@ func NewIPair(a ...interface{}) IPair {
 func (arg1 SwigcptrIPair) SetFirst(arg2 int) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_IPair_first_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	C._wrap_IPair_first_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
 func (arg1 SwigcptrIPair) GetFirst() (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_IPair_first_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_IPair_first_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrIPair) SetSecond(arg2 int) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_IPair_second_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	C._wrap_IPair_second_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
 func (arg1 SwigcptrIPair) GetSecond() (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_IPair_second_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_IPair_second_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DeleteIPair(arg1 IPair) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_IPair_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_IPair_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type IPair interface {
@@ -415,7 +2377,7 @@ func (p SwigcptrDPair) SwigIsDPair() {
 
 func NewDPair__SWIG_0() (_swig_ret DPair) {
 	var swig_r DPair
-	swig_r = (DPair)(SwigcptrDPair(C._wrap_new_DPair__SWIG_0_datamunge_2f7022b1be4fe143()))
+	swig_r = (DPair)(SwigcptrDPair(C._wrap_new_DPair__SWIG_0_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
@@ -423,14 +2385,14 @@ func NewDPair__SWIG_1(arg1 float64, arg2 float64) (_swig_ret DPair) {
 	var swig_r DPair
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (DPair)(SwigcptrDPair(C._wrap_new_DPair__SWIG_1_datamunge_2f7022b1be4fe143(C.double(_swig_i_0), C.double(_swig_i_1))))
+	swig_r = (DPair)(SwigcptrDPair(C._wrap_new_DPair__SWIG_1_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1))))
 	return swig_r
 }
 
 func NewDPair__SWIG_2(arg1 DPair) (_swig_ret DPair) {
 	var swig_r DPair
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (DPair)(SwigcptrDPair(C._wrap_new_DPair__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DPair)(SwigcptrDPair(C._wrap_new_DPair__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -451,32 +2413,32 @@ func NewDPair(a ...interface{}) DPair {
 func (arg1 SwigcptrDPair) SetFirst(arg2 float64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_DPair_first_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+	C._wrap_DPair_first_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
 }
 
 func (arg1 SwigcptrDPair) GetFirst() (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_DPair_first_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_DPair_first_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrDPair) SetSecond(arg2 float64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_DPair_second_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+	C._wrap_DPair_second_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
 }
 
 func (arg1 SwigcptrDPair) GetSecond() (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_DPair_second_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_DPair_second_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DeleteDPair(arg1 DPair) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_DPair_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_DPair_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type DPair interface {
@@ -486,6 +2448,90 @@ type DPair interface {
 	GetFirst() (_swig_ret float64)
 	SetSecond(arg2 float64)
 	GetSecond() (_swig_ret float64)
+}
+
+type SwigcptrDVectorPair uintptr
+
+func (p SwigcptrDVectorPair) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrDVectorPair) SwigIsDVectorPair() {
+}
+
+func NewDVectorPair__SWIG_0() (_swig_ret DVectorPair) {
+	var swig_r DVectorPair
+	swig_r = (DVectorPair)(SwigcptrDVectorPair(C._wrap_new_DVectorPair__SWIG_0_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func NewDVectorPair__SWIG_1(arg1 DVector, arg2 DVector) (_swig_ret DVectorPair) {
+	var swig_r DVectorPair
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVectorPair)(SwigcptrDVectorPair(C._wrap_new_DVectorPair__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func NewDVectorPair__SWIG_2(arg1 DVectorPair) (_swig_ret DVectorPair) {
+	var swig_r DVectorPair
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (DVectorPair)(SwigcptrDVectorPair(C._wrap_new_DVectorPair__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func NewDVectorPair(a ...interface{}) DVectorPair {
+	argc := len(a)
+	if argc == 0 {
+		return NewDVectorPair__SWIG_0()
+	}
+	if argc == 1 {
+		return NewDVectorPair__SWIG_2(a[0].(DVectorPair))
+	}
+	if argc == 2 {
+		return NewDVectorPair__SWIG_1(a[0].(DVector), a[1].(DVector))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrDVectorPair) SetFirst(arg2 DVector) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	C._wrap_DVectorPair_first_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+}
+
+func (arg1 SwigcptrDVectorPair) GetFirst() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DVectorPair_first_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDVectorPair) SetSecond(arg2 DVector) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	C._wrap_DVectorPair_second_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+}
+
+func (arg1 SwigcptrDVectorPair) GetSecond() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DVectorPair_second_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteDVectorPair(arg1 DVectorPair) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_DVectorPair_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type DVectorPair interface {
+	Swigcptr() uintptr
+	SwigIsDVectorPair()
+	SetFirst(arg2 DVector)
+	GetFirst() (_swig_ret DVector)
+	SetSecond(arg2 DVector)
+	GetSecond() (_swig_ret DVector)
 }
 
 type SwigcptrSPair uintptr
@@ -499,7 +2545,7 @@ func (p SwigcptrSPair) SwigIsSPair() {
 
 func NewSPair__SWIG_0() (_swig_ret SPair) {
 	var swig_r SPair
-	swig_r = (SPair)(SwigcptrSPair(C._wrap_new_SPair__SWIG_0_datamunge_2f7022b1be4fe143()))
+	swig_r = (SPair)(SwigcptrSPair(C._wrap_new_SPair__SWIG_0_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
@@ -507,7 +2553,7 @@ func NewSPair__SWIG_1(arg1 string, arg2 string) (_swig_ret SPair) {
 	var swig_r SPair
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (SPair)(SwigcptrSPair(C._wrap_new_SPair__SWIG_1_datamunge_2f7022b1be4fe143(*(*C.swig_type_1)(unsafe.Pointer(&_swig_i_0)), *(*C.swig_type_2)(unsafe.Pointer(&_swig_i_1)))))
+	swig_r = (SPair)(SwigcptrSPair(C._wrap_new_SPair__SWIG_1_datamunge_cd205fa85b728fed(*(*C.swig_type_1)(unsafe.Pointer(&_swig_i_0)), *(*C.swig_type_2)(unsafe.Pointer(&_swig_i_1)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg1
 	}
@@ -520,7 +2566,7 @@ func NewSPair__SWIG_1(arg1 string, arg2 string) (_swig_ret SPair) {
 func NewSPair__SWIG_2(arg1 SPair) (_swig_ret SPair) {
 	var swig_r SPair
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (SPair)(SwigcptrSPair(C._wrap_new_SPair__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (SPair)(SwigcptrSPair(C._wrap_new_SPair__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -541,7 +2587,7 @@ func NewSPair(a ...interface{}) SPair {
 func (arg1 SwigcptrSPair) SetFirst(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_SPair_first_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_3)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_SPair_first_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_3)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -550,7 +2596,7 @@ func (arg1 SwigcptrSPair) SetFirst(arg2 string) {
 func (arg1 SwigcptrSPair) GetFirst() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_SPair_first_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_SPair_first_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -560,7 +2606,7 @@ func (arg1 SwigcptrSPair) GetFirst() (_swig_ret string) {
 func (arg1 SwigcptrSPair) SetSecond(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_SPair_second_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_SPair_second_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -569,7 +2615,7 @@ func (arg1 SwigcptrSPair) SetSecond(arg2 string) {
 func (arg1 SwigcptrSPair) GetSecond() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_SPair_second_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_SPair_second_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -578,7 +2624,7 @@ func (arg1 SwigcptrSPair) GetSecond() (_swig_ret string) {
 
 func DeleteSPair(arg1 SPair) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_SPair_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_SPair_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type SPair interface {
@@ -601,21 +2647,21 @@ func (p SwigcptrIVector) SwigIsIVector() {
 
 func NewIVector__SWIG_0() (_swig_ret IVector) {
 	var swig_r IVector
-	swig_r = (IVector)(SwigcptrIVector(C._wrap_new_IVector__SWIG_0_datamunge_2f7022b1be4fe143()))
+	swig_r = (IVector)(SwigcptrIVector(C._wrap_new_IVector__SWIG_0_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
 func NewIVector__SWIG_1(arg1 int64) (_swig_ret IVector) {
 	var swig_r IVector
 	_swig_i_0 := arg1
-	swig_r = (IVector)(SwigcptrIVector(C._wrap_new_IVector__SWIG_1_datamunge_2f7022b1be4fe143(C.swig_type_7(_swig_i_0))))
+	swig_r = (IVector)(SwigcptrIVector(C._wrap_new_IVector__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_7(_swig_i_0))))
 	return swig_r
 }
 
 func NewIVector__SWIG_2(arg1 IVector) (_swig_ret IVector) {
 	var swig_r IVector
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (IVector)(SwigcptrIVector(C._wrap_new_IVector__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (IVector)(SwigcptrIVector(C._wrap_new_IVector__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -640,46 +2686,46 @@ check_2:
 func (arg1 SwigcptrIVector) Size() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_IVector_size_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_IVector_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrIVector) Capacity() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_IVector_capacity_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_IVector_capacity_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrIVector) Reserve(arg2 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_IVector_reserve_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_type_10(_swig_i_1))
+	C._wrap_IVector_reserve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_10(_swig_i_1))
 }
 
 func (arg1 SwigcptrIVector) IsEmpty() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_IVector_isEmpty_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_IVector_isEmpty_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrIVector) Clear() {
 	_swig_i_0 := arg1
-	C._wrap_IVector_clear_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_IVector_clear_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrIVector) Add(arg2 int) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_IVector_add_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	C._wrap_IVector_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
 func (arg1 SwigcptrIVector) Get(arg2 int) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (int)(C._wrap_IVector_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (int)(C._wrap_IVector_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
@@ -687,12 +2733,12 @@ func (arg1 SwigcptrIVector) Set(arg2 int, arg3 int) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_IVector_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
+	C._wrap_IVector_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
 }
 
 func DeleteIVector(arg1 IVector) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_IVector_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_IVector_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type IVector interface {
@@ -719,21 +2765,21 @@ func (p SwigcptrDVector) SwigIsDVector() {
 
 func NewDVector__SWIG_0() (_swig_ret DVector) {
 	var swig_r DVector
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_new_DVector__SWIG_0_datamunge_2f7022b1be4fe143()))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_new_DVector__SWIG_0_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
 func NewDVector__SWIG_1(arg1 int64) (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_new_DVector__SWIG_1_datamunge_2f7022b1be4fe143(C.swig_type_11(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_new_DVector__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_11(_swig_i_0))))
 	return swig_r
 }
 
 func NewDVector__SWIG_2(arg1 DVector) (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_new_DVector__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_new_DVector__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -758,46 +2804,46 @@ check_2:
 func (arg1 SwigcptrDVector) Size() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_DVector_size_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_DVector_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrDVector) Capacity() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_DVector_capacity_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_DVector_capacity_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrDVector) Reserve(arg2 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_DVector_reserve_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_type_14(_swig_i_1))
+	C._wrap_DVector_reserve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_14(_swig_i_1))
 }
 
 func (arg1 SwigcptrDVector) IsEmpty() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_DVector_isEmpty_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_DVector_isEmpty_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrDVector) Clear() {
 	_swig_i_0 := arg1
-	C._wrap_DVector_clear_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_DVector_clear_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrDVector) Add(arg2 float64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_DVector_add_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+	C._wrap_DVector_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
 }
 
 func (arg1 SwigcptrDVector) Get(arg2 int) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (float64)(C._wrap_DVector_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (float64)(C._wrap_DVector_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
@@ -805,12 +2851,12 @@ func (arg1 SwigcptrDVector) Set(arg2 int, arg3 float64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_DVector_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.double(_swig_i_2))
+	C._wrap_DVector_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.double(_swig_i_2))
 }
 
 func DeleteDVector(arg1 DVector) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_DVector_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_DVector_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type DVector interface {
@@ -826,6 +2872,124 @@ type DVector interface {
 	Set(arg2 int, arg3 float64)
 }
 
+type SwigcptrDVectorVector uintptr
+
+func (p SwigcptrDVectorVector) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrDVectorVector) SwigIsDVectorVector() {
+}
+
+func NewDVectorVector__SWIG_0() (_swig_ret DVectorVector) {
+	var swig_r DVectorVector
+	swig_r = (DVectorVector)(SwigcptrDVectorVector(C._wrap_new_DVectorVector__SWIG_0_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func NewDVectorVector__SWIG_1(arg1 int64) (_swig_ret DVectorVector) {
+	var swig_r DVectorVector
+	_swig_i_0 := arg1
+	swig_r = (DVectorVector)(SwigcptrDVectorVector(C._wrap_new_DVectorVector__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_15(_swig_i_0))))
+	return swig_r
+}
+
+func NewDVectorVector__SWIG_2(arg1 DVectorVector) (_swig_ret DVectorVector) {
+	var swig_r DVectorVector
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (DVectorVector)(SwigcptrDVectorVector(C._wrap_new_DVectorVector__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func NewDVectorVector(a ...interface{}) DVectorVector {
+	argc := len(a)
+	if argc == 0 {
+		return NewDVectorVector__SWIG_0()
+	}
+	if argc == 1 {
+		if _, ok := a[0].(int64); !ok {
+			goto check_2
+		}
+		return NewDVectorVector__SWIG_1(a[0].(int64))
+	}
+check_2:
+	if argc == 1 {
+		return NewDVectorVector__SWIG_2(a[0].(DVectorVector))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrDVectorVector) Size() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DVectorVector_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDVectorVector) Capacity() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DVectorVector_capacity_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDVectorVector) Reserve(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_DVectorVector_reserve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_18(_swig_i_1))
+}
+
+func (arg1 SwigcptrDVectorVector) IsEmpty() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_DVectorVector_isEmpty_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDVectorVector) Clear() {
+	_swig_i_0 := arg1
+	C._wrap_DVectorVector_clear_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrDVectorVector) Add(arg2 DVector) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	C._wrap_DVectorVector_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+}
+
+func (arg1 SwigcptrDVectorVector) Get(arg2 int) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DVectorVector_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDVectorVector) Set(arg2 int, arg3 DVector) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := getSwigcptr(arg3)
+	C._wrap_DVectorVector_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.uintptr_t(_swig_i_2))
+}
+
+func DeleteDVectorVector(arg1 DVectorVector) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_DVectorVector_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type DVectorVector interface {
+	Swigcptr() uintptr
+	SwigIsDVectorVector()
+	Size() (_swig_ret int64)
+	Capacity() (_swig_ret int64)
+	Reserve(arg2 int64)
+	IsEmpty() (_swig_ret bool)
+	Clear()
+	Add(arg2 DVector)
+	Get(arg2 int) (_swig_ret DVector)
+	Set(arg2 int, arg3 DVector)
+}
+
 type SwigcptrSizeVector uintptr
 
 func (p SwigcptrSizeVector) Swigcptr() uintptr {
@@ -837,21 +3001,21 @@ func (p SwigcptrSizeVector) SwigIsSizeVector() {
 
 func NewSizeVector__SWIG_0() (_swig_ret SizeVector) {
 	var swig_r SizeVector
-	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_new_SizeVector__SWIG_0_datamunge_2f7022b1be4fe143()))
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_new_SizeVector__SWIG_0_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
 func NewSizeVector__SWIG_1(arg1 int64) (_swig_ret SizeVector) {
 	var swig_r SizeVector
 	_swig_i_0 := arg1
-	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_new_SizeVector__SWIG_1_datamunge_2f7022b1be4fe143(C.swig_type_15(_swig_i_0))))
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_new_SizeVector__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_19(_swig_i_0))))
 	return swig_r
 }
 
 func NewSizeVector__SWIG_2(arg1 SizeVector) (_swig_ret SizeVector) {
 	var swig_r SizeVector
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_new_SizeVector__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_new_SizeVector__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -876,46 +3040,46 @@ check_2:
 func (arg1 SwigcptrSizeVector) Size() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_SizeVector_size_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_SizeVector_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrSizeVector) Capacity() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_SizeVector_capacity_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_SizeVector_capacity_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrSizeVector) Reserve(arg2 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_SizeVector_reserve_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_type_18(_swig_i_1))
+	C._wrap_SizeVector_reserve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_22(_swig_i_1))
 }
 
 func (arg1 SwigcptrSizeVector) IsEmpty() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_SizeVector_isEmpty_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_SizeVector_isEmpty_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrSizeVector) Clear() {
 	_swig_i_0 := arg1
-	C._wrap_SizeVector_clear_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_SizeVector_clear_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrSizeVector) Add(arg2 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_SizeVector_add_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_type_19(_swig_i_1))
+	C._wrap_SizeVector_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_23(_swig_i_1))
 }
 
 func (arg1 SwigcptrSizeVector) Get(arg2 int) (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (int64)(C._wrap_SizeVector_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (int64)(C._wrap_SizeVector_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
@@ -923,12 +3087,12 @@ func (arg1 SwigcptrSizeVector) Set(arg2 int, arg3 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_SizeVector_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_type_21(_swig_i_2))
+	C._wrap_SizeVector_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_type_25(_swig_i_2))
 }
 
 func DeleteSizeVector(arg1 SizeVector) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_SizeVector_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_SizeVector_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type SizeVector interface {
@@ -955,21 +3119,21 @@ func (p SwigcptrSVector) SwigIsSVector() {
 
 func NewSVector__SWIG_0() (_swig_ret SVector) {
 	var swig_r SVector
-	swig_r = (SVector)(SwigcptrSVector(C._wrap_new_SVector__SWIG_0_datamunge_2f7022b1be4fe143()))
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_new_SVector__SWIG_0_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
 func NewSVector__SWIG_1(arg1 int64) (_swig_ret SVector) {
 	var swig_r SVector
 	_swig_i_0 := arg1
-	swig_r = (SVector)(SwigcptrSVector(C._wrap_new_SVector__SWIG_1_datamunge_2f7022b1be4fe143(C.swig_type_22(_swig_i_0))))
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_new_SVector__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_26(_swig_i_0))))
 	return swig_r
 }
 
 func NewSVector__SWIG_2(arg1 SVector) (_swig_ret SVector) {
 	var swig_r SVector
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (SVector)(SwigcptrSVector(C._wrap_new_SVector__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_new_SVector__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -994,39 +3158,39 @@ check_2:
 func (arg1 SwigcptrSVector) Size() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_SVector_size_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_SVector_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrSVector) Capacity() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_SVector_capacity_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_SVector_capacity_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrSVector) Reserve(arg2 int64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_SVector_reserve_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_type_25(_swig_i_1))
+	C._wrap_SVector_reserve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_29(_swig_i_1))
 }
 
 func (arg1 SwigcptrSVector) IsEmpty() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_SVector_isEmpty_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_SVector_isEmpty_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrSVector) Clear() {
 	_swig_i_0 := arg1
-	C._wrap_SVector_clear_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_SVector_clear_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrSVector) Add(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_SVector_add_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_26)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_SVector_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_30)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1036,7 +3200,7 @@ func (arg1 SwigcptrSVector) Get(arg2 int) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r_p := C._wrap_SVector_get_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	swig_r_p := C._wrap_SVector_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -1047,7 +3211,7 @@ func (arg1 SwigcptrSVector) Set(arg2 int, arg3 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_SVector_set_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_28)(unsafe.Pointer(&_swig_i_2)))
+	C._wrap_SVector_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_32)(unsafe.Pointer(&_swig_i_2)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1055,7 +3219,7 @@ func (arg1 SwigcptrSVector) Set(arg2 int, arg3 string) {
 
 func DeleteSVector(arg1 SVector) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_SVector_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_SVector_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type SVector interface {
@@ -1072,7 +3236,7 @@ type SVector interface {
 }
 
 func Hello() {
-	C._wrap_hello_datamunge_2f7022b1be4fe143()
+	C._wrap_hello_datamunge_cd205fa85b728fed()
 }
 
 type SwigcptrCallback uintptr
@@ -1086,20 +3250,20 @@ func (p SwigcptrCallback) SwigIsCallback() {
 
 func DeleteCallback(arg1 Callback) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_Callback_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_Callback_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrCallback) Call(arg2 float64) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (float64)(C._wrap_Callback_call_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.double(_swig_i_1)))
+	swig_r = (float64)(C._wrap_Callback_call_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1)))
 	return swig_r
 }
 
 func NewCallback() (_swig_ret Callback) {
 	var swig_r Callback
-	swig_r = (Callback)(SwigcptrCallback(C._wrap_new_Callback_datamunge_2f7022b1be4fe143()))
+	swig_r = (Callback)(SwigcptrCallback(C._wrap_new_Callback_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
@@ -1113,7 +3277,7 @@ func Call_with_callback(arg1 float64, arg2 Callback) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
-	swig_r = (float64)(C._wrap_call_with_callback_datamunge_2f7022b1be4fe143(C.double(_swig_i_0), C.uintptr_t(_swig_i_1)))
+	swig_r = (float64)(C._wrap_call_with_callback_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.uintptr_t(_swig_i_1)))
 	return swig_r
 }
 
@@ -1121,7 +3285,7 @@ func Map_dvector_with_callback(arg1 DVector, arg2 Callback) (_swig_ret DVector) 
 	var swig_r DVector
 	_swig_i_0 := getSwigcptr(arg1)
 	_swig_i_1 := getSwigcptr(arg2)
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_map_dvector_with_callback_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_map_dvector_with_callback_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
 	return swig_r
 }
 
@@ -1130,14 +3294,14 @@ func Make_dvector(arg1 float64, arg2 float64, arg3 float64) (_swig_ret DVector) 
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_make_dvector_datamunge_2f7022b1be4fe143(C.double(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_make_dvector_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2))))
 	return swig_r
 }
 
 func Sum_dvector(arg1 DVector) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (float64)(C._wrap_sum_dvector_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_sum_dvector_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -1145,14 +3309,14 @@ func Make_dpair(arg1 float64, arg2 float64) (_swig_ret DPair) {
 	var swig_r DPair
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (DPair)(SwigcptrDPair(C._wrap_make_dpair_datamunge_2f7022b1be4fe143(C.double(_swig_i_0), C.double(_swig_i_1))))
+	swig_r = (DPair)(SwigcptrDPair(C._wrap_make_dpair_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1))))
 	return swig_r
 }
 
 func Sum_dpair(arg1 DPair) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := getSwigcptr(arg1)
-	swig_r = (float64)(C._wrap_sum_dpair_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_sum_dpair_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -1167,35 +3331,41 @@ func (p SwigcptrDataFrame) SwigIsDataFrame() {
 
 func NewDataFrame() (_swig_ret DataFrame) {
 	var swig_r DataFrame
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_new_DataFrame_datamunge_2f7022b1be4fe143()))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_new_DataFrame_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DataFrameEmpty() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_empty_datamunge_cd205fa85b728fed()))
 	return swig_r
 }
 
 func (arg1 SwigcptrDataFrame) Nrows() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_DataFrame_nrows_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_DataFrame_nrows_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrDataFrame) Ncols() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_DataFrame_ncols_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_DataFrame_ncols_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
-func (arg1 SwigcptrDataFrame) Shape() (_swig_ret Std_vector_Sl_std_size_t_Sg_) {
-	var swig_r Std_vector_Sl_std_size_t_Sg_
+func (arg1 SwigcptrDataFrame) Shape() (_swig_ret SizeVector) {
+	var swig_r SizeVector
 	_swig_i_0 := arg1
-	swig_r = (Std_vector_Sl_std_size_t_Sg_)(SwigcptrStd_vector_Sl_std_size_t_Sg_(C._wrap_DataFrame_shape_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_DataFrame_shape_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrDataFrame) Columns() (_swig_ret SVector) {
 	var swig_r SVector
 	_swig_i_0 := arg1
-	swig_r = (SVector)(SwigcptrSVector(C._wrap_DataFrame_columns_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_DataFrame_columns_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -1204,7 +3374,7 @@ func (arg1 SwigcptrDataFrame) Add_numeric_column__SWIG_0(arg2 string, arg3 DVect
 	_swig_i_1 := arg2
 	_swig_i_2 := getSwigcptr(arg3)
 	_swig_i_3 := getSwigcptr(arg4)
-	C._wrap_DataFrame_add_numeric_column__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_31)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2), C.uintptr_t(_swig_i_3))
+	C._wrap_DataFrame_add_numeric_column__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_35)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2), C.uintptr_t(_swig_i_3))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1214,7 +3384,7 @@ func (arg1 SwigcptrDataFrame) Add_numeric_column__SWIG_1(arg2 string, arg3 DVect
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := getSwigcptr(arg3)
-	C._wrap_DataFrame_add_numeric_column__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_32)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2))
+	C._wrap_DataFrame_add_numeric_column__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_36)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1238,7 +3408,7 @@ func (arg1 SwigcptrDataFrame) Add_string_column__SWIG_0(arg2 string, arg3 SVecto
 	_swig_i_1 := arg2
 	_swig_i_2 := getSwigcptr(arg3)
 	_swig_i_3 := getSwigcptr(arg4)
-	C._wrap_DataFrame_add_string_column__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_33)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2), C.uintptr_t(_swig_i_3))
+	C._wrap_DataFrame_add_string_column__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_37)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2), C.uintptr_t(_swig_i_3))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1248,7 +3418,7 @@ func (arg1 SwigcptrDataFrame) Add_string_column__SWIG_1(arg2 string, arg3 SVecto
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := getSwigcptr(arg3)
-	C._wrap_DataFrame_add_string_column__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_34)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2))
+	C._wrap_DataFrame_add_string_column__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_38)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1272,7 +3442,7 @@ func (arg1 SwigcptrDataFrame) Add_string_column_encoded__SWIG_0(arg2 string, arg
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := getSwigcptr(arg4)
-	C._wrap_DataFrame_add_string_column_encoded__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_35)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_36)(unsafe.Pointer(&_swig_i_2)), C.uintptr_t(_swig_i_3))
+	C._wrap_DataFrame_add_string_column_encoded__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_39)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_40)(unsafe.Pointer(&_swig_i_2)), C.uintptr_t(_swig_i_3))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1285,7 +3455,7 @@ func (arg1 SwigcptrDataFrame) Add_string_column_encoded__SWIG_1(arg2 string, arg
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_DataFrame_add_string_column_encoded__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_37)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_38)(unsafe.Pointer(&_swig_i_2)))
+	C._wrap_DataFrame_add_string_column_encoded__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_41)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_42)(unsafe.Pointer(&_swig_i_2)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1311,7 +3481,7 @@ func (arg1 SwigcptrDataFrame) Fill_null_numeric(arg2 string, arg3 float64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_DataFrame_fill_null_numeric_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_39)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))
+	C._wrap_DataFrame_fill_null_numeric_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_43)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1321,7 +3491,7 @@ func (arg1 SwigcptrDataFrame) Fill_null_string(arg2 string, arg3 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_DataFrame_fill_null_string_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_40)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_41)(unsafe.Pointer(&_swig_i_2)))
+	C._wrap_DataFrame_fill_null_string_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_44)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_45)(unsafe.Pointer(&_swig_i_2)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1334,7 +3504,7 @@ func (arg1 SwigcptrDataFrame) Xselect(arg2 SVector) (_swig_ret DataFrame) {
 	var swig_r DataFrame
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_Xselect_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_Xselect_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
 	return swig_r
 }
 
@@ -1342,7 +3512,7 @@ func (arg1 SwigcptrDataFrame) Select_encoded(arg2 string) (_swig_ret DataFrame) 
 	var swig_r DataFrame
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_select_encoded_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_42)(unsafe.Pointer(&_swig_i_1)))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_select_encoded_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_46)(unsafe.Pointer(&_swig_i_1)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1354,7 +3524,7 @@ func (arg1 SwigcptrDataFrame) Sort_by__SWIG_0(arg2 string, arg3 bool) (_swig_ret
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_sort_by__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_43)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_sort_by__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_47)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1365,7 +3535,7 @@ func (arg1 SwigcptrDataFrame) Sort_by__SWIG_1(arg2 string) (_swig_ret DataFrame)
 	var swig_r DataFrame
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_sort_by__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_44)(unsafe.Pointer(&_swig_i_1)))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_sort_by__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_48)(unsafe.Pointer(&_swig_i_1)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1387,14 +3557,14 @@ func (arg1 SwigcptrDataFrame) Drop_duplicates__SWIG_0(arg2 SVector) (_swig_ret D
 	var swig_r DataFrame
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_drop_duplicates__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_drop_duplicates__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
 	return swig_r
 }
 
 func (arg1 SwigcptrDataFrame) Drop_duplicates__SWIG_1() (_swig_ret DataFrame) {
 	var swig_r DataFrame
 	_swig_i_0 := arg1
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_drop_duplicates__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_drop_duplicates__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -1413,7 +3583,7 @@ func (arg1 SwigcptrDataFrame) Drop_duplicates_encoded(arg2 string) (_swig_ret Da
 	var swig_r DataFrame
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_drop_duplicates_encoded_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_45)(unsafe.Pointer(&_swig_i_1)))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_drop_duplicates_encoded_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_49)(unsafe.Pointer(&_swig_i_1)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1425,7 +3595,7 @@ func (arg1 SwigcptrDataFrame) Group_by_sum(arg2 SVector, arg3 SVector) (_swig_re
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
 	_swig_i_2 := getSwigcptr(arg3)
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_group_by_sum_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_group_by_sum_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))))
 	return swig_r
 }
 
@@ -1434,7 +3604,7 @@ func (arg1 SwigcptrDataFrame) Group_by_sum_encoded(arg2 string, arg3 string) (_s
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_group_by_sum_encoded_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_46)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_47)(unsafe.Pointer(&_swig_i_2)))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_group_by_sum_encoded_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_50)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_51)(unsafe.Pointer(&_swig_i_2)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1451,7 +3621,7 @@ func (arg1 SwigcptrDataFrame) Join__SWIG_0(arg2 DataFrame, arg3 string, arg4 str
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
 	_swig_i_4 := arg5
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_join__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_48)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_49)(unsafe.Pointer(&_swig_i_3)), C._Bool(_swig_i_4))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_join__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_52)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_53)(unsafe.Pointer(&_swig_i_3)), C._Bool(_swig_i_4))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1467,7 +3637,7 @@ func (arg1 SwigcptrDataFrame) Join__SWIG_1(arg2 DataFrame, arg3 string, arg4 str
 	_swig_i_1 := getSwigcptr(arg2)
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_join__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_50)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_51)(unsafe.Pointer(&_swig_i_3)))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_join__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_54)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_55)(unsafe.Pointer(&_swig_i_3)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1492,7 +3662,7 @@ func (arg1 SwigcptrDataFrame) Numeric_count(arg2 string) (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (int64)(C._wrap_DataFrame_numeric_count_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_53)(unsafe.Pointer(&_swig_i_1))))
+	swig_r = (int64)(C._wrap_DataFrame_numeric_count_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_57)(unsafe.Pointer(&_swig_i_1))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1503,7 +3673,7 @@ func (arg1 SwigcptrDataFrame) Numeric_null_count(arg2 string) (_swig_ret int64) 
 	var swig_r int64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (int64)(C._wrap_DataFrame_numeric_null_count_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_55)(unsafe.Pointer(&_swig_i_1))))
+	swig_r = (int64)(C._wrap_DataFrame_numeric_null_count_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_59)(unsafe.Pointer(&_swig_i_1))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1514,7 +3684,7 @@ func (arg1 SwigcptrDataFrame) Numeric_sum(arg2 string) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (float64)(C._wrap_DataFrame_numeric_sum_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_56)(unsafe.Pointer(&_swig_i_1))))
+	swig_r = (float64)(C._wrap_DataFrame_numeric_sum_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_60)(unsafe.Pointer(&_swig_i_1))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1525,7 +3695,7 @@ func (arg1 SwigcptrDataFrame) Numeric_mean(arg2 string) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (float64)(C._wrap_DataFrame_numeric_mean_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_57)(unsafe.Pointer(&_swig_i_1))))
+	swig_r = (float64)(C._wrap_DataFrame_numeric_mean_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_61)(unsafe.Pointer(&_swig_i_1))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1536,7 +3706,7 @@ func (arg1 SwigcptrDataFrame) Numeric_min(arg2 string) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (float64)(C._wrap_DataFrame_numeric_min_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_58)(unsafe.Pointer(&_swig_i_1))))
+	swig_r = (float64)(C._wrap_DataFrame_numeric_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_62)(unsafe.Pointer(&_swig_i_1))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1547,7 +3717,7 @@ func (arg1 SwigcptrDataFrame) Numeric_max(arg2 string) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (float64)(C._wrap_DataFrame_numeric_max_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_59)(unsafe.Pointer(&_swig_i_1))))
+	swig_r = (float64)(C._wrap_DataFrame_numeric_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_63)(unsafe.Pointer(&_swig_i_1))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1558,7 +3728,7 @@ func (arg1 SwigcptrDataFrame) To_string__SWIG_0(arg2 int64) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r_p := C._wrap_DataFrame_to_string__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.swig_type_61(_swig_i_1))
+	swig_r_p := C._wrap_DataFrame_to_string__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_65(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -1568,7 +3738,7 @@ func (arg1 SwigcptrDataFrame) To_string__SWIG_0(arg2 int64) (_swig_ret string) {
 func (arg1 SwigcptrDataFrame) To_string__SWIG_1() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_DataFrame_to_string__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_DataFrame_to_string__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -1586,9 +3756,71 @@ func (p SwigcptrDataFrame) To_string(a ...interface{}) string {
 	panic("No match for overloaded function call")
 }
 
+func (arg1 SwigcptrDataFrame) Is_numeric_column(arg2 string) (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (bool)(C._wrap_DataFrame_is_numeric_column_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_67)(unsafe.Pointer(&_swig_i_1))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrDataFrame) Is_null(arg2 string, arg3 int64) (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (bool)(C._wrap_DataFrame_is_null_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_68)(unsafe.Pointer(&_swig_i_1)), C.swig_type_69(_swig_i_2)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrDataFrame) Numeric_at(arg2 string, arg3 int64) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (float64)(C._wrap_DataFrame_numeric_at_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_70)(unsafe.Pointer(&_swig_i_1)), C.swig_type_71(_swig_i_2)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrDataFrame) String_at(arg2 string, arg3 int64) (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r_p := C._wrap_DataFrame_string_at_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_73)(unsafe.Pointer(&_swig_i_1)), C.swig_type_74(_swig_i_2))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func DataFrameIris() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_iris_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DataFramePenguins() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DataFrame_penguins_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
 func DeleteDataFrame(arg1 DataFrame) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_DataFrame_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_DataFrame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type DataFrame interface {
@@ -1596,7 +3828,7 @@ type DataFrame interface {
 	SwigIsDataFrame()
 	Nrows() (_swig_ret int64)
 	Ncols() (_swig_ret int64)
-	Shape() (_swig_ret Std_vector_Sl_std_size_t_Sg_)
+	Shape() (_swig_ret SizeVector)
 	Columns() (_swig_ret SVector)
 	Add_numeric_column(a ...interface{})
 	Add_string_column(a ...interface{})
@@ -1618,6 +3850,10 @@ type DataFrame interface {
 	Numeric_min(arg2 string) (_swig_ret float64)
 	Numeric_max(arg2 string) (_swig_ret float64)
 	To_string(a ...interface{}) string
+	Is_numeric_column(arg2 string) (_swig_ret bool)
+	Is_null(arg2 string, arg3 int64) (_swig_ret bool)
+	Numeric_at(arg2 string, arg3 int64) (_swig_ret float64)
+	String_at(arg2 string, arg3 int64) (_swig_ret string)
 }
 
 type SwigcptrLM uintptr
@@ -1634,7 +3870,7 @@ func NewLM__SWIG_0(arg1 DataFrame, arg2 string, arg3 string) (_swig_ret LM) {
 	_swig_i_0 := getSwigcptr(arg1)
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (LM)(SwigcptrLM(C._wrap_new_LM__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_63)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_64)(unsafe.Pointer(&_swig_i_2)))))
+	swig_r = (LM)(SwigcptrLM(C._wrap_new_LM__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_75)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_76)(unsafe.Pointer(&_swig_i_2)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1648,7 +3884,7 @@ func NewLM__SWIG_1(arg1 DataFrame, arg2 string) (_swig_ret LM) {
 	var swig_r LM
 	_swig_i_0 := getSwigcptr(arg1)
 	_swig_i_1 := arg2
-	swig_r = (LM)(SwigcptrLM(C._wrap_new_LM__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_65)(unsafe.Pointer(&_swig_i_1)))))
+	swig_r = (LM)(SwigcptrLM(C._wrap_new_LM__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_77)(unsafe.Pointer(&_swig_i_1)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1669,7 +3905,7 @@ func NewLM(a ...interface{}) LM {
 func (arg1 SwigcptrLM) Formula_text() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_LM_formula_text_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_LM_formula_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -1679,112 +3915,112 @@ func (arg1 SwigcptrLM) Formula_text() (_swig_ret string) {
 func (arg1 SwigcptrLM) Has_intercept() (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_LM_has_intercept_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_LM_has_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Observations() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_LM_observations_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_LM_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Rank() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_LM_rank_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_LM_rank_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Degrees_of_freedom() (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_LM_degrees_of_freedom_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_LM_degrees_of_freedom_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Coefficients() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_coefficients_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Coefficient_names() (_swig_ret SVector) {
 	var swig_r SVector
 	_swig_i_0 := arg1
-	swig_r = (SVector)(SwigcptrSVector(C._wrap_LM_coefficient_names_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_LM_coefficient_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Fitted_values() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_fitted_values_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Residuals() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_residuals_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Standard_errors() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_standard_errors_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_standard_errors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) T_values() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_t_values_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_t_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) P_values() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_p_values_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_p_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) R_squared() (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_LM_r_squared_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_LM_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Adjusted_r_squared() (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_LM_adjusted_r_squared_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_LM_adjusted_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Sigma() (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_LM_sigma_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_LM_sigma_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) F_statistic() (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_LM_f_statistic_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_LM_f_statistic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) F_p_value() (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_LM_f_p_value_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_LM_f_p_value_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -1792,14 +4028,14 @@ func (arg1 SwigcptrLM) Confidence_interval_lower__SWIG_0(arg2 float64) (_swig_re
 	var swig_r DVector
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_lower__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_lower__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Confidence_interval_lower__SWIG_1() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_lower__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_lower__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -1818,14 +4054,14 @@ func (arg1 SwigcptrLM) Confidence_interval_upper__SWIG_0(arg2 float64) (_swig_re
 	var swig_r DVector
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_upper__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_upper__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Confidence_interval_upper__SWIG_1() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_upper__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_confidence_interval_upper__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
@@ -1843,35 +4079,35 @@ func (p SwigcptrLM) Confidence_interval_upper(a ...interface{}) DVector {
 func (arg1 SwigcptrLM) Leverage() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_leverage_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_leverage_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Standardized_residuals() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_standardized_residuals_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_standardized_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Studentized_residuals() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_studentized_residuals_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_studentized_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Cooks_distance() (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_cooks_distance_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_cooks_distance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Summary() (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_LM_summary_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_LM_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -1880,14 +4116,14 @@ func (arg1 SwigcptrLM) Summary() (_swig_ret string) {
 
 func (arg1 SwigcptrLM) Print_summary() {
 	_swig_i_0 := arg1
-	C._wrap_LM_print_summary_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_LM_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 func (arg1 SwigcptrLM) Predict(arg2 DataFrame) (_swig_ret DVector) {
 	var swig_r DVector
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
-	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_predict_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LM_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
 	return swig_r
 }
 
@@ -1897,7 +4133,7 @@ func (arg1 SwigcptrLM) Predict_frame__SWIG_0(arg2 DataFrame, arg3 string, arg4 f
 	_swig_i_1 := getSwigcptr(arg2)
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_predict_frame__SWIG_0_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_71)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_83)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1909,7 +4145,7 @@ func (arg1 SwigcptrLM) Predict_frame__SWIG_1(arg2 DataFrame, arg3 string) (_swig
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
 	_swig_i_2 := arg3
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_predict_frame__SWIG_1_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_72)(unsafe.Pointer(&_swig_i_2)))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_84)(unsafe.Pointer(&_swig_i_2)))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1920,7 +4156,7 @@ func (arg1 SwigcptrLM) Predict_frame__SWIG_2(arg2 DataFrame) (_swig_ret DataFram
 	var swig_r DataFrame
 	_swig_i_0 := arg1
 	_swig_i_1 := getSwigcptr(arg2)
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_predict_frame__SWIG_2_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
 	return swig_r
 }
 
@@ -1941,42 +4177,42 @@ func (p SwigcptrLM) Predict_frame(a ...interface{}) DataFrame {
 func (arg1 SwigcptrLM) Anova() (_swig_ret DataFrame) {
 	var swig_r DataFrame
 	_swig_i_0 := arg1
-	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_anova_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LM_anova_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
-func (arg1 SwigcptrLM) Plot_residuals_vs_fitted() (_swig_ret Datamunge_plot_ScatterPlot) {
-	var swig_r Datamunge_plot_ScatterPlot
+func (arg1 SwigcptrLM) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
 	_swig_i_0 := arg1
-	swig_r = (Datamunge_plot_ScatterPlot)(SwigcptrDatamunge_plot_ScatterPlot(C._wrap_LM_plot_residuals_vs_fitted_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_LM_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
-func (arg1 SwigcptrLM) Plot_normal_qq() (_swig_ret Datamunge_plot_ScatterPlot) {
-	var swig_r Datamunge_plot_ScatterPlot
+func (arg1 SwigcptrLM) Plot_normal_qq() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
 	_swig_i_0 := arg1
-	swig_r = (Datamunge_plot_ScatterPlot)(SwigcptrDatamunge_plot_ScatterPlot(C._wrap_LM_plot_normal_qq_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_LM_plot_normal_qq_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
-func (arg1 SwigcptrLM) Plot_scale_location() (_swig_ret Datamunge_plot_ScatterPlot) {
-	var swig_r Datamunge_plot_ScatterPlot
+func (arg1 SwigcptrLM) Plot_scale_location() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
 	_swig_i_0 := arg1
-	swig_r = (Datamunge_plot_ScatterPlot)(SwigcptrDatamunge_plot_ScatterPlot(C._wrap_LM_plot_scale_location_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_LM_plot_scale_location_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
-func (arg1 SwigcptrLM) Plot_residuals_vs_leverage() (_swig_ret Datamunge_plot_ScatterPlot) {
-	var swig_r Datamunge_plot_ScatterPlot
+func (arg1 SwigcptrLM) Plot_residuals_vs_leverage() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
 	_swig_i_0 := arg1
-	swig_r = (Datamunge_plot_ScatterPlot)(SwigcptrDatamunge_plot_ScatterPlot(C._wrap_LM_plot_residuals_vs_leverage_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))))
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_LM_plot_residuals_vs_leverage_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
 	return swig_r
 }
 
 func (arg1 SwigcptrLM) Save_diagnostic_plots(arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_LM_save_diagnostic_plots_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0), *(*C.swig_type_73)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_LM_save_diagnostic_plots_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_85)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1984,7 +4220,7 @@ func (arg1 SwigcptrLM) Save_diagnostic_plots(arg2 string) {
 
 func DeleteLM(arg1 LM) {
 	_swig_i_0 := getSwigcptr(arg1)
-	C._wrap_delete_LM_datamunge_2f7022b1be4fe143(C.uintptr_t(_swig_i_0))
+	C._wrap_delete_LM_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
 }
 
 type LM interface {
@@ -2018,27 +4254,12462 @@ type LM interface {
 	Predict(arg2 DataFrame) (_swig_ret DVector)
 	Predict_frame(a ...interface{}) DataFrame
 	Anova() (_swig_ret DataFrame)
-	Plot_residuals_vs_fitted() (_swig_ret Datamunge_plot_ScatterPlot)
-	Plot_normal_qq() (_swig_ret Datamunge_plot_ScatterPlot)
-	Plot_scale_location() (_swig_ret Datamunge_plot_ScatterPlot)
-	Plot_residuals_vs_leverage() (_swig_ret Datamunge_plot_ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+	Plot_normal_qq() (_swig_ret ScatterPlot)
+	Plot_scale_location() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_leverage() (_swig_ret ScatterPlot)
 	Save_diagnostic_plots(arg2 string)
 }
 
+type SwigcptrLMM uintptr
 
-type SwigcptrStd_vector_Sl_std_size_t_Sg_ uintptr
-type Std_vector_Sl_std_size_t_Sg_ interface {
-	Swigcptr() uintptr;
-}
-func (p SwigcptrStd_vector_Sl_std_size_t_Sg_) Swigcptr() uintptr {
-	return uintptr(p)
+func (p SwigcptrLMM) Swigcptr() uintptr {
+	return (uintptr)(p)
 }
 
-type SwigcptrDatamunge_plot_ScatterPlot uintptr
-type Datamunge_plot_ScatterPlot interface {
+func (p SwigcptrLMM) SwigIsLMM() {
+}
+
+func NewLMM__SWIG_0(arg1 DataFrame, arg2 string, arg3 bool, arg4 int64, arg5 int64, arg6 float64, arg7 int64) (_swig_ret LMM) {
+	var swig_r LMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (LMM)(SwigcptrLMM(C._wrap_new_LMM__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_86)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C.swig_type_87(_swig_i_3), C.swig_type_88(_swig_i_4), C.double(_swig_i_5), C.swig_type_89(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLMM__SWIG_1(arg1 DataFrame, arg2 string, arg3 bool, arg4 int64, arg5 int64, arg6 float64) (_swig_ret LMM) {
+	var swig_r LMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (LMM)(SwigcptrLMM(C._wrap_new_LMM__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_90)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C.swig_type_91(_swig_i_3), C.swig_type_92(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLMM__SWIG_2(arg1 DataFrame, arg2 string, arg3 bool, arg4 int64, arg5 int64) (_swig_ret LMM) {
+	var swig_r LMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (LMM)(SwigcptrLMM(C._wrap_new_LMM__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_93)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C.swig_type_94(_swig_i_3), C.swig_type_95(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLMM__SWIG_3(arg1 DataFrame, arg2 string, arg3 bool, arg4 int64) (_swig_ret LMM) {
+	var swig_r LMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (LMM)(SwigcptrLMM(C._wrap_new_LMM__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_96)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C.swig_type_97(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLMM__SWIG_4(arg1 DataFrame, arg2 string, arg3 bool) (_swig_ret LMM) {
+	var swig_r LMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (LMM)(SwigcptrLMM(C._wrap_new_LMM__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_98)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLMM__SWIG_5(arg1 DataFrame, arg2 string) (_swig_ret LMM) {
+	var swig_r LMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (LMM)(SwigcptrLMM(C._wrap_new_LMM__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_99)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLMM(a ...interface{}) LMM {
+	argc := len(a)
+	if argc == 2 {
+		return NewLMM__SWIG_5(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewLMM__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(bool))
+	}
+	if argc == 4 {
+		return NewLMM__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(bool), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewLMM__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(bool), a[3].(int64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewLMM__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(bool), a[3].(int64), a[4].(int64), a[5].(float64))
+	}
+	if argc == 7 {
+		return NewLMM__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(bool), a[3].(int64), a[4].(int64), a[5].(float64), a[6].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrLMM) Formula_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_LMM_formula_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrLMM) Group_variable() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_LMM_group_variable_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrLMM) Has_random_intercept() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_LMM_has_random_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Random_effect_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_LMM_random_effect_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Is_reml() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_LMM_is_reml_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_LMM_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Num_groups() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_LMM_num_groups_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Rank() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_LMM_rank_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Coefficient_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_LMM_coefficient_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Standard_errors() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_standard_errors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Z_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_z_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) P_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_p_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Residual_variance() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_LMM_residual_variance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Residual_std_dev() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_LMM_residual_std_dev_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Random_effect_std_devs() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_random_effect_std_devs_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Random_effect_correlation(arg2 int64, arg3 int64) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (float64)(C._wrap_LMM_random_effect_correlation_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_105(_swig_i_1), C.swig_type_106(_swig_i_2)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Group_labels() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_LMM_group_labels_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Random_effects_for_group(arg2 int64) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_random_effects_for_group_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_107(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Log_likelihood() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_LMM_log_likelihood_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Deviance() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_LMM_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Aic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_LMM_aic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Bic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_LMM_bic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLMM) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_LMM_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrLMM) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_LMM_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrLMM) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LMM_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func DeleteLMM(arg1 LMM) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_LMM_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type LMM interface {
+	Swigcptr() uintptr
+	SwigIsLMM()
+	Formula_text() (_swig_ret string)
+	Group_variable() (_swig_ret string)
+	Has_random_intercept() (_swig_ret bool)
+	Random_effect_names() (_swig_ret SVector)
+	Is_reml() (_swig_ret bool)
+	Observations() (_swig_ret int64)
+	Num_groups() (_swig_ret int64)
+	Rank() (_swig_ret int64)
+	Coefficients() (_swig_ret DVector)
+	Coefficient_names() (_swig_ret SVector)
+	Standard_errors() (_swig_ret DVector)
+	Z_values() (_swig_ret DVector)
+	P_values() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	Residuals() (_swig_ret DVector)
+	Residual_variance() (_swig_ret float64)
+	Residual_std_dev() (_swig_ret float64)
+	Random_effect_std_devs() (_swig_ret DVector)
+	Random_effect_correlation(arg2 int64, arg3 int64) (_swig_ret float64)
+	Group_labels() (_swig_ret SVector)
+	Random_effects_for_group(arg2 int64) (_swig_ret DVector)
+	Log_likelihood() (_swig_ret float64)
+	Deviance() (_swig_ret float64)
+	Aic() (_swig_ret float64)
+	Bic() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+}
+
+type SwigcptrGLMM uintptr
+
+func (p SwigcptrGLMM) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrGLMM) SwigIsGLMM() {
+}
+
+func NewGLMM__SWIG_0(arg1 DataFrame, arg2 string, arg3 string, arg4 int64, arg5 float64, arg6 int64, arg7 int64, arg8 float64, arg9 int64) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_109)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_110)(unsafe.Pointer(&_swig_i_2)), C.swig_type_111(_swig_i_3), C.double(_swig_i_4), C.swig_type_112(_swig_i_5), C.swig_type_113(_swig_i_6), C.double(_swig_i_7), C.swig_type_114(_swig_i_8))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLMM__SWIG_1(arg1 DataFrame, arg2 string, arg3 string, arg4 int64, arg5 float64, arg6 int64, arg7 int64, arg8 float64) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_115)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_116)(unsafe.Pointer(&_swig_i_2)), C.swig_type_117(_swig_i_3), C.double(_swig_i_4), C.swig_type_118(_swig_i_5), C.swig_type_119(_swig_i_6), C.double(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLMM__SWIG_2(arg1 DataFrame, arg2 string, arg3 string, arg4 int64, arg5 float64, arg6 int64, arg7 int64) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_120)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_121)(unsafe.Pointer(&_swig_i_2)), C.swig_type_122(_swig_i_3), C.double(_swig_i_4), C.swig_type_123(_swig_i_5), C.swig_type_124(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLMM__SWIG_3(arg1 DataFrame, arg2 string, arg3 string, arg4 int64, arg5 float64, arg6 int64) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_125)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_126)(unsafe.Pointer(&_swig_i_2)), C.swig_type_127(_swig_i_3), C.double(_swig_i_4), C.swig_type_128(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLMM__SWIG_4(arg1 DataFrame, arg2 string, arg3 string, arg4 int64, arg5 float64) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_129)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_130)(unsafe.Pointer(&_swig_i_2)), C.swig_type_131(_swig_i_3), C.double(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLMM__SWIG_5(arg1 DataFrame, arg2 string, arg3 string, arg4 int64) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_132)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_133)(unsafe.Pointer(&_swig_i_2)), C.swig_type_134(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLMM__SWIG_6(arg1 DataFrame, arg2 string, arg3 string) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_135)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_136)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLMM__SWIG_7(arg1 DataFrame, arg2 string) (_swig_ret GLMM) {
+	var swig_r GLMM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (GLMM)(SwigcptrGLMM(C._wrap_new_GLMM__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_137)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGLMM(a ...interface{}) GLMM {
+	argc := len(a)
+	if argc == 2 {
+		return NewGLMM__SWIG_7(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewGLMM__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(string))
+	}
+	if argc == 4 {
+		return NewGLMM__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewGLMM__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(int64), a[4].(float64))
+	}
+	if argc == 6 {
+		return NewGLMM__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(int64), a[4].(float64), a[5].(int64))
+	}
+	if argc == 7 {
+		return NewGLMM__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(int64), a[4].(float64), a[5].(int64), a[6].(int64))
+	}
+	if argc == 8 {
+		return NewGLMM__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(int64), a[4].(float64), a[5].(int64), a[6].(int64), a[7].(float64))
+	}
+	if argc == 9 {
+		return NewGLMM__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(int64), a[4].(float64), a[5].(int64), a[6].(int64), a[7].(float64), a[8].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGLMM) Formula_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GLMM_formula_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGLMM) Family() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GLMM_family_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGLMM) Group_variable() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GLMM_group_variable_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGLMM) Has_random_intercept() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_GLMM_has_random_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Random_effect_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GLMM_random_effect_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GLMM_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Num_groups() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GLMM_num_groups_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Rank() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GLMM_rank_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Iterations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GLMM_iterations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Coefficient_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GLMM_coefficient_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Standard_errors() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_standard_errors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Z_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_z_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) P_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_p_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Random_effect_std_devs() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_random_effect_std_devs_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Random_effect_correlation(arg2 int64, arg3 int64) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (float64)(C._wrap_GLMM_random_effect_correlation_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_145(_swig_i_1), C.swig_type_146(_swig_i_2)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Group_labels() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GLMM_group_labels_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Random_effects_for_group(arg2 int64) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_random_effects_for_group_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_147(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Deviance() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GLMM_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Aic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GLMM_aic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Bic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GLMM_bic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLMM) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GLMM_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGLMM) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_GLMM_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrGLMM) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLMM_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func DeleteGLMM(arg1 GLMM) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_GLMM_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type GLMM interface {
+	Swigcptr() uintptr
+	SwigIsGLMM()
+	Formula_text() (_swig_ret string)
+	Family() (_swig_ret string)
+	Group_variable() (_swig_ret string)
+	Has_random_intercept() (_swig_ret bool)
+	Random_effect_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Num_groups() (_swig_ret int64)
+	Rank() (_swig_ret int64)
+	Iterations() (_swig_ret int64)
+	Coefficients() (_swig_ret DVector)
+	Coefficient_names() (_swig_ret SVector)
+	Standard_errors() (_swig_ret DVector)
+	Z_values() (_swig_ret DVector)
+	P_values() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	Random_effect_std_devs() (_swig_ret DVector)
+	Random_effect_correlation(arg2 int64, arg3 int64) (_swig_ret float64)
+	Group_labels() (_swig_ret SVector)
+	Random_effects_for_group(arg2 int64) (_swig_ret DVector)
+	Deviance() (_swig_ret float64)
+	Aic() (_swig_ret float64)
+	Bic() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+}
+
+type SwigcptrLDA uintptr
+
+func (p SwigcptrLDA) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrLDA) SwigIsLDA() {
+}
+
+func NewLDA__SWIG_0(arg1 DataFrame, arg2 string, arg3 DVector) (_swig_ret LDA) {
+	var swig_r LDA
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := getSwigcptr(arg3)
+	swig_r = (LDA)(SwigcptrLDA(C._wrap_new_LDA__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_149)(unsafe.Pointer(&_swig_i_1)), C.uintptr_t(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLDA__SWIG_1(arg1 DataFrame, arg2 string) (_swig_ret LDA) {
+	var swig_r LDA
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (LDA)(SwigcptrLDA(C._wrap_new_LDA__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_150)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLDA(a ...interface{}) LDA {
+	argc := len(a)
+	if argc == 2 {
+		return NewLDA__SWIG_1(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewLDA__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(DVector))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrLDA) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_LDA_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_LDA_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_LDA_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Num_discriminants() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_LDA_num_discriminants_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Priors() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LDA_priors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Group_means() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LDA_group_means_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Scaling() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LDA_scaling_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Proportion_of_trace() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_LDA_proportion_of_trace_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_LDA_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LDA_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_LDA_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrLDA) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_LDA_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrLDA) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_LDA_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_LDA_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Plot_discriminants() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_LDA_plot_discriminants_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLDA) Save_discriminant_plot(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_LDA_save_discriminant_plot_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_154)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func DeleteLDA(arg1 LDA) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_LDA_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type LDA interface {
+	Swigcptr() uintptr
+	SwigIsLDA()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Num_discriminants() (_swig_ret int64)
+	Priors() (_swig_ret DVector)
+	Group_means() (_swig_ret DataFrame)
+	Scaling() (_swig_ret DataFrame)
+	Proportion_of_trace() (_swig_ret DVector)
+	Training_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+	Plot_discriminants() (_swig_ret ScatterPlot)
+	Save_discriminant_plot(arg2 string)
+}
+
+type SwigcptrSVM uintptr
+
+func (p SwigcptrSVM) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrSVM) SwigIsSVM() {
+}
+
+func NewSVM__SWIG_0(arg1 DataFrame, arg2 string, arg3 string, arg4 float64, arg5 float64, arg6 float64, arg7 int, arg8 bool) (_swig_ret SVM) {
+	var swig_r SVM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (SVM)(SwigcptrSVM(C._wrap_new_SVM__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_155)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_156)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3), C.double(_swig_i_4), C.double(_swig_i_5), C.swig_intgo(_swig_i_6), C._Bool(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewSVM__SWIG_1(arg1 DataFrame, arg2 string, arg3 string, arg4 float64, arg5 float64, arg6 float64, arg7 int) (_swig_ret SVM) {
+	var swig_r SVM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (SVM)(SwigcptrSVM(C._wrap_new_SVM__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_157)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_158)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3), C.double(_swig_i_4), C.double(_swig_i_5), C.swig_intgo(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewSVM__SWIG_2(arg1 DataFrame, arg2 string, arg3 string, arg4 float64, arg5 float64, arg6 float64) (_swig_ret SVM) {
+	var swig_r SVM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (SVM)(SwigcptrSVM(C._wrap_new_SVM__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_159)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_160)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3), C.double(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewSVM__SWIG_3(arg1 DataFrame, arg2 string, arg3 string, arg4 float64, arg5 float64) (_swig_ret SVM) {
+	var swig_r SVM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (SVM)(SwigcptrSVM(C._wrap_new_SVM__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_161)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_162)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3), C.double(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewSVM__SWIG_4(arg1 DataFrame, arg2 string, arg3 string, arg4 float64) (_swig_ret SVM) {
+	var swig_r SVM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (SVM)(SwigcptrSVM(C._wrap_new_SVM__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_163)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_164)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewSVM__SWIG_5(arg1 DataFrame, arg2 string, arg3 string) (_swig_ret SVM) {
+	var swig_r SVM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (SVM)(SwigcptrSVM(C._wrap_new_SVM__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_165)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_166)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewSVM__SWIG_6(arg1 DataFrame, arg2 string) (_swig_ret SVM) {
+	var swig_r SVM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (SVM)(SwigcptrSVM(C._wrap_new_SVM__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_167)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewSVM(a ...interface{}) SVM {
+	argc := len(a)
+	if argc == 2 {
+		return NewSVM__SWIG_6(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewSVM__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(string))
+	}
+	if argc == 4 {
+		return NewSVM__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewSVM__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64), a[4].(float64))
+	}
+	if argc == 6 {
+		return NewSVM__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64), a[4].(float64), a[5].(float64))
+	}
+	if argc == 7 {
+		return NewSVM__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64), a[4].(float64), a[5].(float64), a[6].(int))
+	}
+	if argc == 8 {
+		return NewSVM__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64), a[4].(float64), a[5].(float64), a[6].(int), a[7].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrSVM) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_SVM_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrSVM) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_SVM_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrSVM) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_SVM_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrSVM) Num_support_vectors() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_SVM_num_support_vectors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrSVM) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_SVM_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrSVM) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_SVM_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrSVM) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_SVM_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrSVM) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_SVM_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrSVM) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_SVM_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrSVM) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_SVM_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func DeleteSVM(arg1 SVM) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_SVM_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type SVM interface {
+	Swigcptr() uintptr
+	SwigIsSVM()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Num_support_vectors() (_swig_ret int64)
+	Training_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+}
+
+type SwigcptrDecisionTreeClassifier uintptr
+
+func (p SwigcptrDecisionTreeClassifier) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrDecisionTreeClassifier) SwigIsDecisionTreeClassifier() {
+}
+
+func NewDecisionTreeClassifier__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 string) (_swig_ret DecisionTreeClassifier) {
+	var swig_r DecisionTreeClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (DecisionTreeClassifier)(SwigcptrDecisionTreeClassifier(C._wrap_new_DecisionTreeClassifier__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_171)(unsafe.Pointer(&_swig_i_1)), C.swig_type_172(_swig_i_2), C.swig_type_173(_swig_i_3), C.swig_type_174(_swig_i_4), *(*C.swig_type_175)(unsafe.Pointer(&_swig_i_5)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg6
+	}
+	return swig_r
+}
+
+func NewDecisionTreeClassifier__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64) (_swig_ret DecisionTreeClassifier) {
+	var swig_r DecisionTreeClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (DecisionTreeClassifier)(SwigcptrDecisionTreeClassifier(C._wrap_new_DecisionTreeClassifier__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_176)(unsafe.Pointer(&_swig_i_1)), C.swig_type_177(_swig_i_2), C.swig_type_178(_swig_i_3), C.swig_type_179(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeClassifier__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64) (_swig_ret DecisionTreeClassifier) {
+	var swig_r DecisionTreeClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (DecisionTreeClassifier)(SwigcptrDecisionTreeClassifier(C._wrap_new_DecisionTreeClassifier__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_180)(unsafe.Pointer(&_swig_i_1)), C.swig_type_181(_swig_i_2), C.swig_type_182(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeClassifier__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret DecisionTreeClassifier) {
+	var swig_r DecisionTreeClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (DecisionTreeClassifier)(SwigcptrDecisionTreeClassifier(C._wrap_new_DecisionTreeClassifier__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_183)(unsafe.Pointer(&_swig_i_1)), C.swig_type_184(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeClassifier__SWIG_4(arg1 DataFrame, arg2 string) (_swig_ret DecisionTreeClassifier) {
+	var swig_r DecisionTreeClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (DecisionTreeClassifier)(SwigcptrDecisionTreeClassifier(C._wrap_new_DecisionTreeClassifier__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_185)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeClassifier(a ...interface{}) DecisionTreeClassifier {
+	argc := len(a)
+	if argc == 2 {
+		return NewDecisionTreeClassifier__SWIG_4(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewDecisionTreeClassifier__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewDecisionTreeClassifier__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewDecisionTreeClassifier__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewDecisionTreeClassifier__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(string))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_DecisionTreeClassifier_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_DecisionTreeClassifier_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeClassifier_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Node_count() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeClassifier_node_count_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Leaf_count() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeClassifier_leaf_count_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Depth() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeClassifier_depth_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DecisionTreeClassifier_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_DecisionTreeClassifier_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DecisionTreeClassifier_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_DecisionTreeClassifier_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_DecisionTreeClassifier_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_DecisionTreeClassifier_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_DecisionTreeClassifier_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_DecisionTreeClassifier_plot_classification_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_191)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_192)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Plot_decision_regions__SWIG_0(arg2 string, arg3 string, arg4 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_193)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_194)(unsafe.Pointer(&_swig_i_2)), C.swig_type_195(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeClassifier) Plot_decision_regions__SWIG_1(arg2 string, arg3 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_196)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_197)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (p SwigcptrDecisionTreeClassifier) Plot_decision_regions(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Plot_decision_regions__SWIG_1(a[0].(string), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Plot_decision_regions__SWIG_0(a[0].(string), a[1].(string), a[2].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func DeleteDecisionTreeClassifier(arg1 DecisionTreeClassifier) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_DecisionTreeClassifier_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type DecisionTreeClassifier interface {
+	Swigcptr() uintptr
+	SwigIsDecisionTreeClassifier()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Node_count() (_swig_ret int64)
+	Leaf_count() (_swig_ret int64)
+	Depth() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Training_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+	Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot)
+	Plot_decision_regions(a ...interface{}) ScatterPlot
+}
+
+type SwigcptrDecisionTreeRegressor uintptr
+
+func (p SwigcptrDecisionTreeRegressor) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrDecisionTreeRegressor) SwigIsDecisionTreeRegressor() {
+}
+
+func NewDecisionTreeRegressor__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64) (_swig_ret DecisionTreeRegressor) {
+	var swig_r DecisionTreeRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (DecisionTreeRegressor)(SwigcptrDecisionTreeRegressor(C._wrap_new_DecisionTreeRegressor__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_198)(unsafe.Pointer(&_swig_i_1)), C.swig_type_199(_swig_i_2), C.swig_type_200(_swig_i_3), C.swig_type_201(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeRegressor__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64) (_swig_ret DecisionTreeRegressor) {
+	var swig_r DecisionTreeRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (DecisionTreeRegressor)(SwigcptrDecisionTreeRegressor(C._wrap_new_DecisionTreeRegressor__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_202)(unsafe.Pointer(&_swig_i_1)), C.swig_type_203(_swig_i_2), C.swig_type_204(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeRegressor__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret DecisionTreeRegressor) {
+	var swig_r DecisionTreeRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (DecisionTreeRegressor)(SwigcptrDecisionTreeRegressor(C._wrap_new_DecisionTreeRegressor__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_205)(unsafe.Pointer(&_swig_i_1)), C.swig_type_206(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeRegressor__SWIG_3(arg1 DataFrame, arg2 string) (_swig_ret DecisionTreeRegressor) {
+	var swig_r DecisionTreeRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (DecisionTreeRegressor)(SwigcptrDecisionTreeRegressor(C._wrap_new_DecisionTreeRegressor__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_207)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDecisionTreeRegressor(a ...interface{}) DecisionTreeRegressor {
+	argc := len(a)
+	if argc == 2 {
+		return NewDecisionTreeRegressor__SWIG_3(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewDecisionTreeRegressor__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewDecisionTreeRegressor__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewDecisionTreeRegressor__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_DecisionTreeRegressor_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeRegressor_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Node_count() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeRegressor_node_count_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Leaf_count() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeRegressor_leaf_count_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Depth() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DecisionTreeRegressor_depth_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DecisionTreeRegressor_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DecisionTreeRegressor_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_DecisionTreeRegressor_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_DecisionTreeRegressor_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_DecisionTreeRegressor_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_DecisionTreeRegressor_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DecisionTreeRegressor_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_DecisionTreeRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDecisionTreeRegressor) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_DecisionTreeRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteDecisionTreeRegressor(arg1 DecisionTreeRegressor) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_DecisionTreeRegressor_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type DecisionTreeRegressor interface {
+	Swigcptr() uintptr
+	SwigIsDecisionTreeRegressor()
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Node_count() (_swig_ret int64)
+	Leaf_count() (_swig_ret int64)
+	Depth() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrRandomForestClassifier uintptr
+
+func (p SwigcptrRandomForestClassifier) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrRandomForestClassifier) SwigIsRandomForestClassifier() {
+}
+
+func NewRandomForestClassifier__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64, arg8 string, arg9 bool, arg10 float64, arg11 uint64) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	_swig_i_10 := arg11
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_213)(unsafe.Pointer(&_swig_i_1)), C.swig_type_214(_swig_i_2), C.swig_type_215(_swig_i_3), C.swig_type_216(_swig_i_4), C.swig_type_217(_swig_i_5), C.swig_type_218(_swig_i_6), *(*C.swig_type_219)(unsafe.Pointer(&_swig_i_7)), C._Bool(_swig_i_8), C.double(_swig_i_9), C.swig_type_220(_swig_i_10))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg8
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64, arg8 string, arg9 bool, arg10 float64) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_221)(unsafe.Pointer(&_swig_i_1)), C.swig_type_222(_swig_i_2), C.swig_type_223(_swig_i_3), C.swig_type_224(_swig_i_4), C.swig_type_225(_swig_i_5), C.swig_type_226(_swig_i_6), *(*C.swig_type_227)(unsafe.Pointer(&_swig_i_7)), C._Bool(_swig_i_8), C.double(_swig_i_9))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg8
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64, arg8 string, arg9 bool) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_228)(unsafe.Pointer(&_swig_i_1)), C.swig_type_229(_swig_i_2), C.swig_type_230(_swig_i_3), C.swig_type_231(_swig_i_4), C.swig_type_232(_swig_i_5), C.swig_type_233(_swig_i_6), *(*C.swig_type_234)(unsafe.Pointer(&_swig_i_7)), C._Bool(_swig_i_8))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg8
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64, arg8 string) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_235)(unsafe.Pointer(&_swig_i_1)), C.swig_type_236(_swig_i_2), C.swig_type_237(_swig_i_3), C.swig_type_238(_swig_i_4), C.swig_type_239(_swig_i_5), C.swig_type_240(_swig_i_6), *(*C.swig_type_241)(unsafe.Pointer(&_swig_i_7)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg8
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_4(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_242)(unsafe.Pointer(&_swig_i_1)), C.swig_type_243(_swig_i_2), C.swig_type_244(_swig_i_3), C.swig_type_245(_swig_i_4), C.swig_type_246(_swig_i_5), C.swig_type_247(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_5(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_248)(unsafe.Pointer(&_swig_i_1)), C.swig_type_249(_swig_i_2), C.swig_type_250(_swig_i_3), C.swig_type_251(_swig_i_4), C.swig_type_252(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_253)(unsafe.Pointer(&_swig_i_1)), C.swig_type_254(_swig_i_2), C.swig_type_255(_swig_i_3), C.swig_type_256(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_7(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_257)(unsafe.Pointer(&_swig_i_1)), C.swig_type_258(_swig_i_2), C.swig_type_259(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_8(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_8_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_260)(unsafe.Pointer(&_swig_i_1)), C.swig_type_261(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier__SWIG_9(arg1 DataFrame, arg2 string) (_swig_ret RandomForestClassifier) {
+	var swig_r RandomForestClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (RandomForestClassifier)(SwigcptrRandomForestClassifier(C._wrap_new_RandomForestClassifier__SWIG_9_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_262)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestClassifier(a ...interface{}) RandomForestClassifier {
+	argc := len(a)
+	if argc == 2 {
+		return NewRandomForestClassifier__SWIG_9(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewRandomForestClassifier__SWIG_8(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewRandomForestClassifier__SWIG_7(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewRandomForestClassifier__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewRandomForestClassifier__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64))
+	}
+	if argc == 7 {
+		return NewRandomForestClassifier__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64))
+	}
+	if argc == 8 {
+		return NewRandomForestClassifier__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(string))
+	}
+	if argc == 9 {
+		return NewRandomForestClassifier__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(string), a[8].(bool))
+	}
+	if argc == 10 {
+		return NewRandomForestClassifier__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(string), a[8].(bool), a[9].(float64))
+	}
+	if argc == 11 {
+		return NewRandomForestClassifier__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(string), a[8].(bool), a[9].(float64), a[10].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_RandomForestClassifier_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_RandomForestClassifier_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_RandomForestClassifier_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) N_trees() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_RandomForestClassifier_n_trees_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Max_features_used() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_RandomForestClassifier_max_features_used_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_RandomForestClassifier_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_RandomForestClassifier_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Oob_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_RandomForestClassifier_oob_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_RandomForestClassifier_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_RandomForestClassifier_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_RandomForestClassifier_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_RandomForestClassifier_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_RandomForestClassifier_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_RandomForestClassifier_plot_classification_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_267)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_268)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Plot_decision_regions__SWIG_0(arg2 string, arg3 string, arg4 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_RandomForestClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_269)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_270)(unsafe.Pointer(&_swig_i_2)), C.swig_type_271(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestClassifier) Plot_decision_regions__SWIG_1(arg2 string, arg3 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_RandomForestClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_272)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_273)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (p SwigcptrRandomForestClassifier) Plot_decision_regions(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Plot_decision_regions__SWIG_1(a[0].(string), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Plot_decision_regions__SWIG_0(a[0].(string), a[1].(string), a[2].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func DeleteRandomForestClassifier(arg1 RandomForestClassifier) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_RandomForestClassifier_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type RandomForestClassifier interface {
+	Swigcptr() uintptr
+	SwigIsRandomForestClassifier()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	N_trees() (_swig_ret int64)
+	Max_features_used() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Training_accuracy() (_swig_ret float64)
+	Oob_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+	Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot)
+	Plot_decision_regions(a ...interface{}) ScatterPlot
+}
+
+type SwigcptrRandomForestRegressor uintptr
+
+func (p SwigcptrRandomForestRegressor) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrRandomForestRegressor) SwigIsRandomForestRegressor() {
+}
+
+func NewRandomForestRegressor__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64, arg8 bool, arg9 float64, arg10 uint64) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_274)(unsafe.Pointer(&_swig_i_1)), C.swig_type_275(_swig_i_2), C.swig_type_276(_swig_i_3), C.swig_type_277(_swig_i_4), C.swig_type_278(_swig_i_5), C.swig_type_279(_swig_i_6), C._Bool(_swig_i_7), C.double(_swig_i_8), C.swig_type_280(_swig_i_9))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64, arg8 bool, arg9 float64) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_281)(unsafe.Pointer(&_swig_i_1)), C.swig_type_282(_swig_i_2), C.swig_type_283(_swig_i_3), C.swig_type_284(_swig_i_4), C.swig_type_285(_swig_i_5), C.swig_type_286(_swig_i_6), C._Bool(_swig_i_7), C.double(_swig_i_8))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64, arg8 bool) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_287)(unsafe.Pointer(&_swig_i_1)), C.swig_type_288(_swig_i_2), C.swig_type_289(_swig_i_3), C.swig_type_290(_swig_i_4), C.swig_type_291(_swig_i_5), C.swig_type_292(_swig_i_6), C._Bool(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64, arg7 int64) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_293)(unsafe.Pointer(&_swig_i_1)), C.swig_type_294(_swig_i_2), C.swig_type_295(_swig_i_3), C.swig_type_296(_swig_i_4), C.swig_type_297(_swig_i_5), C.swig_type_298(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_4(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 int64) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_299)(unsafe.Pointer(&_swig_i_1)), C.swig_type_300(_swig_i_2), C.swig_type_301(_swig_i_3), C.swig_type_302(_swig_i_4), C.swig_type_303(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_5(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_304)(unsafe.Pointer(&_swig_i_1)), C.swig_type_305(_swig_i_2), C.swig_type_306(_swig_i_3), C.swig_type_307(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_308)(unsafe.Pointer(&_swig_i_1)), C.swig_type_309(_swig_i_2), C.swig_type_310(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_7(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_311)(unsafe.Pointer(&_swig_i_1)), C.swig_type_312(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor__SWIG_8(arg1 DataFrame, arg2 string) (_swig_ret RandomForestRegressor) {
+	var swig_r RandomForestRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (RandomForestRegressor)(SwigcptrRandomForestRegressor(C._wrap_new_RandomForestRegressor__SWIG_8_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_313)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRandomForestRegressor(a ...interface{}) RandomForestRegressor {
+	argc := len(a)
+	if argc == 2 {
+		return NewRandomForestRegressor__SWIG_8(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewRandomForestRegressor__SWIG_7(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewRandomForestRegressor__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewRandomForestRegressor__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewRandomForestRegressor__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64))
+	}
+	if argc == 7 {
+		return NewRandomForestRegressor__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64))
+	}
+	if argc == 8 {
+		return NewRandomForestRegressor__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(bool))
+	}
+	if argc == 9 {
+		return NewRandomForestRegressor__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(bool), a[8].(float64))
+	}
+	if argc == 10 {
+		return NewRandomForestRegressor__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(bool), a[8].(float64), a[9].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_RandomForestRegressor_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_RandomForestRegressor_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) N_trees() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_RandomForestRegressor_n_trees_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Max_features_used() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_RandomForestRegressor_max_features_used_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_RandomForestRegressor_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_RandomForestRegressor_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_RandomForestRegressor_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_RandomForestRegressor_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Oob_r_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_RandomForestRegressor_oob_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Oob_rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_RandomForestRegressor_oob_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_RandomForestRegressor_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_RandomForestRegressor_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_RandomForestRegressor_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_RandomForestRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRandomForestRegressor) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_RandomForestRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteRandomForestRegressor(arg1 RandomForestRegressor) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_RandomForestRegressor_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type RandomForestRegressor interface {
+	Swigcptr() uintptr
+	SwigIsRandomForestRegressor()
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	N_trees() (_swig_ret int64)
+	Max_features_used() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Oob_r_squared() (_swig_ret float64)
+	Oob_rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrElasticNet uintptr
+
+func (p SwigcptrElasticNet) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrElasticNet) SwigIsElasticNet() {
+}
+
+func NewElasticNet__SWIG_0(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64, arg5 int64, arg6 int64, arg7 bool, arg8 uint64) (_swig_ret ElasticNet) {
+	var swig_r ElasticNet
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (ElasticNet)(SwigcptrElasticNet(C._wrap_new_ElasticNet__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_318)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3), C.swig_type_319(_swig_i_4), C.swig_type_320(_swig_i_5), C._Bool(_swig_i_6), C.swig_type_321(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewElasticNet__SWIG_1(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64, arg5 int64, arg6 int64, arg7 bool) (_swig_ret ElasticNet) {
+	var swig_r ElasticNet
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (ElasticNet)(SwigcptrElasticNet(C._wrap_new_ElasticNet__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_322)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3), C.swig_type_323(_swig_i_4), C.swig_type_324(_swig_i_5), C._Bool(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewElasticNet__SWIG_2(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64, arg5 int64, arg6 int64) (_swig_ret ElasticNet) {
+	var swig_r ElasticNet
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (ElasticNet)(SwigcptrElasticNet(C._wrap_new_ElasticNet__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_325)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3), C.swig_type_326(_swig_i_4), C.swig_type_327(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewElasticNet__SWIG_3(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64, arg5 int64) (_swig_ret ElasticNet) {
+	var swig_r ElasticNet
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (ElasticNet)(SwigcptrElasticNet(C._wrap_new_ElasticNet__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_328)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3), C.swig_type_329(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewElasticNet__SWIG_4(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64) (_swig_ret ElasticNet) {
+	var swig_r ElasticNet
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ElasticNet)(SwigcptrElasticNet(C._wrap_new_ElasticNet__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_330)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewElasticNet__SWIG_5(arg1 DataFrame, arg2 string, arg3 float64) (_swig_ret ElasticNet) {
+	var swig_r ElasticNet
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (ElasticNet)(SwigcptrElasticNet(C._wrap_new_ElasticNet__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_331)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewElasticNet__SWIG_6(arg1 DataFrame, arg2 string) (_swig_ret ElasticNet) {
+	var swig_r ElasticNet
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (ElasticNet)(SwigcptrElasticNet(C._wrap_new_ElasticNet__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_332)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewElasticNet(a ...interface{}) ElasticNet {
+	argc := len(a)
+	if argc == 2 {
+		return NewElasticNet__SWIG_6(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewElasticNet__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+	if argc == 4 {
+		return NewElasticNet__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewElasticNet__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewElasticNet__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64), a[4].(int64), a[5].(int64))
+	}
+	if argc == 7 {
+		return NewElasticNet__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(bool))
+	}
+	if argc == 8 {
+		return NewElasticNet__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(bool), a[7].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrElasticNet) Formula_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_ElasticNet_formula_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrElasticNet) Has_intercept() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_ElasticNet_has_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_ElasticNet_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ElasticNet_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Alpha() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ElasticNet_alpha_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Lambda() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ElasticNet_lambda_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Lambda_was_selected() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_ElasticNet_lambda_was_selected_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Lambda_path() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ElasticNet_lambda_path_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Cv_mean_squared_error() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ElasticNet_cv_mean_squared_error_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ElasticNet_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Intercept() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ElasticNet_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Non_zero_coefficients() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ElasticNet_non_zero_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ElasticNet_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ElasticNet_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ElasticNet_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ElasticNet_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_ElasticNet_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrElasticNet) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_ElasticNet_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrElasticNet) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ElasticNet_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Plot_coefficient_path() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ElasticNet_plot_coefficient_path_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Plot_cv_curve() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ElasticNet_plot_cv_curve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ElasticNet_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrElasticNet) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ElasticNet_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteElasticNet(arg1 ElasticNet) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_ElasticNet_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type ElasticNet interface {
+	Swigcptr() uintptr
+	SwigIsElasticNet()
+	Formula_text() (_swig_ret string)
+	Has_intercept() (_swig_ret bool)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Alpha() (_swig_ret float64)
+	Lambda() (_swig_ret float64)
+	Lambda_was_selected() (_swig_ret bool)
+	Lambda_path() (_swig_ret DVector)
+	Cv_mean_squared_error() (_swig_ret DVector)
+	Coefficients() (_swig_ret DVector)
+	Intercept() (_swig_ret float64)
+	Non_zero_coefficients() (_swig_ret int64)
+	Fitted_values() (_swig_ret DVector)
+	Residuals() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_coefficient_path() (_swig_ret ScatterPlot)
+	Plot_cv_curve() (_swig_ret ScatterPlot)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrRidge uintptr
+
+func (p SwigcptrRidge) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrRidge) SwigIsRidge() {
+}
+
+func NewRidge__SWIG_0(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64, arg5 int64, arg6 bool, arg7 uint64) (_swig_ret Ridge) {
+	var swig_r Ridge
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (Ridge)(SwigcptrRidge(C._wrap_new_Ridge__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_337)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_338(_swig_i_3), C.swig_type_339(_swig_i_4), C._Bool(_swig_i_5), C.swig_type_340(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRidge__SWIG_1(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64, arg5 int64, arg6 bool) (_swig_ret Ridge) {
+	var swig_r Ridge
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (Ridge)(SwigcptrRidge(C._wrap_new_Ridge__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_341)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_342(_swig_i_3), C.swig_type_343(_swig_i_4), C._Bool(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRidge__SWIG_2(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64, arg5 int64) (_swig_ret Ridge) {
+	var swig_r Ridge
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (Ridge)(SwigcptrRidge(C._wrap_new_Ridge__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_344)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_345(_swig_i_3), C.swig_type_346(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRidge__SWIG_3(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64) (_swig_ret Ridge) {
+	var swig_r Ridge
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (Ridge)(SwigcptrRidge(C._wrap_new_Ridge__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_347)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_348(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRidge__SWIG_4(arg1 DataFrame, arg2 string, arg3 float64) (_swig_ret Ridge) {
+	var swig_r Ridge
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Ridge)(SwigcptrRidge(C._wrap_new_Ridge__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_349)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRidge__SWIG_5(arg1 DataFrame, arg2 string) (_swig_ret Ridge) {
+	var swig_r Ridge
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (Ridge)(SwigcptrRidge(C._wrap_new_Ridge__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_350)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewRidge(a ...interface{}) Ridge {
+	argc := len(a)
+	if argc == 2 {
+		return NewRidge__SWIG_5(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewRidge__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+	if argc == 4 {
+		return NewRidge__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewRidge__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewRidge__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64), a[4].(int64), a[5].(bool))
+	}
+	if argc == 7 {
+		return NewRidge__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64), a[4].(int64), a[5].(bool), a[6].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrRidge) Formula_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Ridge_formula_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrRidge) Has_intercept() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Ridge_has_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_Ridge_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Ridge_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Lambda() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Ridge_lambda_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Lambda_was_selected() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Ridge_lambda_was_selected_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Lambda_path() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Ridge_lambda_path_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Cv_mean_squared_error() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Ridge_cv_mean_squared_error_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Ridge_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Intercept() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Ridge_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Ridge_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Ridge_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Ridge_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Ridge_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Ridge_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrRidge) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_Ridge_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrRidge) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Ridge_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Plot_coefficient_path() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Ridge_plot_coefficient_path_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Plot_cv_curve() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Ridge_plot_cv_curve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Ridge_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrRidge) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Ridge_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteRidge(arg1 Ridge) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Ridge_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type Ridge interface {
+	Swigcptr() uintptr
+	SwigIsRidge()
+	Formula_text() (_swig_ret string)
+	Has_intercept() (_swig_ret bool)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Lambda() (_swig_ret float64)
+	Lambda_was_selected() (_swig_ret bool)
+	Lambda_path() (_swig_ret DVector)
+	Cv_mean_squared_error() (_swig_ret DVector)
+	Coefficients() (_swig_ret DVector)
+	Intercept() (_swig_ret float64)
+	Fitted_values() (_swig_ret DVector)
+	Residuals() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_coefficient_path() (_swig_ret ScatterPlot)
+	Plot_cv_curve() (_swig_ret ScatterPlot)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrLasso uintptr
+
+func (p SwigcptrLasso) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrLasso) SwigIsLasso() {
+}
+
+func NewLasso__SWIG_0(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64, arg5 int64, arg6 bool, arg7 uint64) (_swig_ret Lasso) {
+	var swig_r Lasso
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (Lasso)(SwigcptrLasso(C._wrap_new_Lasso__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_354)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_355(_swig_i_3), C.swig_type_356(_swig_i_4), C._Bool(_swig_i_5), C.swig_type_357(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLasso__SWIG_1(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64, arg5 int64, arg6 bool) (_swig_ret Lasso) {
+	var swig_r Lasso
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (Lasso)(SwigcptrLasso(C._wrap_new_Lasso__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_358)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_359(_swig_i_3), C.swig_type_360(_swig_i_4), C._Bool(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLasso__SWIG_2(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64, arg5 int64) (_swig_ret Lasso) {
+	var swig_r Lasso
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (Lasso)(SwigcptrLasso(C._wrap_new_Lasso__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_361)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_362(_swig_i_3), C.swig_type_363(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLasso__SWIG_3(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64) (_swig_ret Lasso) {
+	var swig_r Lasso
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (Lasso)(SwigcptrLasso(C._wrap_new_Lasso__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_364)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_365(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLasso__SWIG_4(arg1 DataFrame, arg2 string, arg3 float64) (_swig_ret Lasso) {
+	var swig_r Lasso
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Lasso)(SwigcptrLasso(C._wrap_new_Lasso__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_366)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLasso__SWIG_5(arg1 DataFrame, arg2 string) (_swig_ret Lasso) {
+	var swig_r Lasso
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (Lasso)(SwigcptrLasso(C._wrap_new_Lasso__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_367)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewLasso(a ...interface{}) Lasso {
+	argc := len(a)
+	if argc == 2 {
+		return NewLasso__SWIG_5(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewLasso__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+	if argc == 4 {
+		return NewLasso__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64))
+	}
+	if argc == 5 {
+		return NewLasso__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewLasso__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64), a[4].(int64), a[5].(bool))
+	}
+	if argc == 7 {
+		return NewLasso__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64), a[4].(int64), a[5].(bool), a[6].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrLasso) Formula_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Lasso_formula_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrLasso) Has_intercept() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Lasso_has_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_Lasso_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Lasso_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Lambda() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Lasso_lambda_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Lambda_was_selected() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Lasso_lambda_was_selected_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Lambda_path() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Lasso_lambda_path_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Cv_mean_squared_error() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Lasso_cv_mean_squared_error_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Lasso_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Intercept() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Lasso_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Non_zero_coefficients() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Lasso_non_zero_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Lasso_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Lasso_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Lasso_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Lasso_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Lasso_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrLasso) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_Lasso_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrLasso) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Lasso_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Plot_coefficient_path() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Lasso_plot_coefficient_path_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Plot_cv_curve() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Lasso_plot_cv_curve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Lasso_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrLasso) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_Lasso_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteLasso(arg1 Lasso) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Lasso_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type Lasso interface {
+	Swigcptr() uintptr
+	SwigIsLasso()
+	Formula_text() (_swig_ret string)
+	Has_intercept() (_swig_ret bool)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Lambda() (_swig_ret float64)
+	Lambda_was_selected() (_swig_ret bool)
+	Lambda_path() (_swig_ret DVector)
+	Cv_mean_squared_error() (_swig_ret DVector)
+	Coefficients() (_swig_ret DVector)
+	Intercept() (_swig_ret float64)
+	Non_zero_coefficients() (_swig_ret int64)
+	Fitted_values() (_swig_ret DVector)
+	Residuals() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_coefficient_path() (_swig_ret ScatterPlot)
+	Plot_cv_curve() (_swig_ret ScatterPlot)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrKNNClassifier uintptr
+
+func (p SwigcptrKNNClassifier) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrKNNClassifier) SwigIsKNNClassifier() {
+}
+
+func NewKNNClassifier__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 string, arg5 bool, arg6 bool) (_swig_ret KNNClassifier) {
+	var swig_r KNNClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (KNNClassifier)(SwigcptrKNNClassifier(C._wrap_new_KNNClassifier__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_372)(unsafe.Pointer(&_swig_i_1)), C.swig_type_373(_swig_i_2), *(*C.swig_type_374)(unsafe.Pointer(&_swig_i_3)), C._Bool(_swig_i_4), C._Bool(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewKNNClassifier__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 string, arg5 bool) (_swig_ret KNNClassifier) {
+	var swig_r KNNClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (KNNClassifier)(SwigcptrKNNClassifier(C._wrap_new_KNNClassifier__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_375)(unsafe.Pointer(&_swig_i_1)), C.swig_type_376(_swig_i_2), *(*C.swig_type_377)(unsafe.Pointer(&_swig_i_3)), C._Bool(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewKNNClassifier__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 string) (_swig_ret KNNClassifier) {
+	var swig_r KNNClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (KNNClassifier)(SwigcptrKNNClassifier(C._wrap_new_KNNClassifier__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_378)(unsafe.Pointer(&_swig_i_1)), C.swig_type_379(_swig_i_2), *(*C.swig_type_380)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewKNNClassifier__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret KNNClassifier) {
+	var swig_r KNNClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (KNNClassifier)(SwigcptrKNNClassifier(C._wrap_new_KNNClassifier__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_381)(unsafe.Pointer(&_swig_i_1)), C.swig_type_382(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKNNClassifier__SWIG_4(arg1 DataFrame, arg2 string) (_swig_ret KNNClassifier) {
+	var swig_r KNNClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (KNNClassifier)(SwigcptrKNNClassifier(C._wrap_new_KNNClassifier__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_383)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKNNClassifier(a ...interface{}) KNNClassifier {
+	argc := len(a)
+	if argc == 2 {
+		return NewKNNClassifier__SWIG_4(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewKNNClassifier__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewKNNClassifier__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string))
+	}
+	if argc == 5 {
+		return NewKNNClassifier__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string), a[4].(bool))
+	}
+	if argc == 6 {
+		return NewKNNClassifier__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string), a[4].(bool), a[5].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrKNNClassifier) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_KNNClassifier_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_KNNClassifier_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KNNClassifier_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) K() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KNNClassifier_k_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_KNNClassifier_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_KNNClassifier_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_KNNClassifier_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrKNNClassifier) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_KNNClassifier_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrKNNClassifier) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_KNNClassifier_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_KNNClassifier_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KNNClassifier_plot_classification_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_387)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_388)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Plot_decision_regions__SWIG_0(arg2 string, arg3 string, arg4 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KNNClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_389)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_390)(unsafe.Pointer(&_swig_i_2)), C.swig_type_391(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNClassifier) Plot_decision_regions__SWIG_1(arg2 string, arg3 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KNNClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_392)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_393)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (p SwigcptrKNNClassifier) Plot_decision_regions(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Plot_decision_regions__SWIG_1(a[0].(string), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Plot_decision_regions__SWIG_0(a[0].(string), a[1].(string), a[2].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func DeleteKNNClassifier(arg1 KNNClassifier) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_KNNClassifier_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type KNNClassifier interface {
+	Swigcptr() uintptr
+	SwigIsKNNClassifier()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	K() (_swig_ret int64)
+	Training_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+	Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot)
+	Plot_decision_regions(a ...interface{}) ScatterPlot
+}
+
+type SwigcptrKNNRegressor uintptr
+
+func (p SwigcptrKNNRegressor) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrKNNRegressor) SwigIsKNNRegressor() {
+}
+
+func NewKNNRegressor__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 string, arg5 bool, arg6 bool) (_swig_ret KNNRegressor) {
+	var swig_r KNNRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (KNNRegressor)(SwigcptrKNNRegressor(C._wrap_new_KNNRegressor__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_394)(unsafe.Pointer(&_swig_i_1)), C.swig_type_395(_swig_i_2), *(*C.swig_type_396)(unsafe.Pointer(&_swig_i_3)), C._Bool(_swig_i_4), C._Bool(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewKNNRegressor__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 string, arg5 bool) (_swig_ret KNNRegressor) {
+	var swig_r KNNRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (KNNRegressor)(SwigcptrKNNRegressor(C._wrap_new_KNNRegressor__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_397)(unsafe.Pointer(&_swig_i_1)), C.swig_type_398(_swig_i_2), *(*C.swig_type_399)(unsafe.Pointer(&_swig_i_3)), C._Bool(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewKNNRegressor__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 string) (_swig_ret KNNRegressor) {
+	var swig_r KNNRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (KNNRegressor)(SwigcptrKNNRegressor(C._wrap_new_KNNRegressor__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_400)(unsafe.Pointer(&_swig_i_1)), C.swig_type_401(_swig_i_2), *(*C.swig_type_402)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewKNNRegressor__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret KNNRegressor) {
+	var swig_r KNNRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (KNNRegressor)(SwigcptrKNNRegressor(C._wrap_new_KNNRegressor__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_403)(unsafe.Pointer(&_swig_i_1)), C.swig_type_404(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKNNRegressor__SWIG_4(arg1 DataFrame, arg2 string) (_swig_ret KNNRegressor) {
+	var swig_r KNNRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (KNNRegressor)(SwigcptrKNNRegressor(C._wrap_new_KNNRegressor__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_405)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKNNRegressor(a ...interface{}) KNNRegressor {
+	argc := len(a)
+	if argc == 2 {
+		return NewKNNRegressor__SWIG_4(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewKNNRegressor__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewKNNRegressor__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string))
+	}
+	if argc == 5 {
+		return NewKNNRegressor__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string), a[4].(bool))
+	}
+	if argc == 6 {
+		return NewKNNRegressor__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string), a[4].(bool), a[5].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrKNNRegressor) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_KNNRegressor_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KNNRegressor_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) K() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KNNRegressor_k_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_KNNRegressor_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_KNNRegressor_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_KNNRegressor_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_KNNRegressor_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrKNNRegressor) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_KNNRegressor_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrKNNRegressor) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_KNNRegressor_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KNNRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKNNRegressor) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KNNRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteKNNRegressor(arg1 KNNRegressor) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_KNNRegressor_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type KNNRegressor interface {
+	Swigcptr() uintptr
+	SwigIsKNNRegressor()
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	K() (_swig_ret int64)
+	Fitted_values() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrKMeans uintptr
+
+func (p SwigcptrKMeans) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrKMeans) SwigIsKMeans() {
+}
+
+func NewKMeans__SWIG_0(arg1 DataFrame, arg2 SVector, arg3 int64, arg4 int64, arg5 int64, arg6 float64, arg7 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_409(_swig_i_2), C.swig_type_410(_swig_i_3), C.swig_type_411(_swig_i_4), C.double(_swig_i_5), C.swig_type_412(_swig_i_6))))
+	return swig_r
+}
+
+func NewKMeans__SWIG_1(arg1 DataFrame, arg2 SVector, arg3 int64, arg4 int64, arg5 int64, arg6 float64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_413(_swig_i_2), C.swig_type_414(_swig_i_3), C.swig_type_415(_swig_i_4), C.double(_swig_i_5))))
+	return swig_r
+}
+
+func NewKMeans__SWIG_2(arg1 DataFrame, arg2 SVector, arg3 int64, arg4 int64, arg5 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_416(_swig_i_2), C.swig_type_417(_swig_i_3), C.swig_type_418(_swig_i_4))))
+	return swig_r
+}
+
+func NewKMeans__SWIG_3(arg1 DataFrame, arg2 SVector, arg3 int64, arg4 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_419(_swig_i_2), C.swig_type_420(_swig_i_3))))
+	return swig_r
+}
+
+func NewKMeans__SWIG_4(arg1 DataFrame, arg2 SVector, arg3 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_421(_swig_i_2))))
+	return swig_r
+}
+
+func NewKMeans__SWIG_5(arg1 DataFrame, arg2 SVector) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func NewKMeans__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 float64, arg7 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_422)(unsafe.Pointer(&_swig_i_1)), C.swig_type_423(_swig_i_2), C.swig_type_424(_swig_i_3), C.swig_type_425(_swig_i_4), C.double(_swig_i_5), C.swig_type_426(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKMeans__SWIG_7(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64, arg6 float64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_427)(unsafe.Pointer(&_swig_i_1)), C.swig_type_428(_swig_i_2), C.swig_type_429(_swig_i_3), C.swig_type_430(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKMeans__SWIG_8(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64, arg5 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_8_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_431)(unsafe.Pointer(&_swig_i_1)), C.swig_type_432(_swig_i_2), C.swig_type_433(_swig_i_3), C.swig_type_434(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKMeans__SWIG_9(arg1 DataFrame, arg2 string, arg3 int64, arg4 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_9_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_435)(unsafe.Pointer(&_swig_i_1)), C.swig_type_436(_swig_i_2), C.swig_type_437(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKMeans__SWIG_10(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_10_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_438)(unsafe.Pointer(&_swig_i_1)), C.swig_type_439(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKMeans__SWIG_11(arg1 DataFrame, arg2 string) (_swig_ret KMeans) {
+	var swig_r KMeans
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (KMeans)(SwigcptrKMeans(C._wrap_new_KMeans__SWIG_11_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_440)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKMeans(a ...interface{}) KMeans {
+	argc := len(a)
+	if argc == 2 {
+		if _, ok := a[1].(SVector); !ok {
+			goto check_1
+		}
+		return NewKMeans__SWIG_5(a[0].(DataFrame), a[1].(SVector))
+	}
+check_1:
+	if argc == 2 {
+		return NewKMeans__SWIG_11(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		if _, ok := a[1].(string); !ok {
+			goto check_3
+		}
+		return NewKMeans__SWIG_10(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+check_3:
+	if argc == 3 {
+		return NewKMeans__SWIG_4(a[0].(DataFrame), a[1].(SVector), a[2].(int64))
+	}
+	if argc == 4 {
+		if _, ok := a[1].(SVector); !ok {
+			goto check_5
+		}
+		return NewKMeans__SWIG_3(a[0].(DataFrame), a[1].(SVector), a[2].(int64), a[3].(int64))
+	}
+check_5:
+	if argc == 4 {
+		return NewKMeans__SWIG_9(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64))
+	}
+	if argc == 5 {
+		if _, ok := a[1].(string); !ok {
+			goto check_7
+		}
+		return NewKMeans__SWIG_8(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64))
+	}
+check_7:
+	if argc == 5 {
+		return NewKMeans__SWIG_2(a[0].(DataFrame), a[1].(SVector), a[2].(int64), a[3].(int64), a[4].(int64))
+	}
+	if argc == 6 {
+		if _, ok := a[1].(SVector); !ok {
+			goto check_9
+		}
+		return NewKMeans__SWIG_1(a[0].(DataFrame), a[1].(SVector), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(float64))
+	}
+check_9:
+	if argc == 6 {
+		return NewKMeans__SWIG_7(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(float64))
+	}
+	if argc == 7 {
+		if _, ok := a[1].(string); !ok {
+			goto check_11
+		}
+		return NewKMeans__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(float64), a[6].(int64))
+	}
+check_11:
+	if argc == 7 {
+		return NewKMeans__SWIG_0(a[0].(DataFrame), a[1].(SVector), a[2].(int64), a[3].(int64), a[4].(int64), a[5].(float64), a[6].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrKMeans) Feature_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_KMeans_feature_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) N_clusters() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KMeans_n_clusters_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KMeans_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) Iterations_used() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KMeans_iterations_used_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) Labels() (_swig_ret SizeVector) {
+	var swig_r SizeVector
+	_swig_i_0 := arg1
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_KMeans_labels_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) Inertia() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_KMeans_inertia_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) Cluster_center(arg2 int64) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_KMeans_cluster_center_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_444(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) Predict(arg2 DataFrame) (_swig_ret SizeVector) {
+	var swig_r SizeVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_KMeans_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKMeans) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_KMeans_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrKMeans) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_KMeans_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func DeleteKMeans(arg1 KMeans) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_KMeans_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type KMeans interface {
+	Swigcptr() uintptr
+	SwigIsKMeans()
+	Feature_names() (_swig_ret SVector)
+	N_clusters() (_swig_ret int64)
+	Observations() (_swig_ret int64)
+	Iterations_used() (_swig_ret int64)
+	Labels() (_swig_ret SizeVector)
+	Inertia() (_swig_ret float64)
+	Cluster_center(arg2 int64) (_swig_ret DVector)
+	Predict(arg2 DataFrame) (_swig_ret SizeVector)
+	Summary() (_swig_ret string)
+	Print_summary()
+}
+
+type SwigcptrAgglomerativeClustering uintptr
+
+func (p SwigcptrAgglomerativeClustering) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrAgglomerativeClustering) SwigIsAgglomerativeClustering() {
+}
+
+func NewAgglomerativeClustering__SWIG_0(arg1 DataFrame, arg2 SVector, arg3 int64, arg4 string, arg5 string) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_446(_swig_i_2), *(*C.swig_type_447)(unsafe.Pointer(&_swig_i_3)), *(*C.swig_type_448)(unsafe.Pointer(&_swig_i_4)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg5
+	}
+	return swig_r
+}
+
+func NewAgglomerativeClustering__SWIG_1(arg1 DataFrame, arg2 SVector, arg3 int64, arg4 string) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_449(_swig_i_2), *(*C.swig_type_450)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewAgglomerativeClustering__SWIG_2(arg1 DataFrame, arg2 SVector, arg3 int64) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_451(_swig_i_2))))
+	return swig_r
+}
+
+func NewAgglomerativeClustering__SWIG_3(arg1 DataFrame, arg2 SVector) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func NewAgglomerativeClustering__SWIG_4(arg1 DataFrame, arg2 string, arg3 int64, arg4 string, arg5 string) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_452)(unsafe.Pointer(&_swig_i_1)), C.swig_type_453(_swig_i_2), *(*C.swig_type_454)(unsafe.Pointer(&_swig_i_3)), *(*C.swig_type_455)(unsafe.Pointer(&_swig_i_4)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg5
+	}
+	return swig_r
+}
+
+func NewAgglomerativeClustering__SWIG_5(arg1 DataFrame, arg2 string, arg3 int64, arg4 string) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_456)(unsafe.Pointer(&_swig_i_1)), C.swig_type_457(_swig_i_2), *(*C.swig_type_458)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewAgglomerativeClustering__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_459)(unsafe.Pointer(&_swig_i_1)), C.swig_type_460(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewAgglomerativeClustering__SWIG_7(arg1 DataFrame, arg2 string) (_swig_ret AgglomerativeClustering) {
+	var swig_r AgglomerativeClustering
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (AgglomerativeClustering)(SwigcptrAgglomerativeClustering(C._wrap_new_AgglomerativeClustering__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_461)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewAgglomerativeClustering(a ...interface{}) AgglomerativeClustering {
+	argc := len(a)
+	if argc == 2 {
+		if _, ok := a[1].(SVector); !ok {
+			goto check_1
+		}
+		return NewAgglomerativeClustering__SWIG_3(a[0].(DataFrame), a[1].(SVector))
+	}
+check_1:
+	if argc == 2 {
+		return NewAgglomerativeClustering__SWIG_7(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		if _, ok := a[1].(string); !ok {
+			goto check_3
+		}
+		return NewAgglomerativeClustering__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+check_3:
+	if argc == 3 {
+		return NewAgglomerativeClustering__SWIG_2(a[0].(DataFrame), a[1].(SVector), a[2].(int64))
+	}
+	if argc == 4 {
+		if _, ok := a[1].(SVector); !ok {
+			goto check_5
+		}
+		return NewAgglomerativeClustering__SWIG_1(a[0].(DataFrame), a[1].(SVector), a[2].(int64), a[3].(string))
+	}
+check_5:
+	if argc == 4 {
+		return NewAgglomerativeClustering__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string))
+	}
+	if argc == 5 {
+		if _, ok := a[1].(string); !ok {
+			goto check_7
+		}
+		return NewAgglomerativeClustering__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(string), a[4].(string))
+	}
+check_7:
+	if argc == 5 {
+		return NewAgglomerativeClustering__SWIG_0(a[0].(DataFrame), a[1].(SVector), a[2].(int64), a[3].(string), a[4].(string))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Feature_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_AgglomerativeClustering_feature_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_AgglomerativeClustering_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Labels() (_swig_ret SizeVector) {
+	var swig_r SizeVector
+	_swig_i_0 := arg1
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_AgglomerativeClustering_labels_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Cut(arg2 int64) (_swig_ret SizeVector) {
+	var swig_r SizeVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_AgglomerativeClustering_cut_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_463(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Num_merges() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_AgglomerativeClustering_num_merges_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Merge_cluster_a(arg2 int64) (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (int64)(C._wrap_AgglomerativeClustering_merge_cluster_a_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_466(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Merge_cluster_b(arg2 int64) (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (int64)(C._wrap_AgglomerativeClustering_merge_cluster_b_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_468(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Merge_distance(arg2 int64) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (float64)(C._wrap_AgglomerativeClustering_merge_distance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_469(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Merge_size(arg2 int64) (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (int64)(C._wrap_AgglomerativeClustering_merge_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_471(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_AgglomerativeClustering_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrAgglomerativeClustering) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_AgglomerativeClustering_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func DeleteAgglomerativeClustering(arg1 AgglomerativeClustering) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_AgglomerativeClustering_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type AgglomerativeClustering interface {
+	Swigcptr() uintptr
+	SwigIsAgglomerativeClustering()
+	Feature_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Labels() (_swig_ret SizeVector)
+	Cut(arg2 int64) (_swig_ret SizeVector)
+	Num_merges() (_swig_ret int64)
+	Merge_cluster_a(arg2 int64) (_swig_ret int64)
+	Merge_cluster_b(arg2 int64) (_swig_ret int64)
+	Merge_distance(arg2 int64) (_swig_ret float64)
+	Merge_size(arg2 int64) (_swig_ret int64)
+	Summary() (_swig_ret string)
+	Print_summary()
+}
+
+type SwigcptrDBSCAN uintptr
+
+func (p SwigcptrDBSCAN) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrDBSCAN) SwigIsDBSCAN() {
+}
+
+func NewDBSCAN__SWIG_0(arg1 DataFrame, arg2 SVector, arg3 float64, arg4 int64, arg5 string) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.double(_swig_i_2), C.swig_type_473(_swig_i_3), *(*C.swig_type_474)(unsafe.Pointer(&_swig_i_4)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg5
+	}
+	return swig_r
+}
+
+func NewDBSCAN__SWIG_1(arg1 DataFrame, arg2 SVector, arg3 float64, arg4 int64) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.double(_swig_i_2), C.swig_type_475(_swig_i_3))))
+	return swig_r
+}
+
+func NewDBSCAN__SWIG_2(arg1 DataFrame, arg2 SVector, arg3 float64) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func NewDBSCAN__SWIG_3(arg1 DataFrame, arg2 SVector) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func NewDBSCAN__SWIG_4(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64, arg5 string) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_476)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_477(_swig_i_3), *(*C.swig_type_478)(unsafe.Pointer(&_swig_i_4)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg5
+	}
+	return swig_r
+}
+
+func NewDBSCAN__SWIG_5(arg1 DataFrame, arg2 string, arg3 float64, arg4 int64) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_479)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.swig_type_480(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDBSCAN__SWIG_6(arg1 DataFrame, arg2 string, arg3 float64) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_481)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDBSCAN__SWIG_7(arg1 DataFrame, arg2 string) (_swig_ret DBSCAN) {
+	var swig_r DBSCAN
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (DBSCAN)(SwigcptrDBSCAN(C._wrap_new_DBSCAN__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_482)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewDBSCAN(a ...interface{}) DBSCAN {
+	argc := len(a)
+	if argc == 2 {
+		if _, ok := a[1].(SVector); !ok {
+			goto check_1
+		}
+		return NewDBSCAN__SWIG_3(a[0].(DataFrame), a[1].(SVector))
+	}
+check_1:
+	if argc == 2 {
+		return NewDBSCAN__SWIG_7(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		if _, ok := a[1].(string); !ok {
+			goto check_3
+		}
+		return NewDBSCAN__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+check_3:
+	if argc == 3 {
+		return NewDBSCAN__SWIG_2(a[0].(DataFrame), a[1].(SVector), a[2].(float64))
+	}
+	if argc == 4 {
+		if _, ok := a[1].(SVector); !ok {
+			goto check_5
+		}
+		return NewDBSCAN__SWIG_1(a[0].(DataFrame), a[1].(SVector), a[2].(float64), a[3].(int64))
+	}
+check_5:
+	if argc == 4 {
+		return NewDBSCAN__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64))
+	}
+	if argc == 5 {
+		if _, ok := a[1].(string); !ok {
+			goto check_7
+		}
+		return NewDBSCAN__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(int64), a[4].(string))
+	}
+check_7:
+	if argc == 5 {
+		return NewDBSCAN__SWIG_0(a[0].(DataFrame), a[1].(SVector), a[2].(float64), a[3].(int64), a[4].(string))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrDBSCAN) Feature_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_DBSCAN_feature_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDBSCAN) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DBSCAN_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDBSCAN) N_clusters() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DBSCAN_n_clusters_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDBSCAN) N_noise() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_DBSCAN_n_noise_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDBSCAN) Labels() (_swig_ret IVector) {
+	var swig_r IVector
+	_swig_i_0 := arg1
+	swig_r = (IVector)(SwigcptrIVector(C._wrap_DBSCAN_labels_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDBSCAN) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_DBSCAN_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrDBSCAN) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_DBSCAN_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func DeleteDBSCAN(arg1 DBSCAN) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_DBSCAN_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type DBSCAN interface {
+	Swigcptr() uintptr
+	SwigIsDBSCAN()
+	Feature_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	N_clusters() (_swig_ret int64)
+	N_noise() (_swig_ret int64)
+	Labels() (_swig_ret IVector)
+	Summary() (_swig_ret string)
+	Print_summary()
+}
+
+type SwigcptrGBMClassifier uintptr
+
+func (p SwigcptrGBMClassifier) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrGBMClassifier) SwigIsGBMClassifier() {
+}
+
+func NewGBMClassifier__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64, arg7 int64, arg8 float64, arg9 uint64) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_487)(unsafe.Pointer(&_swig_i_1)), C.swig_type_488(_swig_i_2), C.double(_swig_i_3), C.swig_type_489(_swig_i_4), C.swig_type_490(_swig_i_5), C.swig_type_491(_swig_i_6), C.double(_swig_i_7), C.swig_type_492(_swig_i_8))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64, arg7 int64, arg8 float64) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_493)(unsafe.Pointer(&_swig_i_1)), C.swig_type_494(_swig_i_2), C.double(_swig_i_3), C.swig_type_495(_swig_i_4), C.swig_type_496(_swig_i_5), C.swig_type_497(_swig_i_6), C.double(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64, arg7 int64) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_498)(unsafe.Pointer(&_swig_i_1)), C.swig_type_499(_swig_i_2), C.double(_swig_i_3), C.swig_type_500(_swig_i_4), C.swig_type_501(_swig_i_5), C.swig_type_502(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_503)(unsafe.Pointer(&_swig_i_1)), C.swig_type_504(_swig_i_2), C.double(_swig_i_3), C.swig_type_505(_swig_i_4), C.swig_type_506(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier__SWIG_4(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_507)(unsafe.Pointer(&_swig_i_1)), C.swig_type_508(_swig_i_2), C.double(_swig_i_3), C.swig_type_509(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier__SWIG_5(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_510)(unsafe.Pointer(&_swig_i_1)), C.swig_type_511(_swig_i_2), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_512)(unsafe.Pointer(&_swig_i_1)), C.swig_type_513(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier__SWIG_7(arg1 DataFrame, arg2 string) (_swig_ret GBMClassifier) {
+	var swig_r GBMClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (GBMClassifier)(SwigcptrGBMClassifier(C._wrap_new_GBMClassifier__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_514)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMClassifier(a ...interface{}) GBMClassifier {
+	argc := len(a)
+	if argc == 2 {
+		return NewGBMClassifier__SWIG_7(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewGBMClassifier__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewGBMClassifier__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewGBMClassifier__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewGBMClassifier__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64))
+	}
+	if argc == 7 {
+		return NewGBMClassifier__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(int64))
+	}
+	if argc == 8 {
+		return NewGBMClassifier__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(float64))
+	}
+	if argc == 9 {
+		return NewGBMClassifier__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(float64), a[8].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGBMClassifier) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GBMClassifier_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GBMClassifier_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GBMClassifier_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) N_trees() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GBMClassifier_n_trees_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GBMClassifier_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GBMClassifier_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GBMClassifier_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Training_deviance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GBMClassifier_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GBMClassifier_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGBMClassifier) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_GBMClassifier_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrGBMClassifier) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GBMClassifier_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GBMClassifier_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GBMClassifier_plot_classification_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_518)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_519)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Plot_decision_regions__SWIG_0(arg2 string, arg3 string, arg4 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GBMClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_520)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_521)(unsafe.Pointer(&_swig_i_2)), C.swig_type_522(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMClassifier) Plot_decision_regions__SWIG_1(arg2 string, arg3 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GBMClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_523)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_524)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (p SwigcptrGBMClassifier) Plot_decision_regions(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Plot_decision_regions__SWIG_1(a[0].(string), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Plot_decision_regions__SWIG_0(a[0].(string), a[1].(string), a[2].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGBMClassifier) Plot_training_deviance() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GBMClassifier_plot_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteGBMClassifier(arg1 GBMClassifier) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_GBMClassifier_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type GBMClassifier interface {
+	Swigcptr() uintptr
+	SwigIsGBMClassifier()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	N_trees() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Training_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Training_deviance() (_swig_ret DVector)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+	Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot)
+	Plot_decision_regions(a ...interface{}) ScatterPlot
+	Plot_training_deviance() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrGBMRegressor uintptr
+
+func (p SwigcptrGBMRegressor) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrGBMRegressor) SwigIsGBMRegressor() {
+}
+
+func NewGBMRegressor__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64, arg7 int64, arg8 float64, arg9 uint64) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_525)(unsafe.Pointer(&_swig_i_1)), C.swig_type_526(_swig_i_2), C.double(_swig_i_3), C.swig_type_527(_swig_i_4), C.swig_type_528(_swig_i_5), C.swig_type_529(_swig_i_6), C.double(_swig_i_7), C.swig_type_530(_swig_i_8))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64, arg7 int64, arg8 float64) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_531)(unsafe.Pointer(&_swig_i_1)), C.swig_type_532(_swig_i_2), C.double(_swig_i_3), C.swig_type_533(_swig_i_4), C.swig_type_534(_swig_i_5), C.swig_type_535(_swig_i_6), C.double(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64, arg7 int64) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_536)(unsafe.Pointer(&_swig_i_1)), C.swig_type_537(_swig_i_2), C.double(_swig_i_3), C.swig_type_538(_swig_i_4), C.swig_type_539(_swig_i_5), C.swig_type_540(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 int64) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_541)(unsafe.Pointer(&_swig_i_1)), C.swig_type_542(_swig_i_2), C.double(_swig_i_3), C.swig_type_543(_swig_i_4), C.swig_type_544(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor__SWIG_4(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_545)(unsafe.Pointer(&_swig_i_1)), C.swig_type_546(_swig_i_2), C.double(_swig_i_3), C.swig_type_547(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor__SWIG_5(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_548)(unsafe.Pointer(&_swig_i_1)), C.swig_type_549(_swig_i_2), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_550)(unsafe.Pointer(&_swig_i_1)), C.swig_type_551(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor__SWIG_7(arg1 DataFrame, arg2 string) (_swig_ret GBMRegressor) {
+	var swig_r GBMRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (GBMRegressor)(SwigcptrGBMRegressor(C._wrap_new_GBMRegressor__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_552)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGBMRegressor(a ...interface{}) GBMRegressor {
+	argc := len(a)
+	if argc == 2 {
+		return NewGBMRegressor__SWIG_7(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewGBMRegressor__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewGBMRegressor__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewGBMRegressor__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewGBMRegressor__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64))
+	}
+	if argc == 7 {
+		return NewGBMRegressor__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(int64))
+	}
+	if argc == 8 {
+		return NewGBMRegressor__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(float64))
+	}
+	if argc == 9 {
+		return NewGBMRegressor__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(int64), a[7].(float64), a[8].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGBMRegressor) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GBMRegressor_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GBMRegressor_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) N_trees() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GBMRegressor_n_trees_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GBMRegressor_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GBMRegressor_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GBMRegressor_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GBMRegressor_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Training_deviance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GBMRegressor_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GBMRegressor_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGBMRegressor) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_GBMRegressor_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrGBMRegressor) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GBMRegressor_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GBMRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GBMRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGBMRegressor) Plot_training_deviance() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GBMRegressor_plot_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteGBMRegressor(arg1 GBMRegressor) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_GBMRegressor_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type GBMRegressor interface {
+	Swigcptr() uintptr
+	SwigIsGBMRegressor()
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	N_trees() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Training_deviance() (_swig_ret DVector)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+	Plot_training_deviance() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrXGBoostClassifier uintptr
+
+func (p SwigcptrXGBoostClassifier) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrXGBoostClassifier) SwigIsXGBoostClassifier() {
+}
+
+func NewXGBoostClassifier__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64, arg11 float64, arg12 float64, arg13 uint64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	_swig_i_10 := arg11
+	_swig_i_11 := arg12
+	_swig_i_12 := arg13
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_556)(unsafe.Pointer(&_swig_i_1)), C.swig_type_557(_swig_i_2), C.double(_swig_i_3), C.swig_type_558(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_559(_swig_i_9), C.double(_swig_i_10), C.double(_swig_i_11), C.swig_type_560(_swig_i_12))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64, arg11 float64, arg12 float64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	_swig_i_10 := arg11
+	_swig_i_11 := arg12
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_561)(unsafe.Pointer(&_swig_i_1)), C.swig_type_562(_swig_i_2), C.double(_swig_i_3), C.swig_type_563(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_564(_swig_i_9), C.double(_swig_i_10), C.double(_swig_i_11))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64, arg11 float64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	_swig_i_10 := arg11
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_565)(unsafe.Pointer(&_swig_i_1)), C.swig_type_566(_swig_i_2), C.double(_swig_i_3), C.swig_type_567(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_568(_swig_i_9), C.double(_swig_i_10))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_569)(unsafe.Pointer(&_swig_i_1)), C.swig_type_570(_swig_i_2), C.double(_swig_i_3), C.swig_type_571(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_572(_swig_i_9))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_4(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_573)(unsafe.Pointer(&_swig_i_1)), C.swig_type_574(_swig_i_2), C.double(_swig_i_3), C.swig_type_575(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_5(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_576)(unsafe.Pointer(&_swig_i_1)), C.swig_type_577(_swig_i_2), C.double(_swig_i_3), C.swig_type_578(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_579)(unsafe.Pointer(&_swig_i_1)), C.swig_type_580(_swig_i_2), C.double(_swig_i_3), C.swig_type_581(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_7(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_582)(unsafe.Pointer(&_swig_i_1)), C.swig_type_583(_swig_i_2), C.double(_swig_i_3), C.swig_type_584(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_8(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_8_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_585)(unsafe.Pointer(&_swig_i_1)), C.swig_type_586(_swig_i_2), C.double(_swig_i_3), C.swig_type_587(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_9(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_9_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_588)(unsafe.Pointer(&_swig_i_1)), C.swig_type_589(_swig_i_2), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_10(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_10_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_590)(unsafe.Pointer(&_swig_i_1)), C.swig_type_591(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier__SWIG_11(arg1 DataFrame, arg2 string) (_swig_ret XGBoostClassifier) {
+	var swig_r XGBoostClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (XGBoostClassifier)(SwigcptrXGBoostClassifier(C._wrap_new_XGBoostClassifier__SWIG_11_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_592)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostClassifier(a ...interface{}) XGBoostClassifier {
+	argc := len(a)
+	if argc == 2 {
+		return NewXGBoostClassifier__SWIG_11(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewXGBoostClassifier__SWIG_10(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewXGBoostClassifier__SWIG_9(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewXGBoostClassifier__SWIG_8(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewXGBoostClassifier__SWIG_7(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64))
+	}
+	if argc == 7 {
+		return NewXGBoostClassifier__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64))
+	}
+	if argc == 8 {
+		return NewXGBoostClassifier__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64))
+	}
+	if argc == 9 {
+		return NewXGBoostClassifier__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64))
+	}
+	if argc == 10 {
+		return NewXGBoostClassifier__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64))
+	}
+	if argc == 11 {
+		return NewXGBoostClassifier__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64), a[10].(float64))
+	}
+	if argc == 12 {
+		return NewXGBoostClassifier__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64), a[10].(float64), a[11].(float64))
+	}
+	if argc == 13 {
+		return NewXGBoostClassifier__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64), a[10].(float64), a[11].(float64), a[12].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_XGBoostClassifier_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_XGBoostClassifier_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_XGBoostClassifier_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) N_trees() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_XGBoostClassifier_n_trees_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_XGBoostClassifier_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_XGBoostClassifier_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_XGBoostClassifier_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Training_deviance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_XGBoostClassifier_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_XGBoostClassifier_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_XGBoostClassifier_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_XGBoostClassifier_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_XGBoostClassifier_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_XGBoostClassifier_plot_classification_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_596)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_597)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Plot_decision_regions__SWIG_0(arg2 string, arg3 string, arg4 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_XGBoostClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_598)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_599)(unsafe.Pointer(&_swig_i_2)), C.swig_type_600(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Plot_decision_regions__SWIG_1(arg2 string, arg3 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_XGBoostClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_601)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_602)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (p SwigcptrXGBoostClassifier) Plot_decision_regions(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Plot_decision_regions__SWIG_1(a[0].(string), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Plot_decision_regions__SWIG_0(a[0].(string), a[1].(string), a[2].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrXGBoostClassifier) Plot_training_deviance() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_XGBoostClassifier_plot_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteXGBoostClassifier(arg1 XGBoostClassifier) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_XGBoostClassifier_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type XGBoostClassifier interface {
+	Swigcptr() uintptr
+	SwigIsXGBoostClassifier()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	N_trees() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Training_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Training_deviance() (_swig_ret DVector)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+	Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot)
+	Plot_decision_regions(a ...interface{}) ScatterPlot
+	Plot_training_deviance() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrXGBoostRegressor uintptr
+
+func (p SwigcptrXGBoostRegressor) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrXGBoostRegressor) SwigIsXGBoostRegressor() {
+}
+
+func NewXGBoostRegressor__SWIG_0(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64, arg11 float64, arg12 float64, arg13 uint64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	_swig_i_10 := arg11
+	_swig_i_11 := arg12
+	_swig_i_12 := arg13
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_603)(unsafe.Pointer(&_swig_i_1)), C.swig_type_604(_swig_i_2), C.double(_swig_i_3), C.swig_type_605(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_606(_swig_i_9), C.double(_swig_i_10), C.double(_swig_i_11), C.swig_type_607(_swig_i_12))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_1(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64, arg11 float64, arg12 float64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	_swig_i_10 := arg11
+	_swig_i_11 := arg12
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_608)(unsafe.Pointer(&_swig_i_1)), C.swig_type_609(_swig_i_2), C.double(_swig_i_3), C.swig_type_610(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_611(_swig_i_9), C.double(_swig_i_10), C.double(_swig_i_11))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_2(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64, arg11 float64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	_swig_i_10 := arg11
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_612)(unsafe.Pointer(&_swig_i_1)), C.swig_type_613(_swig_i_2), C.double(_swig_i_3), C.swig_type_614(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_615(_swig_i_9), C.double(_swig_i_10))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_3(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64, arg10 int64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	_swig_i_9 := arg10
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_616)(unsafe.Pointer(&_swig_i_1)), C.swig_type_617(_swig_i_2), C.double(_swig_i_3), C.swig_type_618(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8), C.swig_type_619(_swig_i_9))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_4(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64, arg9 float64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	_swig_i_8 := arg9
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_620)(unsafe.Pointer(&_swig_i_1)), C.swig_type_621(_swig_i_2), C.double(_swig_i_3), C.swig_type_622(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7), C.double(_swig_i_8))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_5(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64, arg8 float64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	_swig_i_7 := arg8
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_623)(unsafe.Pointer(&_swig_i_1)), C.swig_type_624(_swig_i_2), C.double(_swig_i_3), C.swig_type_625(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6), C.double(_swig_i_7))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_6(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64, arg7 float64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_6_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_626)(unsafe.Pointer(&_swig_i_1)), C.swig_type_627(_swig_i_2), C.double(_swig_i_3), C.swig_type_628(_swig_i_4), C.double(_swig_i_5), C.double(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_7(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64, arg6 float64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_7_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_629)(unsafe.Pointer(&_swig_i_1)), C.swig_type_630(_swig_i_2), C.double(_swig_i_3), C.swig_type_631(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_8(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64, arg5 int64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_8_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_632)(unsafe.Pointer(&_swig_i_1)), C.swig_type_633(_swig_i_2), C.double(_swig_i_3), C.swig_type_634(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_9(arg1 DataFrame, arg2 string, arg3 int64, arg4 float64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_9_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_635)(unsafe.Pointer(&_swig_i_1)), C.swig_type_636(_swig_i_2), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_10(arg1 DataFrame, arg2 string, arg3 int64) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_10_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_637)(unsafe.Pointer(&_swig_i_1)), C.swig_type_638(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor__SWIG_11(arg1 DataFrame, arg2 string) (_swig_ret XGBoostRegressor) {
+	var swig_r XGBoostRegressor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (XGBoostRegressor)(SwigcptrXGBoostRegressor(C._wrap_new_XGBoostRegressor__SWIG_11_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_639)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewXGBoostRegressor(a ...interface{}) XGBoostRegressor {
+	argc := len(a)
+	if argc == 2 {
+		return NewXGBoostRegressor__SWIG_11(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewXGBoostRegressor__SWIG_10(a[0].(DataFrame), a[1].(string), a[2].(int64))
+	}
+	if argc == 4 {
+		return NewXGBoostRegressor__SWIG_9(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewXGBoostRegressor__SWIG_8(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewXGBoostRegressor__SWIG_7(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64))
+	}
+	if argc == 7 {
+		return NewXGBoostRegressor__SWIG_6(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64))
+	}
+	if argc == 8 {
+		return NewXGBoostRegressor__SWIG_5(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64))
+	}
+	if argc == 9 {
+		return NewXGBoostRegressor__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64))
+	}
+	if argc == 10 {
+		return NewXGBoostRegressor__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64))
+	}
+	if argc == 11 {
+		return NewXGBoostRegressor__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64), a[10].(float64))
+	}
+	if argc == 12 {
+		return NewXGBoostRegressor__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64), a[10].(float64), a[11].(float64))
+	}
+	if argc == 13 {
+		return NewXGBoostRegressor__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(int64), a[3].(float64), a[4].(int64), a[5].(float64), a[6].(float64), a[7].(float64), a[8].(float64), a[9].(int64), a[10].(float64), a[11].(float64), a[12].(uint64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_XGBoostRegressor_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_XGBoostRegressor_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) N_trees() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_XGBoostRegressor_n_trees_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Feature_importance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_XGBoostRegressor_feature_importance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_XGBoostRegressor_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_XGBoostRegressor_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_XGBoostRegressor_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Training_deviance() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_XGBoostRegressor_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_XGBoostRegressor_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_XGBoostRegressor_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_XGBoostRegressor_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_XGBoostRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_XGBoostRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrXGBoostRegressor) Plot_training_deviance() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_XGBoostRegressor_plot_training_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteXGBoostRegressor(arg1 XGBoostRegressor) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_XGBoostRegressor_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type XGBoostRegressor interface {
+	Swigcptr() uintptr
+	SwigIsXGBoostRegressor()
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	N_trees() (_swig_ret int64)
+	Feature_importance() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Training_deviance() (_swig_ret DVector)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+	Plot_training_deviance() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrKernelRegression uintptr
+
+func (p SwigcptrKernelRegression) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrKernelRegression) SwigIsKernelRegression() {
+}
+
+func NewKernelRegression__SWIG_0(arg1 DataFrame, arg2 string, arg3 string, arg4 float64, arg5 int64, arg6 bool) (_swig_ret KernelRegression) {
+	var swig_r KernelRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (KernelRegression)(SwigcptrKernelRegression(C._wrap_new_KernelRegression__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_643)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_644)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3), C.swig_type_645(_swig_i_4), C._Bool(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewKernelRegression__SWIG_1(arg1 DataFrame, arg2 string, arg3 string, arg4 float64, arg5 int64) (_swig_ret KernelRegression) {
+	var swig_r KernelRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (KernelRegression)(SwigcptrKernelRegression(C._wrap_new_KernelRegression__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_646)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_647)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3), C.swig_type_648(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewKernelRegression__SWIG_2(arg1 DataFrame, arg2 string, arg3 string, arg4 float64) (_swig_ret KernelRegression) {
+	var swig_r KernelRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (KernelRegression)(SwigcptrKernelRegression(C._wrap_new_KernelRegression__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_649)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_650)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewKernelRegression__SWIG_3(arg1 DataFrame, arg2 string, arg3 string) (_swig_ret KernelRegression) {
+	var swig_r KernelRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (KernelRegression)(SwigcptrKernelRegression(C._wrap_new_KernelRegression__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_651)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_652)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewKernelRegression__SWIG_4(arg1 DataFrame, arg2 string) (_swig_ret KernelRegression) {
+	var swig_r KernelRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (KernelRegression)(SwigcptrKernelRegression(C._wrap_new_KernelRegression__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_653)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewKernelRegression(a ...interface{}) KernelRegression {
+	argc := len(a)
+	if argc == 2 {
+		return NewKernelRegression__SWIG_4(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewKernelRegression__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(string))
+	}
+	if argc == 4 {
+		return NewKernelRegression__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewKernelRegression__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewKernelRegression__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(float64), a[4].(int64), a[5].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrKernelRegression) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_KernelRegression_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_KernelRegression_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Bandwidth() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_KernelRegression_bandwidth_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Bandwidth_was_selected() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_KernelRegression_bandwidth_was_selected_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Bandwidth_grid() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_KernelRegression_bandwidth_grid_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Cv_mean_squared_error() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_KernelRegression_cv_mean_squared_error_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_KernelRegression_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_KernelRegression_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_KernelRegression_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_KernelRegression_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrKernelRegression) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_KernelRegression_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrKernelRegression) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_KernelRegression_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Plot_fit__SWIG_0(arg2 DataFrame, arg3 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KernelRegression_plot_fit__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_656(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Plot_fit__SWIG_1(arg2 DataFrame) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KernelRegression_plot_fit__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrKernelRegression) Plot_fit(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 1 {
+		return p.Plot_fit__SWIG_1(a[0].(DataFrame))
+	}
+	if argc == 2 {
+		return p.Plot_fit__SWIG_0(a[0].(DataFrame), a[1].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrKernelRegression) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KernelRegression_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KernelRegression_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrKernelRegression) Plot_cv_curve() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_KernelRegression_plot_cv_curve_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteKernelRegression(arg1 KernelRegression) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_KernelRegression_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type KernelRegression interface {
+	Swigcptr() uintptr
+	SwigIsKernelRegression()
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Bandwidth() (_swig_ret float64)
+	Bandwidth_was_selected() (_swig_ret bool)
+	Bandwidth_grid() (_swig_ret DVector)
+	Cv_mean_squared_error() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Plot_fit(a ...interface{}) ScatterPlot
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+	Plot_cv_curve() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrGaussianProcessRegression uintptr
+
+func (p SwigcptrGaussianProcessRegression) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrGaussianProcessRegression) SwigIsGaussianProcessRegression() {
+}
+
+func NewGaussianProcessRegression__SWIG_0(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64, arg5 int64, arg6 int64, arg7 bool) (_swig_ret GaussianProcessRegression) {
+	var swig_r GaussianProcessRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (GaussianProcessRegression)(SwigcptrGaussianProcessRegression(C._wrap_new_GaussianProcessRegression__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_657)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3), C.swig_type_658(_swig_i_4), C.swig_type_659(_swig_i_5), C._Bool(_swig_i_6))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGaussianProcessRegression__SWIG_1(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64, arg5 int64, arg6 int64) (_swig_ret GaussianProcessRegression) {
+	var swig_r GaussianProcessRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (GaussianProcessRegression)(SwigcptrGaussianProcessRegression(C._wrap_new_GaussianProcessRegression__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_660)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3), C.swig_type_661(_swig_i_4), C.swig_type_662(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGaussianProcessRegression__SWIG_2(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64, arg5 int64) (_swig_ret GaussianProcessRegression) {
+	var swig_r GaussianProcessRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (GaussianProcessRegression)(SwigcptrGaussianProcessRegression(C._wrap_new_GaussianProcessRegression__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_663)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3), C.swig_type_664(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGaussianProcessRegression__SWIG_3(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64) (_swig_ret GaussianProcessRegression) {
+	var swig_r GaussianProcessRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (GaussianProcessRegression)(SwigcptrGaussianProcessRegression(C._wrap_new_GaussianProcessRegression__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_665)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGaussianProcessRegression__SWIG_4(arg1 DataFrame, arg2 string, arg3 float64) (_swig_ret GaussianProcessRegression) {
+	var swig_r GaussianProcessRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (GaussianProcessRegression)(SwigcptrGaussianProcessRegression(C._wrap_new_GaussianProcessRegression__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_666)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGaussianProcessRegression__SWIG_5(arg1 DataFrame, arg2 string) (_swig_ret GaussianProcessRegression) {
+	var swig_r GaussianProcessRegression
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (GaussianProcessRegression)(SwigcptrGaussianProcessRegression(C._wrap_new_GaussianProcessRegression__SWIG_5_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_667)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGaussianProcessRegression(a ...interface{}) GaussianProcessRegression {
+	argc := len(a)
+	if argc == 2 {
+		return NewGaussianProcessRegression__SWIG_5(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewGaussianProcessRegression__SWIG_4(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+	if argc == 4 {
+		return NewGaussianProcessRegression__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64))
+	}
+	if argc == 5 {
+		return NewGaussianProcessRegression__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewGaussianProcessRegression__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64), a[4].(int64), a[5].(int64))
+	}
+	if argc == 7 {
+		return NewGaussianProcessRegression__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64), a[4].(int64), a[5].(int64), a[6].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GaussianProcessRegression_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GaussianProcessRegression_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Length_scale() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GaussianProcessRegression_length_scale_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Signal_variance() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GaussianProcessRegression_signal_variance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Noise_variance() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GaussianProcessRegression_noise_variance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Log_marginal_likelihood() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GaussianProcessRegression_log_marginal_likelihood_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Length_scale_was_selected() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_GaussianProcessRegression_length_scale_was_selected_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Noise_ratio_was_selected() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_GaussianProcessRegression_noise_ratio_was_selected_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Length_scale_grid() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GaussianProcessRegression_length_scale_grid_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Length_scale_profile_log_likelihood() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GaussianProcessRegression_length_scale_profile_log_likelihood_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GaussianProcessRegression_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) R_squared() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GaussianProcessRegression_r_squared_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Rmse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GaussianProcessRegression_rmse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GaussianProcessRegression_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_GaussianProcessRegression_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GaussianProcessRegression_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Predict_frame__SWIG_0(arg2 DataFrame, arg3 string, arg4 float64) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GaussianProcessRegression_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_670)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Predict_frame__SWIG_1(arg2 DataFrame, arg3 string) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GaussianProcessRegression_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_671)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Predict_frame__SWIG_2(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GaussianProcessRegression_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrGaussianProcessRegression) Predict_frame(a ...interface{}) DataFrame {
+	argc := len(a)
+	if argc == 1 {
+		return p.Predict_frame__SWIG_2(a[0].(DataFrame))
+	}
+	if argc == 2 {
+		return p.Predict_frame__SWIG_1(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Predict_frame__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Plot_fit__SWIG_0(arg2 DataFrame, arg3 int64, arg4 float64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GaussianProcessRegression_plot_fit__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_672(_swig_i_2), C.double(_swig_i_3))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Plot_fit__SWIG_1(arg2 DataFrame, arg3 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GaussianProcessRegression_plot_fit__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_673(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Plot_fit__SWIG_2(arg2 DataFrame) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GaussianProcessRegression_plot_fit__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrGaussianProcessRegression) Plot_fit(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 1 {
+		return p.Plot_fit__SWIG_2(a[0].(DataFrame))
+	}
+	if argc == 2 {
+		return p.Plot_fit__SWIG_1(a[0].(DataFrame), a[1].(int64))
+	}
+	if argc == 3 {
+		return p.Plot_fit__SWIG_0(a[0].(DataFrame), a[1].(int64), a[2].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Plot_predicted_vs_actual() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GaussianProcessRegression_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GaussianProcessRegression_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGaussianProcessRegression) Plot_length_scale_profile() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GaussianProcessRegression_plot_length_scale_profile_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteGaussianProcessRegression(arg1 GaussianProcessRegression) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_GaussianProcessRegression_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type GaussianProcessRegression interface {
+	Swigcptr() uintptr
+	SwigIsGaussianProcessRegression()
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Length_scale() (_swig_ret float64)
+	Signal_variance() (_swig_ret float64)
+	Noise_variance() (_swig_ret float64)
+	Log_marginal_likelihood() (_swig_ret float64)
+	Length_scale_was_selected() (_swig_ret bool)
+	Noise_ratio_was_selected() (_swig_ret bool)
+	Length_scale_grid() (_swig_ret DVector)
+	Length_scale_profile_log_likelihood() (_swig_ret DVector)
+	Fitted_values() (_swig_ret DVector)
+	R_squared() (_swig_ret float64)
+	Rmse() (_swig_ret float64)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Predict_frame(a ...interface{}) DataFrame
+	Plot_fit(a ...interface{}) ScatterPlot
+	Plot_predicted_vs_actual() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+	Plot_length_scale_profile() (_swig_ret ScatterPlot)
+}
+
+type SwigcptrNaiveBayesClassifier uintptr
+
+func (p SwigcptrNaiveBayesClassifier) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrNaiveBayesClassifier) SwigIsNaiveBayesClassifier() {
+}
+
+func NewNaiveBayesClassifier__SWIG_0(arg1 DataFrame, arg2 string, arg3 float64, arg4 float64) (_swig_ret NaiveBayesClassifier) {
+	var swig_r NaiveBayesClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (NaiveBayesClassifier)(SwigcptrNaiveBayesClassifier(C._wrap_new_NaiveBayesClassifier__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_674)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewNaiveBayesClassifier__SWIG_1(arg1 DataFrame, arg2 string, arg3 float64) (_swig_ret NaiveBayesClassifier) {
+	var swig_r NaiveBayesClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (NaiveBayesClassifier)(SwigcptrNaiveBayesClassifier(C._wrap_new_NaiveBayesClassifier__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_675)(unsafe.Pointer(&_swig_i_1)), C.double(_swig_i_2))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewNaiveBayesClassifier__SWIG_2(arg1 DataFrame, arg2 string) (_swig_ret NaiveBayesClassifier) {
+	var swig_r NaiveBayesClassifier
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (NaiveBayesClassifier)(SwigcptrNaiveBayesClassifier(C._wrap_new_NaiveBayesClassifier__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_676)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewNaiveBayesClassifier(a ...interface{}) NaiveBayesClassifier {
+	argc := len(a)
+	if argc == 2 {
+		return NewNaiveBayesClassifier__SWIG_2(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewNaiveBayesClassifier__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+	if argc == 4 {
+		return NewNaiveBayesClassifier__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(float64), a[3].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Classes() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_NaiveBayesClassifier_classes_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Predictor_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_NaiveBayesClassifier_predictor_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_NaiveBayesClassifier_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Class_priors() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_NaiveBayesClassifier_class_priors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Training_accuracy() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_NaiveBayesClassifier_training_accuracy_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Confusion_matrix() (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_NaiveBayesClassifier_confusion_matrix_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_NaiveBayesClassifier_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_NaiveBayesClassifier_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Predict(arg2 DataFrame) (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_NaiveBayesClassifier_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Predict_frame(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_NaiveBayesClassifier_predict_frame_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_NaiveBayesClassifier_plot_classification_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_679)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_680)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Plot_decision_regions__SWIG_0(arg2 string, arg3 string, arg4 int64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_681)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_682)(unsafe.Pointer(&_swig_i_2)), C.swig_type_683(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrNaiveBayesClassifier) Plot_decision_regions__SWIG_1(arg2 string, arg3 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_684)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_685)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (p SwigcptrNaiveBayesClassifier) Plot_decision_regions(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Plot_decision_regions__SWIG_1(a[0].(string), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Plot_decision_regions__SWIG_0(a[0].(string), a[1].(string), a[2].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func DeleteNaiveBayesClassifier(arg1 NaiveBayesClassifier) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_NaiveBayesClassifier_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type NaiveBayesClassifier interface {
+	Swigcptr() uintptr
+	SwigIsNaiveBayesClassifier()
+	Classes() (_swig_ret SVector)
+	Predictor_names() (_swig_ret SVector)
+	Observations() (_swig_ret int64)
+	Class_priors() (_swig_ret DVector)
+	Training_accuracy() (_swig_ret float64)
+	Confusion_matrix() (_swig_ret DataFrame)
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret SVector)
+	Predict_frame(arg2 DataFrame) (_swig_ret DataFrame)
+	Plot_classification(arg2 DataFrame, arg3 string, arg4 string) (_swig_ret ScatterPlot)
+	Plot_decision_regions(a ...interface{}) ScatterPlot
+}
+
+type SwigcptrGLM uintptr
+
+func (p SwigcptrGLM) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrGLM) SwigIsGLM() {
+}
+
+func NewGLM__SWIG_0(arg1 DataFrame, arg2 string, arg3 string, arg4 string, arg5 int64, arg6 float64) (_swig_ret GLM) {
+	var swig_r GLM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (GLM)(SwigcptrGLM(C._wrap_new_GLM__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_686)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_687)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_688)(unsafe.Pointer(&_swig_i_3)), C.swig_type_689(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewGLM__SWIG_1(arg1 DataFrame, arg2 string, arg3 string, arg4 string, arg5 int64) (_swig_ret GLM) {
+	var swig_r GLM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (GLM)(SwigcptrGLM(C._wrap_new_GLM__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_690)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_691)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_692)(unsafe.Pointer(&_swig_i_3)), C.swig_type_693(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewGLM__SWIG_2(arg1 DataFrame, arg2 string, arg3 string, arg4 string) (_swig_ret GLM) {
+	var swig_r GLM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (GLM)(SwigcptrGLM(C._wrap_new_GLM__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_694)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_695)(unsafe.Pointer(&_swig_i_2)), *(*C.swig_type_696)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func NewGLM__SWIG_3(arg1 DataFrame, arg2 string, arg3 string) (_swig_ret GLM) {
+	var swig_r GLM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (GLM)(SwigcptrGLM(C._wrap_new_GLM__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_697)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_698)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func NewGLM__SWIG_4(arg1 DataFrame, arg2 string) (_swig_ret GLM) {
+	var swig_r GLM
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (GLM)(SwigcptrGLM(C._wrap_new_GLM__SWIG_4_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_699)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewGLM(a ...interface{}) GLM {
+	argc := len(a)
+	if argc == 2 {
+		return NewGLM__SWIG_4(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return NewGLM__SWIG_3(a[0].(DataFrame), a[1].(string), a[2].(string))
+	}
+	if argc == 4 {
+		return NewGLM__SWIG_2(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(string))
+	}
+	if argc == 5 {
+		return NewGLM__SWIG_1(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(string), a[4].(int64))
+	}
+	if argc == 6 {
+		return NewGLM__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(string), a[3].(string), a[4].(int64), a[5].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGLM) Formula_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GLM_formula_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGLM) Family() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GLM_family_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGLM) Has_intercept() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_GLM_has_intercept_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GLM_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Rank() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GLM_rank_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Degrees_of_freedom() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_GLM_degrees_of_freedom_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Coefficient_names() (_swig_ret SVector) {
+	var swig_r SVector
+	_swig_i_0 := arg1
+	swig_r = (SVector)(SwigcptrSVector(C._wrap_GLM_coefficient_names_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Linear_predictors() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_linear_predictors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Pearson_residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_pearson_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Standardized_residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_standardized_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Leverage() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_leverage_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Standard_errors() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_standard_errors_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Test_statistics() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_test_statistics_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) P_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_p_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Deviance() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GLM_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Null_deviance() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GLM_null_deviance_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Dispersion() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GLM_dispersion_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Aic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_GLM_aic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Confidence_interval_lower__SWIG_0(arg2 float64) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_confidence_interval_lower__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Confidence_interval_lower__SWIG_1() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_confidence_interval_lower__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (p SwigcptrGLM) Confidence_interval_lower(a ...interface{}) DVector {
+	argc := len(a)
+	if argc == 0 {
+		return p.Confidence_interval_lower__SWIG_1()
+	}
+	if argc == 1 {
+		return p.Confidence_interval_lower__SWIG_0(a[0].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGLM) Confidence_interval_upper__SWIG_0(arg2 float64) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_confidence_interval_upper__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Confidence_interval_upper__SWIG_1() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_confidence_interval_upper__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (p SwigcptrGLM) Confidence_interval_upper(a ...interface{}) DVector {
+	argc := len(a)
+	if argc == 0 {
+		return p.Confidence_interval_upper__SWIG_1()
+	}
+	if argc == 1 {
+		return p.Confidence_interval_upper__SWIG_0(a[0].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGLM) Summary() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_GLM_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrGLM) Print_summary() {
+	_swig_i_0 := arg1
+	C._wrap_GLM_print_summary_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrGLM) Predict(arg2 DataFrame) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_GLM_predict_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Predict_frame__SWIG_0(arg2 DataFrame, arg3 string, arg4 float64) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GLM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_706)(unsafe.Pointer(&_swig_i_2)), C.double(_swig_i_3))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Predict_frame__SWIG_1(arg2 DataFrame, arg3 string) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GLM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_707)(unsafe.Pointer(&_swig_i_2)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Predict_frame__SWIG_2(arg2 DataFrame) (_swig_ret DataFrame) {
+	var swig_r DataFrame
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DataFrame)(SwigcptrDataFrame(C._wrap_GLM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrGLM) Predict_frame(a ...interface{}) DataFrame {
+	argc := len(a)
+	if argc == 1 {
+		return p.Predict_frame__SWIG_2(a[0].(DataFrame))
+	}
+	if argc == 2 {
+		return p.Predict_frame__SWIG_1(a[0].(DataFrame), a[1].(string))
+	}
+	if argc == 3 {
+		return p.Predict_frame__SWIG_0(a[0].(DataFrame), a[1].(string), a[2].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrGLM) Plot_residuals_vs_fitted() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GLM_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Plot_normal_qq() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GLM_plot_normal_qq_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Plot_scale_location() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GLM_plot_scale_location_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Plot_residuals_vs_leverage() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_GLM_plot_residuals_vs_leverage_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrGLM) Save_diagnostic_plots(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_GLM_save_diagnostic_plots_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_708)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func DeleteGLM(arg1 GLM) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_GLM_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type GLM interface {
+	Swigcptr() uintptr
+	SwigIsGLM()
+	Formula_text() (_swig_ret string)
+	Family() (_swig_ret string)
+	Has_intercept() (_swig_ret bool)
+	Observations() (_swig_ret int64)
+	Rank() (_swig_ret int64)
+	Degrees_of_freedom() (_swig_ret int64)
+	Coefficients() (_swig_ret DVector)
+	Coefficient_names() (_swig_ret SVector)
+	Fitted_values() (_swig_ret DVector)
+	Linear_predictors() (_swig_ret DVector)
+	Residuals() (_swig_ret DVector)
+	Pearson_residuals() (_swig_ret DVector)
+	Standardized_residuals() (_swig_ret DVector)
+	Leverage() (_swig_ret DVector)
+	Standard_errors() (_swig_ret DVector)
+	Test_statistics() (_swig_ret DVector)
+	P_values() (_swig_ret DVector)
+	Deviance() (_swig_ret float64)
+	Null_deviance() (_swig_ret float64)
+	Dispersion() (_swig_ret float64)
+	Aic() (_swig_ret float64)
+	Confidence_interval_lower(a ...interface{}) DVector
+	Confidence_interval_upper(a ...interface{}) DVector
+	Summary() (_swig_ret string)
+	Print_summary()
+	Predict(arg2 DataFrame) (_swig_ret DVector)
+	Predict_frame(a ...interface{}) DataFrame
+	Plot_residuals_vs_fitted() (_swig_ret ScatterPlot)
+	Plot_normal_qq() (_swig_ret ScatterPlot)
+	Plot_scale_location() (_swig_ret ScatterPlot)
+	Plot_residuals_vs_leverage() (_swig_ret ScatterPlot)
+	Save_diagnostic_plots(arg2 string)
+}
+
+type SwigcptrTensor uintptr
+
+func (p SwigcptrTensor) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrTensor) SwigIsTensor() {
+}
+
+func NewTensor__SWIG_0(arg1 SizeVector, arg2 string) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_new_Tensor__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_709)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func NewTensor__SWIG_1(arg1 SizeVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_new_Tensor__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func NewTensor(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return NewTensor__SWIG_1(a[0].(SizeVector))
+	}
+	if argc == 2 {
+		return NewTensor__SWIG_0(a[0].(SizeVector), a[1].(string))
+	}
+	panic("No match for overloaded function call")
+}
+
+func TensorZeros(arg1 SizeVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_zeros_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func TensorOnes(arg1 SizeVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_ones_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func TensorFull(arg1 SizeVector, arg2 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_full_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func TensorFrom_values(arg1 SizeVector, arg2 DVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_from_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func TensorFrom_bool_values(arg1 SizeVector, arg2 IVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_from_bool_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func TensorFrom_string_values(arg1 SizeVector, arg2 SVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_from_string_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func TensorArange__SWIG_0(arg1 float64, arg2 float64, arg3 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_arange__SWIG_0_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func TensorArange__SWIG_1(arg1 float64, arg2 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_arange__SWIG_1_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func TensorArange(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 2 {
+		return TensorArange__SWIG_1(a[0].(float64), a[1].(float64))
+	}
+	if argc == 3 {
+		return TensorArange__SWIG_0(a[0].(float64), a[1].(float64), a[2].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func TensorEye(arg1 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_eye_datamunge_cd205fa85b728fed(C.swig_type_710(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Ndim() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Tensor_ndim_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Shape() (_swig_ret SizeVector) {
+	var swig_r SizeVector
+	_swig_i_0 := arg1
+	swig_r = (SizeVector)(SwigcptrSizeVector(C._wrap_Tensor_shape_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Size() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Tensor_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Dtype_name() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Tensor_dtype_name_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrTensor) At(arg2 SizeVector) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (float64)(C._wrap_Tensor_at_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Set(arg2 SizeVector, arg3 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	C._wrap_Tensor_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.double(_swig_i_2))
+}
+
+func (arg1 SwigcptrTensor) String_at(arg2 SizeVector) (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r_p := C._wrap_Tensor_string_at_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrTensor) Set_string(arg2 SizeVector, arg3 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	C._wrap_Tensor_set_string_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), *(*C.swig_type_715)(unsafe.Pointer(&_swig_i_2)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+}
+
+func (arg1 SwigcptrTensor) At_flat(arg2 int64) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (float64)(C._wrap_Tensor_at_flat_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_716(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Set_flat(arg2 int64, arg3 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	C._wrap_Tensor_set_flat_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_717(_swig_i_1), C.double(_swig_i_2))
+}
+
+func (arg1 SwigcptrTensor) String_at_flat(arg2 int64) (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r_p := C._wrap_Tensor_string_at_flat_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_719(_swig_i_1))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrTensor) Set_string_flat(arg2 int64, arg3 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	C._wrap_Tensor_set_string_flat_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_720(_swig_i_1), *(*C.swig_type_721)(unsafe.Pointer(&_swig_i_2)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg3
+	}
+}
+
+func (arg1 SwigcptrTensor) Reshape(arg2 SizeVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_reshape_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Flatten() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_flatten_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Transpose__SWIG_0(arg2 SizeVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_transpose__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Transpose__SWIG_1() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_transpose__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Transpose(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 0 {
+		return p.Transpose__SWIG_1()
+	}
+	if argc == 1 {
+		return p.Transpose__SWIG_0(a[0].(SizeVector))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Squeeze() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_squeeze_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Squeeze_axis(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_squeeze_axis_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_722(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Expand_dims(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_expand_dims_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_723(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Slice__SWIG_0(arg2 int64, arg3 int64, arg4 int64, arg5 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_slice__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_724(_swig_i_1), C.swig_type_725(_swig_i_2), C.swig_type_726(_swig_i_3), C.swig_type_727(_swig_i_4))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Slice__SWIG_1(arg2 int64, arg3 int64, arg4 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_slice__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_728(_swig_i_1), C.swig_type_729(_swig_i_2), C.swig_type_730(_swig_i_3))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Slice(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 3 {
+		return p.Slice__SWIG_1(a[0].(int64), a[1].(int64), a[2].(int64))
+	}
+	if argc == 4 {
+		return p.Slice__SWIG_0(a[0].(int64), a[1].(int64), a[2].(int64), a[3].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Index_select(arg2 int64, arg3 SizeVector) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := getSwigcptr(arg3)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_index_select_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_731(_swig_i_1), C.uintptr_t(_swig_i_2))))
+	return swig_r
+}
+
+func TensorConcatenate2(arg1 Tensor, arg2 Tensor, arg3 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_concatenate2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_732(_swig_i_2))))
+	return swig_r
+}
+
+func TensorStack2(arg1 Tensor, arg2 Tensor, arg3 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_stack2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_type_733(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Add(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Subtract(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_subtract_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Multiply(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_multiply_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Divide(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_divide_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Power(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_power_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Add_scalar(arg2 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_add_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Subtract_scalar(arg2 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_subtract_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Multiply_scalar(arg2 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_multiply_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Divide_scalar(arg2 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_divide_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Power_scalar(arg2 float64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_power_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Negate() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_negate_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Abs() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_abs_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Sqrt() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_sqrt_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Exp() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_exp_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Log() (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_log_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Apply(arg2 Callback) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_apply_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Equal(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_equal_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Not_equal(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_not_equal_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Less(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_less_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Less_equal(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_less_equal_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Greater(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_greater_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Greater_equal(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_greater_equal_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Sum() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Tensor_sum_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Mean() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Tensor_mean_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Max() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Tensor_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Min() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Tensor_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Prod() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Tensor_prod_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Argmax() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Tensor_argmax_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Argmin() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Tensor_argmin_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) All() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Tensor_all_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Any() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Tensor_any_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Sum_axis__SWIG_0(arg2 int64, arg3 bool) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_sum_axis__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_736(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Sum_axis__SWIG_1(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_sum_axis__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_737(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Sum_axis(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return p.Sum_axis__SWIG_1(a[0].(int64))
+	}
+	if argc == 2 {
+		return p.Sum_axis__SWIG_0(a[0].(int64), a[1].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Mean_axis__SWIG_0(arg2 int64, arg3 bool) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_mean_axis__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_738(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Mean_axis__SWIG_1(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_mean_axis__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_739(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Mean_axis(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return p.Mean_axis__SWIG_1(a[0].(int64))
+	}
+	if argc == 2 {
+		return p.Mean_axis__SWIG_0(a[0].(int64), a[1].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Max_axis__SWIG_0(arg2 int64, arg3 bool) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_max_axis__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_740(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Max_axis__SWIG_1(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_max_axis__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_741(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Max_axis(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return p.Max_axis__SWIG_1(a[0].(int64))
+	}
+	if argc == 2 {
+		return p.Max_axis__SWIG_0(a[0].(int64), a[1].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Min_axis__SWIG_0(arg2 int64, arg3 bool) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_min_axis__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_742(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Min_axis__SWIG_1(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_min_axis__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_743(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Min_axis(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return p.Min_axis__SWIG_1(a[0].(int64))
+	}
+	if argc == 2 {
+		return p.Min_axis__SWIG_0(a[0].(int64), a[1].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Prod_axis__SWIG_0(arg2 int64, arg3 bool) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_prod_axis__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_744(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Prod_axis__SWIG_1(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_prod_axis__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_745(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Prod_axis(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return p.Prod_axis__SWIG_1(a[0].(int64))
+	}
+	if argc == 2 {
+		return p.Prod_axis__SWIG_0(a[0].(int64), a[1].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Argmax_axis__SWIG_0(arg2 int64, arg3 bool) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_argmax_axis__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_746(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Argmax_axis__SWIG_1(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_argmax_axis__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_747(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Argmax_axis(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return p.Argmax_axis__SWIG_1(a[0].(int64))
+	}
+	if argc == 2 {
+		return p.Argmax_axis__SWIG_0(a[0].(int64), a[1].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Argmin_axis__SWIG_0(arg2 int64, arg3 bool) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_argmin_axis__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_748(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Argmin_axis__SWIG_1(arg2 int64) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_argmin_axis__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_749(_swig_i_1))))
+	return swig_r
+}
+
+func (p SwigcptrTensor) Argmin_axis(a ...interface{}) Tensor {
+	argc := len(a)
+	if argc == 1 {
+		return p.Argmin_axis__SWIG_1(a[0].(int64))
+	}
+	if argc == 2 {
+		return p.Argmin_axis__SWIG_0(a[0].(int64), a[1].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrTensor) Matmul(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_matmul_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Dot(arg2 Tensor) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (float64)(C._wrap_Tensor_dot_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) Outer(arg2 Tensor) (_swig_ret Tensor) {
+	var swig_r Tensor
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Tensor)(SwigcptrTensor(C._wrap_Tensor_outer_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrTensor) To_string__SWIG_0(arg2 int64) (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r_p := C._wrap_Tensor_to_string__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_751(_swig_i_1))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrTensor) To_string__SWIG_1() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Tensor_to_string__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (p SwigcptrTensor) To_string(a ...interface{}) string {
+	argc := len(a)
+	if argc == 0 {
+		return p.To_string__SWIG_1()
+	}
+	if argc == 1 {
+		return p.To_string__SWIG_0(a[0].(int64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func DeleteTensor(arg1 Tensor) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Tensor_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type Tensor interface {
+	Swigcptr() uintptr
+	SwigIsTensor()
+	Ndim() (_swig_ret int64)
+	Shape() (_swig_ret SizeVector)
+	Size() (_swig_ret int64)
+	Dtype_name() (_swig_ret string)
+	At(arg2 SizeVector) (_swig_ret float64)
+	Set(arg2 SizeVector, arg3 float64)
+	String_at(arg2 SizeVector) (_swig_ret string)
+	Set_string(arg2 SizeVector, arg3 string)
+	At_flat(arg2 int64) (_swig_ret float64)
+	Set_flat(arg2 int64, arg3 float64)
+	String_at_flat(arg2 int64) (_swig_ret string)
+	Set_string_flat(arg2 int64, arg3 string)
+	Reshape(arg2 SizeVector) (_swig_ret Tensor)
+	Flatten() (_swig_ret Tensor)
+	Transpose(a ...interface{}) Tensor
+	Squeeze() (_swig_ret Tensor)
+	Squeeze_axis(arg2 int64) (_swig_ret Tensor)
+	Expand_dims(arg2 int64) (_swig_ret Tensor)
+	Slice(a ...interface{}) Tensor
+	Index_select(arg2 int64, arg3 SizeVector) (_swig_ret Tensor)
+	Add(arg2 Tensor) (_swig_ret Tensor)
+	Subtract(arg2 Tensor) (_swig_ret Tensor)
+	Multiply(arg2 Tensor) (_swig_ret Tensor)
+	Divide(arg2 Tensor) (_swig_ret Tensor)
+	Power(arg2 Tensor) (_swig_ret Tensor)
+	Add_scalar(arg2 float64) (_swig_ret Tensor)
+	Subtract_scalar(arg2 float64) (_swig_ret Tensor)
+	Multiply_scalar(arg2 float64) (_swig_ret Tensor)
+	Divide_scalar(arg2 float64) (_swig_ret Tensor)
+	Power_scalar(arg2 float64) (_swig_ret Tensor)
+	Negate() (_swig_ret Tensor)
+	Abs() (_swig_ret Tensor)
+	Sqrt() (_swig_ret Tensor)
+	Exp() (_swig_ret Tensor)
+	Log() (_swig_ret Tensor)
+	Apply(arg2 Callback) (_swig_ret Tensor)
+	Equal(arg2 Tensor) (_swig_ret Tensor)
+	Not_equal(arg2 Tensor) (_swig_ret Tensor)
+	Less(arg2 Tensor) (_swig_ret Tensor)
+	Less_equal(arg2 Tensor) (_swig_ret Tensor)
+	Greater(arg2 Tensor) (_swig_ret Tensor)
+	Greater_equal(arg2 Tensor) (_swig_ret Tensor)
+	Sum() (_swig_ret float64)
+	Mean() (_swig_ret float64)
+	Max() (_swig_ret float64)
+	Min() (_swig_ret float64)
+	Prod() (_swig_ret float64)
+	Argmax() (_swig_ret int64)
+	Argmin() (_swig_ret int64)
+	All() (_swig_ret bool)
+	Any() (_swig_ret bool)
+	Sum_axis(a ...interface{}) Tensor
+	Mean_axis(a ...interface{}) Tensor
+	Max_axis(a ...interface{}) Tensor
+	Min_axis(a ...interface{}) Tensor
+	Prod_axis(a ...interface{}) Tensor
+	Argmax_axis(a ...interface{}) Tensor
+	Argmin_axis(a ...interface{}) Tensor
+	Matmul(arg2 Tensor) (_swig_ret Tensor)
+	Dot(arg2 Tensor) (_swig_ret float64)
+	Outer(arg2 Tensor) (_swig_ret Tensor)
+	To_string(a ...interface{}) string
+}
+
+type SwigcptrDual uintptr
+
+func (p SwigcptrDual) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrDual) SwigIsDual() {
+}
+
+func NewDual__SWIG_0(arg1 float64, arg2 float64) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Dual)(SwigcptrDual(C._wrap_new_Dual__SWIG_0_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func NewDual__SWIG_1(arg1 float64) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_new_Dual__SWIG_1_datamunge_cd205fa85b728fed(C.double(_swig_i_0))))
+	return swig_r
+}
+
+func NewDual(a ...interface{}) Dual {
+	argc := len(a)
+	if argc == 1 {
+		return NewDual__SWIG_1(a[0].(float64))
+	}
+	if argc == 2 {
+		return NewDual__SWIG_0(a[0].(float64), a[1].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrDual) Value() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Dual_value_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Derivative() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Dual_derivative_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Add(arg2 Dual) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Subtract(arg2 Dual) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_subtract_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Multiply(arg2 Dual) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_multiply_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Divide(arg2 Dual) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_divide_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Negate() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_negate_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Add_scalar(arg2 float64) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_add_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Subtract_scalar(arg2 float64) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_subtract_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Multiply_scalar(arg2 float64) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_multiply_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Divide_scalar(arg2 float64) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_divide_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Pow(arg2 float64) (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_pow_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Exp() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_exp_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Log() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_log_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Sqrt() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_sqrt_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Sin() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_sin_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Cos() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_cos_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Tan() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_tan_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Tanh() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_tanh_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDual) Abs() (_swig_ret Dual) {
+	var swig_r Dual
+	_swig_i_0 := arg1
+	swig_r = (Dual)(SwigcptrDual(C._wrap_Dual_abs_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteDual(arg1 Dual) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Dual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type Dual interface {
+	Swigcptr() uintptr
+	SwigIsDual()
+	Value() (_swig_ret float64)
+	Derivative() (_swig_ret float64)
+	Add(arg2 Dual) (_swig_ret Dual)
+	Subtract(arg2 Dual) (_swig_ret Dual)
+	Multiply(arg2 Dual) (_swig_ret Dual)
+	Divide(arg2 Dual) (_swig_ret Dual)
+	Negate() (_swig_ret Dual)
+	Add_scalar(arg2 float64) (_swig_ret Dual)
+	Subtract_scalar(arg2 float64) (_swig_ret Dual)
+	Multiply_scalar(arg2 float64) (_swig_ret Dual)
+	Divide_scalar(arg2 float64) (_swig_ret Dual)
+	Pow(arg2 float64) (_swig_ret Dual)
+	Exp() (_swig_ret Dual)
+	Log() (_swig_ret Dual)
+	Sqrt() (_swig_ret Dual)
+	Sin() (_swig_ret Dual)
+	Cos() (_swig_ret Dual)
+	Tan() (_swig_ret Dual)
+	Tanh() (_swig_ret Dual)
+	Abs() (_swig_ret Dual)
+}
+
+type SwigcptrHyperDual uintptr
+
+func (p SwigcptrHyperDual) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrHyperDual) SwigIsHyperDual() {
+}
+
+func NewHyperDual__SWIG_0(arg1 float64, arg2 float64, arg3 float64, arg4 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_new_HyperDual__SWIG_0_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2), C.double(_swig_i_3))))
+	return swig_r
+}
+
+func NewHyperDual__SWIG_1(arg1 float64, arg2 float64, arg3 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_new_HyperDual__SWIG_1_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func NewHyperDual__SWIG_2(arg1 float64, arg2 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_new_HyperDual__SWIG_2_datamunge_cd205fa85b728fed(C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func NewHyperDual__SWIG_3(arg1 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_new_HyperDual__SWIG_3_datamunge_cd205fa85b728fed(C.double(_swig_i_0))))
+	return swig_r
+}
+
+func NewHyperDual(a ...interface{}) HyperDual {
+	argc := len(a)
+	if argc == 1 {
+		return NewHyperDual__SWIG_3(a[0].(float64))
+	}
+	if argc == 2 {
+		return NewHyperDual__SWIG_2(a[0].(float64), a[1].(float64))
+	}
+	if argc == 3 {
+		return NewHyperDual__SWIG_1(a[0].(float64), a[1].(float64), a[2].(float64))
+	}
+	if argc == 4 {
+		return NewHyperDual__SWIG_0(a[0].(float64), a[1].(float64), a[2].(float64), a[3].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrHyperDual) Value() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HyperDual_value_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Eps1() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HyperDual_eps1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Eps2() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HyperDual_eps2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Eps1eps2() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HyperDual_eps1eps2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Add(arg2 HyperDual) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Subtract(arg2 HyperDual) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_subtract_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Multiply(arg2 HyperDual) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_multiply_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Divide(arg2 HyperDual) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_divide_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Negate() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_negate_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Add_scalar(arg2 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_add_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Subtract_scalar(arg2 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_subtract_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Multiply_scalar(arg2 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_multiply_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Divide_scalar(arg2 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_divide_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Pow(arg2 float64) (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_pow_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Exp() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_exp_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Log() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_log_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Sqrt() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_sqrt_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Sin() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_sin_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Cos() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_cos_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Tan() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_tan_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrHyperDual) Tanh() (_swig_ret HyperDual) {
+	var swig_r HyperDual
+	_swig_i_0 := arg1
+	swig_r = (HyperDual)(SwigcptrHyperDual(C._wrap_HyperDual_tanh_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteHyperDual(arg1 HyperDual) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_HyperDual_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type HyperDual interface {
+	Swigcptr() uintptr
+	SwigIsHyperDual()
+	Value() (_swig_ret float64)
+	Eps1() (_swig_ret float64)
+	Eps2() (_swig_ret float64)
+	Eps1eps2() (_swig_ret float64)
+	Add(arg2 HyperDual) (_swig_ret HyperDual)
+	Subtract(arg2 HyperDual) (_swig_ret HyperDual)
+	Multiply(arg2 HyperDual) (_swig_ret HyperDual)
+	Divide(arg2 HyperDual) (_swig_ret HyperDual)
+	Negate() (_swig_ret HyperDual)
+	Add_scalar(arg2 float64) (_swig_ret HyperDual)
+	Subtract_scalar(arg2 float64) (_swig_ret HyperDual)
+	Multiply_scalar(arg2 float64) (_swig_ret HyperDual)
+	Divide_scalar(arg2 float64) (_swig_ret HyperDual)
+	Pow(arg2 float64) (_swig_ret HyperDual)
+	Exp() (_swig_ret HyperDual)
+	Log() (_swig_ret HyperDual)
+	Sqrt() (_swig_ret HyperDual)
+	Sin() (_swig_ret HyperDual)
+	Cos() (_swig_ret HyperDual)
+	Tan() (_swig_ret HyperDual)
+	Tanh() (_swig_ret HyperDual)
+}
+
+type SwigcptrTape uintptr
+
+func (p SwigcptrTape) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrTape) SwigIsTape() {
+}
+
+func NewTape() (_swig_ret Tape) {
+	var swig_r Tape
+	swig_r = (Tape)(SwigcptrTape(C._wrap_new_Tape_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func (arg1 SwigcptrTape) Size() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Tape_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTape) Value_at(arg2 int64) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (float64)(C._wrap_Tape_value_at_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_754(_swig_i_1)))
+	return swig_r
+}
+
+func (arg1 SwigcptrTape) Backward(arg2 Var) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_Tape_backward_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func DeleteTape(arg1 Tape) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Tape_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type Tape interface {
+	Swigcptr() uintptr
+	SwigIsTape()
+	Size() (_swig_ret int64)
+	Value_at(arg2 int64) (_swig_ret float64)
+	Backward(arg2 Var) (_swig_ret DVector)
+}
+
+type SwigcptrVar uintptr
+
+func (p SwigcptrVar) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrVar) SwigIsVar() {
+}
+
+func NewVar(arg1 Tape, arg2 float64) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (Var)(SwigcptrVar(C._wrap_new_Var_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Value() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Var_value_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Index() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Var_index_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Add(arg2 Var) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_add_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Subtract(arg2 Var) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_subtract_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Multiply(arg2 Var) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_multiply_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Divide(arg2 Var) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_divide_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Negate() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_negate_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Add_scalar(arg2 float64) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_add_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Subtract_scalar(arg2 float64) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_subtract_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Multiply_scalar(arg2 float64) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_multiply_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Divide_scalar(arg2 float64) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_divide_scalar_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Pow(arg2 float64) (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_pow_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Exp() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_exp_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Log() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_log_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Sqrt() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_sqrt_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Sin() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_sin_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Cos() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_cos_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Tan() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_tan_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Tanh() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_tanh_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrVar) Abs() (_swig_ret Var) {
+	var swig_r Var
+	_swig_i_0 := arg1
+	swig_r = (Var)(SwigcptrVar(C._wrap_Var_abs_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func DeleteVar(arg1 Var) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Var_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type Var interface {
+	Swigcptr() uintptr
+	SwigIsVar()
+	Value() (_swig_ret float64)
+	Index() (_swig_ret int64)
+	Add(arg2 Var) (_swig_ret Var)
+	Subtract(arg2 Var) (_swig_ret Var)
+	Multiply(arg2 Var) (_swig_ret Var)
+	Divide(arg2 Var) (_swig_ret Var)
+	Negate() (_swig_ret Var)
+	Add_scalar(arg2 float64) (_swig_ret Var)
+	Subtract_scalar(arg2 float64) (_swig_ret Var)
+	Multiply_scalar(arg2 float64) (_swig_ret Var)
+	Divide_scalar(arg2 float64) (_swig_ret Var)
+	Pow(arg2 float64) (_swig_ret Var)
+	Exp() (_swig_ret Var)
+	Log() (_swig_ret Var)
+	Sqrt() (_swig_ret Var)
+	Sin() (_swig_ret Var)
+	Cos() (_swig_ret Var)
+	Tan() (_swig_ret Var)
+	Tanh() (_swig_ret Var)
+	Abs() (_swig_ret Var)
+}
+
+type SwigcptrRGB uintptr
+
+func (p SwigcptrRGB) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrRGB) SwigIsRGB() {
+}
+
+func (arg1 SwigcptrRGB) SetR(arg2 int) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_RGB_r_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+}
+
+func (arg1 SwigcptrRGB) GetR() (_swig_ret int) {
+	var swig_r int
+	_swig_i_0 := arg1
+	swig_r = (int)(C._wrap_RGB_r_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRGB) SetG(arg2 int) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_RGB_g_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+}
+
+func (arg1 SwigcptrRGB) GetG() (_swig_ret int) {
+	var swig_r int
+	_swig_i_0 := arg1
+	swig_r = (int)(C._wrap_RGB_g_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrRGB) SetB(arg2 int) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_RGB_b_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+}
+
+func (arg1 SwigcptrRGB) GetB() (_swig_ret int) {
+	var swig_r int
+	_swig_i_0 := arg1
+	swig_r = (int)(C._wrap_RGB_b_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func NewRGB() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_new_RGB_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteRGB(arg1 RGB) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_RGB_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type RGB interface {
+	Swigcptr() uintptr
+	SwigIsRGB()
+	SetR(arg2 int)
+	GetR() (_swig_ret int)
+	SetG(arg2 int)
+	GetG() (_swig_ret int)
+	SetB(arg2 int)
+	GetB() (_swig_ret int)
+}
+
+type SwigcptrDataSeries uintptr
+
+func (p SwigcptrDataSeries) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrDataSeries) SwigIsDataSeries() {
+}
+
+type DatamungePlotDataSeriesKind int
+func _swig_getDataSeries_Kind_Scatter_DataSeries() (_swig_ret DatamungePlotDataSeriesKind) {
+	var swig_r DatamungePlotDataSeriesKind
+	swig_r = (DatamungePlotDataSeriesKind)(C._wrap_Kind_Scatter_DataSeries_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var DataSeriesKind_Scatter DatamungePlotDataSeriesKind = _swig_getDataSeries_Kind_Scatter_DataSeries()
+func _swig_getDataSeries_Kind_Line_DataSeries() (_swig_ret DatamungePlotDataSeriesKind) {
+	var swig_r DatamungePlotDataSeriesKind
+	swig_r = (DatamungePlotDataSeriesKind)(C._wrap_Kind_Line_DataSeries_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var DataSeriesKind_Line DatamungePlotDataSeriesKind = _swig_getDataSeries_Kind_Line_DataSeries()
+func _swig_getDataSeries_Kind_Bar_DataSeries() (_swig_ret DatamungePlotDataSeriesKind) {
+	var swig_r DatamungePlotDataSeriesKind
+	swig_r = (DatamungePlotDataSeriesKind)(C._wrap_Kind_Bar_DataSeries_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var DataSeriesKind_Bar DatamungePlotDataSeriesKind = _swig_getDataSeries_Kind_Bar_DataSeries()
+func (arg1 SwigcptrDataSeries) SetKind(arg2 DatamungePlotDataSeriesKind) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_DataSeries_kind_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+}
+
+func (arg1 SwigcptrDataSeries) GetKind() (_swig_ret DatamungePlotDataSeriesKind) {
+	var swig_r DatamungePlotDataSeriesKind
+	_swig_i_0 := arg1
+	swig_r = (DatamungePlotDataSeriesKind)(C._wrap_DataSeries_kind_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDataSeries) SetX(arg2 DVector) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	C._wrap_DataSeries_x_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+}
+
+func (arg1 SwigcptrDataSeries) GetX() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DataSeries_x_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDataSeries) SetY(arg2 DVector) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	C._wrap_DataSeries_y_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+}
+
+func (arg1 SwigcptrDataSeries) GetY() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_DataSeries_y_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDataSeries) SetLabel(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_DataSeries_label_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_756)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func (arg1 SwigcptrDataSeries) GetLabel() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_DataSeries_label_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrDataSeries) SetColor(arg2 RGB) {
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	C._wrap_DataSeries_color_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))
+}
+
+func (arg1 SwigcptrDataSeries) GetColor() (_swig_ret RGB) {
+	var swig_r RGB
+	_swig_i_0 := arg1
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_DataSeries_color_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrDataSeries) SetStroke_width(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_DataSeries_stroke_width_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrDataSeries) GetStroke_width() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_DataSeries_stroke_width_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDataSeries) SetMarker_size(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_DataSeries_marker_size_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrDataSeries) GetMarker_size() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_DataSeries_marker_size_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrDataSeries) SetBar_width(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_DataSeries_bar_width_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrDataSeries) GetBar_width() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_DataSeries_bar_width_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func NewDataSeries() (_swig_ret DataSeries) {
+	var swig_r DataSeries
+	swig_r = (DataSeries)(SwigcptrDataSeries(C._wrap_new_DataSeries_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteDataSeries(arg1 DataSeries) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_DataSeries_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type DataSeries interface {
+	Swigcptr() uintptr
+	SwigIsDataSeries()
+	SetKind(arg2 DatamungePlotDataSeriesKind)
+	GetKind() (_swig_ret DatamungePlotDataSeriesKind)
+	SetX(arg2 DVector)
+	GetX() (_swig_ret DVector)
+	SetY(arg2 DVector)
+	GetY() (_swig_ret DVector)
+	SetLabel(arg2 string)
+	GetLabel() (_swig_ret string)
+	SetColor(arg2 RGB)
+	GetColor() (_swig_ret RGB)
+	SetStroke_width(arg2 float64)
+	GetStroke_width() (_swig_ret float64)
+	SetMarker_size(arg2 float64)
+	GetMarker_size() (_swig_ret float64)
+	SetBar_width(arg2 float64)
+	GetBar_width() (_swig_ret float64)
+}
+
+type SwigcptrPlot uintptr
+
+func (p SwigcptrPlot) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrPlot) SwigIsPlot() {
+}
+
+func DeletePlot(arg1 Plot) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Plot_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrPlot) Size(arg2 int64, arg3 int64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_758(_swig_i_1), C.swig_type_759(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Title(arg2 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_title_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_760)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) X_label(arg2 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_x_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_761)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Y_label(arg2 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_y_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_762)(unsafe.Pointer(&_swig_i_1)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Background(arg2 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_background_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Axis_color(arg2 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_axis_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Grid_color(arg2 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Show_grid__SWIG_0(arg2 bool) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Show_grid__SWIG_1() (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (p SwigcptrPlot) Show_grid(a ...interface{}) Plot {
+	argc := len(a)
+	if argc == 0 {
+		return p.Show_grid__SWIG_1()
+	}
+	if argc == 1 {
+		return p.Show_grid__SWIG_0(a[0].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrPlot) X_limits(arg2 float64, arg3 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Y_limits(arg2 float64, arg3 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_Plot_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Width() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Plot_width_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Height() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_Plot_height_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Title_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Plot_title_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrPlot) X_label_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Plot_x_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrPlot) Y_label_text() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_Plot_y_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (arg1 SwigcptrPlot) Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_) {
+	var swig_r Std_vector_Sl_datamunge_plot_DataSeries_Sg_
+	_swig_i_0 := arg1
+	swig_r = (Std_vector_Sl_datamunge_plot_DataSeries_Sg_)(SwigcptrStd_vector_Sl_datamunge_plot_DataSeries_Sg_(C._wrap_Plot_series_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Background_color() (_swig_ret RGB) {
+	var swig_r RGB
+	_swig_i_0 := arg1
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_Plot_background_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Axes_color() (_swig_ret RGB) {
+	var swig_r RGB
+	_swig_i_0 := arg1
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_Plot_axes_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Major_grid_color() (_swig_ret RGB) {
+	var swig_r RGB
+	_swig_i_0 := arg1
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_Plot_major_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Grid_visible() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Plot_grid_visible_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Has_x_limits() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Plot_has_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Has_y_limits() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_Plot_has_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) X_min() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Plot_x_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) X_max() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Plot_x_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Y_min() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Plot_y_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Y_max() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_Plot_y_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrPlot) Save(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_Plot_save_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_768)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func (arg1 SwigcptrPlot) Save_svg(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_Plot_save_svg_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_769)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func (arg1 SwigcptrPlot) View__SWIG_0(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_Plot_view__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_770)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func (arg1 SwigcptrPlot) View__SWIG_1() {
+	_swig_i_0 := arg1
+	C._wrap_Plot_view__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (p SwigcptrPlot) View(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.View__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.View__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrPlot) Show__SWIG_0(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_Plot_show__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_771)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func (arg1 SwigcptrPlot) Show__SWIG_1() {
+	_swig_i_0 := arg1
+	C._wrap_Plot_show__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (p SwigcptrPlot) Show(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.Show__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.Show__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func NewPlot() (_swig_ret Plot) {
+	var swig_r Plot
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_new_Plot_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+type Plot interface {
+	Swigcptr() uintptr
+	SwigIsPlot()
+	Size(arg2 int64, arg3 int64) (_swig_ret Plot)
+	Title(arg2 string) (_swig_ret Plot)
+	X_label(arg2 string) (_swig_ret Plot)
+	Y_label(arg2 string) (_swig_ret Plot)
+	Background(arg2 RGB) (_swig_ret Plot)
+	Axis_color(arg2 RGB) (_swig_ret Plot)
+	Grid_color(arg2 RGB) (_swig_ret Plot)
+	Show_grid(a ...interface{}) Plot
+	X_limits(arg2 float64, arg3 float64) (_swig_ret Plot)
+	Y_limits(arg2 float64, arg3 float64) (_swig_ret Plot)
+	Width() (_swig_ret int64)
+	Height() (_swig_ret int64)
+	Title_text() (_swig_ret string)
+	X_label_text() (_swig_ret string)
+	Y_label_text() (_swig_ret string)
+	Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_)
+	Background_color() (_swig_ret RGB)
+	Axes_color() (_swig_ret RGB)
+	Major_grid_color() (_swig_ret RGB)
+	Grid_visible() (_swig_ret bool)
+	Has_x_limits() (_swig_ret bool)
+	Has_y_limits() (_swig_ret bool)
+	X_min() (_swig_ret float64)
+	X_max() (_swig_ret float64)
+	Y_min() (_swig_ret float64)
+	Y_max() (_swig_ret float64)
+	Save(arg2 string)
+	Save_svg(arg2 string)
+	View(a ...interface{})
+	Show(a ...interface{})
+}
+
+type SwigcptrScatterPlot uintptr
+
+func (p SwigcptrScatterPlot) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrScatterPlot) SwigIsScatterPlot() {
+}
+
+func ScatterPlotCreate() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_create_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func (arg1 SwigcptrScatterPlot) Points__SWIG_0(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB, arg6 float64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	_swig_i_5 := arg6
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_points__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_772)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrScatterPlot) Points__SWIG_1(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_points__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_773)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrScatterPlot) Points__SWIG_2(arg2 DVector, arg3 DVector, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_points__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_774)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrScatterPlot) Points__SWIG_3(arg2 DVector, arg3 DVector) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_points__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))))
+	return swig_r
+}
+
+func (p SwigcptrScatterPlot) Points(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Points__SWIG_3(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return p.Points__SWIG_2(a[0].(DVector), a[1].(DVector), a[2].(string))
+	}
+	if argc == 4 {
+		return p.Points__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB))
+	}
+	if argc == 5 {
+		return p.Points__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB), a[4].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrScatterPlot) Line__SWIG_0(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB, arg6 float64) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	_swig_i_5 := arg6
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_line__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_775)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrScatterPlot) Line__SWIG_1(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_line__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_776)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrScatterPlot) Line__SWIG_2(arg2 DVector, arg3 DVector, arg4 string) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_line__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_777)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrScatterPlot) Line__SWIG_3(arg2 DVector, arg3 DVector) (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_ScatterPlot_line__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))))
+	return swig_r
+}
+
+func (p SwigcptrScatterPlot) Line(a ...interface{}) ScatterPlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Line__SWIG_3(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return p.Line__SWIG_2(a[0].(DVector), a[1].(DVector), a[2].(string))
+	}
+	if argc == 4 {
+		return p.Line__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB))
+	}
+	if argc == 5 {
+		return p.Line__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB), a[4].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func NewScatterPlot() (_swig_ret ScatterPlot) {
+	var swig_r ScatterPlot
+	swig_r = (ScatterPlot)(SwigcptrScatterPlot(C._wrap_new_ScatterPlot_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteScatterPlot(arg1 ScatterPlot) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_ScatterPlot_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (_swig_base SwigcptrScatterPlot) Size(arg1 int64, arg2 int64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.swig_type_778(_swig_i_0), C.swig_type_779(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Title(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_title_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_780)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) X_label(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_x_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_781)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Y_label(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_y_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_782)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Background(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_background_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Axis_color(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_axis_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Grid_color(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Show_grid__SWIG_0(arg1 bool) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C._Bool(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Show_grid__SWIG_1() (_swig_ret Plot) {
+	var swig_r Plot
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (p SwigcptrScatterPlot) Show_grid(a ...interface{}) Plot {
+	argc := len(a)
+	if argc == 0 {
+		return p.Show_grid__SWIG_1()
+	}
+	if argc == 1 {
+		return p.Show_grid__SWIG_0(a[0].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (_swig_base SwigcptrScatterPlot) X_limits(arg1 float64, arg2 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Y_limits(arg1 float64, arg2 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_ScatterPlot_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Width() (_swig_ret int64) {
+	var swig_r int64
+	swig_r = (int64)(C._wrap_ScatterPlot_width_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Height() (_swig_ret int64) {
+	var swig_r int64
+	swig_r = (int64)(C._wrap_ScatterPlot_height_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Title_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_ScatterPlot_title_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrScatterPlot) X_label_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_ScatterPlot_x_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrScatterPlot) Y_label_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_ScatterPlot_y_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrScatterPlot) Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_) {
+	var swig_r Std_vector_Sl_datamunge_plot_DataSeries_Sg_
+	swig_r = (Std_vector_Sl_datamunge_plot_DataSeries_Sg_)(SwigcptrStd_vector_Sl_datamunge_plot_DataSeries_Sg_(C._wrap_ScatterPlot_series_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Background_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_ScatterPlot_background_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Axes_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_ScatterPlot_axes_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Major_grid_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_ScatterPlot_major_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Grid_visible() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_ScatterPlot_grid_visible_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Has_x_limits() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_ScatterPlot_has_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Has_y_limits() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_ScatterPlot_has_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) X_min() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_ScatterPlot_x_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) X_max() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_ScatterPlot_x_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Y_min() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_ScatterPlot_y_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Y_max() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_ScatterPlot_y_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrScatterPlot) Save(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_ScatterPlot_save_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_788)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrScatterPlot) Save_svg(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_ScatterPlot_save_svg_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_789)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrScatterPlot) View__SWIG_0(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_ScatterPlot_view__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_790)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrScatterPlot) View__SWIG_1() {
+	C._wrap_ScatterPlot_view__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+}
+
+func (p SwigcptrScatterPlot) View(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.View__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.View__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func (_swig_base SwigcptrScatterPlot) Show__SWIG_0(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_ScatterPlot_show__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_791)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrScatterPlot) Show__SWIG_1() {
+	C._wrap_ScatterPlot_show__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+}
+
+func (p SwigcptrScatterPlot) Show(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.Show__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.Show__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func (p SwigcptrScatterPlot) SwigIsPlot() {
+}
+
+func (p SwigcptrScatterPlot) SwigGetPlot() Plot {
+	return SwigcptrPlot(getSwigcptr(p))
+}
+
+type ScatterPlot interface {
+	Swigcptr() uintptr
+	SwigIsScatterPlot()
+	Points(a ...interface{}) ScatterPlot
+	Line(a ...interface{}) ScatterPlot
+	Size(arg1 int64, arg2 int64) (_swig_ret Plot)
+	Title(arg1 string) (_swig_ret Plot)
+	X_label(arg1 string) (_swig_ret Plot)
+	Y_label(arg1 string) (_swig_ret Plot)
+	Background(arg1 RGB) (_swig_ret Plot)
+	Axis_color(arg1 RGB) (_swig_ret Plot)
+	Grid_color(arg1 RGB) (_swig_ret Plot)
+	Show_grid(a ...interface{}) Plot
+	X_limits(arg1 float64, arg2 float64) (_swig_ret Plot)
+	Y_limits(arg1 float64, arg2 float64) (_swig_ret Plot)
+	Width() (_swig_ret int64)
+	Height() (_swig_ret int64)
+	Title_text() (_swig_ret string)
+	X_label_text() (_swig_ret string)
+	Y_label_text() (_swig_ret string)
+	Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_)
+	Background_color() (_swig_ret RGB)
+	Axes_color() (_swig_ret RGB)
+	Major_grid_color() (_swig_ret RGB)
+	Grid_visible() (_swig_ret bool)
+	Has_x_limits() (_swig_ret bool)
+	Has_y_limits() (_swig_ret bool)
+	X_min() (_swig_ret float64)
+	X_max() (_swig_ret float64)
+	Y_min() (_swig_ret float64)
+	Y_max() (_swig_ret float64)
+	Save(arg1 string)
+	Save_svg(arg1 string)
+	View(a ...interface{})
+	Show(a ...interface{})
+	SwigIsPlot()
+	SwigGetPlot() Plot
+}
+
+type SwigcptrLinePlot uintptr
+
+func (p SwigcptrLinePlot) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrLinePlot) SwigIsLinePlot() {
+}
+
+func LinePlotCreate() (_swig_ret LinePlot) {
+	var swig_r LinePlot
+	swig_r = (LinePlot)(SwigcptrLinePlot(C._wrap_LinePlot_create_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func (arg1 SwigcptrLinePlot) Line__SWIG_0(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB, arg6 float64) (_swig_ret LinePlot) {
+	var swig_r LinePlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	_swig_i_5 := arg6
+	swig_r = (LinePlot)(SwigcptrLinePlot(C._wrap_LinePlot_line__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_792)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrLinePlot) Line__SWIG_1(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB) (_swig_ret LinePlot) {
+	var swig_r LinePlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	swig_r = (LinePlot)(SwigcptrLinePlot(C._wrap_LinePlot_line__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_793)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrLinePlot) Line__SWIG_2(arg2 DVector, arg3 DVector, arg4 string) (_swig_ret LinePlot) {
+	var swig_r LinePlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	swig_r = (LinePlot)(SwigcptrLinePlot(C._wrap_LinePlot_line__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_794)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrLinePlot) Line__SWIG_3(arg2 DVector, arg3 DVector) (_swig_ret LinePlot) {
+	var swig_r LinePlot
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	swig_r = (LinePlot)(SwigcptrLinePlot(C._wrap_LinePlot_line__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))))
+	return swig_r
+}
+
+func (p SwigcptrLinePlot) Line(a ...interface{}) LinePlot {
+	argc := len(a)
+	if argc == 2 {
+		return p.Line__SWIG_3(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return p.Line__SWIG_2(a[0].(DVector), a[1].(DVector), a[2].(string))
+	}
+	if argc == 4 {
+		return p.Line__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB))
+	}
+	if argc == 5 {
+		return p.Line__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB), a[4].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func NewLinePlot() (_swig_ret LinePlot) {
+	var swig_r LinePlot
+	swig_r = (LinePlot)(SwigcptrLinePlot(C._wrap_new_LinePlot_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteLinePlot(arg1 LinePlot) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_LinePlot_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (_swig_base SwigcptrLinePlot) Size(arg1 int64, arg2 int64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.swig_type_778(_swig_i_0), C.swig_type_779(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Title(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_title_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_780)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) X_label(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_x_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_781)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Y_label(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_y_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_782)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Background(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_background_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Axis_color(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_axis_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Grid_color(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Show_grid__SWIG_0(arg1 bool) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C._Bool(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Show_grid__SWIG_1() (_swig_ret Plot) {
+	var swig_r Plot
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (p SwigcptrLinePlot) Show_grid(a ...interface{}) Plot {
+	argc := len(a)
+	if argc == 0 {
+		return p.Show_grid__SWIG_1()
+	}
+	if argc == 1 {
+		return p.Show_grid__SWIG_0(a[0].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (_swig_base SwigcptrLinePlot) X_limits(arg1 float64, arg2 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Y_limits(arg1 float64, arg2 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_LinePlot_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Width() (_swig_ret int64) {
+	var swig_r int64
+	swig_r = (int64)(C._wrap_LinePlot_width_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Height() (_swig_ret int64) {
+	var swig_r int64
+	swig_r = (int64)(C._wrap_LinePlot_height_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Title_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_LinePlot_title_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrLinePlot) X_label_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_LinePlot_x_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrLinePlot) Y_label_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_LinePlot_y_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrLinePlot) Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_) {
+	var swig_r Std_vector_Sl_datamunge_plot_DataSeries_Sg_
+	swig_r = (Std_vector_Sl_datamunge_plot_DataSeries_Sg_)(SwigcptrStd_vector_Sl_datamunge_plot_DataSeries_Sg_(C._wrap_LinePlot_series_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Background_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_LinePlot_background_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Axes_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_LinePlot_axes_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Major_grid_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_LinePlot_major_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Grid_visible() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_LinePlot_grid_visible_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Has_x_limits() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_LinePlot_has_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Has_y_limits() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_LinePlot_has_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) X_min() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_LinePlot_x_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) X_max() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_LinePlot_x_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Y_min() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_LinePlot_y_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Y_max() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_LinePlot_y_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrLinePlot) Save(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_LinePlot_save_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_788)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrLinePlot) Save_svg(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_LinePlot_save_svg_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_789)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrLinePlot) View__SWIG_0(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_LinePlot_view__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_790)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrLinePlot) View__SWIG_1() {
+	C._wrap_LinePlot_view__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+}
+
+func (p SwigcptrLinePlot) View(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.View__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.View__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func (_swig_base SwigcptrLinePlot) Show__SWIG_0(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_LinePlot_show__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_791)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrLinePlot) Show__SWIG_1() {
+	C._wrap_LinePlot_show__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+}
+
+func (p SwigcptrLinePlot) Show(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.Show__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.Show__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func (p SwigcptrLinePlot) SwigIsPlot() {
+}
+
+func (p SwigcptrLinePlot) SwigGetPlot() Plot {
+	return SwigcptrPlot(getSwigcptr(p))
+}
+
+type LinePlot interface {
+	Swigcptr() uintptr
+	SwigIsLinePlot()
+	Line(a ...interface{}) LinePlot
+	Size(arg1 int64, arg2 int64) (_swig_ret Plot)
+	Title(arg1 string) (_swig_ret Plot)
+	X_label(arg1 string) (_swig_ret Plot)
+	Y_label(arg1 string) (_swig_ret Plot)
+	Background(arg1 RGB) (_swig_ret Plot)
+	Axis_color(arg1 RGB) (_swig_ret Plot)
+	Grid_color(arg1 RGB) (_swig_ret Plot)
+	Show_grid(a ...interface{}) Plot
+	X_limits(arg1 float64, arg2 float64) (_swig_ret Plot)
+	Y_limits(arg1 float64, arg2 float64) (_swig_ret Plot)
+	Width() (_swig_ret int64)
+	Height() (_swig_ret int64)
+	Title_text() (_swig_ret string)
+	X_label_text() (_swig_ret string)
+	Y_label_text() (_swig_ret string)
+	Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_)
+	Background_color() (_swig_ret RGB)
+	Axes_color() (_swig_ret RGB)
+	Major_grid_color() (_swig_ret RGB)
+	Grid_visible() (_swig_ret bool)
+	Has_x_limits() (_swig_ret bool)
+	Has_y_limits() (_swig_ret bool)
+	X_min() (_swig_ret float64)
+	X_max() (_swig_ret float64)
+	Y_min() (_swig_ret float64)
+	Y_max() (_swig_ret float64)
+	Save(arg1 string)
+	Save_svg(arg1 string)
+	View(a ...interface{})
+	Show(a ...interface{})
+	SwigIsPlot()
+	SwigGetPlot() Plot
+}
+
+type SwigcptrBarChart uintptr
+
+func (p SwigcptrBarChart) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrBarChart) SwigIsBarChart() {
+}
+
+func BarChartCreate() (_swig_ret BarChart) {
+	var swig_r BarChart
+	swig_r = (BarChart)(SwigcptrBarChart(C._wrap_BarChart_create_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func (arg1 SwigcptrBarChart) Bars__SWIG_0(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB, arg6 float64) (_swig_ret BarChart) {
+	var swig_r BarChart
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	_swig_i_5 := arg6
+	swig_r = (BarChart)(SwigcptrBarChart(C._wrap_BarChart_bars__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_800)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4), C.double(_swig_i_5))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrBarChart) Bars__SWIG_1(arg2 DVector, arg3 DVector, arg4 string, arg5 RGB) (_swig_ret BarChart) {
+	var swig_r BarChart
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	_swig_i_4 := getSwigcptr(arg5)
+	swig_r = (BarChart)(SwigcptrBarChart(C._wrap_BarChart_bars__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_801)(unsafe.Pointer(&_swig_i_3)), C.uintptr_t(_swig_i_4))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrBarChart) Bars__SWIG_2(arg2 DVector, arg3 DVector, arg4 string) (_swig_ret BarChart) {
+	var swig_r BarChart
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	_swig_i_3 := arg4
+	swig_r = (BarChart)(SwigcptrBarChart(C._wrap_BarChart_bars__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2), *(*C.swig_type_802)(unsafe.Pointer(&_swig_i_3)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg4
+	}
+	return swig_r
+}
+
+func (arg1 SwigcptrBarChart) Bars__SWIG_3(arg2 DVector, arg3 DVector) (_swig_ret BarChart) {
+	var swig_r BarChart
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := getSwigcptr(arg3)
+	swig_r = (BarChart)(SwigcptrBarChart(C._wrap_BarChart_bars__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.uintptr_t(_swig_i_2))))
+	return swig_r
+}
+
+func (p SwigcptrBarChart) Bars(a ...interface{}) BarChart {
+	argc := len(a)
+	if argc == 2 {
+		return p.Bars__SWIG_3(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return p.Bars__SWIG_2(a[0].(DVector), a[1].(DVector), a[2].(string))
+	}
+	if argc == 4 {
+		return p.Bars__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB))
+	}
+	if argc == 5 {
+		return p.Bars__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(string), a[3].(RGB), a[4].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func NewBarChart() (_swig_ret BarChart) {
+	var swig_r BarChart
+	swig_r = (BarChart)(SwigcptrBarChart(C._wrap_new_BarChart_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteBarChart(arg1 BarChart) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_BarChart_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+func (_swig_base SwigcptrBarChart) Size(arg1 int64, arg2 int64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_size_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.swig_type_778(_swig_i_0), C.swig_type_779(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Title(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_title_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_780)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) X_label(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_x_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_781)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Y_label(arg1 string) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_y_label_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_782)(unsafe.Pointer(&_swig_i_0)))))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Background(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_background_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Axis_color(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_axis_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Grid_color(arg1 RGB) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Show_grid__SWIG_0(arg1 bool) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_show_grid__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C._Bool(_swig_i_0))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Show_grid__SWIG_1() (_swig_ret Plot) {
+	var swig_r Plot
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_show_grid__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (p SwigcptrBarChart) Show_grid(a ...interface{}) Plot {
+	argc := len(a)
+	if argc == 0 {
+		return p.Show_grid__SWIG_1()
+	}
+	if argc == 1 {
+		return p.Show_grid__SWIG_0(a[0].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (_swig_base SwigcptrBarChart) X_limits(arg1 float64, arg2 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Y_limits(arg1 float64, arg2 float64) (_swig_ret Plot) {
+	var swig_r Plot
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (Plot)(SwigcptrPlot(C._wrap_BarChart_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), C.double(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Width() (_swig_ret int64) {
+	var swig_r int64
+	swig_r = (int64)(C._wrap_BarChart_width_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Height() (_swig_ret int64) {
+	var swig_r int64
+	swig_r = (int64)(C._wrap_BarChart_height_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Title_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_BarChart_title_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrBarChart) X_label_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_BarChart_x_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrBarChart) Y_label_text() (_swig_ret string) {
+	var swig_r string
+	swig_r_p := C._wrap_BarChart_y_label_text_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func (_swig_base SwigcptrBarChart) Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_) {
+	var swig_r Std_vector_Sl_datamunge_plot_DataSeries_Sg_
+	swig_r = (Std_vector_Sl_datamunge_plot_DataSeries_Sg_)(SwigcptrStd_vector_Sl_datamunge_plot_DataSeries_Sg_(C._wrap_BarChart_series_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Background_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_BarChart_background_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Axes_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_BarChart_axes_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Major_grid_color() (_swig_ret RGB) {
+	var swig_r RGB
+	swig_r = (RGB)(SwigcptrRGB(C._wrap_BarChart_major_grid_color_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Grid_visible() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_BarChart_grid_visible_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Has_x_limits() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_BarChart_has_x_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Has_y_limits() (_swig_ret bool) {
+	var swig_r bool
+	swig_r = (bool)(C._wrap_BarChart_has_y_limits_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) X_min() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_BarChart_x_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) X_max() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_BarChart_x_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Y_min() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_BarChart_y_min_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Y_max() (_swig_ret float64) {
+	var swig_r float64
+	swig_r = (float64)(C._wrap_BarChart_y_max_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base)))
+	return swig_r
+}
+
+func (_swig_base SwigcptrBarChart) Save(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_BarChart_save_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_788)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrBarChart) Save_svg(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_BarChart_save_svg_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_789)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrBarChart) View__SWIG_0(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_BarChart_view__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_790)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrBarChart) View__SWIG_1() {
+	C._wrap_BarChart_view__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+}
+
+func (p SwigcptrBarChart) View(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.View__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.View__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func (_swig_base SwigcptrBarChart) Show__SWIG_0(arg1 string) {
+	_swig_i_0 := arg1
+	C._wrap_BarChart_show__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base), *(*C.swig_type_791)(unsafe.Pointer(&_swig_i_0)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg1
+	}
+}
+
+func (_swig_base SwigcptrBarChart) Show__SWIG_1() {
+	C._wrap_BarChart_show__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_base))
+}
+
+func (p SwigcptrBarChart) Show(a ...interface{}) {
+	argc := len(a)
+	if argc == 0 {
+		p.Show__SWIG_1()
+		return
+	}
+	if argc == 1 {
+		p.Show__SWIG_0(a[0].(string))
+		return
+	}
+	panic("No match for overloaded function call")
+}
+
+func (p SwigcptrBarChart) SwigIsPlot() {
+}
+
+func (p SwigcptrBarChart) SwigGetPlot() Plot {
+	return SwigcptrPlot(getSwigcptr(p))
+}
+
+type BarChart interface {
+	Swigcptr() uintptr
+	SwigIsBarChart()
+	Bars(a ...interface{}) BarChart
+	Size(arg1 int64, arg2 int64) (_swig_ret Plot)
+	Title(arg1 string) (_swig_ret Plot)
+	X_label(arg1 string) (_swig_ret Plot)
+	Y_label(arg1 string) (_swig_ret Plot)
+	Background(arg1 RGB) (_swig_ret Plot)
+	Axis_color(arg1 RGB) (_swig_ret Plot)
+	Grid_color(arg1 RGB) (_swig_ret Plot)
+	Show_grid(a ...interface{}) Plot
+	X_limits(arg1 float64, arg2 float64) (_swig_ret Plot)
+	Y_limits(arg1 float64, arg2 float64) (_swig_ret Plot)
+	Width() (_swig_ret int64)
+	Height() (_swig_ret int64)
+	Title_text() (_swig_ret string)
+	X_label_text() (_swig_ret string)
+	Y_label_text() (_swig_ret string)
+	Series() (_swig_ret Std_vector_Sl_datamunge_plot_DataSeries_Sg_)
+	Background_color() (_swig_ret RGB)
+	Axes_color() (_swig_ret RGB)
+	Major_grid_color() (_swig_ret RGB)
+	Grid_visible() (_swig_ret bool)
+	Has_x_limits() (_swig_ret bool)
+	Has_y_limits() (_swig_ret bool)
+	X_min() (_swig_ret float64)
+	X_max() (_swig_ret float64)
+	Y_min() (_swig_ret float64)
+	Y_max() (_swig_ret float64)
+	Save(arg1 string)
+	Save_svg(arg1 string)
+	View(a ...interface{})
+	Show(a ...interface{})
+	SwigIsPlot()
+	SwigGetPlot() Plot
+}
+
+type SwigcptrARIMAOptions uintptr
+
+func (p SwigcptrARIMAOptions) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrARIMAOptions) SwigIsARIMAOptions() {
+}
+
+func (arg1 SwigcptrARIMAOptions) SetP(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_p_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_808(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetP() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_p_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetD(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_d_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_810(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetD() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_d_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetQ(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_q_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_812(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetQ() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_q_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetSeasonal_p(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_seasonal_p_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_814(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetSeasonal_p() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_seasonal_p_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetSeasonal_d(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_seasonal_d_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_816(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetSeasonal_d() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_seasonal_d_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetSeasonal_q(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_seasonal_q_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_818(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetSeasonal_q() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_seasonal_q_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetSeasonal_period(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_seasonal_period_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_820(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetSeasonal_period() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_seasonal_period_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetInclude_mean(arg2 bool) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_include_mean_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetInclude_mean() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_ARIMAOptions_include_mean_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetDe_population_size(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_de_population_size_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_822(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetDe_population_size() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_de_population_size_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetDe_max_generations(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_de_max_generations_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_824(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetDe_max_generations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMAOptions_de_max_generations_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetCoefficient_bound(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_coefficient_bound_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetCoefficient_bound() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ARIMAOptions_coefficient_bound_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMAOptions) SetSeed(arg2 uint64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ARIMAOptions_seed_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_826(_swig_i_1))
+}
+
+func (arg1 SwigcptrARIMAOptions) GetSeed() (_swig_ret uint64) {
+	var swig_r uint64
+	_swig_i_0 := arg1
+	swig_r = (uint64)(C._wrap_ARIMAOptions_seed_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func NewARIMAOptions() (_swig_ret ARIMAOptions) {
+	var swig_r ARIMAOptions
+	swig_r = (ARIMAOptions)(SwigcptrARIMAOptions(C._wrap_new_ARIMAOptions_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteARIMAOptions(arg1 ARIMAOptions) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_ARIMAOptions_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type ARIMAOptions interface {
+	Swigcptr() uintptr
+	SwigIsARIMAOptions()
+	SetP(arg2 int64)
+	GetP() (_swig_ret int64)
+	SetD(arg2 int64)
+	GetD() (_swig_ret int64)
+	SetQ(arg2 int64)
+	GetQ() (_swig_ret int64)
+	SetSeasonal_p(arg2 int64)
+	GetSeasonal_p() (_swig_ret int64)
+	SetSeasonal_d(arg2 int64)
+	GetSeasonal_d() (_swig_ret int64)
+	SetSeasonal_q(arg2 int64)
+	GetSeasonal_q() (_swig_ret int64)
+	SetSeasonal_period(arg2 int64)
+	GetSeasonal_period() (_swig_ret int64)
+	SetInclude_mean(arg2 bool)
+	GetInclude_mean() (_swig_ret bool)
+	SetDe_population_size(arg2 int64)
+	GetDe_population_size() (_swig_ret int64)
+	SetDe_max_generations(arg2 int64)
+	GetDe_max_generations() (_swig_ret int64)
+	SetCoefficient_bound(arg2 float64)
+	GetCoefficient_bound() (_swig_ret float64)
+	SetSeed(arg2 uint64)
+	GetSeed() (_swig_ret uint64)
+}
+
+type SwigcptrARIMA uintptr
+
+func (p SwigcptrARIMA) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrARIMA) SwigIsARIMA() {
+}
+
+func NewARIMA__SWIG_0(arg1 DVector, arg2 ARIMAOptions) (_swig_ret ARIMA) {
+	var swig_r ARIMA
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (ARIMA)(SwigcptrARIMA(C._wrap_new_ARIMA__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func NewARIMA__SWIG_1(arg1 DVector) (_swig_ret ARIMA) {
+	var swig_r ARIMA
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (ARIMA)(SwigcptrARIMA(C._wrap_new_ARIMA__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func NewARIMA(a ...interface{}) ARIMA {
+	argc := len(a)
+	if argc == 1 {
+		return NewARIMA__SWIG_1(a[0].(DVector))
+	}
+	if argc == 2 {
+		return NewARIMA__SWIG_0(a[0].(DVector), a[1].(ARIMAOptions))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrARIMA) Options() (_swig_ret ARIMAOptions) {
+	var swig_r ARIMAOptions
+	_swig_i_0 := arg1
+	swig_r = (ARIMAOptions)(SwigcptrARIMAOptions(C._wrap_ARIMA_options_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Ar_coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ARIMA_ar_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Ma_coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ARIMA_ma_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Seasonal_ar_coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ARIMA_seasonal_ar_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Seasonal_ma_coefficients() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ARIMA_seasonal_ma_coefficients_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Mean() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ARIMA_mean_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMA_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) N_used() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ARIMA_n_used_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Sigma2() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ARIMA_sigma2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Log_likelihood() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ARIMA_log_likelihood_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Aic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ARIMA_aic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Bic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ARIMA_bic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ARIMA_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ARIMA_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Forecast(arg2 int64) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ARIMA_forecast_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_830(_swig_i_1))))
+	return swig_r
+}
+
+func (arg1 SwigcptrARIMA) Forecast_with_intervals(arg2 int64) (_swig_ret DVectorPair) {
+	var swig_r DVectorPair
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVectorPair)(SwigcptrDVectorPair(C._wrap_ARIMA_forecast_with_intervals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_831(_swig_i_1))))
+	return swig_r
+}
+
+func DeleteARIMA(arg1 ARIMA) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_ARIMA_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type ARIMA interface {
+	Swigcptr() uintptr
+	SwigIsARIMA()
+	Options() (_swig_ret ARIMAOptions)
+	Ar_coefficients() (_swig_ret DVector)
+	Ma_coefficients() (_swig_ret DVector)
+	Seasonal_ar_coefficients() (_swig_ret DVector)
+	Seasonal_ma_coefficients() (_swig_ret DVector)
+	Mean() (_swig_ret float64)
+	Observations() (_swig_ret int64)
+	N_used() (_swig_ret int64)
+	Sigma2() (_swig_ret float64)
+	Log_likelihood() (_swig_ret float64)
+	Aic() (_swig_ret float64)
+	Bic() (_swig_ret float64)
+	Fitted_values() (_swig_ret DVector)
+	Residuals() (_swig_ret DVector)
+	Forecast(arg2 int64) (_swig_ret DVector)
+	Forecast_with_intervals(arg2 int64) (_swig_ret DVectorPair)
+}
+
+type DatamungeStatsTrendType int
+func _swig_getTrendType_None() (_swig_ret DatamungeStatsTrendType) {
+	var swig_r DatamungeStatsTrendType
+	swig_r = (DatamungeStatsTrendType)(C._wrap_TrendType_None_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var TrendType_None DatamungeStatsTrendType = _swig_getTrendType_None()
+func _swig_getTrendType_Additive() (_swig_ret DatamungeStatsTrendType) {
+	var swig_r DatamungeStatsTrendType
+	swig_r = (DatamungeStatsTrendType)(C._wrap_TrendType_Additive_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var TrendType_Additive DatamungeStatsTrendType = _swig_getTrendType_Additive()
+func _swig_getTrendType_AdditiveDamped() (_swig_ret DatamungeStatsTrendType) {
+	var swig_r DatamungeStatsTrendType
+	swig_r = (DatamungeStatsTrendType)(C._wrap_TrendType_AdditiveDamped_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var TrendType_AdditiveDamped DatamungeStatsTrendType = _swig_getTrendType_AdditiveDamped()
+type DatamungeStatsSeasonalType int
+func _swig_getSeasonalType_None() (_swig_ret DatamungeStatsSeasonalType) {
+	var swig_r DatamungeStatsSeasonalType
+	swig_r = (DatamungeStatsSeasonalType)(C._wrap_SeasonalType_None_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var SeasonalType_None DatamungeStatsSeasonalType = _swig_getSeasonalType_None()
+func _swig_getSeasonalType_Additive() (_swig_ret DatamungeStatsSeasonalType) {
+	var swig_r DatamungeStatsSeasonalType
+	swig_r = (DatamungeStatsSeasonalType)(C._wrap_SeasonalType_Additive_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var SeasonalType_Additive DatamungeStatsSeasonalType = _swig_getSeasonalType_Additive()
+func _swig_getSeasonalType_Multiplicative() (_swig_ret DatamungeStatsSeasonalType) {
+	var swig_r DatamungeStatsSeasonalType
+	swig_r = (DatamungeStatsSeasonalType)(C._wrap_SeasonalType_Multiplicative_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var SeasonalType_Multiplicative DatamungeStatsSeasonalType = _swig_getSeasonalType_Multiplicative()
+type SwigcptrExponentialSmoothingOptions uintptr
+
+func (p SwigcptrExponentialSmoothingOptions) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrExponentialSmoothingOptions) SwigIsExponentialSmoothingOptions() {
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetTrend(arg2 DatamungeStatsTrendType) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_trend_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetTrend() (_swig_ret DatamungeStatsTrendType) {
+	var swig_r DatamungeStatsTrendType
+	_swig_i_0 := arg1
+	swig_r = (DatamungeStatsTrendType)(C._wrap_ExponentialSmoothingOptions_trend_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetSeasonal(arg2 DatamungeStatsSeasonalType) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_seasonal_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetSeasonal() (_swig_ret DatamungeStatsSeasonalType) {
+	var swig_r DatamungeStatsSeasonalType
+	_swig_i_0 := arg1
+	swig_r = (DatamungeStatsSeasonalType)(C._wrap_ExponentialSmoothingOptions_seasonal_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetSeasonal_period(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_seasonal_period_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_832(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetSeasonal_period() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ExponentialSmoothingOptions_seasonal_period_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetAlpha(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_alpha_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetAlpha() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothingOptions_alpha_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetBeta(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_beta_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetBeta() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothingOptions_beta_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetGamma(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_gamma_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetGamma() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothingOptions_gamma_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetPhi(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_phi_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetPhi() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothingOptions_phi_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetDe_population_size(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_de_population_size_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_834(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetDe_population_size() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ExponentialSmoothingOptions_de_population_size_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetDe_max_generations(arg2 int64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_de_max_generations_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_836(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetDe_max_generations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ExponentialSmoothingOptions_de_max_generations_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) SetSeed(arg2 uint64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_ExponentialSmoothingOptions_seed_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_838(_swig_i_1))
+}
+
+func (arg1 SwigcptrExponentialSmoothingOptions) GetSeed() (_swig_ret uint64) {
+	var swig_r uint64
+	_swig_i_0 := arg1
+	swig_r = (uint64)(C._wrap_ExponentialSmoothingOptions_seed_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func NewExponentialSmoothingOptions() (_swig_ret ExponentialSmoothingOptions) {
+	var swig_r ExponentialSmoothingOptions
+	swig_r = (ExponentialSmoothingOptions)(SwigcptrExponentialSmoothingOptions(C._wrap_new_ExponentialSmoothingOptions_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteExponentialSmoothingOptions(arg1 ExponentialSmoothingOptions) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_ExponentialSmoothingOptions_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type ExponentialSmoothingOptions interface {
+	Swigcptr() uintptr
+	SwigIsExponentialSmoothingOptions()
+	SetTrend(arg2 DatamungeStatsTrendType)
+	GetTrend() (_swig_ret DatamungeStatsTrendType)
+	SetSeasonal(arg2 DatamungeStatsSeasonalType)
+	GetSeasonal() (_swig_ret DatamungeStatsSeasonalType)
+	SetSeasonal_period(arg2 int64)
+	GetSeasonal_period() (_swig_ret int64)
+	SetAlpha(arg2 float64)
+	GetAlpha() (_swig_ret float64)
+	SetBeta(arg2 float64)
+	GetBeta() (_swig_ret float64)
+	SetGamma(arg2 float64)
+	GetGamma() (_swig_ret float64)
+	SetPhi(arg2 float64)
+	GetPhi() (_swig_ret float64)
+	SetDe_population_size(arg2 int64)
+	GetDe_population_size() (_swig_ret int64)
+	SetDe_max_generations(arg2 int64)
+	GetDe_max_generations() (_swig_ret int64)
+	SetSeed(arg2 uint64)
+	GetSeed() (_swig_ret uint64)
+}
+
+type SwigcptrExponentialSmoothing uintptr
+
+func (p SwigcptrExponentialSmoothing) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrExponentialSmoothing) SwigIsExponentialSmoothing() {
+}
+
+func NewExponentialSmoothing__SWIG_0(arg1 DVector, arg2 ExponentialSmoothingOptions) (_swig_ret ExponentialSmoothing) {
+	var swig_r ExponentialSmoothing
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (ExponentialSmoothing)(SwigcptrExponentialSmoothing(C._wrap_new_ExponentialSmoothing__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func NewExponentialSmoothing__SWIG_1(arg1 DVector) (_swig_ret ExponentialSmoothing) {
+	var swig_r ExponentialSmoothing
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (ExponentialSmoothing)(SwigcptrExponentialSmoothing(C._wrap_new_ExponentialSmoothing__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func NewExponentialSmoothing(a ...interface{}) ExponentialSmoothing {
+	argc := len(a)
+	if argc == 1 {
+		return NewExponentialSmoothing__SWIG_1(a[0].(DVector))
+	}
+	if argc == 2 {
+		return NewExponentialSmoothing__SWIG_0(a[0].(DVector), a[1].(ExponentialSmoothingOptions))
+	}
+	panic("No match for overloaded function call")
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Options() (_swig_ret ExponentialSmoothingOptions) {
+	var swig_r ExponentialSmoothingOptions
+	_swig_i_0 := arg1
+	swig_r = (ExponentialSmoothingOptions)(SwigcptrExponentialSmoothingOptions(C._wrap_ExponentialSmoothing_options_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Alpha() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_alpha_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Beta() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_beta_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Gamma() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_gamma_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Phi() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_phi_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Observations() (_swig_ret int64) {
+	var swig_r int64
+	_swig_i_0 := arg1
+	swig_r = (int64)(C._wrap_ExponentialSmoothing_observations_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Sse() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_sse_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Sigma2() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_sigma2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Log_likelihood() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_log_likelihood_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Aic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_aic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Bic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_ExponentialSmoothing_bic_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Fitted_values() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ExponentialSmoothing_fitted_values_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Residuals() (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ExponentialSmoothing_residuals_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func (arg1 SwigcptrExponentialSmoothing) Forecast(arg2 int64) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_ExponentialSmoothing_forecast_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_841(_swig_i_1))))
+	return swig_r
+}
+
+func DeleteExponentialSmoothing(arg1 ExponentialSmoothing) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_ExponentialSmoothing_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type ExponentialSmoothing interface {
+	Swigcptr() uintptr
+	SwigIsExponentialSmoothing()
+	Options() (_swig_ret ExponentialSmoothingOptions)
+	Alpha() (_swig_ret float64)
+	Beta() (_swig_ret float64)
+	Gamma() (_swig_ret float64)
+	Phi() (_swig_ret float64)
+	Observations() (_swig_ret int64)
+	Sse() (_swig_ret float64)
+	Sigma2() (_swig_ret float64)
+	Log_likelihood() (_swig_ret float64)
+	Aic() (_swig_ret float64)
+	Bic() (_swig_ret float64)
+	Fitted_values() (_swig_ret DVector)
+	Residuals() (_swig_ret DVector)
+	Forecast(arg2 int64) (_swig_ret DVector)
+}
+
+type DatamungeStatsAlternative int
+func _swig_getAlternative_TwoSided() (_swig_ret DatamungeStatsAlternative) {
+	var swig_r DatamungeStatsAlternative
+	swig_r = (DatamungeStatsAlternative)(C._wrap_Alternative_TwoSided_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var Alternative_TwoSided DatamungeStatsAlternative = _swig_getAlternative_TwoSided()
+func _swig_getAlternative_Less() (_swig_ret DatamungeStatsAlternative) {
+	var swig_r DatamungeStatsAlternative
+	swig_r = (DatamungeStatsAlternative)(C._wrap_Alternative_Less_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var Alternative_Less DatamungeStatsAlternative = _swig_getAlternative_Less()
+func _swig_getAlternative_Greater() (_swig_ret DatamungeStatsAlternative) {
+	var swig_r DatamungeStatsAlternative
+	swig_r = (DatamungeStatsAlternative)(C._wrap_Alternative_Greater_datamunge_cd205fa85b728fed())
+	return swig_r
+}
+
+var Alternative_Greater DatamungeStatsAlternative = _swig_getAlternative_Greater()
+type SwigcptrHypothesisTestResult uintptr
+
+func (p SwigcptrHypothesisTestResult) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrHypothesisTestResult) SwigIsHypothesisTestResult() {
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetStatistic(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_statistic_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetStatistic() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_statistic_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetParameter1(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_parameter1_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetParameter1() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_parameter1_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetParameter2(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_parameter2_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetParameter2() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_parameter2_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetP_value(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_p_value_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetP_value() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_p_value_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetEstimate1(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_estimate1_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetEstimate1() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_estimate1_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetEstimate2(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_estimate2_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetEstimate2() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_estimate2_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetConf_int_lower(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_conf_int_lower_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetConf_int_lower() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_conf_int_lower_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetConf_int_upper(arg2 float64) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_conf_int_upper_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetConf_int_upper() (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	swig_r = (float64)(C._wrap_HypothesisTestResult_conf_int_upper_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetHas_conf_int(arg2 bool) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_has_conf_int_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetHas_conf_int() (_swig_ret bool) {
+	var swig_r bool
+	_swig_i_0 := arg1
+	swig_r = (bool)(C._wrap_HypothesisTestResult_has_conf_int_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetAlternative(arg2 DatamungeStatsAlternative) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_alternative_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetAlternative() (_swig_ret DatamungeStatsAlternative) {
+	var swig_r DatamungeStatsAlternative
+	_swig_i_0 := arg1
+	swig_r = (DatamungeStatsAlternative)(C._wrap_HypothesisTestResult_alternative_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func (arg1 SwigcptrHypothesisTestResult) SetMethod(arg2 string) {
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	C._wrap_HypothesisTestResult_method_set_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), *(*C.swig_type_842)(unsafe.Pointer(&_swig_i_1)))
+	if Swig_escape_always_false {
+		Swig_escape_val = arg2
+	}
+}
+
+func (arg1 SwigcptrHypothesisTestResult) GetMethod() (_swig_ret string) {
+	var swig_r string
+	_swig_i_0 := arg1
+	swig_r_p := C._wrap_HypothesisTestResult_method_get_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
+	var swig_r_1 string
+ swig_r_1 = swigCopyString(swig_r) 
+	return swig_r_1
+}
+
+func NewHypothesisTestResult() (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_new_HypothesisTestResult_datamunge_cd205fa85b728fed()))
+	return swig_r
+}
+
+func DeleteHypothesisTestResult(arg1 HypothesisTestResult) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_HypothesisTestResult_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))
+}
+
+type HypothesisTestResult interface {
+	Swigcptr() uintptr
+	SwigIsHypothesisTestResult()
+	SetStatistic(arg2 float64)
+	GetStatistic() (_swig_ret float64)
+	SetParameter1(arg2 float64)
+	GetParameter1() (_swig_ret float64)
+	SetParameter2(arg2 float64)
+	GetParameter2() (_swig_ret float64)
+	SetP_value(arg2 float64)
+	GetP_value() (_swig_ret float64)
+	SetEstimate1(arg2 float64)
+	GetEstimate1() (_swig_ret float64)
+	SetEstimate2(arg2 float64)
+	GetEstimate2() (_swig_ret float64)
+	SetConf_int_lower(arg2 float64)
+	GetConf_int_lower() (_swig_ret float64)
+	SetConf_int_upper(arg2 float64)
+	GetConf_int_upper() (_swig_ret float64)
+	SetHas_conf_int(arg2 bool)
+	GetHas_conf_int() (_swig_ret bool)
+	SetAlternative(arg2 DatamungeStatsAlternative)
+	GetAlternative() (_swig_ret DatamungeStatsAlternative)
+	SetMethod(arg2 string)
+	GetMethod() (_swig_ret string)
+}
+
+func T_test_one_sample__SWIG_0(arg1 DVector, arg2 float64, arg3 DatamungeStatsAlternative, arg4 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_one_sample__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C.swig_intgo(_swig_i_2), C.double(_swig_i_3))))
+	return swig_r
+}
+
+func T_test_one_sample__SWIG_1(arg1 DVector, arg2 float64, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_one_sample__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func T_test_one_sample__SWIG_2(arg1 DVector, arg2 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_one_sample__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func T_test_one_sample__SWIG_3(arg1 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_one_sample__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func T_test_one_sample(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 1 {
+		return T_test_one_sample__SWIG_3(a[0].(DVector))
+	}
+	if argc == 2 {
+		return T_test_one_sample__SWIG_2(a[0].(DVector), a[1].(float64))
+	}
+	if argc == 3 {
+		return T_test_one_sample__SWIG_1(a[0].(DVector), a[1].(float64), a[2].(DatamungeStatsAlternative))
+	}
+	if argc == 4 {
+		return T_test_one_sample__SWIG_0(a[0].(DVector), a[1].(float64), a[2].(DatamungeStatsAlternative), a[3].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func T_test_two_sample__SWIG_0(arg1 DVector, arg2 DVector, arg3 bool, arg4 DatamungeStatsAlternative, arg5 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C._Bool(_swig_i_2), C.swig_intgo(_swig_i_3), C.double(_swig_i_4))))
+	return swig_r
+}
+
+func T_test_two_sample__SWIG_1(arg1 DVector, arg2 DVector, arg3 bool, arg4 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C._Bool(_swig_i_2), C.swig_intgo(_swig_i_3))))
+	return swig_r
+}
+
+func T_test_two_sample__SWIG_2(arg1 DVector, arg2 DVector, arg3 bool) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_two_sample__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C._Bool(_swig_i_2))))
+	return swig_r
+}
+
+func T_test_two_sample__SWIG_3(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_two_sample__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func T_test_two_sample(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return T_test_two_sample__SWIG_3(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return T_test_two_sample__SWIG_2(a[0].(DVector), a[1].(DVector), a[2].(bool))
+	}
+	if argc == 4 {
+		return T_test_two_sample__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(bool), a[3].(DatamungeStatsAlternative))
+	}
+	if argc == 5 {
+		return T_test_two_sample__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(bool), a[3].(DatamungeStatsAlternative), a[4].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func T_test_paired__SWIG_0(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative, arg4 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_paired__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2), C.double(_swig_i_3))))
+	return swig_r
+}
+
+func T_test_paired__SWIG_1(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_paired__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func T_test_paired__SWIG_2(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_t_test_paired__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func T_test_paired(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return T_test_paired__SWIG_2(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return T_test_paired__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative))
+	}
+	if argc == 4 {
+		return T_test_paired__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative), a[3].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Wilcoxon_signed_rank_test__SWIG_0(arg1 DVector, arg2 float64, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_wilcoxon_signed_rank_test__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func Wilcoxon_signed_rank_test__SWIG_1(arg1 DVector, arg2 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_wilcoxon_signed_rank_test__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func Wilcoxon_signed_rank_test__SWIG_2(arg1 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_wilcoxon_signed_rank_test__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func Wilcoxon_signed_rank_test(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 1 {
+		return Wilcoxon_signed_rank_test__SWIG_2(a[0].(DVector))
+	}
+	if argc == 2 {
+		return Wilcoxon_signed_rank_test__SWIG_1(a[0].(DVector), a[1].(float64))
+	}
+	if argc == 3 {
+		return Wilcoxon_signed_rank_test__SWIG_0(a[0].(DVector), a[1].(float64), a[2].(DatamungeStatsAlternative))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Wilcoxon_rank_sum_test__SWIG_0(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_wilcoxon_rank_sum_test__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func Wilcoxon_rank_sum_test__SWIG_1(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_wilcoxon_rank_sum_test__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func Wilcoxon_rank_sum_test(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return Wilcoxon_rank_sum_test__SWIG_1(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return Wilcoxon_rank_sum_test__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Ks_test_one_sample_normal__SWIG_0(arg1 DVector, arg2 float64, arg3 float64, arg4 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_ks_test_one_sample_normal__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2), C.swig_intgo(_swig_i_3))))
+	return swig_r
+}
+
+func Ks_test_one_sample_normal__SWIG_1(arg1 DVector, arg2 float64, arg3 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_ks_test_one_sample_normal__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func Ks_test_one_sample_normal__SWIG_2(arg1 DVector, arg2 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_ks_test_one_sample_normal__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))))
+	return swig_r
+}
+
+func Ks_test_one_sample_normal__SWIG_3(arg1 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_ks_test_one_sample_normal__SWIG_3_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func Ks_test_one_sample_normal(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 1 {
+		return Ks_test_one_sample_normal__SWIG_3(a[0].(DVector))
+	}
+	if argc == 2 {
+		return Ks_test_one_sample_normal__SWIG_2(a[0].(DVector), a[1].(float64))
+	}
+	if argc == 3 {
+		return Ks_test_one_sample_normal__SWIG_1(a[0].(DVector), a[1].(float64), a[2].(float64))
+	}
+	if argc == 4 {
+		return Ks_test_one_sample_normal__SWIG_0(a[0].(DVector), a[1].(float64), a[2].(float64), a[3].(DatamungeStatsAlternative))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Ks_test_two_sample__SWIG_0(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_ks_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func Ks_test_two_sample__SWIG_1(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_ks_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func Ks_test_two_sample(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return Ks_test_two_sample__SWIG_1(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return Ks_test_two_sample__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Chi_squared_goodness_of_fit__SWIG_0(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_chi_squared_goodness_of_fit__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func Chi_squared_goodness_of_fit__SWIG_1(arg1 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_chi_squared_goodness_of_fit__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+func Chi_squared_goodness_of_fit(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 1 {
+		return Chi_squared_goodness_of_fit__SWIG_1(a[0].(DVector))
+	}
+	if argc == 2 {
+		return Chi_squared_goodness_of_fit__SWIG_0(a[0].(DVector), a[1].(DVector))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Chi_squared_test_independence__SWIG_0(arg1 DVector, arg2 int64, arg3 int64, arg4 bool) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_chi_squared_test_independence__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_844(_swig_i_1), C.swig_type_845(_swig_i_2), C._Bool(_swig_i_3))))
+	return swig_r
+}
+
+func Chi_squared_test_independence__SWIG_1(arg1 DVector, arg2 int64, arg3 int64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_chi_squared_test_independence__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.swig_type_846(_swig_i_1), C.swig_type_847(_swig_i_2))))
+	return swig_r
+}
+
+func Chi_squared_test_independence(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 3 {
+		return Chi_squared_test_independence__SWIG_1(a[0].(DVector), a[1].(int64), a[2].(int64))
+	}
+	if argc == 4 {
+		return Chi_squared_test_independence__SWIG_0(a[0].(DVector), a[1].(int64), a[2].(int64), a[3].(bool))
+	}
+	panic("No match for overloaded function call")
+}
+
+func One_way_anova(arg1 DVector, arg2 SizeVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_one_way_anova_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func Kruskal_wallis_test(arg1 DVector, arg2 SizeVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_kruskal_wallis_test_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func Pearson_correlation_test__SWIG_0(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative, arg4 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_pearson_correlation_test__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2), C.double(_swig_i_3))))
+	return swig_r
+}
+
+func Pearson_correlation_test__SWIG_1(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_pearson_correlation_test__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func Pearson_correlation_test__SWIG_2(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_pearson_correlation_test__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func Pearson_correlation_test(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return Pearson_correlation_test__SWIG_2(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return Pearson_correlation_test__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative))
+	}
+	if argc == 4 {
+		return Pearson_correlation_test__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative), a[3].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Spearman_correlation_test__SWIG_0(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_spearman_correlation_test__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func Spearman_correlation_test__SWIG_1(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_spearman_correlation_test__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func Spearman_correlation_test(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return Spearman_correlation_test__SWIG_1(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return Spearman_correlation_test__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative))
+	}
+	panic("No match for overloaded function call")
+}
+
+func F_test_variance__SWIG_0(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative, arg4 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_f_test_variance__SWIG_0_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2), C.double(_swig_i_3))))
+	return swig_r
+}
+
+func F_test_variance__SWIG_1(arg1 DVector, arg2 DVector, arg3 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_f_test_variance__SWIG_1_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1), C.swig_intgo(_swig_i_2))))
+	return swig_r
+}
+
+func F_test_variance__SWIG_2(arg1 DVector, arg2 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_f_test_variance__SWIG_2_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
+}
+
+func F_test_variance(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return F_test_variance__SWIG_2(a[0].(DVector), a[1].(DVector))
+	}
+	if argc == 3 {
+		return F_test_variance__SWIG_1(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative))
+	}
+	if argc == 4 {
+		return F_test_variance__SWIG_0(a[0].(DVector), a[1].(DVector), a[2].(DatamungeStatsAlternative), a[3].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Proportion_test_one_sample__SWIG_0(arg1 int64, arg2 int64, arg3 float64, arg4 DatamungeStatsAlternative, arg5 bool, arg6 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_one_sample__SWIG_0_datamunge_cd205fa85b728fed(C.swig_type_848(_swig_i_0), C.swig_type_849(_swig_i_1), C.double(_swig_i_2), C.swig_intgo(_swig_i_3), C._Bool(_swig_i_4), C.double(_swig_i_5))))
+	return swig_r
+}
+
+func Proportion_test_one_sample__SWIG_1(arg1 int64, arg2 int64, arg3 float64, arg4 DatamungeStatsAlternative, arg5 bool) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_one_sample__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_850(_swig_i_0), C.swig_type_851(_swig_i_1), C.double(_swig_i_2), C.swig_intgo(_swig_i_3), C._Bool(_swig_i_4))))
+	return swig_r
+}
+
+func Proportion_test_one_sample__SWIG_2(arg1 int64, arg2 int64, arg3 float64, arg4 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_one_sample__SWIG_2_datamunge_cd205fa85b728fed(C.swig_type_852(_swig_i_0), C.swig_type_853(_swig_i_1), C.double(_swig_i_2), C.swig_intgo(_swig_i_3))))
+	return swig_r
+}
+
+func Proportion_test_one_sample__SWIG_3(arg1 int64, arg2 int64, arg3 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_one_sample__SWIG_3_datamunge_cd205fa85b728fed(C.swig_type_854(_swig_i_0), C.swig_type_855(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func Proportion_test_one_sample__SWIG_4(arg1 int64, arg2 int64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_one_sample__SWIG_4_datamunge_cd205fa85b728fed(C.swig_type_856(_swig_i_0), C.swig_type_857(_swig_i_1))))
+	return swig_r
+}
+
+func Proportion_test_one_sample(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return Proportion_test_one_sample__SWIG_4(a[0].(int64), a[1].(int64))
+	}
+	if argc == 3 {
+		return Proportion_test_one_sample__SWIG_3(a[0].(int64), a[1].(int64), a[2].(float64))
+	}
+	if argc == 4 {
+		return Proportion_test_one_sample__SWIG_2(a[0].(int64), a[1].(int64), a[2].(float64), a[3].(DatamungeStatsAlternative))
+	}
+	if argc == 5 {
+		return Proportion_test_one_sample__SWIG_1(a[0].(int64), a[1].(int64), a[2].(float64), a[3].(DatamungeStatsAlternative), a[4].(bool))
+	}
+	if argc == 6 {
+		return Proportion_test_one_sample__SWIG_0(a[0].(int64), a[1].(int64), a[2].(float64), a[3].(DatamungeStatsAlternative), a[4].(bool), a[5].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Proportion_test_two_sample__SWIG_0(arg1 int64, arg2 int64, arg3 int64, arg4 int64, arg5 DatamungeStatsAlternative, arg6 bool, arg7 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	_swig_i_6 := arg7
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(C.swig_type_858(_swig_i_0), C.swig_type_859(_swig_i_1), C.swig_type_860(_swig_i_2), C.swig_type_861(_swig_i_3), C.swig_intgo(_swig_i_4), C._Bool(_swig_i_5), C.double(_swig_i_6))))
+	return swig_r
+}
+
+func Proportion_test_two_sample__SWIG_1(arg1 int64, arg2 int64, arg3 int64, arg4 int64, arg5 DatamungeStatsAlternative, arg6 bool) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	_swig_i_5 := arg6
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_862(_swig_i_0), C.swig_type_863(_swig_i_1), C.swig_type_864(_swig_i_2), C.swig_type_865(_swig_i_3), C.swig_intgo(_swig_i_4), C._Bool(_swig_i_5))))
+	return swig_r
+}
+
+func Proportion_test_two_sample__SWIG_2(arg1 int64, arg2 int64, arg3 int64, arg4 int64, arg5 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_two_sample__SWIG_2_datamunge_cd205fa85b728fed(C.swig_type_866(_swig_i_0), C.swig_type_867(_swig_i_1), C.swig_type_868(_swig_i_2), C.swig_type_869(_swig_i_3), C.swig_intgo(_swig_i_4))))
+	return swig_r
+}
+
+func Proportion_test_two_sample__SWIG_3(arg1 int64, arg2 int64, arg3 int64, arg4 int64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_proportion_test_two_sample__SWIG_3_datamunge_cd205fa85b728fed(C.swig_type_870(_swig_i_0), C.swig_type_871(_swig_i_1), C.swig_type_872(_swig_i_2), C.swig_type_873(_swig_i_3))))
+	return swig_r
+}
+
+func Proportion_test_two_sample(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 4 {
+		return Proportion_test_two_sample__SWIG_3(a[0].(int64), a[1].(int64), a[2].(int64), a[3].(int64))
+	}
+	if argc == 5 {
+		return Proportion_test_two_sample__SWIG_2(a[0].(int64), a[1].(int64), a[2].(int64), a[3].(int64), a[4].(DatamungeStatsAlternative))
+	}
+	if argc == 6 {
+		return Proportion_test_two_sample__SWIG_1(a[0].(int64), a[1].(int64), a[2].(int64), a[3].(int64), a[4].(DatamungeStatsAlternative), a[5].(bool))
+	}
+	if argc == 7 {
+		return Proportion_test_two_sample__SWIG_0(a[0].(int64), a[1].(int64), a[2].(int64), a[3].(int64), a[4].(DatamungeStatsAlternative), a[5].(bool), a[6].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Binomial_test__SWIG_0(arg1 int64, arg2 int64, arg3 float64, arg4 DatamungeStatsAlternative, arg5 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_binomial_test__SWIG_0_datamunge_cd205fa85b728fed(C.swig_type_874(_swig_i_0), C.swig_type_875(_swig_i_1), C.double(_swig_i_2), C.swig_intgo(_swig_i_3), C.double(_swig_i_4))))
+	return swig_r
+}
+
+func Binomial_test__SWIG_1(arg1 int64, arg2 int64, arg3 float64, arg4 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_binomial_test__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_876(_swig_i_0), C.swig_type_877(_swig_i_1), C.double(_swig_i_2), C.swig_intgo(_swig_i_3))))
+	return swig_r
+}
+
+func Binomial_test__SWIG_2(arg1 int64, arg2 int64, arg3 float64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_binomial_test__SWIG_2_datamunge_cd205fa85b728fed(C.swig_type_878(_swig_i_0), C.swig_type_879(_swig_i_1), C.double(_swig_i_2))))
+	return swig_r
+}
+
+func Binomial_test__SWIG_3(arg1 int64, arg2 int64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_binomial_test__SWIG_3_datamunge_cd205fa85b728fed(C.swig_type_880(_swig_i_0), C.swig_type_881(_swig_i_1))))
+	return swig_r
+}
+
+func Binomial_test(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 2 {
+		return Binomial_test__SWIG_3(a[0].(int64), a[1].(int64))
+	}
+	if argc == 3 {
+		return Binomial_test__SWIG_2(a[0].(int64), a[1].(int64), a[2].(float64))
+	}
+	if argc == 4 {
+		return Binomial_test__SWIG_1(a[0].(int64), a[1].(int64), a[2].(float64), a[3].(DatamungeStatsAlternative))
+	}
+	if argc == 5 {
+		return Binomial_test__SWIG_0(a[0].(int64), a[1].(int64), a[2].(float64), a[3].(DatamungeStatsAlternative), a[4].(float64))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Fisher_exact_test_2x2__SWIG_0(arg1 int64, arg2 int64, arg3 int64, arg4 int64, arg5 DatamungeStatsAlternative) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	_swig_i_4 := arg5
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_fisher_exact_test_2x2__SWIG_0_datamunge_cd205fa85b728fed(C.swig_type_882(_swig_i_0), C.swig_type_883(_swig_i_1), C.swig_type_884(_swig_i_2), C.swig_type_885(_swig_i_3), C.swig_intgo(_swig_i_4))))
+	return swig_r
+}
+
+func Fisher_exact_test_2x2__SWIG_1(arg1 int64, arg2 int64, arg3 int64, arg4 int64) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	_swig_i_2 := arg3
+	_swig_i_3 := arg4
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_fisher_exact_test_2x2__SWIG_1_datamunge_cd205fa85b728fed(C.swig_type_886(_swig_i_0), C.swig_type_887(_swig_i_1), C.swig_type_888(_swig_i_2), C.swig_type_889(_swig_i_3))))
+	return swig_r
+}
+
+func Fisher_exact_test_2x2(a ...interface{}) HypothesisTestResult {
+	argc := len(a)
+	if argc == 4 {
+		return Fisher_exact_test_2x2__SWIG_1(a[0].(int64), a[1].(int64), a[2].(int64), a[3].(int64))
+	}
+	if argc == 5 {
+		return Fisher_exact_test_2x2__SWIG_0(a[0].(int64), a[1].(int64), a[2].(int64), a[3].(int64), a[4].(DatamungeStatsAlternative))
+	}
+	panic("No match for overloaded function call")
+}
+
+func Shapiro_francia_test(arg1 DVector) (_swig_ret HypothesisTestResult) {
+	var swig_r HypothesisTestResult
+	_swig_i_0 := getSwigcptr(arg1)
+	swig_r = (HypothesisTestResult)(SwigcptrHypothesisTestResult(C._wrap_shapiro_francia_test_datamunge_cd205fa85b728fed(C.uintptr_t(_swig_i_0))))
+	return swig_r
+}
+
+
+type SwigcptrStd_vector_Sl_datamunge_plot_DataSeries_Sg_ uintptr
+type Std_vector_Sl_datamunge_plot_DataSeries_Sg_ interface {
 	Swigcptr() uintptr;
 }
-func (p SwigcptrDatamunge_plot_ScatterPlot) Swigcptr() uintptr {
+func (p SwigcptrStd_vector_Sl_datamunge_plot_DataSeries_Sg_) Swigcptr() uintptr {
 	return uintptr(p)
 }
 

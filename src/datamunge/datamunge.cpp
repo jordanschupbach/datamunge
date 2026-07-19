@@ -135,6 +135,24 @@ double DataFrame::numeric_max(const std::string& column_name) const { return fra
 
 std::string DataFrame::to_string(const std::size_t max_rows) const { return frame_.to_string(max_rows); }
 
+bool DataFrame::is_numeric_column(const std::string& column_name) const {
+  return frame_.column_type(column_name) == dstruct::DataFrame::ColumnType::Numeric;
+}
+
+bool DataFrame::is_null(const std::string& column_name, const std::size_t row_index) const {
+  return frame_.is_null(column_name, row_index);
+}
+
+double DataFrame::numeric_at(const std::string& column_name, const std::size_t row_index) const {
+  return frame_.double_at(column_name, row_index);
+}
+
+std::string DataFrame::string_at(const std::string& column_name, const std::size_t row_index) const {
+  return frame_.string_at(column_name, row_index);
+}
+
+DataFrame* DataFrame::empty() { return new DataFrame(); }
+
 DataFrame* DataFrame::iris() { return new DataFrame(datasets::iris()); }
 
 DataFrame* DataFrame::penguins() { return new DataFrame(datasets::penguins()); }
@@ -564,6 +582,15 @@ stats::DistanceMetric parse_distance_metric(const std::string& metric) {
   if (metric == "euclidean") return stats::DistanceMetric::Euclidean;
   if (metric == "manhattan") return stats::DistanceMetric::Manhattan;
   throw std::invalid_argument("KNN: unknown metric '" + metric + "' (expected euclidean or manhattan)");
+}
+
+stats::LinkageCriterion parse_linkage_criterion(const std::string& linkage) {
+  if (linkage == "single") return stats::LinkageCriterion::Single;
+  if (linkage == "complete") return stats::LinkageCriterion::Complete;
+  if (linkage == "average") return stats::LinkageCriterion::Average;
+  if (linkage == "ward") return stats::LinkageCriterion::Ward;
+  throw std::invalid_argument("AgglomerativeClustering: unknown linkage '" + linkage +
+                              "' (expected single, complete, average, or ward)");
 }
 
 stats::GLMFamily parse_glm_family(const std::string& family) {
@@ -1151,6 +1178,126 @@ std::vector<double> KNNRegressor::predict(const DataFrame& newdata) const { retu
 datamunge::plot::ScatterPlot KNNRegressor::plot_predicted_vs_actual() const { return knn_.plot_predicted_vs_actual(); }
 
 datamunge::plot::ScatterPlot KNNRegressor::plot_residuals_vs_fitted() const { return knn_.plot_residuals_vs_fitted(); }
+
+KMeans::KMeans(const DataFrame& data, const std::vector<std::string>& feature_columns, const std::size_t n_clusters,
+              const std::size_t max_iterations, const std::size_t n_init, const double tolerance, const std::size_t seed)
+    : kmeans_(data.frame_, feature_columns, [&] {
+        stats::KMeansOptions options;
+        options.n_clusters     = n_clusters;
+        options.max_iterations = max_iterations;
+        options.n_init          = n_init;
+        options.tolerance       = tolerance;
+        options.seed             = seed;
+        return options;
+      }()) {}
+
+KMeans::KMeans(const DataFrame& data, const std::string& encoded_feature_columns, const std::size_t n_clusters,
+              const std::size_t max_iterations, const std::size_t n_init, const double tolerance, const std::size_t seed)
+    : KMeans(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_clusters, max_iterations, n_init,
+             tolerance, seed) {}
+
+std::vector<std::string> KMeans::feature_names() const { return kmeans_.feature_names(); }
+
+std::size_t KMeans::n_clusters() const { return kmeans_.n_clusters(); }
+
+std::size_t KMeans::observations() const { return kmeans_.observations(); }
+
+std::size_t KMeans::iterations_used() const { return kmeans_.iterations_used(); }
+
+std::vector<std::size_t> KMeans::labels() const { return kmeans_.labels(); }
+
+double KMeans::inertia() const { return kmeans_.inertia(); }
+
+std::vector<double> KMeans::cluster_center(const std::size_t cluster_index) const {
+  const auto& centers = kmeans_.cluster_centers();
+  if (cluster_index >= centers.rows()) throw std::invalid_argument("KMeans::cluster_center: cluster_index out of range");
+  std::vector<double> center(centers.cols());
+  for (std::size_t j = 0; j < centers.cols(); ++j) center[j] = centers(cluster_index, j);
+  return center;
+}
+
+std::vector<std::size_t> KMeans::predict(const DataFrame& newdata) const { return kmeans_.predict(newdata.frame_); }
+
+std::string KMeans::summary() const { return kmeans_.summary(); }
+
+void KMeans::print_summary() const { kmeans_.print_summary(); }
+
+AgglomerativeClustering::AgglomerativeClustering(const DataFrame& data, const std::vector<std::string>& feature_columns,
+                                                  const std::size_t n_clusters, const std::string& linkage,
+                                                  const std::string& metric)
+    : clustering_(data.frame_, feature_columns, [&] {
+        stats::AgglomerativeClusteringOptions options;
+        options.n_clusters = n_clusters;
+        options.linkage     = parse_linkage_criterion(linkage);
+        options.metric       = parse_distance_metric(metric);
+        return options;
+      }()) {}
+
+AgglomerativeClustering::AgglomerativeClustering(const DataFrame& data, const std::string& encoded_feature_columns,
+                                                  const std::size_t n_clusters, const std::string& linkage,
+                                                  const std::string& metric)
+    : AgglomerativeClustering(data, DataFrame::split_encoded_strings(encoded_feature_columns), n_clusters, linkage,
+                              metric) {}
+
+std::vector<std::string> AgglomerativeClustering::feature_names() const { return clustering_.feature_names(); }
+
+std::size_t AgglomerativeClustering::observations() const { return clustering_.observations(); }
+
+std::vector<std::size_t> AgglomerativeClustering::labels() const { return clustering_.labels(); }
+
+std::vector<std::size_t> AgglomerativeClustering::cut(const std::size_t n_clusters) const {
+  return clustering_.cut(n_clusters);
+}
+
+std::size_t AgglomerativeClustering::num_merges() const { return clustering_.merge_history().size(); }
+
+std::size_t AgglomerativeClustering::merge_cluster_a(const std::size_t merge_index) const {
+  return clustering_.merge_history().at(merge_index).cluster_a;
+}
+
+std::size_t AgglomerativeClustering::merge_cluster_b(const std::size_t merge_index) const {
+  return clustering_.merge_history().at(merge_index).cluster_b;
+}
+
+double AgglomerativeClustering::merge_distance(const std::size_t merge_index) const {
+  return clustering_.merge_history().at(merge_index).distance;
+}
+
+std::size_t AgglomerativeClustering::merge_size(const std::size_t merge_index) const {
+  return clustering_.merge_history().at(merge_index).size;
+}
+
+std::string AgglomerativeClustering::summary() const { return clustering_.summary(); }
+
+void AgglomerativeClustering::print_summary() const { clustering_.print_summary(); }
+
+DBSCAN::DBSCAN(const DataFrame& data, const std::vector<std::string>& feature_columns, const double eps,
+              const std::size_t min_samples, const std::string& metric)
+    : dbscan_(data.frame_, feature_columns, [&] {
+        stats::DBSCANOptions options;
+        options.eps         = eps;
+        options.min_samples = min_samples;
+        options.metric       = parse_distance_metric(metric);
+        return options;
+      }()) {}
+
+DBSCAN::DBSCAN(const DataFrame& data, const std::string& encoded_feature_columns, const double eps,
+              const std::size_t min_samples, const std::string& metric)
+    : DBSCAN(data, DataFrame::split_encoded_strings(encoded_feature_columns), eps, min_samples, metric) {}
+
+std::vector<std::string> DBSCAN::feature_names() const { return dbscan_.feature_names(); }
+
+std::size_t DBSCAN::observations() const { return dbscan_.observations(); }
+
+std::size_t DBSCAN::n_clusters() const { return dbscan_.n_clusters(); }
+
+std::size_t DBSCAN::n_noise() const { return dbscan_.n_noise(); }
+
+std::vector<int> DBSCAN::labels() const { return dbscan_.labels(); }
+
+std::string DBSCAN::summary() const { return dbscan_.summary(); }
+
+void DBSCAN::print_summary() const { dbscan_.print_summary(); }
 
 GBMClassifier::GBMClassifier(const DataFrame& data, const std::string& formula, const std::size_t n_trees,
                              const double learning_rate, const std::size_t max_depth,

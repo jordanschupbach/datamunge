@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <rect width="100%" height="100%" fill="rgb(255,255,255)"/>
+  <style>text{font-family:Helvetica,Arial,sans-serif;fill:rgb(55,65,81);}</style>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="72" x2="936" y2="72" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="259.2" y1="72" x2="259.2" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="168.8" x2="936" y2="168.8" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="428.4" y1="72" x2="428.4" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="265.6" x2="936" y2="265.6" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="597.6" y1="72" x2="597.6" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="362.4" x2="936" y2="362.4" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="766.8" y1="72" x2="766.8" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="459.2" x2="936" y2="459.2" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="936" y1="72" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <text x="90" y="580" font-size="12" text-anchor="middle">-0.089</text>
+  <text x="80" y="560" font-size="12" text-anchor="end">-0.029</text>
+  <text x="259.2" y="580" font-size="12" text-anchor="middle">0.348</text>
+  <text x="80" y="463.2" font-size="12" text-anchor="end">0.406</text>
+  <text x="428.4" y="580" font-size="12" text-anchor="middle">0.786</text>
+  <text x="80" y="366.4" font-size="12" text-anchor="end">0.841</text>
+  <text x="597.6" y="580" font-size="12" text-anchor="middle">1.224</text>
+  <text x="80" y="269.6" font-size="12" text-anchor="end">1.276</text>
+  <text x="766.8" y="580" font-size="12" text-anchor="middle">1.662</text>
+  <text x="80" y="172.8" font-size="12" text-anchor="end">1.712</text>
+  <text x="936" y="580" font-size="12" text-anchor="middle">2.099</text>
+  <text x="80" y="76" font-size="12" text-anchor="end">2.147</text>
+  <text x="480" y="36" font-size="24" text-anchor="middle">Bandwidth Cross-Validation Curve</text>
+  <text x="480" y="620" font-size="16" text-anchor="middle">Bandwidth</text>
+  <text x="24" y="320" font-size="16" text-anchor="middle" transform="rotate(-90 24 320)">LOO mean squared error</text>
+  <polyline fill="none" stroke="rgb(220,38,38)" stroke-width="2" points="128.455,510.475 128.896,510.475 129.388,510.475 129.935,510.475 130.546,510.475 131.226,510.475 131.984,510.475 132.828,510.475 133.769,510.475 134.817,510.476 135.985,510.478 137.286,510.493 138.736,510.559 140.351,510.754 142.151,511.164 144.157,511.783 146.391,512.493 148.881,513.164 151.654,513.723 154.745,514.164 158.188,514.518 162.025,514.818 166.3,515.083 171.063,515.316 176.369,515.502 182.282,515.624 188.87,515.667 196.211,515.621 204.389,515.481 213.501,515.252 223.654,514.946 234.967,514.589 247.571,514.211 261.614,513.819 277.261,513.356 294.695,512.664 314.119,511.449 335.762,509.196 359.876,505.036 386.744,497.647 416.68,485.332 450.034,466.345 487.197,439.378 528.603,404.039 574.738,361.126 626.141,312.538 683.414,260.864 747.227,208.813 818.327,158.733 897.545,112.333 "/>
+  <circle cx="188.87" cy="515.667" r="8" fill="rgb(220,38,38)"/>
+  <rect x="796" y="60" width="18" height="8" fill="rgb(220,38,38)"/>
+  <text x="822" y="68" font-size="12">LOO CV mean squared error</text>
+  <rect x="796" y="80" width="18" height="8" fill="rgb(220,38,38)"/>
+  <text x="822" y="88" font-size="12">selected bandwidth</text>
+</svg>

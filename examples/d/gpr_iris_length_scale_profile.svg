@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <rect width="100%" height="100%" fill="rgb(255,255,255)"/>
+  <style>text{font-family:Helvetica,Arial,sans-serif;fill:rgb(55,65,81);}</style>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="72" x2="936" y2="72" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="259.2" y1="72" x2="259.2" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="168.8" x2="936" y2="168.8" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="428.4" y1="72" x2="428.4" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="265.6" x2="936" y2="265.6" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="597.6" y1="72" x2="597.6" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="362.4" x2="936" y2="362.4" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="766.8" y1="72" x2="766.8" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="459.2" x2="936" y2="459.2" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="936" y1="72" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <text x="90" y="580" font-size="12" text-anchor="middle">-0.045</text>
+  <text x="80" y="560" font-size="12" text-anchor="end">-28.657</text>
+  <text x="259.2" y="580" font-size="12" text-anchor="middle">0.593</text>
+  <text x="80" y="463.2" font-size="12" text-anchor="end">-21.492</text>
+  <text x="428.4" y="580" font-size="12" text-anchor="middle">1.231</text>
+  <text x="80" y="366.4" font-size="12" text-anchor="end">-14.327</text>
+  <text x="597.6" y="580" font-size="12" text-anchor="middle">1.869</text>
+  <text x="80" y="269.6" font-size="12" text-anchor="end">-7.161</text>
+  <text x="766.8" y="580" font-size="12" text-anchor="middle">2.507</text>
+  <text x="80" y="172.8" font-size="12" text-anchor="end">0.004</text>
+  <text x="936" y="580" font-size="12" text-anchor="middle">3.145</text>
+  <text x="80" y="76" font-size="12" text-anchor="end">7.169</text>
+  <text x="480" y="36" font-size="24" text-anchor="middle">Length Scale Profile</text>
+  <text x="480" y="620" font-size="16" text-anchor="middle">Length scale</text>
+  <text x="24" y="320" font-size="16" text-anchor="middle" transform="rotate(-90 24 320)">Profile log marginal likelihood</text>
+  <polyline fill="none" stroke="rgb(220,38,38)" stroke-width="2" points="128.455,515.667 133.653,474.244 139.871,430.142 147.308,390.325 156.203,346.644 166.842,304.035 179.566,267.352 194.784,234.842 212.986,204.021 234.756,177.203 260.793,151.39 291.935,129.277 329.181,115.368 373.729,112.333 427.01,114.301 490.736,114.268 566.954,116.407 658.113,122.424 767.143,133.511 897.545,148.326 "/>
+  <circle cx="373.729" cy="112.333" r="8" fill="rgb(220,38,38)"/>
+  <rect x="796" y="60" width="18" height="8" fill="rgb(220,38,38)"/>
+  <text x="822" y="68" font-size="12">profile log marginal likelihood</text>
+  <rect x="796" y="80" width="18" height="8" fill="rgb(220,38,38)"/>
+  <text x="822" y="88" font-size="12">selected length scale</text>
+</svg>

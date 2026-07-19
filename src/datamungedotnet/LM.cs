@@ -240,23 +240,23 @@ public class LM : global::System.IDisposable {
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_residuals_vs_fitted() {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungePINVOKE.LM_plot_residuals_vs_fitted(swigCPtr), true);
+  public ScatterPlot plot_residuals_vs_fitted() {
+    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_residuals_vs_fitted(swigCPtr), true);
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_normal_qq() {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungePINVOKE.LM_plot_normal_qq(swigCPtr), true);
+  public ScatterPlot plot_normal_qq() {
+    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_normal_qq(swigCPtr), true);
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_scale_location() {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungePINVOKE.LM_plot_scale_location(swigCPtr), true);
+  public ScatterPlot plot_scale_location() {
+    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_scale_location(swigCPtr), true);
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_residuals_vs_leverage() {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungePINVOKE.LM_plot_residuals_vs_leverage(swigCPtr), true);
+  public ScatterPlot plot_residuals_vs_leverage() {
+    ScatterPlot ret = new ScatterPlot(datamungePINVOKE.LM_plot_residuals_vs_leverage(swigCPtr), true);
     return ret;
   }
 

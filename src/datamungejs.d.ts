@@ -36,6 +36,19 @@ export  class DPair {
   second: number;
 }
 
+export  class DVectorPair {
+
+  constructor();
+
+  constructor(first: any, second: any);
+
+  constructor(other: any);
+
+  first: any;
+
+  second: any;
+}
+
 export  class SPair {
 
   constructor();
@@ -75,6 +88,31 @@ export  class IVector {
 }
 
 export  class DVector {
+
+  constructor();
+
+  constructor(n: any);
+
+  constructor(other: any);
+
+  size(): any;
+
+  capacity(): any;
+
+  reserve(n: any): void;
+
+  isEmpty(): boolean;
+
+  clear(): void;
+
+  add(x: any): void;
+
+  get(i: number): any;
+
+  set(i: number, val: any): void;
+}
+
+export  class DVectorVector {
 
   constructor();
 
@@ -174,6 +212,8 @@ export  class DataFrame {
 
   constructor();
 
+ static empty(): DataFrame;
+
   nrows(): any;
 
   ncols(): any;
@@ -235,6 +275,18 @@ export  class DataFrame {
   to_string(max_rows: any): string;
 
   to_string(): string;
+
+  is_numeric_column(column_name: string): boolean;
+
+  is_null(column_name: string, row_index: any): boolean;
+
+  numeric_at(column_name: string, row_index: any): number;
+
+  string_at(column_name: string, row_index: any): string;
+
+ static iris(): DataFrame;
+
+ static penguins(): DataFrame;
 }
 
 export  class LM {
@@ -316,6 +368,2366 @@ export  class LM {
   plot_residuals_vs_leverage(): any;
 
   save_diagnostic_plots(path_prefix: string): void;
+}
+
+export  class LMM {
+
+  constructor(data: DataFrame, formula: string, reml: boolean, de_population_size: any, de_max_generations: any, theta_bound: number, seed: any);
+
+  constructor(data: DataFrame, formula: string, reml: boolean, de_population_size: any, de_max_generations: any, theta_bound: number);
+
+  constructor(data: DataFrame, formula: string, reml: boolean, de_population_size: any, de_max_generations: any);
+
+  constructor(data: DataFrame, formula: string, reml: boolean, de_population_size: any);
+
+  constructor(data: DataFrame, formula: string, reml: boolean);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  group_variable(): string;
+
+  has_random_intercept(): boolean;
+
+  random_effect_names(): any;
+
+  is_reml(): boolean;
+
+  observations(): any;
+
+  num_groups(): any;
+
+  rank(): any;
+
+  coefficients(): any;
+
+  coefficient_names(): any;
+
+  standard_errors(): any;
+
+  z_values(): any;
+
+  p_values(): any;
+
+  fitted_values(): any;
+
+  residuals(): any;
+
+  residual_variance(): number;
+
+  residual_std_dev(): number;
+
+  random_effect_std_devs(): any;
+
+  random_effect_correlation(i: any, j: any): number;
+
+  group_labels(): any;
+
+  random_effects_for_group(group_index: any): any;
+
+  log_likelihood(): number;
+
+  deviance(): number;
+
+  aic(): number;
+
+  bic(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+}
+
+export  class GLMM {
+
+  constructor(data: DataFrame, formula: string, family: string, max_iterations: any, tol: number, de_population_size: any, de_max_generations: any, theta_bound: number, seed: any);
+
+  constructor(data: DataFrame, formula: string, family: string, max_iterations: any, tol: number, de_population_size: any, de_max_generations: any, theta_bound: number);
+
+  constructor(data: DataFrame, formula: string, family: string, max_iterations: any, tol: number, de_population_size: any, de_max_generations: any);
+
+  constructor(data: DataFrame, formula: string, family: string, max_iterations: any, tol: number, de_population_size: any);
+
+  constructor(data: DataFrame, formula: string, family: string, max_iterations: any, tol: number);
+
+  constructor(data: DataFrame, formula: string, family: string, max_iterations: any);
+
+  constructor(data: DataFrame, formula: string, family: string);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  family(): string;
+
+  group_variable(): string;
+
+  has_random_intercept(): boolean;
+
+  random_effect_names(): any;
+
+  observations(): any;
+
+  num_groups(): any;
+
+  rank(): any;
+
+  iterations(): any;
+
+  coefficients(): any;
+
+  coefficient_names(): any;
+
+  standard_errors(): any;
+
+  z_values(): any;
+
+  p_values(): any;
+
+  fitted_values(): any;
+
+  random_effect_std_devs(): any;
+
+  random_effect_correlation(i: any, j: any): number;
+
+  group_labels(): any;
+
+  random_effects_for_group(group_index: any): any;
+
+  deviance(): number;
+
+  aic(): number;
+
+  bic(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+}
+
+export  class LDA {
+
+  constructor(data: DataFrame, formula: string, priors: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  num_discriminants(): any;
+
+  priors(): any;
+
+  group_means(): DataFrame;
+
+  scaling(): DataFrame;
+
+  proportion_of_trace(): any;
+
+  training_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_discriminants(): any;
+
+  save_discriminant_plot(path: string): void;
+}
+
+export  class SVM {
+
+  constructor(data: DataFrame, formula: string, kernel: string, cost: number, gamma: number, coef0: number, degree: number, scale: boolean);
+
+  constructor(data: DataFrame, formula: string, kernel: string, cost: number, gamma: number, coef0: number, degree: number);
+
+  constructor(data: DataFrame, formula: string, kernel: string, cost: number, gamma: number, coef0: number);
+
+  constructor(data: DataFrame, formula: string, kernel: string, cost: number, gamma: number);
+
+  constructor(data: DataFrame, formula: string, kernel: string, cost: number);
+
+  constructor(data: DataFrame, formula: string, kernel: string);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  num_support_vectors(): any;
+
+  training_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+}
+
+export  class DecisionTreeClassifier {
+
+  constructor(data: DataFrame, formula: string, max_depth: any, min_samples_split: any, min_samples_leaf: any, criterion: string);
+
+  constructor(data: DataFrame, formula: string, max_depth: any, min_samples_split: any, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, max_depth: any, min_samples_split: any);
+
+  constructor(data: DataFrame, formula: string, max_depth: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  node_count(): any;
+
+  leaf_count(): any;
+
+  depth(): any;
+
+  feature_importance(): any;
+
+  training_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_classification(data: DataFrame, x_feature: string, y_feature: string): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string, grid_resolution: any): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string): any;
+}
+
+export  class DecisionTreeRegressor {
+
+  constructor(data: DataFrame, formula: string, max_depth: any, min_samples_split: any, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, max_depth: any, min_samples_split: any);
+
+  constructor(data: DataFrame, formula: string, max_depth: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  node_count(): any;
+
+  leaf_count(): any;
+
+  depth(): any;
+
+  feature_importance(): any;
+
+  fitted_values(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+}
+
+export  class RandomForestClassifier {
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any, criterion: string, bootstrap: boolean, sample_fraction: number, seed: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any, criterion: string, bootstrap: boolean, sample_fraction: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any, criterion: string, bootstrap: boolean);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any, criterion: string);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  n_trees(): any;
+
+  max_features_used(): any;
+
+  feature_importance(): any;
+
+  training_accuracy(): number;
+
+  oob_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_classification(data: DataFrame, x_feature: string, y_feature: string): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string, grid_resolution: any): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string): any;
+}
+
+export  class RandomForestRegressor {
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any, bootstrap: boolean, sample_fraction: number, seed: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any, bootstrap: boolean, sample_fraction: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any, bootstrap: boolean);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any, max_features: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any, min_samples_split: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, max_depth: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  n_trees(): any;
+
+  max_features_used(): any;
+
+  feature_importance(): any;
+
+  fitted_values(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  oob_r_squared(): number;
+
+  oob_rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+}
+
+export  class ElasticNet {
+
+  constructor(data: DataFrame, formula: string, alpha: number, lambda: number, n_lambda: any, cv_folds: any, standardize: boolean, seed: number);
+
+  constructor(data: DataFrame, formula: string, alpha: number, lambda: number, n_lambda: any, cv_folds: any, standardize: boolean);
+
+  constructor(data: DataFrame, formula: string, alpha: number, lambda: number, n_lambda: any, cv_folds: any);
+
+  constructor(data: DataFrame, formula: string, alpha: number, lambda: number, n_lambda: any);
+
+  constructor(data: DataFrame, formula: string, alpha: number, lambda: number);
+
+  constructor(data: DataFrame, formula: string, alpha: number);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  has_intercept(): boolean;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  alpha(): number;
+
+  lambda(): number;
+
+  lambda_was_selected(): boolean;
+
+  lambda_path(): any;
+
+  cv_mean_squared_error(): any;
+
+  coefficients(): any;
+
+  intercept(): number;
+
+  non_zero_coefficients(): any;
+
+  fitted_values(): any;
+
+  residuals(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_coefficient_path(): any;
+
+  plot_cv_curve(): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+}
+
+export  class Ridge {
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any, cv_folds: any, standardize: boolean, seed: number);
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any, cv_folds: any, standardize: boolean);
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any, cv_folds: any);
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any);
+
+  constructor(data: DataFrame, formula: string, lambda: number);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  has_intercept(): boolean;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  lambda(): number;
+
+  lambda_was_selected(): boolean;
+
+  lambda_path(): any;
+
+  cv_mean_squared_error(): any;
+
+  coefficients(): any;
+
+  intercept(): number;
+
+  fitted_values(): any;
+
+  residuals(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_coefficient_path(): any;
+
+  plot_cv_curve(): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+}
+
+export  class Lasso {
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any, cv_folds: any, standardize: boolean, seed: number);
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any, cv_folds: any, standardize: boolean);
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any, cv_folds: any);
+
+  constructor(data: DataFrame, formula: string, lambda: number, n_lambda: any);
+
+  constructor(data: DataFrame, formula: string, lambda: number);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  has_intercept(): boolean;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  lambda(): number;
+
+  lambda_was_selected(): boolean;
+
+  lambda_path(): any;
+
+  cv_mean_squared_error(): any;
+
+  coefficients(): any;
+
+  intercept(): number;
+
+  non_zero_coefficients(): any;
+
+  fitted_values(): any;
+
+  residuals(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_coefficient_path(): any;
+
+  plot_cv_curve(): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+}
+
+export  class KNNClassifier {
+
+  constructor(data: DataFrame, formula: string, k: any, metric: string, weighted: boolean, standardize: boolean);
+
+  constructor(data: DataFrame, formula: string, k: any, metric: string, weighted: boolean);
+
+  constructor(data: DataFrame, formula: string, k: any, metric: string);
+
+  constructor(data: DataFrame, formula: string, k: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  k(): any;
+
+  training_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_classification(data: DataFrame, x_feature: string, y_feature: string): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string, grid_resolution: any): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string): any;
+}
+
+export  class KNNRegressor {
+
+  constructor(data: DataFrame, formula: string, k: any, metric: string, weighted: boolean, standardize: boolean);
+
+  constructor(data: DataFrame, formula: string, k: any, metric: string, weighted: boolean);
+
+  constructor(data: DataFrame, formula: string, k: any, metric: string);
+
+  constructor(data: DataFrame, formula: string, k: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  k(): any;
+
+  fitted_values(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+}
+
+export  class KMeans {
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any, max_iterations: any, n_init: any, tolerance: number, seed: any);
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any, max_iterations: any, n_init: any, tolerance: number);
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any, max_iterations: any, n_init: any);
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any, max_iterations: any);
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any);
+
+  constructor(data: DataFrame, feature_columns: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any, max_iterations: any, n_init: any, tolerance: number, seed: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any, max_iterations: any, n_init: any, tolerance: number);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any, max_iterations: any, n_init: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any, max_iterations: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string);
+
+  feature_names(): any;
+
+  n_clusters(): any;
+
+  observations(): any;
+
+  iterations_used(): any;
+
+  labels(): any;
+
+  inertia(): number;
+
+  cluster_center(cluster_index: any): any;
+
+  predict(newdata: DataFrame): any;
+
+  summary(): string;
+
+  print_summary(): void;
+}
+
+export  class AgglomerativeClustering {
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any, linkage: string, metric: string);
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any, linkage: string);
+
+  constructor(data: DataFrame, feature_columns: any, n_clusters: any);
+
+  constructor(data: DataFrame, feature_columns: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any, linkage: string, metric: string);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any, linkage: string);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, n_clusters: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string);
+
+  feature_names(): any;
+
+  observations(): any;
+
+  labels(): any;
+
+  cut(n_clusters: any): any;
+
+  num_merges(): any;
+
+  merge_cluster_a(merge_index: any): any;
+
+  merge_cluster_b(merge_index: any): any;
+
+  merge_distance(merge_index: any): number;
+
+  merge_size(merge_index: any): any;
+
+  summary(): string;
+
+  print_summary(): void;
+}
+
+export  class DBSCAN {
+
+  constructor(data: DataFrame, feature_columns: any, eps: number, min_samples: any, metric: string);
+
+  constructor(data: DataFrame, feature_columns: any, eps: number, min_samples: any);
+
+  constructor(data: DataFrame, feature_columns: any, eps: number);
+
+  constructor(data: DataFrame, feature_columns: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, eps: number, min_samples: any, metric: string);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, eps: number, min_samples: any);
+
+  constructor(data: DataFrame, encoded_feature_columns: string, eps: number);
+
+  constructor(data: DataFrame, encoded_feature_columns: string);
+
+  feature_names(): any;
+
+  observations(): any;
+
+  n_clusters(): any;
+
+  n_noise(): any;
+
+  labels(): any;
+
+  summary(): string;
+
+  print_summary(): void;
+}
+
+export  class GBMClassifier {
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any, min_samples_leaf: any, subsample: number, seed: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any, min_samples_leaf: any, subsample: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  n_trees(): any;
+
+  feature_importance(): any;
+
+  training_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  training_deviance(): any;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_classification(data: DataFrame, x_feature: string, y_feature: string): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string, grid_resolution: any): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string): any;
+
+  plot_training_deviance(): any;
+}
+
+export  class GBMRegressor {
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any, min_samples_leaf: any, subsample: number, seed: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any, min_samples_leaf: any, subsample: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, min_samples_split: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  n_trees(): any;
+
+  feature_importance(): any;
+
+  fitted_values(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  training_deviance(): any;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+
+  plot_training_deviance(): any;
+}
+
+export  class XGBoostClassifier {
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any, subsample: number, colsample_bytree: number, seed: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any, subsample: number, colsample_bytree: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any, subsample: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  n_trees(): any;
+
+  feature_importance(): any;
+
+  training_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  training_deviance(): any;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_classification(data: DataFrame, x_feature: string, y_feature: string): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string, grid_resolution: any): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string): any;
+
+  plot_training_deviance(): any;
+}
+
+export  class XGBoostRegressor {
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any, subsample: number, colsample_bytree: number, seed: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any, subsample: number, colsample_bytree: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any, subsample: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number, min_samples_leaf: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number, min_child_weight: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number, gamma: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number, alpha: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any, lambda: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number, max_depth: any);
+
+  constructor(data: DataFrame, formula: string, n_trees: any, learning_rate: number);
+
+  constructor(data: DataFrame, formula: string, n_trees: any);
+
+  constructor(data: DataFrame, formula: string);
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  n_trees(): any;
+
+  feature_importance(): any;
+
+  fitted_values(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  training_deviance(): any;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+
+  plot_training_deviance(): any;
+}
+
+export  class KernelRegression {
+
+  constructor(data: DataFrame, formula: string, kernel: string, bandwidth: number, n_bandwidth: any, standardize: boolean);
+
+  constructor(data: DataFrame, formula: string, kernel: string, bandwidth: number, n_bandwidth: any);
+
+  constructor(data: DataFrame, formula: string, kernel: string, bandwidth: number);
+
+  constructor(data: DataFrame, formula: string, kernel: string);
+
+  constructor(data: DataFrame, formula: string);
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  bandwidth(): number;
+
+  bandwidth_was_selected(): boolean;
+
+  bandwidth_grid(): any;
+
+  cv_mean_squared_error(): any;
+
+  fitted_values(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  plot_fit(data: DataFrame, grid_resolution: any): any;
+
+  plot_fit(data: DataFrame): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+
+  plot_cv_curve(): any;
+}
+
+export  class GaussianProcessRegression {
+
+  constructor(data: DataFrame, formula: string, length_scale: number, noise_ratio: number, n_length_scale_grid: any, n_noise_grid: any, standardize: boolean);
+
+  constructor(data: DataFrame, formula: string, length_scale: number, noise_ratio: number, n_length_scale_grid: any, n_noise_grid: any);
+
+  constructor(data: DataFrame, formula: string, length_scale: number, noise_ratio: number, n_length_scale_grid: any);
+
+  constructor(data: DataFrame, formula: string, length_scale: number, noise_ratio: number);
+
+  constructor(data: DataFrame, formula: string, length_scale: number);
+
+  constructor(data: DataFrame, formula: string);
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  length_scale(): number;
+
+  signal_variance(): number;
+
+  noise_variance(): number;
+
+  log_marginal_likelihood(): number;
+
+  length_scale_was_selected(): boolean;
+
+  noise_ratio_was_selected(): boolean;
+
+  length_scale_grid(): any;
+
+  length_scale_profile_log_likelihood(): any;
+
+  fitted_values(): any;
+
+  r_squared(): number;
+
+  rmse(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame, interval_kind: string, level: number): DataFrame;
+
+  predict_frame(newdata: DataFrame, interval_kind: string): DataFrame;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_fit(data: DataFrame, grid_resolution: any, level: number): any;
+
+  plot_fit(data: DataFrame, grid_resolution: any): any;
+
+  plot_fit(data: DataFrame): any;
+
+  plot_predicted_vs_actual(): any;
+
+  plot_residuals_vs_fitted(): any;
+
+  plot_length_scale_profile(): any;
+}
+
+export  class NaiveBayesClassifier {
+
+  constructor(data: DataFrame, formula: string, laplace_smoothing: number, var_smoothing: number);
+
+  constructor(data: DataFrame, formula: string, laplace_smoothing: number);
+
+  constructor(data: DataFrame, formula: string);
+
+  classes(): any;
+
+  predictor_names(): any;
+
+  observations(): any;
+
+  class_priors(): any;
+
+  training_accuracy(): number;
+
+  confusion_matrix(): DataFrame;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_classification(data: DataFrame, x_feature: string, y_feature: string): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string, grid_resolution: any): any;
+
+  plot_decision_regions(x_feature: string, y_feature: string): any;
+}
+
+export  class GLM {
+
+  constructor(data: DataFrame, formula: string, family: string, weights_column: string, max_iter: any, tol: number);
+
+  constructor(data: DataFrame, formula: string, family: string, weights_column: string, max_iter: any);
+
+  constructor(data: DataFrame, formula: string, family: string, weights_column: string);
+
+  constructor(data: DataFrame, formula: string, family: string);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  family(): string;
+
+  has_intercept(): boolean;
+
+  observations(): any;
+
+  rank(): any;
+
+  degrees_of_freedom(): any;
+
+  coefficients(): any;
+
+  coefficient_names(): any;
+
+  fitted_values(): any;
+
+  linear_predictors(): any;
+
+  residuals(): any;
+
+  pearson_residuals(): any;
+
+  standardized_residuals(): any;
+
+  leverage(): any;
+
+  standard_errors(): any;
+
+  test_statistics(): any;
+
+  p_values(): any;
+
+  deviance(): number;
+
+  null_deviance(): number;
+
+  dispersion(): number;
+
+  aic(): number;
+
+  confidence_interval_lower(level: number): any;
+
+  confidence_interval_lower(): any;
+
+  confidence_interval_upper(level: number): any;
+
+  confidence_interval_upper(): any;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+
+  predict_frame(newdata: DataFrame, interval_kind: string, level: number): DataFrame;
+
+  predict_frame(newdata: DataFrame, interval_kind: string): DataFrame;
+
+  predict_frame(newdata: DataFrame): DataFrame;
+
+  plot_residuals_vs_fitted(): any;
+
+  plot_normal_qq(): any;
+
+  plot_scale_location(): any;
+
+  plot_residuals_vs_leverage(): any;
+
+  save_diagnostic_plots(path_prefix: string): void;
+}
+
+export  class Tensor {
+
+  constructor(shape: any, dtype: string);
+
+  constructor(shape: any);
+
+ static zeros(shape: any): Tensor;
+
+ static ones(shape: any): Tensor;
+
+ static full(shape: any, value: number): Tensor;
+
+ static from_values(shape: any, values: any): Tensor;
+
+ static from_bool_values(shape: any, values: any): Tensor;
+
+ static from_string_values(shape: any, values: any): Tensor;
+
+ static arange(start: number, stop: number, step: number): Tensor;
+
+ static arange(start: number, stop: number): Tensor;
+
+ static eye(n: any): Tensor;
+
+  ndim(): any;
+
+  shape(): any;
+
+  size(): any;
+
+  dtype_name(): string;
+
+  at(index: any): number;
+
+  set(index: any, value: number): void;
+
+  string_at(index: any): string;
+
+  set_string(index: any, value: string): void;
+
+  at_flat(i: any): number;
+
+  set_flat(i: any, value: number): void;
+
+  string_at_flat(i: any): string;
+
+  set_string_flat(i: any, value: string): void;
+
+  reshape(new_shape: any): Tensor;
+
+  flatten(): Tensor;
+
+  transpose(permutation: any): Tensor;
+
+  transpose(): Tensor;
+
+  squeeze(): Tensor;
+
+  squeeze_axis(axis: any): Tensor;
+
+  expand_dims(axis: any): Tensor;
+
+  slice(axis: any, start: any, stop: any, step: any): Tensor;
+
+  slice(axis: any, start: any, stop: any): Tensor;
+
+  index_select(axis: any, indices: any): Tensor;
+
+ static concatenate2(a: Tensor, b: Tensor, axis: any): Tensor;
+
+ static stack2(a: Tensor, b: Tensor, axis: any): Tensor;
+
+  add(other: Tensor): Tensor;
+
+  subtract(other: Tensor): Tensor;
+
+  multiply(other: Tensor): Tensor;
+
+  divide(other: Tensor): Tensor;
+
+  power(other: Tensor): Tensor;
+
+  add_scalar(scalar: number): Tensor;
+
+  subtract_scalar(scalar: number): Tensor;
+
+  multiply_scalar(scalar: number): Tensor;
+
+  divide_scalar(scalar: number): Tensor;
+
+  power_scalar(exponent: number): Tensor;
+
+  negate(): Tensor;
+
+  abs(): Tensor;
+
+  sqrt(): Tensor;
+
+  exp(): Tensor;
+
+  log(): Tensor;
+
+  apply(callback: Callback): Tensor;
+
+  equal(other: Tensor): Tensor;
+
+  not_equal(other: Tensor): Tensor;
+
+  less(other: Tensor): Tensor;
+
+  less_equal(other: Tensor): Tensor;
+
+  greater(other: Tensor): Tensor;
+
+  greater_equal(other: Tensor): Tensor;
+
+  sum(): number;
+
+  mean(): number;
+
+  max(): number;
+
+  min(): number;
+
+  prod(): number;
+
+  argmax(): any;
+
+  argmin(): any;
+
+  all(): boolean;
+
+  any(): boolean;
+
+  sum_axis(axis: any, keepdims: boolean): Tensor;
+
+  sum_axis(axis: any): Tensor;
+
+  mean_axis(axis: any, keepdims: boolean): Tensor;
+
+  mean_axis(axis: any): Tensor;
+
+  max_axis(axis: any, keepdims: boolean): Tensor;
+
+  max_axis(axis: any): Tensor;
+
+  min_axis(axis: any, keepdims: boolean): Tensor;
+
+  min_axis(axis: any): Tensor;
+
+  prod_axis(axis: any, keepdims: boolean): Tensor;
+
+  prod_axis(axis: any): Tensor;
+
+  argmax_axis(axis: any, keepdims: boolean): Tensor;
+
+  argmax_axis(axis: any): Tensor;
+
+  argmin_axis(axis: any, keepdims: boolean): Tensor;
+
+  argmin_axis(axis: any): Tensor;
+
+  matmul(other: Tensor): Tensor;
+
+  dot(other: Tensor): number;
+
+  outer(other: Tensor): Tensor;
+
+  to_string(max_elements: any): string;
+
+  to_string(): string;
+}
+
+export  class Dual {
+
+  constructor(value: number, derivative: number);
+
+  constructor(value: number);
+
+  value(): number;
+
+  derivative(): number;
+
+  add(other: Dual): Dual;
+
+  subtract(other: Dual): Dual;
+
+  multiply(other: Dual): Dual;
+
+  divide(other: Dual): Dual;
+
+  negate(): Dual;
+
+  add_scalar(scalar: number): Dual;
+
+  subtract_scalar(scalar: number): Dual;
+
+  multiply_scalar(scalar: number): Dual;
+
+  divide_scalar(scalar: number): Dual;
+
+  pow(exponent: number): Dual;
+
+  exp(): Dual;
+
+  log(): Dual;
+
+  sqrt(): Dual;
+
+  sin(): Dual;
+
+  cos(): Dual;
+
+  tan(): Dual;
+
+  tanh(): Dual;
+
+  abs(): Dual;
+}
+
+export  class HyperDual {
+
+  constructor(value: number, eps1: number, eps2: number, eps1eps2: number);
+
+  constructor(value: number, eps1: number, eps2: number);
+
+  constructor(value: number, eps1: number);
+
+  constructor(value: number);
+
+  value(): number;
+
+  eps1(): number;
+
+  eps2(): number;
+
+  eps1eps2(): number;
+
+  add(other: HyperDual): HyperDual;
+
+  subtract(other: HyperDual): HyperDual;
+
+  multiply(other: HyperDual): HyperDual;
+
+  divide(other: HyperDual): HyperDual;
+
+  negate(): HyperDual;
+
+  add_scalar(scalar: number): HyperDual;
+
+  subtract_scalar(scalar: number): HyperDual;
+
+  multiply_scalar(scalar: number): HyperDual;
+
+  divide_scalar(scalar: number): HyperDual;
+
+  pow(exponent: number): HyperDual;
+
+  exp(): HyperDual;
+
+  log(): HyperDual;
+
+  sqrt(): HyperDual;
+
+  sin(): HyperDual;
+
+  cos(): HyperDual;
+
+  tan(): HyperDual;
+
+  tanh(): HyperDual;
+}
+
+export  class Tape {
+
+  constructor();
+
+  size(): any;
+
+  value_at(index: any): number;
+
+  backward(output: Var): any;
+}
+
+export  class Var {
+
+  constructor(tape: Tape, value: number);
+
+  value(): number;
+
+  index(): any;
+
+  add(other: Var): Var;
+
+  subtract(other: Var): Var;
+
+  multiply(other: Var): Var;
+
+  divide(other: Var): Var;
+
+  negate(): Var;
+
+  add_scalar(scalar: number): Var;
+
+  subtract_scalar(scalar: number): Var;
+
+  multiply_scalar(scalar: number): Var;
+
+  divide_scalar(scalar: number): Var;
+
+  pow(exponent: number): Var;
+
+  exp(): Var;
+
+  log(): Var;
+
+  sqrt(): Var;
+
+  sin(): Var;
+
+  cos(): Var;
+
+  tan(): Var;
+
+  tanh(): Var;
+
+  abs(): Var;
+}
+
+export  class RGB {
+
+  r: number;
+
+  g: number;
+
+  b: number;
+
+  constructor();
+}
+
+export type DataSeries_Kind = number & { readonly [_SWIG_type_tag]: 'DataSeries_Kind'; };
+
+export  class DataSeries {
+
+ static readonly Kind_Scatter: DataSeries_Kind;
+
+ static readonly Kind_Line: DataSeries_Kind;
+
+ static readonly Kind_Bar: DataSeries_Kind;
+
+  kind: any;
+
+  x: any;
+
+  y: any;
+
+  label: string;
+
+  color: RGB;
+
+  stroke_width: number;
+
+  marker_size: number;
+
+  bar_width: number;
+
+  constructor();
+}
+
+export  class Plot {
+
+  size(width: any, height: any): Plot;
+
+  title(value: string): Plot;
+
+  x_label(value: string): Plot;
+
+  y_label(value: string): Plot;
+
+  background(color: RGB): Plot;
+
+  axis_color(color: RGB): Plot;
+
+  grid_color(color: RGB): Plot;
+
+  show_grid(enabled: boolean): Plot;
+
+  show_grid(): Plot;
+
+  x_limits(min_x: number, max_x: number): Plot;
+
+  y_limits(min_y: number, max_y: number): Plot;
+
+  width(): any;
+
+  height(): any;
+
+  title_text(): string;
+
+  x_label_text(): string;
+
+  y_label_text(): string;
+
+  series(): any;
+
+  background_color(): RGB;
+
+  axes_color(): RGB;
+
+  major_grid_color(): RGB;
+
+  grid_visible(): boolean;
+
+  has_x_limits(): boolean;
+
+  has_y_limits(): boolean;
+
+  x_min(): number;
+
+  x_max(): number;
+
+  y_min(): number;
+
+  y_max(): number;
+
+  save(path: string): void;
+
+  save_svg(path: string): void;
+
+  view(title_hint: string): void;
+
+  view(): void;
+
+  show(title_hint: string): void;
+
+  show(): void;
+
+  constructor();
+}
+
+export  class ScatterPlot extends Plot {
+
+ static create(): ScatterPlot;
+
+  points(x: any, y: any, label: string, color: RGB, marker_size: number): ScatterPlot;
+
+  points(x: any, y: any, label: string, color: RGB): ScatterPlot;
+
+  points(x: any, y: any, label: string): ScatterPlot;
+
+  points(x: any, y: any): ScatterPlot;
+
+  line(x: any, y: any, label: string, color: RGB, stroke_width: number): ScatterPlot;
+
+  line(x: any, y: any, label: string, color: RGB): ScatterPlot;
+
+  line(x: any, y: any, label: string): ScatterPlot;
+
+  line(x: any, y: any): ScatterPlot;
+
+  constructor();
+}
+
+export  class LinePlot extends Plot {
+
+ static create(): LinePlot;
+
+  line(x: any, y: any, label: string, color: RGB, stroke_width: number): LinePlot;
+
+  line(x: any, y: any, label: string, color: RGB): LinePlot;
+
+  line(x: any, y: any, label: string): LinePlot;
+
+  line(x: any, y: any): LinePlot;
+
+  constructor();
+}
+
+export  class BarChart extends Plot {
+
+ static create(): BarChart;
+
+  bars(x: any, y: any, label: string, color: RGB, bar_width: number): BarChart;
+
+  bars(x: any, y: any, label: string, color: RGB): BarChart;
+
+  bars(x: any, y: any, label: string): BarChart;
+
+  bars(x: any, y: any): BarChart;
+
+  constructor();
+}
+
+export  class ARIMAOptions {
+
+  p: any;
+
+  d: any;
+
+  q: any;
+
+  seasonal_p: any;
+
+  seasonal_d: any;
+
+  seasonal_q: any;
+
+  seasonal_period: any;
+
+  include_mean: boolean;
+
+  de_population_size: any;
+
+  de_max_generations: any;
+
+  coefficient_bound: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class ARIMA {
+
+  constructor(y: any, options: ARIMAOptions);
+
+  constructor(y: any);
+
+  options(): ARIMAOptions;
+
+  ar_coefficients(): any;
+
+  ma_coefficients(): any;
+
+  seasonal_ar_coefficients(): any;
+
+  seasonal_ma_coefficients(): any;
+
+  mean(): number;
+
+  observations(): any;
+
+  n_used(): any;
+
+  sigma2(): number;
+
+  log_likelihood(): number;
+
+  aic(): number;
+
+  bic(): number;
+
+  fitted_values(): any;
+
+  residuals(): any;
+
+  forecast(horizon: any): any;
+
+  forecast_with_intervals(horizon: any): any;
+}
+
+export const TrendType_None: TrendType;
+
+export const TrendType_Additive: TrendType;
+
+export const TrendType_AdditiveDamped: TrendType;
+
+export type TrendType = number & { readonly [_SWIG_type_tag]: 'TrendType'; };
+
+export const SeasonalType_None: SeasonalType;
+
+export const SeasonalType_Additive: SeasonalType;
+
+export const SeasonalType_Multiplicative: SeasonalType;
+
+export type SeasonalType = number & { readonly [_SWIG_type_tag]: 'SeasonalType'; };
+
+export  class ExponentialSmoothingOptions {
+
+  trend: any;
+
+  seasonal: any;
+
+  seasonal_period: any;
+
+  alpha: number;
+
+  beta: number;
+
+  gamma: number;
+
+  phi: number;
+
+  de_population_size: any;
+
+  de_max_generations: any;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class ExponentialSmoothing {
+
+  constructor(y: any, options: ExponentialSmoothingOptions);
+
+  constructor(y: any);
+
+  options(): ExponentialSmoothingOptions;
+
+  alpha(): number;
+
+  beta(): number;
+
+  gamma(): number;
+
+  phi(): number;
+
+  observations(): any;
+
+  sse(): number;
+
+  sigma2(): number;
+
+  log_likelihood(): number;
+
+  aic(): number;
+
+  bic(): number;
+
+  fitted_values(): any;
+
+  residuals(): any;
+
+  forecast(horizon: any): any;
+}
+
+export const Alternative_TwoSided: Alternative;
+
+export const Alternative_Less: Alternative;
+
+export const Alternative_Greater: Alternative;
+
+export type Alternative = number & { readonly [_SWIG_type_tag]: 'Alternative'; };
+
+export  class HypothesisTestResult {
+
+  statistic: number;
+
+  parameter1: number;
+
+  parameter2: number;
+
+  p_value: number;
+
+  estimate1: number;
+
+  estimate2: number;
+
+  conf_int_lower: number;
+
+  conf_int_upper: number;
+
+  has_conf_int: boolean;
+
+  alternative: any;
+
+  method: string;
+
+  constructor();
+}
+
+export function t_test_one_sample(x: any, mu: number, alternative: any, conf_level: number): HypothesisTestResult;
+
+export function t_test_one_sample(x: any, mu: number, alternative: any): HypothesisTestResult;
+
+export function t_test_one_sample(x: any, mu: number): HypothesisTestResult;
+
+export function t_test_one_sample(x: any): HypothesisTestResult;
+
+export function t_test_two_sample(x: any, y: any, equal_variance: boolean, alternative: any, conf_level: number): HypothesisTestResult;
+
+export function t_test_two_sample(x: any, y: any, equal_variance: boolean, alternative: any): HypothesisTestResult;
+
+export function t_test_two_sample(x: any, y: any, equal_variance: boolean): HypothesisTestResult;
+
+export function t_test_two_sample(x: any, y: any): HypothesisTestResult;
+
+export function t_test_paired(x: any, y: any, alternative: any, conf_level: number): HypothesisTestResult;
+
+export function t_test_paired(x: any, y: any, alternative: any): HypothesisTestResult;
+
+export function t_test_paired(x: any, y: any): HypothesisTestResult;
+
+export function wilcoxon_signed_rank_test(x: any, mu: number, alternative: any): HypothesisTestResult;
+
+export function wilcoxon_signed_rank_test(x: any, mu: number): HypothesisTestResult;
+
+export function wilcoxon_signed_rank_test(x: any): HypothesisTestResult;
+
+export function wilcoxon_rank_sum_test(x: any, y: any, alternative: any): HypothesisTestResult;
+
+export function wilcoxon_rank_sum_test(x: any, y: any): HypothesisTestResult;
+
+export function ks_test_one_sample_normal(x: any, mean: number, sd: number, alternative: any): HypothesisTestResult;
+
+export function ks_test_one_sample_normal(x: any, mean: number, sd: number): HypothesisTestResult;
+
+export function ks_test_one_sample_normal(x: any, mean: number): HypothesisTestResult;
+
+export function ks_test_one_sample_normal(x: any): HypothesisTestResult;
+
+export function ks_test_two_sample(x: any, y: any, alternative: any): HypothesisTestResult;
+
+export function ks_test_two_sample(x: any, y: any): HypothesisTestResult;
+
+export function chi_squared_goodness_of_fit(observed: any, expected_probabilities: any): HypothesisTestResult;
+
+export function chi_squared_goodness_of_fit(observed: any): HypothesisTestResult;
+
+export function chi_squared_test_independence(table: any, nrows: any, ncols: any, correct: boolean): HypothesisTestResult;
+
+export function chi_squared_test_independence(table: any, nrows: any, ncols: any): HypothesisTestResult;
+
+export function one_way_anova(values: any, group_sizes: any): HypothesisTestResult;
+
+export function kruskal_wallis_test(values: any, group_sizes: any): HypothesisTestResult;
+
+export function pearson_correlation_test(x: any, y: any, alternative: any, conf_level: number): HypothesisTestResult;
+
+export function pearson_correlation_test(x: any, y: any, alternative: any): HypothesisTestResult;
+
+export function pearson_correlation_test(x: any, y: any): HypothesisTestResult;
+
+export function spearman_correlation_test(x: any, y: any, alternative: any): HypothesisTestResult;
+
+export function spearman_correlation_test(x: any, y: any): HypothesisTestResult;
+
+export function f_test_variance(x: any, y: any, alternative: any, conf_level: number): HypothesisTestResult;
+
+export function f_test_variance(x: any, y: any, alternative: any): HypothesisTestResult;
+
+export function f_test_variance(x: any, y: any): HypothesisTestResult;
+
+export function proportion_test_one_sample(successes: any, n: any, p: number, alternative: any, correct: boolean, conf_level: number): HypothesisTestResult;
+
+export function proportion_test_one_sample(successes: any, n: any, p: number, alternative: any, correct: boolean): HypothesisTestResult;
+
+export function proportion_test_one_sample(successes: any, n: any, p: number, alternative: any): HypothesisTestResult;
+
+export function proportion_test_one_sample(successes: any, n: any, p: number): HypothesisTestResult;
+
+export function proportion_test_one_sample(successes: any, n: any): HypothesisTestResult;
+
+export function proportion_test_two_sample(successes1: any, n1: any, successes2: any, n2: any, alternative: any, correct: boolean, conf_level: number): HypothesisTestResult;
+
+export function proportion_test_two_sample(successes1: any, n1: any, successes2: any, n2: any, alternative: any, correct: boolean): HypothesisTestResult;
+
+export function proportion_test_two_sample(successes1: any, n1: any, successes2: any, n2: any, alternative: any): HypothesisTestResult;
+
+export function proportion_test_two_sample(successes1: any, n1: any, successes2: any, n2: any): HypothesisTestResult;
+
+export function binomial_test(successes: any, n: any, p: number, alternative: any, conf_level: number): HypothesisTestResult;
+
+export function binomial_test(successes: any, n: any, p: number, alternative: any): HypothesisTestResult;
+
+export function binomial_test(successes: any, n: any, p: number): HypothesisTestResult;
+
+export function binomial_test(successes: any, n: any): HypothesisTestResult;
+
+export function fisher_exact_test_2x2(a: any, b: any, c: any, d: any, alternative: any): HypothesisTestResult;
+
+export function fisher_exact_test_2x2(a: any, b: any, c: any, d: any): HypothesisTestResult;
+
+export function shapiro_francia_test(x: any): HypothesisTestResult;
+
+export abstract class ArbitraryFunction {
+
+  evaluate(coordinates: any): number;
+}
+
+export abstract class DifferentiableFunction extends ArbitraryFunction {
+
+  gradient(coordinates: any): any;
+}
+
+export abstract class SeparableFunction extends ArbitraryFunction {
+
+  num_functions(): any;
+
+  evaluate_term(coordinates: any, i: any): number;
+
+  evaluate(coordinates: any): number;
+}
+
+export abstract class DifferentiableSeparableFunction extends DifferentiableFunction {
+
+  num_functions(): any;
+
+  evaluate_term(coordinates: any, i: any): number;
+
+  gradient_term(coordinates: any, i: any): any;
+
+  evaluate(coordinates: any): number;
+
+  gradient(coordinates: any): any;
+}
+
+export  class GradientDescentOptions {
+
+  step_size: number;
+
+  momentum: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class GradientDescent {
+
+  constructor(options: GradientDescentOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+}
+
+export  class AdamOptions {
+
+  step_size: number;
+
+  beta1: number;
+
+  beta2: number;
+
+  epsilon: number;
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  constructor();
+}
+
+export  class Adam {
+
+  constructor(options: AdamOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+}
+
+export  class LBFGSOptions {
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  history_size: any;
+
+  armijo_c1: number;
+
+  wolfe_c2: number;
+
+  max_line_search_trials: any;
+
+  constructor();
+}
+
+export  class LBFGS {
+
+  constructor(options: LBFGSOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+}
+
+export  class SGDOptions {
+
+  step_size: number;
+
+  max_epochs: any;
+
+  batch_size: any;
+
+  tolerance: number;
+
+  shuffle: boolean;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class SGD {
+
+  constructor(options: SGDOptions);
+
+  constructor();
+
+  optimize(_function: DifferentiableSeparableFunction, coordinates: any): number;
+}
+
+export  class SimulatedAnnealingOptions {
+
+  initial_temperature: number;
+
+  cooling_rate: number;
+
+  max_iterations: any;
+
+  step_std_dev: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class SimulatedAnnealing {
+
+  constructor(options: SimulatedAnnealingOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any): number;
+}
+
+export  class PSOOptions {
+
+  population_size: any;
+
+  max_iterations: any;
+
+  inertia_weight: number;
+
+  cognitive_coefficient: number;
+
+  social_coefficient: number;
+
+  topology: string;
+
+  ring_neighbors: any;
+
+  inertia_strategy: string;
+
+  final_inertia_weight: number;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class PSO {
+
+  constructor(options: PSOOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class DEOptions {
+
+  population_size: any;
+
+  max_generations: any;
+
+  differential_weight: number;
+
+  crossover_rate: number;
+
+  mutation_strategy: string;
+
+  crossover_strategy: string;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class DifferentialEvolution {
+
+  constructor(options: DEOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class GAOptions {
+
+  population_size: any;
+
+  max_generations: any;
+
+  crossover_rate: number;
+
+  mutation_rate: number;
+
+  mutation_std_dev: number;
+
+  selection_strategy: string;
+
+  tournament_size: any;
+
+  crossover_strategy: string;
+
+  blend_alpha: number;
+
+  elitism: boolean;
+
+  elite_count: any;
+
+  tolerance: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class GeneticAlgorithm {
+
+  constructor(options: GAOptions);
+
+  constructor();
+
+  optimize(_function: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, coordinates: any, lower_bound: any, upper_bound: any): number;
+}
+
+export  class MAPOptions {
+
+  max_iterations: any;
+
+  tolerance: number;
+
+  history_size: any;
+
+  constructor();
+}
+
+export  class MAP {
+
+  constructor(options: MAPOptions);
+
+  constructor();
+
+  optimize(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction, coordinates: any): number;
+}
+
+export  class HMCOptions {
+
+  num_samples: any;
+
+  num_warmup: any;
+
+  num_leapfrog_steps: any;
+
+  initial_step_size: number;
+
+  target_accept_rate: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class HMCResult {
+
+  samples: any;
+
+  accept_rate: number;
+
+  final_step_size: number;
+
+  constructor();
+}
+
+export  class HMC {
+
+  constructor(options: HMCOptions);
+
+  constructor();
+
+  sample(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction, initial_params: any): HMCResult;
+}
+
+export  class NUTSOptions {
+
+  num_samples: any;
+
+  num_warmup: any;
+
+  max_tree_depth: any;
+
+  initial_step_size: number;
+
+  target_accept_rate: number;
+
+  max_delta_error: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class NUTSResult {
+
+  samples: any;
+
+  accept_rate: number;
+
+  final_step_size: number;
+
+  num_divergences: any;
+
+  constructor();
+}
+
+export  class NUTS {
+
+  constructor(options: NUTSOptions);
+
+  constructor();
+
+  sample(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction, initial_params: any): NUTSResult;
 }
 
 

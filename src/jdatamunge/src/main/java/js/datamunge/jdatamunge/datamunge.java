@@ -77,4 +77,549 @@ public class datamunge {
     return datamungeJNI.sum_dpair(DPair.getCPtr(values), values);
   }
 
+  /**
+   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   */
+  public static HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_0(DVector.getCPtr(x), x, mu, alternative.swigValue(), conf_level), true);
+  }
+
+  /**
+   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   */
+  public static HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_1(DVector.getCPtr(x), x, mu, alternative.swigValue()), true);
+  }
+
+  /**
+   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   */
+  public static HypothesisTestResult t_test_one_sample(DVector x, double mu) {
+    return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_2(DVector.getCPtr(x), x, mu), true);
+  }
+
+  /**
+   *  One-sample t-test of whether the mean of <code>x</code> differs from <code>mu</code>.
+   */
+  public static HypothesisTestResult t_test_one_sample(DVector x) {
+    return new HypothesisTestResult(datamungeJNI.t_test_one_sample__SWIG_3(DVector.getCPtr(x), x), true);
+  }
+
+  /**
+   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
+   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
+   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
+   *         variance Student's t-test instead.
+   */
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, boolean equal_variance, Alternative alternative, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, equal_variance, alternative.swigValue(), conf_level), true);
+  }
+
+  /**
+   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
+   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
+   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
+   *         variance Student's t-test instead.
+   */
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, boolean equal_variance, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, equal_variance, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
+   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
+   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
+   *         variance Student's t-test instead.
+   */
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, boolean equal_variance) {
+    return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y, equal_variance), true);
+  }
+
+  /**
+   *  Two-sample t-test of whether <code>x</code> and <code>y</code> have the same mean. Uses Welch's<br>
+   *         unequal-variance approximation (Satterthwaite degrees of freedom) by default,<br>
+   *         matching R's t.test() default; set <code>equal_variance</code> to use the classic pooled-<br>
+   *         variance Student's t-test instead.
+   */
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y) {
+    return new HypothesisTestResult(datamungeJNI.t_test_two_sample__SWIG_3(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].<br>
+   *         Requires x and y to have the same length.
+   */
+  public static HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.t_test_paired__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue(), conf_level), true);
+  }
+
+  /**
+   *  Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].<br>
+   *         Requires x and y to have the same length.
+   */
+  public static HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.t_test_paired__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].<br>
+   *         Requires x and y to have the same length.
+   */
+  public static HypothesisTestResult t_test_paired(DVector x, DVector y) {
+    return new HypothesisTestResult(datamungeJNI.t_test_paired__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired<br>
+   *         t-test, testing whether the distribution of <code>x</code> - <code>mu</code> is symmetric about zero.<br>
+   *         For a paired test, pass the elementwise differences as <code>x</code>. Differences exactly<br>
+   *         equal to <code>mu</code> are dropped (matching R's wilcox.test() default). Uses the normal<br>
+   *         approximation with a continuity correction and a tie correction to the variance<br>
+   *         (matching R's behavior once ties are present, which is the common case for real<br>
+   *         data); no confidence interval is reported (has_conf_int stays false), matching the<br>
+   *         default `conf.int = FALSE` behavior in R.
+   */
+  public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.wilcoxon_signed_rank_test__SWIG_0(DVector.getCPtr(x), x, mu, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired<br>
+   *         t-test, testing whether the distribution of <code>x</code> - <code>mu</code> is symmetric about zero.<br>
+   *         For a paired test, pass the elementwise differences as <code>x</code>. Differences exactly<br>
+   *         equal to <code>mu</code> are dropped (matching R's wilcox.test() default). Uses the normal<br>
+   *         approximation with a continuity correction and a tie correction to the variance<br>
+   *         (matching R's behavior once ties are present, which is the common case for real<br>
+   *         data); no confidence interval is reported (has_conf_int stays false), matching the<br>
+   *         default `conf.int = FALSE` behavior in R.
+   */
+  public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu) {
+    return new HypothesisTestResult(datamungeJNI.wilcoxon_signed_rank_test__SWIG_1(DVector.getCPtr(x), x, mu), true);
+  }
+
+  /**
+   *  Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired<br>
+   *         t-test, testing whether the distribution of <code>x</code> - <code>mu</code> is symmetric about zero.<br>
+   *         For a paired test, pass the elementwise differences as <code>x</code>. Differences exactly<br>
+   *         equal to <code>mu</code> are dropped (matching R's wilcox.test() default). Uses the normal<br>
+   *         approximation with a continuity correction and a tie correction to the variance<br>
+   *         (matching R's behavior once ties are present, which is the common case for real<br>
+   *         data); no confidence interval is reported (has_conf_int stays false), matching the<br>
+   *         default `conf.int = FALSE` behavior in R.
+   */
+  public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x) {
+    return new HypothesisTestResult(datamungeJNI.wilcoxon_signed_rank_test__SWIG_2(DVector.getCPtr(x), x), true);
+  }
+
+  /**
+   *  Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric<br>
+   *         analog of the two-sample t-test, testing whether <code>x</code> and <code>y</code> are drawn from<br>
+   *         distributions with the same location. Uses the normal approximation with a<br>
+   *         continuity correction and a tie correction to the variance.
+   */
+  public static HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.wilcoxon_rank_sum_test__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric<br>
+   *         analog of the two-sample t-test, testing whether <code>x</code> and <code>y</code> are drawn from<br>
+   *         distributions with the same location. Uses the normal approximation with a<br>
+   *         continuity correction and a tie correction to the variance.
+   */
+  public static HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y) {
+    return new HypothesisTestResult(datamungeJNI.wilcoxon_rank_sum_test__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
+   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
+   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
+   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
+   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
+   *         software that computes the exact finite-sample null distribution for small,<br>
+   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
+   *         than a few dozen.
+   */
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_0(DVector.getCPtr(x), x, mean, sd, alternative.swigValue()), true);
+  }
+
+  /**
+   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
+   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
+   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
+   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
+   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
+   *         software that computes the exact finite-sample null distribution for small,<br>
+   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
+   *         than a few dozen.
+   */
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_1(DVector.getCPtr(x), x, mean, sd), true);
+  }
+
+  /**
+   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
+   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
+   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
+   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
+   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
+   *         software that computes the exact finite-sample null distribution for small,<br>
+   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
+   *         than a few dozen.
+   */
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_2(DVector.getCPtr(x), x, mean), true);
+  }
+
+  /**
+   *  One-sample Kolmogorov-Smirnov test of whether <code>x</code> is drawn from a<br>
+   *         Normal(<code>mean</code>, <code>sd)</code> distribution, comparing the empirical CDF of <code>x</code> against<br>
+   *         that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided<br>
+   *         p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov<br>
+   *         one-sided asymptotic formula for "less"/"greater"; this will differ slightly from<br>
+   *         software that computes the exact finite-sample null distribution for small,<br>
+   *         tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more<br>
+   *         than a few dozen.
+   */
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_one_sample_normal__SWIG_3(DVector.getCPtr(x), x), true);
+  }
+
+  /**
+   *  Two-sample Kolmogorov-Smirnov test of whether <code>x</code> and <code>y</code> are drawn from the<br>
+   *         same continuous distribution, comparing their empirical CDFs. Same asymptotic<br>
+   *         p-value approach as ks_test_one_sample_normal.
+   */
+  public static HypothesisTestResult ks_test_two_sample(DVector x, DVector y, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_two_sample__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Two-sample Kolmogorov-Smirnov test of whether <code>x</code> and <code>y</code> are drawn from the<br>
+   *         same continuous distribution, comparing their empirical CDFs. Same asymptotic<br>
+   *         p-value approach as ks_test_one_sample_normal.
+   */
+  public static HypothesisTestResult ks_test_two_sample(DVector x, DVector y) {
+    return new HypothesisTestResult(datamungeJNI.ks_test_two_sample__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  Chi-squared goodness-of-fit test: whether the counts in <code>observed</code> match the<br>
+   *         given <code>expected_probabilities</code> (which must sum to 1). If <code>expected_probabilities</code><br>
+   *         is empty, a uniform distribution across categories is assumed, matching R's<br>
+   *         chisq.test() default.
+   */
+  public static HypothesisTestResult chi_squared_goodness_of_fit(DVector observed, DVector expected_probabilities) {
+    return new HypothesisTestResult(datamungeJNI.chi_squared_goodness_of_fit__SWIG_0(DVector.getCPtr(observed), observed, DVector.getCPtr(expected_probabilities), expected_probabilities), true);
+  }
+
+  /**
+   *  Chi-squared goodness-of-fit test: whether the counts in <code>observed</code> match the<br>
+   *         given <code>expected_probabilities</code> (which must sum to 1). If <code>expected_probabilities</code><br>
+   *         is empty, a uniform distribution across categories is assumed, matching R's<br>
+   *         chisq.test() default.
+   */
+  public static HypothesisTestResult chi_squared_goodness_of_fit(DVector observed) {
+    return new HypothesisTestResult(datamungeJNI.chi_squared_goodness_of_fit__SWIG_1(DVector.getCPtr(observed), observed), true);
+  }
+
+  /**
+   *  Chi-squared test of independence on a two-way contingency table given as a<br>
+   *         row-major flattened vector of counts (length <code>nrows</code> * <code>ncols)</code>. Applies Yates'<br>
+   *         continuity correction when the table is 2x2 and <code>correct</code> is true (the default,<br>
+   *         matching R's chisq.test()).
+   */
+  public static HypothesisTestResult chi_squared_test_independence(DVector table, long nrows, long ncols, boolean correct) {
+    return new HypothesisTestResult(datamungeJNI.chi_squared_test_independence__SWIG_0(DVector.getCPtr(table), table, nrows, ncols, correct), true);
+  }
+
+  /**
+   *  Chi-squared test of independence on a two-way contingency table given as a<br>
+   *         row-major flattened vector of counts (length <code>nrows</code> * <code>ncols)</code>. Applies Yates'<br>
+   *         continuity correction when the table is 2x2 and <code>correct</code> is true (the default,<br>
+   *         matching R's chisq.test()).
+   */
+  public static HypothesisTestResult chi_squared_test_independence(DVector table, long nrows, long ncols) {
+    return new HypothesisTestResult(datamungeJNI.chi_squared_test_independence__SWIG_1(DVector.getCPtr(table), table, nrows, ncols), true);
+  }
+
+  /**
+   *  One-way ANOVA F-test across k &gt;= 2 independent groups, testing whether all groups<br>
+   *         share the same mean. <code>values</code> is every group's observations concatenated in<br>
+   *         order, and <code>group_sizes</code> gives each group's length (must sum to values.size()).<br>
+   *         statistic = F, parameter1 = between-groups df, parameter2 = within-groups df.
+   */
+  public static HypothesisTestResult one_way_anova(DVector values, SizeVector group_sizes) {
+    return new HypothesisTestResult(datamungeJNI.one_way_anova(DVector.getCPtr(values), values, SizeVector.getCPtr(group_sizes), group_sizes), true);
+  }
+
+  /**
+   *  Kruskal-Wallis rank-sum test: a non-parametric analog of one-way ANOVA across<br>
+   *         k &gt;= 2 independent groups, testing whether they share the same distribution.<br>
+   *         Same (values, group_sizes) layout as one_way_anova(). Uses the chi-squared<br>
+   *         approximation to the H statistic with a tie correction; statistic = H,<br>
+   *         parameter1 = df = k - 1.
+   */
+  public static HypothesisTestResult kruskal_wallis_test(DVector values, SizeVector group_sizes) {
+    return new HypothesisTestResult(datamungeJNI.kruskal_wallis_test(DVector.getCPtr(values), values, SizeVector.getCPtr(group_sizes), group_sizes), true);
+  }
+
+  /**
+   *  Pearson product-moment correlation test between <code>x</code> and <code>y</code>. estimate1 is the<br>
+   *         correlation coefficient r; the confidence interval is computed via the Fisher<br>
+   *         z-transform.
+   */
+  public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.pearson_correlation_test__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue(), conf_level), true);
+  }
+
+  /**
+   *  Pearson product-moment correlation test between <code>x</code> and <code>y</code>. estimate1 is the<br>
+   *         correlation coefficient r; the confidence interval is computed via the Fisher<br>
+   *         z-transform.
+   */
+  public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.pearson_correlation_test__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Pearson product-moment correlation test between <code>x</code> and <code>y</code>. estimate1 is the<br>
+   *         correlation coefficient r; the confidence interval is computed via the Fisher<br>
+   *         z-transform.
+   */
+  public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y) {
+    return new HypothesisTestResult(datamungeJNI.pearson_correlation_test__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  Spearman's rank correlation test between <code>x</code> and <code>y</code>: the Pearson correlation<br>
+   *         of their ranks, with a p-value from the same t-approximation used for Pearson's<br>
+   *         test (matching R's asymptotic method, used whenever ties are present). estimate1<br>
+   *         is rho; no confidence interval is reported (has_conf_int stays false), matching R.
+   */
+  public static HypothesisTestResult spearman_correlation_test(DVector x, DVector y, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.spearman_correlation_test__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Spearman's rank correlation test between <code>x</code> and <code>y</code>: the Pearson correlation<br>
+   *         of their ranks, with a p-value from the same t-approximation used for Pearson's<br>
+   *         test (matching R's asymptotic method, used whenever ties are present). estimate1<br>
+   *         is rho; no confidence interval is reported (has_conf_int stays false), matching R.
+   */
+  public static HypothesisTestResult spearman_correlation_test(DVector x, DVector y) {
+    return new HypothesisTestResult(datamungeJNI.spearman_correlation_test__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  F-test comparing the variances of <code>x</code> and <code>y</code> (H0: equal variances). estimate1<br>
+   *         is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the<br>
+   *         two groups' degrees of freedom.
+   */
+  public static HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.f_test_variance__SWIG_0(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue(), conf_level), true);
+  }
+
+  /**
+   *  F-test comparing the variances of <code>x</code> and <code>y</code> (H0: equal variances). estimate1<br>
+   *         is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the<br>
+   *         two groups' degrees of freedom.
+   */
+  public static HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.f_test_variance__SWIG_1(DVector.getCPtr(x), x, DVector.getCPtr(y), y, alternative.swigValue()), true);
+  }
+
+  /**
+   *  F-test comparing the variances of <code>x</code> and <code>y</code> (H0: equal variances). estimate1<br>
+   *         is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the<br>
+   *         two groups' degrees of freedom.
+   */
+  public static HypothesisTestResult f_test_variance(DVector x, DVector y) {
+    return new HypothesisTestResult(datamungeJNI.f_test_variance__SWIG_2(DVector.getCPtr(x), x, DVector.getCPtr(y), y), true);
+  }
+
+  /**
+   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
+   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
+   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
+   *         confidence interval uses the Wilson score interval (without continuity<br>
+   *         correction, a close approximation to R's corrected version).
+   */
+  public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p, Alternative alternative, boolean correct, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_0(successes, n, p, alternative.swigValue(), correct, conf_level), true);
+  }
+
+  /**
+   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
+   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
+   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
+   *         confidence interval uses the Wilson score interval (without continuity<br>
+   *         correction, a close approximation to R's corrected version).
+   */
+  public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p, Alternative alternative, boolean correct) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_1(successes, n, p, alternative.swigValue(), correct), true);
+  }
+
+  /**
+   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
+   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
+   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
+   *         confidence interval uses the Wilson score interval (without continuity<br>
+   *         correction, a close approximation to R's corrected version).
+   */
+  public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_2(successes, n, p, alternative.swigValue()), true);
+  }
+
+  /**
+   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
+   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
+   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
+   *         confidence interval uses the Wilson score interval (without continuity<br>
+   *         correction, a close approximation to R's corrected version).
+   */
+  public static HypothesisTestResult proportion_test_one_sample(long successes, long n, double p) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_3(successes, n, p), true);
+  }
+
+  /**
+   *  One-sample test of the proportion <code>successes</code> / <code>n</code> against a null value <code>p</code><br>
+   *         (default 0.5), via the chi-squared/normal approximation with a continuity<br>
+   *         correction (matching R's prop.test()). estimate1 is the sample proportion; the<br>
+   *         confidence interval uses the Wilson score interval (without continuity<br>
+   *         correction, a close approximation to R's corrected version).
+   */
+  public static HypothesisTestResult proportion_test_one_sample(long successes, long n) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_one_sample__SWIG_4(successes, n), true);
+  }
+
+  /**
+   *  Two-sample test of whether two groups have the same success proportion, via the<br>
+   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
+   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
+   *         confidence interval is for their difference (estimate1 - estimate2).
+   */
+  public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2, Alternative alternative, boolean correct, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_0(successes1, n1, successes2, n2, alternative.swigValue(), correct, conf_level), true);
+  }
+
+  /**
+   *  Two-sample test of whether two groups have the same success proportion, via the<br>
+   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
+   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
+   *         confidence interval is for their difference (estimate1 - estimate2).
+   */
+  public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2, Alternative alternative, boolean correct) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_1(successes1, n1, successes2, n2, alternative.swigValue(), correct), true);
+  }
+
+  /**
+   *  Two-sample test of whether two groups have the same success proportion, via the<br>
+   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
+   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
+   *         confidence interval is for their difference (estimate1 - estimate2).
+   */
+  public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_2(successes1, n1, successes2, n2, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Two-sample test of whether two groups have the same success proportion, via the<br>
+   *         pooled chi-squared/normal approximation with a continuity correction (matching<br>
+   *         R's prop.test()). estimate1/estimate2 are the two sample proportions; the<br>
+   *         confidence interval is for their difference (estimate1 - estimate2).
+   */
+  public static HypothesisTestResult proportion_test_two_sample(long successes1, long n1, long successes2, long n2) {
+    return new HypothesisTestResult(datamungeJNI.proportion_test_two_sample__SWIG_3(successes1, n1, successes2, n2), true);
+  }
+
+  /**
+   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
+   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
+   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
+   *         interval is the exact Clopper-Pearson interval.
+   */
+  public static HypothesisTestResult binomial_test(long successes, long n, double p, Alternative alternative, double conf_level) {
+    return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_0(successes, n, p, alternative.swigValue(), conf_level), true);
+  }
+
+  /**
+   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
+   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
+   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
+   *         interval is the exact Clopper-Pearson interval.
+   */
+  public static HypothesisTestResult binomial_test(long successes, long n, double p, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_1(successes, n, p, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
+   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
+   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
+   *         interval is the exact Clopper-Pearson interval.
+   */
+  public static HypothesisTestResult binomial_test(long successes, long n, double p) {
+    return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_2(successes, n, p), true);
+  }
+
+  /**
+   *  Exact binomial test of whether <code>successes</code> out of <code>n</code> trials is consistent with<br>
+   *         success probability <code>p</code> (default 0.5), summing exact binomial probabilities<br>
+   *         (matching R's binom.test()). estimate1 is the sample proportion; the confidence<br>
+   *         interval is the exact Clopper-Pearson interval.
+   */
+  public static HypothesisTestResult binomial_test(long successes, long n) {
+    return new HypothesisTestResult(datamungeJNI.binomial_test__SWIG_3(successes, n), true);
+  }
+
+  /**
+   *  Fisher's exact test on a 2x2 contingency table<br>
+   * <br>
+   *             | col1 | col2<br>
+   *         row1|  a   |  b<br>
+   *         row2|  c   |  d<br>
+   * <br>
+   *         testing independence of the row and column classifications by summing exact<br>
+   *         hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is<br>
+   *         the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;<br>
+   *         no confidence interval is computed (has_conf_int stays false). statistic holds the<br>
+   *         observed count `a`.
+   */
+  public static HypothesisTestResult fisher_exact_test_2x2(long a, long b, long c, long d, Alternative alternative) {
+    return new HypothesisTestResult(datamungeJNI.fisher_exact_test_2x2__SWIG_0(a, b, c, d, alternative.swigValue()), true);
+  }
+
+  /**
+   *  Fisher's exact test on a 2x2 contingency table<br>
+   * <br>
+   *             | col1 | col2<br>
+   *         row1|  a   |  b<br>
+   *         row2|  c   |  d<br>
+   * <br>
+   *         testing independence of the row and column classifications by summing exact<br>
+   *         hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is<br>
+   *         the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;<br>
+   *         no confidence interval is computed (has_conf_int stays false). statistic holds the<br>
+   *         observed count `a`.
+   */
+  public static HypothesisTestResult fisher_exact_test_2x2(long a, long b, long c, long d) {
+    return new HypothesisTestResult(datamungeJNI.fisher_exact_test_2x2__SWIG_1(a, b, c, d), true);
+  }
+
+  /**
+   *  Shapiro-Francia test for normality: the squared correlation between the sorted<br>
+   *         sample and the expected normal order statistics (Blom's approximation), with<br>
+   *         Royston's (1993) log-normal p-value approximation. A simpler, closely-related<br>
+   *         cousin of the (more commonly cited but more involved) Shapiro-Wilk test, valid<br>
+   *         for 5 &lt;= n &lt;= 5000; estimate1 is the W' statistic (near 1 for normal-looking<br>
+   *         data, well below 1 for non-normal data). A small p-value is evidence against<br>
+   *         normality.
+   */
+  public static HypothesisTestResult shapiro_francia_test(DVector x) {
+    return new HypothesisTestResult(datamungeJNI.shapiro_francia_test(DVector.getCPtr(x), x), true);
+  }
+
 }

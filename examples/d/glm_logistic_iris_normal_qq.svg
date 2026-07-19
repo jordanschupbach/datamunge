@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <rect width="100%" height="100%" fill="rgb(255,255,255)"/>
+  <style>text{font-family:Helvetica,Arial,sans-serif;fill:rgb(55,65,81);}</style>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="72" x2="936" y2="72" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="259.2" y1="72" x2="259.2" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="168.8" x2="936" y2="168.8" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="428.4" y1="72" x2="428.4" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="265.6" x2="936" y2="265.6" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="597.6" y1="72" x2="597.6" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="362.4" x2="936" y2="362.4" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="766.8" y1="72" x2="766.8" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="459.2" x2="936" y2="459.2" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="936" y1="72" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <text x="90" y="580" font-size="12" text-anchor="middle">-2.833</text>
+  <text x="80" y="560" font-size="12" text-anchor="end">-2.209</text>
+  <text x="259.2" y="580" font-size="12" text-anchor="middle">-1.7</text>
+  <text x="80" y="463.2" font-size="12" text-anchor="end">-1.275</text>
+  <text x="428.4" y="580" font-size="12" text-anchor="middle">-0.567</text>
+  <text x="80" y="366.4" font-size="12" text-anchor="end">-0.34</text>
+  <text x="597.6" y="580" font-size="12" text-anchor="middle">0.567</text>
+  <text x="80" y="269.6" font-size="12" text-anchor="end">0.595</text>
+  <text x="766.8" y="580" font-size="12" text-anchor="middle">1.7</text>
+  <text x="80" y="172.8" font-size="12" text-anchor="end">1.529</text>
+  <text x="936" y="580" font-size="12" text-anchor="middle">2.833</text>
+  <text x="80" y="76" font-size="12" text-anchor="end">2.464</text>
+  <text x="480" y="36" font-size="24" text-anchor="middle">Normal Q-Q</text>
+  <text x="480" y="620" font-size="16" text-anchor="middle">Theoretical Quantiles</text>
+  <text x="24" y="320" font-size="16" text-anchor="middle" transform="rotate(-90 24 320)">Standardized residuals</text>
+  <circle cx="128.455" cy="515.667" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="189.027" cy="514.938" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="220.397" cy="495.287" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="242.5" cy="399.106" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="259.894" cy="399.106" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="274.406" cy="395.561" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="286.96" cy="368.424" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="298.092" cy="366.75" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="308.144" cy="359.953" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="317.344" cy="358.191" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="325.855" cy="351.683" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="333.798" cy="351.683" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="341.264" cy="350.432" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="348.324" cy="350.432" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="355.033" cy="350.432" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="361.438" cy="350.432" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="367.575" cy="350.432" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="373.475" cy="345.514" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="379.166" cy="338.021" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="384.668" cy="337.457" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="390.001" cy="337.457" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="395.182" cy="336.936" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="400.224" cy="335.75" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="405.141" cy="335.299" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="409.944" cy="333.265" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="414.642" cy="331.743" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="419.245" cy="331.743" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="423.76" cy="330.79" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="428.196" cy="330.603" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="432.557" cy="330.603" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="436.851" cy="329.75" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="441.083" cy="329.75" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="445.258" cy="329.618" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="449.38" cy="329.215" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="453.455" cy="329.11" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="457.486" cy="329.11" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="461.476" cy="329.11" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="465.43" cy="328.33" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="469.351" cy="328.046" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="473.242" cy="327.799" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="477.107" cy="327.726" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="480.947" cy="327.699" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="484.767" cy="327.593" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="488.567" cy="327.572" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="492.353" cy="327.362" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="496.124" cy="327.288" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="499.886" cy="327.288" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="503.639" cy="327.247" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="507.385" cy="327.247" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="511.129" cy="327.231" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="514.871" cy="327.179" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="518.615" cy="327.15" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="522.361" cy="327.143" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="526.114" cy="327.126" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="529.876" cy="327.096" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="533.647" cy="327.071" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="537.433" cy="327.05" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="541.233" cy="327.034" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="545.053" cy="326.938" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="548.893" cy="326.903" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="552.758" cy="326.835" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="556.649" cy="326.835" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="560.57" cy="326.74" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="564.524" cy="326.62" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="568.514" cy="326.468" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="572.545" cy="326.174" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="576.62" cy="326.118" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="580.742" cy="326.094" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="584.917" cy="326.034" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="589.149" cy="325.904" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="593.443" cy="325.76" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="597.804" cy="325.681" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="602.24" cy="325.474" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="606.755" cy="325.281" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="611.358" cy="324.901" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="616.056" cy="324.643" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="620.859" cy="324.585" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="625.776" cy="324.135" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="630.818" cy="322.55" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="635.999" cy="318.918" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="641.332" cy="317.991" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="646.834" cy="316.139" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="652.525" cy="316.139" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="658.425" cy="315.543" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="664.562" cy="314.891" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="670.967" cy="313.809" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="677.676" cy="310.721" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="684.736" cy="306.367" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="692.202" cy="306.367" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="700.145" cy="305.067" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="708.656" cy="299.293" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="717.856" cy="292.028" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="727.908" cy="264.955" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="739.04" cy="264.955" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="751.594" cy="244.589" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="766.106" cy="244.589" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="783.5" cy="240.564" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="805.603" cy="180.39" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="836.973" cy="156.344" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="897.545" cy="112.333" r="4" fill="rgb(37,99,235)"/>
+  <rect x="796" y="60" width="18" height="8" fill="rgb(37,99,235)"/>
+  <text x="822" y="68" font-size="12">standardized deviance residuals</text>
+</svg>

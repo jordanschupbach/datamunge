@@ -72,4 +72,369 @@ public class datamunge {
     return ret;
   }
 
+  /// <summary>One-sample t-test of whether the mean of ``x`` differs from ``mu``.</summary>
+  public static HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_one_sample__SWIG_0(DVector.getCPtr(x), mu, (int)alternative, conf_level), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample t-test of whether the mean of ``x`` differs from ``mu``.</summary>
+  public static HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_one_sample__SWIG_1(DVector.getCPtr(x), mu, (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample t-test of whether the mean of ``x`` differs from ``mu``.</summary>
+  public static HypothesisTestResult t_test_one_sample(DVector x, double mu) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_one_sample__SWIG_2(DVector.getCPtr(x), mu), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample t-test of whether the mean of ``x`` differs from ``mu``.</summary>
+  public static HypothesisTestResult t_test_one_sample(DVector x) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_one_sample__SWIG_3(DVector.getCPtr(x)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Two-sample t-test of whether ``x`` and ``y`` have the same mean. Uses Welch's        unequal-variance approximation (Satterthwaite degrees of freedom) by default,        matching R's t.test() default; set ``equal_variance`` to use the classic pooled-        variance Student's t-test instead.</summary>
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, bool equal_variance, Alternative alternative, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_two_sample__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), equal_variance, (int)alternative, conf_level), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Two-sample t-test of whether ``x`` and ``y`` have the same mean. Uses Welch's        unequal-variance approximation (Satterthwaite degrees of freedom) by default,        matching R's t.test() default; set ``equal_variance`` to use the classic pooled-        variance Student's t-test instead.</summary>
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, bool equal_variance, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_two_sample__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y), equal_variance, (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Two-sample t-test of whether ``x`` and ``y`` have the same mean. Uses Welch's        unequal-variance approximation (Satterthwaite degrees of freedom) by default,        matching R's t.test() default; set ``equal_variance`` to use the classic pooled-        variance Student's t-test instead.</summary>
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y, bool equal_variance) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_two_sample__SWIG_2(DVector.getCPtr(x), DVector.getCPtr(y), equal_variance), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Two-sample t-test of whether ``x`` and ``y`` have the same mean. Uses Welch's        unequal-variance approximation (Satterthwaite degrees of freedom) by default,        matching R's t.test() default; set ``equal_variance`` to use the classic pooled-        variance Student's t-test instead.</summary>
+  public static HypothesisTestResult t_test_two_sample(DVector x, DVector y) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_two_sample__SWIG_3(DVector.getCPtr(x), DVector.getCPtr(y)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].        Requires x and y to have the same length.</summary>
+  public static HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_paired__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative, conf_level), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].        Requires x and y to have the same length.</summary>
+  public static HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_paired__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].        Requires x and y to have the same length.</summary>
+  public static HypothesisTestResult t_test_paired(DVector x, DVector y) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.t_test_paired__SWIG_2(DVector.getCPtr(x), DVector.getCPtr(y)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired        t-test, testing whether the distribution of ``x`` - ``mu`` is symmetric about zero.        For a paired test, pass the elementwise differences as ``x``. Differences exactly        equal to ``mu`` are dropped (matching R's wilcox.test() default). Uses the normal        approximation with a continuity correction and a tie correction to the variance        (matching R's behavior once ties are present, which is the common case for real        data); no confidence interval is reported (has_conf_int stays false), matching the        default `conf.int = FALSE` behavior in R.</summary>
+  public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.wilcoxon_signed_rank_test__SWIG_0(DVector.getCPtr(x), mu, (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired        t-test, testing whether the distribution of ``x`` - ``mu`` is symmetric about zero.        For a paired test, pass the elementwise differences as ``x``. Differences exactly        equal to ``mu`` are dropped (matching R's wilcox.test() default). Uses the normal        approximation with a continuity correction and a tie correction to the variance        (matching R's behavior once ties are present, which is the common case for real        data); no confidence interval is reported (has_conf_int stays false), matching the        default `conf.int = FALSE` behavior in R.</summary>
+  public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.wilcoxon_signed_rank_test__SWIG_1(DVector.getCPtr(x), mu), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired        t-test, testing whether the distribution of ``x`` - ``mu`` is symmetric about zero.        For a paired test, pass the elementwise differences as ``x``. Differences exactly        equal to ``mu`` are dropped (matching R's wilcox.test() default). Uses the normal        approximation with a continuity correction and a tie correction to the variance        (matching R's behavior once ties are present, which is the common case for real        data); no confidence interval is reported (has_conf_int stays false), matching the        default `conf.int = FALSE` behavior in R.</summary>
+  public static HypothesisTestResult wilcoxon_signed_rank_test(DVector x) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.wilcoxon_signed_rank_test__SWIG_2(DVector.getCPtr(x)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric        analog of the two-sample t-test, testing whether ``x`` and ``y`` are drawn from        distributions with the same location. Uses the normal approximation with a        continuity correction and a tie correction to the variance.</summary>
+  public static HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.wilcoxon_rank_sum_test__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric        analog of the two-sample t-test, testing whether ``x`` and ``y`` are drawn from        distributions with the same location. Uses the normal approximation with a        continuity correction and a tie correction to the variance.</summary>
+  public static HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.wilcoxon_rank_sum_test__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample Kolmogorov-Smirnov test of whether ``x`` is drawn from a        Normal(``mean``, ``sd)`` distribution, comparing the empirical CDF of ``x`` against        that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided        p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov        one-sided asymptotic formula for "less"/"greater"; this will differ slightly from        software that computes the exact finite-sample null distribution for small,        tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more        than a few dozen.</summary>
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.ks_test_one_sample_normal__SWIG_0(DVector.getCPtr(x), mean, sd, (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample Kolmogorov-Smirnov test of whether ``x`` is drawn from a        Normal(``mean``, ``sd)`` distribution, comparing the empirical CDF of ``x`` against        that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided        p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov        one-sided asymptotic formula for "less"/"greater"; this will differ slightly from        software that computes the exact finite-sample null distribution for small,        tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more        than a few dozen.</summary>
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.ks_test_one_sample_normal__SWIG_1(DVector.getCPtr(x), mean, sd), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample Kolmogorov-Smirnov test of whether ``x`` is drawn from a        Normal(``mean``, ``sd)`` distribution, comparing the empirical CDF of ``x`` against        that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided        p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov        one-sided asymptotic formula for "less"/"greater"; this will differ slightly from        software that computes the exact finite-sample null distribution for small,        tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more        than a few dozen.</summary>
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.ks_test_one_sample_normal__SWIG_2(DVector.getCPtr(x), mean), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample Kolmogorov-Smirnov test of whether ``x`` is drawn from a        Normal(``mean``, ``sd)`` distribution, comparing the empirical CDF of ``x`` against        that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided        p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov        one-sided asymptotic formula for "less"/"greater"; this will differ slightly from        software that computes the exact finite-sample null distribution for small,        tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more        than a few dozen.</summary>
+  public static HypothesisTestResult ks_test_one_sample_normal(DVector x) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.ks_test_one_sample_normal__SWIG_3(DVector.getCPtr(x)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Two-sample Kolmogorov-Smirnov test of whether ``x`` and ``y`` are drawn from the        same continuous distribution, comparing their empirical CDFs. Same asymptotic        p-value approach as ks_test_one_sample_normal.</summary>
+  public static HypothesisTestResult ks_test_two_sample(DVector x, DVector y, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.ks_test_two_sample__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Two-sample Kolmogorov-Smirnov test of whether ``x`` and ``y`` are drawn from the        same continuous distribution, comparing their empirical CDFs. Same asymptotic        p-value approach as ks_test_one_sample_normal.</summary>
+  public static HypothesisTestResult ks_test_two_sample(DVector x, DVector y) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.ks_test_two_sample__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Chi-squared goodness-of-fit test: whether the counts in ``observed`` match the        given ``expected_probabilities`` (which must sum to 1). If ``expected_probabilities``        is empty, a uniform distribution across categories is assumed, matching R's        chisq.test() default.</summary>
+  public static HypothesisTestResult chi_squared_goodness_of_fit(DVector observed, DVector expected_probabilities) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.chi_squared_goodness_of_fit__SWIG_0(DVector.getCPtr(observed), DVector.getCPtr(expected_probabilities)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Chi-squared goodness-of-fit test: whether the counts in ``observed`` match the        given ``expected_probabilities`` (which must sum to 1). If ``expected_probabilities``        is empty, a uniform distribution across categories is assumed, matching R's        chisq.test() default.</summary>
+  public static HypothesisTestResult chi_squared_goodness_of_fit(DVector observed) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.chi_squared_goodness_of_fit__SWIG_1(DVector.getCPtr(observed)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Chi-squared test of independence on a two-way contingency table given as a        row-major flattened vector of counts (length ``nrows`` * ``ncols)``. Applies Yates'        continuity correction when the table is 2x2 and ``correct`` is true (the default,        matching R's chisq.test()).</summary>
+  public static HypothesisTestResult chi_squared_test_independence(DVector table, uint nrows, uint ncols, bool correct) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.chi_squared_test_independence__SWIG_0(DVector.getCPtr(table), nrows, ncols, correct), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Chi-squared test of independence on a two-way contingency table given as a        row-major flattened vector of counts (length ``nrows`` * ``ncols)``. Applies Yates'        continuity correction when the table is 2x2 and ``correct`` is true (the default,        matching R's chisq.test()).</summary>
+  public static HypothesisTestResult chi_squared_test_independence(DVector table, uint nrows, uint ncols) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.chi_squared_test_independence__SWIG_1(DVector.getCPtr(table), nrows, ncols), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-way ANOVA F-test across k &gt;= 2 independent groups, testing whether all groups        share the same mean. ``values`` is every group's observations concatenated in        order, and ``group_sizes`` gives each group's length (must sum to values.size()).        statistic = F, parameter1 = between-groups df, parameter2 = within-groups df.</summary>
+  public static HypothesisTestResult one_way_anova(DVector values, SizeVector group_sizes) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.one_way_anova(DVector.getCPtr(values), SizeVector.getCPtr(group_sizes)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Kruskal-Wallis rank-sum test: a non-parametric analog of one-way ANOVA across        k &gt;= 2 independent groups, testing whether they share the same distribution.        Same (values, group_sizes) layout as one_way_anova(). Uses the chi-squared        approximation to the H statistic with a tie correction; statistic = H,        parameter1 = df = k - 1.</summary>
+  public static HypothesisTestResult kruskal_wallis_test(DVector values, SizeVector group_sizes) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.kruskal_wallis_test(DVector.getCPtr(values), SizeVector.getCPtr(group_sizes)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Pearson product-moment correlation test between ``x`` and ``y``. estimate1 is the        correlation coefficient r; the confidence interval is computed via the Fisher        z-transform.</summary>
+  public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.pearson_correlation_test__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative, conf_level), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Pearson product-moment correlation test between ``x`` and ``y``. estimate1 is the        correlation coefficient r; the confidence interval is computed via the Fisher        z-transform.</summary>
+  public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.pearson_correlation_test__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Pearson product-moment correlation test between ``x`` and ``y``. estimate1 is the        correlation coefficient r; the confidence interval is computed via the Fisher        z-transform.</summary>
+  public static HypothesisTestResult pearson_correlation_test(DVector x, DVector y) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.pearson_correlation_test__SWIG_2(DVector.getCPtr(x), DVector.getCPtr(y)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Spearman's rank correlation test between ``x`` and ``y``: the Pearson correlation        of their ranks, with a p-value from the same t-approximation used for Pearson's        test (matching R's asymptotic method, used whenever ties are present). estimate1        is rho; no confidence interval is reported (has_conf_int stays false), matching R.</summary>
+  public static HypothesisTestResult spearman_correlation_test(DVector x, DVector y, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.spearman_correlation_test__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Spearman's rank correlation test between ``x`` and ``y``: the Pearson correlation        of their ranks, with a p-value from the same t-approximation used for Pearson's        test (matching R's asymptotic method, used whenever ties are present). estimate1        is rho; no confidence interval is reported (has_conf_int stays false), matching R.</summary>
+  public static HypothesisTestResult spearman_correlation_test(DVector x, DVector y) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.spearman_correlation_test__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>F-test comparing the variances of ``x`` and ``y`` (H0: equal variances). estimate1        is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the        two groups' degrees of freedom.</summary>
+  public static HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.f_test_variance__SWIG_0(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative, conf_level), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>F-test comparing the variances of ``x`` and ``y`` (H0: equal variances). estimate1        is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the        two groups' degrees of freedom.</summary>
+  public static HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.f_test_variance__SWIG_1(DVector.getCPtr(x), DVector.getCPtr(y), (int)alternative), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>F-test comparing the variances of ``x`` and ``y`` (H0: equal variances). estimate1        is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the        two groups' degrees of freedom.</summary>
+  public static HypothesisTestResult f_test_variance(DVector x, DVector y) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.f_test_variance__SWIG_2(DVector.getCPtr(x), DVector.getCPtr(y)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>One-sample test of the proportion ``successes`` / ``n`` against a null value ``p``        (default 0.5), via the chi-squared/normal approximation with a continuity        correction (matching R's prop.test()). estimate1 is the sample proportion; the        confidence interval uses the Wilson score interval (without continuity        correction, a close approximation to R's corrected version).</summary>
+  public static HypothesisTestResult proportion_test_one_sample(uint successes, uint n, double p, Alternative alternative, bool correct, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_one_sample__SWIG_0(successes, n, p, (int)alternative, correct, conf_level), true);
+    return ret;
+  }
+
+  /// <summary>One-sample test of the proportion ``successes`` / ``n`` against a null value ``p``        (default 0.5), via the chi-squared/normal approximation with a continuity        correction (matching R's prop.test()). estimate1 is the sample proportion; the        confidence interval uses the Wilson score interval (without continuity        correction, a close approximation to R's corrected version).</summary>
+  public static HypothesisTestResult proportion_test_one_sample(uint successes, uint n, double p, Alternative alternative, bool correct) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_one_sample__SWIG_1(successes, n, p, (int)alternative, correct), true);
+    return ret;
+  }
+
+  /// <summary>One-sample test of the proportion ``successes`` / ``n`` against a null value ``p``        (default 0.5), via the chi-squared/normal approximation with a continuity        correction (matching R's prop.test()). estimate1 is the sample proportion; the        confidence interval uses the Wilson score interval (without continuity        correction, a close approximation to R's corrected version).</summary>
+  public static HypothesisTestResult proportion_test_one_sample(uint successes, uint n, double p, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_one_sample__SWIG_2(successes, n, p, (int)alternative), true);
+    return ret;
+  }
+
+  /// <summary>One-sample test of the proportion ``successes`` / ``n`` against a null value ``p``        (default 0.5), via the chi-squared/normal approximation with a continuity        correction (matching R's prop.test()). estimate1 is the sample proportion; the        confidence interval uses the Wilson score interval (without continuity        correction, a close approximation to R's corrected version).</summary>
+  public static HypothesisTestResult proportion_test_one_sample(uint successes, uint n, double p) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_one_sample__SWIG_3(successes, n, p), true);
+    return ret;
+  }
+
+  /// <summary>One-sample test of the proportion ``successes`` / ``n`` against a null value ``p``        (default 0.5), via the chi-squared/normal approximation with a continuity        correction (matching R's prop.test()). estimate1 is the sample proportion; the        confidence interval uses the Wilson score interval (without continuity        correction, a close approximation to R's corrected version).</summary>
+  public static HypothesisTestResult proportion_test_one_sample(uint successes, uint n) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_one_sample__SWIG_4(successes, n), true);
+    return ret;
+  }
+
+  /// <summary>Two-sample test of whether two groups have the same success proportion, via the        pooled chi-squared/normal approximation with a continuity correction (matching        R's prop.test()). estimate1/estimate2 are the two sample proportions; the        confidence interval is for their difference (estimate1 - estimate2).</summary>
+  public static HypothesisTestResult proportion_test_two_sample(uint successes1, uint n1, uint successes2, uint n2, Alternative alternative, bool correct, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_two_sample__SWIG_0(successes1, n1, successes2, n2, (int)alternative, correct, conf_level), true);
+    return ret;
+  }
+
+  /// <summary>Two-sample test of whether two groups have the same success proportion, via the        pooled chi-squared/normal approximation with a continuity correction (matching        R's prop.test()). estimate1/estimate2 are the two sample proportions; the        confidence interval is for their difference (estimate1 - estimate2).</summary>
+  public static HypothesisTestResult proportion_test_two_sample(uint successes1, uint n1, uint successes2, uint n2, Alternative alternative, bool correct) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_two_sample__SWIG_1(successes1, n1, successes2, n2, (int)alternative, correct), true);
+    return ret;
+  }
+
+  /// <summary>Two-sample test of whether two groups have the same success proportion, via the        pooled chi-squared/normal approximation with a continuity correction (matching        R's prop.test()). estimate1/estimate2 are the two sample proportions; the        confidence interval is for their difference (estimate1 - estimate2).</summary>
+  public static HypothesisTestResult proportion_test_two_sample(uint successes1, uint n1, uint successes2, uint n2, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_two_sample__SWIG_2(successes1, n1, successes2, n2, (int)alternative), true);
+    return ret;
+  }
+
+  /// <summary>Two-sample test of whether two groups have the same success proportion, via the        pooled chi-squared/normal approximation with a continuity correction (matching        R's prop.test()). estimate1/estimate2 are the two sample proportions; the        confidence interval is for their difference (estimate1 - estimate2).</summary>
+  public static HypothesisTestResult proportion_test_two_sample(uint successes1, uint n1, uint successes2, uint n2) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.proportion_test_two_sample__SWIG_3(successes1, n1, successes2, n2), true);
+    return ret;
+  }
+
+  /// <summary>Exact binomial test of whether ``successes`` out of ``n`` trials is consistent with        success probability ``p`` (default 0.5), summing exact binomial probabilities        (matching R's binom.test()). estimate1 is the sample proportion; the confidence        interval is the exact Clopper-Pearson interval.</summary>
+  public static HypothesisTestResult binomial_test(uint successes, uint n, double p, Alternative alternative, double conf_level) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.binomial_test__SWIG_0(successes, n, p, (int)alternative, conf_level), true);
+    return ret;
+  }
+
+  /// <summary>Exact binomial test of whether ``successes`` out of ``n`` trials is consistent with        success probability ``p`` (default 0.5), summing exact binomial probabilities        (matching R's binom.test()). estimate1 is the sample proportion; the confidence        interval is the exact Clopper-Pearson interval.</summary>
+  public static HypothesisTestResult binomial_test(uint successes, uint n, double p, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.binomial_test__SWIG_1(successes, n, p, (int)alternative), true);
+    return ret;
+  }
+
+  /// <summary>Exact binomial test of whether ``successes`` out of ``n`` trials is consistent with        success probability ``p`` (default 0.5), summing exact binomial probabilities        (matching R's binom.test()). estimate1 is the sample proportion; the confidence        interval is the exact Clopper-Pearson interval.</summary>
+  public static HypothesisTestResult binomial_test(uint successes, uint n, double p) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.binomial_test__SWIG_2(successes, n, p), true);
+    return ret;
+  }
+
+  /// <summary>Exact binomial test of whether ``successes`` out of ``n`` trials is consistent with        success probability ``p`` (default 0.5), summing exact binomial probabilities        (matching R's binom.test()). estimate1 is the sample proportion; the confidence        interval is the exact Clopper-Pearson interval.</summary>
+  public static HypothesisTestResult binomial_test(uint successes, uint n) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.binomial_test__SWIG_3(successes, n), true);
+    return ret;
+  }
+
+  /// <summary>Fisher's exact test on a 2x2 contingency table</summary>
+  ///             | col1 | col2
+  ///         row1|  a   |  b
+  ///         row2|  c   |  d
+  ///         testing independence of the row and column classifications by summing exact
+  ///         hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is
+  ///         the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;
+  ///         no confidence interval is computed (has_conf_int stays false). statistic holds the
+  ///         observed count `a`.
+  public static HypothesisTestResult fisher_exact_test_2x2(uint a, uint b, uint c, uint d, Alternative alternative) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.fisher_exact_test_2x2__SWIG_0(a, b, c, d, (int)alternative), true);
+    return ret;
+  }
+
+  /// <summary>Fisher's exact test on a 2x2 contingency table</summary>
+  ///             | col1 | col2
+  ///         row1|  a   |  b
+  ///         row2|  c   |  d
+  ///         testing independence of the row and column classifications by summing exact
+  ///         hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is
+  ///         the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;
+  ///         no confidence interval is computed (has_conf_int stays false). statistic holds the
+  ///         observed count `a`.
+  public static HypothesisTestResult fisher_exact_test_2x2(uint a, uint b, uint c, uint d) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.fisher_exact_test_2x2__SWIG_1(a, b, c, d), true);
+    return ret;
+  }
+
+  /// <summary>Shapiro-Francia test for normality: the squared correlation between the sorted        sample and the expected normal order statistics (Blom's approximation), with        Royston's (1993) log-normal p-value approximation. A simpler, closely-related        cousin of the (more commonly cited but more involved) Shapiro-Wilk test, valid        for 5 &lt;= n &lt;= 5000; estimate1 is the W' statistic (near 1 for normal-looking        data, well below 1 for non-normal data). A small p-value is evidence against        normality.</summary>
+  public static HypothesisTestResult shapiro_francia_test(DVector x) {
+    HypothesisTestResult ret = new HypothesisTestResult(datamungePINVOKE.shapiro_francia_test(DVector.getCPtr(x)), true);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }

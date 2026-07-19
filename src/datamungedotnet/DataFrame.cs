@@ -60,6 +60,13 @@ public class DataFrame : global::System.IDisposable {
   public DataFrame() : this(datamungePINVOKE.new_DataFrame(), true) {
   }
 
+  /// <summary>Equivalent to the default constructor, exposed as a static factory (like iris()/        penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument        constructor's ownership-flagged pointer breaks method dispatch on the result.</summary>
+  public static DataFrame empty() {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_empty();
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
   public uint nrows() {
     uint ret = datamungePINVOKE.DataFrame_nrows(swigCPtr);
     return ret;
@@ -70,8 +77,8 @@ public class DataFrame : global::System.IDisposable {
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_std__size_t_t shape() {
-    SWIGTYPE_p_std__vectorT_std__size_t_t ret = new SWIGTYPE_p_std__vectorT_std__size_t_t(datamungePINVOKE.DataFrame_shape(swigCPtr), true);
+  public SizeVector shape() {
+    SizeVector ret = new SizeVector(datamungePINVOKE.DataFrame_shape(swigCPtr), true);
     return ret;
   }
 
@@ -239,6 +246,45 @@ public class DataFrame : global::System.IDisposable {
 
   public string to_string() {
     string ret = datamungePINVOKE.DataFrame_to_string__SWIG_1(swigCPtr);
+    return ret;
+  }
+
+  /// <summary>true if column_name holds numeric values, false if it holds strings.</summary>
+  public bool is_numeric_column(string column_name) {
+    bool ret = datamungePINVOKE.DataFrame_is_numeric_column(swigCPtr, column_name);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool is_null(string column_name, uint row_index) {
+    bool ret = datamungePINVOKE.DataFrame_is_null(swigCPtr, column_name, row_index);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>The value at (column_name, row_index); throws if the cell is null or the column isn't numeric.</summary>
+  public double numeric_at(string column_name, uint row_index) {
+    double ret = datamungePINVOKE.DataFrame_numeric_at(swigCPtr, column_name, row_index);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>The value at (column_name, row_index); throws if the cell is null or the column isn't string-typed.</summary>
+  public string string_at(string column_name, uint row_index) {
+    string ret = datamungePINVOKE.DataFrame_string_at(swigCPtr, column_name, row_index);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static DataFrame iris() {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_iris();
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public static DataFrame penguins() {
+    global::System.IntPtr cPtr = datamungePINVOKE.DataFrame_penguins();
+    DataFrame ret = (cPtr == global::System.IntPtr.Zero) ? null : new DataFrame(cPtr, false);
     return ret;
   }
 

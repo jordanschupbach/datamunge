@@ -21,12 +21,13 @@ pkgs.stdenv.mkDerivation rec {
   buildInputs = [
     datamunge
     pkgs.guile
+    pkgs.arrow-cpp
   ];
 
   configurePhase = ''
     cmake -S src/datamungeguile -B build/datamungeguile \
       -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_PREFIX_PATH="${datamunge}"
+      -DCMAKE_PREFIX_PATH="${datamunge};${pkgs.arrow-cpp}"
   '';
 
   buildPhase = ''

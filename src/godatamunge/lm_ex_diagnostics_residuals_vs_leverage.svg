@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <rect width="100%" height="100%" fill="rgb(255,255,255)"/>
+  <style>text{font-family:Helvetica,Arial,sans-serif;fill:rgb(55,65,81);}</style>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="72" x2="936" y2="72" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="259.2" y1="72" x2="259.2" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="168.8" x2="936" y2="168.8" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="428.4" y1="72" x2="428.4" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="265.6" x2="936" y2="265.6" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="597.6" y1="72" x2="597.6" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="362.4" x2="936" y2="362.4" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="766.8" y1="72" x2="766.8" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="459.2" x2="936" y2="459.2" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="936" y1="72" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <text x="90" y="580" font-size="12" text-anchor="middle">0.175</text>
+  <text x="80" y="560" font-size="12" text-anchor="end">-2.43</text>
+  <text x="259.2" y="580" font-size="12" text-anchor="middle">0.293</text>
+  <text x="80" y="463.2" font-size="12" text-anchor="end">-1.564</text>
+  <text x="428.4" y="580" font-size="12" text-anchor="middle">0.411</text>
+  <text x="80" y="366.4" font-size="12" text-anchor="end">-0.698</text>
+  <text x="597.6" y="580" font-size="12" text-anchor="middle">0.528</text>
+  <text x="80" y="269.6" font-size="12" text-anchor="end">0.168</text>
+  <text x="766.8" y="580" font-size="12" text-anchor="middle">0.646</text>
+  <text x="80" y="172.8" font-size="12" text-anchor="end">1.034</text>
+  <text x="936" y="580" font-size="12" text-anchor="middle">0.764</text>
+  <text x="80" y="76" font-size="12" text-anchor="end">1.9</text>
+  <text x="480" y="36" font-size="24" text-anchor="middle">Residuals vs Leverage</text>
+  <text x="480" y="620" font-size="16" text-anchor="middle">Leverage</text>
+  <text x="24" y="320" font-size="16" text-anchor="middle" transform="rotate(-90 24 320)">Standardized residuals</text>
+  <circle cx="319.119" cy="318.891" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="801.601" cy="112.333" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="815.254" cy="409.18" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="129.349" cy="279.906" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="170.681" cy="183.449" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="289.324" cy="515.667" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="897.545" cy="308.604" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="346.874" cy="155.544" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="230.532" cy="227.162" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="128.455" cy="330.024" r="4" fill="rgb(37,99,235)"/>
+  <circle cx="801.601" cy="112.333" r="6" fill="rgb(220,38,38)"/>
+  <circle cx="815.254" cy="409.18" r="6" fill="rgb(220,38,38)"/>
+  <circle cx="289.324" cy="515.667" r="6" fill="rgb(220,38,38)"/>
+  <rect x="796" y="60" width="18" height="8" fill="rgb(37,99,235)"/>
+  <text x="822" y="68" font-size="12">points</text>
+  <rect x="796" y="80" width="18" height="8" fill="rgb(220,38,38)"/>
+  <text x="822" y="88" font-size="12">high Cook&apos;s distance</text>
+</svg>

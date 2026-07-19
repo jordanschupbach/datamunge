@@ -1,0 +1,73 @@
+(use-modules (datamunge))
+
+(define (shape-str shp)
+  (string-join (map number->string (vector->list shp)) ", "))
+
+(format #t "=================== Construction ===================\n")
+(define z (Tensor-zeros (vector 2 3)))
+(format #t "zeros([2,3]): ~a\n" (Tensor-to-string z))
+
+(define eyet (Tensor-eye 3))
+(format #t "eye(3): ~a\n" (Tensor-to-string eyet))
+
+(define r (Tensor-reshape (Tensor-arange 0.0 12.0 1.0) (vector 3 4)))
+(format #t "arange(0,12).reshape([3,4]): ~a\n" (Tensor-to-string r))
+
+(format #t "\n=================== Shape ops ===================\n")
+(define rt (Tensor-transpose r))
+(format #t "transpose -> shape [~a]\n" (shape-str (Tensor-shape rt)))
+(define sliced (Tensor-slice r 1 1 3))
+(format #t "slice(axis=1, start=1, stop=3): ~a\n" (Tensor-to-string sliced))
+
+(format #t "\n=================== Broadcasting arithmetic ===================\n")
+(define col (Tensor-from-values (vector 3 1) (list 1.0 2.0 3.0)))
+(define row (Tensor-from-values (vector 1 4) (list 10.0 20.0 30.0 40.0)))
+(define broadcast-sum (Tensor-add col row))
+(format #t "(3,1) + (1,4) -> ~a\n" (Tensor-to-string broadcast-sum))
+
+(format #t "\n=================== Reductions ===================\n")
+(format #t "r.sum() = ~a, r.mean() = ~a\n" (Tensor-sum r) (Tensor-mean r))
+(define col-means (Tensor-mean-axis r 0))
+(format #t "column means (axis=0): ~a\n" (Tensor-to-string col-means))
+
+(format #t "\n=================== Linear algebra ===================\n")
+(define a (Tensor-from-values (vector 2 3) (list 1.0 2.0 3.0 4.0 5.0 6.0)))
+(define b (Tensor-from-values (vector 3 2) (list 7.0 8.0 9.0 10.0 11.0 12.0)))
+(format #t "matmul(2x3, 3x2) -> ~a\n" (Tensor-to-string (Tensor-matmul a b)))
+
+(define v1 (Tensor-from-values (vector 3) (list 1.0 2.0 3.0)))
+(define v2 (Tensor-from-values (vector 3) (list 4.0 5.0 6.0)))
+(format #t "dot([1,2,3], [4,5,6]) = ~a\n" (Tensor-dot v1 v2))
+(format #t "outer(v1, v2) -> ~a\n" (Tensor-to-string (Tensor-outer v1 v2)))
+
+(format #t "\n=================== Comparisons & masks ===================\n")
+(define mask (Tensor-greater-equal r (Tensor-full (vector 3 4) 6.0)))
+(format #t "r >= 6 -> ~a\n" (Tensor-to-string mask))
+(format #t "count(r >= 6) = ~a\n" (Tensor-sum mask))
+
+(format #t "\n=================== A real dataset as a Tensor ===================\n")
+(define iris (DataFrame-iris))
+(define n (DataFrame-nrows iris))
+(define flat '())
+(do ((i 0 (+ i 1))) ((= i n))
+  (set! flat (cons (DataFrame-numeric-at iris "Sepal.Length" i) flat))
+  (set! flat (cons (DataFrame-numeric-at iris "Sepal.Width" i) flat))
+  (set! flat (cons (DataFrame-numeric-at iris "Petal.Length" i) flat))
+  (set! flat (cons (DataFrame-numeric-at iris "Petal.Width" i) flat)))
+(set! flat (reverse flat))
+(define x (Tensor-from-values (vector n 4) flat))
+(format #t "iris feature tensor shape: [~a]\n" (shape-str (Tensor-shape x)))
+
+(define feature-means (Tensor-mean-axis x 0))
+(define centered (Tensor-subtract x (Tensor-reshape feature-means (vector 1 4))))
+(define scatter (Tensor-matmul (Tensor-transpose centered) centered))
+(format #t "feature means (Sepal.Length, Sepal.Width, Petal.Length, Petal.Width): ~a\n" (Tensor-to-string feature-means))
+(format #t "(X-mean)^T (X-mean) [4x4 scatter matrix]: ~a\n" (Tensor-to-string scatter 16))
+
+(define species '())
+(do ((i 0 (+ i 1))) ((= i n))
+  (set! species (cons (DataFrame-string-at iris "Species" i) species)))
+(set! species (reverse species))
+(define species-tensor (Tensor-from-string-values (vector n) species))
+(define setosa-mask (Tensor-equal species-tensor (Tensor-from-string-values (vector 1) (list "setosa"))))
+(format #t "setosa count = ~a (of ~a rows)\n" (Tensor-sum setosa-mask) n)

@@ -21,10 +21,11 @@ pkgs.stdenv.mkDerivation rec {
     datamunge
     pkgs.tcl
     pkgs.tk
+    pkgs.arrow-cpp
   ];
 
   configurePhase = ''
-    cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${datamunge}"
+    cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${datamunge};${pkgs.arrow-cpp}"
   '';
 
   buildPhase = ''

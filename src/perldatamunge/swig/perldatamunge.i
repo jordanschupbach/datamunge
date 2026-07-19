@@ -56,6 +56,13 @@
 %ignore datamunge::stats::KNNClassifierPrediction;
 %ignore datamunge::stats::KNNRegressor;
 %ignore datamunge::stats::KNNRegressorOptions;
+%ignore datamunge::stats::KMeans;
+%ignore datamunge::stats::KMeansOptions;
+%ignore datamunge::stats::AgglomerativeClustering;
+%ignore datamunge::stats::AgglomerativeClusteringOptions;
+%ignore datamunge::stats::LinkageCriterion;
+%ignore datamunge::stats::DBSCAN;
+%ignore datamunge::stats::DBSCANOptions;
 %ignore datamunge::stats::DistanceMetric;
 %ignore datamunge::stats::GBMClassifier;
 %ignore datamunge::stats::GBMClassifierOptions;
@@ -98,10 +105,80 @@
 %ignore datamunge::bayes::poisson_log_lpmf;
 %template(IPair) std::pair<int, int>;
 %template(DPair) std::pair<double, double>;
+%template(DVectorPair) std::pair<std::vector<double>, std::vector<double> >;
 %template(SPair) std::pair<std::string, std::string>;
 %template(IVector) std::vector<int>;
 %template(DVector) std::vector<double>;
+%template(DVectorVector) std::vector<std::vector<double> >;
 %template(SizeVector) std::vector<size_t>;
+%apply std::vector<size_t> { std::vector<std::size_t> };
+%apply std::vector<size_t>& { std::vector<std::size_t>& };
+%apply const std::vector<size_t>& { const std::vector<std::size_t>& };
+// Perl5's std_vector.i "out" typemap indexes $1 directly ($1[i]), but for the aliased
+// std::vector<std::size_t> spelling SWIG wraps the by-value return in SwigValueWrapper,
+// which has no operator[] -- breaking compilation. Override with an explicit unwrap
+// (mirrors what Ruby's generated code does via swig::from(static_cast<...>(result))).
+%typemap(out) std::vector<std::size_t> {
+    std::vector<std::size_t> datamunge_tmp_out = static_cast<std::vector<std::size_t> >($1);
+    size_t datamunge_tmp_len = datamunge_tmp_out.size();
+    SV **datamunge_tmp_svs = new SV*[datamunge_tmp_len];
+    for (size_t datamunge_tmp_i = 0; datamunge_tmp_i < datamunge_tmp_len; datamunge_tmp_i++) {
+        datamunge_tmp_svs[datamunge_tmp_i] = sv_newmortal();
+        sv_setuv(datamunge_tmp_svs[datamunge_tmp_i], datamunge_tmp_out[datamunge_tmp_i]);
+    }
+    AV *datamunge_tmp_av = av_make(datamunge_tmp_len, datamunge_tmp_svs);
+    delete[] datamunge_tmp_svs;
+    $result = newRV_noinc((SV*) datamunge_tmp_av);
+    sv_2mortal($result);
+    argvi++;
+}
+// Similarly, the %apply-aliased std::vector<std::size_t> parameter typemaps don't inherit
+// the perl5 std_vector.i "specialize_std_vector" scalar-array fast path (SvIOK/SvIVX) that
+// the literal std::vector<size_t> spelling gets -- they fall back to the generic per-element
+// wrapped-object typemap, which rejects a plain Perl arrayref of numbers (every facade method,
+// e.g. Tensor::zeros, spells this parameter std::size_t, so this is the common case in practice).
+// Override with the same scalar-array logic the specialization uses.
+%typemap(in) const std::vector<std::size_t>& (std::vector<std::size_t> temp, std::vector<std::size_t>* v) {
+    if (SWIG_ConvertPtr($input,(void **) &v, $1_descriptor,1) != -1) {
+        $1 = v;
+    } else if (SvROK($input)) {
+        AV *av = (AV *)SvRV($input);
+        if (SvTYPE(av) != SVt_PVAV)
+            SWIG_croak("Type error in argument $argnum of $symname. Expected an array of size_t");
+        SSize_t len = av_len(av) + 1;
+        for (SSize_t i = 0; i < len; i++) {
+            SV **tv = av_fetch(av, i, 0);
+            if (SvIOK(*tv)) {
+                temp.push_back((std::size_t) SvIVX(*tv));
+            } else {
+                SWIG_croak("Type error in argument $argnum of $symname. Expected an array of size_t");
+            }
+        }
+        $1 = &temp;
+    } else {
+        SWIG_croak("Type error in argument $argnum of $symname. Expected an array of size_t");
+    }
+}
+%typemap(in) std::vector<std::size_t> (std::vector<std::size_t>* v) {
+    if (SWIG_ConvertPtr($input,(void **) &v, $&1_descriptor,1) != -1) {
+        $1 = *v;
+    } else if (SvROK($input)) {
+        AV *av = (AV *)SvRV($input);
+        if (SvTYPE(av) != SVt_PVAV)
+            SWIG_croak("Type error in argument $argnum of $symname. Expected an array of size_t");
+        SSize_t len = av_len(av) + 1;
+        for (SSize_t i = 0; i < len; i++) {
+            SV **tv = av_fetch(av, i, 0);
+            if (SvIOK(*tv)) {
+                $1.push_back((std::size_t) SvIVX(*tv));
+            } else {
+                SWIG_croak("Type error in argument $argnum of $symname. Expected an array of size_t");
+            }
+        }
+    } else {
+        SWIG_croak("Type error in argument $argnum of $symname. Expected an array of size_t");
+    }
+}
 %template(SVector) std::vector<std::string>;
 
 %feature("director") datamunge::Callback;
@@ -115,3 +192,30 @@
 %}
 
 %include "datamunge/datamunge.hpp"
+%include "datamunge/plot/plot.hpp"
+%include "datamunge/stats/arima.hpp"
+%include "datamunge/stats/exponential_smoothing.hpp"
+%include "datamunge/stats/hypothesis_test_result.hpp"
+%include "datamunge/stats/t_test.hpp"
+%include "datamunge/stats/wilcoxon_test.hpp"
+%include "datamunge/stats/ks_test.hpp"
+%include "datamunge/stats/chi_squared_test.hpp"
+%include "datamunge/stats/anova_test.hpp"
+%include "datamunge/stats/correlation_test.hpp"
+%include "datamunge/stats/variance_test.hpp"
+%include "datamunge/stats/proportion_test.hpp"
+%include "datamunge/stats/fisher_exact_test.hpp"
+%include "datamunge/stats/normality_test.hpp"
+%include "datamunge/stats/p_adjust.hpp"
+%include "datamunge/optim/function_types.hpp"
+%include "datamunge/optim/gradient_descent.hpp"
+%include "datamunge/optim/adam.hpp"
+%include "datamunge/optim/lbfgs.hpp"
+%include "datamunge/optim/sgd.hpp"
+%include "datamunge/optim/simulated_annealing.hpp"
+%include "datamunge/optim/pso.hpp"
+%include "datamunge/optim/differential_evolution.hpp"
+%include "datamunge/optim/genetic_algorithm.hpp"
+%include "datamunge/bayes/map.hpp"
+%include "datamunge/bayes/hmc.hpp"
+%include "datamunge/bayes/nuts.hpp"
