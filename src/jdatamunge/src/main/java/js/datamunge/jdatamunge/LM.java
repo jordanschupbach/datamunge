@@ -212,20 +212,20 @@ public class LM {
     return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_residuals_vs_fitted() {
-    return new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungeJNI.LM_plot_residuals_vs_fitted(swigCPtr, this), true);
+  public ScatterPlot plot_residuals_vs_fitted() {
+    return new ScatterPlot(datamungeJNI.LM_plot_residuals_vs_fitted(swigCPtr, this), true);
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_normal_qq() {
-    return new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungeJNI.LM_plot_normal_qq(swigCPtr, this), true);
+  public ScatterPlot plot_normal_qq() {
+    return new ScatterPlot(datamungeJNI.LM_plot_normal_qq(swigCPtr, this), true);
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_scale_location() {
-    return new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungeJNI.LM_plot_scale_location(swigCPtr, this), true);
+  public ScatterPlot plot_scale_location() {
+    return new ScatterPlot(datamungeJNI.LM_plot_scale_location(swigCPtr, this), true);
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_residuals_vs_leverage() {
-    return new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamungeJNI.LM_plot_residuals_vs_leverage(swigCPtr, this), true);
+  public ScatterPlot plot_residuals_vs_leverage() {
+    return new ScatterPlot(datamungeJNI.LM_plot_residuals_vs_leverage(swigCPtr, this), true);
   }
 
   /**

@@ -23,4 +23,47 @@ public:
 };
 
 
+class SwigDirector_ArbitraryFunction : public datamunge::optim::ArbitraryFunction, public Swig::Director {
+
+public:
+    SwigDirector_ArbitraryFunction(VALUE self);
+    virtual ~SwigDirector_ArbitraryFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+};
+
+
+class SwigDirector_DifferentiableFunction : public datamunge::optim::DifferentiableFunction, public Swig::Director {
+
+public:
+    SwigDirector_DifferentiableFunction(VALUE self);
+    virtual ~SwigDirector_DifferentiableFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+};
+
+
+class SwigDirector_SeparableFunction : public datamunge::optim::SeparableFunction, public Swig::Director {
+
+public:
+    SwigDirector_SeparableFunction(VALUE self);
+    virtual ~SwigDirector_SeparableFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::size_t num_functions() const;
+    virtual double evaluate_term(std::vector< double,std::allocator< double > > const &coordinates,std::size_t i);
+};
+
+
+class SwigDirector_DifferentiableSeparableFunction : public datamunge::optim::DifferentiableSeparableFunction, public Swig::Director {
+
+public:
+    SwigDirector_DifferentiableSeparableFunction(VALUE self);
+    virtual ~SwigDirector_DifferentiableSeparableFunction();
+    virtual double evaluate(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::vector< double,std::allocator< double > > gradient(std::vector< double,std::allocator< double > > const &coordinates);
+    virtual std::size_t num_functions() const;
+    virtual double evaluate_term(std::vector< double,std::allocator< double > > const &coordinates,std::size_t i);
+    virtual std::vector< double,std::allocator< double > > gradient_term(std::vector< double,std::allocator< double > > const &coordinates,std::size_t i);
+};
+
+
 #endif

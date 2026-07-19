@@ -519,26 +519,26 @@ SWIGINTERN void std_vector_Sl_double_Sg__doRemoveRange(std::vector< double > *se
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< size_t > *new_std_vector_Sl_size_t_Sg___SWIG_2(jint count,size_t const &value){
+SWIGINTERN std::vector< std::vector< double > > *new_std_vector_Sl_std_vector_Sl_double_Sg__Sg___SWIG_2(jint count,std::vector< double > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
-        return new std::vector< size_t >(static_cast<std::vector< size_t >::size_type>(count), value);
+        return new std::vector< std::vector< double > >(static_cast<std::vector< std::vector< double > >::size_type>(count), value);
       }
-SWIGINTERN jint std_vector_Sl_size_t_Sg__doCapacity(std::vector< size_t > *self){
+SWIGINTERN jint std_vector_Sl_std_vector_Sl_double_Sg__Sg__doCapacity(std::vector< std::vector< double > > *self){
         return SWIG_VectorSize(self->capacity());
       }
-SWIGINTERN void std_vector_Sl_size_t_Sg__doReserve(std::vector< size_t > *self,jint n){
+SWIGINTERN void std_vector_Sl_std_vector_Sl_double_Sg__Sg__doReserve(std::vector< std::vector< double > > *self,jint n){
         if (n < 0)
           throw std::out_of_range("vector reserve size must be positive");
         self->reserve(n);
       }
-SWIGINTERN jint std_vector_Sl_size_t_Sg__doSize(std::vector< size_t > const *self){
+SWIGINTERN jint std_vector_Sl_std_vector_Sl_double_Sg__Sg__doSize(std::vector< std::vector< double > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_size_t_Sg__doAdd__SWIG_0(std::vector< size_t > *self,std::vector< size_t >::value_type const &x){
+SWIGINTERN void std_vector_Sl_std_vector_Sl_double_Sg__Sg__doAdd__SWIG_0(std::vector< std::vector< double > > *self,std::vector< std::vector< double > >::value_type const &x){
         self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_size_t_Sg__doAdd__SWIG_1(std::vector< size_t > *self,jint index,std::vector< size_t >::value_type const &x){
+SWIGINTERN void std_vector_Sl_std_vector_Sl_double_Sg__Sg__doAdd__SWIG_1(std::vector< std::vector< double > > *self,jint index,std::vector< std::vector< double > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
           self->insert(self->begin() + index, x);
@@ -546,34 +546,96 @@ SWIGINTERN void std_vector_Sl_size_t_Sg__doAdd__SWIG_1(std::vector< size_t > *se
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< size_t >::value_type std_vector_Sl_size_t_Sg__doRemove(std::vector< size_t > *self,jint index){
+SWIGINTERN std::vector< std::vector< double > >::value_type std_vector_Sl_std_vector_Sl_double_Sg__Sg__doRemove(std::vector< std::vector< double > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index < size) {
-          size_t const old_value = (*self)[index];
+          std::vector< double > const old_value = (*self)[index];
           self->erase(self->begin() + index);
           return old_value;
         } else {
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< size_t >::value_type const &std_vector_Sl_size_t_Sg__doGet(std::vector< size_t > *self,jint index){
+SWIGINTERN std::vector< std::vector< double > >::value_type const &std_vector_Sl_std_vector_Sl_double_Sg__Sg__doGet(std::vector< std::vector< double > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< size_t >::value_type std_vector_Sl_size_t_Sg__doSet(std::vector< size_t > *self,jint index,std::vector< size_t >::value_type const &val){
+SWIGINTERN std::vector< std::vector< double > >::value_type std_vector_Sl_std_vector_Sl_double_Sg__Sg__doSet(std::vector< std::vector< double > > *self,jint index,std::vector< std::vector< double > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
-          size_t const old_value = (*self)[index];
+          std::vector< double > const old_value = (*self)[index];
           (*self)[index] = val;
           return old_value;
         }
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN void std_vector_Sl_size_t_Sg__doRemoveRange(std::vector< size_t > *self,jint fromIndex,jint toIndex){
+SWIGINTERN void std_vector_Sl_std_vector_Sl_double_Sg__Sg__doRemoveRange(std::vector< std::vector< double > > *self,jint fromIndex,jint toIndex){
+        jint size = static_cast<jint>(self->size());
+        if (0 <= fromIndex && fromIndex <= toIndex && toIndex <= size) {
+          self->erase(self->begin() + fromIndex, self->begin() + toIndex);
+        } else {
+          throw std::out_of_range("vector index out of range");
+        }
+      }
+SWIGINTERN std::vector< std::size_t > *new_std_vector_Sl_std_size_t_Sg___SWIG_2(jint count,std::size_t const &value){
+        if (count < 0)
+          throw std::out_of_range("vector count must be positive");
+        return new std::vector< std::size_t >(static_cast<std::vector< std::size_t >::size_type>(count), value);
+      }
+SWIGINTERN jint std_vector_Sl_std_size_t_Sg__doCapacity(std::vector< std::size_t > *self){
+        return SWIG_VectorSize(self->capacity());
+      }
+SWIGINTERN void std_vector_Sl_std_size_t_Sg__doReserve(std::vector< std::size_t > *self,jint n){
+        if (n < 0)
+          throw std::out_of_range("vector reserve size must be positive");
+        self->reserve(n);
+      }
+SWIGINTERN jint std_vector_Sl_std_size_t_Sg__doSize(std::vector< std::size_t > const *self){
+        return SWIG_VectorSize(self->size());
+      }
+SWIGINTERN void std_vector_Sl_std_size_t_Sg__doAdd__SWIG_0(std::vector< std::size_t > *self,std::vector< std::size_t >::value_type const &x){
+        self->push_back(x);
+      }
+SWIGINTERN void std_vector_Sl_std_size_t_Sg__doAdd__SWIG_1(std::vector< std::size_t > *self,jint index,std::vector< std::size_t >::value_type const &x){
+        jint size = static_cast<jint>(self->size());
+        if (0 <= index && index <= size) {
+          self->insert(self->begin() + index, x);
+        } else {
+          throw std::out_of_range("vector index out of range");
+        }
+      }
+SWIGINTERN std::vector< std::size_t >::value_type std_vector_Sl_std_size_t_Sg__doRemove(std::vector< std::size_t > *self,jint index){
+        jint size = static_cast<jint>(self->size());
+        if (0 <= index && index < size) {
+          std::size_t const old_value = (*self)[index];
+          self->erase(self->begin() + index);
+          return old_value;
+        } else {
+          throw std::out_of_range("vector index out of range");
+        }
+      }
+SWIGINTERN std::vector< std::size_t >::value_type const &std_vector_Sl_std_size_t_Sg__doGet(std::vector< std::size_t > *self,jint index){
+        jint size = static_cast<jint>(self->size());
+        if (index >= 0 && index < size)
+          return (*self)[index];
+        else
+          throw std::out_of_range("vector index out of range");
+      }
+SWIGINTERN std::vector< std::size_t >::value_type std_vector_Sl_std_size_t_Sg__doSet(std::vector< std::size_t > *self,jint index,std::vector< std::size_t >::value_type const &val){
+        jint size = static_cast<jint>(self->size());
+        if (index >= 0 && index < size) {
+          std::size_t const old_value = (*self)[index];
+          (*self)[index] = val;
+          return old_value;
+        }
+        else
+          throw std::out_of_range("vector index out of range");
+      }
+SWIGINTERN void std_vector_Sl_std_size_t_Sg__doRemoveRange(std::vector< std::size_t > *self,jint fromIndex,jint toIndex){
         jint size = static_cast<jint>(self->size());
         if (0 <= fromIndex && fromIndex <= toIndex && toIndex <= size) {
           self->erase(self->begin() + fromIndex, self->begin() + toIndex);
@@ -873,6 +935,135 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DPair(
   (void)jenv;
   (void)jcls;
   arg1 = *(std::pair< double,double > **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DVectorPair_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  std::pair< std::vector< double >,std::vector< double > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (std::pair< std::vector< double >,std::vector< double > > *)new std::pair< std::vector< double >,std::vector< double > >();
+  *(std::pair< std::vector< double >,std::vector< double > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DVectorPair_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::vector< double > *argp1 ;
+  std::vector< double > *argp2 ;
+  std::pair< std::vector< double >,std::vector< double > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  argp1 = *(std::vector< double > **)&jarg1; 
+  if (!argp1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg1 = *argp1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (std::pair< std::vector< double >,std::vector< double > > *)new std::pair< std::vector< double >,std::vector< double > >(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(std::pair< std::vector< double >,std::vector< double > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DVectorPair_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
+  std::pair< std::vector< double >,std::vector< double > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::pair< std::vector< double >,std::vector< double > > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::pair< std::vector< double >,std::vector< double > > const & is null");
+    return 0;
+  } 
+  result = (std::pair< std::vector< double >,std::vector< double > > *)new std::pair< std::vector< double >,std::vector< double > >((std::pair< std::vector< double >,std::vector< double > > const &)*arg1);
+  *(std::pair< std::vector< double >,std::vector< double > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorPair_1first_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::pair< std::vector< double >,std::vector< double > > **)&jarg1; 
+  arg2 = *(std::vector< double > **)&jarg2; 
+  if (arg1) (arg1)->first = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorPair_1first_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::pair< std::vector< double >,std::vector< double > > **)&jarg1; 
+  result = (std::vector< double > *)& ((arg1)->first);
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorPair_1second_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::pair< std::vector< double >,std::vector< double > > **)&jarg1; 
+  arg2 = *(std::vector< double > **)&jarg2; 
+  if (arg1) (arg1)->second = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorPair_1second_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::pair< std::vector< double >,std::vector< double > > **)&jarg1; 
+  result = (std::vector< double > *)& ((arg1)->second);
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DVectorPair(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(std::pair< std::vector< double >,std::vector< double > > **)&jarg1; 
   delete arg1;
 }
 
@@ -1576,59 +1767,349 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DVecto
 }
 
 
-SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SizeVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DVectorVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  std::vector< size_t > *result = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (std::vector< size_t > *)new std::vector< size_t >();
-  *(std::vector< size_t > **)&jresult = result; 
+  result = (std::vector< std::vector< double > > *)new std::vector< std::vector< double > >();
+  *(std::vector< std::vector< double > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DVectorVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::vector< double > > const & is null");
+    return 0;
+  } 
+  result = (std::vector< std::vector< double > > *)new std::vector< std::vector< double > >((std::vector< std::vector< double > > const &)*arg1);
+  *(std::vector< std::vector< double > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  result = (bool)((std::vector< std::vector< double > > const *)arg1)->empty();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  (arg1)->clear();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DVectorVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  jint arg1 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = jarg1; 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  try {
+    result = (std::vector< std::vector< double > > *)new_std_vector_Sl_std_vector_Sl_double_Sg__Sg___SWIG_2(SWIG_STD_MOVE(arg1),(std::vector< double > const &)*arg2);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::vector< double > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doCapacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  try {
+    result = std_vector_Sl_std_vector_Sl_double_Sg__Sg__doCapacity(arg1);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doReserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  arg2 = jarg2; 
+  try {
+    std_vector_Sl_std_vector_Sl_double_Sg__Sg__doReserve(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::length_error &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return ;
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  try {
+    result = std_vector_Sl_std_vector_Sl_double_Sg__Sg__doSize((std::vector< std::vector< double > > const *)arg1);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doAdd_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< std::vector< double > >::value_type *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  arg2 = *(std::vector< std::vector< double > >::value_type **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::vector< double > >::value_type const & is null");
+    return ;
+  } 
+  std_vector_Sl_std_vector_Sl_double_Sg__Sg__doAdd__SWIG_0(arg1,(std::vector< double > const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doAdd_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint arg2 ;
+  std::vector< std::vector< double > >::value_type *arg3 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  arg2 = jarg2; 
+  arg3 = *(std::vector< std::vector< double > >::value_type **)&jarg3;
+  if (!arg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::vector< double > >::value_type const & is null");
+    return ;
+  } 
+  try {
+    std_vector_Sl_std_vector_Sl_double_Sg__Sg__doAdd__SWIG_1(arg1,SWIG_STD_MOVE(arg2),(std::vector< double > const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doRemove(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  jlong jresult = 0 ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint arg2 ;
+  std::vector< std::vector< double > >::value_type result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  arg2 = jarg2; 
+  try {
+    result = std_vector_Sl_std_vector_Sl_double_Sg__Sg__doRemove(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::vector< double > >::value_type **)&jresult = new std::vector< std::vector< double > >::value_type(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doGet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  jlong jresult = 0 ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint arg2 ;
+  std::vector< std::vector< double > >::value_type *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  arg2 = jarg2; 
+  try {
+    result = (std::vector< std::vector< double > >::value_type *) &std_vector_Sl_std_vector_Sl_double_Sg__Sg__doGet(arg1,SWIG_STD_MOVE(arg2));
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::vector< double > >::value_type **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint arg2 ;
+  std::vector< std::vector< double > >::value_type *arg3 = 0 ;
+  std::vector< std::vector< double > >::value_type result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  arg2 = jarg2; 
+  arg3 = *(std::vector< std::vector< double > >::value_type **)&jarg3;
+  if (!arg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::vector< double > >::value_type const & is null");
+    return 0;
+  } 
+  try {
+    result = std_vector_Sl_std_vector_Sl_double_Sg__Sg__doSet(arg1,SWIG_STD_MOVE(arg2),(std::vector< double > const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::vector< double > >::value_type **)&jresult = new std::vector< std::vector< double > >::value_type(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DVectorVector_1doRemoveRange(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  jint arg2 ;
+  jint arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  arg2 = jarg2; 
+  arg3 = jarg3; 
+  try {
+    std_vector_Sl_std_vector_Sl_double_Sg__Sg__doRemoveRange(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DVectorVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(std::vector< std::vector< double > > **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SizeVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (std::vector< std::size_t > *)new std::vector< std::size_t >();
+  *(std::vector< std::size_t > **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SizeVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  std::vector< size_t > *arg1 = 0 ;
-  std::vector< size_t > *result = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
   if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< size_t > const & is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
     return 0;
   } 
-  result = (std::vector< size_t > *)new std::vector< size_t >((std::vector< size_t > const &)*arg1);
-  *(std::vector< size_t > **)&jresult = result; 
+  result = (std::vector< std::size_t > *)new std::vector< std::size_t >((std::vector< std::size_t > const &)*arg1);
+  *(std::vector< std::size_t > **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
-  result = (bool)((std::vector< size_t > const *)arg1)->empty();
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
+  result = (bool)((std::vector< std::size_t > const *)arg1)->empty();
   jresult = (jboolean)result; 
   return jresult;
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   (arg1)->clear();
 }
 
@@ -1636,37 +2117,37 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1cl
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SizeVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2) {
   jlong jresult = 0 ;
   jint arg1 ;
-  size_t *arg2 = 0 ;
-  size_t temp2 ;
-  std::vector< size_t > *result = 0 ;
+  std::size_t *arg2 = 0 ;
+  std::size_t temp2 ;
+  std::vector< std::size_t > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = jarg1; 
-  temp2 = (size_t)jarg2; 
+  temp2 = (std::size_t)jarg2; 
   arg2 = &temp2; 
   try {
-    result = (std::vector< size_t > *)new_std_vector_Sl_size_t_Sg___SWIG_2(SWIG_STD_MOVE(arg1),(size_t const &)*arg2);
+    result = (std::vector< std::size_t > *)new_std_vector_Sl_std_size_t_Sg___SWIG_2(SWIG_STD_MOVE(arg1),(std::size_t const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::vector< size_t > **)&jresult = result; 
+  *(std::vector< std::size_t > **)&jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doCapacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   try {
-    result = std_vector_Sl_size_t_Sg__doCapacity(arg1);
+    result = std_vector_Sl_std_size_t_Sg__doCapacity(arg1);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -1677,16 +2158,16 @@ SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1do
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doReserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    std_vector_Sl_size_t_Sg__doReserve(arg1,SWIG_STD_MOVE(arg2));
+    std_vector_Sl_std_size_t_Sg__doReserve(arg1,SWIG_STD_MOVE(arg2));
   } catch(std::length_error &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return ;
@@ -1699,15 +2180,15 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1do
 
 SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   try {
-    result = std_vector_Sl_size_t_Sg__doSize((std::vector< size_t > const *)arg1);
+    result = std_vector_Sl_std_size_t_Sg__doSize((std::vector< std::size_t > const *)arg1);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -1718,35 +2199,35 @@ SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1do
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doAdd_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  std::vector< size_t > *arg1 = 0 ;
-  std::vector< size_t >::value_type *arg2 = 0 ;
-  std::vector< size_t >::value_type temp2 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  std::vector< std::size_t >::value_type *arg2 = 0 ;
+  std::vector< std::size_t >::value_type temp2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
-  temp2 = (std::vector< size_t >::value_type)jarg2; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
+  temp2 = (std::vector< std::size_t >::value_type)jarg2; 
   arg2 = &temp2; 
-  std_vector_Sl_size_t_Sg__doAdd__SWIG_0(arg1,(size_t const &)*arg2);
+  std_vector_Sl_std_size_t_Sg__doAdd__SWIG_0(arg1,(std::size_t const &)*arg2);
 }
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doAdd_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3) {
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint arg2 ;
-  std::vector< size_t >::value_type *arg3 = 0 ;
-  std::vector< size_t >::value_type temp3 ;
+  std::vector< std::size_t >::value_type *arg3 = 0 ;
+  std::vector< std::size_t >::value_type temp3 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   arg2 = jarg2; 
-  temp3 = (std::vector< size_t >::value_type)jarg3; 
+  temp3 = (std::vector< std::size_t >::value_type)jarg3; 
   arg3 = &temp3; 
   try {
-    std_vector_Sl_size_t_Sg__doAdd__SWIG_1(arg1,SWIG_STD_MOVE(arg2),(size_t const &)*arg3);
+    std_vector_Sl_std_size_t_Sg__doAdd__SWIG_1(arg1,SWIG_STD_MOVE(arg2),(std::size_t const &)*arg3);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return ;
@@ -1756,17 +2237,17 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1do
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doRemove(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint arg2 ;
-  std::vector< size_t >::value_type result;
+  std::vector< std::size_t >::value_type result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = std_vector_Sl_size_t_Sg__doRemove(arg1,SWIG_STD_MOVE(arg2));
+    result = std_vector_Sl_std_size_t_Sg__doRemove(arg1,SWIG_STD_MOVE(arg2));
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -1778,17 +2259,17 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1d
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doGet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jlong jresult = 0 ;
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint arg2 ;
-  std::vector< size_t >::value_type *result = 0 ;
+  std::vector< std::size_t >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::vector< size_t >::value_type *) &std_vector_Sl_size_t_Sg__doGet(arg1,SWIG_STD_MOVE(arg2));
+    result = (std::vector< std::size_t >::value_type *) &std_vector_Sl_std_size_t_Sg__doGet(arg1,SWIG_STD_MOVE(arg2));
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -1800,21 +2281,21 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1d
 
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3) {
   jlong jresult = 0 ;
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint arg2 ;
-  std::vector< size_t >::value_type *arg3 = 0 ;
-  std::vector< size_t >::value_type temp3 ;
-  std::vector< size_t >::value_type result;
+  std::vector< std::size_t >::value_type *arg3 = 0 ;
+  std::vector< std::size_t >::value_type temp3 ;
+  std::vector< std::size_t >::value_type result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   arg2 = jarg2; 
-  temp3 = (std::vector< size_t >::value_type)jarg3; 
+  temp3 = (std::vector< std::size_t >::value_type)jarg3; 
   arg3 = &temp3; 
   try {
-    result = std_vector_Sl_size_t_Sg__doSet(arg1,SWIG_STD_MOVE(arg2),(size_t const &)*arg3);
+    result = std_vector_Sl_std_size_t_Sg__doSet(arg1,SWIG_STD_MOVE(arg2),(std::size_t const &)*arg3);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -1825,18 +2306,18 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1d
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1doRemoveRange(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   jint arg2 ;
   jint arg3 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   arg2 = jarg2; 
   arg3 = jarg3; 
   try {
-    std_vector_Sl_size_t_Sg__doRemoveRange(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    std_vector_Sl_std_size_t_Sg__doRemoveRange(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return ;
@@ -1845,11 +2326,11 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SizeVector_1do
 
 
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1SizeVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  std::vector< size_t > *arg1 = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(std::vector< size_t > **)&jarg1; 
+  arg1 = *(std::vector< std::size_t > **)&jarg1; 
   delete arg1;
 }
 
@@ -2325,6 +2806,18 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DataFram
 }
 
 
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1empty(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::DataFrame *)datamunge::DataFrame::empty();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1nrows(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::DataFrame *arg1 = 0 ;
@@ -2358,7 +2851,7 @@ SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1nc
 SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1shape(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   datamunge::DataFrame *arg1 = 0 ;
-  SwigValueWrapper< std::vector< std::size_t > > result;
+  std::vector< std::size_t > result;
   
   (void)jenv;
   (void)jcls;
@@ -3127,6 +3620,136 @@ SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1is_1numeric_1column(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jboolean jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (bool)((datamunge::DataFrame const *)arg1)->is_numeric_column((std::string const &)*arg2);
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1is_1null(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jboolean jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (bool)((datamunge::DataFrame const *)arg1)->is_null((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1numeric_1at(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jdouble jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (double)((datamunge::DataFrame const *)arg1)->numeric_at((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1string_1at(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jstring jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = ((datamunge::DataFrame const *)arg1)->string_at((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1iris(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::DataFrame *)datamunge::DataFrame::iris();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataFrame_1penguins(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::DataFrame *)datamunge::DataFrame::penguins();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DataFrame(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   datamunge::DataFrame *arg1 = 0 ;
   
@@ -3825,6 +4448,21053 @@ SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1LM(JNI
   delete arg1;
 }
 
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LMM_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jboolean jarg3, jlong jarg4, jlong jarg5, jdouble jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  std::size_t arg7 ;
+  datamunge::LMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = jarg3 ? true : false; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::LMM *)new datamunge::LMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6,SWIG_STD_MOVE(arg7));
+  *(datamunge::LMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LMM_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jboolean jarg3, jlong jarg4, jlong jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  datamunge::LMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = jarg3 ? true : false; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::LMM *)new datamunge::LMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::LMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LMM_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jboolean jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::LMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = jarg3 ? true : false; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::LMM *)new datamunge::LMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::LMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LMM_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jboolean jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  std::size_t arg4 ;
+  datamunge::LMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = jarg3 ? true : false; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::LMM *)new datamunge::LMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::LMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LMM_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  datamunge::LMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::LMM *)new datamunge::LMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  *(datamunge::LMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LMM_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::LMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::LMM *)new datamunge::LMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::LMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1formula_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->formula_text();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1group_1variable(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->group_variable();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1has_1random_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (bool)((datamunge::LMM const *)arg1)->has_random_intercept();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1random_1effect_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->random_effect_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1is_1reml(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (bool)((datamunge::LMM const *)arg1)->is_reml();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1num_1groups(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->num_groups();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1rank(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->rank();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->coefficients();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1coefficient_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->coefficient_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1standard_1errors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->standard_errors();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1z_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->z_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1p_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->p_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->residuals();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1residual_1variance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (double)((datamunge::LMM const *)arg1)->residual_variance();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1residual_1std_1dev(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (double)((datamunge::LMM const *)arg1)->residual_std_dev();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1random_1effect_1std_1devs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->random_effect_std_devs();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1random_1effect_1correlation(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
+  jdouble jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  result = (double)((datamunge::LMM const *)arg1)->random_effect_correlation(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1group_1labels(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->group_labels();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1random_1effects_1for_1group(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::LMM const *)arg1)->random_effects_for_group(SWIG_STD_MOVE(arg2));
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1log_1likelihood(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (double)((datamunge::LMM const *)arg1)->log_likelihood();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (double)((datamunge::LMM const *)arg1)->deviance();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1aic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (double)((datamunge::LMM const *)arg1)->aic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1bic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = (double)((datamunge::LMM const *)arg1)->bic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  result = ((datamunge::LMM const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::LMM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  ((datamunge::LMM const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LMM_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::LMM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::LMM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1LMM(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::LMM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::LMM **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4, jdouble jarg5, jlong jarg6, jlong jarg7, jdouble jarg8, jlong jarg9) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  double arg8 ;
+  std::size_t arg9 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (std::size_t)jarg9; 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8,SWIG_STD_MOVE(arg9));
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4, jdouble jarg5, jlong jarg6, jlong jarg7, jdouble jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  double arg8 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = (double)jarg8; 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8);
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4, jdouble jarg5, jlong jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7));
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4, jdouble jarg5, jlong jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4),arg5,SWIG_STD_MOVE(arg6));
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4, jdouble jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  double arg5 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (double)jarg5; 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4),arg5);
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLMM_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GLMM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::GLMM *)new datamunge::GLMM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::GLMM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1formula_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->formula_text();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1family(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->family();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1group_1variable(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->group_variable();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1has_1random_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = (bool)((datamunge::GLMM const *)arg1)->has_random_intercept();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1random_1effect_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->random_effect_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1num_1groups(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->num_groups();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1rank(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->rank();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1iterations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->iterations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->coefficients();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1coefficient_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->coefficient_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1standard_1errors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->standard_errors();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1z_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->z_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1p_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->p_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1random_1effect_1std_1devs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->random_effect_std_devs();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1random_1effect_1correlation(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
+  jdouble jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  result = (double)((datamunge::GLMM const *)arg1)->random_effect_correlation(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1group_1labels(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->group_labels();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1random_1effects_1for_1group(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::GLMM const *)arg1)->random_effects_for_group(SWIG_STD_MOVE(arg2));
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = (double)((datamunge::GLMM const *)arg1)->deviance();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1aic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = (double)((datamunge::GLMM const *)arg1)->aic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1bic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = (double)((datamunge::GLMM const *)arg1)->bic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  result = ((datamunge::GLMM const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::GLMM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  ((datamunge::GLMM const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLMM_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GLMM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::GLMM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1GLMM(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::GLMM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::GLMM **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LDA_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  datamunge::LDA *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = *(std::vector< double > **)&jarg3;
+  if (!arg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = (datamunge::LDA *)new datamunge::LDA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::vector< double > const &)*arg3);
+  *(datamunge::LDA **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LDA_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::LDA *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::LDA *)new datamunge::LDA((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::LDA **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1num_1discriminants(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->num_discriminants();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1priors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->priors();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1group_1means(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::LDA const *)arg1)->group_means();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1scaling(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::LDA const *)arg1)->scaling();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1proportion_1of_1trace(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->proportion_of_trace();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = (double)((datamunge::LDA const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::LDA const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::LDA *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  ((datamunge::LDA const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::LDA const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::LDA const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1plot_1discriminants(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::LDA *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  result = ((datamunge::LDA const *)arg1)->plot_discriminants();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LDA_1save_1discriminant_1plot(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::LDA *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  ((datamunge::LDA const *)arg1)->save_discriminant_plot((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1LDA(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::LDA *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::LDA **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SVM_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4, jdouble jarg5, jdouble jarg6, jint jarg7, jboolean jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  int arg7 ;
+  bool arg8 ;
+  datamunge::SVM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  arg5 = (double)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (int)jarg7; 
+  arg8 = jarg8 ? true : false; 
+  result = (datamunge::SVM *)new datamunge::SVM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,arg5,arg6,arg7,arg8);
+  *(datamunge::SVM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SVM_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4, jdouble jarg5, jdouble jarg6, jint jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  int arg7 ;
+  datamunge::SVM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  arg5 = (double)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (int)jarg7; 
+  result = (datamunge::SVM *)new datamunge::SVM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,arg5,arg6,arg7);
+  *(datamunge::SVM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SVM_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4, jdouble jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  datamunge::SVM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  arg5 = (double)jarg5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::SVM *)new datamunge::SVM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,arg5,arg6);
+  *(datamunge::SVM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SVM_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4, jdouble jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  double arg5 ;
+  datamunge::SVM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  arg5 = (double)jarg5; 
+  result = (datamunge::SVM *)new datamunge::SVM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,arg5);
+  *(datamunge::SVM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SVM_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  datamunge::SVM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  result = (datamunge::SVM *)new datamunge::SVM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4);
+  *(datamunge::SVM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SVM_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::SVM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = (datamunge::SVM *)new datamunge::SVM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::SVM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1SVM_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::SVM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::SVM *)new datamunge::SVM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::SVM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  result = ((datamunge::SVM const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  result = ((datamunge::SVM const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  result = ((datamunge::SVM const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1num_1support_1vectors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  result = ((datamunge::SVM const *)arg1)->num_support_vectors();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  result = (double)((datamunge::SVM const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::SVM const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  result = ((datamunge::SVM const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::SVM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  ((datamunge::SVM const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::SVM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_SVM_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::SVM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::SVM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1SVM(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::SVM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::SVM **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeClassifier_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jstring jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::string *arg6 = 0 ;
+  datamunge::DecisionTreeClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  if(!jarg6) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg6_pstr = jenv->GetStringUTFChars(jarg6, 0); 
+  if (!arg6_pstr) return 0;
+  std::string arg6_str(arg6_pstr);
+  arg6 = &arg6_str;
+  jenv->ReleaseStringUTFChars(jarg6, arg6_pstr); 
+  result = (datamunge::DecisionTreeClassifier *)new datamunge::DecisionTreeClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),(std::string const &)*arg6);
+  *(datamunge::DecisionTreeClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeClassifier_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::DecisionTreeClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::DecisionTreeClassifier *)new datamunge::DecisionTreeClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::DecisionTreeClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeClassifier_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::DecisionTreeClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::DecisionTreeClassifier *)new datamunge::DecisionTreeClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::DecisionTreeClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeClassifier_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::DecisionTreeClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::DecisionTreeClassifier *)new datamunge::DecisionTreeClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::DecisionTreeClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeClassifier_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::DecisionTreeClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::DecisionTreeClassifier *)new datamunge::DecisionTreeClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::DecisionTreeClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1node_1count(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->node_count();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1leaf_1count(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->leaf_count();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1depth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->depth();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = (double)((datamunge::DecisionTreeClassifier const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::DecisionTreeClassifier const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  ((datamunge::DecisionTreeClassifier const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::DecisionTreeClassifier const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1plot_1classification(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1plot_1decision_1regions_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeClassifier_1plot_1decision_1regions_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DecisionTreeClassifier(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::DecisionTreeClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::DecisionTreeClassifier **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeRegressor_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::DecisionTreeRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::DecisionTreeRegressor *)new datamunge::DecisionTreeRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::DecisionTreeRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeRegressor_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::DecisionTreeRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::DecisionTreeRegressor *)new datamunge::DecisionTreeRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::DecisionTreeRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeRegressor_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::DecisionTreeRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::DecisionTreeRegressor *)new datamunge::DecisionTreeRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::DecisionTreeRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DecisionTreeRegressor_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::DecisionTreeRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::DecisionTreeRegressor *)new datamunge::DecisionTreeRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::DecisionTreeRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1node_1count(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->node_count();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1leaf_1count(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->leaf_count();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1depth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->depth();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = (double)((datamunge::DecisionTreeRegressor const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = (double)((datamunge::DecisionTreeRegressor const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  ((datamunge::DecisionTreeRegressor const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DecisionTreeRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DecisionTreeRegressor(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::DecisionTreeRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::DecisionTreeRegressor **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jstring jarg8, jboolean jarg9, jdouble jarg10, jobject jarg11) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  std::string *arg8 = 0 ;
+  bool arg9 ;
+  double arg10 ;
+  std::uint64_t arg11 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  if(!jarg8) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg8_pstr = jenv->GetStringUTFChars(jarg8, 0); 
+  if (!arg8_pstr) return 0;
+  std::string arg8_str(arg8_pstr);
+  arg8 = &arg8_str;
+  jenv->ReleaseStringUTFChars(jarg8, arg8_pstr); 
+  arg9 = jarg9 ? true : false; 
+  arg10 = (double)jarg10; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg11) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg11);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg11, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg11 = 0;
+    if (sz > 0) {
+      arg11 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg11 = (arg11 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),(std::string const &)*arg8,arg9,arg10,arg11);
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jstring jarg8, jboolean jarg9, jdouble jarg10) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  std::string *arg8 = 0 ;
+  bool arg9 ;
+  double arg10 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  if(!jarg8) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg8_pstr = jenv->GetStringUTFChars(jarg8, 0); 
+  if (!arg8_pstr) return 0;
+  std::string arg8_str(arg8_pstr);
+  arg8 = &arg8_str;
+  jenv->ReleaseStringUTFChars(jarg8, arg8_pstr); 
+  arg9 = jarg9 ? true : false; 
+  arg10 = (double)jarg10; 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),(std::string const &)*arg8,arg9,arg10);
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jstring jarg8, jboolean jarg9) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  std::string *arg8 = 0 ;
+  bool arg9 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  if(!jarg8) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg8_pstr = jenv->GetStringUTFChars(jarg8, 0); 
+  if (!arg8_pstr) return 0;
+  std::string arg8_str(arg8_pstr);
+  arg8 = &arg8_str;
+  jenv->ReleaseStringUTFChars(jarg8, arg8_pstr); 
+  arg9 = jarg9 ? true : false; 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),(std::string const &)*arg8,arg9);
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jstring jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  std::string *arg8 = 0 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  if(!jarg8) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg8_pstr = jenv->GetStringUTFChars(jarg8, 0); 
+  if (!arg8_pstr) return 0;
+  std::string arg8_str(arg8_pstr);
+  arg8 = &arg8_str;
+  jenv->ReleaseStringUTFChars(jarg8, arg8_pstr); 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),(std::string const &)*arg8);
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7));
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_18(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestClassifier_1_1SWIG_19(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::RandomForestClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::RandomForestClassifier *)new datamunge::RandomForestClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::RandomForestClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1n_1trees(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->n_trees();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1max_1features_1used(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->max_features_used();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = (double)((datamunge::RandomForestClassifier const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1oob_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = (double)((datamunge::RandomForestClassifier const *)arg1)->oob_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::RandomForestClassifier const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  ((datamunge::RandomForestClassifier const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::RandomForestClassifier const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1plot_1classification(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1plot_1decision_1regions_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestClassifier_1plot_1decision_1regions_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1RandomForestClassifier(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::RandomForestClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::RandomForestClassifier **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jboolean jarg8, jdouble jarg9, jobject jarg10) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  bool arg8 ;
+  double arg9 ;
+  std::uint64_t arg10 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = jarg8 ? true : false; 
+  arg9 = (double)jarg9; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg10) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg10);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg10, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg10 = 0;
+    if (sz > 0) {
+      arg10 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg10 = (arg10 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8,arg9,arg10);
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jboolean jarg8, jdouble jarg9) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  bool arg8 ;
+  double arg9 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = jarg8 ? true : false; 
+  arg9 = (double)jarg9; 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8,arg9);
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jboolean jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  bool arg8 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = jarg8 ? true : false; 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8);
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7));
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jlong jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RandomForestRegressor_1_1SWIG_18(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::RandomForestRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::RandomForestRegressor *)new datamunge::RandomForestRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::RandomForestRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1n_1trees(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->n_trees();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1max_1features_1used(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->max_features_used();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = (double)((datamunge::RandomForestRegressor const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = (double)((datamunge::RandomForestRegressor const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1oob_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = (double)((datamunge::RandomForestRegressor const *)arg1)->oob_r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1oob_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = (double)((datamunge::RandomForestRegressor const *)arg1)->oob_rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  ((datamunge::RandomForestRegressor const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RandomForestRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1RandomForestRegressor(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::RandomForestRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::RandomForestRegressor **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ElasticNet_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jboolean jarg7, jobject jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  bool arg7 ;
+  std::uint64_t arg8 ;
+  datamunge::ElasticNet *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = jarg7 ? true : false; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg8) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg8);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg8, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg8 = 0;
+    if (sz > 0) {
+      arg8 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg8 = (arg8 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::ElasticNet *)new datamunge::ElasticNet((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7,arg8);
+  *(datamunge::ElasticNet **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ElasticNet_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jboolean jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  bool arg7 ;
+  datamunge::ElasticNet *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = jarg7 ? true : false; 
+  result = (datamunge::ElasticNet *)new datamunge::ElasticNet((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7);
+  *(datamunge::ElasticNet **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ElasticNet_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4, jlong jarg5, jlong jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  datamunge::ElasticNet *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::ElasticNet *)new datamunge::ElasticNet((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::ElasticNet **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ElasticNet_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  datamunge::ElasticNet *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::ElasticNet *)new datamunge::ElasticNet((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::ElasticNet **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ElasticNet_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  datamunge::ElasticNet *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::ElasticNet *)new datamunge::ElasticNet((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4);
+  *(datamunge::ElasticNet **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ElasticNet_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  datamunge::ElasticNet *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  result = (datamunge::ElasticNet *)new datamunge::ElasticNet((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  *(datamunge::ElasticNet **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ElasticNet_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::ElasticNet *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::ElasticNet *)new datamunge::ElasticNet((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::ElasticNet **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1formula_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->formula_text();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1has_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = (bool)((datamunge::ElasticNet const *)arg1)->has_intercept();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1alpha(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = (double)((datamunge::ElasticNet const *)arg1)->alpha();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1lambda(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = (double)((datamunge::ElasticNet const *)arg1)->lambda();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1lambda_1was_1selected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = (bool)((datamunge::ElasticNet const *)arg1)->lambda_was_selected();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1lambda_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->lambda_path();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1cv_1mean_1squared_1error(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->cv_mean_squared_error();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->coefficients();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = (double)((datamunge::ElasticNet const *)arg1)->intercept();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1non_1zero_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->non_zero_coefficients();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->residuals();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = (double)((datamunge::ElasticNet const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = (double)((datamunge::ElasticNet const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::ElasticNet *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  ((datamunge::ElasticNet const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::ElasticNet const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1coefficient_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ElasticNet_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::ElasticNet *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1ElasticNet(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::ElasticNet *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::ElasticNet **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Ridge_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4, jlong jarg5, jboolean jarg6, jobject jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  bool arg6 ;
+  std::uint64_t arg7 ;
+  datamunge::Ridge *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = jarg6 ? true : false; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg7) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg7);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg7, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg7 = 0;
+    if (sz > 0) {
+      arg7 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg7 = (arg7 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::Ridge *)new datamunge::Ridge((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6,arg7);
+  *(datamunge::Ridge **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Ridge_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4, jlong jarg5, jboolean jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  bool arg6 ;
+  datamunge::Ridge *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = jarg6 ? true : false; 
+  result = (datamunge::Ridge *)new datamunge::Ridge((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::Ridge **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Ridge_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::Ridge *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::Ridge *)new datamunge::Ridge((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::Ridge **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Ridge_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  datamunge::Ridge *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::Ridge *)new datamunge::Ridge((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::Ridge **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Ridge_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  datamunge::Ridge *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  result = (datamunge::Ridge *)new datamunge::Ridge((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  *(datamunge::Ridge **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Ridge_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::Ridge *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::Ridge *)new datamunge::Ridge((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::Ridge **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1formula_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->formula_text();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1has_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = (bool)((datamunge::Ridge const *)arg1)->has_intercept();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1lambda(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = (double)((datamunge::Ridge const *)arg1)->lambda();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1lambda_1was_1selected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = (bool)((datamunge::Ridge const *)arg1)->lambda_was_selected();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1lambda_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->lambda_path();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1cv_1mean_1squared_1error(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->cv_mean_squared_error();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->coefficients();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = (double)((datamunge::Ridge const *)arg1)->intercept();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->residuals();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = (double)((datamunge::Ridge const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = (double)((datamunge::Ridge const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::Ridge *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  ((datamunge::Ridge const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Ridge const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1coefficient_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Ridge_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Ridge *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Ridge(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::Ridge *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::Ridge **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Lasso_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4, jlong jarg5, jboolean jarg6, jobject jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  bool arg6 ;
+  std::uint64_t arg7 ;
+  datamunge::Lasso *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = jarg6 ? true : false; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg7) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg7);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg7, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg7 = 0;
+    if (sz > 0) {
+      arg7 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg7 = (arg7 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::Lasso *)new datamunge::Lasso((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6,arg7);
+  *(datamunge::Lasso **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Lasso_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4, jlong jarg5, jboolean jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  bool arg6 ;
+  datamunge::Lasso *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = jarg6 ? true : false; 
+  result = (datamunge::Lasso *)new datamunge::Lasso((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::Lasso **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Lasso_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::Lasso *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::Lasso *)new datamunge::Lasso((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::Lasso **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Lasso_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  datamunge::Lasso *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::Lasso *)new datamunge::Lasso((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::Lasso **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Lasso_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  datamunge::Lasso *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  result = (datamunge::Lasso *)new datamunge::Lasso((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  *(datamunge::Lasso **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Lasso_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::Lasso *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::Lasso *)new datamunge::Lasso((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::Lasso **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1formula_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->formula_text();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1has_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = (bool)((datamunge::Lasso const *)arg1)->has_intercept();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1lambda(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = (double)((datamunge::Lasso const *)arg1)->lambda();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1lambda_1was_1selected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = (bool)((datamunge::Lasso const *)arg1)->lambda_was_selected();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1lambda_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->lambda_path();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1cv_1mean_1squared_1error(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->cv_mean_squared_error();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->coefficients();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = (double)((datamunge::Lasso const *)arg1)->intercept();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1non_1zero_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->non_zero_coefficients();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->residuals();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = (double)((datamunge::Lasso const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = (double)((datamunge::Lasso const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::Lasso *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  ((datamunge::Lasso const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Lasso const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1coefficient_1path(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Lasso_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Lasso *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Lasso(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::Lasso *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::Lasso **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNClassifier_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4, jboolean jarg5, jboolean jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  bool arg6 ;
+  datamunge::KNNClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  arg5 = jarg5 ? true : false; 
+  arg6 = jarg6 ? true : false; 
+  result = (datamunge::KNNClassifier *)new datamunge::KNNClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5,arg6);
+  *(datamunge::KNNClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNClassifier_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4, jboolean jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  datamunge::KNNClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  arg5 = jarg5 ? true : false; 
+  result = (datamunge::KNNClassifier *)new datamunge::KNNClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5);
+  *(datamunge::KNNClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNClassifier_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  datamunge::KNNClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::KNNClassifier *)new datamunge::KNNClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  *(datamunge::KNNClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNClassifier_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::KNNClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::KNNClassifier *)new datamunge::KNNClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::KNNClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNClassifier_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::KNNClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::KNNClassifier *)new datamunge::KNNClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::KNNClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  result = ((datamunge::KNNClassifier const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  result = ((datamunge::KNNClassifier const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  result = ((datamunge::KNNClassifier const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1k(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  result = ((datamunge::KNNClassifier const *)arg1)->k();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  result = (double)((datamunge::KNNClassifier const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::KNNClassifier const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  result = ((datamunge::KNNClassifier const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::KNNClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  ((datamunge::KNNClassifier const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::KNNClassifier const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::KNNClassifier const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1plot_1classification(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1plot_1decision_1regions_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNClassifier_1plot_1decision_1regions_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::KNNClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1KNNClassifier(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::KNNClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::KNNClassifier **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNRegressor_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4, jboolean jarg5, jboolean jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  bool arg6 ;
+  datamunge::KNNRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  arg5 = jarg5 ? true : false; 
+  arg6 = jarg6 ? true : false; 
+  result = (datamunge::KNNRegressor *)new datamunge::KNNRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5,arg6);
+  *(datamunge::KNNRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNRegressor_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4, jboolean jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  datamunge::KNNRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  arg5 = jarg5 ? true : false; 
+  result = (datamunge::KNNRegressor *)new datamunge::KNNRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,arg5);
+  *(datamunge::KNNRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNRegressor_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  datamunge::KNNRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::KNNRegressor *)new datamunge::KNNRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  *(datamunge::KNNRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNRegressor_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::KNNRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::KNNRegressor *)new datamunge::KNNRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::KNNRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KNNRegressor_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::KNNRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::KNNRegressor *)new datamunge::KNNRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::KNNRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = ((datamunge::KNNRegressor const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = ((datamunge::KNNRegressor const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1k(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = ((datamunge::KNNRegressor const *)arg1)->k();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = ((datamunge::KNNRegressor const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = (double)((datamunge::KNNRegressor const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = (double)((datamunge::KNNRegressor const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = ((datamunge::KNNRegressor const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::KNNRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  ((datamunge::KNNRegressor const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::KNNRegressor const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KNNRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KNNRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1KNNRegressor(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::KNNRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::KNNRegressor **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jlong jarg4, jlong jarg5, jdouble jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  std::size_t arg7 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6,SWIG_STD_MOVE(arg7));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jlong jarg4, jlong jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2);
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jdouble jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  std::size_t arg7 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6,SWIG_STD_MOVE(arg7));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_18(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_19(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_110(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KMeans_1_1SWIG_111(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::KMeans *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::KMeans *)new datamunge::KMeans((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::KMeans **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1feature_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  result = ((datamunge::KMeans const *)arg1)->feature_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1n_1clusters(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  result = ((datamunge::KMeans const *)arg1)->n_clusters();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  result = ((datamunge::KMeans const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1iterations_1used(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  result = ((datamunge::KMeans const *)arg1)->iterations_used();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1labels(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  std::vector< std::size_t > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  result = ((datamunge::KMeans const *)arg1)->labels();
+  *(std::vector< std::size_t > **)&jresult = new std::vector< std::size_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1inertia(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  result = (double)((datamunge::KMeans const *)arg1)->inertia();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1cluster_1center(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::KMeans const *)arg1)->cluster_center(SWIG_STD_MOVE(arg2));
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::size_t > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::KMeans const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::size_t > **)&jresult = new std::vector< std::size_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::KMeans *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  result = ((datamunge::KMeans const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KMeans_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::KMeans *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  ((datamunge::KMeans const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1KMeans(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::KMeans *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::KMeans **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jstring jarg4, jstring jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  if(!jarg5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg5_pstr = jenv->GetStringUTFChars(jarg5, 0); 
+  if (!arg5_pstr) return 0;
+  std::string arg5_str(arg5_pstr);
+  arg5 = &arg5_str;
+  jenv->ReleaseStringUTFChars(jarg5, arg5_pstr); 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,(std::string const &)*arg5);
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2);
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4, jstring jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  if(!jarg5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg5_pstr = jenv->GetStringUTFChars(jarg5, 0); 
+  if (!arg5_pstr) return 0;
+  std::string arg5_str(arg5_pstr);
+  arg5 = &arg5_str;
+  jenv->ReleaseStringUTFChars(jarg5, arg5_pstr); 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4,(std::string const &)*arg5);
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string *arg4 = 0 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),(std::string const &)*arg4);
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1AgglomerativeClustering_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::AgglomerativeClustering *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::AgglomerativeClustering *)new datamunge::AgglomerativeClustering((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::AgglomerativeClustering **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1feature_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->feature_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1labels(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::vector< std::size_t > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->labels();
+  *(std::vector< std::size_t > **)&jresult = new std::vector< std::size_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1cut(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< std::size_t > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->cut(SWIG_STD_MOVE(arg2));
+  *(std::vector< std::size_t > **)&jresult = new std::vector< std::size_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1num_1merges(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->num_merges();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1merge_1cluster_1a(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->merge_cluster_a(SWIG_STD_MOVE(arg2));
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1merge_1cluster_1b(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->merge_cluster_b(SWIG_STD_MOVE(arg2));
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1merge_1distance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jdouble jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::size_t arg2 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (double)((datamunge::AgglomerativeClustering const *)arg1)->merge_distance(SWIG_STD_MOVE(arg2));
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1merge_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->merge_size(SWIG_STD_MOVE(arg2));
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  result = ((datamunge::AgglomerativeClustering const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_AgglomerativeClustering_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  ((datamunge::AgglomerativeClustering const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1AgglomerativeClustering(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::AgglomerativeClustering *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::AgglomerativeClustering **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jdouble jarg3, jlong jarg4, jstring jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string *arg5 = 0 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  if(!jarg5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg5_pstr = jenv->GetStringUTFChars(jarg5, 0); 
+  if (!arg5_pstr) return 0;
+  std::string arg5_str(arg5_pstr);
+  arg5 = &arg5_str;
+  jenv->ReleaseStringUTFChars(jarg5, arg5_pstr); 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,arg3,SWIG_STD_MOVE(arg4),(std::string const &)*arg5);
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jdouble jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  double arg3 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  arg3 = (double)jarg3; 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2,arg3);
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::vector< std::string > const &)*arg2);
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4, jstring jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string *arg5 = 0 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  if(!jarg5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg5_pstr = jenv->GetStringUTFChars(jarg5, 0); 
+  if (!arg5_pstr) return 0;
+  std::string arg5_str(arg5_pstr);
+  arg5 = &arg5_str;
+  jenv->ReleaseStringUTFChars(jarg5, arg5_pstr); 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4),(std::string const &)*arg5);
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DBSCAN_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::DBSCAN *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::DBSCAN *)new datamunge::DBSCAN((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::DBSCAN **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DBSCAN_1feature_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DBSCAN *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  result = ((datamunge::DBSCAN const *)arg1)->feature_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DBSCAN_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DBSCAN *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  result = ((datamunge::DBSCAN const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DBSCAN_1n_1clusters(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DBSCAN *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  result = ((datamunge::DBSCAN const *)arg1)->n_clusters();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DBSCAN_1n_1noise(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DBSCAN *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  result = ((datamunge::DBSCAN const *)arg1)->n_noise();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DBSCAN_1labels(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::DBSCAN *arg1 = 0 ;
+  std::vector< int > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  result = ((datamunge::DBSCAN const *)arg1)->labels();
+  *(std::vector< int > **)&jresult = new std::vector< int >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DBSCAN_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::DBSCAN *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  result = ((datamunge::DBSCAN const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DBSCAN_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::DBSCAN *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  ((datamunge::DBSCAN const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DBSCAN(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::DBSCAN *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::DBSCAN **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jdouble jarg8, jobject jarg9) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  double arg8 ;
+  std::uint64_t arg9 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = (double)jarg8; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg9) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg9);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg9, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg9 = 0;
+    if (sz > 0) {
+      arg9 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg9 = (arg9 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8,arg9);
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jdouble jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  double arg8 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = (double)jarg8; 
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8);
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7));
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMClassifier_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GBMClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::GBMClassifier *)new datamunge::GBMClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::GBMClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1n_1trees(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->n_trees();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = (double)((datamunge::GBMClassifier const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::GBMClassifier const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->training_deviance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::GBMClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  ((datamunge::GBMClassifier const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::GBMClassifier const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::GBMClassifier const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1plot_1classification(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1plot_1decision_1regions_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1plot_1decision_1regions_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMClassifier_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMClassifier *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1GBMClassifier(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::GBMClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::GBMClassifier **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jdouble jarg8, jobject jarg9) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  double arg8 ;
+  std::uint64_t arg9 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = (double)jarg8; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg9) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg9);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg9, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg9 = 0;
+    if (sz > 0) {
+      arg9 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg9 = (arg9 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8,arg9);
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jlong jarg7, jdouble jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  double arg8 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  arg8 = (double)jarg8; 
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7),arg8);
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jlong jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  std::size_t arg7 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (std::size_t)jarg7; 
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),SWIG_STD_MOVE(arg7));
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jlong jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GBMRegressor_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GBMRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::GBMRegressor *)new datamunge::GBMRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::GBMRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1n_1trees(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->n_trees();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = (double)((datamunge::GBMRegressor const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = (double)((datamunge::GBMRegressor const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->training_deviance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::GBMRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  ((datamunge::GBMRegressor const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::GBMRegressor const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GBMRegressor_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GBMRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1GBMRegressor(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::GBMRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::GBMRegressor **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10, jdouble jarg11, jdouble jarg12, jobject jarg13) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  double arg11 ;
+  double arg12 ;
+  std::uint64_t arg13 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  arg11 = (double)jarg11; 
+  arg12 = (double)jarg12; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg13) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg13);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg13, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg13 = 0;
+    if (sz > 0) {
+      arg13 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg13 = (arg13 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10),arg11,arg12,arg13);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10, jdouble jarg11, jdouble jarg12) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  double arg11 ;
+  double arg12 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  arg11 = (double)jarg11; 
+  arg12 = (double)jarg12; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10),arg11,arg12);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10, jdouble jarg11) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  double arg11 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  arg11 = (double)jarg11; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10),arg11);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10));
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_18(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_19(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_110(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostClassifier_1_1SWIG_111(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::XGBoostClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::XGBoostClassifier *)new datamunge::XGBoostClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::XGBoostClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1n_1trees(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->n_trees();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = (double)((datamunge::XGBoostClassifier const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::XGBoostClassifier const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->training_deviance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  ((datamunge::XGBoostClassifier const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::XGBoostClassifier const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1plot_1classification(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1plot_1decision_1regions_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1plot_1decision_1regions_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostClassifier_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1XGBoostClassifier(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::XGBoostClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::XGBoostClassifier **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10, jdouble jarg11, jdouble jarg12, jobject jarg13) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  double arg11 ;
+  double arg12 ;
+  std::uint64_t arg13 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  arg11 = (double)jarg11; 
+  arg12 = (double)jarg12; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg13) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return 0;
+    }
+    clazz = jenv->GetObjectClass(jarg13);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg13, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg13 = 0;
+    if (sz > 0) {
+      arg13 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg13 = (arg13 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10),arg11,arg12,arg13);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10, jdouble jarg11, jdouble jarg12) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  double arg11 ;
+  double arg12 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  arg11 = (double)jarg11; 
+  arg12 = (double)jarg12; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10),arg11,arg12);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10, jdouble jarg11) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  double arg11 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  arg11 = (double)jarg11; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10),arg11);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9, jlong jarg10) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  std::size_t arg10 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9,SWIG_STD_MOVE(arg10));
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8, jdouble jarg9) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  double arg9 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  arg9 = (double)jarg9; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8,arg9);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7, jdouble jarg8) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  double arg8 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (double)jarg8; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7,arg8);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_16(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6, jdouble jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  double arg7 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  arg7 = (double)jarg7; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6,arg7);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_17(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_18(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_19(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_110(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1XGBoostRegressor_1_1SWIG_111(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::XGBoostRegressor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::XGBoostRegressor *)new datamunge::XGBoostRegressor((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::XGBoostRegressor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1n_1trees(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->n_trees();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1feature_1importance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->feature_importance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = (double)((datamunge::XGBoostRegressor const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = (double)((datamunge::XGBoostRegressor const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->training_deviance();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  ((datamunge::XGBoostRegressor const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_XGBoostRegressor_1plot_1training_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1XGBoostRegressor(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::XGBoostRegressor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::XGBoostRegressor **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KernelRegression_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4, jlong jarg5, jboolean jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  bool arg6 ;
+  datamunge::KernelRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = jarg6 ? true : false; 
+  result = (datamunge::KernelRegression *)new datamunge::KernelRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::KernelRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KernelRegression_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  datamunge::KernelRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::KernelRegression *)new datamunge::KernelRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::KernelRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KernelRegression_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  datamunge::KernelRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  result = (datamunge::KernelRegression *)new datamunge::KernelRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,arg4);
+  *(datamunge::KernelRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KernelRegression_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::KernelRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = (datamunge::KernelRegression *)new datamunge::KernelRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::KernelRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1KernelRegression_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::KernelRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::KernelRegression *)new datamunge::KernelRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::KernelRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1bandwidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = (double)((datamunge::KernelRegression const *)arg1)->bandwidth();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1bandwidth_1was_1selected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = (bool)((datamunge::KernelRegression const *)arg1)->bandwidth_was_selected();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1bandwidth_1grid(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->bandwidth_grid();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1cv_1mean_1squared_1error(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->cv_mean_squared_error();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = (double)((datamunge::KernelRegression const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = (double)((datamunge::KernelRegression const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::KernelRegression *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  ((datamunge::KernelRegression const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::KernelRegression const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1fit_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1fit_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_KernelRegression_1plot_1cv_1curve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::KernelRegression *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1KernelRegression(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::KernelRegression *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::KernelRegression **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GaussianProcessRegression_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4, jlong jarg5, jlong jarg6, jboolean jarg7) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  bool arg7 ;
+  datamunge::GaussianProcessRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = jarg7 ? true : false; 
+  result = (datamunge::GaussianProcessRegression *)new datamunge::GaussianProcessRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7);
+  *(datamunge::GaussianProcessRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GaussianProcessRegression_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4, jlong jarg5, jlong jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  std::size_t arg6 ;
+  datamunge::GaussianProcessRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::GaussianProcessRegression *)new datamunge::GaussianProcessRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4,SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::GaussianProcessRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GaussianProcessRegression_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  datamunge::GaussianProcessRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::GaussianProcessRegression *)new datamunge::GaussianProcessRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::GaussianProcessRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GaussianProcessRegression_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  datamunge::GaussianProcessRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::GaussianProcessRegression *)new datamunge::GaussianProcessRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4);
+  *(datamunge::GaussianProcessRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GaussianProcessRegression_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  datamunge::GaussianProcessRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  result = (datamunge::GaussianProcessRegression *)new datamunge::GaussianProcessRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  *(datamunge::GaussianProcessRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GaussianProcessRegression_1_1SWIG_15(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GaussianProcessRegression *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::GaussianProcessRegression *)new datamunge::GaussianProcessRegression((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::GaussianProcessRegression **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1length_1scale(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (double)((datamunge::GaussianProcessRegression const *)arg1)->length_scale();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1signal_1variance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (double)((datamunge::GaussianProcessRegression const *)arg1)->signal_variance();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1noise_1variance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (double)((datamunge::GaussianProcessRegression const *)arg1)->noise_variance();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1log_1marginal_1likelihood(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (double)((datamunge::GaussianProcessRegression const *)arg1)->log_marginal_likelihood();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1length_1scale_1was_1selected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (bool)((datamunge::GaussianProcessRegression const *)arg1)->length_scale_was_selected();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1noise_1ratio_1was_1selected(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (bool)((datamunge::GaussianProcessRegression const *)arg1)->noise_ratio_was_selected();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1length_1scale_1grid(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->length_scale_grid();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1length_1scale_1profile_1log_1likelihood(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->length_scale_profile_log_likelihood();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1r_1squared(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (double)((datamunge::GaussianProcessRegression const *)arg1)->r_squared();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1rmse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = (double)((datamunge::GaussianProcessRegression const *)arg1)->rmse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  ((datamunge::GaussianProcessRegression const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1predict_1frame_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  result = (datamunge::DataFrame *)((datamunge::GaussianProcessRegression const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,arg4);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1predict_1frame_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = (datamunge::DataFrame *)((datamunge::GaussianProcessRegression const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1predict_1frame_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::GaussianProcessRegression const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1fit_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::size_t arg3 ;
+  double arg4 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (double)jarg4; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1fit_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1fit_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1predicted_1vs_1actual(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GaussianProcessRegression_1plot_1length_1scale_1profile(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1GaussianProcessRegression(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::GaussianProcessRegression *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::GaussianProcessRegression **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1NaiveBayesClassifier_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  double arg4 ;
+  datamunge::NaiveBayesClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::NaiveBayesClassifier *)new datamunge::NaiveBayesClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3,arg4);
+  *(datamunge::NaiveBayesClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1NaiveBayesClassifier_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  datamunge::NaiveBayesClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  arg3 = (double)jarg3; 
+  result = (datamunge::NaiveBayesClassifier *)new datamunge::NaiveBayesClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,arg3);
+  *(datamunge::NaiveBayesClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1NaiveBayesClassifier_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::NaiveBayesClassifier *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::NaiveBayesClassifier *)new datamunge::NaiveBayesClassifier((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::NaiveBayesClassifier **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1classes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->classes();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1predictor_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->predictor_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1class_1priors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->class_priors();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1training_1accuracy(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  result = (double)((datamunge::NaiveBayesClassifier const *)arg1)->training_accuracy();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1confusion_1matrix(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  result = (datamunge::DataFrame *)((datamunge::NaiveBayesClassifier const *)arg1)->confusion_matrix();
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  ((datamunge::NaiveBayesClassifier const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1predict_1frame(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::NaiveBayesClassifier const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1plot_1classification(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1plot_1decision_1regions_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::size_t arg4 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (std::size_t)jarg4; 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_NaiveBayesClassifier_1plot_1decision_1regions_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1NaiveBayesClassifier(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::NaiveBayesClassifier *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::NaiveBayesClassifier **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLM_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jstring jarg4, jlong jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  double arg6 ;
+  datamunge::GLM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  arg5 = (std::size_t)jarg5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::GLM *)new datamunge::GLM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::GLM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLM_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jstring jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::size_t arg5 ;
+  datamunge::GLM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::GLM *)new datamunge::GLM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,SWIG_STD_MOVE(arg5));
+  *(datamunge::GLM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLM_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::GLM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  std::string arg4_str(arg4_pstr);
+  arg4 = &arg4_str;
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::GLM *)new datamunge::GLM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::GLM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLM_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::GLM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = (datamunge::GLM *)new datamunge::GLM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::GLM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1GLM_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GLM *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::DataFrame **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::GLM *)new datamunge::GLM((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::GLM **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1formula_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->formula_text();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1family(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->family();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1has_1intercept(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = (bool)((datamunge::GLM const *)arg1)->has_intercept();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1rank(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->rank();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1degrees_1of_1freedom(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->degrees_of_freedom();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->coefficients();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1coefficient_1names(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->coefficient_names();
+  *(std::vector< std::string > **)&jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1linear_1predictors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->linear_predictors();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->residuals();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1pearson_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->pearson_residuals();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1standardized_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->standardized_residuals();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1leverage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->leverage();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1standard_1errors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->standard_errors();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1test_1statistics(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->test_statistics();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1p_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->p_values();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = (double)((datamunge::GLM const *)arg1)->deviance();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1null_1deviance(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = (double)((datamunge::GLM const *)arg1)->null_deviance();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1dispersion(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = (double)((datamunge::GLM const *)arg1)->dispersion();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1aic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = (double)((datamunge::GLM const *)arg1)->aic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1confidence_1interval_1lower_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  double arg2 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::GLM const *)arg1)->confidence_interval_lower(arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1confidence_1interval_1lower_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->confidence_interval_lower();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1confidence_1interval_1upper_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  double arg2 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::GLM const *)arg1)->confidence_interval_upper(arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1confidence_1interval_1upper_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->confidence_interval_upper();
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->summary();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1print_1summary(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::GLM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  ((datamunge::GLM const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1predict(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = ((datamunge::GLM const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1predict_1frame_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  double arg4 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  arg4 = (double)jarg4; 
+  result = (datamunge::DataFrame *)((datamunge::GLM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,arg4);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1predict_1frame_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = (datamunge::DataFrame *)((datamunge::GLM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1predict_1frame_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  arg2 = *(datamunge::DataFrame **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::DataFrame const & is null");
+    return 0;
+  } 
+  result = (datamunge::DataFrame *)((datamunge::GLM const *)arg1)->predict_frame((datamunge::DataFrame const &)*arg2);
+  *(datamunge::DataFrame **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1residuals_1vs_1fitted(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1normal_1qq(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1scale_1location(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->plot_scale_location();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1plot_1residuals_1vs_1leverage(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::GLM *arg1 = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_GLM_1save_1diagnostic_1plots(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::GLM *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  ((datamunge::GLM const *)arg1)->save_diagnostic_plots((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1GLM(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::GLM *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::GLM **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Tensor_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::Tensor *)new datamunge::Tensor((std::vector< std::size_t > const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Tensor_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)new datamunge::Tensor((std::vector< std::size_t > const &)*arg1);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1zeros(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)datamunge::Tensor::zeros((std::vector< std::size_t > const &)*arg1);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1ones(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)datamunge::Tensor::ones((std::vector< std::size_t > const &)*arg1);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1full(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Tensor *)datamunge::Tensor::full((std::vector< std::size_t > const &)*arg1,arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1from_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)datamunge::Tensor::from_values((std::vector< std::size_t > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1from_1bool_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  std::vector< int > *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< int > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< int > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)datamunge::Tensor::from_bool_values((std::vector< std::size_t > const &)*arg1,(std::vector< int > const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1from_1string_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< std::size_t > *arg1 = 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< std::size_t > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::string > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::string > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)datamunge::Tensor::from_string_values((std::vector< std::size_t > const &)*arg1,(std::vector< std::string > const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1arange_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  result = (datamunge::Tensor *)datamunge::Tensor::arange(arg1,arg2,arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1arange_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Tensor *)datamunge::Tensor::arange(arg1,arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1eye(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  result = (datamunge::Tensor *)datamunge::Tensor::eye(SWIG_STD_MOVE(arg1));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1ndim(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = ((datamunge::Tensor const *)arg1)->ndim();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1shape(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::vector< std::size_t > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = ((datamunge::Tensor const *)arg1)->shape();
+  *(std::vector< std::size_t > **)&jresult = new std::vector< std::size_t >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = ((datamunge::Tensor const *)arg1)->size();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1dtype_1name(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = ((datamunge::Tensor const *)arg1)->dtype_name();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1at(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = (double)((datamunge::Tensor const *)arg1)->at((std::vector< std::size_t > const &)*arg2);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jdouble jarg3) {
+  datamunge::Tensor *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  double arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return ;
+  } 
+  arg3 = (double)jarg3; 
+  (arg1)->set((std::vector< std::size_t > const &)*arg2,arg3);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1string_1at(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jstring jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Tensor const *)arg1)->string_at((std::vector< std::size_t > const &)*arg2);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1set_1string(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
+  datamunge::Tensor *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return ;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return ;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  (arg1)->set_string((std::vector< std::size_t > const &)*arg2,(std::string const &)*arg3);
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1at_1flat(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (double)((datamunge::Tensor const *)arg1)->at_flat(SWIG_STD_MOVE(arg2));
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1set_1flat(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jdouble jarg3) {
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  (arg1)->set_flat(SWIG_STD_MOVE(arg2),arg3);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1string_1at_1flat(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jstring jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::Tensor const *)arg1)->string_at_flat(SWIG_STD_MOVE(arg2));
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1set_1string_1flat(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jstring jarg3) {
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::string *arg3 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg3_pstr = jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return ;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  (arg1)->set_string_flat(SWIG_STD_MOVE(arg2),(std::string const &)*arg3);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1reshape(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->reshape((std::vector< std::size_t > const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1flatten(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->flatten();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1transpose_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->transpose((std::vector< std::size_t > const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1transpose_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->transpose();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1squeeze(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->squeeze();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1squeeze_1axis(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->squeeze_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1expand_1dims(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->expand_dims(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1slice_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jlong jarg4, jlong jarg5) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (std::size_t)jarg5; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->slice(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1slice_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->slice(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1index_1select(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< std::size_t > *arg3 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = *(std::vector< std::size_t > **)&jarg3;
+  if (!arg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->index_select(SWIG_STD_MOVE(arg2),(std::vector< std::size_t > const &)*arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1concatenate2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::Tensor *)datamunge::Tensor::concatenate2((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1stack2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::Tensor *)datamunge::Tensor::stack2((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->add((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1subtract(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->subtract((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1multiply(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->multiply((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1divide(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->divide((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1power(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->power((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1add_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->add_scalar(arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1subtract_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->subtract_scalar(arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1multiply_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->multiply_scalar(arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1divide_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->divide_scalar(arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1power_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->power_scalar(arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1negate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->negate();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->abs();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sqrt();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->exp();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1log(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->log();
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1apply(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Callback *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Callback **)&jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->apply(arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->equal((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1not_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->not_equal((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1less(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->less((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1less_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->less_equal((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1greater(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->greater((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1greater_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->greater_equal((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1sum(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (double)((datamunge::Tensor const *)arg1)->sum();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1mean(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (double)((datamunge::Tensor const *)arg1)->mean();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1max(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (double)((datamunge::Tensor const *)arg1)->max();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1min(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (double)((datamunge::Tensor const *)arg1)->min();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1prod(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (double)((datamunge::Tensor const *)arg1)->prod();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1argmax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = ((datamunge::Tensor const *)arg1)->argmax();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1argmin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = ((datamunge::Tensor const *)arg1)->argmin();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1all(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (bool)((datamunge::Tensor const *)arg1)->all();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1any(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = (bool)((datamunge::Tensor const *)arg1)->any();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1sum_1axis_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  bool arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sum_axis(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1sum_1axis_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sum_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1mean_1axis_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  bool arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->mean_axis(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1mean_1axis_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->mean_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1max_1axis_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  bool arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_axis(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1max_1axis_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1min_1axis_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  bool arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->min_axis(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1min_1axis_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->min_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1prod_1axis_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  bool arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->prod_axis(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1prod_1axis_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->prod_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1argmax_1axis_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  bool arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->argmax_axis(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1argmax_1axis_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->argmax_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1argmin_1axis_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jboolean jarg3) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  bool arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = jarg3 ? true : false; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->argmin_axis(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1argmin_1axis_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->argmin_axis(SWIG_STD_MOVE(arg2));
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1matmul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->matmul((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1dot(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jdouble jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (double)((datamunge::Tensor const *)arg1)->dot((datamunge::Tensor const &)*arg2);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1outer(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = *(datamunge::Tensor **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tensor const & is null");
+    return 0;
+  } 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->outer((datamunge::Tensor const &)*arg2);
+  *(datamunge::Tensor **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1to_1string_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jstring jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::Tensor const *)arg1)->to_string(SWIG_STD_MOVE(arg2));
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tensor_1to_1string_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::Tensor *arg1 = 0 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  result = ((datamunge::Tensor const *)arg1)->to_string();
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Tensor(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::Tensor *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::Tensor **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Dual_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  datamunge::Dual *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Dual *)new datamunge::Dual(arg1,arg2);
+  *(datamunge::Dual **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Dual_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jdouble jarg1) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  datamunge::Dual *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  result = (datamunge::Dual *)new datamunge::Dual(arg1);
+  *(datamunge::Dual **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = (double)((datamunge::Dual const *)arg1)->value();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1derivative(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = (double)((datamunge::Dual const *)arg1)->derivative();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  datamunge::Dual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = *(datamunge::Dual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Dual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Dual const *)arg1)->add((datamunge::Dual const &)*arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1subtract(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  datamunge::Dual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = *(datamunge::Dual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Dual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Dual const *)arg1)->subtract((datamunge::Dual const &)*arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1multiply(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  datamunge::Dual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = *(datamunge::Dual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Dual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Dual const *)arg1)->multiply((datamunge::Dual const &)*arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1divide(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  datamunge::Dual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = *(datamunge::Dual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Dual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Dual const *)arg1)->divide((datamunge::Dual const &)*arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1negate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->negate();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1add_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Dual const *)arg1)->add_scalar(arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1subtract_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Dual const *)arg1)->subtract_scalar(arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1multiply_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Dual const *)arg1)->multiply_scalar(arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1divide_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Dual const *)arg1)->divide_scalar(arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1pow(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Dual const *)arg1)->pow(arg2);
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->exp();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1log(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->log();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->sqrt();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1sin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->sin();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1cos(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->cos();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1tan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->tan();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1tanh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->tanh();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Dual_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Dual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Dual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  result = ((datamunge::Dual const *)arg1)->abs();
+  *(datamunge::Dual **)&jresult = new datamunge::Dual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Dual(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::Dual *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::Dual **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1HyperDual_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2, jdouble jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  datamunge::HyperDual *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  arg4 = (double)jarg4; 
+  result = (datamunge::HyperDual *)new datamunge::HyperDual(arg1,arg2,arg3,arg4);
+  *(datamunge::HyperDual **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1HyperDual_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::HyperDual *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  result = (datamunge::HyperDual *)new datamunge::HyperDual(arg1,arg2,arg3);
+  *(datamunge::HyperDual **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1HyperDual_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  datamunge::HyperDual *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  result = (datamunge::HyperDual *)new datamunge::HyperDual(arg1,arg2);
+  *(datamunge::HyperDual **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1HyperDual_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jdouble jarg1) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  datamunge::HyperDual *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  result = (datamunge::HyperDual *)new datamunge::HyperDual(arg1);
+  *(datamunge::HyperDual **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = (double)((datamunge::HyperDual const *)arg1)->value();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1eps1(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = (double)((datamunge::HyperDual const *)arg1)->eps1();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1eps2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = (double)((datamunge::HyperDual const *)arg1)->eps2();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1eps1eps2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = (double)((datamunge::HyperDual const *)arg1)->eps1eps2();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  datamunge::HyperDual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = *(datamunge::HyperDual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::HyperDual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::HyperDual const *)arg1)->add((datamunge::HyperDual const &)*arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1subtract(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  datamunge::HyperDual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = *(datamunge::HyperDual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::HyperDual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::HyperDual const *)arg1)->subtract((datamunge::HyperDual const &)*arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1multiply(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  datamunge::HyperDual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = *(datamunge::HyperDual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::HyperDual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::HyperDual const *)arg1)->multiply((datamunge::HyperDual const &)*arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1divide(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  datamunge::HyperDual *arg2 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = *(datamunge::HyperDual **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::HyperDual const & is null");
+    return 0;
+  } 
+  result = ((datamunge::HyperDual const *)arg1)->divide((datamunge::HyperDual const &)*arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1negate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->negate();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1add_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::HyperDual const *)arg1)->add_scalar(arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1subtract_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::HyperDual const *)arg1)->subtract_scalar(arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1multiply_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::HyperDual const *)arg1)->multiply_scalar(arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1divide_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::HyperDual const *)arg1)->divide_scalar(arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1pow(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::HyperDual const *)arg1)->pow(arg2);
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->exp();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1log(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->log();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->sqrt();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1sin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->sin();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1cos(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->cos();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1tan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->tan();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HyperDual_1tanh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::HyperDual *arg1 = 0 ;
+  SwigValueWrapper< datamunge::HyperDual > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  result = ((datamunge::HyperDual const *)arg1)->tanh();
+  *(datamunge::HyperDual **)&jresult = new datamunge::HyperDual(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1HyperDual(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::HyperDual *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::HyperDual **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Tape(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::Tape *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::Tape *)new datamunge::Tape();
+  *(datamunge::Tape **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tape_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Tape *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tape **)&jarg1; 
+  result = ((datamunge::Tape const *)arg1)->size();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tape_1value_1at(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jdouble jresult = 0 ;
+  datamunge::Tape *arg1 = 0 ;
+  std::size_t arg2 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tape **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = (double)((datamunge::Tape const *)arg1)->value_at(SWIG_STD_MOVE(arg2));
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Tape_1backward(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Tape *arg1 = 0 ;
+  datamunge::Var *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Tape **)&jarg1; 
+  arg2 = *(datamunge::Var **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Var const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Tape const *)arg1)->backward((datamunge::Var const &)*arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Tape(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::Tape *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::Tape **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Var(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Tape *arg1 = 0 ;
+  double arg2 ;
+  datamunge::Var *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Tape **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Tape & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  result = (datamunge::Var *)new datamunge::Var(*arg1,arg2);
+  *(datamunge::Var **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = (double)((datamunge::Var const *)arg1)->value();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1index(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->index();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  datamunge::Var *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = *(datamunge::Var **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Var const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Var const *)arg1)->add((datamunge::Var const &)*arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1subtract(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  datamunge::Var *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = *(datamunge::Var **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Var const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Var const *)arg1)->subtract((datamunge::Var const &)*arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1multiply(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  datamunge::Var *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = *(datamunge::Var **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Var const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Var const *)arg1)->multiply((datamunge::Var const &)*arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1divide(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  datamunge::Var *arg2 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = *(datamunge::Var **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "datamunge::Var const & is null");
+    return 0;
+  } 
+  result = ((datamunge::Var const *)arg1)->divide((datamunge::Var const &)*arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1negate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->negate();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1add_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Var const *)arg1)->add_scalar(arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1subtract_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Var const *)arg1)->subtract_scalar(arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1multiply_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Var const *)arg1)->multiply_scalar(arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1divide_1scalar(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Var const *)arg1)->divide_scalar(arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1pow(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  double arg2 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = ((datamunge::Var const *)arg1)->pow(arg2);
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->exp();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1log(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->log();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->sqrt();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1sin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->sin();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1cos(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->cos();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1tan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->tan();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1tanh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->tanh();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Var_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::Var *arg1 = 0 ;
+  SwigValueWrapper< datamunge::Var > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  result = ((datamunge::Var const *)arg1)->abs();
+  *(datamunge::Var **)&jresult = new datamunge::Var(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Var(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::Var *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::Var **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1r_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  datamunge::plot::RGB *arg1 = 0 ;
+  int arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg2 = (int)jarg2; 
+  if (arg1) (arg1)->r = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1r_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  datamunge::plot::RGB *arg1 = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  result = (int) ((arg1)->r);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  datamunge::plot::RGB *arg1 = 0 ;
+  int arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg2 = (int)jarg2; 
+  if (arg1) (arg1)->g = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  datamunge::plot::RGB *arg1 = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  result = (int) ((arg1)->g);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1b_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  datamunge::plot::RGB *arg1 = 0 ;
+  int arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  arg2 = (int)jarg2; 
+  if (arg1) (arg1)->b = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_RGB_1b_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  datamunge::plot::RGB *arg1 = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  result = (int) ((arg1)->b);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1RGB(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::plot::RGB *)new datamunge::plot::RGB();
+  *(datamunge::plot::RGB **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1RGB(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::plot::RGB *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::plot::RGB **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1kind_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::plot::DataSeries::Kind arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg2 = (datamunge::plot::DataSeries::Kind)jarg2; 
+  if (arg1) (arg1)->kind = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1kind_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::plot::DataSeries::Kind result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (datamunge::plot::DataSeries::Kind) ((arg1)->kind);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1x_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg2 = *(std::vector< double > **)&jarg2; 
+  if (arg1) (arg1)->x = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1x_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (std::vector< double > *)& ((arg1)->x);
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1y_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg2 = *(std::vector< double > **)&jarg2; 
+  if (arg1) (arg1)->y = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1y_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (std::vector< double > *)& ((arg1)->y);
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1label_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if (arg1) (arg1)->label = *arg2;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1label_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (std::string *) & ((arg1)->label);
+  jresult = jenv->NewStringUTF(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::plot::RGB *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg2 = *(datamunge::plot::RGB **)&jarg2; 
+  if (arg1) (arg1)->color = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  *(datamunge::plot::RGB **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1stroke_1width_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->stroke_width = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1stroke_1width_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (double) ((arg1)->stroke_width);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1marker_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->marker_size = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1marker_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (double) ((arg1)->marker_size);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1bar_1width_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->bar_width = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_DataSeries_1bar_1width_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  result = (double) ((arg1)->bar_width);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1DataSeries(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::DataSeries *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::plot::DataSeries *)new datamunge::plot::DataSeries();
+  *(datamunge::plot::DataSeries **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1DataSeries(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::plot::DataSeries **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1Plot(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  result = (datamunge::plot::Plot *) &(arg1)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1title(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  (&arg2)->assign(arg2_pstr);
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::plot::Plot *) &(arg1)->title(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  (&arg2)->assign(arg2_pstr);
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::plot::Plot *) &(arg1)->x_label(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1label(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return 0;
+  (&arg2)->assign(arg2_pstr);
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  result = (datamunge::plot::Plot *) &(arg1)->y_label(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1background(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::plot::Plot *) &(arg1)->background(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1axis_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::plot::Plot *) &(arg1)->axis_color(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1grid_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  argp2 = *(datamunge::plot::RGB **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::plot::Plot *) &(arg1)->grid_color(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1grid_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg2 = jarg2 ? true : false; 
+  result = (datamunge::plot::Plot *) &(arg1)->show_grid(arg2);
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1grid_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (datamunge::plot::Plot *) &(arg1)->show_grid();
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  result = (datamunge::plot::Plot *) &(arg1)->x_limits(arg2,arg3);
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1width(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = ((datamunge::plot::Plot const *)arg1)->width();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1height(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = ((datamunge::plot::Plot const *)arg1)->height();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1title_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->title_text();
+  jresult = jenv->NewStringUTF(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1label_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->x_label_text();
+  jresult = jenv->NewStringUTF(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1label_1text(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (std::string *) &((datamunge::plot::Plot const *)arg1)->y_label_text();
+  jresult = jenv->NewStringUTF(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1series(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< datamunge::plot::DataSeries > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)arg1)->series();
+  *(std::vector< datamunge::plot::DataSeries > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1background_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::RGB result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = ((datamunge::plot::Plot const *)arg1)->background_color();
+  *(datamunge::plot::RGB **)&jresult = new datamunge::plot::RGB(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1axes_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::RGB result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = ((datamunge::plot::Plot const *)arg1)->axes_color();
+  *(datamunge::plot::RGB **)&jresult = new datamunge::plot::RGB(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1major_1grid_1color(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::RGB result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = ((datamunge::plot::Plot const *)arg1)->major_grid_color();
+  *(datamunge::plot::RGB **)&jresult = new datamunge::plot::RGB(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1grid_1visible(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (bool)((datamunge::plot::Plot const *)arg1)->grid_visible();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1has_1x_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (bool)((datamunge::plot::Plot const *)arg1)->has_x_limits();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1has_1y_1limits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (bool)((datamunge::plot::Plot const *)arg1)->has_y_limits();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1min(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (double)((datamunge::plot::Plot const *)arg1)->x_min();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1x_1max(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (double)((datamunge::plot::Plot const *)arg1)->x_max();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1min(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (double)((datamunge::plot::Plot const *)arg1)->y_min();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1y_1max(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::plot::Plot *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  result = (double)((datamunge::plot::Plot const *)arg1)->y_max();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1save(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  ((datamunge::plot::Plot const *)arg1)->save((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1save_1svg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  ((datamunge::plot::Plot const *)arg1)->save_svg((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1view_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  ((datamunge::plot::Plot const *)arg1)->view((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1view_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  ((datamunge::plot::Plot const *)arg1)->view();
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  ((datamunge::plot::Plot const *)arg1)->show((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_Plot_1show_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::plot::Plot **)&jarg1; 
+  ((datamunge::plot::Plot const *)arg1)->show();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1Plot(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::plot::Plot *)new datamunge::plot::Plot();
+  *(datamunge::plot::Plot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1create(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = datamunge::plot::ScatterPlot::create();
+  *(datamunge::plot::ScatterPlot **)&jresult = new datamunge::plot::ScatterPlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1points_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1points_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1points_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1points_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1line_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1line_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1line_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1line_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ScatterPlot(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::ScatterPlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::plot::ScatterPlot *)new datamunge::plot::ScatterPlot();
+  *(datamunge::plot::ScatterPlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1ScatterPlot(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::plot::ScatterPlot *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::plot::ScatterPlot **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LinePlot_1create(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::LinePlot result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = datamunge::plot::LinePlot::create();
+  *(datamunge::plot::LinePlot **)&jresult = new datamunge::plot::LinePlot(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LinePlot_1line_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::plot::LinePlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::LinePlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::LinePlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::LinePlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LinePlot_1line_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
+  jlong jresult = 0 ;
+  datamunge::plot::LinePlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::LinePlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::LinePlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::LinePlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LinePlot_1line_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::plot::LinePlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::LinePlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::LinePlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::LinePlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LinePlot_1line_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  datamunge::plot::LinePlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::LinePlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::LinePlot **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::LinePlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1LinePlot(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::LinePlot *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::plot::LinePlot *)new datamunge::plot::LinePlot();
+  *(datamunge::plot::LinePlot **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1LinePlot(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::plot::LinePlot *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::plot::LinePlot **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_BarChart_1create(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::BarChart result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = datamunge::plot::BarChart::create();
+  *(datamunge::plot::BarChart **)&jresult = new datamunge::plot::BarChart(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_BarChart_1bars_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_, jdouble jarg6) {
+  jlong jresult = 0 ;
+  datamunge::plot::BarChart *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::BarChart *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::BarChart **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  arg6 = (double)jarg6; 
+  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::BarChart **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_BarChart_1bars_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4, jlong jarg5, jobject jarg5_) {
+  jlong jresult = 0 ;
+  datamunge::plot::BarChart *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::BarChart *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg5_;
+  arg1 = *(datamunge::plot::BarChart **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  argp5 = *(datamunge::plot::RGB **)&jarg5; 
+  if (!argp5) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::plot::RGB");
+    return 0;
+  }
+  arg5 = *argp5; 
+  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::BarChart **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_BarChart_1bars_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jstring jarg4) {
+  jlong jresult = 0 ;
+  datamunge::plot::BarChart *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::BarChart *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::BarChart **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  if(!jarg4) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg4_pstr = jenv->GetStringUTFChars(jarg4, 0); 
+  if (!arg4_pstr) return 0;
+  (&arg4)->assign(arg4_pstr);
+  jenv->ReleaseStringUTFChars(jarg4, arg4_pstr); 
+  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::BarChart **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_BarChart_1bars_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  datamunge::plot::BarChart *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::BarChart *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(datamunge::plot::BarChart **)&jarg1; 
+  argp2 = *(std::vector< double > **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg2 = *argp2; 
+  argp3 = *(std::vector< double > **)&jarg3; 
+  if (!argp3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null std::vector< double >");
+    return 0;
+  }
+  arg3 = *argp3; 
+  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::BarChart **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1BarChart(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::plot::BarChart *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::plot::BarChart *)new datamunge::plot::BarChart();
+  *(datamunge::plot::BarChart **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1BarChart(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::plot::BarChart *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::plot::BarChart **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1p_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->p = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1p_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->p);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->d = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->d);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->q = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->q);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1p_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->seasonal_p = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1p_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->seasonal_p);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->seasonal_d = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->seasonal_d);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->seasonal_q = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->seasonal_q);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1period_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->seasonal_period = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seasonal_1period_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->seasonal_period);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1include_1mean_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  bool arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = jarg2 ? true : false; 
+  if (arg1) (arg1)->include_mean = arg2;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1include_1mean_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result = (bool) ((arg1)->include_mean);
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1de_1population_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->de_population_size = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1de_1population_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->de_population_size);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1de_1max_1generations_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->de_max_generations = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1de_1max_1generations_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result =  ((arg1)->de_max_generations);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1coefficient_1bound_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->coefficient_bound = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1coefficient_1bound_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result = (double) ((arg1)->coefficient_bound);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seed_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return ;
+    }
+    clazz = jenv->GetObjectClass(jarg2);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg2, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg2 = 0;
+    if (sz > 0) {
+      arg2 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg2 = (arg2 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  if (arg1) (arg1)->seed = arg2;
+}
+
+
+SWIGEXPORT jobject JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMAOptions_1seed_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jobject jresult = 0 ;
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  result = (std::uint64_t) ((arg1)->seed);
+  {
+    jbyteArray ba = jenv->NewByteArray(9);
+    jbyte* bae = jenv->GetByteArrayElements(ba, 0);
+    jclass clazz = jenv->FindClass("java/math/BigInteger");
+    jmethodID mid = jenv->GetMethodID(clazz, "<init>", "([B)V");
+    jobject bigint;
+    int i;
+    
+    bae[0] = 0;
+    for(i=1; i<9; i++ ) {
+      bae[i] = (jbyte)(result>>8*(8-i));
+    }
+    
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+    bigint = jenv->NewObject(clazz, mid, ba);
+    jenv->DeleteLocalRef(ba);
+    jresult = bigint;
+  }
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ARIMAOptions(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMAOptions *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::stats::ARIMAOptions *)new datamunge::stats::ARIMAOptions();
+  *(datamunge::stats::ARIMAOptions **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1ARIMAOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::stats::ARIMAOptions *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::stats::ARIMAOptions **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ARIMA_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::ARIMAOptions arg2 ;
+  datamunge::stats::ARIMAOptions *argp2 ;
+  datamunge::stats::ARIMA *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  argp2 = *(datamunge::stats::ARIMAOptions **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::stats::ARIMAOptions");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::stats::ARIMA *)new datamunge::stats::ARIMA((std::vector< double > const &)*arg1,SWIG_STD_MOVE(arg2));
+  *(datamunge::stats::ARIMA **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ARIMA_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::ARIMA *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = (datamunge::stats::ARIMA *)new datamunge::stats::ARIMA((std::vector< double > const &)*arg1);
+  *(datamunge::stats::ARIMA **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1options(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  datamunge::stats::ARIMAOptions *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (datamunge::stats::ARIMAOptions *) &((datamunge::stats::ARIMA const *)arg1)->options();
+  *(datamunge::stats::ARIMAOptions **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1ar_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->ar_coefficients();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1ma_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->ma_coefficients();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1seasonal_1ar_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->seasonal_ar_coefficients();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1seasonal_1ma_1coefficients(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->seasonal_ma_coefficients();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1mean(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (double)((datamunge::stats::ARIMA const *)arg1)->mean();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = ((datamunge::stats::ARIMA const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1n_1used(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = ((datamunge::stats::ARIMA const *)arg1)->n_used();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1sigma2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (double)((datamunge::stats::ARIMA const *)arg1)->sigma2();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1log_1likelihood(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (double)((datamunge::stats::ARIMA const *)arg1)->log_likelihood();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1aic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (double)((datamunge::stats::ARIMA const *)arg1)->aic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1bic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (double)((datamunge::stats::ARIMA const *)arg1)->bic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ARIMA const *)arg1)->residuals();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1forecast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::stats::ARIMA const *)arg1)->forecast(SWIG_STD_MOVE(arg2));
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ARIMA_1forecast_1with_1intervals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::pair< std::vector< double >,std::vector< double > > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::stats::ARIMA const *)arg1)->forecast_with_intervals(SWIG_STD_MOVE(arg2));
+  *(std::pair< std::vector< double >,std::vector< double > > **)&jresult = new std::pair< std::vector< double >,std::vector< double > >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1ARIMA(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::stats::ARIMA *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::stats::ARIMA **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1trend_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  datamunge::stats::TrendType arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (datamunge::stats::TrendType)jarg2; 
+  if (arg1) (arg1)->trend = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1trend_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  datamunge::stats::TrendType result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result = (datamunge::stats::TrendType) ((arg1)->trend);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1seasonal_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  datamunge::stats::SeasonalType arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (datamunge::stats::SeasonalType)jarg2; 
+  if (arg1) (arg1)->seasonal = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1seasonal_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  datamunge::stats::SeasonalType result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result = (datamunge::stats::SeasonalType) ((arg1)->seasonal);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1seasonal_1period_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->seasonal_period = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1seasonal_1period_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result =  ((arg1)->seasonal_period);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1alpha_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->alpha = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1alpha_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result = (double) ((arg1)->alpha);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1beta_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->beta = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1beta_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result = (double) ((arg1)->beta);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1gamma_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->gamma = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1gamma_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result = (double) ((arg1)->gamma);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1phi_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->phi = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1phi_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result = (double) ((arg1)->phi);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1de_1population_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->de_population_size = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1de_1population_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result =  ((arg1)->de_population_size);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1de_1max_1generations_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->de_max_generations = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1de_1max_1generations_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result =  ((arg1)->de_max_generations);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1seed_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  {
+    jclass clazz;
+    jmethodID mid;
+    jbyteArray ba;
+    jbyte* bae;
+    jsize sz;
+    int i;
+    
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "BigInteger null");
+      return ;
+    }
+    clazz = jenv->GetObjectClass(jarg2);
+    mid = jenv->GetMethodID(clazz, "toByteArray", "()[B");
+    ba = (jbyteArray)jenv->CallObjectMethod(jarg2, mid);
+    bae = jenv->GetByteArrayElements(ba, 0);
+    sz = jenv->GetArrayLength(ba);
+    arg2 = 0;
+    if (sz > 0) {
+      arg2 = (std::uint64_t)(signed char)bae[0];
+      for(i=1; i<sz; i++) {
+        arg2 = (arg2 << 8) | (std::uint64_t)(unsigned char)bae[i];
+      }
+    }
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+  }
+  if (arg1) (arg1)->seed = arg2;
+}
+
+
+SWIGEXPORT jobject JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothingOptions_1seed_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jobject jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  result = (std::uint64_t) ((arg1)->seed);
+  {
+    jbyteArray ba = jenv->NewByteArray(9);
+    jbyte* bae = jenv->GetByteArrayElements(ba, 0);
+    jclass clazz = jenv->FindClass("java/math/BigInteger");
+    jmethodID mid = jenv->GetMethodID(clazz, "<init>", "([B)V");
+    jobject bigint;
+    int i;
+    
+    bae[0] = 0;
+    for(i=1; i<9; i++ ) {
+      bae[i] = (jbyte)(result>>8*(8-i));
+    }
+    
+    jenv->ReleaseByteArrayElements(ba, bae, 0);
+    bigint = jenv->NewObject(clazz, mid, ba);
+    jenv->DeleteLocalRef(ba);
+    jresult = bigint;
+  }
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ExponentialSmoothingOptions(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::stats::ExponentialSmoothingOptions *)new datamunge::stats::ExponentialSmoothingOptions();
+  *(datamunge::stats::ExponentialSmoothingOptions **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1ExponentialSmoothingOptions(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ExponentialSmoothing_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions arg2 ;
+  datamunge::stats::ExponentialSmoothingOptions *argp2 ;
+  datamunge::stats::ExponentialSmoothing *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  argp2 = *(datamunge::stats::ExponentialSmoothingOptions **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null datamunge::stats::ExponentialSmoothingOptions");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (datamunge::stats::ExponentialSmoothing *)new datamunge::stats::ExponentialSmoothing((std::vector< double > const &)*arg1,SWIG_STD_MOVE(arg2));
+  *(datamunge::stats::ExponentialSmoothing **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1ExponentialSmoothing_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::ExponentialSmoothing *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = (datamunge::stats::ExponentialSmoothing *)new datamunge::stats::ExponentialSmoothing((std::vector< double > const &)*arg1);
+  *(datamunge::stats::ExponentialSmoothing **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1options(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  datamunge::stats::ExponentialSmoothingOptions *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (datamunge::stats::ExponentialSmoothingOptions *) &((datamunge::stats::ExponentialSmoothing const *)arg1)->options();
+  *(datamunge::stats::ExponentialSmoothingOptions **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1alpha(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->alpha();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1beta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->beta();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1gamma(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->gamma();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1phi(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->phi();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1observations(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  std::size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = ((datamunge::stats::ExponentialSmoothing const *)arg1)->observations();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1sse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->sse();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1sigma2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->sigma2();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1log_1likelihood(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->log_likelihood();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1aic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->aic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1bic(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (double)((datamunge::stats::ExponentialSmoothing const *)arg1)->bic();
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1fitted_1values(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ExponentialSmoothing const *)arg1)->fitted_values();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1residuals(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  result = (std::vector< double > *) &((datamunge::stats::ExponentialSmoothing const *)arg1)->residuals();
+  *(std::vector< double > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ExponentialSmoothing_1forecast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  jlong jresult = 0 ;
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::stats::ExponentialSmoothing const *)arg1)->forecast(SWIG_STD_MOVE(arg2));
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1ExponentialSmoothing(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::stats::ExponentialSmoothing **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1statistic_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->statistic = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1statistic_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->statistic);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1parameter1_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->parameter1 = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1parameter1_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->parameter1);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1parameter2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->parameter2 = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1parameter2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->parameter2);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1p_1value_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->p_value = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1p_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->p_value);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1estimate1_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->estimate1 = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1estimate1_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->estimate1);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1estimate2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->estimate2 = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1estimate2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->estimate2);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1conf_1int_1lower_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->conf_int_lower = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1conf_1int_1lower_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->conf_int_lower);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1conf_1int_1upper_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->conf_int_upper = arg2;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1conf_1int_1upper_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (double) ((arg1)->conf_int_upper);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1has_1conf_1int_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  bool arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = jarg2 ? true : false; 
+  if (arg1) (arg1)->has_conf_int = arg2;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1has_1conf_1int_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (bool) ((arg1)->has_conf_int);
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1alternative_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  datamunge::stats::Alternative arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  arg2 = (datamunge::stats::Alternative)jarg2; 
+  if (arg1) (arg1)->alternative = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1alternative_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  datamunge::stats::Alternative result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (datamunge::stats::Alternative) ((arg1)->alternative);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1method_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if (arg1) (arg1)->method = *arg2;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_HypothesisTestResult_1method_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  result = (std::string *) & ((arg1)->method);
+  jresult = jenv->NewStringUTF(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_new_1HypothesisTestResult(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  datamunge::stats::HypothesisTestResult *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (datamunge::stats::HypothesisTestResult *)new datamunge::stats::HypothesisTestResult();
+  *(datamunge::stats::HypothesisTestResult **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_delete_1HypothesisTestResult(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  datamunge::stats::HypothesisTestResult *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(datamunge::stats::HypothesisTestResult **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1one_1sample_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jint jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::stats::Alternative arg3 ;
+  double arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  arg4 = (double)jarg4; 
+  result = datamunge::stats::t_test_one_sample((std::vector< double > const &)*arg1,arg2,arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1one_1sample_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::t_test_one_sample((std::vector< double > const &)*arg1,arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1one_1sample_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  result = datamunge::stats::t_test_one_sample((std::vector< double > const &)*arg1,arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1one_1sample_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::t_test_one_sample((std::vector< double > const &)*arg1);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1two_1sample_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jboolean jarg3, jint jarg4, jdouble jarg5) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  bool arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  double arg5 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = jarg3 ? true : false; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  arg5 = (double)jarg5; 
+  result = datamunge::stats::t_test_two_sample((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3,arg4,arg5);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1two_1sample_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jboolean jarg3, jint jarg4) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  bool arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = jarg3 ? true : false; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  result = datamunge::stats::t_test_two_sample((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1two_1sample_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jboolean jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  bool arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = jarg3 ? true : false; 
+  result = datamunge::stats::t_test_two_sample((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1two_1sample_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::t_test_two_sample((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1paired_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  double arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  arg4 = (double)jarg4; 
+  result = datamunge::stats::t_test_paired((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1paired_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::t_test_paired((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_t_1test_1paired_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::t_test_paired((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_wilcoxon_1signed_1rank_1test_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::wilcoxon_signed_rank_test((std::vector< double > const &)*arg1,arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_wilcoxon_1signed_1rank_1test_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  result = datamunge::stats::wilcoxon_signed_rank_test((std::vector< double > const &)*arg1,arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_wilcoxon_1signed_1rank_1test_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::wilcoxon_signed_rank_test((std::vector< double > const &)*arg1);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_wilcoxon_1rank_1sum_1test_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::wilcoxon_rank_sum_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_wilcoxon_1rank_1sum_1test_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::wilcoxon_rank_sum_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ks_1test_1one_1sample_1normal_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3, jint jarg4) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  result = datamunge::stats::ks_test_one_sample_normal((std::vector< double > const &)*arg1,arg2,arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ks_1test_1one_1sample_1normal_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  result = datamunge::stats::ks_test_one_sample_normal((std::vector< double > const &)*arg1,arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ks_1test_1one_1sample_1normal_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double arg2 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (double)jarg2; 
+  result = datamunge::stats::ks_test_one_sample_normal((std::vector< double > const &)*arg1,arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ks_1test_1one_1sample_1normal_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::ks_test_one_sample_normal((std::vector< double > const &)*arg1);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ks_1test_1two_1sample_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::ks_test_two_sample((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ks_1test_1two_1sample_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::ks_test_two_sample((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_chi_1squared_1goodness_1of_1fit_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::chi_squared_goodness_of_fit((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_chi_1squared_1goodness_1of_1fit_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::chi_squared_goodness_of_fit((std::vector< double > const &)*arg1);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_chi_1squared_1test_1independence_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jboolean jarg4) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  bool arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = jarg4 ? true : false; 
+  result = datamunge::stats::chi_squared_test_independence((std::vector< double > const &)*arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_chi_1squared_1test_1independence_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  result = datamunge::stats::chi_squared_test_independence((std::vector< double > const &)*arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_one_1way_1anova(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::one_way_anova((std::vector< double > const &)*arg1,(std::vector< std::size_t > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_kruskal_1wallis_1test(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< std::size_t > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< std::size_t > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::size_t > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::kruskal_wallis_test((std::vector< double > const &)*arg1,(std::vector< std::size_t > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_pearson_1correlation_1test_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  double arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  arg4 = (double)jarg4; 
+  result = datamunge::stats::pearson_correlation_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_pearson_1correlation_1test_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::pearson_correlation_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_pearson_1correlation_1test_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::pearson_correlation_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_spearman_1correlation_1test_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::spearman_correlation_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_spearman_1correlation_1test_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::spearman_correlation_test((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_f_1test_1variance_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jdouble jarg4) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  double arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  arg4 = (double)jarg4; 
+  result = datamunge::stats::f_test_variance((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_f_1test_1variance_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::Alternative arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg3 = (datamunge::stats::Alternative)jarg3; 
+  result = datamunge::stats::f_test_variance((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2,arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_f_1test_1variance_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(std::vector< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::f_test_variance((std::vector< double > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1one_1sample_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jdouble jarg3, jint jarg4, jboolean jarg5, jdouble jarg6) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  bool arg5 ;
+  double arg6 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  arg5 = jarg5 ? true : false; 
+  arg6 = (double)jarg6; 
+  result = datamunge::stats::proportion_test_one_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),arg3,arg4,arg5,arg6);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1one_1sample_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jdouble jarg3, jint jarg4, jboolean jarg5) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  bool arg5 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  arg5 = jarg5 ? true : false; 
+  result = datamunge::stats::proportion_test_one_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),arg3,arg4,arg5);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1one_1sample_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jdouble jarg3, jint jarg4) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  result = datamunge::stats::proportion_test_one_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1one_1sample_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  result = datamunge::stats::proportion_test_one_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1one_1sample_1_1SWIG_14(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = datamunge::stats::proportion_test_one_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1two_1sample_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jint jarg5, jboolean jarg6, jdouble jarg7) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::stats::Alternative arg5 ;
+  bool arg6 ;
+  double arg7 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (datamunge::stats::Alternative)jarg5; 
+  arg6 = jarg6 ? true : false; 
+  arg7 = (double)jarg7; 
+  result = datamunge::stats::proportion_test_two_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,arg6,arg7);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1two_1sample_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jint jarg5, jboolean jarg6) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::stats::Alternative arg5 ;
+  bool arg6 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (datamunge::stats::Alternative)jarg5; 
+  arg6 = jarg6 ? true : false; 
+  result = datamunge::stats::proportion_test_two_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5,arg6);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1two_1sample_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::stats::Alternative arg5 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (datamunge::stats::Alternative)jarg5; 
+  result = datamunge::stats::proportion_test_two_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_proportion_1test_1two_1sample_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = datamunge::stats::proportion_test_two_sample(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_binomial_1test_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jdouble jarg3, jint jarg4, jdouble jarg5) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  double arg5 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  arg5 = (double)jarg5; 
+  result = datamunge::stats::binomial_test(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),arg3,arg4,arg5);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_binomial_1test_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jdouble jarg3, jint jarg4) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  datamunge::stats::Alternative arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  arg4 = (datamunge::stats::Alternative)jarg4; 
+  result = datamunge::stats::binomial_test(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),arg3,arg4);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_binomial_1test_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  double arg3 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (double)jarg3; 
+  result = datamunge::stats::binomial_test(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_binomial_1test_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = datamunge::stats::binomial_test(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_fisher_1exact_1test_12x2_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jint jarg5) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::stats::Alternative arg5 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  arg5 = (datamunge::stats::Alternative)jarg5; 
+  result = datamunge::stats::fisher_exact_test_2x2(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_fisher_1exact_1test_12x2_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4) {
+  jlong jresult = 0 ;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (std::size_t)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  arg3 = (std::size_t)jarg3; 
+  arg4 = (std::size_t)jarg4; 
+  result = datamunge::stats::fisher_exact_test_2x2(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_shapiro_1francia_1test(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::HypothesisTestResult result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = datamunge::stats::shapiro_francia_test((std::vector< double > const &)*arg1);
+  *(datamunge::stats::HypothesisTestResult **)&jresult = new datamunge::stats::HypothesisTestResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_ScatterPlot_1SWIGUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+    jlong baseptr = 0;
+    (void)jenv;
+    (void)jcls;
+    *(datamunge::plot::Plot **)&baseptr = *(datamunge::plot::ScatterPlot **)&jarg1;
+    return baseptr;
+}
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_LinePlot_1SWIGUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+    jlong baseptr = 0;
+    (void)jenv;
+    (void)jcls;
+    *(datamunge::plot::Plot **)&baseptr = *(datamunge::plot::LinePlot **)&jarg1;
+    return baseptr;
+}
+
+SWIGEXPORT jlong JNICALL Java_js_datamunge_jdatamunge_datamungeJNI_BarChart_1SWIGUpcast(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+    jlong baseptr = 0;
+    (void)jenv;
+    (void)jcls;
+    *(datamunge::plot::Plot **)&baseptr = *(datamunge::plot::BarChart **)&jarg1;
+    return baseptr;
+}
 
 #ifdef __cplusplus
 }

@@ -990,6 +990,7 @@
             datamungetcl
             pkgs.tcl
             pkgs.tk
+            pkgs.arrow-cpp
             pkgs.swig
             pkgs.cmake
             pkgs.pkg-config
@@ -1024,6 +1025,7 @@
             datamunge
             datamungeoctave
             pkgs.octave
+            pkgs.arrow-cpp
             pkgs.swig
             pkgs.cmake
             pkgs.pkg-config
@@ -1089,6 +1091,7 @@
             datamunge
             datamungeguile
             pkgs.guile
+            pkgs.arrow-cpp
             pkgs.swig
             pkgs.cmake
             pkgs.pkg-config

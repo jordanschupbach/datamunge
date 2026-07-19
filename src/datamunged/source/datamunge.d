@@ -37,6 +37,11 @@ static import std.exception;
 static import std.range;
 static import std.traits;
 
+static import std.algorithm;
+static import std.exception;
+static import std.range;
+static import std.traits;
+
 
 class DPair {
   private void* swigCPtr;
@@ -110,6 +115,161 @@ class DPair {
 
   public double second() @property const {
     auto ret = datamunge_im.DPair_second_get(cast(void*)swigCPtr);
+    return ret;
+  }
+}
+
+class IPair {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_IPair(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this() {
+    this(datamunge_im.new_IPair__SWIG_0(), true);
+  }
+
+  public this(int first, int second) {
+    this(datamunge_im.new_IPair__SWIG_1(first, second), true);
+  }
+
+  public this(IPair other) {
+    this(datamunge_im.new_IPair__SWIG_2(IPair.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void first(int value) @property {
+    datamunge_im.IPair_first_set(cast(void*)swigCPtr, value);
+  }
+
+  public int first() @property const {
+    auto ret = datamunge_im.IPair_first_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void second(int value) @property {
+    datamunge_im.IPair_second_set(cast(void*)swigCPtr, value);
+  }
+
+  public int second() @property const {
+    auto ret = datamunge_im.IPair_second_get(cast(void*)swigCPtr);
+    return ret;
+  }
+}
+
+class DVectorPair {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DVectorPair(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this() {
+    this(datamunge_im.new_DVectorPair__SWIG_0(), true);
+  }
+
+  public this(DVector first, DVector second) {
+    this(datamunge_im.new_DVectorPair__SWIG_1(DVector.swigGetCPtr(first), DVector.swigGetCPtr(second)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DVectorPair other) {
+    this(datamunge_im.new_DVectorPair__SWIG_2(DVectorPair.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void first(DVector value) @property {
+    datamunge_im.DVectorPair_first_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector first() @property const {
+    void* cPtr = datamunge_im.DVectorPair_first_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
+  public void second(DVector value) @property {
+    datamunge_im.DVectorPair_second_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector second() @property const {
+    void* cPtr = datamunge_im.DVectorPair_second_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
     return ret;
   }
 }
@@ -492,6 +652,389 @@ class DVector {
 
   public void setElement(size_t index, double val) {
     datamunge_im.DVector_setElement(cast(void*)swigCPtr, index, val);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+}
+
+class DVectorVector {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DVectorVector(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  alias size_t KeyType;
+  alias DVector ValueType;
+
+  this(ValueType[] values...) {
+    this();
+    reserve(values.length);
+    foreach (e; values) {
+      this ~= e;
+    }
+  }
+
+  struct Range {
+    private DVectorVector _outer;
+    private size_t _a, _b;
+
+    this(DVectorVector data, size_t a, size_t b) {
+      _outer = data;
+      _a = a;
+      _b = b;
+    }
+
+    @property bool empty() const {
+      assert((cast(DVectorVector)_outer).length >= _b);
+      return _a >= _b;
+    }
+
+    @property Range save() {
+      return this;
+    }
+
+    @property ValueType front() {
+      std.exception.enforce(!empty);
+      return _outer[_a];
+    }
+
+    @property void front(ValueType value) {
+      std.exception.enforce(!empty);
+      _outer[_a] = std.algorithm.move(value);
+    }
+
+    void popFront() {
+      std.exception.enforce(!empty);
+      ++_a;
+    }
+
+    void opIndexAssign(ValueType value, size_t i) {
+      i += _a;
+      std.exception.enforce(i < _b && _b <= _outer.length);
+      _outer[i] = value;
+    }
+
+    void opIndexOpAssign(string op)(ValueType value, size_t i) {
+      std.exception.enforce(_outer && _a + i < _b && _b <= _outer.length);
+      auto element = _outer[i];
+      mixin("element "~op~"= value;");
+      _outer[i] = element;
+    }
+  }
+
+  // TODO: dup?
+
+  Range opSlice() {
+    return Range(this, 0, length);
+  }
+
+  Range opSlice(size_t a, size_t b) {
+    std.exception.enforce(a <= b && b <= length);
+    return Range(this, a, b);
+  }
+
+  size_t opDollar() const {
+    return length;
+  }
+
+  @property ValueType front() {
+    std.exception.enforce(!empty);
+    return getElement(0);
+  }
+
+  @property void front(ValueType value) {
+    std.exception.enforce(!empty);
+    setElement(0, value);
+  }
+
+  @property ValueType back() {
+    std.exception.enforce(!empty);
+    return getElement(length - 1);
+  }
+
+  @property void back(ValueType value) {
+    std.exception.enforce(!empty);
+    setElement(length - 1, value);
+  }
+
+  ValueType opIndex(size_t i) {
+    return getElement(i);
+  }
+
+  void opIndexAssign(ValueType value, size_t i) {
+    setElement(i, value);
+  }
+
+  void opIndexOpAssign(string op)(ValueType value, size_t i) {
+    auto element = this[i];
+    mixin("element "~op~"= value;");
+    this[i] = element;
+  }
+
+  ValueType[] opBinary(string op, Stuff)(Stuff stuff) if (op == "~") {
+    ValueType[] result;
+    result ~= this[];
+    assert(result.length == length);
+    result ~= stuff[];
+    return result;
+  }
+
+  void opOpAssign(string op, Stuff)(Stuff stuff) if (op == "~") {
+    static if (is(typeof(insertBack(stuff)))) {
+      insertBack(stuff);
+    } else if (is(typeof(insertBack(stuff[])))) {
+      insertBack(stuff[]);
+    } else {
+      static assert(false, "Cannot append " ~ Stuff.stringof ~ " to " ~ typeof(this).stringof);
+    }
+  }
+
+  alias size length;
+
+  alias remove removeAny;
+  alias removeAny stableRemoveAny;
+
+  size_t insertBack(Stuff)(Stuff stuff)
+  if (std.traits.isImplicitlyConvertible!(Stuff, ValueType)){
+    push_back(stuff);
+    return 1;
+  }
+  size_t insertBack(Stuff)(Stuff stuff)
+  if (std.range.isInputRange!Stuff &&
+      std.traits.isImplicitlyConvertible!(std.range.ElementType!Stuff, ValueType)) {
+    size_t itemCount;
+    foreach(item; stuff) {
+      insertBack(item);
+      ++itemCount;
+    }
+    return itemCount;
+  }
+  alias insertBack insert;
+
+  alias pop_back removeBack;
+  alias pop_back stableRemoveBack;
+
+  size_t insertBefore(Stuff)(Range r, Stuff stuff)
+  if (std.traits.isImplicitlyConvertible!(Stuff, ValueType)) {
+    std.exception.enforce(r._outer.swigCPtr == swigCPtr && r._a < length);
+    insertAt(r._a, stuff);
+    return 1;
+  }
+
+  size_t insertBefore(Stuff)(Range r, Stuff stuff)
+  if (std.range.isInputRange!Stuff && std.traits.isImplicitlyConvertible!(ElementType!Stuff, ValueType)) {
+    std.exception.enforce(r._outer.swigCPtr == swigCPtr && r._a <= length);
+
+    size_t insertCount;
+    foreach(i, item; stuff) {
+      insertAt(r._a + i, item);
+      ++insertCount;
+    }
+
+    return insertCount;
+  }
+
+  size_t insertAfter(Stuff)(Range r, Stuff stuff) {
+    // TODO: optimize
+    immutable offset = r._a + r.length;
+    std.exception.enforce(offset <= length);
+    auto result = insertBack(stuff);
+    std.algorithm.bringToFront(this[offset .. length - result],
+      this[length - result .. length]);
+    return result;
+  }
+
+  size_t replace(Stuff)(Range r, Stuff stuff)
+  if (std.range.isInputRange!Stuff &&
+      std.traits.isImplicitlyConvertible!(ElementType!Stuff, ValueType)) {
+    immutable offset = r._a;
+    std.exception.enforce(offset <= length);
+    size_t result;
+    for (; !stuff.empty; stuff.popFront()) {
+      if (r.empty) {
+        // append the rest
+        return result + insertBack(stuff);
+      }
+      r.front = stuff.front;
+      r.popFront();
+      ++result;
+    }
+    // Remove remaining stuff in r
+    remove(r);
+    return result;
+  }
+
+  size_t replace(Stuff)(Range r, Stuff stuff)
+  if (std.traits.isImplicitlyConvertible!(Stuff, ValueType))
+  {
+      if (r.empty)
+      {
+          insertBefore(r, stuff);
+      }
+      else
+      {
+          r.front = stuff;
+          r.popFront();
+          remove(r);
+      }
+      return 1;
+  }
+
+  Range linearRemove(Range r) {
+    std.exception.enforce(r._a <= r._b && r._b <= length);
+    immutable tailLength = length - r._b;
+    linearRemove(r._a, r._b);
+    return this[length - tailLength .. length];
+  }
+  alias remove stableLinearRemove;
+
+  int opApply(int delegate(ref DVector value) dg) {
+    int result;
+
+    size_t currentSize = size();
+    for (size_t i = 0; i < currentSize; ++i) {
+      auto value = getElement(i);
+      result = dg(value);
+      setElement(i, value);
+    }
+    return result;
+  }
+
+  int opApply(int delegate(ref size_t index, ref DVector value) dg) {
+    int result;
+
+    size_t currentSize = size();
+    for (size_t i = 0; i < currentSize; ++i) {
+      auto value = getElement(i);
+
+      // Workaround for http://d.puremagic.com/issues/show_bug.cgi?id=2443.
+      auto index = i;
+
+      result = dg(index, value);
+      setElement(i, value);
+    }
+    return result;
+  }
+
+  public bool empty() const {
+    bool ret = datamunge_im.DVectorVector_empty(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public void clear() {
+    datamunge_im.DVectorVector_clear(cast(void*)swigCPtr);
+  }
+
+  public void push_back(DVector x) {
+    datamunge_im.DVectorVector_push_back(cast(void*)swigCPtr, DVector.swigGetCPtr(x));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void pop_back() {
+    datamunge_im.DVectorVector_pop_back(cast(void*)swigCPtr);
+  }
+
+  public size_t size() const {
+    auto ret = datamunge_im.DVectorVector_size(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t capacity() const {
+    auto ret = datamunge_im.DVectorVector_capacity(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void reserve(size_t n) {
+    datamunge_im.DVectorVector_reserve(cast(void*)swigCPtr, n);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_DVectorVector__SWIG_0(), true);
+  }
+
+  public this(DVectorVector other) {
+    this(datamunge_im.new_DVectorVector__SWIG_1(DVectorVector.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(size_t capacity) {
+    this(datamunge_im.new_DVectorVector__SWIG_2(capacity), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public DVector remove() {
+    DVector ret = new DVector(datamunge_im.DVectorVector_remove__SWIG_0(cast(void*)swigCPtr), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DVector remove(size_t index) {
+    DVector ret = new DVector(datamunge_im.DVectorVector_remove__SWIG_1(cast(void*)swigCPtr, index), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void removeBack(size_t how_many) {
+    datamunge_im.DVectorVector_removeBack(cast(void*)swigCPtr, how_many);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void linearRemove(size_t start_index, size_t end_index) {
+    datamunge_im.DVectorVector_linearRemove(cast(void*)swigCPtr, start_index, end_index);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void insertAt(size_t index, DVector x) {
+    datamunge_im.DVectorVector_insertAt(cast(void*)swigCPtr, index, DVector.swigGetCPtr(x));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public DVector getElement(size_t index) {
+    DVector ret = new DVector(datamunge_im.DVectorVector_getElement(cast(void*)swigCPtr, index), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void setElement(size_t index, DVector val) {
+    datamunge_im.DVectorVector_setElement(cast(void*)swigCPtr, index, DVector.swigGetCPtr(val));
     if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
   }
 }
@@ -1809,6 +2352,12 @@ class DataFrame {
     this(datamunge_im.new_DataFrame(), true);
   }
 
+  public static DataFrame empty() {
+    void* cPtr = datamunge_im.DataFrame_empty();
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
   public size_t nrows() const {
     auto ret = datamunge_im.DataFrame_nrows(cast(void*)swigCPtr);
     return ret;
@@ -1819,8 +2368,8 @@ class DataFrame {
     return ret;
   }
 
-  public SWIGTYPE_p_std__vectorT_std__size_t_t shape() const {
-    SWIGTYPE_p_std__vectorT_std__size_t_t ret = new SWIGTYPE_p_std__vectorT_std__size_t_t(datamunge_im.DataFrame_shape(cast(void*)swigCPtr), true);
+  public SizeVector shape() const {
+    SizeVector ret = new SizeVector(datamunge_im.DataFrame_shape(cast(void*)swigCPtr), true);
     return ret;
   }
 
@@ -1988,6 +2537,42 @@ class DataFrame {
 
   public string to_string() const {
     string ret = std.conv.to!string(datamunge_im.DataFrame_to_string__SWIG_1(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public bool is_numeric_column(string column_name) const {
+    bool ret = datamunge_im.DataFrame_is_numeric_column(cast(void*)swigCPtr, (column_name ? std.string.toStringz(column_name) : null)) ? true : false;
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public bool is_null(string column_name, size_t row_index) const {
+    bool ret = datamunge_im.DataFrame_is_null(cast(void*)swigCPtr, (column_name ? std.string.toStringz(column_name) : null), row_index) ? true : false;
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public double numeric_at(string column_name, size_t row_index) const {
+    auto ret = datamunge_im.DataFrame_numeric_at(cast(void*)swigCPtr, (column_name ? std.string.toStringz(column_name) : null), row_index);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public string string_at(string column_name, size_t row_index) const {
+    string ret = std.conv.to!string(datamunge_im.DataFrame_string_at(cast(void*)swigCPtr, (column_name ? std.string.toStringz(column_name) : null), row_index));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static DataFrame iris() {
+    void* cPtr = datamunge_im.DataFrame_iris();
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public static DataFrame penguins() {
+    void* cPtr = datamunge_im.DataFrame_penguins();
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
     return ret;
   }
 }
@@ -2213,23 +2798,23 @@ class LM {
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_residuals_vs_fitted() const {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamunge_im.LM_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.LM_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_normal_qq() const {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamunge_im.LM_plot_normal_qq(cast(void*)swigCPtr), true);
+  public ScatterPlot plot_normal_qq() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.LM_plot_normal_qq(cast(void*)swigCPtr), true);
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_scale_location() const {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamunge_im.LM_plot_scale_location(cast(void*)swigCPtr), true);
+  public ScatterPlot plot_scale_location() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.LM_plot_scale_location(cast(void*)swigCPtr), true);
     return ret;
   }
 
-  public SWIGTYPE_p_datamunge__plot__ScatterPlot plot_residuals_vs_leverage() const {
-    SWIGTYPE_p_datamunge__plot__ScatterPlot ret = new SWIGTYPE_p_datamunge__plot__ScatterPlot(datamunge_im.LM_plot_residuals_vs_leverage(cast(void*)swigCPtr), true);
+  public ScatterPlot plot_residuals_vs_leverage() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.LM_plot_residuals_vs_leverage(cast(void*)swigCPtr), true);
     return ret;
   }
 
@@ -2239,15 +2824,13 @@ class LM {
   }
 }
 
-class SWIGTYPE_p_datamunge__plot__ScatterPlot {
+class LMM {
   private void* swigCPtr;
+  protected bool swigCMemOwn;
 
-  public this(void* cObject, bool futureUse) {
+  public this(void* cObject, bool ownCObject) {
     swigCPtr = cObject;
-  }
-
-  protected this() {
-    swigCPtr = null;
+    swigCMemOwn = ownCObject;
   }
 
   public static void* swigGetCPtr(typeof(this) obj) {
@@ -2255,13 +2838,9292 @@ class SWIGTYPE_p_datamunge__plot__ScatterPlot {
   }
 
   public static void* swigRelease(typeof(this) obj) {
-    return (obj is null) ? null : obj.swigCPtr;
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
   }
 
   mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_LMM(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, bool reml, size_t de_population_size, size_t de_max_generations, double theta_bound, size_t seed) {
+    this(datamunge_im.new_LMM__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), reml, de_population_size, de_max_generations, theta_bound, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, bool reml, size_t de_population_size, size_t de_max_generations, double theta_bound) {
+    this(datamunge_im.new_LMM__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), reml, de_population_size, de_max_generations, theta_bound), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, bool reml, size_t de_population_size, size_t de_max_generations) {
+    this(datamunge_im.new_LMM__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), reml, de_population_size, de_max_generations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, bool reml, size_t de_population_size) {
+    this(datamunge_im.new_LMM__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), reml, de_population_size), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, bool reml) {
+    this(datamunge_im.new_LMM__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), reml), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_LMM__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string formula_text() const {
+    string ret = std.conv.to!string(datamunge_im.LMM_formula_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string group_variable() const {
+    string ret = std.conv.to!string(datamunge_im.LMM_group_variable(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public bool has_random_intercept() const {
+    bool ret = datamunge_im.LMM_has_random_intercept(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public SVector random_effect_names() const {
+    SVector ret = new SVector(datamunge_im.LMM_random_effect_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public bool is_reml() const {
+    bool ret = datamunge_im.LMM_is_reml(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.LMM_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t num_groups() const {
+    auto ret = datamunge_im.LMM_num_groups(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t rank() const {
+    auto ret = datamunge_im.LMM_rank(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector coefficients() const {
+    DVector ret = new DVector(datamunge_im.LMM_coefficients(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector coefficient_names() const {
+    SVector ret = new SVector(datamunge_im.LMM_coefficient_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector standard_errors() const {
+    DVector ret = new DVector(datamunge_im.LMM_standard_errors(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector z_values() const {
+    DVector ret = new DVector(datamunge_im.LMM_z_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector p_values() const {
+    DVector ret = new DVector(datamunge_im.LMM_p_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.LMM_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector residuals() const {
+    DVector ret = new DVector(datamunge_im.LMM_residuals(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double residual_variance() const {
+    auto ret = datamunge_im.LMM_residual_variance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double residual_std_dev() const {
+    auto ret = datamunge_im.LMM_residual_std_dev(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector random_effect_std_devs() const {
+    DVector ret = new DVector(datamunge_im.LMM_random_effect_std_devs(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double random_effect_correlation(size_t i, size_t j) const {
+    auto ret = datamunge_im.LMM_random_effect_correlation(cast(void*)swigCPtr, i, j);
+    return ret;
+  }
+
+  public SVector group_labels() const {
+    SVector ret = new SVector(datamunge_im.LMM_group_labels(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector random_effects_for_group(size_t group_index) const {
+    DVector ret = new DVector(datamunge_im.LMM_random_effects_for_group(cast(void*)swigCPtr, group_index), true);
+    return ret;
+  }
+
+  public double log_likelihood() const {
+    auto ret = datamunge_im.LMM_log_likelihood(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double deviance() const {
+    auto ret = datamunge_im.LMM_deviance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double aic() const {
+    auto ret = datamunge_im.LMM_aic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double bic() const {
+    auto ret = datamunge_im.LMM_bic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.LMM_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.LMM_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.LMM_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
 }
 
-class SWIGTYPE_p_std__vectorT_std__size_t_t {
+class GLMM {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GLMM(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, string family, size_t max_iterations, double tol, size_t de_population_size, size_t de_max_generations, double theta_bound, size_t seed) {
+    this(datamunge_im.new_GLMM__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), max_iterations, tol, de_population_size, de_max_generations, theta_bound, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family, size_t max_iterations, double tol, size_t de_population_size, size_t de_max_generations, double theta_bound) {
+    this(datamunge_im.new_GLMM__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), max_iterations, tol, de_population_size, de_max_generations, theta_bound), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family, size_t max_iterations, double tol, size_t de_population_size, size_t de_max_generations) {
+    this(datamunge_im.new_GLMM__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), max_iterations, tol, de_population_size, de_max_generations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family, size_t max_iterations, double tol, size_t de_population_size) {
+    this(datamunge_im.new_GLMM__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), max_iterations, tol, de_population_size), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family, size_t max_iterations, double tol) {
+    this(datamunge_im.new_GLMM__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), max_iterations, tol), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family, size_t max_iterations) {
+    this(datamunge_im.new_GLMM__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family) {
+    this(datamunge_im.new_GLMM__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_GLMM__SWIG_7(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string formula_text() const {
+    string ret = std.conv.to!string(datamunge_im.GLMM_formula_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string family() const {
+    string ret = std.conv.to!string(datamunge_im.GLMM_family(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string group_variable() const {
+    string ret = std.conv.to!string(datamunge_im.GLMM_group_variable(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public bool has_random_intercept() const {
+    bool ret = datamunge_im.GLMM_has_random_intercept(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public SVector random_effect_names() const {
+    SVector ret = new SVector(datamunge_im.GLMM_random_effect_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.GLMM_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t num_groups() const {
+    auto ret = datamunge_im.GLMM_num_groups(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t rank() const {
+    auto ret = datamunge_im.GLMM_rank(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t iterations() const {
+    auto ret = datamunge_im.GLMM_iterations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector coefficients() const {
+    DVector ret = new DVector(datamunge_im.GLMM_coefficients(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector coefficient_names() const {
+    SVector ret = new SVector(datamunge_im.GLMM_coefficient_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector standard_errors() const {
+    DVector ret = new DVector(datamunge_im.GLMM_standard_errors(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector z_values() const {
+    DVector ret = new DVector(datamunge_im.GLMM_z_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector p_values() const {
+    DVector ret = new DVector(datamunge_im.GLMM_p_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.GLMM_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector random_effect_std_devs() const {
+    DVector ret = new DVector(datamunge_im.GLMM_random_effect_std_devs(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double random_effect_correlation(size_t i, size_t j) const {
+    auto ret = datamunge_im.GLMM_random_effect_correlation(cast(void*)swigCPtr, i, j);
+    return ret;
+  }
+
+  public SVector group_labels() const {
+    SVector ret = new SVector(datamunge_im.GLMM_group_labels(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector random_effects_for_group(size_t group_index) const {
+    DVector ret = new DVector(datamunge_im.GLMM_random_effects_for_group(cast(void*)swigCPtr, group_index), true);
+    return ret;
+  }
+
+  public double deviance() const {
+    auto ret = datamunge_im.GLMM_deviance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double aic() const {
+    auto ret = datamunge_im.GLMM_aic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double bic() const {
+    auto ret = datamunge_im.GLMM_bic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.GLMM_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.GLMM_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.GLMM_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class LDA {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_LDA(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, DVector priors) {
+    this(datamunge_im.new_LDA__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), DVector.swigGetCPtr(priors)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_LDA__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.LDA_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.LDA_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.LDA_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t num_discriminants() const {
+    auto ret = datamunge_im.LDA_num_discriminants(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector priors() const {
+    DVector ret = new DVector(datamunge_im.LDA_priors(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DataFrame group_means() const {
+    void* cPtr = datamunge_im.LDA_group_means(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public DataFrame scaling() const {
+    void* cPtr = datamunge_im.LDA_scaling(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public DVector proportion_of_trace() const {
+    DVector ret = new DVector(datamunge_im.LDA_proportion_of_trace(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.LDA_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.LDA_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.LDA_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.LDA_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.LDA_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.LDA_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_discriminants() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.LDA_plot_discriminants(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public void save_discriminant_plot(string path) const {
+    datamunge_im.LDA_save_discriminant_plot(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+}
+
+class SVM {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SVM(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, string kernel, double cost, double gamma, double coef0, int degree, bool scale) {
+    this(datamunge_im.new_SVM__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), cost, gamma, coef0, degree, scale), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel, double cost, double gamma, double coef0, int degree) {
+    this(datamunge_im.new_SVM__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), cost, gamma, coef0, degree), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel, double cost, double gamma, double coef0) {
+    this(datamunge_im.new_SVM__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), cost, gamma, coef0), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel, double cost, double gamma) {
+    this(datamunge_im.new_SVM__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), cost, gamma), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel, double cost) {
+    this(datamunge_im.new_SVM__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), cost), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel) {
+    this(datamunge_im.new_SVM__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_SVM__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.SVM_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.SVM_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.SVM_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t num_support_vectors() const {
+    auto ret = datamunge_im.SVM_num_support_vectors(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.SVM_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.SVM_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.SVM_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.SVM_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.SVM_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.SVM_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class DecisionTreeClassifier {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DecisionTreeClassifier(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, string criterion) {
+    this(datamunge_im.new_DecisionTreeClassifier__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), max_depth, min_samples_split, min_samples_leaf, (criterion ? std.string.toStringz(criterion) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf) {
+    this(datamunge_im.new_DecisionTreeClassifier__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), max_depth, min_samples_split, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t max_depth, size_t min_samples_split) {
+    this(datamunge_im.new_DecisionTreeClassifier__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), max_depth, min_samples_split), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t max_depth) {
+    this(datamunge_im.new_DecisionTreeClassifier__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_DecisionTreeClassifier__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.DecisionTreeClassifier_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.DecisionTreeClassifier_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.DecisionTreeClassifier_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t node_count() const {
+    auto ret = datamunge_im.DecisionTreeClassifier_node_count(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t leaf_count() const {
+    auto ret = datamunge_im.DecisionTreeClassifier_leaf_count(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t depth() const {
+    auto ret = datamunge_im.DecisionTreeClassifier_depth(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.DecisionTreeClassifier_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.DecisionTreeClassifier_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.DecisionTreeClassifier_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.DecisionTreeClassifier_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.DecisionTreeClassifier_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.DecisionTreeClassifier_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.DecisionTreeClassifier_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.DecisionTreeClassifier_plot_classification(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.DecisionTreeClassifier_plot_decision_regions__SWIG_0(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.DecisionTreeClassifier_plot_decision_regions__SWIG_1(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class DecisionTreeRegressor {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DecisionTreeRegressor(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf) {
+    this(datamunge_im.new_DecisionTreeRegressor__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), max_depth, min_samples_split, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t max_depth, size_t min_samples_split) {
+    this(datamunge_im.new_DecisionTreeRegressor__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), max_depth, min_samples_split), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t max_depth) {
+    this(datamunge_im.new_DecisionTreeRegressor__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_DecisionTreeRegressor__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.DecisionTreeRegressor_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.DecisionTreeRegressor_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t node_count() const {
+    auto ret = datamunge_im.DecisionTreeRegressor_node_count(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t leaf_count() const {
+    auto ret = datamunge_im.DecisionTreeRegressor_leaf_count(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t depth() const {
+    auto ret = datamunge_im.DecisionTreeRegressor_depth(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.DecisionTreeRegressor_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.DecisionTreeRegressor_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.DecisionTreeRegressor_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.DecisionTreeRegressor_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.DecisionTreeRegressor_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.DecisionTreeRegressor_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.DecisionTreeRegressor_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.DecisionTreeRegressor_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.DecisionTreeRegressor_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class RandomForestClassifier {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_RandomForestClassifier(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features, string criterion, bool bootstrap, double sample_fraction, ulong seed) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, (criterion ? std.string.toStringz(criterion) : null), bootstrap, sample_fraction, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features, string criterion, bool bootstrap, double sample_fraction) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, (criterion ? std.string.toStringz(criterion) : null), bootstrap, sample_fraction), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features, string criterion, bool bootstrap) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, (criterion ? std.string.toStringz(criterion) : null), bootstrap), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features, string criterion) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, (criterion ? std.string.toStringz(criterion) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_7(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_8(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_RandomForestClassifier__SWIG_9(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.RandomForestClassifier_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.RandomForestClassifier_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.RandomForestClassifier_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_trees() const {
+    auto ret = datamunge_im.RandomForestClassifier_n_trees(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t max_features_used() const {
+    auto ret = datamunge_im.RandomForestClassifier_max_features_used(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.RandomForestClassifier_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.RandomForestClassifier_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double oob_accuracy() const {
+    auto ret = datamunge_im.RandomForestClassifier_oob_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.RandomForestClassifier_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.RandomForestClassifier_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.RandomForestClassifier_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.RandomForestClassifier_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.RandomForestClassifier_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.RandomForestClassifier_plot_classification(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.RandomForestClassifier_plot_decision_regions__SWIG_0(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.RandomForestClassifier_plot_decision_regions__SWIG_1(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class RandomForestRegressor {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_RandomForestRegressor(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features, bool bootstrap, double sample_fraction, ulong seed) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, bootstrap, sample_fraction, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features, bool bootstrap, double sample_fraction) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, bootstrap, sample_fraction), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features, bool bootstrap) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, bootstrap), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, size_t max_features) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf, max_features), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth, size_t min_samples_split) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth, min_samples_split), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, size_t max_depth) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_7(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_RandomForestRegressor__SWIG_8(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.RandomForestRegressor_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.RandomForestRegressor_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_trees() const {
+    auto ret = datamunge_im.RandomForestRegressor_n_trees(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t max_features_used() const {
+    auto ret = datamunge_im.RandomForestRegressor_max_features_used(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.RandomForestRegressor_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.RandomForestRegressor_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.RandomForestRegressor_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.RandomForestRegressor_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double oob_r_squared() const {
+    auto ret = datamunge_im.RandomForestRegressor_oob_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double oob_rmse() const {
+    auto ret = datamunge_im.RandomForestRegressor_oob_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.RandomForestRegressor_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.RandomForestRegressor_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.RandomForestRegressor_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.RandomForestRegressor_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.RandomForestRegressor_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class ElasticNet {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_ElasticNet(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, double alpha, double lambda, size_t n_lambda, size_t cv_folds, bool standardize, ulong seed) {
+    this(datamunge_im.new_ElasticNet__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), alpha, lambda, n_lambda, cv_folds, standardize, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double alpha, double lambda, size_t n_lambda, size_t cv_folds, bool standardize) {
+    this(datamunge_im.new_ElasticNet__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), alpha, lambda, n_lambda, cv_folds, standardize), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double alpha, double lambda, size_t n_lambda, size_t cv_folds) {
+    this(datamunge_im.new_ElasticNet__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), alpha, lambda, n_lambda, cv_folds), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double alpha, double lambda, size_t n_lambda) {
+    this(datamunge_im.new_ElasticNet__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), alpha, lambda, n_lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double alpha, double lambda) {
+    this(datamunge_im.new_ElasticNet__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), alpha, lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double alpha) {
+    this(datamunge_im.new_ElasticNet__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), alpha), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_ElasticNet__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string formula_text() const {
+    string ret = std.conv.to!string(datamunge_im.ElasticNet_formula_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public bool has_intercept() const {
+    bool ret = datamunge_im.ElasticNet_has_intercept(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.ElasticNet_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.ElasticNet_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double alpha() const {
+    auto ret = datamunge_im.ElasticNet_alpha(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double lambda() const {
+    auto ret = datamunge_im.ElasticNet_lambda(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public bool lambda_was_selected() const {
+    bool ret = datamunge_im.ElasticNet_lambda_was_selected(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public DVector lambda_path() const {
+    DVector ret = new DVector(datamunge_im.ElasticNet_lambda_path(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector cv_mean_squared_error() const {
+    DVector ret = new DVector(datamunge_im.ElasticNet_cv_mean_squared_error(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector coefficients() const {
+    DVector ret = new DVector(datamunge_im.ElasticNet_coefficients(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double intercept() const {
+    auto ret = datamunge_im.ElasticNet_intercept(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t non_zero_coefficients() const {
+    auto ret = datamunge_im.ElasticNet_non_zero_coefficients(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.ElasticNet_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector residuals() const {
+    DVector ret = new DVector(datamunge_im.ElasticNet_residuals(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.ElasticNet_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.ElasticNet_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.ElasticNet_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.ElasticNet_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.ElasticNet_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_coefficient_path() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ElasticNet_plot_coefficient_path(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_cv_curve() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ElasticNet_plot_cv_curve(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ElasticNet_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ElasticNet_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class Ridge {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Ridge(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda, size_t cv_folds, bool standardize, ulong seed) {
+    this(datamunge_im.new_Ridge__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda, cv_folds, standardize, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda, size_t cv_folds, bool standardize) {
+    this(datamunge_im.new_Ridge__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda, cv_folds, standardize), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda, size_t cv_folds) {
+    this(datamunge_im.new_Ridge__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda, cv_folds), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda) {
+    this(datamunge_im.new_Ridge__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda) {
+    this(datamunge_im.new_Ridge__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_Ridge__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string formula_text() const {
+    string ret = std.conv.to!string(datamunge_im.Ridge_formula_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public bool has_intercept() const {
+    bool ret = datamunge_im.Ridge_has_intercept(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.Ridge_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.Ridge_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double lambda() const {
+    auto ret = datamunge_im.Ridge_lambda(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public bool lambda_was_selected() const {
+    bool ret = datamunge_im.Ridge_lambda_was_selected(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public DVector lambda_path() const {
+    DVector ret = new DVector(datamunge_im.Ridge_lambda_path(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector cv_mean_squared_error() const {
+    DVector ret = new DVector(datamunge_im.Ridge_cv_mean_squared_error(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector coefficients() const {
+    DVector ret = new DVector(datamunge_im.Ridge_coefficients(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double intercept() const {
+    auto ret = datamunge_im.Ridge_intercept(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.Ridge_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector residuals() const {
+    DVector ret = new DVector(datamunge_im.Ridge_residuals(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.Ridge_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.Ridge_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.Ridge_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.Ridge_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.Ridge_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_coefficient_path() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Ridge_plot_coefficient_path(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_cv_curve() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Ridge_plot_cv_curve(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Ridge_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Ridge_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class Lasso {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Lasso(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda, size_t cv_folds, bool standardize, ulong seed) {
+    this(datamunge_im.new_Lasso__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda, cv_folds, standardize, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda, size_t cv_folds, bool standardize) {
+    this(datamunge_im.new_Lasso__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda, cv_folds, standardize), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda, size_t cv_folds) {
+    this(datamunge_im.new_Lasso__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda, cv_folds), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda, size_t n_lambda) {
+    this(datamunge_im.new_Lasso__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda, n_lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double lambda) {
+    this(datamunge_im.new_Lasso__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_Lasso__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string formula_text() const {
+    string ret = std.conv.to!string(datamunge_im.Lasso_formula_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public bool has_intercept() const {
+    bool ret = datamunge_im.Lasso_has_intercept(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.Lasso_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.Lasso_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double lambda() const {
+    auto ret = datamunge_im.Lasso_lambda(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public bool lambda_was_selected() const {
+    bool ret = datamunge_im.Lasso_lambda_was_selected(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public DVector lambda_path() const {
+    DVector ret = new DVector(datamunge_im.Lasso_lambda_path(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector cv_mean_squared_error() const {
+    DVector ret = new DVector(datamunge_im.Lasso_cv_mean_squared_error(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector coefficients() const {
+    DVector ret = new DVector(datamunge_im.Lasso_coefficients(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double intercept() const {
+    auto ret = datamunge_im.Lasso_intercept(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t non_zero_coefficients() const {
+    auto ret = datamunge_im.Lasso_non_zero_coefficients(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.Lasso_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector residuals() const {
+    DVector ret = new DVector(datamunge_im.Lasso_residuals(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.Lasso_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.Lasso_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.Lasso_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.Lasso_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.Lasso_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_coefficient_path() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Lasso_plot_coefficient_path(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_cv_curve() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Lasso_plot_cv_curve(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Lasso_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.Lasso_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class KNNClassifier {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_KNNClassifier(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t k, string metric, bool weighted, bool standardize) {
+    this(datamunge_im.new_KNNClassifier__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k, (metric ? std.string.toStringz(metric) : null), weighted, standardize), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t k, string metric, bool weighted) {
+    this(datamunge_im.new_KNNClassifier__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k, (metric ? std.string.toStringz(metric) : null), weighted), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t k, string metric) {
+    this(datamunge_im.new_KNNClassifier__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t k) {
+    this(datamunge_im.new_KNNClassifier__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_KNNClassifier__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.KNNClassifier_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.KNNClassifier_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.KNNClassifier_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t k() const {
+    auto ret = datamunge_im.KNNClassifier_k(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.KNNClassifier_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.KNNClassifier_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.KNNClassifier_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.KNNClassifier_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.KNNClassifier_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.KNNClassifier_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KNNClassifier_plot_classification(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KNNClassifier_plot_decision_regions__SWIG_0(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KNNClassifier_plot_decision_regions__SWIG_1(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class KNNRegressor {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_KNNRegressor(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t k, string metric, bool weighted, bool standardize) {
+    this(datamunge_im.new_KNNRegressor__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k, (metric ? std.string.toStringz(metric) : null), weighted, standardize), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t k, string metric, bool weighted) {
+    this(datamunge_im.new_KNNRegressor__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k, (metric ? std.string.toStringz(metric) : null), weighted), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t k, string metric) {
+    this(datamunge_im.new_KNNRegressor__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t k) {
+    this(datamunge_im.new_KNNRegressor__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), k), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_KNNRegressor__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.KNNRegressor_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.KNNRegressor_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t k() const {
+    auto ret = datamunge_im.KNNRegressor_k(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.KNNRegressor_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.KNNRegressor_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.KNNRegressor_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.KNNRegressor_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.KNNRegressor_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.KNNRegressor_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KNNRegressor_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KNNRegressor_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class KMeans {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_KMeans(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters, size_t max_iterations, size_t n_init, double tolerance, size_t seed) {
+    this(datamunge_im.new_KMeans__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters, max_iterations, n_init, tolerance, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters, size_t max_iterations, size_t n_init, double tolerance) {
+    this(datamunge_im.new_KMeans__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters, max_iterations, n_init, tolerance), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters, size_t max_iterations, size_t n_init) {
+    this(datamunge_im.new_KMeans__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters, max_iterations, n_init), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters, size_t max_iterations) {
+    this(datamunge_im.new_KMeans__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters) {
+    this(datamunge_im.new_KMeans__SWIG_4(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_KMeans__SWIG_5(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters, size_t max_iterations, size_t n_init, double tolerance, size_t seed) {
+    this(datamunge_im.new_KMeans__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters, max_iterations, n_init, tolerance, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters, size_t max_iterations, size_t n_init, double tolerance) {
+    this(datamunge_im.new_KMeans__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters, max_iterations, n_init, tolerance), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters, size_t max_iterations, size_t n_init) {
+    this(datamunge_im.new_KMeans__SWIG_8(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters, max_iterations, n_init), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters, size_t max_iterations) {
+    this(datamunge_im.new_KMeans__SWIG_9(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters, max_iterations), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters) {
+    this(datamunge_im.new_KMeans__SWIG_10(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_KMeans__SWIG_11(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.KMeans_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t n_clusters() const {
+    auto ret = datamunge_im.KMeans_n_clusters(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.KMeans_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t iterations_used() const {
+    auto ret = datamunge_im.KMeans_iterations_used(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector labels() const {
+    SizeVector ret = new SizeVector(datamunge_im.KMeans_labels(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double inertia() const {
+    auto ret = datamunge_im.KMeans_inertia(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector cluster_center(size_t cluster_index) const {
+    DVector ret = new DVector(datamunge_im.KMeans_cluster_center(cast(void*)swigCPtr, cluster_index), true);
+    return ret;
+  }
+
+  public SizeVector predict(DataFrame newdata) const {
+    SizeVector ret = new SizeVector(datamunge_im.KMeans_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.KMeans_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.KMeans_print_summary(cast(void*)swigCPtr);
+  }
+}
+
+class AgglomerativeClustering {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_AgglomerativeClustering(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters, string linkage, string metric) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters, (linkage ? std.string.toStringz(linkage) : null), (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters, string linkage) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters, (linkage ? std.string.toStringz(linkage) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, size_t n_clusters) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), n_clusters), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters, string linkage, string metric) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_4(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters, (linkage ? std.string.toStringz(linkage) : null), (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters, string linkage) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_5(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters, (linkage ? std.string.toStringz(linkage) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, size_t n_clusters) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), n_clusters), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_AgglomerativeClustering__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.AgglomerativeClustering_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.AgglomerativeClustering_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector labels() const {
+    SizeVector ret = new SizeVector(datamunge_im.AgglomerativeClustering_labels(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SizeVector cut(size_t n_clusters) const {
+    SizeVector ret = new SizeVector(datamunge_im.AgglomerativeClustering_cut(cast(void*)swigCPtr, n_clusters), true);
+    return ret;
+  }
+
+  public size_t num_merges() const {
+    auto ret = datamunge_im.AgglomerativeClustering_num_merges(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t merge_cluster_a(size_t merge_index) const {
+    auto ret = datamunge_im.AgglomerativeClustering_merge_cluster_a(cast(void*)swigCPtr, merge_index);
+    return ret;
+  }
+
+  public size_t merge_cluster_b(size_t merge_index) const {
+    auto ret = datamunge_im.AgglomerativeClustering_merge_cluster_b(cast(void*)swigCPtr, merge_index);
+    return ret;
+  }
+
+  public double merge_distance(size_t merge_index) const {
+    auto ret = datamunge_im.AgglomerativeClustering_merge_distance(cast(void*)swigCPtr, merge_index);
+    return ret;
+  }
+
+  public size_t merge_size(size_t merge_index) const {
+    auto ret = datamunge_im.AgglomerativeClustering_merge_size(cast(void*)swigCPtr, merge_index);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.AgglomerativeClustering_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.AgglomerativeClustering_print_summary(cast(void*)swigCPtr);
+  }
+}
+
+class DBSCAN {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DBSCAN(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, SVector feature_columns, double eps, size_t min_samples, string metric) {
+    this(datamunge_im.new_DBSCAN__SWIG_0(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), eps, min_samples, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, double eps, size_t min_samples) {
+    this(datamunge_im.new_DBSCAN__SWIG_1(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), eps, min_samples), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns, double eps) {
+    this(datamunge_im.new_DBSCAN__SWIG_2(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns), eps), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, SVector feature_columns) {
+    this(datamunge_im.new_DBSCAN__SWIG_3(DataFrame.swigGetCPtr(data), SVector.swigGetCPtr(feature_columns)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, double eps, size_t min_samples, string metric) {
+    this(datamunge_im.new_DBSCAN__SWIG_4(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), eps, min_samples, (metric ? std.string.toStringz(metric) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, double eps, size_t min_samples) {
+    this(datamunge_im.new_DBSCAN__SWIG_5(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), eps, min_samples), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns, double eps) {
+    this(datamunge_im.new_DBSCAN__SWIG_6(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null), eps), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string encoded_feature_columns) {
+    this(datamunge_im.new_DBSCAN__SWIG_7(DataFrame.swigGetCPtr(data), (encoded_feature_columns ? std.string.toStringz(encoded_feature_columns) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector feature_names() const {
+    SVector ret = new SVector(datamunge_im.DBSCAN_feature_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.DBSCAN_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_clusters() const {
+    auto ret = datamunge_im.DBSCAN_n_clusters(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_noise() const {
+    auto ret = datamunge_im.DBSCAN_n_noise(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public IVector labels() const {
+    IVector ret = new IVector(datamunge_im.DBSCAN_labels(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.DBSCAN_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.DBSCAN_print_summary(cast(void*)swigCPtr);
+  }
+}
+
+class GBMClassifier {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GBMClassifier(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, double subsample, ulong seed) {
+    this(datamunge_im.new_GBMClassifier__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, double subsample) {
+    this(datamunge_im.new_GBMClassifier__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf) {
+    this(datamunge_im.new_GBMClassifier__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split) {
+    this(datamunge_im.new_GBMClassifier__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth) {
+    this(datamunge_im.new_GBMClassifier__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate) {
+    this(datamunge_im.new_GBMClassifier__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees) {
+    this(datamunge_im.new_GBMClassifier__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_GBMClassifier__SWIG_7(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.GBMClassifier_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.GBMClassifier_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.GBMClassifier_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_trees() const {
+    auto ret = datamunge_im.GBMClassifier_n_trees(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.GBMClassifier_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.GBMClassifier_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.GBMClassifier_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public DVector training_deviance() const {
+    DVector ret = new DVector(datamunge_im.GBMClassifier_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.GBMClassifier_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.GBMClassifier_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.GBMClassifier_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.GBMClassifier_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GBMClassifier_plot_classification(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GBMClassifier_plot_decision_regions__SWIG_0(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GBMClassifier_plot_decision_regions__SWIG_1(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_training_deviance() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GBMClassifier_plot_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class GBMRegressor {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GBMRegressor(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, double subsample, ulong seed) {
+    this(datamunge_im.new_GBMRegressor__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf, double subsample) {
+    this(datamunge_im.new_GBMRegressor__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split, size_t min_samples_leaf) {
+    this(datamunge_im.new_GBMRegressor__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, size_t min_samples_split) {
+    this(datamunge_im.new_GBMRegressor__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, min_samples_split), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth) {
+    this(datamunge_im.new_GBMRegressor__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate) {
+    this(datamunge_im.new_GBMRegressor__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees) {
+    this(datamunge_im.new_GBMRegressor__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_GBMRegressor__SWIG_7(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.GBMRegressor_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.GBMRegressor_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_trees() const {
+    auto ret = datamunge_im.GBMRegressor_n_trees(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.GBMRegressor_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.GBMRegressor_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.GBMRegressor_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.GBMRegressor_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector training_deviance() const {
+    DVector ret = new DVector(datamunge_im.GBMRegressor_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.GBMRegressor_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.GBMRegressor_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.GBMRegressor_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GBMRegressor_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GBMRegressor_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_training_deviance() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GBMRegressor_plot_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class XGBoostClassifier {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_XGBoostClassifier(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf, double subsample, double colsample_bytree, ulong seed) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample, colsample_bytree, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf, double subsample, double colsample_bytree) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample, colsample_bytree), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf, double subsample) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_7(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_8(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_9(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_10(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_XGBoostClassifier__SWIG_11(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.XGBoostClassifier_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.XGBoostClassifier_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.XGBoostClassifier_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_trees() const {
+    auto ret = datamunge_im.XGBoostClassifier_n_trees(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.XGBoostClassifier_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.XGBoostClassifier_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.XGBoostClassifier_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public DVector training_deviance() const {
+    DVector ret = new DVector(datamunge_im.XGBoostClassifier_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.XGBoostClassifier_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.XGBoostClassifier_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.XGBoostClassifier_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.XGBoostClassifier_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.XGBoostClassifier_plot_classification(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.XGBoostClassifier_plot_decision_regions__SWIG_0(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.XGBoostClassifier_plot_decision_regions__SWIG_1(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_training_deviance() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.XGBoostClassifier_plot_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class XGBoostRegressor {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_XGBoostRegressor(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf, double subsample, double colsample_bytree, ulong seed) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample, colsample_bytree, seed), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf, double subsample, double colsample_bytree) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample, colsample_bytree), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf, double subsample) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight, size_t min_samples_leaf) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight, min_samples_leaf), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma, double min_child_weight) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma, min_child_weight), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha, double gamma) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha, gamma), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda, double alpha) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_6(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda, alpha), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth, double lambda) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_7(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth, lambda), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate, size_t max_depth) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_8(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate, max_depth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees, double learning_rate) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_9(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees, learning_rate), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, size_t n_trees) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_10(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), n_trees), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_XGBoostRegressor__SWIG_11(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.XGBoostRegressor_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.XGBoostRegressor_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_trees() const {
+    auto ret = datamunge_im.XGBoostRegressor_n_trees(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector feature_importance() const {
+    DVector ret = new DVector(datamunge_im.XGBoostRegressor_feature_importance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.XGBoostRegressor_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.XGBoostRegressor_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.XGBoostRegressor_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector training_deviance() const {
+    DVector ret = new DVector(datamunge_im.XGBoostRegressor_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.XGBoostRegressor_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.XGBoostRegressor_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.XGBoostRegressor_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.XGBoostRegressor_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.XGBoostRegressor_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_training_deviance() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.XGBoostRegressor_plot_training_deviance(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class KernelRegression {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_KernelRegression(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, string kernel, double bandwidth, size_t n_bandwidth, bool standardize) {
+    this(datamunge_im.new_KernelRegression__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), bandwidth, n_bandwidth, standardize), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel, double bandwidth, size_t n_bandwidth) {
+    this(datamunge_im.new_KernelRegression__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), bandwidth, n_bandwidth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel, double bandwidth) {
+    this(datamunge_im.new_KernelRegression__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null), bandwidth), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string kernel) {
+    this(datamunge_im.new_KernelRegression__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (kernel ? std.string.toStringz(kernel) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_KernelRegression__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.KernelRegression_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.KernelRegression_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double bandwidth() const {
+    auto ret = datamunge_im.KernelRegression_bandwidth(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public bool bandwidth_was_selected() const {
+    bool ret = datamunge_im.KernelRegression_bandwidth_was_selected(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public DVector bandwidth_grid() const {
+    DVector ret = new DVector(datamunge_im.KernelRegression_bandwidth_grid(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector cv_mean_squared_error() const {
+    DVector ret = new DVector(datamunge_im.KernelRegression_cv_mean_squared_error(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.KernelRegression_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.KernelRegression_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.KernelRegression_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.KernelRegression_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.KernelRegression_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.KernelRegression_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_fit(DataFrame data, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KernelRegression_plot_fit__SWIG_0(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_fit(DataFrame data) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KernelRegression_plot_fit__SWIG_1(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KernelRegression_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KernelRegression_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_cv_curve() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.KernelRegression_plot_cv_curve(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class GaussianProcessRegression {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GaussianProcessRegression(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, double length_scale, double noise_ratio, size_t n_length_scale_grid, size_t n_noise_grid, bool standardize) {
+    this(datamunge_im.new_GaussianProcessRegression__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), length_scale, noise_ratio, n_length_scale_grid, n_noise_grid, standardize), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double length_scale, double noise_ratio, size_t n_length_scale_grid, size_t n_noise_grid) {
+    this(datamunge_im.new_GaussianProcessRegression__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), length_scale, noise_ratio, n_length_scale_grid, n_noise_grid), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double length_scale, double noise_ratio, size_t n_length_scale_grid) {
+    this(datamunge_im.new_GaussianProcessRegression__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), length_scale, noise_ratio, n_length_scale_grid), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double length_scale, double noise_ratio) {
+    this(datamunge_im.new_GaussianProcessRegression__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), length_scale, noise_ratio), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double length_scale) {
+    this(datamunge_im.new_GaussianProcessRegression__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), length_scale), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_GaussianProcessRegression__SWIG_5(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.GaussianProcessRegression_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.GaussianProcessRegression_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double length_scale() const {
+    auto ret = datamunge_im.GaussianProcessRegression_length_scale(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double signal_variance() const {
+    auto ret = datamunge_im.GaussianProcessRegression_signal_variance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double noise_variance() const {
+    auto ret = datamunge_im.GaussianProcessRegression_noise_variance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double log_marginal_likelihood() const {
+    auto ret = datamunge_im.GaussianProcessRegression_log_marginal_likelihood(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public bool length_scale_was_selected() const {
+    bool ret = datamunge_im.GaussianProcessRegression_length_scale_was_selected(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public bool noise_ratio_was_selected() const {
+    bool ret = datamunge_im.GaussianProcessRegression_noise_ratio_was_selected(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public DVector length_scale_grid() const {
+    DVector ret = new DVector(datamunge_im.GaussianProcessRegression_length_scale_grid(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector length_scale_profile_log_likelihood() const {
+    DVector ret = new DVector(datamunge_im.GaussianProcessRegression_length_scale_profile_log_likelihood(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.GaussianProcessRegression_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double r_squared() const {
+    auto ret = datamunge_im.GaussianProcessRegression_r_squared(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double rmse() const {
+    auto ret = datamunge_im.GaussianProcessRegression_rmse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.GaussianProcessRegression_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.GaussianProcessRegression_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.GaussianProcessRegression_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata, string interval_kind, double level) const {
+    void* cPtr = datamunge_im.GaussianProcessRegression_predict_frame__SWIG_0(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata), (interval_kind ? std.string.toStringz(interval_kind) : null), level);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata, string interval_kind) const {
+    void* cPtr = datamunge_im.GaussianProcessRegression_predict_frame__SWIG_1(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata), (interval_kind ? std.string.toStringz(interval_kind) : null));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.GaussianProcessRegression_predict_frame__SWIG_2(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_fit(DataFrame data, size_t grid_resolution, double level) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GaussianProcessRegression_plot_fit__SWIG_0(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), grid_resolution, level), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_fit(DataFrame data, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GaussianProcessRegression_plot_fit__SWIG_1(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_fit(DataFrame data) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GaussianProcessRegression_plot_fit__SWIG_2(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_predicted_vs_actual() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GaussianProcessRegression_plot_predicted_vs_actual(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GaussianProcessRegression_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_length_scale_profile() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GaussianProcessRegression_plot_length_scale_profile(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class NaiveBayesClassifier {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_NaiveBayesClassifier(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, double laplace_smoothing, double var_smoothing) {
+    this(datamunge_im.new_NaiveBayesClassifier__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), laplace_smoothing, var_smoothing), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, double laplace_smoothing) {
+    this(datamunge_im.new_NaiveBayesClassifier__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), laplace_smoothing), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_NaiveBayesClassifier__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public SVector classes() const {
+    SVector ret = new SVector(datamunge_im.NaiveBayesClassifier_classes(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector predictor_names() const {
+    SVector ret = new SVector(datamunge_im.NaiveBayesClassifier_predictor_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.NaiveBayesClassifier_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector class_priors() const {
+    DVector ret = new DVector(datamunge_im.NaiveBayesClassifier_class_priors(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double training_accuracy() const {
+    auto ret = datamunge_im.NaiveBayesClassifier_training_accuracy(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DataFrame confusion_matrix() const {
+    void* cPtr = datamunge_im.NaiveBayesClassifier_confusion_matrix(cast(void*)swigCPtr);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.NaiveBayesClassifier_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.NaiveBayesClassifier_print_summary(cast(void*)swigCPtr);
+  }
+
+  public SVector predict(DataFrame newdata) const {
+    SVector ret = new SVector(datamunge_im.NaiveBayesClassifier_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.NaiveBayesClassifier_predict_frame(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_classification(DataFrame data, string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.NaiveBayesClassifier_plot_classification(cast(void*)swigCPtr, DataFrame.swigGetCPtr(data), (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature, size_t grid_resolution) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.NaiveBayesClassifier_plot_decision_regions__SWIG_0(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null), grid_resolution), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_decision_regions(string x_feature, string y_feature) const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.NaiveBayesClassifier_plot_decision_regions__SWIG_1(cast(void*)swigCPtr, (x_feature ? std.string.toStringz(x_feature) : null), (y_feature ? std.string.toStringz(y_feature) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class GLM {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GLM(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DataFrame data, string formula, string family, string weights_column, size_t max_iter, double tol) {
+    this(datamunge_im.new_GLM__SWIG_0(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), (weights_column ? std.string.toStringz(weights_column) : null), max_iter, tol), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family, string weights_column, size_t max_iter) {
+    this(datamunge_im.new_GLM__SWIG_1(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), (weights_column ? std.string.toStringz(weights_column) : null), max_iter), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family, string weights_column) {
+    this(datamunge_im.new_GLM__SWIG_2(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null), (weights_column ? std.string.toStringz(weights_column) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula, string family) {
+    this(datamunge_im.new_GLM__SWIG_3(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null), (family ? std.string.toStringz(family) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DataFrame data, string formula) {
+    this(datamunge_im.new_GLM__SWIG_4(DataFrame.swigGetCPtr(data), (formula ? std.string.toStringz(formula) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string formula_text() const {
+    string ret = std.conv.to!string(datamunge_im.GLM_formula_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string family() const {
+    string ret = std.conv.to!string(datamunge_im.GLM_family(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public bool has_intercept() const {
+    bool ret = datamunge_im.GLM_has_intercept(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.GLM_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t rank() const {
+    auto ret = datamunge_im.GLM_rank(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t degrees_of_freedom() const {
+    auto ret = datamunge_im.GLM_degrees_of_freedom(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector coefficients() const {
+    DVector ret = new DVector(datamunge_im.GLM_coefficients(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public SVector coefficient_names() const {
+    SVector ret = new SVector(datamunge_im.GLM_coefficient_names(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.GLM_fitted_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector linear_predictors() const {
+    DVector ret = new DVector(datamunge_im.GLM_linear_predictors(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector residuals() const {
+    DVector ret = new DVector(datamunge_im.GLM_residuals(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector pearson_residuals() const {
+    DVector ret = new DVector(datamunge_im.GLM_pearson_residuals(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector standardized_residuals() const {
+    DVector ret = new DVector(datamunge_im.GLM_standardized_residuals(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector leverage() const {
+    DVector ret = new DVector(datamunge_im.GLM_leverage(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector standard_errors() const {
+    DVector ret = new DVector(datamunge_im.GLM_standard_errors(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector test_statistics() const {
+    DVector ret = new DVector(datamunge_im.GLM_test_statistics(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector p_values() const {
+    DVector ret = new DVector(datamunge_im.GLM_p_values(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public double deviance() const {
+    auto ret = datamunge_im.GLM_deviance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double null_deviance() const {
+    auto ret = datamunge_im.GLM_null_deviance(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double dispersion() const {
+    auto ret = datamunge_im.GLM_dispersion(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double aic() const {
+    auto ret = datamunge_im.GLM_aic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector confidence_interval_lower(double level) const {
+    DVector ret = new DVector(datamunge_im.GLM_confidence_interval_lower__SWIG_0(cast(void*)swigCPtr, level), true);
+    return ret;
+  }
+
+  public DVector confidence_interval_lower() const {
+    DVector ret = new DVector(datamunge_im.GLM_confidence_interval_lower__SWIG_1(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public DVector confidence_interval_upper(double level) const {
+    DVector ret = new DVector(datamunge_im.GLM_confidence_interval_upper__SWIG_0(cast(void*)swigCPtr, level), true);
+    return ret;
+  }
+
+  public DVector confidence_interval_upper() const {
+    DVector ret = new DVector(datamunge_im.GLM_confidence_interval_upper__SWIG_1(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public string summary() const {
+    string ret = std.conv.to!string(datamunge_im.GLM_summary(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public void print_summary() const {
+    datamunge_im.GLM_print_summary(cast(void*)swigCPtr);
+  }
+
+  public DVector predict(DataFrame newdata) const {
+    DVector ret = new DVector(datamunge_im.GLM_predict(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata, string interval_kind, double level) const {
+    void* cPtr = datamunge_im.GLM_predict_frame__SWIG_0(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata), (interval_kind ? std.string.toStringz(interval_kind) : null), level);
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata, string interval_kind) const {
+    void* cPtr = datamunge_im.GLM_predict_frame__SWIG_1(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata), (interval_kind ? std.string.toStringz(interval_kind) : null));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DataFrame predict_frame(DataFrame newdata) const {
+    void* cPtr = datamunge_im.GLM_predict_frame__SWIG_2(cast(void*)swigCPtr, DataFrame.swigGetCPtr(newdata));
+    DataFrame ret = (cPtr is null) ? null : new DataFrame(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_fitted() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GLM_plot_residuals_vs_fitted(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_normal_qq() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GLM_plot_normal_qq(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_scale_location() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GLM_plot_scale_location(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public ScatterPlot plot_residuals_vs_leverage() const {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.GLM_plot_residuals_vs_leverage(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public void save_diagnostic_plots(string path_prefix) const {
+    datamunge_im.GLM_save_diagnostic_plots(cast(void*)swigCPtr, (path_prefix ? std.string.toStringz(path_prefix) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+}
+
+class Tensor {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Tensor(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(SizeVector shape, string dtype) {
+    this(datamunge_im.new_Tensor__SWIG_0(SizeVector.swigGetCPtr(shape), (dtype ? std.string.toStringz(dtype) : null)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(SizeVector shape) {
+    this(datamunge_im.new_Tensor__SWIG_1(SizeVector.swigGetCPtr(shape)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public static Tensor zeros(SizeVector shape) {
+    void* cPtr = datamunge_im.Tensor_zeros(SizeVector.swigGetCPtr(shape));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor ones(SizeVector shape) {
+    void* cPtr = datamunge_im.Tensor_ones(SizeVector.swigGetCPtr(shape));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor full(SizeVector shape, double value) {
+    void* cPtr = datamunge_im.Tensor_full(SizeVector.swigGetCPtr(shape), value);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor from_values(SizeVector shape, DVector values) {
+    void* cPtr = datamunge_im.Tensor_from_values(SizeVector.swigGetCPtr(shape), DVector.swigGetCPtr(values));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor from_bool_values(SizeVector shape, IVector values) {
+    void* cPtr = datamunge_im.Tensor_from_bool_values(SizeVector.swigGetCPtr(shape), IVector.swigGetCPtr(values));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor from_string_values(SizeVector shape, SVector values) {
+    void* cPtr = datamunge_im.Tensor_from_string_values(SizeVector.swigGetCPtr(shape), SVector.swigGetCPtr(values));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor arange(double start, double stop, double step) {
+    void* cPtr = datamunge_im.Tensor_arange__SWIG_0(start, stop, step);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public static Tensor arange(double start, double stop) {
+    void* cPtr = datamunge_im.Tensor_arange__SWIG_1(start, stop);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public static Tensor eye(size_t n) {
+    void* cPtr = datamunge_im.Tensor_eye(n);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public size_t ndim() const {
+    auto ret = datamunge_im.Tensor_ndim(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public SizeVector shape() const {
+    SizeVector ret = new SizeVector(datamunge_im.Tensor_shape(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public size_t size() const {
+    auto ret = datamunge_im.Tensor_size(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string dtype_name() const {
+    string ret = std.conv.to!string(datamunge_im.Tensor_dtype_name(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public double at(SizeVector index) const {
+    auto ret = datamunge_im.Tensor_at(cast(void*)swigCPtr, SizeVector.swigGetCPtr(index));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void set(SizeVector index, double value) {
+    datamunge_im.Tensor_set(cast(void*)swigCPtr, SizeVector.swigGetCPtr(index), value);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string string_at(SizeVector index) const {
+    string ret = std.conv.to!string(datamunge_im.Tensor_string_at(cast(void*)swigCPtr, SizeVector.swigGetCPtr(index)));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void set_string(SizeVector index, string value) {
+    datamunge_im.Tensor_set_string(cast(void*)swigCPtr, SizeVector.swigGetCPtr(index), (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public double at_flat(size_t i) const {
+    auto ret = datamunge_im.Tensor_at_flat(cast(void*)swigCPtr, i);
+    return ret;
+  }
+
+  public void set_flat(size_t i, double value) {
+    datamunge_im.Tensor_set_flat(cast(void*)swigCPtr, i, value);
+  }
+
+  public string string_at_flat(size_t i) const {
+    string ret = std.conv.to!string(datamunge_im.Tensor_string_at_flat(cast(void*)swigCPtr, i));
+    return ret;
+  }
+
+  public void set_string_flat(size_t i, string value) {
+    datamunge_im.Tensor_set_string_flat(cast(void*)swigCPtr, i, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public Tensor reshape(SizeVector new_shape) const {
+    void* cPtr = datamunge_im.Tensor_reshape(cast(void*)swigCPtr, SizeVector.swigGetCPtr(new_shape));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor flatten() const {
+    void* cPtr = datamunge_im.Tensor_flatten(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor transpose(SizeVector permutation) const {
+    void* cPtr = datamunge_im.Tensor_transpose__SWIG_0(cast(void*)swigCPtr, SizeVector.swigGetCPtr(permutation));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor transpose() const {
+    void* cPtr = datamunge_im.Tensor_transpose__SWIG_1(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor squeeze() const {
+    void* cPtr = datamunge_im.Tensor_squeeze(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor squeeze_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_squeeze_axis(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor expand_dims(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_expand_dims(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor slice(size_t axis, size_t start, size_t stop, size_t step) const {
+    void* cPtr = datamunge_im.Tensor_slice__SWIG_0(cast(void*)swigCPtr, axis, start, stop, step);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor slice(size_t axis, size_t start, size_t stop) const {
+    void* cPtr = datamunge_im.Tensor_slice__SWIG_1(cast(void*)swigCPtr, axis, start, stop);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor index_select(size_t axis, SizeVector indices) const {
+    void* cPtr = datamunge_im.Tensor_index_select(cast(void*)swigCPtr, axis, SizeVector.swigGetCPtr(indices));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor concatenate2(Tensor a, Tensor b, size_t axis) {
+    void* cPtr = datamunge_im.Tensor_concatenate2(Tensor.swigGetCPtr(a), Tensor.swigGetCPtr(b), axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public static Tensor stack2(Tensor a, Tensor b, size_t axis) {
+    void* cPtr = datamunge_im.Tensor_stack2(Tensor.swigGetCPtr(a), Tensor.swigGetCPtr(b), axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor add(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_add(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor subtract(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_subtract(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor multiply(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_multiply(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor divide(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_divide(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor power(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_power(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor add_scalar(double scalar) const {
+    void* cPtr = datamunge_im.Tensor_add_scalar(cast(void*)swigCPtr, scalar);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor subtract_scalar(double scalar) const {
+    void* cPtr = datamunge_im.Tensor_subtract_scalar(cast(void*)swigCPtr, scalar);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor multiply_scalar(double scalar) const {
+    void* cPtr = datamunge_im.Tensor_multiply_scalar(cast(void*)swigCPtr, scalar);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor divide_scalar(double scalar) const {
+    void* cPtr = datamunge_im.Tensor_divide_scalar(cast(void*)swigCPtr, scalar);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor power_scalar(double exponent) const {
+    void* cPtr = datamunge_im.Tensor_power_scalar(cast(void*)swigCPtr, exponent);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor negate() const {
+    void* cPtr = datamunge_im.Tensor_negate(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor abs() const {
+    void* cPtr = datamunge_im.Tensor_abs(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor sqrt() const {
+    void* cPtr = datamunge_im.Tensor_sqrt(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor exp() const {
+    void* cPtr = datamunge_im.Tensor_exp(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor log() const {
+    void* cPtr = datamunge_im.Tensor_log(cast(void*)swigCPtr);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor apply(Callback callback) const {
+    void* cPtr = datamunge_im.Tensor_apply(cast(void*)swigCPtr, Callback.swigGetCPtr(callback));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor equal(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_equal(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor not_equal(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_not_equal(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor less(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_less(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor less_equal(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_less_equal(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor greater(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_greater(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor greater_equal(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_greater_equal(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public double sum() const {
+    auto ret = datamunge_im.Tensor_sum(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double mean() const {
+    auto ret = datamunge_im.Tensor_mean(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double max() const {
+    auto ret = datamunge_im.Tensor_max(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double min() const {
+    auto ret = datamunge_im.Tensor_min(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double prod() const {
+    auto ret = datamunge_im.Tensor_prod(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t argmax() const {
+    auto ret = datamunge_im.Tensor_argmax(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t argmin() const {
+    auto ret = datamunge_im.Tensor_argmin(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public bool all() const {
+    bool ret = datamunge_im.Tensor_all(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public bool any() const {
+    bool ret = datamunge_im.Tensor_any(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public Tensor sum_axis(size_t axis, bool keepdims) const {
+    void* cPtr = datamunge_im.Tensor_sum_axis__SWIG_0(cast(void*)swigCPtr, axis, keepdims);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor sum_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_sum_axis__SWIG_1(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor mean_axis(size_t axis, bool keepdims) const {
+    void* cPtr = datamunge_im.Tensor_mean_axis__SWIG_0(cast(void*)swigCPtr, axis, keepdims);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor mean_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_mean_axis__SWIG_1(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor max_axis(size_t axis, bool keepdims) const {
+    void* cPtr = datamunge_im.Tensor_max_axis__SWIG_0(cast(void*)swigCPtr, axis, keepdims);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor max_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_max_axis__SWIG_1(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor min_axis(size_t axis, bool keepdims) const {
+    void* cPtr = datamunge_im.Tensor_min_axis__SWIG_0(cast(void*)swigCPtr, axis, keepdims);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor min_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_min_axis__SWIG_1(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor prod_axis(size_t axis, bool keepdims) const {
+    void* cPtr = datamunge_im.Tensor_prod_axis__SWIG_0(cast(void*)swigCPtr, axis, keepdims);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor prod_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_prod_axis__SWIG_1(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor argmax_axis(size_t axis, bool keepdims) const {
+    void* cPtr = datamunge_im.Tensor_argmax_axis__SWIG_0(cast(void*)swigCPtr, axis, keepdims);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor argmax_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_argmax_axis__SWIG_1(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor argmin_axis(size_t axis, bool keepdims) const {
+    void* cPtr = datamunge_im.Tensor_argmin_axis__SWIG_0(cast(void*)swigCPtr, axis, keepdims);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor argmin_axis(size_t axis) const {
+    void* cPtr = datamunge_im.Tensor_argmin_axis__SWIG_1(cast(void*)swigCPtr, axis);
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor matmul(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_matmul(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public double dot(Tensor other) const {
+    auto ret = datamunge_im.Tensor_dot(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Tensor outer(Tensor other) const {
+    void* cPtr = datamunge_im.Tensor_outer(cast(void*)swigCPtr, Tensor.swigGetCPtr(other));
+    Tensor ret = (cPtr is null) ? null : new Tensor(cPtr, false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public string to_string(size_t max_elements) const {
+    string ret = std.conv.to!string(datamunge_im.Tensor_to_string__SWIG_0(cast(void*)swigCPtr, max_elements));
+    return ret;
+  }
+
+  public string to_string() const {
+    string ret = std.conv.to!string(datamunge_im.Tensor_to_string__SWIG_1(cast(void*)swigCPtr));
+    return ret;
+  }
+}
+
+class Dual {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Dual(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(double value, double derivative) {
+    this(datamunge_im.new_Dual__SWIG_0(value, derivative), true);
+  }
+
+  public this(double value) {
+    this(datamunge_im.new_Dual__SWIG_1(value), true);
+  }
+
+  public double value() const {
+    auto ret = datamunge_im.Dual_value(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double derivative() const {
+    auto ret = datamunge_im.Dual_derivative(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public Dual add(Dual other) const {
+    Dual ret = new Dual(datamunge_im.Dual_add(cast(void*)swigCPtr, Dual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Dual subtract(Dual other) const {
+    Dual ret = new Dual(datamunge_im.Dual_subtract(cast(void*)swigCPtr, Dual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Dual multiply(Dual other) const {
+    Dual ret = new Dual(datamunge_im.Dual_multiply(cast(void*)swigCPtr, Dual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Dual divide(Dual other) const {
+    Dual ret = new Dual(datamunge_im.Dual_divide(cast(void*)swigCPtr, Dual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Dual negate() const {
+    Dual ret = new Dual(datamunge_im.Dual_negate(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual add_scalar(double scalar) const {
+    Dual ret = new Dual(datamunge_im.Dual_add_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Dual subtract_scalar(double scalar) const {
+    Dual ret = new Dual(datamunge_im.Dual_subtract_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Dual multiply_scalar(double scalar) const {
+    Dual ret = new Dual(datamunge_im.Dual_multiply_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Dual divide_scalar(double scalar) const {
+    Dual ret = new Dual(datamunge_im.Dual_divide_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Dual pow(double exponent) const {
+    Dual ret = new Dual(datamunge_im.Dual_pow(cast(void*)swigCPtr, exponent), true);
+    return ret;
+  }
+
+  public Dual exp() const {
+    Dual ret = new Dual(datamunge_im.Dual_exp(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual log() const {
+    Dual ret = new Dual(datamunge_im.Dual_log(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual sqrt() const {
+    Dual ret = new Dual(datamunge_im.Dual_sqrt(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual sin() const {
+    Dual ret = new Dual(datamunge_im.Dual_sin(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual cos() const {
+    Dual ret = new Dual(datamunge_im.Dual_cos(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual tan() const {
+    Dual ret = new Dual(datamunge_im.Dual_tan(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual tanh() const {
+    Dual ret = new Dual(datamunge_im.Dual_tanh(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Dual abs() const {
+    Dual ret = new Dual(datamunge_im.Dual_abs(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class HyperDual {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_HyperDual(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(double value, double eps1, double eps2, double eps1eps2) {
+    this(datamunge_im.new_HyperDual__SWIG_0(value, eps1, eps2, eps1eps2), true);
+  }
+
+  public this(double value, double eps1, double eps2) {
+    this(datamunge_im.new_HyperDual__SWIG_1(value, eps1, eps2), true);
+  }
+
+  public this(double value, double eps1) {
+    this(datamunge_im.new_HyperDual__SWIG_2(value, eps1), true);
+  }
+
+  public this(double value) {
+    this(datamunge_im.new_HyperDual__SWIG_3(value), true);
+  }
+
+  public double value() const {
+    auto ret = datamunge_im.HyperDual_value(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double eps1() const {
+    auto ret = datamunge_im.HyperDual_eps1(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double eps2() const {
+    auto ret = datamunge_im.HyperDual_eps2(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double eps1eps2() const {
+    auto ret = datamunge_im.HyperDual_eps1eps2(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public HyperDual add(HyperDual other) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_add(cast(void*)swigCPtr, HyperDual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public HyperDual subtract(HyperDual other) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_subtract(cast(void*)swigCPtr, HyperDual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public HyperDual multiply(HyperDual other) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_multiply(cast(void*)swigCPtr, HyperDual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public HyperDual divide(HyperDual other) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_divide(cast(void*)swigCPtr, HyperDual.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public HyperDual negate() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_negate(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public HyperDual add_scalar(double scalar) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_add_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public HyperDual subtract_scalar(double scalar) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_subtract_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public HyperDual multiply_scalar(double scalar) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_multiply_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public HyperDual divide_scalar(double scalar) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_divide_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public HyperDual pow(double exponent) const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_pow(cast(void*)swigCPtr, exponent), true);
+    return ret;
+  }
+
+  public HyperDual exp() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_exp(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public HyperDual log() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_log(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public HyperDual sqrt() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_sqrt(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public HyperDual sin() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_sin(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public HyperDual cos() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_cos(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public HyperDual tan() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_tan(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public HyperDual tanh() const {
+    HyperDual ret = new HyperDual(datamunge_im.HyperDual_tanh(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class Tape {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Tape(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this() {
+    this(datamunge_im.new_Tape(), true);
+  }
+
+  public size_t size() const {
+    auto ret = datamunge_im.Tape_size(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double value_at(size_t index) const {
+    auto ret = datamunge_im.Tape_value_at(cast(void*)swigCPtr, index);
+    return ret;
+  }
+
+  public DVector backward(Var output) const {
+    DVector ret = new DVector(datamunge_im.Tape_backward(cast(void*)swigCPtr, Var.swigGetCPtr(output)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class Var {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Var(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(Tape tape, double value) {
+    this(datamunge_im.new_Var(Tape.swigGetCPtr(tape), value), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public double value() const {
+    auto ret = datamunge_im.Var_value(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t index() const {
+    auto ret = datamunge_im.Var_index(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public Var add(Var other) const {
+    Var ret = new Var(datamunge_im.Var_add(cast(void*)swigCPtr, Var.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Var subtract(Var other) const {
+    Var ret = new Var(datamunge_im.Var_subtract(cast(void*)swigCPtr, Var.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Var multiply(Var other) const {
+    Var ret = new Var(datamunge_im.Var_multiply(cast(void*)swigCPtr, Var.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Var divide(Var other) const {
+    Var ret = new Var(datamunge_im.Var_divide(cast(void*)swigCPtr, Var.swigGetCPtr(other)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Var negate() const {
+    Var ret = new Var(datamunge_im.Var_negate(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var add_scalar(double scalar) const {
+    Var ret = new Var(datamunge_im.Var_add_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Var subtract_scalar(double scalar) const {
+    Var ret = new Var(datamunge_im.Var_subtract_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Var multiply_scalar(double scalar) const {
+    Var ret = new Var(datamunge_im.Var_multiply_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Var divide_scalar(double scalar) const {
+    Var ret = new Var(datamunge_im.Var_divide_scalar(cast(void*)swigCPtr, scalar), true);
+    return ret;
+  }
+
+  public Var pow(double exponent) const {
+    Var ret = new Var(datamunge_im.Var_pow(cast(void*)swigCPtr, exponent), true);
+    return ret;
+  }
+
+  public Var exp() const {
+    Var ret = new Var(datamunge_im.Var_exp(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var log() const {
+    Var ret = new Var(datamunge_im.Var_log(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var sqrt() const {
+    Var ret = new Var(datamunge_im.Var_sqrt(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var sin() const {
+    Var ret = new Var(datamunge_im.Var_sin(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var cos() const {
+    Var ret = new Var(datamunge_im.Var_cos(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var tan() const {
+    Var ret = new Var(datamunge_im.Var_tan(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var tanh() const {
+    Var ret = new Var(datamunge_im.Var_tanh(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public Var abs() const {
+    Var ret = new Var(datamunge_im.Var_abs(cast(void*)swigCPtr), true);
+    return ret;
+  }
+}
+
+class RGB {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_RGB(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void r(int value) @property {
+    datamunge_im.RGB_r_set(cast(void*)swigCPtr, value);
+  }
+
+  public int r() @property const {
+    auto ret = datamunge_im.RGB_r_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void g(int value) @property {
+    datamunge_im.RGB_g_set(cast(void*)swigCPtr, value);
+  }
+
+  public int g() @property const {
+    auto ret = datamunge_im.RGB_g_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void b(int value) @property {
+    datamunge_im.RGB_b_set(cast(void*)swigCPtr, value);
+  }
+
+  public int b() @property const {
+    auto ret = datamunge_im.RGB_b_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_RGB(), true);
+  }
+}
+
+class DataSeries {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DataSeries(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  enum Kind {
+    Scatter,
+    Line,
+    Bar
+  }
+
+  public void kind(DataSeries.Kind value) @property {
+    datamunge_im.DataSeries_kind_set(cast(void*)swigCPtr, cast(int)value);
+  }
+
+  public DataSeries.Kind kind() @property const {
+    DataSeries.Kind ret = cast(DataSeries.Kind)datamunge_im.DataSeries_kind_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void x(DVector value) @property {
+    datamunge_im.DataSeries_x_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector x() @property const {
+    void* cPtr = datamunge_im.DataSeries_x_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
+  public void y(DVector value) @property {
+    datamunge_im.DataSeries_y_set(cast(void*)swigCPtr, DVector.swigGetCPtr(value));
+  }
+
+  public DVector y() @property const {
+    void* cPtr = datamunge_im.DataSeries_y_get(cast(void*)swigCPtr);
+    DVector ret = (cPtr is null) ? null : new DVector(cPtr, false);
+    return ret;
+  }
+
+  public void label(string value) @property {
+    datamunge_im.DataSeries_label_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string label() @property const {
+    string ret = std.conv.to!string(datamunge_im.DataSeries_label_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void color(RGB value) @property {
+    datamunge_im.DataSeries_color_set(cast(void*)swigCPtr, RGB.swigGetCPtr(value));
+  }
+
+  public RGB color() @property const {
+    void* cPtr = datamunge_im.DataSeries_color_get(cast(void*)swigCPtr);
+    RGB ret = (cPtr is null) ? null : new RGB(cPtr, false);
+    return ret;
+  }
+
+  public void stroke_width(double value) @property {
+    datamunge_im.DataSeries_stroke_width_set(cast(void*)swigCPtr, value);
+  }
+
+  public double stroke_width() @property const {
+    auto ret = datamunge_im.DataSeries_stroke_width_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void marker_size(double value) @property {
+    datamunge_im.DataSeries_marker_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double marker_size() @property const {
+    auto ret = datamunge_im.DataSeries_marker_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void bar_width(double value) @property {
+    datamunge_im.DataSeries_bar_width_set(cast(void*)swigCPtr, value);
+  }
+
+  public double bar_width() @property const {
+    auto ret = datamunge_im.DataSeries_bar_width_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_DataSeries(), true);
+  }
+}
+
+class Plot {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Plot(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public Plot size(size_t width, size_t height) {
+    Plot ret = new Plot(datamunge_im.Plot_size(cast(void*)swigCPtr, width, height), false);
+    return ret;
+  }
+
+  public Plot title(string value) {
+    Plot ret = new Plot(datamunge_im.Plot_title(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot x_label(string value) {
+    Plot ret = new Plot(datamunge_im.Plot_x_label(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot y_label(string value) {
+    Plot ret = new Plot(datamunge_im.Plot_y_label(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot background(RGB color) {
+    Plot ret = new Plot(datamunge_im.Plot_background(cast(void*)swigCPtr, RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot axis_color(RGB color) {
+    Plot ret = new Plot(datamunge_im.Plot_axis_color(cast(void*)swigCPtr, RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot grid_color(RGB color) {
+    Plot ret = new Plot(datamunge_im.Plot_grid_color(cast(void*)swigCPtr, RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public Plot show_grid(bool enabled) {
+    Plot ret = new Plot(datamunge_im.Plot_show_grid__SWIG_0(cast(void*)swigCPtr, enabled), false);
+    return ret;
+  }
+
+  public Plot show_grid() {
+    Plot ret = new Plot(datamunge_im.Plot_show_grid__SWIG_1(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public Plot x_limits(double min_x, double max_x) {
+    Plot ret = new Plot(datamunge_im.Plot_x_limits(cast(void*)swigCPtr, min_x, max_x), false);
+    return ret;
+  }
+
+  public Plot y_limits(double min_y, double max_y) {
+    Plot ret = new Plot(datamunge_im.Plot_y_limits(cast(void*)swigCPtr, min_y, max_y), false);
+    return ret;
+  }
+
+  public size_t width() const {
+    auto ret = datamunge_im.Plot_width(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t height() const {
+    auto ret = datamunge_im.Plot_height(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public string title_text() const {
+    string ret = std.conv.to!string(datamunge_im.Plot_title_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string x_label_text() const {
+    string ret = std.conv.to!string(datamunge_im.Plot_x_label_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public string y_label_text() const {
+    string ret = std.conv.to!string(datamunge_im.Plot_y_label_text(cast(void*)swigCPtr));
+    return ret;
+  }
+
+  public SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t series() const {
+    SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t ret = new SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t(datamunge_im.Plot_series(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public RGB background_color() const {
+    RGB ret = new RGB(datamunge_im.Plot_background_color(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RGB axes_color() const {
+    RGB ret = new RGB(datamunge_im.Plot_axes_color(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public RGB major_grid_color() const {
+    RGB ret = new RGB(datamunge_im.Plot_major_grid_color(cast(void*)swigCPtr), true);
+    return ret;
+  }
+
+  public bool grid_visible() const {
+    bool ret = datamunge_im.Plot_grid_visible(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public bool has_x_limits() const {
+    bool ret = datamunge_im.Plot_has_x_limits(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public bool has_y_limits() const {
+    bool ret = datamunge_im.Plot_has_y_limits(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public double x_min() const {
+    auto ret = datamunge_im.Plot_x_min(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double x_max() const {
+    auto ret = datamunge_im.Plot_x_max(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double y_min() const {
+    auto ret = datamunge_im.Plot_y_min(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double y_max() const {
+    auto ret = datamunge_im.Plot_y_max(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void save(string path) const {
+    datamunge_im.Plot_save(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void save_svg(string path) const {
+    datamunge_im.Plot_save_svg(cast(void*)swigCPtr, (path ? std.string.toStringz(path) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void view(string title_hint) const {
+    datamunge_im.Plot_view__SWIG_0(cast(void*)swigCPtr, (title_hint ? std.string.toStringz(title_hint) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void view() const {
+    datamunge_im.Plot_view__SWIG_1(cast(void*)swigCPtr);
+  }
+
+  public void show(string title_hint) const {
+    datamunge_im.Plot_show__SWIG_0(cast(void*)swigCPtr, (title_hint ? std.string.toStringz(title_hint) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public void show() const {
+    datamunge_im.Plot_show__SWIG_1(cast(void*)swigCPtr);
+  }
+
+  public this() {
+    this(datamunge_im.new_Plot(), true);
+  }
+}
+
+class ScatterPlot : Plot {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool ownCObject) {
+    super(datamunge_im.ScatterPlot_Upcast(cObject), ownCObject);
+    swigCPtr = cObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public override void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_ScatterPlot(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+        super.dispose();
+      }
+    }
+  }
+
+  public static ScatterPlot create() {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_create(), true);
+    return ret;
+  }
+
+  public ScatterPlot points(DVector x, DVector y, string label, RGB color, double marker_size) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_points__SWIG_0(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color), marker_size), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot points(DVector x, DVector y, string label, RGB color) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_points__SWIG_1(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot points(DVector x, DVector y, string label) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_points__SWIG_2(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot points(DVector x, DVector y) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_points__SWIG_3(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot line(DVector x, DVector y, string label, RGB color, double stroke_width) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_line__SWIG_0(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color), stroke_width), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot line(DVector x, DVector y, string label, RGB color) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_line__SWIG_1(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot line(DVector x, DVector y, string label) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_line__SWIG_2(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public ScatterPlot line(DVector x, DVector y) {
+    ScatterPlot ret = new ScatterPlot(datamunge_im.ScatterPlot_line__SWIG_3(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_ScatterPlot(), true);
+  }
+}
+
+class LinePlot : Plot {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool ownCObject) {
+    super(datamunge_im.LinePlot_Upcast(cObject), ownCObject);
+    swigCPtr = cObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public override void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_LinePlot(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+        super.dispose();
+      }
+    }
+  }
+
+  public static LinePlot create() {
+    LinePlot ret = new LinePlot(datamunge_im.LinePlot_create(), true);
+    return ret;
+  }
+
+  public LinePlot line(DVector x, DVector y, string label, RGB color, double stroke_width) {
+    LinePlot ret = new LinePlot(datamunge_im.LinePlot_line__SWIG_0(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color), stroke_width), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public LinePlot line(DVector x, DVector y, string label, RGB color) {
+    LinePlot ret = new LinePlot(datamunge_im.LinePlot_line__SWIG_1(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public LinePlot line(DVector x, DVector y, string label) {
+    LinePlot ret = new LinePlot(datamunge_im.LinePlot_line__SWIG_2(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public LinePlot line(DVector x, DVector y) {
+    LinePlot ret = new LinePlot(datamunge_im.LinePlot_line__SWIG_3(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_LinePlot(), true);
+  }
+}
+
+class BarChart : Plot {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool ownCObject) {
+    super(datamunge_im.BarChart_Upcast(cObject), ownCObject);
+    swigCPtr = cObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public override void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_BarChart(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+        super.dispose();
+      }
+    }
+  }
+
+  public static BarChart create() {
+    BarChart ret = new BarChart(datamunge_im.BarChart_create(), true);
+    return ret;
+  }
+
+  public BarChart bars(DVector x, DVector y, string label, RGB color, double bar_width) {
+    BarChart ret = new BarChart(datamunge_im.BarChart_bars__SWIG_0(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color), bar_width), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public BarChart bars(DVector x, DVector y, string label, RGB color) {
+    BarChart ret = new BarChart(datamunge_im.BarChart_bars__SWIG_1(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null), RGB.swigGetCPtr(color)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public BarChart bars(DVector x, DVector y, string label) {
+    BarChart ret = new BarChart(datamunge_im.BarChart_bars__SWIG_2(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), (label ? std.string.toStringz(label) : null)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public BarChart bars(DVector x, DVector y) {
+    BarChart ret = new BarChart(datamunge_im.BarChart_bars__SWIG_3(cast(void*)swigCPtr, DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), false);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_BarChart(), true);
+  }
+}
+
+class ARIMAOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_ARIMAOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void p(size_t value) @property {
+    datamunge_im.ARIMAOptions_p_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t p() @property const {
+    auto ret = datamunge_im.ARIMAOptions_p_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void d(size_t value) @property {
+    datamunge_im.ARIMAOptions_d_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t d() @property const {
+    auto ret = datamunge_im.ARIMAOptions_d_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void q(size_t value) @property {
+    datamunge_im.ARIMAOptions_q_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t q() @property const {
+    auto ret = datamunge_im.ARIMAOptions_q_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seasonal_p(size_t value) @property {
+    datamunge_im.ARIMAOptions_seasonal_p_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t seasonal_p() @property const {
+    auto ret = datamunge_im.ARIMAOptions_seasonal_p_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seasonal_d(size_t value) @property {
+    datamunge_im.ARIMAOptions_seasonal_d_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t seasonal_d() @property const {
+    auto ret = datamunge_im.ARIMAOptions_seasonal_d_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seasonal_q(size_t value) @property {
+    datamunge_im.ARIMAOptions_seasonal_q_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t seasonal_q() @property const {
+    auto ret = datamunge_im.ARIMAOptions_seasonal_q_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seasonal_period(size_t value) @property {
+    datamunge_im.ARIMAOptions_seasonal_period_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t seasonal_period() @property const {
+    auto ret = datamunge_im.ARIMAOptions_seasonal_period_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void include_mean(bool value) @property {
+    datamunge_im.ARIMAOptions_include_mean_set(cast(void*)swigCPtr, value);
+  }
+
+  public bool include_mean() @property const {
+    bool ret = datamunge_im.ARIMAOptions_include_mean_get(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public void de_population_size(size_t value) @property {
+    datamunge_im.ARIMAOptions_de_population_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t de_population_size() @property const {
+    auto ret = datamunge_im.ARIMAOptions_de_population_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void de_max_generations(size_t value) @property {
+    datamunge_im.ARIMAOptions_de_max_generations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t de_max_generations() @property const {
+    auto ret = datamunge_im.ARIMAOptions_de_max_generations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void coefficient_bound(double value) @property {
+    datamunge_im.ARIMAOptions_coefficient_bound_set(cast(void*)swigCPtr, value);
+  }
+
+  public double coefficient_bound() @property const {
+    auto ret = datamunge_im.ARIMAOptions_coefficient_bound_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.ARIMAOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.ARIMAOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_ARIMAOptions(), true);
+  }
+}
+
+class ARIMA {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_ARIMA(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DVector y, ARIMAOptions options) {
+    this(datamunge_im.new_ARIMA__SWIG_0(DVector.swigGetCPtr(y), ARIMAOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DVector y) {
+    this(datamunge_im.new_ARIMA__SWIG_1(DVector.swigGetCPtr(y)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public ARIMAOptions options() const {
+    ARIMAOptions ret = new ARIMAOptions(datamunge_im.ARIMA_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector ar_coefficients() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_ar_coefficients(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector ma_coefficients() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_ma_coefficients(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector seasonal_ar_coefficients() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_seasonal_ar_coefficients(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector seasonal_ma_coefficients() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_seasonal_ma_coefficients(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public double mean() const {
+    auto ret = datamunge_im.ARIMA_mean(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.ARIMA_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t n_used() const {
+    auto ret = datamunge_im.ARIMA_n_used(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double sigma2() const {
+    auto ret = datamunge_im.ARIMA_sigma2(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double log_likelihood() const {
+    auto ret = datamunge_im.ARIMA_log_likelihood(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double aic() const {
+    auto ret = datamunge_im.ARIMA_aic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double bic() const {
+    auto ret = datamunge_im.ARIMA_bic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_fitted_values(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector residuals() const {
+    DVector ret = new DVector(datamunge_im.ARIMA_residuals(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector forecast(size_t horizon) const {
+    DVector ret = new DVector(datamunge_im.ARIMA_forecast(cast(void*)swigCPtr, horizon), true);
+    return ret;
+  }
+
+  public DVectorPair forecast_with_intervals(size_t horizon) const {
+    DVectorPair ret = new DVectorPair(datamunge_im.ARIMA_forecast_with_intervals(cast(void*)swigCPtr, horizon), true);
+    return ret;
+  }
+}
+
+enum TrendType {
+  None,
+  Additive,
+  AdditiveDamped
+}
+
+enum SeasonalType {
+  None,
+  Additive,
+  Multiplicative
+}
+
+class ExponentialSmoothingOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_ExponentialSmoothingOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void trend(TrendType value) @property {
+    datamunge_im.ExponentialSmoothingOptions_trend_set(cast(void*)swigCPtr, cast(int)value);
+  }
+
+  public TrendType trend() @property const {
+    TrendType ret = cast(TrendType)datamunge_im.ExponentialSmoothingOptions_trend_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seasonal(SeasonalType value) @property {
+    datamunge_im.ExponentialSmoothingOptions_seasonal_set(cast(void*)swigCPtr, cast(int)value);
+  }
+
+  public SeasonalType seasonal() @property const {
+    SeasonalType ret = cast(SeasonalType)datamunge_im.ExponentialSmoothingOptions_seasonal_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seasonal_period(size_t value) @property {
+    datamunge_im.ExponentialSmoothingOptions_seasonal_period_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t seasonal_period() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_seasonal_period_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void alpha(double value) @property {
+    datamunge_im.ExponentialSmoothingOptions_alpha_set(cast(void*)swigCPtr, value);
+  }
+
+  public double alpha() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_alpha_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void beta(double value) @property {
+    datamunge_im.ExponentialSmoothingOptions_beta_set(cast(void*)swigCPtr, value);
+  }
+
+  public double beta() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_beta_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void gamma(double value) @property {
+    datamunge_im.ExponentialSmoothingOptions_gamma_set(cast(void*)swigCPtr, value);
+  }
+
+  public double gamma() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_gamma_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void phi(double value) @property {
+    datamunge_im.ExponentialSmoothingOptions_phi_set(cast(void*)swigCPtr, value);
+  }
+
+  public double phi() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_phi_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void de_population_size(size_t value) @property {
+    datamunge_im.ExponentialSmoothingOptions_de_population_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t de_population_size() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_de_population_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void de_max_generations(size_t value) @property {
+    datamunge_im.ExponentialSmoothingOptions_de_max_generations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t de_max_generations() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_de_max_generations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.ExponentialSmoothingOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.ExponentialSmoothingOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_ExponentialSmoothingOptions(), true);
+  }
+}
+
+class ExponentialSmoothing {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_ExponentialSmoothing(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DVector y, ExponentialSmoothingOptions options) {
+    this(datamunge_im.new_ExponentialSmoothing__SWIG_0(DVector.swigGetCPtr(y), ExponentialSmoothingOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this(DVector y) {
+    this(datamunge_im.new_ExponentialSmoothing__SWIG_1(DVector.swigGetCPtr(y)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public ExponentialSmoothingOptions options() const {
+    ExponentialSmoothingOptions ret = new ExponentialSmoothingOptions(datamunge_im.ExponentialSmoothing_options(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public double alpha() const {
+    auto ret = datamunge_im.ExponentialSmoothing_alpha(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double beta() const {
+    auto ret = datamunge_im.ExponentialSmoothing_beta(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double gamma() const {
+    auto ret = datamunge_im.ExponentialSmoothing_gamma(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double phi() const {
+    auto ret = datamunge_im.ExponentialSmoothing_phi(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public size_t observations() const {
+    auto ret = datamunge_im.ExponentialSmoothing_observations(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double sse() const {
+    auto ret = datamunge_im.ExponentialSmoothing_sse(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double sigma2() const {
+    auto ret = datamunge_im.ExponentialSmoothing_sigma2(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double log_likelihood() const {
+    auto ret = datamunge_im.ExponentialSmoothing_log_likelihood(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double aic() const {
+    auto ret = datamunge_im.ExponentialSmoothing_aic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double bic() const {
+    auto ret = datamunge_im.ExponentialSmoothing_bic(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public DVector fitted_values() const {
+    DVector ret = new DVector(datamunge_im.ExponentialSmoothing_fitted_values(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector residuals() const {
+    DVector ret = new DVector(datamunge_im.ExponentialSmoothing_residuals(cast(void*)swigCPtr), false);
+    return ret;
+  }
+
+  public DVector forecast(size_t horizon) const {
+    DVector ret = new DVector(datamunge_im.ExponentialSmoothing_forecast(cast(void*)swigCPtr, horizon), true);
+    return ret;
+  }
+}
+
+enum Alternative {
+  TwoSided,
+  Less,
+  Greater
+}
+
+class HypothesisTestResult {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_HypothesisTestResult(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void statistic(double value) @property {
+    datamunge_im.HypothesisTestResult_statistic_set(cast(void*)swigCPtr, value);
+  }
+
+  public double statistic() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_statistic_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void parameter1(double value) @property {
+    datamunge_im.HypothesisTestResult_parameter1_set(cast(void*)swigCPtr, value);
+  }
+
+  public double parameter1() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_parameter1_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void parameter2(double value) @property {
+    datamunge_im.HypothesisTestResult_parameter2_set(cast(void*)swigCPtr, value);
+  }
+
+  public double parameter2() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_parameter2_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void p_value(double value) @property {
+    datamunge_im.HypothesisTestResult_p_value_set(cast(void*)swigCPtr, value);
+  }
+
+  public double p_value() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_p_value_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void estimate1(double value) @property {
+    datamunge_im.HypothesisTestResult_estimate1_set(cast(void*)swigCPtr, value);
+  }
+
+  public double estimate1() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_estimate1_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void estimate2(double value) @property {
+    datamunge_im.HypothesisTestResult_estimate2_set(cast(void*)swigCPtr, value);
+  }
+
+  public double estimate2() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_estimate2_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void conf_int_lower(double value) @property {
+    datamunge_im.HypothesisTestResult_conf_int_lower_set(cast(void*)swigCPtr, value);
+  }
+
+  public double conf_int_lower() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_conf_int_lower_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void conf_int_upper(double value) @property {
+    datamunge_im.HypothesisTestResult_conf_int_upper_set(cast(void*)swigCPtr, value);
+  }
+
+  public double conf_int_upper() @property const {
+    auto ret = datamunge_im.HypothesisTestResult_conf_int_upper_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void has_conf_int(bool value) @property {
+    datamunge_im.HypothesisTestResult_has_conf_int_set(cast(void*)swigCPtr, value);
+  }
+
+  public bool has_conf_int() @property const {
+    bool ret = datamunge_im.HypothesisTestResult_has_conf_int_get(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public void alternative(Alternative value) @property {
+    datamunge_im.HypothesisTestResult_alternative_set(cast(void*)swigCPtr, cast(int)value);
+  }
+
+  public Alternative alternative() @property const {
+    Alternative ret = cast(Alternative)datamunge_im.HypothesisTestResult_alternative_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void method(string value) @property {
+    datamunge_im.HypothesisTestResult_method_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string method() @property const {
+    string ret = std.conv.to!string(datamunge_im.HypothesisTestResult_method_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_HypothesisTestResult(), true);
+  }
+}
+
+HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_one_sample__SWIG_0(DVector.swigGetCPtr(x), mu, cast(int)alternative, conf_level), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_one_sample(DVector x, double mu, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_one_sample__SWIG_1(DVector.swigGetCPtr(x), mu, cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_one_sample(DVector x, double mu) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_one_sample__SWIG_2(DVector.swigGetCPtr(x), mu), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_one_sample(DVector x) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_one_sample__SWIG_3(DVector.swigGetCPtr(x)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_two_sample(DVector x, DVector y, bool equal_variance, Alternative alternative, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_two_sample__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), equal_variance, cast(int)alternative, conf_level), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_two_sample(DVector x, DVector y, bool equal_variance, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_two_sample__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), equal_variance, cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_two_sample(DVector x, DVector y, bool equal_variance) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_two_sample__SWIG_2(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), equal_variance), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_two_sample(DVector x, DVector y) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_two_sample__SWIG_3(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_paired__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative, conf_level), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_paired(DVector x, DVector y, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_paired__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult t_test_paired(DVector x, DVector y) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.t_test_paired__SWIG_2(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.wilcoxon_signed_rank_test__SWIG_0(DVector.swigGetCPtr(x), mu, cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult wilcoxon_signed_rank_test(DVector x, double mu) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.wilcoxon_signed_rank_test__SWIG_1(DVector.swigGetCPtr(x), mu), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult wilcoxon_signed_rank_test(DVector x) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.wilcoxon_signed_rank_test__SWIG_2(DVector.swigGetCPtr(x)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.wilcoxon_rank_sum_test__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult wilcoxon_rank_sum_test(DVector x, DVector y) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.wilcoxon_rank_sum_test__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_normal__SWIG_0(DVector.swigGetCPtr(x), mean, sd, cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean, double sd) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_normal__SWIG_1(DVector.swigGetCPtr(x), mean, sd), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_one_sample_normal(DVector x, double mean) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_normal__SWIG_2(DVector.swigGetCPtr(x), mean), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_one_sample_normal(DVector x) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_one_sample_normal__SWIG_3(DVector.swigGetCPtr(x)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_two_sample(DVector x, DVector y, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_two_sample__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult ks_test_two_sample(DVector x, DVector y) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.ks_test_two_sample__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult chi_squared_goodness_of_fit(DVector observed, DVector expected_probabilities) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.chi_squared_goodness_of_fit__SWIG_0(DVector.swigGetCPtr(observed), DVector.swigGetCPtr(expected_probabilities)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult chi_squared_goodness_of_fit(DVector observed) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.chi_squared_goodness_of_fit__SWIG_1(DVector.swigGetCPtr(observed)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult chi_squared_test_independence(DVector table, size_t nrows, size_t ncols, bool correct) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.chi_squared_test_independence__SWIG_0(DVector.swigGetCPtr(table), nrows, ncols, correct), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult chi_squared_test_independence(DVector table, size_t nrows, size_t ncols) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.chi_squared_test_independence__SWIG_1(DVector.swigGetCPtr(table), nrows, ncols), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult one_way_anova(DVector values, SizeVector group_sizes) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.one_way_anova(DVector.swigGetCPtr(values), SizeVector.swigGetCPtr(group_sizes)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult kruskal_wallis_test(DVector values, SizeVector group_sizes) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.kruskal_wallis_test(DVector.swigGetCPtr(values), SizeVector.swigGetCPtr(group_sizes)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.pearson_correlation_test__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative, conf_level), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult pearson_correlation_test(DVector x, DVector y, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.pearson_correlation_test__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult pearson_correlation_test(DVector x, DVector y) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.pearson_correlation_test__SWIG_2(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult spearman_correlation_test(DVector x, DVector y, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.spearman_correlation_test__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult spearman_correlation_test(DVector x, DVector y) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.spearman_correlation_test__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.f_test_variance__SWIG_0(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative, conf_level), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult f_test_variance(DVector x, DVector y, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.f_test_variance__SWIG_1(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y), cast(int)alternative), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult f_test_variance(DVector x, DVector y) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.f_test_variance__SWIG_2(DVector.swigGetCPtr(x), DVector.swigGetCPtr(y)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+HypothesisTestResult proportion_test_one_sample(size_t successes, size_t n, double p, Alternative alternative, bool correct, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_one_sample__SWIG_0(successes, n, p, cast(int)alternative, correct, conf_level), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_one_sample(size_t successes, size_t n, double p, Alternative alternative, bool correct) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_one_sample__SWIG_1(successes, n, p, cast(int)alternative, correct), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_one_sample(size_t successes, size_t n, double p, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_one_sample__SWIG_2(successes, n, p, cast(int)alternative), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_one_sample(size_t successes, size_t n, double p) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_one_sample__SWIG_3(successes, n, p), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_one_sample(size_t successes, size_t n) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_one_sample__SWIG_4(successes, n), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_two_sample(size_t successes1, size_t n1, size_t successes2, size_t n2, Alternative alternative, bool correct, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_two_sample__SWIG_0(successes1, n1, successes2, n2, cast(int)alternative, correct, conf_level), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_two_sample(size_t successes1, size_t n1, size_t successes2, size_t n2, Alternative alternative, bool correct) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_two_sample__SWIG_1(successes1, n1, successes2, n2, cast(int)alternative, correct), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_two_sample(size_t successes1, size_t n1, size_t successes2, size_t n2, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_two_sample__SWIG_2(successes1, n1, successes2, n2, cast(int)alternative), true);
+  return ret;
+}
+
+HypothesisTestResult proportion_test_two_sample(size_t successes1, size_t n1, size_t successes2, size_t n2) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.proportion_test_two_sample__SWIG_3(successes1, n1, successes2, n2), true);
+  return ret;
+}
+
+HypothesisTestResult binomial_test(size_t successes, size_t n, double p, Alternative alternative, double conf_level) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.binomial_test__SWIG_0(successes, n, p, cast(int)alternative, conf_level), true);
+  return ret;
+}
+
+HypothesisTestResult binomial_test(size_t successes, size_t n, double p, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.binomial_test__SWIG_1(successes, n, p, cast(int)alternative), true);
+  return ret;
+}
+
+HypothesisTestResult binomial_test(size_t successes, size_t n, double p) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.binomial_test__SWIG_2(successes, n, p), true);
+  return ret;
+}
+
+HypothesisTestResult binomial_test(size_t successes, size_t n) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.binomial_test__SWIG_3(successes, n), true);
+  return ret;
+}
+
+HypothesisTestResult fisher_exact_test_2x2(size_t a, size_t b, size_t c, size_t d, Alternative alternative) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.fisher_exact_test_2x2__SWIG_0(a, b, c, d, cast(int)alternative), true);
+  return ret;
+}
+
+HypothesisTestResult fisher_exact_test_2x2(size_t a, size_t b, size_t c, size_t d) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.fisher_exact_test_2x2__SWIG_1(a, b, c, d), true);
+  return ret;
+}
+
+HypothesisTestResult shapiro_francia_test(DVector x) {
+  HypothesisTestResult ret = new HypothesisTestResult(datamunge_im.shapiro_francia_test(DVector.swigGetCPtr(x)), true);
+  if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  return ret;
+}
+
+class ArbitraryFunction {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_ArbitraryFunction(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public double evaluate(DVector coordinates) {
+    auto ret = datamunge_im.ArbitraryFunction_evaluate(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_ArbitraryFunction(), true);
+    swigDirectorConnect();
+  }
+
+  private void swigDirectorConnect() {
+    datamunge_im.SwigDirector_ArbitraryFunction_Callback0 callback0;
+    if (swigIsMethodOverridden!(double delegate(DVector), double function(DVector), evaluate)()) {
+      callback0 = &swigDirectorCallback_ArbitraryFunction_evaluate;
+    }
+
+    datamunge_im.ArbitraryFunction_director_connect(cast(void*)swigCPtr, cast(void*)this, callback0);
+  }
+
+  private bool swigIsMethodOverridden(DelegateType, FunctionType, alias fn)() {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+  private bool swigIsMethodOverriddenConst(DelegateType, FunctionType, alias fn)() inout {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+
+  private static Function SwigNonVirtualAddressOf(Function, alias fn)() {
+    return cast(Function) &fn;
+  }
+}
+
+private extern(C) double swigDirectorCallback_ArbitraryFunction_evaluate(void* dObject, void* coordinates) {
+  return (cast(ArbitraryFunction)dObject).evaluate(new DVector(coordinates, false));
+}
+
+class DifferentiableFunction : ArbitraryFunction {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool ownCObject) {
+    super(datamunge_im.DifferentiableFunction_Upcast(cObject), ownCObject);
+    swigCPtr = cObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public override void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DifferentiableFunction(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+        super.dispose();
+      }
+    }
+  }
+
+  public DVector gradient(DVector coordinates) {
+    DVector ret = new DVector(datamunge_im.DifferentiableFunction_gradient(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_DifferentiableFunction(), true);
+    swigDirectorConnect();
+  }
+
+  private void swigDirectorConnect() {
+    datamunge_im.SwigDirector_DifferentiableFunction_Callback0 callback0;
+    if (swigIsMethodOverridden!(double delegate(DVector), double function(DVector), evaluate)()) {
+      callback0 = &swigDirectorCallback_DifferentiableFunction_evaluate;
+    }
+
+    datamunge_im.SwigDirector_DifferentiableFunction_Callback1 callback1;
+    if (swigIsMethodOverridden!(DVector delegate(DVector), DVector function(DVector), gradient)()) {
+      callback1 = &swigDirectorCallback_DifferentiableFunction_gradient;
+    }
+
+    datamunge_im.DifferentiableFunction_director_connect(cast(void*)swigCPtr, cast(void*)this, callback0, callback1);
+  }
+
+  private bool swigIsMethodOverridden(DelegateType, FunctionType, alias fn)() {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+  private bool swigIsMethodOverriddenConst(DelegateType, FunctionType, alias fn)() inout {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+
+  private static Function SwigNonVirtualAddressOf(Function, alias fn)() {
+    return cast(Function) &fn;
+  }
+}
+
+private extern(C) double swigDirectorCallback_DifferentiableFunction_evaluate(void* dObject, void* coordinates) {
+  return (cast(DifferentiableFunction)dObject).evaluate(new DVector(coordinates, false));
+}
+
+private extern(C) void* swigDirectorCallback_DifferentiableFunction_gradient(void* dObject, void* coordinates) {
+  return DVector.swigGetCPtr((cast(DifferentiableFunction)dObject).gradient(new DVector(coordinates, false)));
+}
+
+class SeparableFunction : ArbitraryFunction {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool ownCObject) {
+    super(datamunge_im.SeparableFunction_Upcast(cObject), ownCObject);
+    swigCPtr = cObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public override void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SeparableFunction(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+        super.dispose();
+      }
+    }
+  }
+
+  public size_t num_functions() const {
+    auto ret = datamunge_im.SeparableFunction_num_functions(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double evaluate_term(DVector coordinates, size_t i) {
+    auto ret = datamunge_im.SeparableFunction_evaluate_term(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates), i);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public override double evaluate(DVector coordinates) {
+    auto ret = ((swigIsMethodOverridden!(double delegate(DVector), double function(DVector), evaluate)()) ? datamunge_im.SeparableFunction_evaluateSwigExplicitSeparableFunction(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates)) : datamunge_im.SeparableFunction_evaluate(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates)));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_SeparableFunction(), true);
+    swigDirectorConnect();
+  }
+
+  private void swigDirectorConnect() {
+    datamunge_im.SwigDirector_SeparableFunction_Callback0 callback0;
+    if (swigIsMethodOverridden!(double delegate(DVector), double function(DVector), evaluate)()) {
+      callback0 = &swigDirectorCallback_SeparableFunction_evaluate;
+    }
+
+    datamunge_im.SwigDirector_SeparableFunction_Callback1 callback1;
+    if (swigIsMethodOverridden!(size_t delegate(), size_t function(), num_functions)()) {
+      callback1 = &swigDirectorCallback_SeparableFunction_num_functions;
+    }
+
+    datamunge_im.SwigDirector_SeparableFunction_Callback2 callback2;
+    if (swigIsMethodOverridden!(double delegate(DVector, size_t), double function(DVector, size_t), evaluate_term)()) {
+      callback2 = &swigDirectorCallback_SeparableFunction_evaluate_term;
+    }
+
+    datamunge_im.SeparableFunction_director_connect(cast(void*)swigCPtr, cast(void*)this, callback0, callback1, callback2);
+  }
+
+  private bool swigIsMethodOverridden(DelegateType, FunctionType, alias fn)() {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+  private bool swigIsMethodOverriddenConst(DelegateType, FunctionType, alias fn)() inout {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+
+  private static Function SwigNonVirtualAddressOf(Function, alias fn)() {
+    return cast(Function) &fn;
+  }
+}
+
+private extern(C) double swigDirectorCallback_SeparableFunction_evaluate(void* dObject, void* coordinates) {
+  return (cast(SeparableFunction)dObject).evaluate(new DVector(coordinates, false));
+}
+
+private extern(C) size_t swigDirectorCallback_SeparableFunction_num_functions(void* dObject) {
+  return (cast(SeparableFunction)dObject).num_functions();
+}
+
+private extern(C) double swigDirectorCallback_SeparableFunction_evaluate_term(void* dObject, void* coordinates, size_t i) {
+  return (cast(SeparableFunction)dObject).evaluate_term(new DVector(coordinates, false), i);
+}
+
+class DifferentiableSeparableFunction : DifferentiableFunction {
+  private void* swigCPtr;
+
+  public this(void* cObject, bool ownCObject) {
+    super(datamunge_im.DifferentiableSeparableFunction_Upcast(cObject), ownCObject);
+    swigCPtr = cObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public override void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DifferentiableSeparableFunction(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+        super.dispose();
+      }
+    }
+  }
+
+  public size_t num_functions() const {
+    auto ret = datamunge_im.DifferentiableSeparableFunction_num_functions(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public double evaluate_term(DVector coordinates, size_t i) {
+    auto ret = datamunge_im.DifferentiableSeparableFunction_evaluate_term(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates), i);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public DVector gradient_term(DVector coordinates, size_t i) {
+    DVector ret = new DVector(datamunge_im.DifferentiableSeparableFunction_gradient_term(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates), i), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public override double evaluate(DVector coordinates) {
+    auto ret = ((swigIsMethodOverridden!(double delegate(DVector), double function(DVector), evaluate)()) ? datamunge_im.DifferentiableSeparableFunction_evaluateSwigExplicitDifferentiableSeparableFunction(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates)) : datamunge_im.DifferentiableSeparableFunction_evaluate(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates)));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public override DVector gradient(DVector coordinates) {
+    DVector ret = new DVector(((swigIsMethodOverridden!(DVector delegate(DVector), DVector function(DVector), gradient)()) ? datamunge_im.DifferentiableSeparableFunction_gradientSwigExplicitDifferentiableSeparableFunction(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates)) : datamunge_im.DifferentiableSeparableFunction_gradient(cast(void*)swigCPtr, DVector.swigGetCPtr(coordinates))), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_DifferentiableSeparableFunction(), true);
+    swigDirectorConnect();
+  }
+
+  private void swigDirectorConnect() {
+    datamunge_im.SwigDirector_DifferentiableSeparableFunction_Callback0 callback0;
+    if (swigIsMethodOverridden!(double delegate(DVector), double function(DVector), evaluate)()) {
+      callback0 = &swigDirectorCallback_DifferentiableSeparableFunction_evaluate;
+    }
+
+    datamunge_im.SwigDirector_DifferentiableSeparableFunction_Callback1 callback1;
+    if (swigIsMethodOverridden!(DVector delegate(DVector), DVector function(DVector), gradient)()) {
+      callback1 = &swigDirectorCallback_DifferentiableSeparableFunction_gradient;
+    }
+
+    datamunge_im.SwigDirector_DifferentiableSeparableFunction_Callback2 callback2;
+    if (swigIsMethodOverridden!(size_t delegate(), size_t function(), num_functions)()) {
+      callback2 = &swigDirectorCallback_DifferentiableSeparableFunction_num_functions;
+    }
+
+    datamunge_im.SwigDirector_DifferentiableSeparableFunction_Callback3 callback3;
+    if (swigIsMethodOverridden!(double delegate(DVector, size_t), double function(DVector, size_t), evaluate_term)()) {
+      callback3 = &swigDirectorCallback_DifferentiableSeparableFunction_evaluate_term;
+    }
+
+    datamunge_im.SwigDirector_DifferentiableSeparableFunction_Callback4 callback4;
+    if (swigIsMethodOverridden!(DVector delegate(DVector, size_t), DVector function(DVector, size_t), gradient_term)()) {
+      callback4 = &swigDirectorCallback_DifferentiableSeparableFunction_gradient_term;
+    }
+
+    datamunge_im.DifferentiableSeparableFunction_director_connect(cast(void*)swigCPtr, cast(void*)this, callback0, callback1, callback2, callback3, callback4);
+  }
+
+  private bool swigIsMethodOverridden(DelegateType, FunctionType, alias fn)() {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+  private bool swigIsMethodOverriddenConst(DelegateType, FunctionType, alias fn)() inout {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+
+  private static Function SwigNonVirtualAddressOf(Function, alias fn)() {
+    return cast(Function) &fn;
+  }
+}
+
+private extern(C) double swigDirectorCallback_DifferentiableSeparableFunction_evaluate(void* dObject, void* coordinates) {
+  return (cast(DifferentiableSeparableFunction)dObject).evaluate(new DVector(coordinates, false));
+}
+
+private extern(C) void* swigDirectorCallback_DifferentiableSeparableFunction_gradient(void* dObject, void* coordinates) {
+  return DVector.swigGetCPtr((cast(DifferentiableSeparableFunction)dObject).gradient(new DVector(coordinates, false)));
+}
+
+private extern(C) size_t swigDirectorCallback_DifferentiableSeparableFunction_num_functions(void* dObject) {
+  return (cast(DifferentiableSeparableFunction)dObject).num_functions();
+}
+
+private extern(C) double swigDirectorCallback_DifferentiableSeparableFunction_evaluate_term(void* dObject, void* coordinates, size_t i) {
+  return (cast(DifferentiableSeparableFunction)dObject).evaluate_term(new DVector(coordinates, false), i);
+}
+
+private extern(C) void* swigDirectorCallback_DifferentiableSeparableFunction_gradient_term(void* dObject, void* coordinates, size_t i) {
+  return DVector.swigGetCPtr((cast(DifferentiableSeparableFunction)dObject).gradient_term(new DVector(coordinates, false), i));
+}
+
+class GradientDescentOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GradientDescentOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void step_size(double value) @property {
+    datamunge_im.GradientDescentOptions_step_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double step_size() @property const {
+    auto ret = datamunge_im.GradientDescentOptions_step_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void momentum(double value) @property {
+    datamunge_im.GradientDescentOptions_momentum_set(cast(void*)swigCPtr, value);
+  }
+
+  public double momentum() @property const {
+    auto ret = datamunge_im.GradientDescentOptions_momentum_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_iterations(size_t value) @property {
+    datamunge_im.GradientDescentOptions_max_iterations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_iterations() @property const {
+    auto ret = datamunge_im.GradientDescentOptions_max_iterations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.GradientDescentOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.GradientDescentOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_GradientDescentOptions(), true);
+  }
+}
+
+class GradientDescent {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GradientDescent(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(GradientDescentOptions options) {
+    this(datamunge_im.new_GradientDescent__SWIG_0(GradientDescentOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_GradientDescent__SWIG_1(), true);
+  }
+
+  public double optimize(DifferentiableFunction _function, DVector coordinates) const {
+    auto ret = datamunge_im.GradientDescent_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class AdamOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_AdamOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void step_size(double value) @property {
+    datamunge_im.AdamOptions_step_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double step_size() @property const {
+    auto ret = datamunge_im.AdamOptions_step_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void beta1(double value) @property {
+    datamunge_im.AdamOptions_beta1_set(cast(void*)swigCPtr, value);
+  }
+
+  public double beta1() @property const {
+    auto ret = datamunge_im.AdamOptions_beta1_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void beta2(double value) @property {
+    datamunge_im.AdamOptions_beta2_set(cast(void*)swigCPtr, value);
+  }
+
+  public double beta2() @property const {
+    auto ret = datamunge_im.AdamOptions_beta2_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void epsilon(double value) @property {
+    datamunge_im.AdamOptions_epsilon_set(cast(void*)swigCPtr, value);
+  }
+
+  public double epsilon() @property const {
+    auto ret = datamunge_im.AdamOptions_epsilon_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_iterations(size_t value) @property {
+    datamunge_im.AdamOptions_max_iterations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_iterations() @property const {
+    auto ret = datamunge_im.AdamOptions_max_iterations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.AdamOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.AdamOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_AdamOptions(), true);
+  }
+}
+
+class Adam {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_Adam(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(AdamOptions options) {
+    this(datamunge_im.new_Adam__SWIG_0(AdamOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_Adam__SWIG_1(), true);
+  }
+
+  public double optimize(DifferentiableFunction _function, DVector coordinates) const {
+    auto ret = datamunge_im.Adam_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class LBFGSOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_LBFGSOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void max_iterations(size_t value) @property {
+    datamunge_im.LBFGSOptions_max_iterations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_iterations() @property const {
+    auto ret = datamunge_im.LBFGSOptions_max_iterations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.LBFGSOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.LBFGSOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void history_size(size_t value) @property {
+    datamunge_im.LBFGSOptions_history_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t history_size() @property const {
+    auto ret = datamunge_im.LBFGSOptions_history_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void armijo_c1(double value) @property {
+    datamunge_im.LBFGSOptions_armijo_c1_set(cast(void*)swigCPtr, value);
+  }
+
+  public double armijo_c1() @property const {
+    auto ret = datamunge_im.LBFGSOptions_armijo_c1_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void wolfe_c2(double value) @property {
+    datamunge_im.LBFGSOptions_wolfe_c2_set(cast(void*)swigCPtr, value);
+  }
+
+  public double wolfe_c2() @property const {
+    auto ret = datamunge_im.LBFGSOptions_wolfe_c2_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_line_search_trials(size_t value) @property {
+    datamunge_im.LBFGSOptions_max_line_search_trials_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_line_search_trials() @property const {
+    auto ret = datamunge_im.LBFGSOptions_max_line_search_trials_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_LBFGSOptions(), true);
+  }
+}
+
+class LBFGS {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_LBFGS(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(LBFGSOptions options) {
+    this(datamunge_im.new_LBFGS__SWIG_0(LBFGSOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_LBFGS__SWIG_1(), true);
+  }
+
+  public double optimize(DifferentiableFunction _function, DVector coordinates) const {
+    auto ret = datamunge_im.LBFGS_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class SGDOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SGDOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void step_size(double value) @property {
+    datamunge_im.SGDOptions_step_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double step_size() @property const {
+    auto ret = datamunge_im.SGDOptions_step_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_epochs(size_t value) @property {
+    datamunge_im.SGDOptions_max_epochs_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_epochs() @property const {
+    auto ret = datamunge_im.SGDOptions_max_epochs_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void batch_size(size_t value) @property {
+    datamunge_im.SGDOptions_batch_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t batch_size() @property const {
+    auto ret = datamunge_im.SGDOptions_batch_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.SGDOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.SGDOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void shuffle(bool value) @property {
+    datamunge_im.SGDOptions_shuffle_set(cast(void*)swigCPtr, value);
+  }
+
+  public bool shuffle() @property const {
+    bool ret = datamunge_im.SGDOptions_shuffle_get(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.SGDOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.SGDOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_SGDOptions(), true);
+  }
+}
+
+class SGD {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SGD(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(SGDOptions options) {
+    this(datamunge_im.new_SGD__SWIG_0(SGDOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_SGD__SWIG_1(), true);
+  }
+
+  public double optimize(DifferentiableSeparableFunction _function, DVector coordinates) const {
+    auto ret = datamunge_im.SGD_optimize(cast(void*)swigCPtr, DifferentiableSeparableFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class SimulatedAnnealingOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SimulatedAnnealingOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void initial_temperature(double value) @property {
+    datamunge_im.SimulatedAnnealingOptions_initial_temperature_set(cast(void*)swigCPtr, value);
+  }
+
+  public double initial_temperature() @property const {
+    auto ret = datamunge_im.SimulatedAnnealingOptions_initial_temperature_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void cooling_rate(double value) @property {
+    datamunge_im.SimulatedAnnealingOptions_cooling_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double cooling_rate() @property const {
+    auto ret = datamunge_im.SimulatedAnnealingOptions_cooling_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_iterations(size_t value) @property {
+    datamunge_im.SimulatedAnnealingOptions_max_iterations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_iterations() @property const {
+    auto ret = datamunge_im.SimulatedAnnealingOptions_max_iterations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void step_std_dev(double value) @property {
+    datamunge_im.SimulatedAnnealingOptions_step_std_dev_set(cast(void*)swigCPtr, value);
+  }
+
+  public double step_std_dev() @property const {
+    auto ret = datamunge_im.SimulatedAnnealingOptions_step_std_dev_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.SimulatedAnnealingOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.SimulatedAnnealingOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_SimulatedAnnealingOptions(), true);
+  }
+}
+
+class SimulatedAnnealing {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_SimulatedAnnealing(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(SimulatedAnnealingOptions options) {
+    this(datamunge_im.new_SimulatedAnnealing__SWIG_0(SimulatedAnnealingOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_SimulatedAnnealing__SWIG_1(), true);
+  }
+
+  public double optimize(ArbitraryFunction _function, DVector coordinates) const {
+    auto ret = datamunge_im.SimulatedAnnealing_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class PSOOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_PSOOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void population_size(size_t value) @property {
+    datamunge_im.PSOOptions_population_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t population_size() @property const {
+    auto ret = datamunge_im.PSOOptions_population_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_iterations(size_t value) @property {
+    datamunge_im.PSOOptions_max_iterations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_iterations() @property const {
+    auto ret = datamunge_im.PSOOptions_max_iterations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void inertia_weight(double value) @property {
+    datamunge_im.PSOOptions_inertia_weight_set(cast(void*)swigCPtr, value);
+  }
+
+  public double inertia_weight() @property const {
+    auto ret = datamunge_im.PSOOptions_inertia_weight_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void cognitive_coefficient(double value) @property {
+    datamunge_im.PSOOptions_cognitive_coefficient_set(cast(void*)swigCPtr, value);
+  }
+
+  public double cognitive_coefficient() @property const {
+    auto ret = datamunge_im.PSOOptions_cognitive_coefficient_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void social_coefficient(double value) @property {
+    datamunge_im.PSOOptions_social_coefficient_set(cast(void*)swigCPtr, value);
+  }
+
+  public double social_coefficient() @property const {
+    auto ret = datamunge_im.PSOOptions_social_coefficient_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void topology(string value) @property {
+    datamunge_im.PSOOptions_topology_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string topology() @property const {
+    string ret = std.conv.to!string(datamunge_im.PSOOptions_topology_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void ring_neighbors(size_t value) @property {
+    datamunge_im.PSOOptions_ring_neighbors_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t ring_neighbors() @property const {
+    auto ret = datamunge_im.PSOOptions_ring_neighbors_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void inertia_strategy(string value) @property {
+    datamunge_im.PSOOptions_inertia_strategy_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string inertia_strategy() @property const {
+    string ret = std.conv.to!string(datamunge_im.PSOOptions_inertia_strategy_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void final_inertia_weight(double value) @property {
+    datamunge_im.PSOOptions_final_inertia_weight_set(cast(void*)swigCPtr, value);
+  }
+
+  public double final_inertia_weight() @property const {
+    auto ret = datamunge_im.PSOOptions_final_inertia_weight_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.PSOOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.PSOOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.PSOOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.PSOOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_PSOOptions(), true);
+  }
+}
+
+class PSO {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_PSO(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(PSOOptions options) {
+    this(datamunge_im.new_PSO__SWIG_0(PSOOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_PSO__SWIG_1(), true);
+  }
+
+  public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
+    auto ret = datamunge_im.PSO_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class DEOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DEOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void population_size(size_t value) @property {
+    datamunge_im.DEOptions_population_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t population_size() @property const {
+    auto ret = datamunge_im.DEOptions_population_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_generations(size_t value) @property {
+    datamunge_im.DEOptions_max_generations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_generations() @property const {
+    auto ret = datamunge_im.DEOptions_max_generations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void differential_weight(double value) @property {
+    datamunge_im.DEOptions_differential_weight_set(cast(void*)swigCPtr, value);
+  }
+
+  public double differential_weight() @property const {
+    auto ret = datamunge_im.DEOptions_differential_weight_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void crossover_rate(double value) @property {
+    datamunge_im.DEOptions_crossover_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double crossover_rate() @property const {
+    auto ret = datamunge_im.DEOptions_crossover_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void mutation_strategy(string value) @property {
+    datamunge_im.DEOptions_mutation_strategy_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string mutation_strategy() @property const {
+    string ret = std.conv.to!string(datamunge_im.DEOptions_mutation_strategy_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void crossover_strategy(string value) @property {
+    datamunge_im.DEOptions_crossover_strategy_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string crossover_strategy() @property const {
+    string ret = std.conv.to!string(datamunge_im.DEOptions_crossover_strategy_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.DEOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.DEOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.DEOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.DEOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_DEOptions(), true);
+  }
+}
+
+class DifferentialEvolution {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_DifferentialEvolution(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(DEOptions options) {
+    this(datamunge_im.new_DifferentialEvolution__SWIG_0(DEOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_DifferentialEvolution__SWIG_1(), true);
+  }
+
+  public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
+    auto ret = datamunge_im.DifferentialEvolution_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class GAOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GAOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void population_size(size_t value) @property {
+    datamunge_im.GAOptions_population_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t population_size() @property const {
+    auto ret = datamunge_im.GAOptions_population_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_generations(size_t value) @property {
+    datamunge_im.GAOptions_max_generations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_generations() @property const {
+    auto ret = datamunge_im.GAOptions_max_generations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void crossover_rate(double value) @property {
+    datamunge_im.GAOptions_crossover_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double crossover_rate() @property const {
+    auto ret = datamunge_im.GAOptions_crossover_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void mutation_rate(double value) @property {
+    datamunge_im.GAOptions_mutation_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double mutation_rate() @property const {
+    auto ret = datamunge_im.GAOptions_mutation_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void mutation_std_dev(double value) @property {
+    datamunge_im.GAOptions_mutation_std_dev_set(cast(void*)swigCPtr, value);
+  }
+
+  public double mutation_std_dev() @property const {
+    auto ret = datamunge_im.GAOptions_mutation_std_dev_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void selection_strategy(string value) @property {
+    datamunge_im.GAOptions_selection_strategy_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string selection_strategy() @property const {
+    string ret = std.conv.to!string(datamunge_im.GAOptions_selection_strategy_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void tournament_size(size_t value) @property {
+    datamunge_im.GAOptions_tournament_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t tournament_size() @property const {
+    auto ret = datamunge_im.GAOptions_tournament_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void crossover_strategy(string value) @property {
+    datamunge_im.GAOptions_crossover_strategy_set(cast(void*)swigCPtr, (value ? std.string.toStringz(value) : null));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public string crossover_strategy() @property const {
+    string ret = std.conv.to!string(datamunge_im.GAOptions_crossover_strategy_get(cast(void*)swigCPtr));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+
+  public void blend_alpha(double value) @property {
+    datamunge_im.GAOptions_blend_alpha_set(cast(void*)swigCPtr, value);
+  }
+
+  public double blend_alpha() @property const {
+    auto ret = datamunge_im.GAOptions_blend_alpha_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void elitism(bool value) @property {
+    datamunge_im.GAOptions_elitism_set(cast(void*)swigCPtr, value);
+  }
+
+  public bool elitism() @property const {
+    bool ret = datamunge_im.GAOptions_elitism_get(cast(void*)swigCPtr) ? true : false;
+    return ret;
+  }
+
+  public void elite_count(size_t value) @property {
+    datamunge_im.GAOptions_elite_count_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t elite_count() @property const {
+    auto ret = datamunge_im.GAOptions_elite_count_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.GAOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.GAOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.GAOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.GAOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_GAOptions(), true);
+  }
+}
+
+class GeneticAlgorithm {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_GeneticAlgorithm(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(GAOptions options) {
+    this(datamunge_im.new_GeneticAlgorithm__SWIG_0(GAOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_GeneticAlgorithm__SWIG_1(), true);
+  }
+
+  public double optimize(ArbitraryFunction _function, DVector coordinates, DVector lower_bound, DVector upper_bound) const {
+    auto ret = datamunge_im.GeneticAlgorithm_optimize(cast(void*)swigCPtr, ArbitraryFunction.swigGetCPtr(_function), DVector.swigGetCPtr(coordinates), DVector.swigGetCPtr(lower_bound), DVector.swigGetCPtr(upper_bound));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class MAPOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_MAPOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void max_iterations(size_t value) @property {
+    datamunge_im.MAPOptions_max_iterations_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_iterations() @property const {
+    auto ret = datamunge_im.MAPOptions_max_iterations_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void tolerance(double value) @property {
+    datamunge_im.MAPOptions_tolerance_set(cast(void*)swigCPtr, value);
+  }
+
+  public double tolerance() @property const {
+    auto ret = datamunge_im.MAPOptions_tolerance_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void history_size(size_t value) @property {
+    datamunge_im.MAPOptions_history_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t history_size() @property const {
+    auto ret = datamunge_im.MAPOptions_history_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_MAPOptions(), true);
+  }
+}
+
+class MAP {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_MAP(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(MAPOptions options) {
+    this(datamunge_im.new_MAP__SWIG_0(MAPOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_MAP__SWIG_1(), true);
+  }
+
+  public double optimize(DifferentiableFunction log_posterior, DVector coordinates) const {
+    auto ret = datamunge_im.MAP_optimize(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(log_posterior), DVector.swigGetCPtr(coordinates));
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class HMCOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_HMCOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void num_samples(size_t value) @property {
+    datamunge_im.HMCOptions_num_samples_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t num_samples() @property const {
+    auto ret = datamunge_im.HMCOptions_num_samples_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void num_warmup(size_t value) @property {
+    datamunge_im.HMCOptions_num_warmup_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t num_warmup() @property const {
+    auto ret = datamunge_im.HMCOptions_num_warmup_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void num_leapfrog_steps(size_t value) @property {
+    datamunge_im.HMCOptions_num_leapfrog_steps_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t num_leapfrog_steps() @property const {
+    auto ret = datamunge_im.HMCOptions_num_leapfrog_steps_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void initial_step_size(double value) @property {
+    datamunge_im.HMCOptions_initial_step_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double initial_step_size() @property const {
+    auto ret = datamunge_im.HMCOptions_initial_step_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void target_accept_rate(double value) @property {
+    datamunge_im.HMCOptions_target_accept_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double target_accept_rate() @property const {
+    auto ret = datamunge_im.HMCOptions_target_accept_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.HMCOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.HMCOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_HMCOptions(), true);
+  }
+}
+
+class HMCResult {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_HMCResult(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void samples(DVectorVector value) @property {
+    datamunge_im.HMCResult_samples_set(cast(void*)swigCPtr, DVectorVector.swigGetCPtr(value));
+  }
+
+  public DVectorVector samples() @property const {
+    void* cPtr = datamunge_im.HMCResult_samples_get(cast(void*)swigCPtr);
+    DVectorVector ret = (cPtr is null) ? null : new DVectorVector(cPtr, false);
+    return ret;
+  }
+
+  public void accept_rate(double value) @property {
+    datamunge_im.HMCResult_accept_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double accept_rate() @property const {
+    auto ret = datamunge_im.HMCResult_accept_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void final_step_size(double value) @property {
+    datamunge_im.HMCResult_final_step_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double final_step_size() @property const {
+    auto ret = datamunge_im.HMCResult_final_step_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_HMCResult(), true);
+  }
+}
+
+class HMC {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_HMC(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(HMCOptions options) {
+    this(datamunge_im.new_HMC__SWIG_0(HMCOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_HMC__SWIG_1(), true);
+  }
+
+  public HMCResult sample(DifferentiableFunction log_posterior, DVector initial_params) const {
+    HMCResult ret = new HMCResult(datamunge_im.HMC_sample(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(log_posterior), DVector.swigGetCPtr(initial_params)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class NUTSOptions {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_NUTSOptions(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void num_samples(size_t value) @property {
+    datamunge_im.NUTSOptions_num_samples_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t num_samples() @property const {
+    auto ret = datamunge_im.NUTSOptions_num_samples_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void num_warmup(size_t value) @property {
+    datamunge_im.NUTSOptions_num_warmup_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t num_warmup() @property const {
+    auto ret = datamunge_im.NUTSOptions_num_warmup_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_tree_depth(size_t value) @property {
+    datamunge_im.NUTSOptions_max_tree_depth_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t max_tree_depth() @property const {
+    auto ret = datamunge_im.NUTSOptions_max_tree_depth_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void initial_step_size(double value) @property {
+    datamunge_im.NUTSOptions_initial_step_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double initial_step_size() @property const {
+    auto ret = datamunge_im.NUTSOptions_initial_step_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void target_accept_rate(double value) @property {
+    datamunge_im.NUTSOptions_target_accept_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double target_accept_rate() @property const {
+    auto ret = datamunge_im.NUTSOptions_target_accept_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void max_delta_error(double value) @property {
+    datamunge_im.NUTSOptions_max_delta_error_set(cast(void*)swigCPtr, value);
+  }
+
+  public double max_delta_error() @property const {
+    auto ret = datamunge_im.NUTSOptions_max_delta_error_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void seed(ulong value) @property {
+    datamunge_im.NUTSOptions_seed_set(cast(void*)swigCPtr, value);
+  }
+
+  public ulong seed() @property const {
+    auto ret = datamunge_im.NUTSOptions_seed_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_NUTSOptions(), true);
+  }
+}
+
+class NUTSResult {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_NUTSResult(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public void samples(DVectorVector value) @property {
+    datamunge_im.NUTSResult_samples_set(cast(void*)swigCPtr, DVectorVector.swigGetCPtr(value));
+  }
+
+  public DVectorVector samples() @property const {
+    void* cPtr = datamunge_im.NUTSResult_samples_get(cast(void*)swigCPtr);
+    DVectorVector ret = (cPtr is null) ? null : new DVectorVector(cPtr, false);
+    return ret;
+  }
+
+  public void accept_rate(double value) @property {
+    datamunge_im.NUTSResult_accept_rate_set(cast(void*)swigCPtr, value);
+  }
+
+  public double accept_rate() @property const {
+    auto ret = datamunge_im.NUTSResult_accept_rate_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void final_step_size(double value) @property {
+    datamunge_im.NUTSResult_final_step_size_set(cast(void*)swigCPtr, value);
+  }
+
+  public double final_step_size() @property const {
+    auto ret = datamunge_im.NUTSResult_final_step_size_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public void num_divergences(size_t value) @property {
+    datamunge_im.NUTSResult_num_divergences_set(cast(void*)swigCPtr, value);
+  }
+
+  public size_t num_divergences() @property const {
+    auto ret = datamunge_im.NUTSResult_num_divergences_get(cast(void*)swigCPtr);
+    return ret;
+  }
+
+  public this() {
+    this(datamunge_im.new_NUTSResult(), true);
+  }
+}
+
+class NUTS {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin datamunge_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          datamunge_im.delete_NUTS(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public this(NUTSOptions options) {
+    this(datamunge_im.new_NUTS__SWIG_0(NUTSOptions.swigGetCPtr(options)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+  }
+
+  public this() {
+    this(datamunge_im.new_NUTS__SWIG_1(), true);
+  }
+
+  public NUTSResult sample(DifferentiableFunction log_posterior, DVector initial_params) const {
+    NUTSResult ret = new NUTSResult(datamunge_im.NUTS_sample(cast(void*)swigCPtr, DifferentiableFunction.swigGetCPtr(log_posterior), DVector.swigGetCPtr(initial_params)), true);
+    if (datamunge_im.SwigPendingException.isPending) throw datamunge_im.SwigPendingException.retrieve();
+    return ret;
+  }
+}
+
+class SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t {
   private void* swigCPtr;
 
   public this(void* cObject, bool futureUse) {

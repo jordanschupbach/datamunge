@@ -76,6 +76,11 @@ class DataFrame {
  public:
   DataFrame() = default;
 
+  /// @brief Equivalent to the default constructor, exposed as a static factory (like iris()/
+  ///        penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+  ///        constructor's ownership-flagged pointer breaks method dispatch on the result.
+  [[nodiscard]] static DataFrame* empty();
+
   [[nodiscard]] std::size_t nrows() const;
   [[nodiscard]] std::size_t ncols() const;
   [[nodiscard]] std::vector<std::size_t> shape() const;
@@ -110,6 +115,14 @@ class DataFrame {
   [[nodiscard]] double numeric_max(const std::string& column_name) const;
   [[nodiscard]] std::string to_string(std::size_t max_rows = 10) const;
 
+  /// @brief true if column_name holds numeric values, false if it holds strings.
+  [[nodiscard]] bool is_numeric_column(const std::string& column_name) const;
+  [[nodiscard]] bool is_null(const std::string& column_name, std::size_t row_index) const;
+  /// @brief The value at (column_name, row_index); throws if the cell is null or the column isn't numeric.
+  [[nodiscard]] double numeric_at(const std::string& column_name, std::size_t row_index) const;
+  /// @brief The value at (column_name, row_index); throws if the cell is null or the column isn't string-typed.
+  [[nodiscard]] std::string string_at(const std::string& column_name, std::size_t row_index) const;
+
   // Bundled sample datasets.
   [[nodiscard]] static DataFrame* iris();
   [[nodiscard]] static DataFrame* penguins();
@@ -127,6 +140,9 @@ class DataFrame {
   friend class Lasso;
   friend class KNNClassifier;
   friend class KNNRegressor;
+  friend class KMeans;
+  friend class AgglomerativeClustering;
+  friend class DBSCAN;
   friend class GBMClassifier;
   friend class GBMRegressor;
   friend class XGBoostClassifier;
@@ -717,6 +733,104 @@ class KNNRegressor {
 
  private:
   stats::KNNRegressor knn_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::KMeans — k-means clustering (Lloyd's
+///        algorithm with k-means++ initialization) fit from a DataFrame and a list of numeric
+///        feature columns.
+class KMeans {
+ public:
+  KMeans(const DataFrame& data, const std::vector<std::string>& feature_columns, std::size_t n_clusters = 8,
+        std::size_t max_iterations = 300, std::size_t n_init = 10, double tolerance = 1e-4, std::size_t seed = 42);
+
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- a workaround for SWIG-bound languages whose
+  ///        overload resolution can't pass a real string vector to a constructor with other
+  ///        default arguments (see DataFrame::add_string_column_encoded()).
+  KMeans(const DataFrame& data, const std::string& encoded_feature_columns, std::size_t n_clusters = 8,
+        std::size_t max_iterations = 300, std::size_t n_init = 10, double tolerance = 1e-4, std::size_t seed = 42);
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              n_clusters() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              iterations_used() const;
+
+  [[nodiscard]] std::vector<std::size_t> labels() const;
+  [[nodiscard]] double                   inertia() const;
+  /// @brief The feature vector of cluster @p cluster_index's center.
+  [[nodiscard]] std::vector<double> cluster_center(std::size_t cluster_index) const;
+
+  [[nodiscard]] std::vector<std::size_t> predict(const DataFrame& newdata) const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+ private:
+  stats::KMeans kmeans_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::AgglomerativeClustering — bottom-up
+///        hierarchical clustering fit from a DataFrame and a list of numeric feature columns.
+class AgglomerativeClustering {
+ public:
+  /// @param linkage One of "single", "complete", "average", "ward" (default).
+  /// @param metric One of "euclidean" (default) or "manhattan"; ward linkage requires euclidean.
+  AgglomerativeClustering(const DataFrame& data, const std::vector<std::string>& feature_columns,
+                          std::size_t n_clusters = 2, const std::string& linkage = "ward",
+                          const std::string& metric = "euclidean");
+
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  AgglomerativeClustering(const DataFrame& data, const std::string& encoded_feature_columns,
+                          std::size_t n_clusters = 2, const std::string& linkage = "ward",
+                          const std::string& metric = "euclidean");
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::vector<std::size_t> labels() const;
+
+  /// @brief Re-cuts the already-built dendrogram to produce @p n_clusters clusters, without refitting.
+  [[nodiscard]] std::vector<std::size_t> cut(std::size_t n_clusters) const;
+
+  // Merge history, as parallel flat arrays (length num_merges()) in merge order.
+  [[nodiscard]] std::size_t              num_merges() const;
+  [[nodiscard]] std::size_t              merge_cluster_a(std::size_t merge_index) const;
+  [[nodiscard]] std::size_t              merge_cluster_b(std::size_t merge_index) const;
+  [[nodiscard]] double                   merge_distance(std::size_t merge_index) const;
+  [[nodiscard]] std::size_t              merge_size(std::size_t merge_index) const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+ private:
+  stats::AgglomerativeClustering clustering_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::DBSCAN — density-based clustering fit
+///        from a DataFrame and a list of numeric feature columns.
+class DBSCAN {
+ public:
+  /// @param metric One of "euclidean" (default) or "manhattan".
+  DBSCAN(const DataFrame& data, const std::vector<std::string>& feature_columns, double eps = 0.5,
+        std::size_t min_samples = 5, const std::string& metric = "euclidean");
+
+  /// @brief Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+  ///        col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+  DBSCAN(const DataFrame& data, const std::string& encoded_feature_columns, double eps = 0.5,
+        std::size_t min_samples = 5, const std::string& metric = "euclidean");
+
+  [[nodiscard]] std::vector<std::string> feature_names() const;
+  [[nodiscard]] std::size_t              observations() const;
+  [[nodiscard]] std::size_t              n_clusters() const;
+  [[nodiscard]] std::size_t              n_noise() const;
+  /// @brief Cluster index (0-based) assigned to each fitted row, or -1 for noise.
+  [[nodiscard]] std::vector<int> labels() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+ private:
+  stats::DBSCAN dbscan_;
 };
 
 /// @brief SWIG-friendly facade for datamunge::stats::GBMClassifier — multiclass gradient boosting (a sequence

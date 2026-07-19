@@ -9,9 +9,23 @@
 open Swig
 type c_enum_type = [ 
   `unknown
+| `Kind
+| `TrendType
+| `SeasonalType
+| `Alternative
 ]
 type c_enum_value = [ 
   `Int of int
+| `Scatter
+| `Line
+| `Bar
+| `None
+| `Additive
+| `AdditiveDamped
+| `Multiplicative
+| `TwoSided
+| `Less
+| `Greater
 ]
 
 type c_obj = c_enum_value c_obj_t
@@ -35,11 +49,32 @@ val _delete_DPair : c_obj -> c_obj
 val create_std_xxpair_xx_ldbrace_xx_lparendouble_xdouble_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
 
 
+val new_IPair : c_obj -> c_obj
+val _new_IPair : c_obj -> c_obj
+val _delete_IPair : c_obj -> c_obj
+
+val create_std_xxpair_xx_ldbrace_xx_lparenint_xint_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
+
+
+val new_DVectorPair : c_obj -> c_obj
+val _new_DVectorPair : c_obj -> c_obj
+val _delete_DVectorPair : c_obj -> c_obj
+
+val create_std_xxpair_xx_ldbrace_xx_lparenstd_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_xstd_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
+
+
 val new_DVector : c_obj -> c_obj
 val _new_DVector : c_obj -> c_obj
 val _delete_DVector : c_obj -> c_obj
 
 val create_std_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
+
+
+val new_DVectorVector : c_obj -> c_obj
+val _new_DVectorVector : c_obj -> c_obj
+val _delete_DVectorVector : c_obj -> c_obj
+
+val create_std_xxvector_xx_ldbrace_xx_lparenstd_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
 
 
 val new_IVector : c_obj -> c_obj
@@ -53,7 +88,7 @@ val new_SizeVector : c_obj -> c_obj
 val _new_SizeVector : c_obj -> c_obj
 val _delete_SizeVector : c_obj -> c_obj
 
-val create_std_xxvector_xx_ldbrace_xx_lparensize_t_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
+val create_std_xxvector_xx_ldbrace_xx_lparenstd_xxsize_t_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
 
 
 val new_SVector : c_obj -> c_obj
@@ -79,6 +114,9 @@ val _make_dpair : c_obj -> c_obj
 val _sum_dpair : c_obj -> c_obj
 val new_DataFrame : c_obj -> c_obj
 val _new_DataFrame : c_obj -> c_obj
+val _DataFrame_empty : c_obj -> c_obj
+val _DataFrame_iris : c_obj -> c_obj
+val _DataFrame_penguins : c_obj -> c_obj
 val _delete_DataFrame : c_obj -> c_obj
 
 val create_datamunge_xxDataFrame_from_ptr : c_obj -> c_obj
@@ -89,6 +127,524 @@ val _new_LM : c_obj -> c_obj
 val _delete_LM : c_obj -> c_obj
 
 val create_datamunge_xxLM_from_ptr : c_obj -> c_obj
+
+
+val new_LMM : c_obj -> c_obj
+val _new_LMM : c_obj -> c_obj
+val _delete_LMM : c_obj -> c_obj
+
+val create_datamunge_xxLMM_from_ptr : c_obj -> c_obj
+
+
+val new_GLMM : c_obj -> c_obj
+val _new_GLMM : c_obj -> c_obj
+val _delete_GLMM : c_obj -> c_obj
+
+val create_datamunge_xxGLMM_from_ptr : c_obj -> c_obj
+
+
+val new_LDA : c_obj -> c_obj
+val _new_LDA : c_obj -> c_obj
+val _delete_LDA : c_obj -> c_obj
+
+val create_datamunge_xxLDA_from_ptr : c_obj -> c_obj
+
+
+val new_SVM : c_obj -> c_obj
+val _new_SVM : c_obj -> c_obj
+val _delete_SVM : c_obj -> c_obj
+
+val create_datamunge_xxSVM_from_ptr : c_obj -> c_obj
+
+
+val new_DecisionTreeClassifier : c_obj -> c_obj
+val _new_DecisionTreeClassifier : c_obj -> c_obj
+val _delete_DecisionTreeClassifier : c_obj -> c_obj
+
+val create_datamunge_xxDecisionTreeClassifier_from_ptr : c_obj -> c_obj
+
+
+val new_DecisionTreeRegressor : c_obj -> c_obj
+val _new_DecisionTreeRegressor : c_obj -> c_obj
+val _delete_DecisionTreeRegressor : c_obj -> c_obj
+
+val create_datamunge_xxDecisionTreeRegressor_from_ptr : c_obj -> c_obj
+
+
+val new_RandomForestClassifier : c_obj -> c_obj
+val _new_RandomForestClassifier : c_obj -> c_obj
+val _delete_RandomForestClassifier : c_obj -> c_obj
+
+val create_datamunge_xxRandomForestClassifier_from_ptr : c_obj -> c_obj
+
+
+val new_RandomForestRegressor : c_obj -> c_obj
+val _new_RandomForestRegressor : c_obj -> c_obj
+val _delete_RandomForestRegressor : c_obj -> c_obj
+
+val create_datamunge_xxRandomForestRegressor_from_ptr : c_obj -> c_obj
+
+
+val new_ElasticNet : c_obj -> c_obj
+val _new_ElasticNet : c_obj -> c_obj
+val _delete_ElasticNet : c_obj -> c_obj
+
+val create_datamunge_xxElasticNet_from_ptr : c_obj -> c_obj
+
+
+val new_Ridge : c_obj -> c_obj
+val _new_Ridge : c_obj -> c_obj
+val _delete_Ridge : c_obj -> c_obj
+
+val create_datamunge_xxRidge_from_ptr : c_obj -> c_obj
+
+
+val new_Lasso : c_obj -> c_obj
+val _new_Lasso : c_obj -> c_obj
+val _delete_Lasso : c_obj -> c_obj
+
+val create_datamunge_xxLasso_from_ptr : c_obj -> c_obj
+
+
+val new_KNNClassifier : c_obj -> c_obj
+val _new_KNNClassifier : c_obj -> c_obj
+val _delete_KNNClassifier : c_obj -> c_obj
+
+val create_datamunge_xxKNNClassifier_from_ptr : c_obj -> c_obj
+
+
+val new_KNNRegressor : c_obj -> c_obj
+val _new_KNNRegressor : c_obj -> c_obj
+val _delete_KNNRegressor : c_obj -> c_obj
+
+val create_datamunge_xxKNNRegressor_from_ptr : c_obj -> c_obj
+
+
+val new_KMeans : c_obj -> c_obj
+val _new_KMeans : c_obj -> c_obj
+val _delete_KMeans : c_obj -> c_obj
+
+val create_datamunge_xxKMeans_from_ptr : c_obj -> c_obj
+
+
+val new_AgglomerativeClustering : c_obj -> c_obj
+val _new_AgglomerativeClustering : c_obj -> c_obj
+val _delete_AgglomerativeClustering : c_obj -> c_obj
+
+val create_datamunge_xxAgglomerativeClustering_from_ptr : c_obj -> c_obj
+
+
+val new_DBSCAN : c_obj -> c_obj
+val _new_DBSCAN : c_obj -> c_obj
+val _delete_DBSCAN : c_obj -> c_obj
+
+val create_datamunge_xxDBSCAN_from_ptr : c_obj -> c_obj
+
+
+val new_GBMClassifier : c_obj -> c_obj
+val _new_GBMClassifier : c_obj -> c_obj
+val _delete_GBMClassifier : c_obj -> c_obj
+
+val create_datamunge_xxGBMClassifier_from_ptr : c_obj -> c_obj
+
+
+val new_GBMRegressor : c_obj -> c_obj
+val _new_GBMRegressor : c_obj -> c_obj
+val _delete_GBMRegressor : c_obj -> c_obj
+
+val create_datamunge_xxGBMRegressor_from_ptr : c_obj -> c_obj
+
+
+val new_XGBoostClassifier : c_obj -> c_obj
+val _new_XGBoostClassifier : c_obj -> c_obj
+val _delete_XGBoostClassifier : c_obj -> c_obj
+
+val create_datamunge_xxXGBoostClassifier_from_ptr : c_obj -> c_obj
+
+
+val new_XGBoostRegressor : c_obj -> c_obj
+val _new_XGBoostRegressor : c_obj -> c_obj
+val _delete_XGBoostRegressor : c_obj -> c_obj
+
+val create_datamunge_xxXGBoostRegressor_from_ptr : c_obj -> c_obj
+
+
+val new_KernelRegression : c_obj -> c_obj
+val _new_KernelRegression : c_obj -> c_obj
+val _delete_KernelRegression : c_obj -> c_obj
+
+val create_datamunge_xxKernelRegression_from_ptr : c_obj -> c_obj
+
+
+val new_GaussianProcessRegression : c_obj -> c_obj
+val _new_GaussianProcessRegression : c_obj -> c_obj
+val _delete_GaussianProcessRegression : c_obj -> c_obj
+
+val create_datamunge_xxGaussianProcessRegression_from_ptr : c_obj -> c_obj
+
+
+val new_NaiveBayesClassifier : c_obj -> c_obj
+val _new_NaiveBayesClassifier : c_obj -> c_obj
+val _delete_NaiveBayesClassifier : c_obj -> c_obj
+
+val create_datamunge_xxNaiveBayesClassifier_from_ptr : c_obj -> c_obj
+
+
+val new_GLM : c_obj -> c_obj
+val _new_GLM : c_obj -> c_obj
+val _delete_GLM : c_obj -> c_obj
+
+val create_datamunge_xxGLM_from_ptr : c_obj -> c_obj
+
+
+val new_Tensor : c_obj -> c_obj
+val _new_Tensor : c_obj -> c_obj
+val _Tensor_zeros : c_obj -> c_obj
+val _Tensor_ones : c_obj -> c_obj
+val _Tensor_full : c_obj -> c_obj
+val _Tensor_from_values : c_obj -> c_obj
+val _Tensor_from_bool_values : c_obj -> c_obj
+val _Tensor_from_string_values : c_obj -> c_obj
+val _Tensor_arange : c_obj -> c_obj
+val _Tensor_eye : c_obj -> c_obj
+val _Tensor_concatenate2 : c_obj -> c_obj
+val _Tensor_stack2 : c_obj -> c_obj
+val _delete_Tensor : c_obj -> c_obj
+
+val create_datamunge_xxTensor_from_ptr : c_obj -> c_obj
+
+
+val new_Dual : c_obj -> c_obj
+val _new_Dual : c_obj -> c_obj
+val _delete_Dual : c_obj -> c_obj
+
+val create_datamunge_xxDual_from_ptr : c_obj -> c_obj
+
+
+val new_HyperDual : c_obj -> c_obj
+val _new_HyperDual : c_obj -> c_obj
+val _delete_HyperDual : c_obj -> c_obj
+
+val create_datamunge_xxHyperDual_from_ptr : c_obj -> c_obj
+
+
+val new_Tape : c_obj -> c_obj
+val _new_Tape : c_obj -> c_obj
+val _delete_Tape : c_obj -> c_obj
+
+val create_datamunge_xxTape_from_ptr : c_obj -> c_obj
+
+
+val new_Var : c_obj -> c_obj
+val _new_Var : c_obj -> c_obj
+val _delete_Var : c_obj -> c_obj
+
+val create_datamunge_xxVar_from_ptr : c_obj -> c_obj
+
+
+val new_RGB : c_obj -> c_obj
+val _new_RGB : c_obj -> c_obj
+val _delete_RGB : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxRGB_from_ptr : c_obj -> c_obj
+
+
+val _Scatter : c_obj -> Swig.c_obj
+val _Line : c_obj -> Swig.c_obj
+val _Bar : c_obj -> Swig.c_obj
+val new_DataSeries : c_obj -> c_obj
+val _new_DataSeries : c_obj -> c_obj
+val _delete_DataSeries : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxDataSeries_from_ptr : c_obj -> c_obj
+
+
+val _delete_Plot : c_obj -> c_obj
+val new_Plot : c_obj -> c_obj
+val _new_Plot : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxPlot_from_ptr : c_obj -> c_obj
+
+
+val _ScatterPlot_create : c_obj -> c_obj
+val new_ScatterPlot : c_obj -> c_obj
+val _new_ScatterPlot : c_obj -> c_obj
+val _delete_ScatterPlot : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxScatterPlot_from_ptr : c_obj -> c_obj
+
+
+val _LinePlot_create : c_obj -> c_obj
+val new_LinePlot : c_obj -> c_obj
+val _new_LinePlot : c_obj -> c_obj
+val _delete_LinePlot : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxLinePlot_from_ptr : c_obj -> c_obj
+
+
+val _BarChart_create : c_obj -> c_obj
+val new_BarChart : c_obj -> c_obj
+val _new_BarChart : c_obj -> c_obj
+val _delete_BarChart : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxBarChart_from_ptr : c_obj -> c_obj
+
+
+val new_ARIMAOptions : c_obj -> c_obj
+val _new_ARIMAOptions : c_obj -> c_obj
+val _delete_ARIMAOptions : c_obj -> c_obj
+
+val create_datamunge_xxstats_xxARIMAOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ARIMA : c_obj -> c_obj
+val _new_ARIMA : c_obj -> c_obj
+val _delete_ARIMA : c_obj -> c_obj
+
+val create_datamunge_xxstats_xxARIMA_from_ptr : c_obj -> c_obj
+
+
+val _None : c_obj -> Swig.c_obj
+val _Additive : c_obj -> Swig.c_obj
+val _AdditiveDamped : c_obj -> Swig.c_obj
+val _Multiplicative : c_obj -> Swig.c_obj
+val new_ExponentialSmoothingOptions : c_obj -> c_obj
+val _new_ExponentialSmoothingOptions : c_obj -> c_obj
+val _delete_ExponentialSmoothingOptions : c_obj -> c_obj
+
+val create_datamunge_xxstats_xxExponentialSmoothingOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ExponentialSmoothing : c_obj -> c_obj
+val _new_ExponentialSmoothing : c_obj -> c_obj
+val _delete_ExponentialSmoothing : c_obj -> c_obj
+
+val create_datamunge_xxstats_xxExponentialSmoothing_from_ptr : c_obj -> c_obj
+
+
+val _TwoSided : c_obj -> Swig.c_obj
+val _Less : c_obj -> Swig.c_obj
+val _Greater : c_obj -> Swig.c_obj
+val new_HypothesisTestResult : c_obj -> c_obj
+val _new_HypothesisTestResult : c_obj -> c_obj
+val _delete_HypothesisTestResult : c_obj -> c_obj
+
+val create_datamunge_xxstats_xxHypothesisTestResult_from_ptr : c_obj -> c_obj
+
+
+val _t_test_one_sample : c_obj -> c_obj
+val _t_test_two_sample : c_obj -> c_obj
+val _t_test_paired : c_obj -> c_obj
+val _wilcoxon_signed_rank_test : c_obj -> c_obj
+val _wilcoxon_rank_sum_test : c_obj -> c_obj
+val _ks_test_one_sample_normal : c_obj -> c_obj
+val _ks_test_two_sample : c_obj -> c_obj
+val _chi_squared_goodness_of_fit : c_obj -> c_obj
+val _chi_squared_test_independence : c_obj -> c_obj
+val _one_way_anova : c_obj -> c_obj
+val _kruskal_wallis_test : c_obj -> c_obj
+val _pearson_correlation_test : c_obj -> c_obj
+val _spearman_correlation_test : c_obj -> c_obj
+val _f_test_variance : c_obj -> c_obj
+val _proportion_test_one_sample : c_obj -> c_obj
+val _proportion_test_two_sample : c_obj -> c_obj
+val _binomial_test : c_obj -> c_obj
+val _fisher_exact_test_2x2 : c_obj -> c_obj
+val _shapiro_francia_test : c_obj -> c_obj
+val _delete_ArbitraryFunction : c_obj -> c_obj
+val new_ArbitraryFunction : c_obj -> c_obj
+val _new_ArbitraryFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxArbitraryFunction_from_ptr : c_obj -> c_obj
+
+
+val new_DifferentiableFunction : c_obj -> c_obj
+val _new_DifferentiableFunction : c_obj -> c_obj
+val _delete_DifferentiableFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxDifferentiableFunction_from_ptr : c_obj -> c_obj
+
+
+val new_SeparableFunction : c_obj -> c_obj
+val _new_SeparableFunction : c_obj -> c_obj
+val _delete_SeparableFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSeparableFunction_from_ptr : c_obj -> c_obj
+
+
+val new_DifferentiableSeparableFunction : c_obj -> c_obj
+val _new_DifferentiableSeparableFunction : c_obj -> c_obj
+val _delete_DifferentiableSeparableFunction : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxDifferentiableSeparableFunction_from_ptr : c_obj -> c_obj
+
+
+val new_GradientDescentOptions : c_obj -> c_obj
+val _new_GradientDescentOptions : c_obj -> c_obj
+val _delete_GradientDescentOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxGradientDescentOptions_from_ptr : c_obj -> c_obj
+
+
+val new_GradientDescent : c_obj -> c_obj
+val _new_GradientDescent : c_obj -> c_obj
+val _delete_GradientDescent : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxGradientDescent_from_ptr : c_obj -> c_obj
+
+
+val new_AdamOptions : c_obj -> c_obj
+val _new_AdamOptions : c_obj -> c_obj
+val _delete_AdamOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAdamOptions_from_ptr : c_obj -> c_obj
+
+
+val new_Adam : c_obj -> c_obj
+val _new_Adam : c_obj -> c_obj
+val _delete_Adam : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxAdam_from_ptr : c_obj -> c_obj
+
+
+val new_LBFGSOptions : c_obj -> c_obj
+val _new_LBFGSOptions : c_obj -> c_obj
+val _delete_LBFGSOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxLBFGSOptions_from_ptr : c_obj -> c_obj
+
+
+val new_LBFGS : c_obj -> c_obj
+val _new_LBFGS : c_obj -> c_obj
+val _delete_LBFGS : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxLBFGS_from_ptr : c_obj -> c_obj
+
+
+val new_SGDOptions : c_obj -> c_obj
+val _new_SGDOptions : c_obj -> c_obj
+val _delete_SGDOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSGDOptions_from_ptr : c_obj -> c_obj
+
+
+val new_SGD : c_obj -> c_obj
+val _new_SGD : c_obj -> c_obj
+val _delete_SGD : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSGD_from_ptr : c_obj -> c_obj
+
+
+val new_SimulatedAnnealingOptions : c_obj -> c_obj
+val _new_SimulatedAnnealingOptions : c_obj -> c_obj
+val _delete_SimulatedAnnealingOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSimulatedAnnealingOptions_from_ptr : c_obj -> c_obj
+
+
+val new_SimulatedAnnealing : c_obj -> c_obj
+val _new_SimulatedAnnealing : c_obj -> c_obj
+val _delete_SimulatedAnnealing : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxSimulatedAnnealing_from_ptr : c_obj -> c_obj
+
+
+val new_PSOOptions : c_obj -> c_obj
+val _new_PSOOptions : c_obj -> c_obj
+val _delete_PSOOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxPSOOptions_from_ptr : c_obj -> c_obj
+
+
+val new_PSO : c_obj -> c_obj
+val _new_PSO : c_obj -> c_obj
+val _delete_PSO : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxPSO_from_ptr : c_obj -> c_obj
+
+
+val new_DEOptions : c_obj -> c_obj
+val _new_DEOptions : c_obj -> c_obj
+val _delete_DEOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxDEOptions_from_ptr : c_obj -> c_obj
+
+
+val new_DifferentialEvolution : c_obj -> c_obj
+val _new_DifferentialEvolution : c_obj -> c_obj
+val _delete_DifferentialEvolution : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxDifferentialEvolution_from_ptr : c_obj -> c_obj
+
+
+val new_GAOptions : c_obj -> c_obj
+val _new_GAOptions : c_obj -> c_obj
+val _delete_GAOptions : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxGAOptions_from_ptr : c_obj -> c_obj
+
+
+val new_GeneticAlgorithm : c_obj -> c_obj
+val _new_GeneticAlgorithm : c_obj -> c_obj
+val _delete_GeneticAlgorithm : c_obj -> c_obj
+
+val create_datamunge_xxoptim_xxGeneticAlgorithm_from_ptr : c_obj -> c_obj
+
+
+val new_MAPOptions : c_obj -> c_obj
+val _new_MAPOptions : c_obj -> c_obj
+val _delete_MAPOptions : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxMAPOptions_from_ptr : c_obj -> c_obj
+
+
+val new_MAP : c_obj -> c_obj
+val _new_MAP : c_obj -> c_obj
+val _delete_MAP : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxMAP_from_ptr : c_obj -> c_obj
+
+
+val new_HMCOptions : c_obj -> c_obj
+val _new_HMCOptions : c_obj -> c_obj
+val _delete_HMCOptions : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxHMCOptions_from_ptr : c_obj -> c_obj
+
+
+val new_HMCResult : c_obj -> c_obj
+val _new_HMCResult : c_obj -> c_obj
+val _delete_HMCResult : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxHMCResult_from_ptr : c_obj -> c_obj
+
+
+val new_HMC : c_obj -> c_obj
+val _new_HMC : c_obj -> c_obj
+val _delete_HMC : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxHMC_from_ptr : c_obj -> c_obj
+
+
+val new_NUTSOptions : c_obj -> c_obj
+val _new_NUTSOptions : c_obj -> c_obj
+val _delete_NUTSOptions : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxNUTSOptions_from_ptr : c_obj -> c_obj
+
+
+val new_NUTSResult : c_obj -> c_obj
+val _new_NUTSResult : c_obj -> c_obj
+val _delete_NUTSResult : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxNUTSResult_from_ptr : c_obj -> c_obj
+
+
+val new_NUTS : c_obj -> c_obj
+val _new_NUTS : c_obj -> c_obj
+val _delete_NUTS : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxNUTS_from_ptr : c_obj -> c_obj
 
 
 val enum_to_int : c_enum_type -> c_obj -> Swig.c_obj

@@ -28,7 +28,14 @@ fmt: format
 
 run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave
 
-run-csharp: build-csharp
+# dotnet run always compiles whatever's in datamungedotnet/Program.cs (no per-example TARGET
+# mechanism, like D's dub) -- copy the selected example over Program.cs before building, same
+# pattern as run-d's examples-src/ -> source/app.d copy.
+run-csharp: prebuild-csharp
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "rm -rf build/dotnet/release"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake -S ./{{ BINDINGS_DIR }}/datamungedotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
+  cp examples/csharp/{{ TARGET }}.cs {{ BINDINGS_DIR }}/datamungedotnet/Program.cs
   {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/datamunge-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./{{ BINDINGS_DIR }}/datamungedotnet'
 
 run-java: build-java
@@ -44,6 +51,7 @@ run-d: build-d
   bash -lc 'set -euo pipefail; \
     compiler=""; \
     if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
+    cp examples/d/examples-src/{{ TARGET }}.d examples/d/source/app.d; \
     if command -v nix >/dev/null 2>&1; then \
       {{ NIX_DEVELOP }} .#d --command bash -lc "rm -rf build/dub-packages/datamunged-0.0.1 && cd examples/d && dub run $compiler --build=release"; \
     else \
@@ -123,6 +131,33 @@ prebuild-csharp:
 
 prebuild-r:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/datamunge_r_wrap.cpp -oh ../src/datamunge_r_wrap.h ../src/datamunger/swig/datamunger.i && mv ../src/datamunger.R ../R"
+  # Work around a swig-jse R-backend codegen bug: for a namespace-level `enum class` (not
+  # nested inside a class -- nested enums like plot::DataSeries::Kind are unaffected),
+  # defineEnumeration()'s .values=c(...) table calls a differently-named (and never-generated)
+  # .Call symbol than the enum's own per-member accessor functions use, so the package fails
+  # to load at all. Insert the missing doubled prefix (e.g. R_swig_TrendType_None_get ->
+  # R_swig_TrendType_TrendType_None_get) for every such enum.
+  perl -0777 -pi -e "s/'R_swig_TrendType_(?!TrendType_)/'R_swig_TrendType_TrendType_/g" R/datamunger.R
+  perl -0777 -pi -e "s/'R_swig_SeasonalType_(?!SeasonalType_)/'R_swig_SeasonalType_SeasonalType_/g" R/datamunger.R
+  perl -0777 -pi -e "s/'R_swig_Alternative_(?!Alternative_)/'R_swig_Alternative_Alternative_/g" R/datamunger.R
+  perl -0777 -pi -e "s/'R_swig_PAdjustMethod_(?!PAdjustMethod_)/'R_swig_PAdjustMethod_PAdjustMethod_/g" R/datamunger.R
+  # Work around a second swig-jse R-backend bug: std::vector<std::size_t> (used throughout
+  # this codebase, vs. the bare std::vector<size_t> the SizeVector %template/%apply fix is
+  # keyed to -- see the size_t %apply notes elsewhere in this file) gets its own, never-
+  # registered S4 class name for RETURN values specifically (parameters are fine via the
+  # %apply fix; only the return-value class registration differs). Point every reference at
+  # the class that's actually registered.
+  perl -0777 -pi -e "s/_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t/_p_std__vectorT_size_t_t/g" R/datamunger.R
+  # Third swig-jse R-backend bug, layered on top of the above: for a std::vector<size_t>
+  # RETURN VALUE (as opposed to a constructor that creates a genuine new SizeVector object),
+  # the underlying .Call already returns a plain R integer vector directly (matching how
+  # vector<double> returns work -- no pointer involved), so wrapping it in
+  # new("_p_std__vectorT_size_t_t", ref=ans) is wrong and throws an "invalid object for slot
+  # ref" error. Strip that erroneous wrapping. Genuine SizeVector-constructing calls are
+  # unaffected because they're followed by a reg.finalizer(...) line that this pattern doesn't
+  # match, so only by-value vector<size_t> returns (e.g. KMeans_labels, DataFrame_shape,
+  # Tensor_shape) get unwrapped.
+  perl -0777 -pi -e "s/;ans = (\.Call\('R_swig_[^\n]*?PACKAGE='datamunger'\));\n\s*ans <- if \(is\.null\(ans\)\) ans\n\s*else new\(\"_p_std__vectorT_size_t_t\", ref=ans\);\n\s*\n\s*ans\n/;\$1;\n/g" R/datamunger.R
 
 prebuild-perl:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
@@ -171,6 +206,16 @@ prebuild-java:
 
 prebuild-ocaml:
   {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${DATAMUNGE_PREFIX:-}\" || (echo 'DATAMUNGE_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/datamungeocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/datamungeocaml/src src/datamungeocaml/swig/datamungeocaml.i"
+  # Work around a swig-jse OCaml-backend codegen bug: for ANY `enum class` (nested or
+  # namespace-level), the generated SWIG_ENUM__... initializers reference the enumerator by
+  # its bare name in the ENCLOSING namespace (e.g. `datamunge::stats::Additive`) instead of
+  # correctly qualifying it with the enum class name (`datamunge::stats::TrendType::Additive`)
+  # -- a hard C++ compile error, not a warning. Insert the missing enum-class qualifier for
+  # every affected enumerator (see datamunge_ocaml_bindings.md memory for the full diagnosis).
+  perl -0777 -pi -e "s/= datamunge::plot::DataSeries::(Scatter|Line|Bar)\b/= static_cast<int>(datamunge::plot::DataSeries::Kind::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
+  perl -0777 -pi -e "s/= datamunge::stats::(None|Additive|AdditiveDamped)\b/= static_cast<int>(datamunge::stats::TrendType::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
+  perl -0777 -pi -e "s/= datamunge::stats::Multiplicative\b/= static_cast<int>(datamunge::stats::SeasonalType::Multiplicative)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
+  perl -0777 -pi -e "s/= datamunge::stats::(TwoSided|Less|Greater)\b/= static_cast<int>(datamunge::stats::Alternative::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
 
 # }}} prebuild commands
 
@@ -262,7 +307,7 @@ build-r: prebuild-r
 
 build-tcl: prebuild-tcl
   rm -rf build/datamungetcl
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake -S src/datamungetcl -B build/datamungetcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
   {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake --build build/datamungetcl -j{{ JOBS }} --verbose'
   {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cp -v {{ BINDINGS_DIR }}/datamungetcl/pkgIndex.tcl build/datamungetcl/'
 
@@ -276,11 +321,11 @@ build-rust:
 
 build-guile: prebuild-guile
   rm -rf build/datamungeguile
-  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake -S src/datamungeguile -B build/datamungeguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
   {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --build build/datamungeguile -j{{ JOBS }} --verbose'
 
 build-octave: prebuild-octave
-  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake -S src/datamungeoctave -B build/datamungeoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge)"'
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake -S src/datamungeoctave -B build/datamungeoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix datamunge);$(pkg-config --variable=prefix arrow)"'
   {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake --build build/datamungeoctave -j{{ JOBS }} --verbose'
 
 build-ocaml: prebuild-ocaml

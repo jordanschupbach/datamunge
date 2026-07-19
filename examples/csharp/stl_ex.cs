@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // and then recomment it back when compiling as a standalone program
 // #r "src/datamungedotnet/bin/Debug/net10.0/datamungedotnet.dll"
 
-class stl_ex {
+class Program {
   static void Main() {
     Console.WriteLine("Hello, World!");
 

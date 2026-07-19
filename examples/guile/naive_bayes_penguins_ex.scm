@@ -1,0 +1,35 @@
+(use-modules (datamunge))
+
+(define penguins (DataFrame-penguins))
+(format #t "penguins: ~a rows x ~a cols\n\n" (DataFrame-nrows penguins) (DataFrame-ncols penguins))
+
+(define model (new-NaiveBayesClassifier penguins "species ~ bill_length_mm + bill_depth_mm + island + sex"))
+(NaiveBayesClassifier-print-summary model)
+
+(format #t "\nConfusion matrix (rows = actual, cols = predicted):\n")
+(format #t "~a\n" (DataFrame-to-string (NaiveBayesClassifier-confusion-matrix model)))
+
+(format #t "\nMisclassified rows:\n")
+(define predictions (NaiveBayesClassifier-predict model penguins))
+(define misclassified 0)
+(define n (DataFrame-nrows penguins))
+(do ((i 0 (+ i 1))) ((= i n))
+  (unless (or (DataFrame-is-null penguins "species" i)
+              (DataFrame-is-null penguins "bill_length_mm" i)
+              (DataFrame-is-null penguins "bill_depth_mm" i)
+              (DataFrame-is-null penguins "island" i)
+              (DataFrame-is-null penguins "sex" i))
+    (let* ((actual (DataFrame-string-at penguins "species" i))
+           (pred (vector-ref predictions i)))
+      (unless (string=? pred actual)
+        (set! misclassified (+ misclassified 1))
+        (format #t "  row ~a: bill_length=~a bill_depth=~a island=~a sex=~a  actual=~a  predicted=~a\n" i
+                (DataFrame-numeric-at penguins "bill_length_mm" i) (DataFrame-numeric-at penguins "bill_depth_mm" i)
+                (DataFrame-string-at penguins "island" i) (DataFrame-string-at penguins "sex" i) actual pred)))))
+(format #t "~a misclassified (of ~a rows, some incomplete)\n" misclassified n)
+
+(define bill-only (new-NaiveBayesClassifier penguins "species ~ bill_length_mm + bill_depth_mm"))
+(format #t "\nbill-measurements-only model training accuracy: ~a%\n" (* 100.0 (NaiveBayesClassifier-training-accuracy bill-only)))
+(Plot-save (NaiveBayesClassifier-plot-classification bill-only penguins "bill_length_mm" "bill_depth_mm") "naive_bayes_penguins_classification.svg")
+(Plot-save (NaiveBayesClassifier-plot-decision-regions bill-only "bill_length_mm" "bill_depth_mm") "naive_bayes_penguins_decision_regions.svg")
+(format #t "Saved naive_bayes_penguins_classification.svg and naive_bayes_penguins_decision_regions.svg\n")

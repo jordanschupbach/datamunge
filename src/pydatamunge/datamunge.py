@@ -173,6 +173,32 @@ class DPair(object):
 
 # Register DPair in _datamunge:
 _datamunge.DPair_swigregister(DPair)
+class DVectorPair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.DVectorPair_swiginit(self, _datamunge.new_DVectorPair(*args))
+    first = property(_datamunge.DVectorPair_first_get, _datamunge.DVectorPair_first_set)
+    second = property(_datamunge.DVectorPair_second_get, _datamunge.DVectorPair_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index): 
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _datamunge.delete_DVectorPair
+
+# Register DVectorPair in _datamunge:
+_datamunge.DVectorPair_swigregister(DVectorPair)
 class SPair(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -409,6 +435,111 @@ class DVector(object):
 
 # Register DVector in _datamunge:
 _datamunge.DVector_swigregister(DVector)
+class DVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.DVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.DVectorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.DVectorVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.DVectorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.DVectorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.DVectorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.DVectorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.DVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.DVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.DVectorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.DVectorVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.DVectorVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.DVectorVector_empty(self)
+
+    def size(self):
+        return _datamunge.DVectorVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.DVectorVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.DVectorVector_begin(self)
+
+    def end(self):
+        return _datamunge.DVectorVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.DVectorVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.DVectorVector_rend(self)
+
+    def clear(self):
+        return _datamunge.DVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.DVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.DVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.DVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.DVectorVector_swiginit(self, _datamunge.new_DVectorVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.DVectorVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.DVectorVector_front(self)
+
+    def back(self):
+        return _datamunge.DVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.DVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.DVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.DVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.DVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.DVectorVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_DVectorVector
+
+# Register DVectorVector in _datamunge:
+_datamunge.DVectorVector_swigregister(DVectorVector)
 class SizeVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -738,6 +869,15 @@ class DataFrame(object):
     def __init__(self):
         _datamunge.DataFrame_swiginit(self, _datamunge.new_DataFrame())
 
+    @staticmethod
+    def empty():
+        r"""
+        Equivalent to the default constructor, exposed as a static factory (like iris()/
+               penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+               constructor's ownership-flagged pointer breaks method dispatch on the result.
+        """
+        return _datamunge.DataFrame_empty()
+
     def nrows(self):
         return _datamunge.DataFrame_nrows(self)
 
@@ -809,6 +949,21 @@ class DataFrame(object):
 
     def to_string(self, max_rows=10):
         return _datamunge.DataFrame_to_string(self, max_rows)
+
+    def is_numeric_column(self, column_name):
+        r"""true if column_name holds numeric values, false if it holds strings."""
+        return _datamunge.DataFrame_is_numeric_column(self, column_name)
+
+    def is_null(self, column_name, row_index):
+        return _datamunge.DataFrame_is_null(self, column_name, row_index)
+
+    def numeric_at(self, column_name, row_index):
+        r"""The value at (column_name, row_index); throws if the cell is null or the column isn't numeric."""
+        return _datamunge.DataFrame_numeric_at(self, column_name, row_index)
+
+    def string_at(self, column_name, row_index):
+        r"""The value at (column_name, row_index); throws if the cell is null or the column isn't string-typed."""
+        return _datamunge.DataFrame_string_at(self, column_name, row_index)
 
     @staticmethod
     def iris():
@@ -946,6 +1101,215 @@ class LM(object):
 
 # Register LM in _datamunge:
 _datamunge.LM_swigregister(LM)
+class LMM(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::LMM — a linear mixed model fit by
+           (RE)ML, with a single grouping factor, e.g. "score ~ x1 + (1 + x1 | school)".
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, reml=True, de_population_size=40, de_max_generations=300, theta_bound=5.0, seed=42):
+        r"""
+        :type reml: boolean, optional
+        :param reml: REML (default) or maximum likelihood.
+        :type theta_bound: float, optional
+        :param theta_bound: Box-constraint magnitude (relative to the residual SD) for the
+                                DifferentialEvolution search over variance-component parameters.
+        """
+        _datamunge.LMM_swiginit(self, _datamunge.new_LMM(data, formula, reml, de_population_size, de_max_generations, theta_bound, seed))
+
+    def formula_text(self):
+        return _datamunge.LMM_formula_text(self)
+
+    def group_variable(self):
+        return _datamunge.LMM_group_variable(self)
+
+    def has_random_intercept(self):
+        return _datamunge.LMM_has_random_intercept(self)
+
+    def random_effect_names(self):
+        return _datamunge.LMM_random_effect_names(self)
+
+    def is_reml(self):
+        return _datamunge.LMM_is_reml(self)
+
+    def observations(self):
+        return _datamunge.LMM_observations(self)
+
+    def num_groups(self):
+        return _datamunge.LMM_num_groups(self)
+
+    def rank(self):
+        return _datamunge.LMM_rank(self)
+
+    def coefficients(self):
+        return _datamunge.LMM_coefficients(self)
+
+    def coefficient_names(self):
+        return _datamunge.LMM_coefficient_names(self)
+
+    def standard_errors(self):
+        return _datamunge.LMM_standard_errors(self)
+
+    def z_values(self):
+        return _datamunge.LMM_z_values(self)
+
+    def p_values(self):
+        return _datamunge.LMM_p_values(self)
+
+    def fitted_values(self):
+        return _datamunge.LMM_fitted_values(self)
+
+    def residuals(self):
+        return _datamunge.LMM_residuals(self)
+
+    def residual_variance(self):
+        return _datamunge.LMM_residual_variance(self)
+
+    def residual_std_dev(self):
+        return _datamunge.LMM_residual_std_dev(self)
+
+    def random_effect_std_devs(self):
+        return _datamunge.LMM_random_effect_std_devs(self)
+
+    def random_effect_correlation(self, i, j):
+        return _datamunge.LMM_random_effect_correlation(self, i, j)
+
+    def group_labels(self):
+        return _datamunge.LMM_group_labels(self)
+
+    def random_effects_for_group(self, group_index):
+        r"""
+        The BLUP random-effect vector for the group at ``group_index`` (see group_labels()),
+               in the same order as random_effect_names().
+        """
+        return _datamunge.LMM_random_effects_for_group(self, group_index)
+
+    def log_likelihood(self):
+        return _datamunge.LMM_log_likelihood(self)
+
+    def deviance(self):
+        return _datamunge.LMM_deviance(self)
+
+    def aic(self):
+        return _datamunge.LMM_aic(self)
+
+    def bic(self):
+        return _datamunge.LMM_bic(self)
+
+    def summary(self):
+        return _datamunge.LMM_summary(self)
+
+    def print_summary(self):
+        return _datamunge.LMM_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.LMM_predict(self, newdata)
+    __swig_destroy__ = _datamunge.delete_LMM
+
+# Register LMM in _datamunge:
+_datamunge.LMM_swigregister(LMM)
+class GLMM(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::GLMM — a generalized linear mixed model
+           fit by penalized quasi-likelihood, with a single grouping factor, e.g.
+           "success ~ x1 + (1 | school)" with family="binomial".
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type family: string, optional
+        :param family: One of "binomial" (logit link) or "poisson" (log link).
+        """
+        _datamunge.GLMM_swiginit(self, _datamunge.new_GLMM(*args))
+
+    def formula_text(self):
+        return _datamunge.GLMM_formula_text(self)
+
+    def family(self):
+        return _datamunge.GLMM_family(self)
+
+    def group_variable(self):
+        return _datamunge.GLMM_group_variable(self)
+
+    def has_random_intercept(self):
+        return _datamunge.GLMM_has_random_intercept(self)
+
+    def random_effect_names(self):
+        return _datamunge.GLMM_random_effect_names(self)
+
+    def observations(self):
+        return _datamunge.GLMM_observations(self)
+
+    def num_groups(self):
+        return _datamunge.GLMM_num_groups(self)
+
+    def rank(self):
+        return _datamunge.GLMM_rank(self)
+
+    def iterations(self):
+        return _datamunge.GLMM_iterations(self)
+
+    def coefficients(self):
+        return _datamunge.GLMM_coefficients(self)
+
+    def coefficient_names(self):
+        return _datamunge.GLMM_coefficient_names(self)
+
+    def standard_errors(self):
+        return _datamunge.GLMM_standard_errors(self)
+
+    def z_values(self):
+        return _datamunge.GLMM_z_values(self)
+
+    def p_values(self):
+        return _datamunge.GLMM_p_values(self)
+
+    def fitted_values(self):
+        return _datamunge.GLMM_fitted_values(self)
+
+    def random_effect_std_devs(self):
+        return _datamunge.GLMM_random_effect_std_devs(self)
+
+    def random_effect_correlation(self, i, j):
+        return _datamunge.GLMM_random_effect_correlation(self, i, j)
+
+    def group_labels(self):
+        return _datamunge.GLMM_group_labels(self)
+
+    def random_effects_for_group(self, group_index):
+        r"""
+        The BLUP random-effect vector for the group at ``group_index`` (see group_labels()),
+               in the same order as random_effect_names().
+        """
+        return _datamunge.GLMM_random_effects_for_group(self, group_index)
+
+    def deviance(self):
+        return _datamunge.GLMM_deviance(self)
+
+    def aic(self):
+        return _datamunge.GLMM_aic(self)
+
+    def bic(self):
+        return _datamunge.GLMM_bic(self)
+
+    def summary(self):
+        return _datamunge.GLMM_summary(self)
+
+    def print_summary(self):
+        return _datamunge.GLMM_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.GLMM_predict(self, newdata)
+    __swig_destroy__ = _datamunge.delete_GLMM
+
+# Register GLMM in _datamunge:
+_datamunge.GLMM_swigregister(GLMM)
 class LDA(object):
     r"""SWIG-friendly facade for datamunge::stats::LDA — R-`MASS::lda()`-style linear discriminant analysis."""
 
@@ -1187,4 +1551,3141 @@ class DecisionTreeRegressor(object):
 
 # Register DecisionTreeRegressor in _datamunge:
 _datamunge.DecisionTreeRegressor_swigregister(DecisionTreeRegressor)
+class RandomForestClassifier(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::RandomForestClassifier — a bagged ensemble of CART trees,
+           each fit on a bootstrap sample with a random subset of predictors considered at every split.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type criterion: string, optional
+        :param criterion: "gini" (default) or "entropy".
+        :type max_features: std::size_t, optional
+        :param max_features: 0 = auto (floor(sqrt(number of predictors))).
+        """
+        _datamunge.RandomForestClassifier_swiginit(self, _datamunge.new_RandomForestClassifier(*args))
+
+    def classes(self):
+        return _datamunge.RandomForestClassifier_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.RandomForestClassifier_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.RandomForestClassifier_observations(self)
+
+    def n_trees(self):
+        return _datamunge.RandomForestClassifier_n_trees(self)
+
+    def max_features_used(self):
+        return _datamunge.RandomForestClassifier_max_features_used(self)
+
+    def feature_importance(self):
+        return _datamunge.RandomForestClassifier_feature_importance(self)
+
+    def training_accuracy(self):
+        return _datamunge.RandomForestClassifier_training_accuracy(self)
+
+    def oob_accuracy(self):
+        r"""Out-of-bag accuracy estimate (majority vote among trees that did not train on each row)."""
+        return _datamunge.RandomForestClassifier_oob_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes()."""
+        return _datamunge.RandomForestClassifier_confusion_matrix(self)
+
+    def summary(self):
+        return _datamunge.RandomForestClassifier_summary(self)
+
+    def print_summary(self):
+        return _datamunge.RandomForestClassifier_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.RandomForestClassifier_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column plus one numeric vote-share column per class (votes_<class>)."""
+        return _datamunge.RandomForestClassifier_predict_frame(self, newdata)
+
+    def plot_classification(self, data, x_feature, y_feature):
+        r"""
+        Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+               points overlaid in a distinct marker.
+        """
+        return _datamunge.RandomForestClassifier_plot_classification(self, data, x_feature, y_feature)
+
+    def plot_decision_regions(self, x_feature, y_feature, grid_resolution=60):
+        r"""
+        Background grid of majority-vote predicted class regions plus training points; requires exactly 2
+               predictors.
+        """
+        return _datamunge.RandomForestClassifier_plot_decision_regions(self, x_feature, y_feature, grid_resolution)
+    __swig_destroy__ = _datamunge.delete_RandomForestClassifier
+
+# Register RandomForestClassifier in _datamunge:
+_datamunge.RandomForestClassifier_swigregister(RandomForestClassifier)
+class RandomForestRegressor(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::RandomForestRegressor — a bagged ensemble of CART regression
+           trees, each fit on a bootstrap sample with a random subset of predictors considered at every split.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, n_trees=100, max_depth=10, min_samples_split=2, min_samples_leaf=1, max_features=0, bootstrap=True, sample_fraction=1.0, seed=42):
+        r"""
+        :type max_features: std::size_t, optional
+        :param max_features: 0 = auto (floor(number of predictors / 3)).
+        """
+        _datamunge.RandomForestRegressor_swiginit(self, _datamunge.new_RandomForestRegressor(data, formula, n_trees, max_depth, min_samples_split, min_samples_leaf, max_features, bootstrap, sample_fraction, seed))
+
+    def predictor_names(self):
+        return _datamunge.RandomForestRegressor_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.RandomForestRegressor_observations(self)
+
+    def n_trees(self):
+        return _datamunge.RandomForestRegressor_n_trees(self)
+
+    def max_features_used(self):
+        return _datamunge.RandomForestRegressor_max_features_used(self)
+
+    def feature_importance(self):
+        return _datamunge.RandomForestRegressor_feature_importance(self)
+
+    def fitted_values(self):
+        return _datamunge.RandomForestRegressor_fitted_values(self)
+
+    def r_squared(self):
+        return _datamunge.RandomForestRegressor_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.RandomForestRegressor_rmse(self)
+
+    def oob_r_squared(self):
+        return _datamunge.RandomForestRegressor_oob_r_squared(self)
+
+    def oob_rmse(self):
+        return _datamunge.RandomForestRegressor_oob_rmse(self)
+
+    def summary(self):
+        return _datamunge.RandomForestRegressor_summary(self)
+
+    def print_summary(self):
+        return _datamunge.RandomForestRegressor_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.RandomForestRegressor_predict(self, newdata)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.RandomForestRegressor_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.RandomForestRegressor_plot_residuals_vs_fitted(self)
+    __swig_destroy__ = _datamunge.delete_RandomForestRegressor
+
+# Register RandomForestRegressor in _datamunge:
+_datamunge.RandomForestRegressor_swigregister(RandomForestRegressor)
+class ElasticNet(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::ElasticNet — regularized linear regression fit by
+           coordinate descent (alpha=0 is ridge, alpha=1 is lasso); see also the Ridge and Lasso convenience
+           facades below.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, alpha=0.5, _lambda=-1.0, n_lambda=100, cv_folds=5, standardize=True, seed=42):
+        r"""
+        :type alpha: float, optional
+        :param alpha: L1/L2 mixing: 0 = ridge, 1 = lasso, in between = elastic net.
+        :type lambda: float, optional
+        :param lambda: Regularization strength; pass a negative value (the default) to select it automatically via
+                           cross-validation.
+        """
+        _datamunge.ElasticNet_swiginit(self, _datamunge.new_ElasticNet(data, formula, alpha, _lambda, n_lambda, cv_folds, standardize, seed))
+
+    def formula_text(self):
+        return _datamunge.ElasticNet_formula_text(self)
+
+    def has_intercept(self):
+        return _datamunge.ElasticNet_has_intercept(self)
+
+    def predictor_names(self):
+        return _datamunge.ElasticNet_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.ElasticNet_observations(self)
+
+    def alpha(self):
+        return _datamunge.ElasticNet_alpha(self)
+
+    def _lambda(self):
+        r"""
+        The lambda actually used to produce coefficients() -- either the caller-supplied value or the
+               cross-validation-selected one.
+        """
+        return _datamunge.ElasticNet__lambda(self)
+
+    def lambda_was_selected(self):
+        return _datamunge.ElasticNet_lambda_was_selected(self)
+
+    def lambda_path(self):
+        return _datamunge.ElasticNet_lambda_path(self)
+
+    def cv_mean_squared_error(self):
+        return _datamunge.ElasticNet_cv_mean_squared_error(self)
+
+    def coefficients(self):
+        return _datamunge.ElasticNet_coefficients(self)
+
+    def intercept(self):
+        return _datamunge.ElasticNet_intercept(self)
+
+    def non_zero_coefficients(self):
+        return _datamunge.ElasticNet_non_zero_coefficients(self)
+
+    def fitted_values(self):
+        return _datamunge.ElasticNet_fitted_values(self)
+
+    def residuals(self):
+        return _datamunge.ElasticNet_residuals(self)
+
+    def r_squared(self):
+        return _datamunge.ElasticNet_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.ElasticNet_rmse(self)
+
+    def summary(self):
+        return _datamunge.ElasticNet_summary(self)
+
+    def print_summary(self):
+        return _datamunge.ElasticNet_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.ElasticNet_predict(self, newdata)
+
+    def plot_coefficient_path(self):
+        r"""
+        Coefficient trace (one series per predictor) across the lambda path; throws unless lambda was
+               auto-selected.
+        """
+        return _datamunge.ElasticNet_plot_coefficient_path(self)
+
+    def plot_cv_curve(self):
+        r"""
+        Cross-validated MSE across the lambda path with the selected lambda marked; throws unless lambda
+               was auto-selected.
+        """
+        return _datamunge.ElasticNet_plot_cv_curve(self)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.ElasticNet_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.ElasticNet_plot_residuals_vs_fitted(self)
+    __swig_destroy__ = _datamunge.delete_ElasticNet
+
+# Register ElasticNet in _datamunge:
+_datamunge.ElasticNet_swigregister(ElasticNet)
+class Ridge(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::Ridge — pure L2-penalized ("ridge") regression, a special
+           case of ElasticNet with alpha fixed to 0. Shrinks coefficients toward zero without ever zeroing them.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, _lambda=-1.0, n_lambda=100, cv_folds=5, standardize=True, seed=42):
+        _datamunge.Ridge_swiginit(self, _datamunge.new_Ridge(data, formula, _lambda, n_lambda, cv_folds, standardize, seed))
+
+    def formula_text(self):
+        return _datamunge.Ridge_formula_text(self)
+
+    def has_intercept(self):
+        return _datamunge.Ridge_has_intercept(self)
+
+    def predictor_names(self):
+        return _datamunge.Ridge_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.Ridge_observations(self)
+
+    def _lambda(self):
+        return _datamunge.Ridge__lambda(self)
+
+    def lambda_was_selected(self):
+        return _datamunge.Ridge_lambda_was_selected(self)
+
+    def lambda_path(self):
+        return _datamunge.Ridge_lambda_path(self)
+
+    def cv_mean_squared_error(self):
+        return _datamunge.Ridge_cv_mean_squared_error(self)
+
+    def coefficients(self):
+        return _datamunge.Ridge_coefficients(self)
+
+    def intercept(self):
+        return _datamunge.Ridge_intercept(self)
+
+    def fitted_values(self):
+        return _datamunge.Ridge_fitted_values(self)
+
+    def residuals(self):
+        return _datamunge.Ridge_residuals(self)
+
+    def r_squared(self):
+        return _datamunge.Ridge_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.Ridge_rmse(self)
+
+    def summary(self):
+        return _datamunge.Ridge_summary(self)
+
+    def print_summary(self):
+        return _datamunge.Ridge_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.Ridge_predict(self, newdata)
+
+    def plot_coefficient_path(self):
+        return _datamunge.Ridge_plot_coefficient_path(self)
+
+    def plot_cv_curve(self):
+        return _datamunge.Ridge_plot_cv_curve(self)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.Ridge_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.Ridge_plot_residuals_vs_fitted(self)
+    __swig_destroy__ = _datamunge.delete_Ridge
+
+# Register Ridge in _datamunge:
+_datamunge.Ridge_swigregister(Ridge)
+class Lasso(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::Lasso — pure L1-penalized ("lasso") regression, a special
+           case of ElasticNet with alpha fixed to 1. Can shrink coefficients exactly to zero, performing
+           variable selection.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, _lambda=-1.0, n_lambda=100, cv_folds=5, standardize=True, seed=42):
+        _datamunge.Lasso_swiginit(self, _datamunge.new_Lasso(data, formula, _lambda, n_lambda, cv_folds, standardize, seed))
+
+    def formula_text(self):
+        return _datamunge.Lasso_formula_text(self)
+
+    def has_intercept(self):
+        return _datamunge.Lasso_has_intercept(self)
+
+    def predictor_names(self):
+        return _datamunge.Lasso_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.Lasso_observations(self)
+
+    def _lambda(self):
+        return _datamunge.Lasso__lambda(self)
+
+    def lambda_was_selected(self):
+        return _datamunge.Lasso_lambda_was_selected(self)
+
+    def lambda_path(self):
+        return _datamunge.Lasso_lambda_path(self)
+
+    def cv_mean_squared_error(self):
+        return _datamunge.Lasso_cv_mean_squared_error(self)
+
+    def coefficients(self):
+        return _datamunge.Lasso_coefficients(self)
+
+    def intercept(self):
+        return _datamunge.Lasso_intercept(self)
+
+    def non_zero_coefficients(self):
+        return _datamunge.Lasso_non_zero_coefficients(self)
+
+    def fitted_values(self):
+        return _datamunge.Lasso_fitted_values(self)
+
+    def residuals(self):
+        return _datamunge.Lasso_residuals(self)
+
+    def r_squared(self):
+        return _datamunge.Lasso_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.Lasso_rmse(self)
+
+    def summary(self):
+        return _datamunge.Lasso_summary(self)
+
+    def print_summary(self):
+        return _datamunge.Lasso_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.Lasso_predict(self, newdata)
+
+    def plot_coefficient_path(self):
+        return _datamunge.Lasso_plot_coefficient_path(self)
+
+    def plot_cv_curve(self):
+        return _datamunge.Lasso_plot_cv_curve(self)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.Lasso_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.Lasso_plot_residuals_vs_fitted(self)
+    __swig_destroy__ = _datamunge.delete_Lasso
+
+# Register Lasso in _datamunge:
+_datamunge.Lasso_swigregister(Lasso)
+class KNNClassifier(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::KNNClassifier — k-nearest-neighbors classification.
+           Since a training point's nearest neighbor is always itself, training_accuracy()/confusion_matrix()
+           report leave-one-out performance rather than a trivial resubstitution fit.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type metric: string, optional
+        :param metric: "euclidean" (default) or "manhattan".
+        """
+        _datamunge.KNNClassifier_swiginit(self, _datamunge.new_KNNClassifier(*args))
+
+    def classes(self):
+        return _datamunge.KNNClassifier_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.KNNClassifier_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.KNNClassifier_observations(self)
+
+    def k(self):
+        return _datamunge.KNNClassifier_k(self)
+
+    def training_accuracy(self):
+        return _datamunge.KNNClassifier_training_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes(); leave-one-out."""
+        return _datamunge.KNNClassifier_confusion_matrix(self)
+
+    def summary(self):
+        return _datamunge.KNNClassifier_summary(self)
+
+    def print_summary(self):
+        return _datamunge.KNNClassifier_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.KNNClassifier_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column plus one numeric vote-share column per class (votes_<class>)."""
+        return _datamunge.KNNClassifier_predict_frame(self, newdata)
+
+    def plot_classification(self, data, x_feature, y_feature):
+        r"""
+        Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+               points overlaid in a distinct marker.
+        """
+        return _datamunge.KNNClassifier_plot_classification(self, data, x_feature, y_feature)
+
+    def plot_decision_regions(self, x_feature, y_feature, grid_resolution=60):
+        r"""Background grid of predicted class regions plus training points; requires exactly 2 predictors."""
+        return _datamunge.KNNClassifier_plot_decision_regions(self, x_feature, y_feature, grid_resolution)
+    __swig_destroy__ = _datamunge.delete_KNNClassifier
+
+# Register KNNClassifier in _datamunge:
+_datamunge.KNNClassifier_swigregister(KNNClassifier)
+class KNNRegressor(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::KNNRegressor — k-nearest-neighbors regression. As with
+           KNNClassifier, fitted_values()/r_squared()/rmse() report leave-one-out performance.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type metric: string, optional
+        :param metric: "euclidean" (default) or "manhattan".
+        """
+        _datamunge.KNNRegressor_swiginit(self, _datamunge.new_KNNRegressor(*args))
+
+    def predictor_names(self):
+        return _datamunge.KNNRegressor_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.KNNRegressor_observations(self)
+
+    def k(self):
+        return _datamunge.KNNRegressor_k(self)
+
+    def fitted_values(self):
+        return _datamunge.KNNRegressor_fitted_values(self)
+
+    def r_squared(self):
+        return _datamunge.KNNRegressor_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.KNNRegressor_rmse(self)
+
+    def summary(self):
+        return _datamunge.KNNRegressor_summary(self)
+
+    def print_summary(self):
+        return _datamunge.KNNRegressor_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.KNNRegressor_predict(self, newdata)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.KNNRegressor_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.KNNRegressor_plot_residuals_vs_fitted(self)
+    __swig_destroy__ = _datamunge.delete_KNNRegressor
+
+# Register KNNRegressor in _datamunge:
+_datamunge.KNNRegressor_swigregister(KNNRegressor)
+class KMeans(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::KMeans — k-means clustering (Lloyd's
+           algorithm with k-means++ initialization) fit from a DataFrame and a list of numeric
+           feature columns.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- a workaround for SWIG-bound languages whose
+               overload resolution can't pass a real string vector to a constructor with other
+               default arguments (see DataFrame::add_string_column_encoded()).
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- a workaround for SWIG-bound languages whose
+               overload resolution can't pass a real string vector to a constructor with other
+               default arguments (see DataFrame::add_string_column_encoded()).
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- a workaround for SWIG-bound languages whose
+               overload resolution can't pass a real string vector to a constructor with other
+               default arguments (see DataFrame::add_string_column_encoded()).
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- a workaround for SWIG-bound languages whose
+               overload resolution can't pass a real string vector to a constructor with other
+               default arguments (see DataFrame::add_string_column_encoded()).
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- a workaround for SWIG-bound languages whose
+               overload resolution can't pass a real string vector to a constructor with other
+               default arguments (see DataFrame::add_string_column_encoded()).
+
+        |
+
+        *Overload 6:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- a workaround for SWIG-bound languages whose
+               overload resolution can't pass a real string vector to a constructor with other
+               default arguments (see DataFrame::add_string_column_encoded()).
+        """
+        _datamunge.KMeans_swiginit(self, _datamunge.new_KMeans(*args))
+
+    def feature_names(self):
+        return _datamunge.KMeans_feature_names(self)
+
+    def n_clusters(self):
+        return _datamunge.KMeans_n_clusters(self)
+
+    def observations(self):
+        return _datamunge.KMeans_observations(self)
+
+    def iterations_used(self):
+        return _datamunge.KMeans_iterations_used(self)
+
+    def labels(self):
+        return _datamunge.KMeans_labels(self)
+
+    def inertia(self):
+        return _datamunge.KMeans_inertia(self)
+
+    def cluster_center(self, cluster_index):
+        r"""The feature vector of cluster ``cluster_index's`` center."""
+        return _datamunge.KMeans_cluster_center(self, cluster_index)
+
+    def predict(self, newdata):
+        return _datamunge.KMeans_predict(self, newdata)
+
+    def summary(self):
+        return _datamunge.KMeans_summary(self)
+
+    def print_summary(self):
+        return _datamunge.KMeans_print_summary(self)
+    __swig_destroy__ = _datamunge.delete_KMeans
+
+# Register KMeans in _datamunge:
+_datamunge.KMeans_swigregister(KMeans)
+class AgglomerativeClustering(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::AgglomerativeClustering — bottom-up
+           hierarchical clustering fit from a DataFrame and a list of numeric feature columns.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type linkage: string, optional
+        :param linkage: One of "single", "complete", "average", "ward" (default).
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan"; ward linkage requires euclidean.
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.AgglomerativeClustering_swiginit(self, _datamunge.new_AgglomerativeClustering(*args))
+
+    def feature_names(self):
+        return _datamunge.AgglomerativeClustering_feature_names(self)
+
+    def observations(self):
+        return _datamunge.AgglomerativeClustering_observations(self)
+
+    def labels(self):
+        return _datamunge.AgglomerativeClustering_labels(self)
+
+    def cut(self, n_clusters):
+        r"""Re-cuts the already-built dendrogram to produce ``n_clusters`` clusters, without refitting."""
+        return _datamunge.AgglomerativeClustering_cut(self, n_clusters)
+
+    def num_merges(self):
+        return _datamunge.AgglomerativeClustering_num_merges(self)
+
+    def merge_cluster_a(self, merge_index):
+        return _datamunge.AgglomerativeClustering_merge_cluster_a(self, merge_index)
+
+    def merge_cluster_b(self, merge_index):
+        return _datamunge.AgglomerativeClustering_merge_cluster_b(self, merge_index)
+
+    def merge_distance(self, merge_index):
+        return _datamunge.AgglomerativeClustering_merge_distance(self, merge_index)
+
+    def merge_size(self, merge_index):
+        return _datamunge.AgglomerativeClustering_merge_size(self, merge_index)
+
+    def summary(self):
+        return _datamunge.AgglomerativeClustering_summary(self)
+
+    def print_summary(self):
+        return _datamunge.AgglomerativeClustering_print_summary(self)
+    __swig_destroy__ = _datamunge.delete_AgglomerativeClustering
+
+# Register AgglomerativeClustering in _datamunge:
+_datamunge.AgglomerativeClustering_swigregister(AgglomerativeClustering)
+class DBSCAN(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::DBSCAN — density-based clustering fit
+           from a DataFrame and a list of numeric feature columns.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        :type metric: string, optional
+        :param metric: One of "euclidean" (default) or "manhattan".
+
+        |
+
+        *Overload 2:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 3:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 4:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+
+        |
+
+        *Overload 5:*
+        Same as the vector<string> constructor, but feature_columns is a single "<count>\x1e
+               col1\x1fcol2\x1f..."-encoded string -- see KMeans's encoded constructor for why.
+        """
+        _datamunge.DBSCAN_swiginit(self, _datamunge.new_DBSCAN(*args))
+
+    def feature_names(self):
+        return _datamunge.DBSCAN_feature_names(self)
+
+    def observations(self):
+        return _datamunge.DBSCAN_observations(self)
+
+    def n_clusters(self):
+        return _datamunge.DBSCAN_n_clusters(self)
+
+    def n_noise(self):
+        return _datamunge.DBSCAN_n_noise(self)
+
+    def labels(self):
+        r"""Cluster index (0-based) assigned to each fitted row, or -1 for noise."""
+        return _datamunge.DBSCAN_labels(self)
+
+    def summary(self):
+        return _datamunge.DBSCAN_summary(self)
+
+    def print_summary(self):
+        return _datamunge.DBSCAN_print_summary(self)
+    __swig_destroy__ = _datamunge.delete_DBSCAN
+
+# Register DBSCAN in _datamunge:
+_datamunge.DBSCAN_swigregister(DBSCAN)
+class GBMClassifier(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::GBMClassifier — multiclass gradient boosting (a sequence
+           of shallow trees, one per class per round, fit to the current multinomial-deviance gradient).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, n_trees=100, learning_rate=0.1, max_depth=3, min_samples_split=2, min_samples_leaf=1, subsample=1.0, seed=42):
+        _datamunge.GBMClassifier_swiginit(self, _datamunge.new_GBMClassifier(data, formula, n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample, seed))
+
+    def classes(self):
+        return _datamunge.GBMClassifier_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.GBMClassifier_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.GBMClassifier_observations(self)
+
+    def n_trees(self):
+        return _datamunge.GBMClassifier_n_trees(self)
+
+    def feature_importance(self):
+        return _datamunge.GBMClassifier_feature_importance(self)
+
+    def training_accuracy(self):
+        return _datamunge.GBMClassifier_training_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes()."""
+        return _datamunge.GBMClassifier_confusion_matrix(self)
+
+    def training_deviance(self):
+        r"""Multinomial deviance on the training set after each boosting round (length n_trees())."""
+        return _datamunge.GBMClassifier_training_deviance(self)
+
+    def summary(self):
+        return _datamunge.GBMClassifier_summary(self)
+
+    def print_summary(self):
+        return _datamunge.GBMClassifier_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.GBMClassifier_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column plus one numeric probability column per class (prob_<class>)."""
+        return _datamunge.GBMClassifier_predict_frame(self, newdata)
+
+    def plot_classification(self, data, x_feature, y_feature):
+        return _datamunge.GBMClassifier_plot_classification(self, data, x_feature, y_feature)
+
+    def plot_decision_regions(self, x_feature, y_feature, grid_resolution=60):
+        return _datamunge.GBMClassifier_plot_decision_regions(self, x_feature, y_feature, grid_resolution)
+
+    def plot_training_deviance(self):
+        return _datamunge.GBMClassifier_plot_training_deviance(self)
+    __swig_destroy__ = _datamunge.delete_GBMClassifier
+
+# Register GBMClassifier in _datamunge:
+_datamunge.GBMClassifier_swigregister(GBMClassifier)
+class GBMRegressor(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::GBMRegressor — a sequence of shallow regression trees,
+           each fit to the residuals of the current ensemble (gradient boosting on squared error).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, n_trees=100, learning_rate=0.1, max_depth=3, min_samples_split=2, min_samples_leaf=1, subsample=1.0, seed=42):
+        _datamunge.GBMRegressor_swiginit(self, _datamunge.new_GBMRegressor(data, formula, n_trees, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample, seed))
+
+    def predictor_names(self):
+        return _datamunge.GBMRegressor_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.GBMRegressor_observations(self)
+
+    def n_trees(self):
+        return _datamunge.GBMRegressor_n_trees(self)
+
+    def feature_importance(self):
+        return _datamunge.GBMRegressor_feature_importance(self)
+
+    def fitted_values(self):
+        return _datamunge.GBMRegressor_fitted_values(self)
+
+    def r_squared(self):
+        return _datamunge.GBMRegressor_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.GBMRegressor_rmse(self)
+
+    def training_deviance(self):
+        r"""Mean squared error on the training set after each boosting round (length n_trees())."""
+        return _datamunge.GBMRegressor_training_deviance(self)
+
+    def summary(self):
+        return _datamunge.GBMRegressor_summary(self)
+
+    def print_summary(self):
+        return _datamunge.GBMRegressor_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.GBMRegressor_predict(self, newdata)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.GBMRegressor_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.GBMRegressor_plot_residuals_vs_fitted(self)
+
+    def plot_training_deviance(self):
+        return _datamunge.GBMRegressor_plot_training_deviance(self)
+    __swig_destroy__ = _datamunge.delete_GBMRegressor
+
+# Register GBMRegressor in _datamunge:
+_datamunge.GBMRegressor_swigregister(GBMRegressor)
+class XGBoostClassifier(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::XGBoostClassifier — regularized, second-order (gradient +
+           Hessian) multiclass gradient boosting, using the same regularized-gain tree-growing objective as the
+           XGBoost algorithm (L1/L2 leaf regularization plus a per-split complexity penalty).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, n_trees=100, learning_rate=0.3, max_depth=6, _lambda=1.0, alpha=0.0, gamma=0.0, min_child_weight=1.0, min_samples_leaf=1, subsample=1.0, colsample_bytree=1.0, seed=42):
+        _datamunge.XGBoostClassifier_swiginit(self, _datamunge.new_XGBoostClassifier(data, formula, n_trees, learning_rate, max_depth, _lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample, colsample_bytree, seed))
+
+    def classes(self):
+        return _datamunge.XGBoostClassifier_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.XGBoostClassifier_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.XGBoostClassifier_observations(self)
+
+    def n_trees(self):
+        return _datamunge.XGBoostClassifier_n_trees(self)
+
+    def feature_importance(self):
+        r"""Gain-based importance (XGBoost's default "gain" metric), normalized to sum to 1."""
+        return _datamunge.XGBoostClassifier_feature_importance(self)
+
+    def training_accuracy(self):
+        return _datamunge.XGBoostClassifier_training_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes()."""
+        return _datamunge.XGBoostClassifier_confusion_matrix(self)
+
+    def training_deviance(self):
+        r"""Multinomial deviance on the training set after each boosting round (length n_trees())."""
+        return _datamunge.XGBoostClassifier_training_deviance(self)
+
+    def summary(self):
+        return _datamunge.XGBoostClassifier_summary(self)
+
+    def print_summary(self):
+        return _datamunge.XGBoostClassifier_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.XGBoostClassifier_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column plus one numeric probability column per class (prob_<class>)."""
+        return _datamunge.XGBoostClassifier_predict_frame(self, newdata)
+
+    def plot_classification(self, data, x_feature, y_feature):
+        return _datamunge.XGBoostClassifier_plot_classification(self, data, x_feature, y_feature)
+
+    def plot_decision_regions(self, x_feature, y_feature, grid_resolution=60):
+        return _datamunge.XGBoostClassifier_plot_decision_regions(self, x_feature, y_feature, grid_resolution)
+
+    def plot_training_deviance(self):
+        return _datamunge.XGBoostClassifier_plot_training_deviance(self)
+    __swig_destroy__ = _datamunge.delete_XGBoostClassifier
+
+# Register XGBoostClassifier in _datamunge:
+_datamunge.XGBoostClassifier_swigregister(XGBoostClassifier)
+class XGBoostRegressor(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::XGBoostRegressor — regularized, second-order gradient
+           boosting regression with the same tree-growing objective as the XGBoost algorithm.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, n_trees=100, learning_rate=0.3, max_depth=6, _lambda=1.0, alpha=0.0, gamma=0.0, min_child_weight=1.0, min_samples_leaf=1, subsample=1.0, colsample_bytree=1.0, seed=42):
+        _datamunge.XGBoostRegressor_swiginit(self, _datamunge.new_XGBoostRegressor(data, formula, n_trees, learning_rate, max_depth, _lambda, alpha, gamma, min_child_weight, min_samples_leaf, subsample, colsample_bytree, seed))
+
+    def predictor_names(self):
+        return _datamunge.XGBoostRegressor_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.XGBoostRegressor_observations(self)
+
+    def n_trees(self):
+        return _datamunge.XGBoostRegressor_n_trees(self)
+
+    def feature_importance(self):
+        return _datamunge.XGBoostRegressor_feature_importance(self)
+
+    def fitted_values(self):
+        return _datamunge.XGBoostRegressor_fitted_values(self)
+
+    def r_squared(self):
+        return _datamunge.XGBoostRegressor_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.XGBoostRegressor_rmse(self)
+
+    def training_deviance(self):
+        return _datamunge.XGBoostRegressor_training_deviance(self)
+
+    def summary(self):
+        return _datamunge.XGBoostRegressor_summary(self)
+
+    def print_summary(self):
+        return _datamunge.XGBoostRegressor_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.XGBoostRegressor_predict(self, newdata)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.XGBoostRegressor_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.XGBoostRegressor_plot_residuals_vs_fitted(self)
+
+    def plot_training_deviance(self):
+        return _datamunge.XGBoostRegressor_plot_training_deviance(self)
+    __swig_destroy__ = _datamunge.delete_XGBoostRegressor
+
+# Register XGBoostRegressor in _datamunge:
+_datamunge.XGBoostRegressor_swigregister(XGBoostRegressor)
+class KernelRegression(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::KernelRegression — Nadaraya-Watson kernel regression, a
+           nonparametric fit where each prediction is a kernel-weighted average of training responses.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type kernel: string, optional
+        :param kernel: "gaussian" (default), "epanechnikov", "uniform", or "triangular".
+        :type bandwidth: float, optional
+        :param bandwidth: Bandwidth in standardized-predictor units; pass a negative value (the default) to select
+                              it automatically via leave-one-out cross-validation.
+        """
+        _datamunge.KernelRegression_swiginit(self, _datamunge.new_KernelRegression(*args))
+
+    def predictor_names(self):
+        return _datamunge.KernelRegression_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.KernelRegression_observations(self)
+
+    def bandwidth(self):
+        r"""The bandwidth actually used -- either the caller-supplied value or the cross-validation-selected one."""
+        return _datamunge.KernelRegression_bandwidth(self)
+
+    def bandwidth_was_selected(self):
+        return _datamunge.KernelRegression_bandwidth_was_selected(self)
+
+    def bandwidth_grid(self):
+        return _datamunge.KernelRegression_bandwidth_grid(self)
+
+    def cv_mean_squared_error(self):
+        return _datamunge.KernelRegression_cv_mean_squared_error(self)
+
+    def fitted_values(self):
+        return _datamunge.KernelRegression_fitted_values(self)
+
+    def r_squared(self):
+        return _datamunge.KernelRegression_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.KernelRegression_rmse(self)
+
+    def summary(self):
+        return _datamunge.KernelRegression_summary(self)
+
+    def print_summary(self):
+        return _datamunge.KernelRegression_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.KernelRegression_predict(self, newdata)
+
+    def plot_fit(self, data, grid_resolution=200):
+        r"""Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model."""
+        return _datamunge.KernelRegression_plot_fit(self, data, grid_resolution)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.KernelRegression_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.KernelRegression_plot_residuals_vs_fitted(self)
+
+    def plot_cv_curve(self):
+        return _datamunge.KernelRegression_plot_cv_curve(self)
+    __swig_destroy__ = _datamunge.delete_KernelRegression
+
+# Register KernelRegression in _datamunge:
+_datamunge.KernelRegression_swigregister(KernelRegression)
+class GaussianProcessRegression(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::GaussianProcessRegression — exact Gaussian process
+           regression with an RBF kernel, fit via Cholesky decomposition. Unlike every other regressor here,
+           predictions come with a principled posterior confidence interval; see predict_frame().
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, length_scale=-1.0, noise_ratio=-1.0, n_length_scale_grid=20, n_noise_grid=15, standardize=True):
+        r"""
+        :type length_scale: float, optional
+        :param length_scale: RBF kernel length scale in standardized-predictor units; pass a negative value (the
+                                  default) to select it automatically by maximizing the log marginal likelihood.
+        :type noise_ratio: float, optional
+        :param noise_ratio: noise_variance / signal_variance; pass a negative value (the default) to select it
+                                automatically the same way (0 is a legal fixed value: a noiseless/interpolating GP).
+        """
+        _datamunge.GaussianProcessRegression_swiginit(self, _datamunge.new_GaussianProcessRegression(data, formula, length_scale, noise_ratio, n_length_scale_grid, n_noise_grid, standardize))
+
+    def predictor_names(self):
+        return _datamunge.GaussianProcessRegression_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.GaussianProcessRegression_observations(self)
+
+    def length_scale(self):
+        return _datamunge.GaussianProcessRegression_length_scale(self)
+
+    def signal_variance(self):
+        return _datamunge.GaussianProcessRegression_signal_variance(self)
+
+    def noise_variance(self):
+        return _datamunge.GaussianProcessRegression_noise_variance(self)
+
+    def log_marginal_likelihood(self):
+        return _datamunge.GaussianProcessRegression_log_marginal_likelihood(self)
+
+    def length_scale_was_selected(self):
+        return _datamunge.GaussianProcessRegression_length_scale_was_selected(self)
+
+    def noise_ratio_was_selected(self):
+        return _datamunge.GaussianProcessRegression_noise_ratio_was_selected(self)
+
+    def length_scale_grid(self):
+        return _datamunge.GaussianProcessRegression_length_scale_grid(self)
+
+    def length_scale_profile_log_likelihood(self):
+        return _datamunge.GaussianProcessRegression_length_scale_profile_log_likelihood(self)
+
+    def fitted_values(self):
+        return _datamunge.GaussianProcessRegression_fitted_values(self)
+
+    def r_squared(self):
+        return _datamunge.GaussianProcessRegression_r_squared(self)
+
+    def rmse(self):
+        return _datamunge.GaussianProcessRegression_rmse(self)
+
+    def summary(self):
+        return _datamunge.GaussianProcessRegression_summary(self)
+
+    def print_summary(self):
+        return _datamunge.GaussianProcessRegression_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.GaussianProcessRegression_predict(self, newdata)
+
+    def predict_frame(self, *args):
+        r"""
+        :type interval_kind: string, optional
+        :param interval_kind: One of "none" or "confidence". Returned DataFrame has a "fit" column, plus
+                                 "se_fit"/"lwr"/"upr" when an interval is requested.
+        """
+        return _datamunge.GaussianProcessRegression_predict_frame(self, *args)
+
+    def plot_fit(self, data, grid_resolution=200, level=0.95):
+        return _datamunge.GaussianProcessRegression_plot_fit(self, data, grid_resolution, level)
+
+    def plot_predicted_vs_actual(self):
+        return _datamunge.GaussianProcessRegression_plot_predicted_vs_actual(self)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.GaussianProcessRegression_plot_residuals_vs_fitted(self)
+
+    def plot_length_scale_profile(self):
+        return _datamunge.GaussianProcessRegression_plot_length_scale_profile(self)
+    __swig_destroy__ = _datamunge.delete_GaussianProcessRegression
+
+# Register GaussianProcessRegression in _datamunge:
+_datamunge.GaussianProcessRegression_swigregister(GaussianProcessRegression)
+class NaiveBayesClassifier(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::NaiveBayesClassifier — a Naive Bayes classifier that
+           models numeric predictors with per-class Gaussians and categorical predictors with per-class
+           frequency tables (each categorical predictor's levels modeled jointly as one variable, not as
+           separate independent dummy features).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, data, formula, laplace_smoothing=1.0, var_smoothing=1e-9):
+        _datamunge.NaiveBayesClassifier_swiginit(self, _datamunge.new_NaiveBayesClassifier(data, formula, laplace_smoothing, var_smoothing))
+
+    def classes(self):
+        return _datamunge.NaiveBayesClassifier_classes(self)
+
+    def predictor_names(self):
+        return _datamunge.NaiveBayesClassifier_predictor_names(self)
+
+    def observations(self):
+        return _datamunge.NaiveBayesClassifier_observations(self)
+
+    def class_priors(self):
+        return _datamunge.NaiveBayesClassifier_class_priors(self)
+
+    def training_accuracy(self):
+        return _datamunge.NaiveBayesClassifier_training_accuracy(self)
+
+    def confusion_matrix(self):
+        r""""actual" column plus one numeric column per class (counts), both ordered as classes()."""
+        return _datamunge.NaiveBayesClassifier_confusion_matrix(self)
+
+    def summary(self):
+        return _datamunge.NaiveBayesClassifier_summary(self)
+
+    def print_summary(self):
+        return _datamunge.NaiveBayesClassifier_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.NaiveBayesClassifier_predict(self, newdata)
+
+    def predict_frame(self, newdata):
+        r""""class" column plus one numeric probability column per class (prob_<class>)."""
+        return _datamunge.NaiveBayesClassifier_predict_frame(self, newdata)
+
+    def plot_classification(self, data, x_feature, y_feature):
+        return _datamunge.NaiveBayesClassifier_plot_classification(self, data, x_feature, y_feature)
+
+    def plot_decision_regions(self, x_feature, y_feature, grid_resolution=60):
+        r"""Background grid of predicted class regions; requires exactly two predictors, both numeric."""
+        return _datamunge.NaiveBayesClassifier_plot_decision_regions(self, x_feature, y_feature, grid_resolution)
+    __swig_destroy__ = _datamunge.delete_NaiveBayesClassifier
+
+# Register NaiveBayesClassifier in _datamunge:
+_datamunge.NaiveBayesClassifier_swigregister(NaiveBayesClassifier)
+class GLM(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::GLM — a generalized linear model (gaussian, binomial,
+           poisson, or Gamma family with its canonical link, matching R's glm() defaults) fit by iteratively
+           reweighted least squares.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type family: string, optional
+        :param family: One of "gaussian" (identity link), "binomial" (logit link), "poisson" (log link), or
+                           "Gamma" (inverse link).
+        :type weights_column: string, optional
+        :param weights_column: Optional column name enabling prior weights; pass "" (the default) for none.
+        """
+        _datamunge.GLM_swiginit(self, _datamunge.new_GLM(*args))
+
+    def formula_text(self):
+        return _datamunge.GLM_formula_text(self)
+
+    def family(self):
+        return _datamunge.GLM_family(self)
+
+    def has_intercept(self):
+        return _datamunge.GLM_has_intercept(self)
+
+    def observations(self):
+        return _datamunge.GLM_observations(self)
+
+    def rank(self):
+        return _datamunge.GLM_rank(self)
+
+    def degrees_of_freedom(self):
+        return _datamunge.GLM_degrees_of_freedom(self)
+
+    def coefficients(self):
+        return _datamunge.GLM_coefficients(self)
+
+    def coefficient_names(self):
+        return _datamunge.GLM_coefficient_names(self)
+
+    def fitted_values(self):
+        return _datamunge.GLM_fitted_values(self)
+
+    def linear_predictors(self):
+        return _datamunge.GLM_linear_predictors(self)
+
+    def residuals(self):
+        return _datamunge.GLM_residuals(self)
+
+    def pearson_residuals(self):
+        return _datamunge.GLM_pearson_residuals(self)
+
+    def standardized_residuals(self):
+        return _datamunge.GLM_standardized_residuals(self)
+
+    def leverage(self):
+        return _datamunge.GLM_leverage(self)
+
+    def standard_errors(self):
+        return _datamunge.GLM_standard_errors(self)
+
+    def test_statistics(self):
+        return _datamunge.GLM_test_statistics(self)
+
+    def p_values(self):
+        return _datamunge.GLM_p_values(self)
+
+    def deviance(self):
+        return _datamunge.GLM_deviance(self)
+
+    def null_deviance(self):
+        return _datamunge.GLM_null_deviance(self)
+
+    def dispersion(self):
+        return _datamunge.GLM_dispersion(self)
+
+    def aic(self):
+        return _datamunge.GLM_aic(self)
+
+    def confidence_interval_lower(self, level=0.95):
+        return _datamunge.GLM_confidence_interval_lower(self, level)
+
+    def confidence_interval_upper(self, level=0.95):
+        return _datamunge.GLM_confidence_interval_upper(self, level)
+
+    def summary(self):
+        return _datamunge.GLM_summary(self)
+
+    def print_summary(self):
+        return _datamunge.GLM_print_summary(self)
+
+    def predict(self, newdata):
+        r"""Response-scale predictions (back-transformed through the inverse link)."""
+        return _datamunge.GLM_predict(self, newdata)
+
+    def predict_frame(self, *args):
+        r"""
+        :type interval_kind: string, optional
+        :param interval_kind: One of "none" or "confidence". Returned DataFrame has a "fit" column, plus
+                                 "se_fit"/"lwr"/"upr" when an interval is requested.
+        """
+        return _datamunge.GLM_predict_frame(self, *args)
+
+    def plot_residuals_vs_fitted(self):
+        return _datamunge.GLM_plot_residuals_vs_fitted(self)
+
+    def plot_normal_qq(self):
+        return _datamunge.GLM_plot_normal_qq(self)
+
+    def plot_scale_location(self):
+        return _datamunge.GLM_plot_scale_location(self)
+
+    def plot_residuals_vs_leverage(self):
+        return _datamunge.GLM_plot_residuals_vs_leverage(self)
+
+    def save_diagnostic_plots(self, path_prefix):
+        return _datamunge.GLM_save_diagnostic_plots(self, path_prefix)
+    __swig_destroy__ = _datamunge.delete_GLM
+
+# Register GLM in _datamunge:
+_datamunge.GLM_swigregister(GLM)
+class Tensor(object):
+    r"""
+    SWIG-friendly facade for datamunge::linalg::Tensor -- a dense, row-major, N-dimensional
+           array that can hold float64, bool, or string elements (chosen at construction).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type dtype: string, optional
+        :param dtype: One of "float64", "bool", or "string".
+        """
+        _datamunge.Tensor_swiginit(self, _datamunge.new_Tensor(*args))
+
+    @staticmethod
+    def zeros(shape):
+        return _datamunge.Tensor_zeros(shape)
+
+    @staticmethod
+    def ones(shape):
+        return _datamunge.Tensor_ones(shape)
+
+    @staticmethod
+    def full(shape, value):
+        return _datamunge.Tensor_full(shape, value)
+
+    @staticmethod
+    def from_values(shape, values):
+        return _datamunge.Tensor_from_values(shape, values)
+
+    @staticmethod
+    def from_bool_values(shape, values):
+        return _datamunge.Tensor_from_bool_values(shape, values)
+
+    @staticmethod
+    def from_string_values(shape, values):
+        return _datamunge.Tensor_from_string_values(shape, values)
+
+    @staticmethod
+    def arange(start, stop, step=1.0):
+        return _datamunge.Tensor_arange(start, stop, step)
+
+    @staticmethod
+    def eye(n):
+        return _datamunge.Tensor_eye(n)
+
+    def ndim(self):
+        return _datamunge.Tensor_ndim(self)
+
+    def shape(self):
+        return _datamunge.Tensor_shape(self)
+
+    def size(self):
+        return _datamunge.Tensor_size(self)
+
+    def dtype_name(self):
+        return _datamunge.Tensor_dtype_name(self)
+
+    def at(self, index):
+        return _datamunge.Tensor_at(self, index)
+
+    def set(self, index, value):
+        return _datamunge.Tensor_set(self, index, value)
+
+    def string_at(self, index):
+        return _datamunge.Tensor_string_at(self, index)
+
+    def set_string(self, index, value):
+        return _datamunge.Tensor_set_string(self, index, value)
+
+    def at_flat(self, i):
+        return _datamunge.Tensor_at_flat(self, i)
+
+    def set_flat(self, i, value):
+        return _datamunge.Tensor_set_flat(self, i, value)
+
+    def string_at_flat(self, i):
+        return _datamunge.Tensor_string_at_flat(self, i)
+
+    def set_string_flat(self, i, value):
+        return _datamunge.Tensor_set_string_flat(self, i, value)
+
+    def reshape(self, new_shape):
+        return _datamunge.Tensor_reshape(self, new_shape)
+
+    def flatten(self):
+        return _datamunge.Tensor_flatten(self)
+
+    def transpose(self, *args):
+        return _datamunge.Tensor_transpose(self, *args)
+
+    def squeeze(self):
+        return _datamunge.Tensor_squeeze(self)
+
+    def squeeze_axis(self, axis):
+        return _datamunge.Tensor_squeeze_axis(self, axis)
+
+    def expand_dims(self, axis):
+        return _datamunge.Tensor_expand_dims(self, axis)
+
+    def slice(self, axis, start, stop, step=1):
+        return _datamunge.Tensor_slice(self, axis, start, stop, step)
+
+    def index_select(self, axis, indices):
+        return _datamunge.Tensor_index_select(self, axis, indices)
+
+    @staticmethod
+    def concatenate2(a, b, axis):
+        r"""Concatenates two tensors along an existing axis (shapes must match on every other axis)."""
+        return _datamunge.Tensor_concatenate2(a, b, axis)
+
+    @staticmethod
+    def stack2(a, b, axis):
+        r"""Stacks two same-shaped tensors along a new axis inserted at position ``axis``."""
+        return _datamunge.Tensor_stack2(a, b, axis)
+
+    def add(self, other):
+        return _datamunge.Tensor_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.Tensor_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.Tensor_multiply(self, other)
+
+    def divide(self, other):
+        return _datamunge.Tensor_divide(self, other)
+
+    def power(self, other):
+        return _datamunge.Tensor_power(self, other)
+
+    def add_scalar(self, scalar):
+        return _datamunge.Tensor_add_scalar(self, scalar)
+
+    def subtract_scalar(self, scalar):
+        return _datamunge.Tensor_subtract_scalar(self, scalar)
+
+    def multiply_scalar(self, scalar):
+        return _datamunge.Tensor_multiply_scalar(self, scalar)
+
+    def divide_scalar(self, scalar):
+        return _datamunge.Tensor_divide_scalar(self, scalar)
+
+    def power_scalar(self, exponent):
+        return _datamunge.Tensor_power_scalar(self, exponent)
+
+    def negate(self):
+        return _datamunge.Tensor_negate(self)
+
+    def abs(self):
+        return _datamunge.Tensor_abs(self)
+
+    def sqrt(self):
+        return _datamunge.Tensor_sqrt(self)
+
+    def exp(self):
+        return _datamunge.Tensor_exp(self)
+
+    def log(self):
+        return _datamunge.Tensor_log(self)
+
+    def apply(self, callback):
+        r"""Applies a user-supplied Callback elementwise. Requires a numeric dtype; result is float64."""
+        return _datamunge.Tensor_apply(self, callback)
+
+    def equal(self, other):
+        return _datamunge.Tensor_equal(self, other)
+
+    def not_equal(self, other):
+        return _datamunge.Tensor_not_equal(self, other)
+
+    def less(self, other):
+        return _datamunge.Tensor_less(self, other)
+
+    def less_equal(self, other):
+        return _datamunge.Tensor_less_equal(self, other)
+
+    def greater(self, other):
+        return _datamunge.Tensor_greater(self, other)
+
+    def greater_equal(self, other):
+        return _datamunge.Tensor_greater_equal(self, other)
+
+    def sum(self):
+        return _datamunge.Tensor_sum(self)
+
+    def mean(self):
+        return _datamunge.Tensor_mean(self)
+
+    def max(self):
+        return _datamunge.Tensor_max(self)
+
+    def min(self):
+        return _datamunge.Tensor_min(self)
+
+    def prod(self):
+        return _datamunge.Tensor_prod(self)
+
+    def argmax(self):
+        return _datamunge.Tensor_argmax(self)
+
+    def argmin(self):
+        return _datamunge.Tensor_argmin(self)
+
+    def all(self):
+        return _datamunge.Tensor_all(self)
+
+    def any(self):
+        return _datamunge.Tensor_any(self)
+
+    def sum_axis(self, axis, keepdims=False):
+        return _datamunge.Tensor_sum_axis(self, axis, keepdims)
+
+    def mean_axis(self, axis, keepdims=False):
+        return _datamunge.Tensor_mean_axis(self, axis, keepdims)
+
+    def max_axis(self, axis, keepdims=False):
+        return _datamunge.Tensor_max_axis(self, axis, keepdims)
+
+    def min_axis(self, axis, keepdims=False):
+        return _datamunge.Tensor_min_axis(self, axis, keepdims)
+
+    def prod_axis(self, axis, keepdims=False):
+        return _datamunge.Tensor_prod_axis(self, axis, keepdims)
+
+    def argmax_axis(self, axis, keepdims=False):
+        return _datamunge.Tensor_argmax_axis(self, axis, keepdims)
+
+    def argmin_axis(self, axis, keepdims=False):
+        return _datamunge.Tensor_argmin_axis(self, axis, keepdims)
+
+    def matmul(self, other):
+        return _datamunge.Tensor_matmul(self, other)
+
+    def dot(self, other):
+        return _datamunge.Tensor_dot(self, other)
+
+    def outer(self, other):
+        return _datamunge.Tensor_outer(self, other)
+
+    def to_string(self, max_elements=100):
+        return _datamunge.Tensor_to_string(self, max_elements)
+    __swig_destroy__ = _datamunge.delete_Tensor
+
+# Register Tensor in _datamunge:
+_datamunge.Tensor_swigregister(Tensor)
+class Dual(object):
+    r"""
+    SWIG-friendly facade for datamunge::autodiff::Dual -- a first-order forward-mode
+           dual number. Build an expression out of named operations (starting from a seed
+           with derivative=1) to read off an exact derivative alongside the value.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, value, derivative=0.0):
+        _datamunge.Dual_swiginit(self, _datamunge.new_Dual(value, derivative))
+
+    def value(self):
+        return _datamunge.Dual_value(self)
+
+    def derivative(self):
+        return _datamunge.Dual_derivative(self)
+
+    def add(self, other):
+        return _datamunge.Dual_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.Dual_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.Dual_multiply(self, other)
+
+    def divide(self, other):
+        return _datamunge.Dual_divide(self, other)
+
+    def negate(self):
+        return _datamunge.Dual_negate(self)
+
+    def add_scalar(self, scalar):
+        return _datamunge.Dual_add_scalar(self, scalar)
+
+    def subtract_scalar(self, scalar):
+        return _datamunge.Dual_subtract_scalar(self, scalar)
+
+    def multiply_scalar(self, scalar):
+        return _datamunge.Dual_multiply_scalar(self, scalar)
+
+    def divide_scalar(self, scalar):
+        return _datamunge.Dual_divide_scalar(self, scalar)
+
+    def pow(self, exponent):
+        return _datamunge.Dual_pow(self, exponent)
+
+    def exp(self):
+        return _datamunge.Dual_exp(self)
+
+    def log(self):
+        return _datamunge.Dual_log(self)
+
+    def sqrt(self):
+        return _datamunge.Dual_sqrt(self)
+
+    def sin(self):
+        return _datamunge.Dual_sin(self)
+
+    def cos(self):
+        return _datamunge.Dual_cos(self)
+
+    def tan(self):
+        return _datamunge.Dual_tan(self)
+
+    def tanh(self):
+        return _datamunge.Dual_tanh(self)
+
+    def abs(self):
+        return _datamunge.Dual_abs(self)
+    __swig_destroy__ = _datamunge.delete_Dual
+
+# Register Dual in _datamunge:
+_datamunge.Dual_swigregister(Dual)
+class HyperDual(object):
+    r"""
+    SWIG-friendly facade for datamunge::autodiff::HyperDual -- a second-order
+           forward-mode dual number carrying two independent derivative directions plus
+           their exact mixed second partial, for computing Hessian entries.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, value, eps1=0.0, eps2=0.0, eps1eps2=0.0):
+        _datamunge.HyperDual_swiginit(self, _datamunge.new_HyperDual(value, eps1, eps2, eps1eps2))
+
+    def value(self):
+        return _datamunge.HyperDual_value(self)
+
+    def eps1(self):
+        return _datamunge.HyperDual_eps1(self)
+
+    def eps2(self):
+        return _datamunge.HyperDual_eps2(self)
+
+    def eps1eps2(self):
+        return _datamunge.HyperDual_eps1eps2(self)
+
+    def add(self, other):
+        return _datamunge.HyperDual_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.HyperDual_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.HyperDual_multiply(self, other)
+
+    def divide(self, other):
+        return _datamunge.HyperDual_divide(self, other)
+
+    def negate(self):
+        return _datamunge.HyperDual_negate(self)
+
+    def add_scalar(self, scalar):
+        return _datamunge.HyperDual_add_scalar(self, scalar)
+
+    def subtract_scalar(self, scalar):
+        return _datamunge.HyperDual_subtract_scalar(self, scalar)
+
+    def multiply_scalar(self, scalar):
+        return _datamunge.HyperDual_multiply_scalar(self, scalar)
+
+    def divide_scalar(self, scalar):
+        return _datamunge.HyperDual_divide_scalar(self, scalar)
+
+    def pow(self, exponent):
+        return _datamunge.HyperDual_pow(self, exponent)
+
+    def exp(self):
+        return _datamunge.HyperDual_exp(self)
+
+    def log(self):
+        return _datamunge.HyperDual_log(self)
+
+    def sqrt(self):
+        return _datamunge.HyperDual_sqrt(self)
+
+    def sin(self):
+        return _datamunge.HyperDual_sin(self)
+
+    def cos(self):
+        return _datamunge.HyperDual_cos(self)
+
+    def tan(self):
+        return _datamunge.HyperDual_tan(self)
+
+    def tanh(self):
+        return _datamunge.HyperDual_tanh(self)
+    __swig_destroy__ = _datamunge.delete_HyperDual
+
+# Register HyperDual in _datamunge:
+_datamunge.HyperDual_swigregister(HyperDual)
+class Tape(object):
+    r"""
+    SWIG-friendly facade for datamunge::autodiff::Tape -- a reverse-mode
+           ("backpropagation") computation tape. Create leaf Vars against a Tape, build an
+           expression out of named Var operations, then call backward() on the output Var
+           to get the derivative of that output with respect to every node on the tape
+           (index a leaf's own index() into the result to read its gradient).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        _datamunge.Tape_swiginit(self, _datamunge.new_Tape())
+
+    def size(self):
+        return _datamunge.Tape_size(self)
+
+    def value_at(self, index):
+        return _datamunge.Tape_value_at(self, index)
+
+    def backward(self, output):
+        return _datamunge.Tape_backward(self, output)
+    __swig_destroy__ = _datamunge.delete_Tape
+
+# Register Tape in _datamunge:
+_datamunge.Tape_swigregister(Tape)
+class Var(object):
+    r"""SWIG-friendly facade for datamunge::autodiff::Var -- a handle into a Tape."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, tape, value):
+        r"""Records a new independent leaf variable on ``tape``."""
+        _datamunge.Var_swiginit(self, _datamunge.new_Var(tape, value))
+
+    def value(self):
+        return _datamunge.Var_value(self)
+
+    def index(self):
+        return _datamunge.Var_index(self)
+
+    def add(self, other):
+        return _datamunge.Var_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.Var_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.Var_multiply(self, other)
+
+    def divide(self, other):
+        return _datamunge.Var_divide(self, other)
+
+    def negate(self):
+        return _datamunge.Var_negate(self)
+
+    def add_scalar(self, scalar):
+        return _datamunge.Var_add_scalar(self, scalar)
+
+    def subtract_scalar(self, scalar):
+        return _datamunge.Var_subtract_scalar(self, scalar)
+
+    def multiply_scalar(self, scalar):
+        return _datamunge.Var_multiply_scalar(self, scalar)
+
+    def divide_scalar(self, scalar):
+        return _datamunge.Var_divide_scalar(self, scalar)
+
+    def pow(self, exponent):
+        return _datamunge.Var_pow(self, exponent)
+
+    def exp(self):
+        return _datamunge.Var_exp(self)
+
+    def log(self):
+        return _datamunge.Var_log(self)
+
+    def sqrt(self):
+        return _datamunge.Var_sqrt(self)
+
+    def sin(self):
+        return _datamunge.Var_sin(self)
+
+    def cos(self):
+        return _datamunge.Var_cos(self)
+
+    def tan(self):
+        return _datamunge.Var_tan(self)
+
+    def tanh(self):
+        return _datamunge.Var_tanh(self)
+
+    def abs(self):
+        return _datamunge.Var_abs(self)
+    __swig_destroy__ = _datamunge.delete_Var
+
+# Register Var in _datamunge:
+_datamunge.Var_swigregister(Var)
+class RGB(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    r = property(_datamunge.RGB_r_get, _datamunge.RGB_r_set)
+    g = property(_datamunge.RGB_g_get, _datamunge.RGB_g_set)
+    b = property(_datamunge.RGB_b_get, _datamunge.RGB_b_set)
+
+    def __init__(self):
+        _datamunge.RGB_swiginit(self, _datamunge.new_RGB())
+    __swig_destroy__ = _datamunge.delete_RGB
+
+# Register RGB in _datamunge:
+_datamunge.RGB_swigregister(RGB)
+class DataSeries(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    Kind_Scatter = _datamunge.DataSeries_Kind_Scatter
+    Kind_Line = _datamunge.DataSeries_Kind_Line
+    Kind_Bar = _datamunge.DataSeries_Kind_Bar
+    kind = property(_datamunge.DataSeries_kind_get, _datamunge.DataSeries_kind_set)
+    x = property(_datamunge.DataSeries_x_get, _datamunge.DataSeries_x_set)
+    y = property(_datamunge.DataSeries_y_get, _datamunge.DataSeries_y_set)
+    label = property(_datamunge.DataSeries_label_get, _datamunge.DataSeries_label_set)
+    color = property(_datamunge.DataSeries_color_get, _datamunge.DataSeries_color_set)
+    stroke_width = property(_datamunge.DataSeries_stroke_width_get, _datamunge.DataSeries_stroke_width_set)
+    marker_size = property(_datamunge.DataSeries_marker_size_get, _datamunge.DataSeries_marker_size_set)
+    bar_width = property(_datamunge.DataSeries_bar_width_get, _datamunge.DataSeries_bar_width_set)
+
+    def __init__(self):
+        _datamunge.DataSeries_swiginit(self, _datamunge.new_DataSeries())
+    __swig_destroy__ = _datamunge.delete_DataSeries
+
+# Register DataSeries in _datamunge:
+_datamunge.DataSeries_swigregister(DataSeries)
+class Plot(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_Plot
+
+    def size(self, width, height):
+        return _datamunge.Plot_size(self, width, height)
+
+    def title(self, value):
+        return _datamunge.Plot_title(self, value)
+
+    def x_label(self, value):
+        return _datamunge.Plot_x_label(self, value)
+
+    def y_label(self, value):
+        return _datamunge.Plot_y_label(self, value)
+
+    def background(self, color):
+        return _datamunge.Plot_background(self, color)
+
+    def axis_color(self, color):
+        return _datamunge.Plot_axis_color(self, color)
+
+    def grid_color(self, color):
+        return _datamunge.Plot_grid_color(self, color)
+
+    def show_grid(self, enabled=True):
+        return _datamunge.Plot_show_grid(self, enabled)
+
+    def x_limits(self, min_x, max_x):
+        return _datamunge.Plot_x_limits(self, min_x, max_x)
+
+    def y_limits(self, min_y, max_y):
+        return _datamunge.Plot_y_limits(self, min_y, max_y)
+
+    def width(self):
+        return _datamunge.Plot_width(self)
+
+    def height(self):
+        return _datamunge.Plot_height(self)
+
+    def title_text(self):
+        return _datamunge.Plot_title_text(self)
+
+    def x_label_text(self):
+        return _datamunge.Plot_x_label_text(self)
+
+    def y_label_text(self):
+        return _datamunge.Plot_y_label_text(self)
+
+    def series(self):
+        return _datamunge.Plot_series(self)
+
+    def background_color(self):
+        return _datamunge.Plot_background_color(self)
+
+    def axes_color(self):
+        return _datamunge.Plot_axes_color(self)
+
+    def major_grid_color(self):
+        return _datamunge.Plot_major_grid_color(self)
+
+    def grid_visible(self):
+        return _datamunge.Plot_grid_visible(self)
+
+    def has_x_limits(self):
+        return _datamunge.Plot_has_x_limits(self)
+
+    def has_y_limits(self):
+        return _datamunge.Plot_has_y_limits(self)
+
+    def x_min(self):
+        return _datamunge.Plot_x_min(self)
+
+    def x_max(self):
+        return _datamunge.Plot_x_max(self)
+
+    def y_min(self):
+        return _datamunge.Plot_y_min(self)
+
+    def y_max(self):
+        return _datamunge.Plot_y_max(self)
+
+    def save(self, path):
+        return _datamunge.Plot_save(self, path)
+
+    def save_svg(self, path):
+        return _datamunge.Plot_save_svg(self, path)
+
+    def view(self, *args):
+        return _datamunge.Plot_view(self, *args)
+
+    def show(self, *args):
+        return _datamunge.Plot_show(self, *args)
+
+    def __init__(self):
+        _datamunge.Plot_swiginit(self, _datamunge.new_Plot())
+
+# Register Plot in _datamunge:
+_datamunge.Plot_swigregister(Plot)
+class ScatterPlot(Plot):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def create():
+        return _datamunge.ScatterPlot_create()
+
+    def points(self, *args):
+        return _datamunge.ScatterPlot_points(self, *args)
+
+    def line(self, *args):
+        return _datamunge.ScatterPlot_line(self, *args)
+
+    def __init__(self):
+        _datamunge.ScatterPlot_swiginit(self, _datamunge.new_ScatterPlot())
+    __swig_destroy__ = _datamunge.delete_ScatterPlot
+
+# Register ScatterPlot in _datamunge:
+_datamunge.ScatterPlot_swigregister(ScatterPlot)
+class LinePlot(Plot):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def create():
+        return _datamunge.LinePlot_create()
+
+    def line(self, *args):
+        return _datamunge.LinePlot_line(self, *args)
+
+    def __init__(self):
+        _datamunge.LinePlot_swiginit(self, _datamunge.new_LinePlot())
+    __swig_destroy__ = _datamunge.delete_LinePlot
+
+# Register LinePlot in _datamunge:
+_datamunge.LinePlot_swigregister(LinePlot)
+class BarChart(Plot):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def create():
+        return _datamunge.BarChart_create()
+
+    def bars(self, *args):
+        return _datamunge.BarChart_bars(self, *args)
+
+    def __init__(self):
+        _datamunge.BarChart_swiginit(self, _datamunge.new_BarChart())
+    __swig_destroy__ = _datamunge.delete_BarChart
+
+# Register BarChart in _datamunge:
+_datamunge.BarChart_swigregister(BarChart)
+class ARIMAOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    p = property(_datamunge.ARIMAOptions_p_get, _datamunge.ARIMAOptions_p_set)
+    d = property(_datamunge.ARIMAOptions_d_get, _datamunge.ARIMAOptions_d_set)
+    q = property(_datamunge.ARIMAOptions_q_get, _datamunge.ARIMAOptions_q_set)
+    seasonal_p = property(_datamunge.ARIMAOptions_seasonal_p_get, _datamunge.ARIMAOptions_seasonal_p_set)
+    seasonal_d = property(_datamunge.ARIMAOptions_seasonal_d_get, _datamunge.ARIMAOptions_seasonal_d_set)
+    seasonal_q = property(_datamunge.ARIMAOptions_seasonal_q_get, _datamunge.ARIMAOptions_seasonal_q_set)
+    seasonal_period = property(_datamunge.ARIMAOptions_seasonal_period_get, _datamunge.ARIMAOptions_seasonal_period_set)
+    include_mean = property(_datamunge.ARIMAOptions_include_mean_get, _datamunge.ARIMAOptions_include_mean_set, doc=r"""
+    Fit an intercept (mean of the fully-differenced series). Only meaningful when
+           d == 0 && seasonal_d == 0 -- matching R's arima(), a mean term is not fit on a
+           series that has already been differenced to stationarity.
+    """)
+    de_population_size = property(_datamunge.ARIMAOptions_de_population_size_get, _datamunge.ARIMAOptions_de_population_size_set)
+    de_max_generations = property(_datamunge.ARIMAOptions_de_max_generations_get, _datamunge.ARIMAOptions_de_max_generations_set)
+    coefficient_bound = property(_datamunge.ARIMAOptions_coefficient_bound_get, _datamunge.ARIMAOptions_coefficient_bound_set, doc=r"""Box constraint applied to every AR/MA coefficient during optimization.""")
+    seed = property(_datamunge.ARIMAOptions_seed_get, _datamunge.ARIMAOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.ARIMAOptions_swiginit(self, _datamunge.new_ARIMAOptions())
+    __swig_destroy__ = _datamunge.delete_ARIMAOptions
+
+# Register ARIMAOptions in _datamunge:
+_datamunge.ARIMAOptions_swigregister(ARIMAOptions)
+class ARIMA(object):
+    r"""
+    A Box-Jenkins seasonal ARIMA(p, d, q)(P, D, Q)_s model, fit to a single numeric
+           series by conditional sum of squares (CSS): the series is differenced (regular
+           d times, then seasonal D times with period s) to stationarity, the combined
+           AR/MA polynomials (regular composed with seasonal, via polynomial multiplication)
+           are estimated by minimizing the conditional residual sum of squares with
+           DifferentialEvolution, and forecasts are produced by recursing the fitted
+           difference equation forward and re-integrating through the differencing steps.
+
+           Setting seasonal_period == 0 (the default) reduces this to a plain, non-seasonal
+           ARIMA(p, d, q) model -- i.e. SARIMA is the general case, ARIMA the special case,
+           exactly as in R's arima()/statsmodels' SARIMAX().
+
+           Note: CSS estimation approximates the exact Gaussian likelihood by conditioning
+           on the first max(p + P*s, q + Q*s) observations rather than filtering the full
+           series (e.g. via a Kalman filter); it is a standard, textbook ARIMA fitting
+           method (R's arima(method = "CSS")) but will differ slightly from exact-ML fits.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ARIMA_swiginit(self, _datamunge.new_ARIMA(*args))
+
+    def options(self):
+        return _datamunge.ARIMA_options(self)
+
+    def ar_coefficients(self):
+        return _datamunge.ARIMA_ar_coefficients(self)
+
+    def ma_coefficients(self):
+        return _datamunge.ARIMA_ma_coefficients(self)
+
+    def seasonal_ar_coefficients(self):
+        return _datamunge.ARIMA_seasonal_ar_coefficients(self)
+
+    def seasonal_ma_coefficients(self):
+        return _datamunge.ARIMA_seasonal_ma_coefficients(self)
+
+    def mean(self):
+        return _datamunge.ARIMA_mean(self)
+
+    def observations(self):
+        return _datamunge.ARIMA_observations(self)
+
+    def n_used(self):
+        return _datamunge.ARIMA_n_used(self)
+
+    def sigma2(self):
+        return _datamunge.ARIMA_sigma2(self)
+
+    def log_likelihood(self):
+        return _datamunge.ARIMA_log_likelihood(self)
+
+    def aic(self):
+        return _datamunge.ARIMA_aic(self)
+
+    def bic(self):
+        return _datamunge.ARIMA_bic(self)
+
+    def fitted_values(self):
+        r"""
+        One-step-ahead fitted values on the original scale, aligned to the input
+               series (the first `observations() - n_used()` entries -- the presample points
+               conditioned on by CSS -- are copies of the observed value, matching a
+               residual of exactly zero there rather than an undefined value).
+        """
+        return _datamunge.ARIMA_fitted_values(self)
+
+    def residuals(self):
+        r"""One-step-ahead residuals on the original scale (zero for the presample points)."""
+        return _datamunge.ARIMA_residuals(self)
+
+    def forecast(self, horizon):
+        r"""Point forecasts for the next ``horizon`` periods, on the original scale."""
+        return _datamunge.ARIMA_forecast(self, horizon)
+
+    def forecast_with_intervals(self, horizon):
+        r"""
+        Point forecasts and their standard errors (from the psi-weight / MA(infinity)
+               expansion of the full, non-stationary AR/MA representation of y), on the
+               original scale.
+        """
+        return _datamunge.ARIMA_forecast_with_intervals(self, horizon)
+    __swig_destroy__ = _datamunge.delete_ARIMA
+
+# Register ARIMA in _datamunge:
+_datamunge.ARIMA_swigregister(ARIMA)
+TrendType__None = _datamunge.TrendType__None
+TrendType_Additive = _datamunge.TrendType_Additive
+TrendType_AdditiveDamped = _datamunge.TrendType_AdditiveDamped
+SeasonalType__None = _datamunge.SeasonalType__None
+SeasonalType_Additive = _datamunge.SeasonalType_Additive
+SeasonalType_Multiplicative = _datamunge.SeasonalType_Multiplicative
+class ExponentialSmoothingOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    trend = property(_datamunge.ExponentialSmoothingOptions_trend_get, _datamunge.ExponentialSmoothingOptions_trend_set)
+    seasonal = property(_datamunge.ExponentialSmoothingOptions_seasonal_get, _datamunge.ExponentialSmoothingOptions_seasonal_set)
+    seasonal_period = property(_datamunge.ExponentialSmoothingOptions_seasonal_period_get, _datamunge.ExponentialSmoothingOptions_seasonal_period_set)
+    alpha = property(_datamunge.ExponentialSmoothingOptions_alpha_get, _datamunge.ExponentialSmoothingOptions_alpha_set)
+    beta = property(_datamunge.ExponentialSmoothingOptions_beta_get, _datamunge.ExponentialSmoothingOptions_beta_set)
+    gamma = property(_datamunge.ExponentialSmoothingOptions_gamma_get, _datamunge.ExponentialSmoothingOptions_gamma_set)
+    phi = property(_datamunge.ExponentialSmoothingOptions_phi_get, _datamunge.ExponentialSmoothingOptions_phi_set)
+    de_population_size = property(_datamunge.ExponentialSmoothingOptions_de_population_size_get, _datamunge.ExponentialSmoothingOptions_de_population_size_set)
+    de_max_generations = property(_datamunge.ExponentialSmoothingOptions_de_max_generations_get, _datamunge.ExponentialSmoothingOptions_de_max_generations_set)
+    seed = property(_datamunge.ExponentialSmoothingOptions_seed_get, _datamunge.ExponentialSmoothingOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.ExponentialSmoothingOptions_swiginit(self, _datamunge.new_ExponentialSmoothingOptions())
+    __swig_destroy__ = _datamunge.delete_ExponentialSmoothingOptions
+
+# Register ExponentialSmoothingOptions in _datamunge:
+_datamunge.ExponentialSmoothingOptions_swigregister(ExponentialSmoothingOptions)
+class ExponentialSmoothing(object):
+    r"""
+    Exponential smoothing (Holt-Winters family): simple exponential smoothing (no
+           trend, no seasonality), Holt linear trend (with optional damping), and seasonal
+           Holt-Winters (additive or multiplicative), unified under one class the way R's
+           HoltWinters() and statsmodels' ExponentialSmoothing() are -- which components are
+           active is controlled entirely by ExponentialSmoothingOptions::trend/seasonal.
+
+           Initial level/trend/seasonal-index states are set once from a simple classical
+           decomposition of the first one or two seasonal cycles and then held fixed; only
+           the smoothing parameters (alpha, beta, gamma, phi) are fit, by minimizing
+           one-step-ahead sum of squared errors with DifferentialEvolution.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ExponentialSmoothing_swiginit(self, _datamunge.new_ExponentialSmoothing(*args))
+
+    def options(self):
+        return _datamunge.ExponentialSmoothing_options(self)
+
+    def alpha(self):
+        return _datamunge.ExponentialSmoothing_alpha(self)
+
+    def beta(self):
+        return _datamunge.ExponentialSmoothing_beta(self)
+
+    def gamma(self):
+        return _datamunge.ExponentialSmoothing_gamma(self)
+
+    def phi(self):
+        return _datamunge.ExponentialSmoothing_phi(self)
+
+    def observations(self):
+        return _datamunge.ExponentialSmoothing_observations(self)
+
+    def sse(self):
+        return _datamunge.ExponentialSmoothing_sse(self)
+
+    def sigma2(self):
+        return _datamunge.ExponentialSmoothing_sigma2(self)
+
+    def log_likelihood(self):
+        return _datamunge.ExponentialSmoothing_log_likelihood(self)
+
+    def aic(self):
+        return _datamunge.ExponentialSmoothing_aic(self)
+
+    def bic(self):
+        return _datamunge.ExponentialSmoothing_bic(self)
+
+    def fitted_values(self):
+        r"""
+        In-sample one-step-ahead fitted values, aligned to the input series. The
+               warm-up prefix used to set initial states (see class docs) is copied from the
+               observed values (residual exactly zero there).
+        """
+        return _datamunge.ExponentialSmoothing_fitted_values(self)
+
+    def residuals(self):
+        return _datamunge.ExponentialSmoothing_residuals(self)
+
+    def forecast(self, horizon):
+        r"""Point forecasts for the next ``horizon`` periods."""
+        return _datamunge.ExponentialSmoothing_forecast(self, horizon)
+    __swig_destroy__ = _datamunge.delete_ExponentialSmoothing
+
+# Register ExponentialSmoothing in _datamunge:
+_datamunge.ExponentialSmoothing_swigregister(ExponentialSmoothing)
+Alternative_TwoSided = _datamunge.Alternative_TwoSided
+Alternative_Less = _datamunge.Alternative_Less
+Alternative_Greater = _datamunge.Alternative_Greater
+class HypothesisTestResult(object):
+    r"""
+    A generic hypothesis-test result, reused across every test in this module the way
+           R's `htest` S3 class is reused across t.test/wilcox.test/chisq.test/ks.test/etc.
+           Not every field is meaningful for every test -- e.g. chi-squared and KS tests
+           don't report a confidence interval, so conf_int_lower/upper are left at 0; see
+           each test function's doc comment for which fields it actually fills in.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    statistic = property(_datamunge.HypothesisTestResult_statistic_get, _datamunge.HypothesisTestResult_statistic_set)
+    parameter1 = property(_datamunge.HypothesisTestResult_parameter1_get, _datamunge.HypothesisTestResult_parameter1_set)
+    parameter2 = property(_datamunge.HypothesisTestResult_parameter2_get, _datamunge.HypothesisTestResult_parameter2_set)
+    p_value = property(_datamunge.HypothesisTestResult_p_value_get, _datamunge.HypothesisTestResult_p_value_set)
+    estimate1 = property(_datamunge.HypothesisTestResult_estimate1_get, _datamunge.HypothesisTestResult_estimate1_set)
+    estimate2 = property(_datamunge.HypothesisTestResult_estimate2_get, _datamunge.HypothesisTestResult_estimate2_set)
+    conf_int_lower = property(_datamunge.HypothesisTestResult_conf_int_lower_get, _datamunge.HypothesisTestResult_conf_int_lower_set)
+    conf_int_upper = property(_datamunge.HypothesisTestResult_conf_int_upper_get, _datamunge.HypothesisTestResult_conf_int_upper_set)
+    has_conf_int = property(_datamunge.HypothesisTestResult_has_conf_int_get, _datamunge.HypothesisTestResult_has_conf_int_set)
+    alternative = property(_datamunge.HypothesisTestResult_alternative_get, _datamunge.HypothesisTestResult_alternative_set)
+    method = property(_datamunge.HypothesisTestResult_method_get, _datamunge.HypothesisTestResult_method_set)
+
+    def __init__(self):
+        _datamunge.HypothesisTestResult_swiginit(self, _datamunge.new_HypothesisTestResult())
+    __swig_destroy__ = _datamunge.delete_HypothesisTestResult
+
+# Register HypothesisTestResult in _datamunge:
+_datamunge.HypothesisTestResult_swigregister(HypothesisTestResult)
+
+def t_test_one_sample(*args):
+    r"""One-sample t-test of whether the mean of ``x`` differs from ``mu``."""
+    return _datamunge.t_test_one_sample(*args)
+
+def t_test_two_sample(*args):
+    r"""
+    Two-sample t-test of whether ``x`` and ``y`` have the same mean. Uses Welch's
+           unequal-variance approximation (Satterthwaite degrees of freedom) by default,
+           matching R's t.test() default; set ``equal_variance`` to use the classic pooled-
+           variance Student's t-test instead.
+    """
+    return _datamunge.t_test_two_sample(*args)
+
+def t_test_paired(*args):
+    r"""
+    Paired t-test: a one-sample t-test on the elementwise differences x[i] - y[i].
+           Requires x and y to have the same length.
+    """
+    return _datamunge.t_test_paired(*args)
+
+def wilcoxon_signed_rank_test(*args):
+    r"""
+    Wilcoxon signed-rank test: a non-parametric analog of the one-sample/paired
+           t-test, testing whether the distribution of ``x`` - ``mu`` is symmetric about zero.
+           For a paired test, pass the elementwise differences as ``x``. Differences exactly
+           equal to ``mu`` are dropped (matching R's wilcox.test() default). Uses the normal
+           approximation with a continuity correction and a tie correction to the variance
+           (matching R's behavior once ties are present, which is the common case for real
+           data); no confidence interval is reported (has_conf_int stays false), matching the
+           default `conf.int = FALSE` behavior in R.
+    """
+    return _datamunge.wilcoxon_signed_rank_test(*args)
+
+def wilcoxon_rank_sum_test(*args):
+    r"""
+    Wilcoxon rank-sum test (equivalently, the Mann-Whitney U test): a non-parametric
+           analog of the two-sample t-test, testing whether ``x`` and ``y`` are drawn from
+           distributions with the same location. Uses the normal approximation with a
+           continuity correction and a tie correction to the variance.
+    """
+    return _datamunge.wilcoxon_rank_sum_test(*args)
+
+def ks_test_one_sample_normal(*args):
+    r"""
+    One-sample Kolmogorov-Smirnov test of whether ``x`` is drawn from a
+           Normal(``mean``, ``sd)`` distribution, comparing the empirical CDF of ``x`` against
+           that normal CDF. Uses the asymptotic Kolmogorov distribution for the two-sided
+           p-value (Stephens' 1970 correction to the sample size) and the classic Smirnov
+           one-sided asymptotic formula for "less"/"greater"; this will differ slightly from
+           software that computes the exact finite-sample null distribution for small,
+           tie-free samples (e.g. R's ks.test() default), but agrees closely once n is more
+           than a few dozen.
+    """
+    return _datamunge.ks_test_one_sample_normal(*args)
+
+def ks_test_two_sample(*args):
+    r"""
+    Two-sample Kolmogorov-Smirnov test of whether ``x`` and ``y`` are drawn from the
+           same continuous distribution, comparing their empirical CDFs. Same asymptotic
+           p-value approach as ks_test_one_sample_normal.
+    """
+    return _datamunge.ks_test_two_sample(*args)
+
+def chi_squared_goodness_of_fit(*args):
+    r"""
+    Chi-squared goodness-of-fit test: whether the counts in ``observed`` match the
+           given ``expected_probabilities`` (which must sum to 1). If ``expected_probabilities``
+           is empty, a uniform distribution across categories is assumed, matching R's
+           chisq.test() default.
+    """
+    return _datamunge.chi_squared_goodness_of_fit(*args)
+
+def chi_squared_test_independence(table, nrows, ncols, correct=True):
+    r"""
+    Chi-squared test of independence on a two-way contingency table given as a
+           row-major flattened vector of counts (length ``nrows`` * ``ncols)``. Applies Yates'
+           continuity correction when the table is 2x2 and ``correct`` is true (the default,
+           matching R's chisq.test()).
+    """
+    return _datamunge.chi_squared_test_independence(table, nrows, ncols, correct)
+
+def one_way_anova(values, group_sizes):
+    r"""
+    One-way ANOVA F-test across k >= 2 independent groups, testing whether all groups
+           share the same mean. ``values`` is every group's observations concatenated in
+           order, and ``group_sizes`` gives each group's length (must sum to values.size()).
+           statistic = F, parameter1 = between-groups df, parameter2 = within-groups df.
+    """
+    return _datamunge.one_way_anova(values, group_sizes)
+
+def kruskal_wallis_test(values, group_sizes):
+    r"""
+    Kruskal-Wallis rank-sum test: a non-parametric analog of one-way ANOVA across
+           k >= 2 independent groups, testing whether they share the same distribution.
+           Same (values, group_sizes) layout as one_way_anova(). Uses the chi-squared
+           approximation to the H statistic with a tie correction; statistic = H,
+           parameter1 = df = k - 1.
+    """
+    return _datamunge.kruskal_wallis_test(values, group_sizes)
+
+def pearson_correlation_test(*args):
+    r"""
+    Pearson product-moment correlation test between ``x`` and ``y``. estimate1 is the
+           correlation coefficient r; the confidence interval is computed via the Fisher
+           z-transform.
+    """
+    return _datamunge.pearson_correlation_test(*args)
+
+def spearman_correlation_test(*args):
+    r"""
+    Spearman's rank correlation test between ``x`` and ``y``: the Pearson correlation
+           of their ranks, with a p-value from the same t-approximation used for Pearson's
+           test (matching R's asymptotic method, used whenever ties are present). estimate1
+           is rho; no confidence interval is reported (has_conf_int stays false), matching R.
+    """
+    return _datamunge.spearman_correlation_test(*args)
+
+def f_test_variance(*args):
+    r"""
+    F-test comparing the variances of ``x`` and ``y`` (H0: equal variances). estimate1
+           is the ratio var(x) / var(y); statistic is the same F ratio; parameter1/2 are the
+           two groups' degrees of freedom.
+    """
+    return _datamunge.f_test_variance(*args)
+
+def proportion_test_one_sample(*args):
+    r"""
+    One-sample test of the proportion ``successes`` / ``n`` against a null value ``p``
+           (default 0.5), via the chi-squared/normal approximation with a continuity
+           correction (matching R's prop.test()). estimate1 is the sample proportion; the
+           confidence interval uses the Wilson score interval (without continuity
+           correction, a close approximation to R's corrected version).
+    """
+    return _datamunge.proportion_test_one_sample(*args)
+
+def proportion_test_two_sample(*args):
+    r"""
+    Two-sample test of whether two groups have the same success proportion, via the
+           pooled chi-squared/normal approximation with a continuity correction (matching
+           R's prop.test()). estimate1/estimate2 are the two sample proportions; the
+           confidence interval is for their difference (estimate1 - estimate2).
+    """
+    return _datamunge.proportion_test_two_sample(*args)
+
+def binomial_test(*args):
+    r"""
+    Exact binomial test of whether ``successes`` out of ``n`` trials is consistent with
+           success probability ``p`` (default 0.5), summing exact binomial probabilities
+           (matching R's binom.test()). estimate1 is the sample proportion; the confidence
+           interval is the exact Clopper-Pearson interval.
+    """
+    return _datamunge.binomial_test(*args)
+
+def fisher_exact_test_2x2(*args):
+    r"""
+    Fisher's exact test on a 2x2 contingency table
+
+               | col1 | col2
+           row1|  a   |  b
+           row2|  c   |  d
+
+           testing independence of the row and column classifications by summing exact
+           hypergeometric probabilities (matching R's fisher.test() p-values). estimate1 is
+           the sample odds ratio (a*d)/(b*c), not the conditional MLE R reports by default;
+           no confidence interval is computed (has_conf_int stays false). statistic holds the
+           observed count `a`.
+    """
+    return _datamunge.fisher_exact_test_2x2(*args)
+
+def shapiro_francia_test(x):
+    r"""
+    Shapiro-Francia test for normality: the squared correlation between the sorted
+           sample and the expected normal order statistics (Blom's approximation), with
+           Royston's (1993) log-normal p-value approximation. A simpler, closely-related
+           cousin of the (more commonly cited but more involved) Shapiro-Wilk test, valid
+           for 5 <= n <= 5000; estimate1 is the W' statistic (near 1 for normal-looking
+           data, well below 1 for non-normal data). A small p-value is evidence against
+           normality.
+    """
+    return _datamunge.shapiro_francia_test(x)
+PAdjustMethod_Bonferroni = _datamunge.PAdjustMethod_Bonferroni
+PAdjustMethod_Holm = _datamunge.PAdjustMethod_Holm
+PAdjustMethod_Hochberg = _datamunge.PAdjustMethod_Hochberg
+PAdjustMethod_Hommel = _datamunge.PAdjustMethod_Hommel
+PAdjustMethod_BH = _datamunge.PAdjustMethod_BH
+PAdjustMethod_BY = _datamunge.PAdjustMethod_BY
+PAdjustMethod__None = _datamunge.PAdjustMethod__None
+
+def p_adjust(*args):
+    r"""
+    Adjust a vector of p-values for multiple comparisons, matching R's p.adjust().
+
+           - Bonferroni: p[i] * n, capped at 1 -- simplest and most conservative FWER control.
+           - Holm: step-down Bonferroni (Holm-Bonferroni) -- uniformly more powerful than
+             plain Bonferroni while still controlling FWER, no extra assumptions.
+           - Hochberg: step-up FWER control -- more powerful than Holm, but assumes the test
+             statistics are independent (or positively dependent).
+           - Hommel: step-up FWER control, uniformly more powerful than Hochberg under the
+             same independence assumption; the most expensive to compute (O(n^2)). For n == 2
+             this degenerates to (and is computed as) Hochberg, matching R.
+           - BH (Benjamini-Hochberg, aka "fdr" in R): controls the false discovery rate under
+             independence or positive regression dependence -- the standard choice for large-
+             scale testing (e.g. genomics, many simultaneous hypothesis tests).
+           - BY (Benjamini-Yekutieli): controls the FDR under arbitrary dependence; more
+             conservative than BH.
+           - None: returns the input p-values unchanged.
+
+           As in R, a single p-value (n <= 1) is always returned unchanged regardless of
+           ``method``.
+    """
+    return _datamunge.p_adjust(*args)
+
+def westfall_young_adjust(resampled_p, sorted_p):
+    r"""
+    Westfall-Young single-step minP adjustment (Westfall & Young, 1993) -- a resampling-
+           based FWER correction that accounts for the actual dependence structure between
+           tests (unlike the analytic methods above, which either assume independence or make
+           no assumption at all).
+
+           ``resampled_p`` is a B x m matrix: row b holds the m p-values recomputed on the
+           b-th permutation or bootstrap resample (generated by the caller -- this function is
+           purely the combinatorial engine, not the resampling scheme itself). ``sorted_p`` is
+           the m original p-values sorted ascending, and column k of every row in ``resampled_p``
+           must correspond to the same hypothesis as sorted_p[k] (i.e. the caller sorts once and
+           reorders both consistently before calling).
+
+           Single-step: every hypothesis is compared against the same reference distribution --
+           the per-resample minimum p-value taken over *all* m hypotheses -- so adjusted p[k] =
+           (fraction of resamples whose overall minimum p-value <= sorted_p[k]). This is
+           automatically monotonic in sorted_p and valid under subset pivotality, but less
+           powerful than the step-down refinement below since it never narrows the comparison
+           set as hypotheses are resolved.
+
+           Returned in the same (ascending sorted_p) order as the input; the caller is
+           responsible for mapping back to original hypothesis order if needed.
+    """
+    return _datamunge.westfall_young_adjust(resampled_p, sorted_p)
+
+def romano_wolf_adjust(resampled_p, sorted_p):
+    r"""
+    Romano-Wolf step-down resampling adjustment (Romano & Wolf, 2005) -- like
+           westfall_young_adjust, but more powerful: at each step k (in ascending sorted_p
+           order), the reference distribution is the per-resample minimum p-value taken only
+           over the *remaining* hypotheses k..m-1, narrowing by one hypothesis at each step
+           rather than always using all m. This is the step-down generalization that controls
+           FWER without requiring subset pivotality. Monotonicity (adjusted p[k] >= adjusted
+           p[k-1]) is enforced explicitly, since narrowing the comparison set at each step means
+           it isn't automatic the way it is for the single-step procedure above.
+
+           Same input/output conventions as westfall_young_adjust: ``resampled_p`` is a B x m
+           matrix with column k aligned to sorted_p[k], and the result is returned in the same
+           sorted order.
+    """
+    return _datamunge.romano_wolf_adjust(resampled_p, sorted_p)
+class ArbitraryFunction(object):
+    r"""
+    The most general objective function: only supports evaluation. Optimizers that
+           consume this type (e.g. SimulatedAnnealing) are derivative-free.
+
+           This is a director-enabled extension point: subclass it directly (in C++, or, via
+           SWIG directors, in any supported language) to define a custom objective.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_ArbitraryFunction
+
+    def evaluate(self, coordinates):
+        r"""Evaluates the objective at ``coordinates``."""
+        return _datamunge.ArbitraryFunction_evaluate(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == ArbitraryFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.ArbitraryFunction_swiginit(self, _datamunge.new_ArbitraryFunction(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_ArbitraryFunction(self)
+        return weakref.proxy(self)
+
+# Register ArbitraryFunction in _datamunge:
+_datamunge.ArbitraryFunction_swigregister(ArbitraryFunction)
+class DifferentiableFunction(ArbitraryFunction):
+    r"""
+    An objective function that additionally supports exact gradient evaluation.
+           Optimizers that consume this type (GradientDescent, Adam, LBFGS) use the full
+           gradient at every step.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def gradient(self, coordinates):
+        r"""Returns the gradient of the objective at ``coordinates``."""
+        return _datamunge.DifferentiableFunction_gradient(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == DifferentiableFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.DifferentiableFunction_swiginit(self, _datamunge.new_DifferentiableFunction(_self, ))
+    __swig_destroy__ = _datamunge.delete_DifferentiableFunction
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_DifferentiableFunction(self)
+        return weakref.proxy(self)
+
+# Register DifferentiableFunction in _datamunge:
+_datamunge.DifferentiableFunction_swigregister(DifferentiableFunction)
+class SeparableFunction(ArbitraryFunction):
+    r"""
+    An objective that decomposes as a sum over num_functions() independent terms
+           (e.g. one term per training example). evaluate() defaults to summing every term,
+           but remains overridable for a more efficient full-objective computation.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def num_functions(self):
+        r"""The number of additive terms the objective decomposes into."""
+        return _datamunge.SeparableFunction_num_functions(self)
+
+    def evaluate_term(self, coordinates, i):
+        r"""Evaluates just term ``i`` of the objective at ``coordinates``."""
+        return _datamunge.SeparableFunction_evaluate_term(self, coordinates, i)
+
+    def evaluate(self, coordinates):
+        return _datamunge.SeparableFunction_evaluate(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == SeparableFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.SeparableFunction_swiginit(self, _datamunge.new_SeparableFunction(_self, ))
+    __swig_destroy__ = _datamunge.delete_SeparableFunction
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_SeparableFunction(self)
+        return weakref.proxy(self)
+
+# Register SeparableFunction in _datamunge:
+_datamunge.SeparableFunction_swigregister(SeparableFunction)
+class DifferentiableSeparableFunction(DifferentiableFunction):
+    r"""
+    A function that is both differentiable and separable -- the common case for
+           machine learning loss functions (a sum of per-example losses). Optimizers that
+           consume this type (SGD) can update coordinates from a single term's gradient
+           without evaluating the full objective.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def num_functions(self):
+        r"""The number of additive terms the objective decomposes into."""
+        return _datamunge.DifferentiableSeparableFunction_num_functions(self)
+
+    def evaluate_term(self, coordinates, i):
+        r"""Evaluates just term ``i`` of the objective at ``coordinates``."""
+        return _datamunge.DifferentiableSeparableFunction_evaluate_term(self, coordinates, i)
+
+    def gradient_term(self, coordinates, i):
+        r"""Returns the gradient of just term ``i`` of the objective at ``coordinates``."""
+        return _datamunge.DifferentiableSeparableFunction_gradient_term(self, coordinates, i)
+
+    def evaluate(self, coordinates):
+        return _datamunge.DifferentiableSeparableFunction_evaluate(self, coordinates)
+
+    def gradient(self, coordinates):
+        return _datamunge.DifferentiableSeparableFunction_gradient(self, coordinates)
+
+    def __init__(self):
+        if self.__class__ == DifferentiableSeparableFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.DifferentiableSeparableFunction_swiginit(self, _datamunge.new_DifferentiableSeparableFunction(_self, ))
+    __swig_destroy__ = _datamunge.delete_DifferentiableSeparableFunction
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_DifferentiableSeparableFunction(self)
+        return weakref.proxy(self)
+
+# Register DifferentiableSeparableFunction in _datamunge:
+_datamunge.DifferentiableSeparableFunction_swigregister(DifferentiableSeparableFunction)
+class GradientDescentOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.GradientDescentOptions_step_size_get, _datamunge.GradientDescentOptions_step_size_set)
+    momentum = property(_datamunge.GradientDescentOptions_momentum_get, _datamunge.GradientDescentOptions_momentum_set, doc=r"""Classical momentum coefficient in [0, 1); 0 disables momentum (plain gradient descent).""")
+    max_iterations = property(_datamunge.GradientDescentOptions_max_iterations_get, _datamunge.GradientDescentOptions_max_iterations_set)
+    tolerance = property(_datamunge.GradientDescentOptions_tolerance_get, _datamunge.GradientDescentOptions_tolerance_set, doc=r"""Stops when the gradient norm or the objective's per-iteration change drops below this.""")
+
+    def __init__(self):
+        _datamunge.GradientDescentOptions_swiginit(self, _datamunge.new_GradientDescentOptions())
+    __swig_destroy__ = _datamunge.delete_GradientDescentOptions
+
+# Register GradientDescentOptions in _datamunge:
+_datamunge.GradientDescentOptions_swigregister(GradientDescentOptions)
+class GradientDescent(object):
+    r"""Gradient descent (optionally with classical momentum) on a DifferentiableFunction."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.GradientDescent_swiginit(self, _datamunge.new_GradientDescent(*args))
+
+    def optimize(self, function, coordinates):
+        r"""
+        Minimizes ``function`` starting from ``coordinates``, updating it in place to the
+               best point found, and returns the objective value there.
+        """
+        return _datamunge.GradientDescent_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_GradientDescent
+
+# Register GradientDescent in _datamunge:
+_datamunge.GradientDescent_swigregister(GradientDescent)
+class AdamOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.AdamOptions_step_size_get, _datamunge.AdamOptions_step_size_set)
+    beta1 = property(_datamunge.AdamOptions_beta1_get, _datamunge.AdamOptions_beta1_set)
+    beta2 = property(_datamunge.AdamOptions_beta2_get, _datamunge.AdamOptions_beta2_set)
+    epsilon = property(_datamunge.AdamOptions_epsilon_get, _datamunge.AdamOptions_epsilon_set)
+    max_iterations = property(_datamunge.AdamOptions_max_iterations_get, _datamunge.AdamOptions_max_iterations_set)
+    tolerance = property(_datamunge.AdamOptions_tolerance_get, _datamunge.AdamOptions_tolerance_set)
+
+    def __init__(self):
+        _datamunge.AdamOptions_swiginit(self, _datamunge.new_AdamOptions())
+    __swig_destroy__ = _datamunge.delete_AdamOptions
+
+# Register AdamOptions in _datamunge:
+_datamunge.AdamOptions_swigregister(AdamOptions)
+class Adam(object):
+    r"""Full-batch Adam (Kingma & Ba 2015) on a DifferentiableFunction."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.Adam_swiginit(self, _datamunge.new_Adam(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.Adam_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_Adam
+
+# Register Adam in _datamunge:
+_datamunge.Adam_swigregister(Adam)
+class LBFGSOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    max_iterations = property(_datamunge.LBFGSOptions_max_iterations_get, _datamunge.LBFGSOptions_max_iterations_set)
+    tolerance = property(_datamunge.LBFGSOptions_tolerance_get, _datamunge.LBFGSOptions_tolerance_set, doc=r"""Stops when the gradient norm drops below this.""")
+    history_size = property(_datamunge.LBFGSOptions_history_size_get, _datamunge.LBFGSOptions_history_size_set, doc=r"""Number of (s, y) curvature pairs retained for the two-loop recursion.""")
+    armijo_c1 = property(_datamunge.LBFGSOptions_armijo_c1_get, _datamunge.LBFGSOptions_armijo_c1_set, doc=r"""Armijo sufficient-decrease constant for the line search.""")
+    wolfe_c2 = property(_datamunge.LBFGSOptions_wolfe_c2_get, _datamunge.LBFGSOptions_wolfe_c2_set, doc=r"""Weak-Wolfe curvature constant for the line search (typical value for L-BFGS).""")
+    max_line_search_trials = property(_datamunge.LBFGSOptions_max_line_search_trials_get, _datamunge.LBFGSOptions_max_line_search_trials_set)
+
+    def __init__(self):
+        _datamunge.LBFGSOptions_swiginit(self, _datamunge.new_LBFGSOptions())
+    __swig_destroy__ = _datamunge.delete_LBFGSOptions
+
+# Register LBFGSOptions in _datamunge:
+_datamunge.LBFGSOptions_swigregister(LBFGSOptions)
+class LBFGS(object):
+    r"""
+    Limited-memory BFGS (Nocedal 1980) on a DifferentiableFunction: a quasi-Newton
+           method that approximates the inverse Hessian from a short history of gradient
+           changes, combined with an Armijo backtracking line search.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.LBFGS_swiginit(self, _datamunge.new_LBFGS(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.LBFGS_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_LBFGS
+
+# Register LBFGS in _datamunge:
+_datamunge.LBFGS_swigregister(LBFGS)
+class SGDOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    step_size = property(_datamunge.SGDOptions_step_size_get, _datamunge.SGDOptions_step_size_set)
+    max_epochs = property(_datamunge.SGDOptions_max_epochs_get, _datamunge.SGDOptions_max_epochs_set)
+    batch_size = property(_datamunge.SGDOptions_batch_size_get, _datamunge.SGDOptions_batch_size_set)
+    tolerance = property(_datamunge.SGDOptions_tolerance_get, _datamunge.SGDOptions_tolerance_set, doc=r"""Stops when the full-objective change between epochs drops below this.""")
+    shuffle = property(_datamunge.SGDOptions_shuffle_get, _datamunge.SGDOptions_shuffle_set)
+    seed = property(_datamunge.SGDOptions_seed_get, _datamunge.SGDOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.SGDOptions_swiginit(self, _datamunge.new_SGDOptions())
+    __swig_destroy__ = _datamunge.delete_SGDOptions
+
+# Register SGDOptions in _datamunge:
+_datamunge.SGDOptions_swigregister(SGDOptions)
+class SGD(object):
+    r"""
+    Stochastic (mini-batch) gradient descent on a DifferentiableSeparableFunction: each
+           step updates coordinates from the average gradient of one shuffled mini-batch of
+           terms, rather than the full objective's gradient.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.SGD_swiginit(self, _datamunge.new_SGD(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.SGD_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_SGD
+
+# Register SGD in _datamunge:
+_datamunge.SGD_swigregister(SGD)
+class SimulatedAnnealingOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    initial_temperature = property(_datamunge.SimulatedAnnealingOptions_initial_temperature_get, _datamunge.SimulatedAnnealingOptions_initial_temperature_set)
+    cooling_rate = property(_datamunge.SimulatedAnnealingOptions_cooling_rate_get, _datamunge.SimulatedAnnealingOptions_cooling_rate_set, doc=r"""Multiplicative cooling factor applied to the temperature after every iteration.""")
+    max_iterations = property(_datamunge.SimulatedAnnealingOptions_max_iterations_get, _datamunge.SimulatedAnnealingOptions_max_iterations_set)
+    step_std_dev = property(_datamunge.SimulatedAnnealingOptions_step_std_dev_get, _datamunge.SimulatedAnnealingOptions_step_std_dev_set, doc=r"""Standard deviation of the Gaussian perturbation proposed at each step.""")
+    seed = property(_datamunge.SimulatedAnnealingOptions_seed_get, _datamunge.SimulatedAnnealingOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.SimulatedAnnealingOptions_swiginit(self, _datamunge.new_SimulatedAnnealingOptions())
+    __swig_destroy__ = _datamunge.delete_SimulatedAnnealingOptions
+
+# Register SimulatedAnnealingOptions in _datamunge:
+_datamunge.SimulatedAnnealingOptions_swigregister(SimulatedAnnealingOptions)
+class SimulatedAnnealing(object):
+    r"""
+    Simulated annealing on an ArbitraryFunction: a derivative-free stochastic method
+           that accepts worsening moves with Metropolis probability exp(-delta/temperature),
+           cooling geometrically, and tracks the best point found. The only optimizer here
+           that requires nothing beyond evaluate() -- suitable for non-differentiable or
+           black-box objectives.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.SimulatedAnnealing_swiginit(self, _datamunge.new_SimulatedAnnealing(*args))
+
+    def optimize(self, function, coordinates):
+        return _datamunge.SimulatedAnnealing_optimize(self, function, coordinates)
+    __swig_destroy__ = _datamunge.delete_SimulatedAnnealing
+
+# Register SimulatedAnnealing in _datamunge:
+_datamunge.SimulatedAnnealing_swigregister(SimulatedAnnealing)
+class PSOOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.PSOOptions_population_size_get, _datamunge.PSOOptions_population_size_set)
+    max_iterations = property(_datamunge.PSOOptions_max_iterations_get, _datamunge.PSOOptions_max_iterations_set)
+    inertia_weight = property(_datamunge.PSOOptions_inertia_weight_get, _datamunge.PSOOptions_inertia_weight_set)
+    cognitive_coefficient = property(_datamunge.PSOOptions_cognitive_coefficient_get, _datamunge.PSOOptions_cognitive_coefficient_set)
+    social_coefficient = property(_datamunge.PSOOptions_social_coefficient_get, _datamunge.PSOOptions_social_coefficient_set)
+    topology = property(_datamunge.PSOOptions_topology_get, _datamunge.PSOOptions_topology_set, doc=r"""
+    One of "global" (gbest -- every particle is attracted to the single best
+           particle found so far) or "ring" (lbest -- each particle is attracted to the
+           best particle within a small ring-shaped neighborhood; slower but less prone
+           to premature convergence).
+    """)
+    ring_neighbors = property(_datamunge.PSOOptions_ring_neighbors_get, _datamunge.PSOOptions_ring_neighbors_set, doc=r"""Neighbors considered on each side of a particle when topology == "ring".""")
+    inertia_strategy = property(_datamunge.PSOOptions_inertia_strategy_get, _datamunge.PSOOptions_inertia_strategy_set, doc=r"""
+    One of "constant" or "linear_decay" (anneals from inertia_weight down to
+           final_inertia_weight over the course of the run).
+    """)
+    final_inertia_weight = property(_datamunge.PSOOptions_final_inertia_weight_get, _datamunge.PSOOptions_final_inertia_weight_set)
+    tolerance = property(_datamunge.PSOOptions_tolerance_get, _datamunge.PSOOptions_tolerance_set, doc=r"""Stops after the global best has improved by less than this for 20 consecutive iterations.""")
+    seed = property(_datamunge.PSOOptions_seed_get, _datamunge.PSOOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.PSOOptions_swiginit(self, _datamunge.new_PSOOptions())
+    __swig_destroy__ = _datamunge.delete_PSOOptions
+
+# Register PSOOptions in _datamunge:
+_datamunge.PSOOptions_swigregister(PSOOptions)
+class PSO(object):
+    r"""
+    Particle swarm optimization on an ArbitraryFunction within a box constraint: a
+           population of particles fly through the search space, each pulled toward its own
+           best-seen position and the best position found by (depending on topology) the
+           whole swarm or a local neighborhood. Derivative-free.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.PSO_swiginit(self, _datamunge.new_PSO(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one particle of the swarm.
+        """
+        return _datamunge.PSO_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_PSO
+
+# Register PSO in _datamunge:
+_datamunge.PSO_swigregister(PSO)
+class DEOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.DEOptions_population_size_get, _datamunge.DEOptions_population_size_set)
+    max_generations = property(_datamunge.DEOptions_max_generations_get, _datamunge.DEOptions_max_generations_set)
+    differential_weight = property(_datamunge.DEOptions_differential_weight_get, _datamunge.DEOptions_differential_weight_set, doc=r"""F: scales the differential perturbation applied by the mutation strategy.""")
+    crossover_rate = property(_datamunge.DEOptions_crossover_rate_get, _datamunge.DEOptions_crossover_rate_set, doc=r"""CR: probability that a given gene is taken from the mutant vector.""")
+    mutation_strategy = property(_datamunge.DEOptions_mutation_strategy_get, _datamunge.DEOptions_mutation_strategy_set, doc=r"""
+    One of "rand1", "best1", "current_to_best1", or "rand2" -- Storn & Price's
+           DE/x/y/z naming for which base vector(s) the differential perturbation(s) are
+           added to.
+    """)
+    crossover_strategy = property(_datamunge.DEOptions_crossover_strategy_get, _datamunge.DEOptions_crossover_strategy_set, doc=r"""One of "binomial" or "exponential".""")
+    tolerance = property(_datamunge.DEOptions_tolerance_get, _datamunge.DEOptions_tolerance_set, doc=r"""Stops after the population best has improved by less than this for 20 consecutive generations.""")
+    seed = property(_datamunge.DEOptions_seed_get, _datamunge.DEOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.DEOptions_swiginit(self, _datamunge.new_DEOptions())
+    __swig_destroy__ = _datamunge.delete_DEOptions
+
+# Register DEOptions in _datamunge:
+_datamunge.DEOptions_swigregister(DEOptions)
+class DifferentialEvolution(object):
+    r"""
+    Differential evolution on an ArbitraryFunction within a box constraint: each
+           generation, every individual is challenged by a "trial" vector built from a
+           mutated combination of other population members, greedily replacing it only if
+           the trial is at least as good. Derivative-free.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.DifferentialEvolution_swiginit(self, _datamunge.new_DifferentialEvolution(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one member of the population.
+        """
+        return _datamunge.DifferentialEvolution_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_DifferentialEvolution
+
+# Register DifferentialEvolution in _datamunge:
+_datamunge.DifferentialEvolution_swigregister(DifferentialEvolution)
+class GAOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    population_size = property(_datamunge.GAOptions_population_size_get, _datamunge.GAOptions_population_size_set)
+    max_generations = property(_datamunge.GAOptions_max_generations_get, _datamunge.GAOptions_max_generations_set)
+    crossover_rate = property(_datamunge.GAOptions_crossover_rate_get, _datamunge.GAOptions_crossover_rate_set)
+    mutation_rate = property(_datamunge.GAOptions_mutation_rate_get, _datamunge.GAOptions_mutation_rate_set, doc=r"""Per-gene probability of a Gaussian mutation.""")
+    mutation_std_dev = property(_datamunge.GAOptions_mutation_std_dev_get, _datamunge.GAOptions_mutation_std_dev_set, doc=r"""Mutation Gaussian standard deviation, as a fraction of each gene's [lower, upper] range.""")
+    selection_strategy = property(_datamunge.GAOptions_selection_strategy_get, _datamunge.GAOptions_selection_strategy_set, doc=r"""One of "tournament", "roulette" (fitness-proportionate), or "rank" (linear ranking).""")
+    tournament_size = property(_datamunge.GAOptions_tournament_size_get, _datamunge.GAOptions_tournament_size_set)
+    crossover_strategy = property(_datamunge.GAOptions_crossover_strategy_get, _datamunge.GAOptions_crossover_strategy_set, doc=r"""One of "single_point", "uniform", or "blend" (BLX-alpha).""")
+    blend_alpha = property(_datamunge.GAOptions_blend_alpha_get, _datamunge.GAOptions_blend_alpha_set, doc=r"""Alpha parameter for BLX-alpha crossover, used only when crossover_strategy == "blend".""")
+    elitism = property(_datamunge.GAOptions_elitism_get, _datamunge.GAOptions_elitism_set)
+    elite_count = property(_datamunge.GAOptions_elite_count_get, _datamunge.GAOptions_elite_count_set)
+    tolerance = property(_datamunge.GAOptions_tolerance_get, _datamunge.GAOptions_tolerance_set, doc=r"""Stops after the population best has improved by less than this for 20 consecutive generations.""")
+    seed = property(_datamunge.GAOptions_seed_get, _datamunge.GAOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.GAOptions_swiginit(self, _datamunge.new_GAOptions())
+    __swig_destroy__ = _datamunge.delete_GAOptions
+
+# Register GAOptions in _datamunge:
+_datamunge.GAOptions_swigregister(GAOptions)
+class GeneticAlgorithm(object):
+    r"""
+    A real-valued genetic algorithm on an ArbitraryFunction within a box constraint: a
+           population evolves across generations via selection, crossover, and mutation.
+           Independently configurable selection/crossover strategies and elitism give a
+           combinatorial family of GA variants under one interface. Derivative-free.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.GeneticAlgorithm_swiginit(self, _datamunge.new_GeneticAlgorithm(*args))
+
+    def optimize(self, function, coordinates, lower_bound, upper_bound):
+        r"""
+        Minimizes ``function`` within [``lower_bound``, ``upper_bound]``, updating
+               ``coordinates`` in place to the best point found, and returns its value. The
+               initial ``coordinates`` (clamped into bounds) seed one member of the population.
+        """
+        return _datamunge.GeneticAlgorithm_optimize(self, function, coordinates, lower_bound, upper_bound)
+    __swig_destroy__ = _datamunge.delete_GeneticAlgorithm
+
+# Register GeneticAlgorithm in _datamunge:
+_datamunge.GeneticAlgorithm_swigregister(GeneticAlgorithm)
+class MAPOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    max_iterations = property(_datamunge.MAPOptions_max_iterations_get, _datamunge.MAPOptions_max_iterations_set)
+    tolerance = property(_datamunge.MAPOptions_tolerance_get, _datamunge.MAPOptions_tolerance_set)
+    history_size = property(_datamunge.MAPOptions_history_size_get, _datamunge.MAPOptions_history_size_set)
+
+    def __init__(self):
+        _datamunge.MAPOptions_swiginit(self, _datamunge.new_MAPOptions())
+    __swig_destroy__ = _datamunge.delete_MAPOptions
+
+# Register MAPOptions in _datamunge:
+_datamunge.MAPOptions_swigregister(MAPOptions)
+class MAP(object):
+    r"""
+    Maximum a posteriori estimation: finds the mode of a log-posterior density via
+           L-BFGS (datamunge::optim::LBFGS), analogous to Stan's `optimizing()`.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.MAP_swiginit(self, _datamunge.new_MAP(*args))
+
+    def optimize(self, log_posterior, coordinates):
+        r"""
+        Maximizes ``log_posterior`` starting from ``coordinates``, updating it in place
+               to the mode found, and returns the log-posterior density there.
+        """
+        return _datamunge.MAP_optimize(self, log_posterior, coordinates)
+    __swig_destroy__ = _datamunge.delete_MAP
+
+# Register MAP in _datamunge:
+_datamunge.MAP_swigregister(MAP)
+class HMCOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    num_samples = property(_datamunge.HMCOptions_num_samples_get, _datamunge.HMCOptions_num_samples_set)
+    num_warmup = property(_datamunge.HMCOptions_num_warmup_get, _datamunge.HMCOptions_num_warmup_set)
+    num_leapfrog_steps = property(_datamunge.HMCOptions_num_leapfrog_steps_get, _datamunge.HMCOptions_num_leapfrog_steps_set, doc=r"""Number of leapfrog steps per proposal (trajectory length = num_leapfrog_steps * step size).""")
+    initial_step_size = property(_datamunge.HMCOptions_initial_step_size_get, _datamunge.HMCOptions_initial_step_size_set)
+    target_accept_rate = property(_datamunge.HMCOptions_target_accept_rate_get, _datamunge.HMCOptions_target_accept_rate_set, doc=r"""Target Metropolis acceptance rate the dual-averaging adaptation aims for during warmup.""")
+    seed = property(_datamunge.HMCOptions_seed_get, _datamunge.HMCOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.HMCOptions_swiginit(self, _datamunge.new_HMCOptions())
+    __swig_destroy__ = _datamunge.delete_HMCOptions
+
+# Register HMCOptions in _datamunge:
+_datamunge.HMCOptions_swigregister(HMCOptions)
+class HMCResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    samples = property(_datamunge.HMCResult_samples_get, _datamunge.HMCResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
+    accept_rate = property(_datamunge.HMCResult_accept_rate_get, _datamunge.HMCResult_accept_rate_set)
+    final_step_size = property(_datamunge.HMCResult_final_step_size_get, _datamunge.HMCResult_final_step_size_set)
+
+    def __init__(self):
+        _datamunge.HMCResult_swiginit(self, _datamunge.new_HMCResult())
+    __swig_destroy__ = _datamunge.delete_HMCResult
+
+# Register HMCResult in _datamunge:
+_datamunge.HMCResult_swigregister(HMCResult)
+class HMC(object):
+    r"""
+    Hamiltonian Monte Carlo with a fixed leapfrog trajectory length and Nesterov
+           dual-averaging step-size adaptation during warmup (Hoffman & Gelman 2014), using
+           an identity mass matrix. Samples from the distribution proportional to
+           exp(log_posterior) over unconstrained real parameters.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.HMC_swiginit(self, _datamunge.new_HMC(*args))
+
+    def sample(self, log_posterior, initial_params):
+        return _datamunge.HMC_sample(self, log_posterior, initial_params)
+    __swig_destroy__ = _datamunge.delete_HMC
+
+# Register HMC in _datamunge:
+_datamunge.HMC_swigregister(HMC)
+class NUTSOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    num_samples = property(_datamunge.NUTSOptions_num_samples_get, _datamunge.NUTSOptions_num_samples_set)
+    num_warmup = property(_datamunge.NUTSOptions_num_warmup_get, _datamunge.NUTSOptions_num_warmup_set)
+    max_tree_depth = property(_datamunge.NUTSOptions_max_tree_depth_get, _datamunge.NUTSOptions_max_tree_depth_set, doc=r"""Caps the recursive trajectory-doubling at 2^max_tree_depth leapfrog steps per iteration.""")
+    initial_step_size = property(_datamunge.NUTSOptions_initial_step_size_get, _datamunge.NUTSOptions_initial_step_size_set)
+    target_accept_rate = property(_datamunge.NUTSOptions_target_accept_rate_get, _datamunge.NUTSOptions_target_accept_rate_set)
+    max_delta_error = property(_datamunge.NUTSOptions_max_delta_error_get, _datamunge.NUTSOptions_max_delta_error_set, doc=r"""
+    A trajectory is flagged as diverging once the Hamiltonian drifts by more than
+           this from its initial value (Stan's default of 1000).
+    """)
+    seed = property(_datamunge.NUTSOptions_seed_get, _datamunge.NUTSOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.NUTSOptions_swiginit(self, _datamunge.new_NUTSOptions())
+    __swig_destroy__ = _datamunge.delete_NUTSOptions
+
+# Register NUTSOptions in _datamunge:
+_datamunge.NUTSOptions_swigregister(NUTSOptions)
+class NUTSResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    samples = property(_datamunge.NUTSResult_samples_get, _datamunge.NUTSResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
+    accept_rate = property(_datamunge.NUTSResult_accept_rate_get, _datamunge.NUTSResult_accept_rate_set, doc=r"""
+    Mean Metropolis acceptance statistic across all iterations (the same quantity
+           the step-size adaptation targets).
+    """)
+    final_step_size = property(_datamunge.NUTSResult_final_step_size_get, _datamunge.NUTSResult_final_step_size_set)
+    num_divergences = property(_datamunge.NUTSResult_num_divergences_get, _datamunge.NUTSResult_num_divergences_set)
+
+    def __init__(self):
+        _datamunge.NUTSResult_swiginit(self, _datamunge.new_NUTSResult())
+    __swig_destroy__ = _datamunge.delete_NUTSResult
+
+# Register NUTSResult in _datamunge:
+_datamunge.NUTSResult_swigregister(NUTSResult)
+class NUTS(object):
+    r"""
+    The No-U-Turn Sampler (Hoffman & Gelman 2014, the efficient slice-sampling
+           variant, Algorithm 3): Hamiltonian Monte Carlo with an automatically chosen
+           trajectory length -- the leapfrog trajectory is grown by repeated doubling until
+           it would start turning back on itself (a "U-turn"), removing the need to hand-tune
+           a fixed number of leapfrog steps. Step size is still adapted via the same
+           dual-averaging scheme as HMC. Uses an identity mass matrix.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.NUTS_swiginit(self, _datamunge.new_NUTS(*args))
+
+    def sample(self, log_posterior, initial_params):
+        return _datamunge.NUTS_sample(self, log_posterior, initial_params)
+    __swig_destroy__ = _datamunge.delete_NUTS
+
+# Register NUTS in _datamunge:
+_datamunge.NUTS_swigregister(NUTS)
 

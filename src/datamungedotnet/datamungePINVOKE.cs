@@ -272,6 +272,30 @@ class datamungePINVOKE {
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DPair")]
   public static extern void delete_DPair(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DVectorPair__SWIG_0")]
+  public static extern global::System.IntPtr new_DVectorPair__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DVectorPair__SWIG_1")]
+  public static extern global::System.IntPtr new_DVectorPair__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DVectorPair__SWIG_2")]
+  public static extern global::System.IntPtr new_DVectorPair__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorPair_first_set")]
+  public static extern void DVectorPair_first_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorPair_first_get")]
+  public static extern global::System.IntPtr DVectorPair_first_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorPair_second_set")]
+  public static extern void DVectorPair_second_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorPair_second_get")]
+  public static extern global::System.IntPtr DVectorPair_second_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DVectorPair")]
+  public static extern void delete_DVectorPair(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SPair__SWIG_0")]
   public static extern global::System.IntPtr new_SPair__SWIG_0();
 
@@ -458,6 +482,75 @@ class datamungePINVOKE {
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DVector")]
   public static extern void delete_DVector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DVectorVector__SWIG_0")]
+  public static extern global::System.IntPtr new_DVectorVector__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DVectorVector__SWIG_1")]
+  public static extern global::System.IntPtr new_DVectorVector__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_Clear")]
+  public static extern void DVectorVector_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_Add")]
+  public static extern void DVectorVector_Add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_size")]
+  public static extern uint DVectorVector_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_empty")]
+  public static extern bool DVectorVector_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_capacity")]
+  public static extern uint DVectorVector_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_reserve")]
+  public static extern void DVectorVector_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DVectorVector__SWIG_2")]
+  public static extern global::System.IntPtr new_DVectorVector__SWIG_2(int jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_getitemcopy")]
+  public static extern global::System.IntPtr DVectorVector_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_getitem")]
+  public static extern global::System.IntPtr DVectorVector_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_setitem")]
+  public static extern void DVectorVector_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_AddRange")]
+  public static extern void DVectorVector_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_GetRange")]
+  public static extern global::System.IntPtr DVectorVector_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_Insert")]
+  public static extern void DVectorVector_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_InsertRange")]
+  public static extern void DVectorVector_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_RemoveAt")]
+  public static extern void DVectorVector_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_RemoveRange")]
+  public static extern void DVectorVector_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_Repeat")]
+  public static extern global::System.IntPtr DVectorVector_Repeat(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_Reverse__SWIG_0")]
+  public static extern void DVectorVector_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_Reverse__SWIG_1")]
+  public static extern void DVectorVector_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DVectorVector_SetRange")]
+  public static extern void DVectorVector_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DVectorVector")]
+  public static extern void delete_DVectorVector(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SizeVector__SWIG_0")]
   public static extern global::System.IntPtr new_SizeVector__SWIG_0();
 
@@ -641,6 +734,9 @@ class datamungePINVOKE {
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DataFrame")]
   public static extern global::System.IntPtr new_DataFrame();
 
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_empty")]
+  public static extern global::System.IntPtr DataFrame_empty();
+
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_nrows")]
   public static extern uint DataFrame_nrows(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -733,6 +829,24 @@ class datamungePINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_to_string__SWIG_1")]
   public static extern string DataFrame_to_string__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_is_numeric_column")]
+  public static extern bool DataFrame_is_numeric_column(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_is_null")]
+  public static extern bool DataFrame_is_null(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_numeric_at")]
+  public static extern double DataFrame_numeric_at(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_string_at")]
+  public static extern string DataFrame_string_at(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_iris")]
+  public static extern global::System.IntPtr DataFrame_iris();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataFrame_penguins")]
+  public static extern global::System.IntPtr DataFrame_penguins();
 
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DataFrame")]
   public static extern void delete_DataFrame(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -856,4 +970,3037 @@ class datamungePINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_LM")]
   public static extern void delete_LM(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LMM__SWIG_0")]
+  public static extern global::System.IntPtr new_LMM__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, bool jarg3, uint jarg4, uint jarg5, double jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LMM__SWIG_1")]
+  public static extern global::System.IntPtr new_LMM__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, bool jarg3, uint jarg4, uint jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LMM__SWIG_2")]
+  public static extern global::System.IntPtr new_LMM__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, bool jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LMM__SWIG_3")]
+  public static extern global::System.IntPtr new_LMM__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, bool jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LMM__SWIG_4")]
+  public static extern global::System.IntPtr new_LMM__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LMM__SWIG_5")]
+  public static extern global::System.IntPtr new_LMM__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_formula_text")]
+  public static extern string LMM_formula_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_group_variable")]
+  public static extern string LMM_group_variable(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_has_random_intercept")]
+  public static extern bool LMM_has_random_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_random_effect_names")]
+  public static extern global::System.IntPtr LMM_random_effect_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_is_reml")]
+  public static extern bool LMM_is_reml(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_observations")]
+  public static extern uint LMM_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_num_groups")]
+  public static extern uint LMM_num_groups(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_rank")]
+  public static extern uint LMM_rank(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_coefficients")]
+  public static extern global::System.IntPtr LMM_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_coefficient_names")]
+  public static extern global::System.IntPtr LMM_coefficient_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_standard_errors")]
+  public static extern global::System.IntPtr LMM_standard_errors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_z_values")]
+  public static extern global::System.IntPtr LMM_z_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_p_values")]
+  public static extern global::System.IntPtr LMM_p_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_fitted_values")]
+  public static extern global::System.IntPtr LMM_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_residuals")]
+  public static extern global::System.IntPtr LMM_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_residual_variance")]
+  public static extern double LMM_residual_variance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_residual_std_dev")]
+  public static extern double LMM_residual_std_dev(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_random_effect_std_devs")]
+  public static extern global::System.IntPtr LMM_random_effect_std_devs(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_random_effect_correlation")]
+  public static extern double LMM_random_effect_correlation(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_group_labels")]
+  public static extern global::System.IntPtr LMM_group_labels(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_random_effects_for_group")]
+  public static extern global::System.IntPtr LMM_random_effects_for_group(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_log_likelihood")]
+  public static extern double LMM_log_likelihood(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_deviance")]
+  public static extern double LMM_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_aic")]
+  public static extern double LMM_aic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_bic")]
+  public static extern double LMM_bic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_summary")]
+  public static extern string LMM_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_print_summary")]
+  public static extern void LMM_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LMM_predict")]
+  public static extern global::System.IntPtr LMM_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_LMM")]
+  public static extern void delete_LMM(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_0")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4, double jarg5, uint jarg6, uint jarg7, double jarg8, uint jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_1")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4, double jarg5, uint jarg6, uint jarg7, double jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_2")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4, double jarg5, uint jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_3")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4, double jarg5, uint jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_4")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4, double jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_5")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_6")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLMM__SWIG_7")]
+  public static extern global::System.IntPtr new_GLMM__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_formula_text")]
+  public static extern string GLMM_formula_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_family")]
+  public static extern string GLMM_family(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_group_variable")]
+  public static extern string GLMM_group_variable(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_has_random_intercept")]
+  public static extern bool GLMM_has_random_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_random_effect_names")]
+  public static extern global::System.IntPtr GLMM_random_effect_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_observations")]
+  public static extern uint GLMM_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_num_groups")]
+  public static extern uint GLMM_num_groups(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_rank")]
+  public static extern uint GLMM_rank(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_iterations")]
+  public static extern uint GLMM_iterations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_coefficients")]
+  public static extern global::System.IntPtr GLMM_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_coefficient_names")]
+  public static extern global::System.IntPtr GLMM_coefficient_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_standard_errors")]
+  public static extern global::System.IntPtr GLMM_standard_errors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_z_values")]
+  public static extern global::System.IntPtr GLMM_z_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_p_values")]
+  public static extern global::System.IntPtr GLMM_p_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_fitted_values")]
+  public static extern global::System.IntPtr GLMM_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_random_effect_std_devs")]
+  public static extern global::System.IntPtr GLMM_random_effect_std_devs(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_random_effect_correlation")]
+  public static extern double GLMM_random_effect_correlation(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_group_labels")]
+  public static extern global::System.IntPtr GLMM_group_labels(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_random_effects_for_group")]
+  public static extern global::System.IntPtr GLMM_random_effects_for_group(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_deviance")]
+  public static extern double GLMM_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_aic")]
+  public static extern double GLMM_aic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_bic")]
+  public static extern double GLMM_bic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_summary")]
+  public static extern string GLMM_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_print_summary")]
+  public static extern void GLMM_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLMM_predict")]
+  public static extern global::System.IntPtr GLMM_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_GLMM")]
+  public static extern void delete_GLMM(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LDA__SWIG_0")]
+  public static extern global::System.IntPtr new_LDA__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LDA__SWIG_1")]
+  public static extern global::System.IntPtr new_LDA__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_classes")]
+  public static extern global::System.IntPtr LDA_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_predictor_names")]
+  public static extern global::System.IntPtr LDA_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_observations")]
+  public static extern uint LDA_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_num_discriminants")]
+  public static extern uint LDA_num_discriminants(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_priors")]
+  public static extern global::System.IntPtr LDA_priors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_group_means")]
+  public static extern global::System.IntPtr LDA_group_means(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_scaling")]
+  public static extern global::System.IntPtr LDA_scaling(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_proportion_of_trace")]
+  public static extern global::System.IntPtr LDA_proportion_of_trace(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_training_accuracy")]
+  public static extern double LDA_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_confusion_matrix")]
+  public static extern global::System.IntPtr LDA_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_summary")]
+  public static extern string LDA_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_print_summary")]
+  public static extern void LDA_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_predict")]
+  public static extern global::System.IntPtr LDA_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_predict_frame")]
+  public static extern global::System.IntPtr LDA_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_plot_discriminants")]
+  public static extern global::System.IntPtr LDA_plot_discriminants(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LDA_save_discriminant_plot")]
+  public static extern void LDA_save_discriminant_plot(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_LDA")]
+  public static extern void delete_LDA(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SVM__SWIG_0")]
+  public static extern global::System.IntPtr new_SVM__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4, double jarg5, double jarg6, int jarg7, bool jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SVM__SWIG_1")]
+  public static extern global::System.IntPtr new_SVM__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4, double jarg5, double jarg6, int jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SVM__SWIG_2")]
+  public static extern global::System.IntPtr new_SVM__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4, double jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SVM__SWIG_3")]
+  public static extern global::System.IntPtr new_SVM__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4, double jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SVM__SWIG_4")]
+  public static extern global::System.IntPtr new_SVM__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SVM__SWIG_5")]
+  public static extern global::System.IntPtr new_SVM__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_SVM__SWIG_6")]
+  public static extern global::System.IntPtr new_SVM__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_classes")]
+  public static extern global::System.IntPtr SVM_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_predictor_names")]
+  public static extern global::System.IntPtr SVM_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_observations")]
+  public static extern uint SVM_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_num_support_vectors")]
+  public static extern uint SVM_num_support_vectors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_training_accuracy")]
+  public static extern double SVM_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_confusion_matrix")]
+  public static extern global::System.IntPtr SVM_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_summary")]
+  public static extern string SVM_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_print_summary")]
+  public static extern void SVM_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_predict")]
+  public static extern global::System.IntPtr SVM_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_SVM_predict_frame")]
+  public static extern global::System.IntPtr SVM_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_SVM")]
+  public static extern void delete_SVM(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeClassifier__SWIG_0")]
+  public static extern global::System.IntPtr new_DecisionTreeClassifier__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, string jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeClassifier__SWIG_1")]
+  public static extern global::System.IntPtr new_DecisionTreeClassifier__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeClassifier__SWIG_2")]
+  public static extern global::System.IntPtr new_DecisionTreeClassifier__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeClassifier__SWIG_3")]
+  public static extern global::System.IntPtr new_DecisionTreeClassifier__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeClassifier__SWIG_4")]
+  public static extern global::System.IntPtr new_DecisionTreeClassifier__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_classes")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_predictor_names")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_observations")]
+  public static extern uint DecisionTreeClassifier_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_node_count")]
+  public static extern uint DecisionTreeClassifier_node_count(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_leaf_count")]
+  public static extern uint DecisionTreeClassifier_leaf_count(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_depth")]
+  public static extern uint DecisionTreeClassifier_depth(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_feature_importance")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_training_accuracy")]
+  public static extern double DecisionTreeClassifier_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_confusion_matrix")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_summary")]
+  public static extern string DecisionTreeClassifier_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_print_summary")]
+  public static extern void DecisionTreeClassifier_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_predict")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_predict_frame")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_plot_classification")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_plot_classification(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_plot_decision_regions__SWIG_0")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_plot_decision_regions__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeClassifier_plot_decision_regions__SWIG_1")]
+  public static extern global::System.IntPtr DecisionTreeClassifier_plot_decision_regions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DecisionTreeClassifier")]
+  public static extern void delete_DecisionTreeClassifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeRegressor__SWIG_0")]
+  public static extern global::System.IntPtr new_DecisionTreeRegressor__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeRegressor__SWIG_1")]
+  public static extern global::System.IntPtr new_DecisionTreeRegressor__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeRegressor__SWIG_2")]
+  public static extern global::System.IntPtr new_DecisionTreeRegressor__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DecisionTreeRegressor__SWIG_3")]
+  public static extern global::System.IntPtr new_DecisionTreeRegressor__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_predictor_names")]
+  public static extern global::System.IntPtr DecisionTreeRegressor_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_observations")]
+  public static extern uint DecisionTreeRegressor_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_node_count")]
+  public static extern uint DecisionTreeRegressor_node_count(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_leaf_count")]
+  public static extern uint DecisionTreeRegressor_leaf_count(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_depth")]
+  public static extern uint DecisionTreeRegressor_depth(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_feature_importance")]
+  public static extern global::System.IntPtr DecisionTreeRegressor_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_fitted_values")]
+  public static extern global::System.IntPtr DecisionTreeRegressor_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_r_squared")]
+  public static extern double DecisionTreeRegressor_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_rmse")]
+  public static extern double DecisionTreeRegressor_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_summary")]
+  public static extern string DecisionTreeRegressor_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_print_summary")]
+  public static extern void DecisionTreeRegressor_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_predict")]
+  public static extern global::System.IntPtr DecisionTreeRegressor_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr DecisionTreeRegressor_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DecisionTreeRegressor_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr DecisionTreeRegressor_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DecisionTreeRegressor")]
+  public static extern void delete_DecisionTreeRegressor(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_0")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7, string jarg8, bool jarg9, double jarg10, ulong jarg11);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_1")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7, string jarg8, bool jarg9, double jarg10);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_2")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7, string jarg8, bool jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_3")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7, string jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_4")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_5")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_6")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_7")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_8")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_8(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestClassifier__SWIG_9")]
+  public static extern global::System.IntPtr new_RandomForestClassifier__SWIG_9(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_classes")]
+  public static extern global::System.IntPtr RandomForestClassifier_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_predictor_names")]
+  public static extern global::System.IntPtr RandomForestClassifier_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_observations")]
+  public static extern uint RandomForestClassifier_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_n_trees")]
+  public static extern uint RandomForestClassifier_n_trees(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_max_features_used")]
+  public static extern uint RandomForestClassifier_max_features_used(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_feature_importance")]
+  public static extern global::System.IntPtr RandomForestClassifier_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_training_accuracy")]
+  public static extern double RandomForestClassifier_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_oob_accuracy")]
+  public static extern double RandomForestClassifier_oob_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_confusion_matrix")]
+  public static extern global::System.IntPtr RandomForestClassifier_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_summary")]
+  public static extern string RandomForestClassifier_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_print_summary")]
+  public static extern void RandomForestClassifier_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_predict")]
+  public static extern global::System.IntPtr RandomForestClassifier_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_predict_frame")]
+  public static extern global::System.IntPtr RandomForestClassifier_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_plot_classification")]
+  public static extern global::System.IntPtr RandomForestClassifier_plot_classification(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_plot_decision_regions__SWIG_0")]
+  public static extern global::System.IntPtr RandomForestClassifier_plot_decision_regions__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestClassifier_plot_decision_regions__SWIG_1")]
+  public static extern global::System.IntPtr RandomForestClassifier_plot_decision_regions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_RandomForestClassifier")]
+  public static extern void delete_RandomForestClassifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_0")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7, bool jarg8, double jarg9, ulong jarg10);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_1")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7, bool jarg8, double jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_2")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7, bool jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_3")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_4")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, uint jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_5")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_6")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_7")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RandomForestRegressor__SWIG_8")]
+  public static extern global::System.IntPtr new_RandomForestRegressor__SWIG_8(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_predictor_names")]
+  public static extern global::System.IntPtr RandomForestRegressor_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_observations")]
+  public static extern uint RandomForestRegressor_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_n_trees")]
+  public static extern uint RandomForestRegressor_n_trees(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_max_features_used")]
+  public static extern uint RandomForestRegressor_max_features_used(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_feature_importance")]
+  public static extern global::System.IntPtr RandomForestRegressor_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_fitted_values")]
+  public static extern global::System.IntPtr RandomForestRegressor_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_r_squared")]
+  public static extern double RandomForestRegressor_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_rmse")]
+  public static extern double RandomForestRegressor_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_oob_r_squared")]
+  public static extern double RandomForestRegressor_oob_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_oob_rmse")]
+  public static extern double RandomForestRegressor_oob_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_summary")]
+  public static extern string RandomForestRegressor_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_print_summary")]
+  public static extern void RandomForestRegressor_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_predict")]
+  public static extern global::System.IntPtr RandomForestRegressor_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr RandomForestRegressor_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RandomForestRegressor_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr RandomForestRegressor_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_RandomForestRegressor")]
+  public static extern void delete_RandomForestRegressor(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ElasticNet__SWIG_0")]
+  public static extern global::System.IntPtr new_ElasticNet__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4, uint jarg5, uint jarg6, bool jarg7, ulong jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ElasticNet__SWIG_1")]
+  public static extern global::System.IntPtr new_ElasticNet__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4, uint jarg5, uint jarg6, bool jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ElasticNet__SWIG_2")]
+  public static extern global::System.IntPtr new_ElasticNet__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4, uint jarg5, uint jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ElasticNet__SWIG_3")]
+  public static extern global::System.IntPtr new_ElasticNet__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ElasticNet__SWIG_4")]
+  public static extern global::System.IntPtr new_ElasticNet__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ElasticNet__SWIG_5")]
+  public static extern global::System.IntPtr new_ElasticNet__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ElasticNet__SWIG_6")]
+  public static extern global::System.IntPtr new_ElasticNet__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_formula_text")]
+  public static extern string ElasticNet_formula_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_has_intercept")]
+  public static extern bool ElasticNet_has_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_predictor_names")]
+  public static extern global::System.IntPtr ElasticNet_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_observations")]
+  public static extern uint ElasticNet_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_alpha")]
+  public static extern double ElasticNet_alpha(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_lambda")]
+  public static extern double ElasticNet_lambda(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_lambda_was_selected")]
+  public static extern bool ElasticNet_lambda_was_selected(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_lambda_path")]
+  public static extern global::System.IntPtr ElasticNet_lambda_path(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_cv_mean_squared_error")]
+  public static extern global::System.IntPtr ElasticNet_cv_mean_squared_error(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_coefficients")]
+  public static extern global::System.IntPtr ElasticNet_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_intercept")]
+  public static extern double ElasticNet_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_non_zero_coefficients")]
+  public static extern uint ElasticNet_non_zero_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_fitted_values")]
+  public static extern global::System.IntPtr ElasticNet_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_residuals")]
+  public static extern global::System.IntPtr ElasticNet_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_r_squared")]
+  public static extern double ElasticNet_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_rmse")]
+  public static extern double ElasticNet_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_summary")]
+  public static extern string ElasticNet_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_print_summary")]
+  public static extern void ElasticNet_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_predict")]
+  public static extern global::System.IntPtr ElasticNet_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_plot_coefficient_path")]
+  public static extern global::System.IntPtr ElasticNet_plot_coefficient_path(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_plot_cv_curve")]
+  public static extern global::System.IntPtr ElasticNet_plot_cv_curve(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr ElasticNet_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ElasticNet_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr ElasticNet_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_ElasticNet")]
+  public static extern void delete_ElasticNet(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Ridge__SWIG_0")]
+  public static extern global::System.IntPtr new_Ridge__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4, uint jarg5, bool jarg6, ulong jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Ridge__SWIG_1")]
+  public static extern global::System.IntPtr new_Ridge__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4, uint jarg5, bool jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Ridge__SWIG_2")]
+  public static extern global::System.IntPtr new_Ridge__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Ridge__SWIG_3")]
+  public static extern global::System.IntPtr new_Ridge__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Ridge__SWIG_4")]
+  public static extern global::System.IntPtr new_Ridge__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Ridge__SWIG_5")]
+  public static extern global::System.IntPtr new_Ridge__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_formula_text")]
+  public static extern string Ridge_formula_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_has_intercept")]
+  public static extern bool Ridge_has_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_predictor_names")]
+  public static extern global::System.IntPtr Ridge_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_observations")]
+  public static extern uint Ridge_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_lambda")]
+  public static extern double Ridge_lambda(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_lambda_was_selected")]
+  public static extern bool Ridge_lambda_was_selected(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_lambda_path")]
+  public static extern global::System.IntPtr Ridge_lambda_path(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_cv_mean_squared_error")]
+  public static extern global::System.IntPtr Ridge_cv_mean_squared_error(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_coefficients")]
+  public static extern global::System.IntPtr Ridge_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_intercept")]
+  public static extern double Ridge_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_fitted_values")]
+  public static extern global::System.IntPtr Ridge_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_residuals")]
+  public static extern global::System.IntPtr Ridge_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_r_squared")]
+  public static extern double Ridge_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_rmse")]
+  public static extern double Ridge_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_summary")]
+  public static extern string Ridge_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_print_summary")]
+  public static extern void Ridge_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_predict")]
+  public static extern global::System.IntPtr Ridge_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_plot_coefficient_path")]
+  public static extern global::System.IntPtr Ridge_plot_coefficient_path(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_plot_cv_curve")]
+  public static extern global::System.IntPtr Ridge_plot_cv_curve(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr Ridge_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Ridge_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr Ridge_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_Ridge")]
+  public static extern void delete_Ridge(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Lasso__SWIG_0")]
+  public static extern global::System.IntPtr new_Lasso__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4, uint jarg5, bool jarg6, ulong jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Lasso__SWIG_1")]
+  public static extern global::System.IntPtr new_Lasso__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4, uint jarg5, bool jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Lasso__SWIG_2")]
+  public static extern global::System.IntPtr new_Lasso__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Lasso__SWIG_3")]
+  public static extern global::System.IntPtr new_Lasso__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Lasso__SWIG_4")]
+  public static extern global::System.IntPtr new_Lasso__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Lasso__SWIG_5")]
+  public static extern global::System.IntPtr new_Lasso__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_formula_text")]
+  public static extern string Lasso_formula_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_has_intercept")]
+  public static extern bool Lasso_has_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_predictor_names")]
+  public static extern global::System.IntPtr Lasso_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_observations")]
+  public static extern uint Lasso_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_lambda")]
+  public static extern double Lasso_lambda(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_lambda_was_selected")]
+  public static extern bool Lasso_lambda_was_selected(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_lambda_path")]
+  public static extern global::System.IntPtr Lasso_lambda_path(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_cv_mean_squared_error")]
+  public static extern global::System.IntPtr Lasso_cv_mean_squared_error(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_coefficients")]
+  public static extern global::System.IntPtr Lasso_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_intercept")]
+  public static extern double Lasso_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_non_zero_coefficients")]
+  public static extern uint Lasso_non_zero_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_fitted_values")]
+  public static extern global::System.IntPtr Lasso_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_residuals")]
+  public static extern global::System.IntPtr Lasso_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_r_squared")]
+  public static extern double Lasso_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_rmse")]
+  public static extern double Lasso_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_summary")]
+  public static extern string Lasso_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_print_summary")]
+  public static extern void Lasso_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_predict")]
+  public static extern global::System.IntPtr Lasso_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_plot_coefficient_path")]
+  public static extern global::System.IntPtr Lasso_plot_coefficient_path(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_plot_cv_curve")]
+  public static extern global::System.IntPtr Lasso_plot_cv_curve(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr Lasso_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Lasso_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr Lasso_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_Lasso")]
+  public static extern void delete_Lasso(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNClassifier__SWIG_0")]
+  public static extern global::System.IntPtr new_KNNClassifier__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4, bool jarg5, bool jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNClassifier__SWIG_1")]
+  public static extern global::System.IntPtr new_KNNClassifier__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4, bool jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNClassifier__SWIG_2")]
+  public static extern global::System.IntPtr new_KNNClassifier__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNClassifier__SWIG_3")]
+  public static extern global::System.IntPtr new_KNNClassifier__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNClassifier__SWIG_4")]
+  public static extern global::System.IntPtr new_KNNClassifier__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_classes")]
+  public static extern global::System.IntPtr KNNClassifier_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_predictor_names")]
+  public static extern global::System.IntPtr KNNClassifier_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_observations")]
+  public static extern uint KNNClassifier_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_k")]
+  public static extern uint KNNClassifier_k(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_training_accuracy")]
+  public static extern double KNNClassifier_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_confusion_matrix")]
+  public static extern global::System.IntPtr KNNClassifier_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_summary")]
+  public static extern string KNNClassifier_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_print_summary")]
+  public static extern void KNNClassifier_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_predict")]
+  public static extern global::System.IntPtr KNNClassifier_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_predict_frame")]
+  public static extern global::System.IntPtr KNNClassifier_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_plot_classification")]
+  public static extern global::System.IntPtr KNNClassifier_plot_classification(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_plot_decision_regions__SWIG_0")]
+  public static extern global::System.IntPtr KNNClassifier_plot_decision_regions__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNClassifier_plot_decision_regions__SWIG_1")]
+  public static extern global::System.IntPtr KNNClassifier_plot_decision_regions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_KNNClassifier")]
+  public static extern void delete_KNNClassifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNRegressor__SWIG_0")]
+  public static extern global::System.IntPtr new_KNNRegressor__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4, bool jarg5, bool jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNRegressor__SWIG_1")]
+  public static extern global::System.IntPtr new_KNNRegressor__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4, bool jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNRegressor__SWIG_2")]
+  public static extern global::System.IntPtr new_KNNRegressor__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNRegressor__SWIG_3")]
+  public static extern global::System.IntPtr new_KNNRegressor__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KNNRegressor__SWIG_4")]
+  public static extern global::System.IntPtr new_KNNRegressor__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_predictor_names")]
+  public static extern global::System.IntPtr KNNRegressor_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_observations")]
+  public static extern uint KNNRegressor_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_k")]
+  public static extern uint KNNRegressor_k(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_fitted_values")]
+  public static extern global::System.IntPtr KNNRegressor_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_r_squared")]
+  public static extern double KNNRegressor_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_rmse")]
+  public static extern double KNNRegressor_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_summary")]
+  public static extern string KNNRegressor_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_print_summary")]
+  public static extern void KNNRegressor_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_predict")]
+  public static extern global::System.IntPtr KNNRegressor_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr KNNRegressor_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KNNRegressor_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr KNNRegressor_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_KNNRegressor")]
+  public static extern void delete_KNNRegressor(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_0")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, uint jarg4, uint jarg5, double jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_1")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, uint jarg4, uint jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_2")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_3")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_4")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_5")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_6")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, double jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_7")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_8")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_8(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_9")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_9(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_10")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_10(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KMeans__SWIG_11")]
+  public static extern global::System.IntPtr new_KMeans__SWIG_11(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_feature_names")]
+  public static extern global::System.IntPtr KMeans_feature_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_n_clusters")]
+  public static extern uint KMeans_n_clusters(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_observations")]
+  public static extern uint KMeans_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_iterations_used")]
+  public static extern uint KMeans_iterations_used(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_labels")]
+  public static extern global::System.IntPtr KMeans_labels(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_inertia")]
+  public static extern double KMeans_inertia(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_cluster_center")]
+  public static extern global::System.IntPtr KMeans_cluster_center(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_predict")]
+  public static extern global::System.IntPtr KMeans_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_summary")]
+  public static extern string KMeans_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KMeans_print_summary")]
+  public static extern void KMeans_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_KMeans")]
+  public static extern void delete_KMeans(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_0")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, string jarg4, string jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_1")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_2")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_3")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_4")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4, string jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_5")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_6")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_AgglomerativeClustering__SWIG_7")]
+  public static extern global::System.IntPtr new_AgglomerativeClustering__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_feature_names")]
+  public static extern global::System.IntPtr AgglomerativeClustering_feature_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_observations")]
+  public static extern uint AgglomerativeClustering_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_labels")]
+  public static extern global::System.IntPtr AgglomerativeClustering_labels(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_cut")]
+  public static extern global::System.IntPtr AgglomerativeClustering_cut(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_num_merges")]
+  public static extern uint AgglomerativeClustering_num_merges(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_merge_cluster_a")]
+  public static extern uint AgglomerativeClustering_merge_cluster_a(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_merge_cluster_b")]
+  public static extern uint AgglomerativeClustering_merge_cluster_b(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_merge_distance")]
+  public static extern double AgglomerativeClustering_merge_distance(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_merge_size")]
+  public static extern uint AgglomerativeClustering_merge_size(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_summary")]
+  public static extern string AgglomerativeClustering_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_AgglomerativeClustering_print_summary")]
+  public static extern void AgglomerativeClustering_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_AgglomerativeClustering")]
+  public static extern void delete_AgglomerativeClustering(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_0")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, double jarg3, uint jarg4, string jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_1")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, double jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_2")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_3")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_4")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4, string jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_5")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_6")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DBSCAN__SWIG_7")]
+  public static extern global::System.IntPtr new_DBSCAN__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DBSCAN_feature_names")]
+  public static extern global::System.IntPtr DBSCAN_feature_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DBSCAN_observations")]
+  public static extern uint DBSCAN_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DBSCAN_n_clusters")]
+  public static extern uint DBSCAN_n_clusters(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DBSCAN_n_noise")]
+  public static extern uint DBSCAN_n_noise(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DBSCAN_labels")]
+  public static extern global::System.IntPtr DBSCAN_labels(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DBSCAN_summary")]
+  public static extern string DBSCAN_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DBSCAN_print_summary")]
+  public static extern void DBSCAN_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DBSCAN")]
+  public static extern void delete_DBSCAN(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_0")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6, uint jarg7, double jarg8, ulong jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_1")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6, uint jarg7, double jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_2")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_3")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_4")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_5")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_6")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMClassifier__SWIG_7")]
+  public static extern global::System.IntPtr new_GBMClassifier__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_classes")]
+  public static extern global::System.IntPtr GBMClassifier_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_predictor_names")]
+  public static extern global::System.IntPtr GBMClassifier_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_observations")]
+  public static extern uint GBMClassifier_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_n_trees")]
+  public static extern uint GBMClassifier_n_trees(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_feature_importance")]
+  public static extern global::System.IntPtr GBMClassifier_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_training_accuracy")]
+  public static extern double GBMClassifier_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_confusion_matrix")]
+  public static extern global::System.IntPtr GBMClassifier_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_training_deviance")]
+  public static extern global::System.IntPtr GBMClassifier_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_summary")]
+  public static extern string GBMClassifier_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_print_summary")]
+  public static extern void GBMClassifier_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_predict")]
+  public static extern global::System.IntPtr GBMClassifier_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_predict_frame")]
+  public static extern global::System.IntPtr GBMClassifier_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_plot_classification")]
+  public static extern global::System.IntPtr GBMClassifier_plot_classification(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_plot_decision_regions__SWIG_0")]
+  public static extern global::System.IntPtr GBMClassifier_plot_decision_regions__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_plot_decision_regions__SWIG_1")]
+  public static extern global::System.IntPtr GBMClassifier_plot_decision_regions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMClassifier_plot_training_deviance")]
+  public static extern global::System.IntPtr GBMClassifier_plot_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_GBMClassifier")]
+  public static extern void delete_GBMClassifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_0")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6, uint jarg7, double jarg8, ulong jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_1")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6, uint jarg7, double jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_2")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6, uint jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_3")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, uint jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_4")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_5")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_6")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GBMRegressor__SWIG_7")]
+  public static extern global::System.IntPtr new_GBMRegressor__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_predictor_names")]
+  public static extern global::System.IntPtr GBMRegressor_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_observations")]
+  public static extern uint GBMRegressor_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_n_trees")]
+  public static extern uint GBMRegressor_n_trees(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_feature_importance")]
+  public static extern global::System.IntPtr GBMRegressor_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_fitted_values")]
+  public static extern global::System.IntPtr GBMRegressor_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_r_squared")]
+  public static extern double GBMRegressor_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_rmse")]
+  public static extern double GBMRegressor_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_training_deviance")]
+  public static extern global::System.IntPtr GBMRegressor_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_summary")]
+  public static extern string GBMRegressor_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_print_summary")]
+  public static extern void GBMRegressor_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_predict")]
+  public static extern global::System.IntPtr GBMRegressor_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr GBMRegressor_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr GBMRegressor_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GBMRegressor_plot_training_deviance")]
+  public static extern global::System.IntPtr GBMRegressor_plot_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_GBMRegressor")]
+  public static extern void delete_GBMRegressor(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_0")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10, double jarg11, double jarg12, ulong jarg13);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_1")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10, double jarg11, double jarg12);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_2")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10, double jarg11);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_3")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_4")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_5")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_6")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_7")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_8")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_8(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_9")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_9(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_10")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_10(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostClassifier__SWIG_11")]
+  public static extern global::System.IntPtr new_XGBoostClassifier__SWIG_11(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_classes")]
+  public static extern global::System.IntPtr XGBoostClassifier_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_predictor_names")]
+  public static extern global::System.IntPtr XGBoostClassifier_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_observations")]
+  public static extern uint XGBoostClassifier_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_n_trees")]
+  public static extern uint XGBoostClassifier_n_trees(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_feature_importance")]
+  public static extern global::System.IntPtr XGBoostClassifier_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_training_accuracy")]
+  public static extern double XGBoostClassifier_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_confusion_matrix")]
+  public static extern global::System.IntPtr XGBoostClassifier_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_training_deviance")]
+  public static extern global::System.IntPtr XGBoostClassifier_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_summary")]
+  public static extern string XGBoostClassifier_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_print_summary")]
+  public static extern void XGBoostClassifier_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_predict")]
+  public static extern global::System.IntPtr XGBoostClassifier_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_predict_frame")]
+  public static extern global::System.IntPtr XGBoostClassifier_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_plot_classification")]
+  public static extern global::System.IntPtr XGBoostClassifier_plot_classification(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_plot_decision_regions__SWIG_0")]
+  public static extern global::System.IntPtr XGBoostClassifier_plot_decision_regions__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_plot_decision_regions__SWIG_1")]
+  public static extern global::System.IntPtr XGBoostClassifier_plot_decision_regions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostClassifier_plot_training_deviance")]
+  public static extern global::System.IntPtr XGBoostClassifier_plot_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_XGBoostClassifier")]
+  public static extern void delete_XGBoostClassifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_0")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10, double jarg11, double jarg12, ulong jarg13);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_1")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10, double jarg11, double jarg12);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_2")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10, double jarg11);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_3")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9, uint jarg10);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_4")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8, double jarg9);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_5")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7, double jarg8);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_6")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_6(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6, double jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_7")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_7(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_8")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_8(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_9")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_9(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_10")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_10(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_XGBoostRegressor__SWIG_11")]
+  public static extern global::System.IntPtr new_XGBoostRegressor__SWIG_11(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_predictor_names")]
+  public static extern global::System.IntPtr XGBoostRegressor_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_observations")]
+  public static extern uint XGBoostRegressor_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_n_trees")]
+  public static extern uint XGBoostRegressor_n_trees(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_feature_importance")]
+  public static extern global::System.IntPtr XGBoostRegressor_feature_importance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_fitted_values")]
+  public static extern global::System.IntPtr XGBoostRegressor_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_r_squared")]
+  public static extern double XGBoostRegressor_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_rmse")]
+  public static extern double XGBoostRegressor_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_training_deviance")]
+  public static extern global::System.IntPtr XGBoostRegressor_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_summary")]
+  public static extern string XGBoostRegressor_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_print_summary")]
+  public static extern void XGBoostRegressor_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_predict")]
+  public static extern global::System.IntPtr XGBoostRegressor_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr XGBoostRegressor_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr XGBoostRegressor_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_XGBoostRegressor_plot_training_deviance")]
+  public static extern global::System.IntPtr XGBoostRegressor_plot_training_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_XGBoostRegressor")]
+  public static extern void delete_XGBoostRegressor(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KernelRegression__SWIG_0")]
+  public static extern global::System.IntPtr new_KernelRegression__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4, uint jarg5, bool jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KernelRegression__SWIG_1")]
+  public static extern global::System.IntPtr new_KernelRegression__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KernelRegression__SWIG_2")]
+  public static extern global::System.IntPtr new_KernelRegression__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KernelRegression__SWIG_3")]
+  public static extern global::System.IntPtr new_KernelRegression__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_KernelRegression__SWIG_4")]
+  public static extern global::System.IntPtr new_KernelRegression__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_predictor_names")]
+  public static extern global::System.IntPtr KernelRegression_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_observations")]
+  public static extern uint KernelRegression_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_bandwidth")]
+  public static extern double KernelRegression_bandwidth(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_bandwidth_was_selected")]
+  public static extern bool KernelRegression_bandwidth_was_selected(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_bandwidth_grid")]
+  public static extern global::System.IntPtr KernelRegression_bandwidth_grid(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_cv_mean_squared_error")]
+  public static extern global::System.IntPtr KernelRegression_cv_mean_squared_error(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_fitted_values")]
+  public static extern global::System.IntPtr KernelRegression_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_r_squared")]
+  public static extern double KernelRegression_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_rmse")]
+  public static extern double KernelRegression_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_summary")]
+  public static extern string KernelRegression_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_print_summary")]
+  public static extern void KernelRegression_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_predict")]
+  public static extern global::System.IntPtr KernelRegression_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_plot_fit__SWIG_0")]
+  public static extern global::System.IntPtr KernelRegression_plot_fit__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_plot_fit__SWIG_1")]
+  public static extern global::System.IntPtr KernelRegression_plot_fit__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr KernelRegression_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr KernelRegression_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_KernelRegression_plot_cv_curve")]
+  public static extern global::System.IntPtr KernelRegression_plot_cv_curve(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_KernelRegression")]
+  public static extern void delete_KernelRegression(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GaussianProcessRegression__SWIG_0")]
+  public static extern global::System.IntPtr new_GaussianProcessRegression__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4, uint jarg5, uint jarg6, bool jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GaussianProcessRegression__SWIG_1")]
+  public static extern global::System.IntPtr new_GaussianProcessRegression__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4, uint jarg5, uint jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GaussianProcessRegression__SWIG_2")]
+  public static extern global::System.IntPtr new_GaussianProcessRegression__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GaussianProcessRegression__SWIG_3")]
+  public static extern global::System.IntPtr new_GaussianProcessRegression__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GaussianProcessRegression__SWIG_4")]
+  public static extern global::System.IntPtr new_GaussianProcessRegression__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GaussianProcessRegression__SWIG_5")]
+  public static extern global::System.IntPtr new_GaussianProcessRegression__SWIG_5(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_predictor_names")]
+  public static extern global::System.IntPtr GaussianProcessRegression_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_observations")]
+  public static extern uint GaussianProcessRegression_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_length_scale")]
+  public static extern double GaussianProcessRegression_length_scale(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_signal_variance")]
+  public static extern double GaussianProcessRegression_signal_variance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_noise_variance")]
+  public static extern double GaussianProcessRegression_noise_variance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_log_marginal_likelihood")]
+  public static extern double GaussianProcessRegression_log_marginal_likelihood(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_length_scale_was_selected")]
+  public static extern bool GaussianProcessRegression_length_scale_was_selected(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_noise_ratio_was_selected")]
+  public static extern bool GaussianProcessRegression_noise_ratio_was_selected(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_length_scale_grid")]
+  public static extern global::System.IntPtr GaussianProcessRegression_length_scale_grid(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_length_scale_profile_log_likelihood")]
+  public static extern global::System.IntPtr GaussianProcessRegression_length_scale_profile_log_likelihood(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_fitted_values")]
+  public static extern global::System.IntPtr GaussianProcessRegression_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_r_squared")]
+  public static extern double GaussianProcessRegression_r_squared(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_rmse")]
+  public static extern double GaussianProcessRegression_rmse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_summary")]
+  public static extern string GaussianProcessRegression_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_print_summary")]
+  public static extern void GaussianProcessRegression_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_predict")]
+  public static extern global::System.IntPtr GaussianProcessRegression_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_predict_frame__SWIG_0")]
+  public static extern global::System.IntPtr GaussianProcessRegression_predict_frame__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_predict_frame__SWIG_1")]
+  public static extern global::System.IntPtr GaussianProcessRegression_predict_frame__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_predict_frame__SWIG_2")]
+  public static extern global::System.IntPtr GaussianProcessRegression_predict_frame__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_plot_fit__SWIG_0")]
+  public static extern global::System.IntPtr GaussianProcessRegression_plot_fit__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_plot_fit__SWIG_1")]
+  public static extern global::System.IntPtr GaussianProcessRegression_plot_fit__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_plot_fit__SWIG_2")]
+  public static extern global::System.IntPtr GaussianProcessRegression_plot_fit__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_plot_predicted_vs_actual")]
+  public static extern global::System.IntPtr GaussianProcessRegression_plot_predicted_vs_actual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr GaussianProcessRegression_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GaussianProcessRegression_plot_length_scale_profile")]
+  public static extern global::System.IntPtr GaussianProcessRegression_plot_length_scale_profile(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_GaussianProcessRegression")]
+  public static extern void delete_GaussianProcessRegression(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_NaiveBayesClassifier__SWIG_0")]
+  public static extern global::System.IntPtr new_NaiveBayesClassifier__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_NaiveBayesClassifier__SWIG_1")]
+  public static extern global::System.IntPtr new_NaiveBayesClassifier__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_NaiveBayesClassifier__SWIG_2")]
+  public static extern global::System.IntPtr new_NaiveBayesClassifier__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_classes")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_classes(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_predictor_names")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_predictor_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_observations")]
+  public static extern uint NaiveBayesClassifier_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_class_priors")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_class_priors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_training_accuracy")]
+  public static extern double NaiveBayesClassifier_training_accuracy(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_confusion_matrix")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_confusion_matrix(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_summary")]
+  public static extern string NaiveBayesClassifier_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_print_summary")]
+  public static extern void NaiveBayesClassifier_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_predict")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_predict_frame")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_predict_frame(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_plot_classification")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_plot_classification(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_plot_decision_regions__SWIG_0")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_plot_decision_regions__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_NaiveBayesClassifier_plot_decision_regions__SWIG_1")]
+  public static extern global::System.IntPtr NaiveBayesClassifier_plot_decision_regions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_NaiveBayesClassifier")]
+  public static extern void delete_NaiveBayesClassifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLM__SWIG_0")]
+  public static extern global::System.IntPtr new_GLM__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, string jarg4, uint jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLM__SWIG_1")]
+  public static extern global::System.IntPtr new_GLM__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, string jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLM__SWIG_2")]
+  public static extern global::System.IntPtr new_GLM__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLM__SWIG_3")]
+  public static extern global::System.IntPtr new_GLM__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_GLM__SWIG_4")]
+  public static extern global::System.IntPtr new_GLM__SWIG_4(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_formula_text")]
+  public static extern string GLM_formula_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_family")]
+  public static extern string GLM_family(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_has_intercept")]
+  public static extern bool GLM_has_intercept(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_observations")]
+  public static extern uint GLM_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_rank")]
+  public static extern uint GLM_rank(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_degrees_of_freedom")]
+  public static extern uint GLM_degrees_of_freedom(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_coefficients")]
+  public static extern global::System.IntPtr GLM_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_coefficient_names")]
+  public static extern global::System.IntPtr GLM_coefficient_names(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_fitted_values")]
+  public static extern global::System.IntPtr GLM_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_linear_predictors")]
+  public static extern global::System.IntPtr GLM_linear_predictors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_residuals")]
+  public static extern global::System.IntPtr GLM_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_pearson_residuals")]
+  public static extern global::System.IntPtr GLM_pearson_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_standardized_residuals")]
+  public static extern global::System.IntPtr GLM_standardized_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_leverage")]
+  public static extern global::System.IntPtr GLM_leverage(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_standard_errors")]
+  public static extern global::System.IntPtr GLM_standard_errors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_test_statistics")]
+  public static extern global::System.IntPtr GLM_test_statistics(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_p_values")]
+  public static extern global::System.IntPtr GLM_p_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_deviance")]
+  public static extern double GLM_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_null_deviance")]
+  public static extern double GLM_null_deviance(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_dispersion")]
+  public static extern double GLM_dispersion(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_aic")]
+  public static extern double GLM_aic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_confidence_interval_lower__SWIG_0")]
+  public static extern global::System.IntPtr GLM_confidence_interval_lower__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_confidence_interval_lower__SWIG_1")]
+  public static extern global::System.IntPtr GLM_confidence_interval_lower__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_confidence_interval_upper__SWIG_0")]
+  public static extern global::System.IntPtr GLM_confidence_interval_upper__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_confidence_interval_upper__SWIG_1")]
+  public static extern global::System.IntPtr GLM_confidence_interval_upper__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_summary")]
+  public static extern string GLM_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_print_summary")]
+  public static extern void GLM_print_summary(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_predict")]
+  public static extern global::System.IntPtr GLM_predict(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_predict_frame__SWIG_0")]
+  public static extern global::System.IntPtr GLM_predict_frame__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_predict_frame__SWIG_1")]
+  public static extern global::System.IntPtr GLM_predict_frame__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_predict_frame__SWIG_2")]
+  public static extern global::System.IntPtr GLM_predict_frame__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_plot_residuals_vs_fitted")]
+  public static extern global::System.IntPtr GLM_plot_residuals_vs_fitted(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_plot_normal_qq")]
+  public static extern global::System.IntPtr GLM_plot_normal_qq(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_plot_scale_location")]
+  public static extern global::System.IntPtr GLM_plot_scale_location(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_plot_residuals_vs_leverage")]
+  public static extern global::System.IntPtr GLM_plot_residuals_vs_leverage(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_GLM_save_diagnostic_plots")]
+  public static extern void GLM_save_diagnostic_plots(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_GLM")]
+  public static extern void delete_GLM(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Tensor__SWIG_0")]
+  public static extern global::System.IntPtr new_Tensor__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Tensor__SWIG_1")]
+  public static extern global::System.IntPtr new_Tensor__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_zeros")]
+  public static extern global::System.IntPtr Tensor_zeros(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_ones")]
+  public static extern global::System.IntPtr Tensor_ones(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_full")]
+  public static extern global::System.IntPtr Tensor_full(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_from_values")]
+  public static extern global::System.IntPtr Tensor_from_values(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_from_bool_values")]
+  public static extern global::System.IntPtr Tensor_from_bool_values(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_from_string_values")]
+  public static extern global::System.IntPtr Tensor_from_string_values(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_arange__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_arange__SWIG_0(double jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_arange__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_arange__SWIG_1(double jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_eye")]
+  public static extern global::System.IntPtr Tensor_eye(uint jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_ndim")]
+  public static extern uint Tensor_ndim(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_shape")]
+  public static extern global::System.IntPtr Tensor_shape(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_size")]
+  public static extern uint Tensor_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_dtype_name")]
+  public static extern string Tensor_dtype_name(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_at")]
+  public static extern double Tensor_at(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_set")]
+  public static extern void Tensor_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_string_at")]
+  public static extern string Tensor_string_at(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_set_string")]
+  public static extern void Tensor_set_string(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_at_flat")]
+  public static extern double Tensor_at_flat(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_set_flat")]
+  public static extern void Tensor_set_flat(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_string_at_flat")]
+  public static extern string Tensor_string_at_flat(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_set_string_flat")]
+  public static extern void Tensor_set_string_flat(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, string jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_reshape")]
+  public static extern global::System.IntPtr Tensor_reshape(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_flatten")]
+  public static extern global::System.IntPtr Tensor_flatten(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_transpose__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_transpose__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_transpose__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_transpose__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_squeeze")]
+  public static extern global::System.IntPtr Tensor_squeeze(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_squeeze_axis")]
+  public static extern global::System.IntPtr Tensor_squeeze_axis(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_expand_dims")]
+  public static extern global::System.IntPtr Tensor_expand_dims(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_slice__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_slice__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, uint jarg3, uint jarg4, uint jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_slice__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_slice__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_index_select")]
+  public static extern global::System.IntPtr Tensor_index_select(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_concatenate2")]
+  public static extern global::System.IntPtr Tensor_concatenate2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_stack2")]
+  public static extern global::System.IntPtr Tensor_stack2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_add")]
+  public static extern global::System.IntPtr Tensor_add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_subtract")]
+  public static extern global::System.IntPtr Tensor_subtract(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_multiply")]
+  public static extern global::System.IntPtr Tensor_multiply(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_divide")]
+  public static extern global::System.IntPtr Tensor_divide(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_power")]
+  public static extern global::System.IntPtr Tensor_power(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_add_scalar")]
+  public static extern global::System.IntPtr Tensor_add_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_subtract_scalar")]
+  public static extern global::System.IntPtr Tensor_subtract_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_multiply_scalar")]
+  public static extern global::System.IntPtr Tensor_multiply_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_divide_scalar")]
+  public static extern global::System.IntPtr Tensor_divide_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_power_scalar")]
+  public static extern global::System.IntPtr Tensor_power_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_negate")]
+  public static extern global::System.IntPtr Tensor_negate(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_abs")]
+  public static extern global::System.IntPtr Tensor_abs(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_sqrt")]
+  public static extern global::System.IntPtr Tensor_sqrt(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_exp")]
+  public static extern global::System.IntPtr Tensor_exp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_log")]
+  public static extern global::System.IntPtr Tensor_log(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_apply")]
+  public static extern global::System.IntPtr Tensor_apply(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_equal")]
+  public static extern global::System.IntPtr Tensor_equal(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_not_equal")]
+  public static extern global::System.IntPtr Tensor_not_equal(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_less")]
+  public static extern global::System.IntPtr Tensor_less(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_less_equal")]
+  public static extern global::System.IntPtr Tensor_less_equal(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_greater")]
+  public static extern global::System.IntPtr Tensor_greater(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_greater_equal")]
+  public static extern global::System.IntPtr Tensor_greater_equal(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_sum")]
+  public static extern double Tensor_sum(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_mean")]
+  public static extern double Tensor_mean(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_max")]
+  public static extern double Tensor_max(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_min")]
+  public static extern double Tensor_min(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_prod")]
+  public static extern double Tensor_prod(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_argmax")]
+  public static extern uint Tensor_argmax(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_argmin")]
+  public static extern uint Tensor_argmin(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_all")]
+  public static extern bool Tensor_all(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_any")]
+  public static extern bool Tensor_any(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_sum_axis__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_sum_axis__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_sum_axis__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_sum_axis__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_mean_axis__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_mean_axis__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_mean_axis__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_mean_axis__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_max_axis__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_max_axis__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_max_axis__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_max_axis__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_min_axis__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_min_axis__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_min_axis__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_min_axis__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_prod_axis__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_prod_axis__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_prod_axis__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_prod_axis__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_argmax_axis__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_argmax_axis__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_argmax_axis__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_argmax_axis__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_argmin_axis__SWIG_0")]
+  public static extern global::System.IntPtr Tensor_argmin_axis__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_argmin_axis__SWIG_1")]
+  public static extern global::System.IntPtr Tensor_argmin_axis__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_matmul")]
+  public static extern global::System.IntPtr Tensor_matmul(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_dot")]
+  public static extern double Tensor_dot(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_outer")]
+  public static extern global::System.IntPtr Tensor_outer(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_to_string__SWIG_0")]
+  public static extern string Tensor_to_string__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tensor_to_string__SWIG_1")]
+  public static extern string Tensor_to_string__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_Tensor")]
+  public static extern void delete_Tensor(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Dual__SWIG_0")]
+  public static extern global::System.IntPtr new_Dual__SWIG_0(double jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Dual__SWIG_1")]
+  public static extern global::System.IntPtr new_Dual__SWIG_1(double jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_value")]
+  public static extern double Dual_value(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_derivative")]
+  public static extern double Dual_derivative(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_add")]
+  public static extern global::System.IntPtr Dual_add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_subtract")]
+  public static extern global::System.IntPtr Dual_subtract(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_multiply")]
+  public static extern global::System.IntPtr Dual_multiply(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_divide")]
+  public static extern global::System.IntPtr Dual_divide(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_negate")]
+  public static extern global::System.IntPtr Dual_negate(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_add_scalar")]
+  public static extern global::System.IntPtr Dual_add_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_subtract_scalar")]
+  public static extern global::System.IntPtr Dual_subtract_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_multiply_scalar")]
+  public static extern global::System.IntPtr Dual_multiply_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_divide_scalar")]
+  public static extern global::System.IntPtr Dual_divide_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_pow")]
+  public static extern global::System.IntPtr Dual_pow(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_exp")]
+  public static extern global::System.IntPtr Dual_exp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_log")]
+  public static extern global::System.IntPtr Dual_log(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_sqrt")]
+  public static extern global::System.IntPtr Dual_sqrt(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_sin")]
+  public static extern global::System.IntPtr Dual_sin(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_cos")]
+  public static extern global::System.IntPtr Dual_cos(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_tan")]
+  public static extern global::System.IntPtr Dual_tan(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_tanh")]
+  public static extern global::System.IntPtr Dual_tanh(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Dual_abs")]
+  public static extern global::System.IntPtr Dual_abs(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_Dual")]
+  public static extern void delete_Dual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_HyperDual__SWIG_0")]
+  public static extern global::System.IntPtr new_HyperDual__SWIG_0(double jarg1, double jarg2, double jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_HyperDual__SWIG_1")]
+  public static extern global::System.IntPtr new_HyperDual__SWIG_1(double jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_HyperDual__SWIG_2")]
+  public static extern global::System.IntPtr new_HyperDual__SWIG_2(double jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_HyperDual__SWIG_3")]
+  public static extern global::System.IntPtr new_HyperDual__SWIG_3(double jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_value")]
+  public static extern double HyperDual_value(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_eps1")]
+  public static extern double HyperDual_eps1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_eps2")]
+  public static extern double HyperDual_eps2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_eps1eps2")]
+  public static extern double HyperDual_eps1eps2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_add")]
+  public static extern global::System.IntPtr HyperDual_add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_subtract")]
+  public static extern global::System.IntPtr HyperDual_subtract(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_multiply")]
+  public static extern global::System.IntPtr HyperDual_multiply(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_divide")]
+  public static extern global::System.IntPtr HyperDual_divide(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_negate")]
+  public static extern global::System.IntPtr HyperDual_negate(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_add_scalar")]
+  public static extern global::System.IntPtr HyperDual_add_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_subtract_scalar")]
+  public static extern global::System.IntPtr HyperDual_subtract_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_multiply_scalar")]
+  public static extern global::System.IntPtr HyperDual_multiply_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_divide_scalar")]
+  public static extern global::System.IntPtr HyperDual_divide_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_pow")]
+  public static extern global::System.IntPtr HyperDual_pow(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_exp")]
+  public static extern global::System.IntPtr HyperDual_exp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_log")]
+  public static extern global::System.IntPtr HyperDual_log(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_sqrt")]
+  public static extern global::System.IntPtr HyperDual_sqrt(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_sin")]
+  public static extern global::System.IntPtr HyperDual_sin(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_cos")]
+  public static extern global::System.IntPtr HyperDual_cos(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_tan")]
+  public static extern global::System.IntPtr HyperDual_tan(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HyperDual_tanh")]
+  public static extern global::System.IntPtr HyperDual_tanh(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_HyperDual")]
+  public static extern void delete_HyperDual(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Tape")]
+  public static extern global::System.IntPtr new_Tape();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tape_size")]
+  public static extern uint Tape_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tape_value_at")]
+  public static extern double Tape_value_at(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Tape_backward")]
+  public static extern global::System.IntPtr Tape_backward(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_Tape")]
+  public static extern void delete_Tape(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Var")]
+  public static extern global::System.IntPtr new_Var(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_value")]
+  public static extern double Var_value(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_index")]
+  public static extern uint Var_index(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_add")]
+  public static extern global::System.IntPtr Var_add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_subtract")]
+  public static extern global::System.IntPtr Var_subtract(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_multiply")]
+  public static extern global::System.IntPtr Var_multiply(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_divide")]
+  public static extern global::System.IntPtr Var_divide(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_negate")]
+  public static extern global::System.IntPtr Var_negate(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_add_scalar")]
+  public static extern global::System.IntPtr Var_add_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_subtract_scalar")]
+  public static extern global::System.IntPtr Var_subtract_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_multiply_scalar")]
+  public static extern global::System.IntPtr Var_multiply_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_divide_scalar")]
+  public static extern global::System.IntPtr Var_divide_scalar(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_pow")]
+  public static extern global::System.IntPtr Var_pow(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_exp")]
+  public static extern global::System.IntPtr Var_exp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_log")]
+  public static extern global::System.IntPtr Var_log(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_sqrt")]
+  public static extern global::System.IntPtr Var_sqrt(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_sin")]
+  public static extern global::System.IntPtr Var_sin(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_cos")]
+  public static extern global::System.IntPtr Var_cos(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_tan")]
+  public static extern global::System.IntPtr Var_tan(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_tanh")]
+  public static extern global::System.IntPtr Var_tanh(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Var_abs")]
+  public static extern global::System.IntPtr Var_abs(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_Var")]
+  public static extern void delete_Var(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RGB_r_set")]
+  public static extern void RGB_r_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RGB_r_get")]
+  public static extern int RGB_r_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RGB_g_set")]
+  public static extern void RGB_g_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RGB_g_get")]
+  public static extern int RGB_g_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RGB_b_set")]
+  public static extern void RGB_b_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_RGB_b_get")]
+  public static extern int RGB_b_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_RGB")]
+  public static extern global::System.IntPtr new_RGB();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_RGB")]
+  public static extern void delete_RGB(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_kind_set")]
+  public static extern void DataSeries_kind_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_kind_get")]
+  public static extern int DataSeries_kind_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_x_set")]
+  public static extern void DataSeries_x_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_x_get")]
+  public static extern global::System.IntPtr DataSeries_x_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_y_set")]
+  public static extern void DataSeries_y_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_y_get")]
+  public static extern global::System.IntPtr DataSeries_y_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_label_set")]
+  public static extern void DataSeries_label_set(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_label_get")]
+  public static extern string DataSeries_label_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_color_set")]
+  public static extern void DataSeries_color_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_color_get")]
+  public static extern global::System.IntPtr DataSeries_color_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_stroke_width_set")]
+  public static extern void DataSeries_stroke_width_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_stroke_width_get")]
+  public static extern double DataSeries_stroke_width_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_marker_size_set")]
+  public static extern void DataSeries_marker_size_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_marker_size_get")]
+  public static extern double DataSeries_marker_size_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_bar_width_set")]
+  public static extern void DataSeries_bar_width_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_DataSeries_bar_width_get")]
+  public static extern double DataSeries_bar_width_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_DataSeries")]
+  public static extern global::System.IntPtr new_DataSeries();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_DataSeries")]
+  public static extern void delete_DataSeries(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_Plot")]
+  public static extern void delete_Plot(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_size")]
+  public static extern global::System.IntPtr Plot_size(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_title")]
+  public static extern global::System.IntPtr Plot_title(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_x_label")]
+  public static extern global::System.IntPtr Plot_x_label(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_y_label")]
+  public static extern global::System.IntPtr Plot_y_label(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_background")]
+  public static extern global::System.IntPtr Plot_background(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_axis_color")]
+  public static extern global::System.IntPtr Plot_axis_color(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_grid_color")]
+  public static extern global::System.IntPtr Plot_grid_color(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_show_grid__SWIG_0")]
+  public static extern global::System.IntPtr Plot_show_grid__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_show_grid__SWIG_1")]
+  public static extern global::System.IntPtr Plot_show_grid__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_x_limits")]
+  public static extern global::System.IntPtr Plot_x_limits(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_y_limits")]
+  public static extern global::System.IntPtr Plot_y_limits(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_width")]
+  public static extern uint Plot_width(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_height")]
+  public static extern uint Plot_height(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_title_text")]
+  public static extern string Plot_title_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_x_label_text")]
+  public static extern string Plot_x_label_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_y_label_text")]
+  public static extern string Plot_y_label_text(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_series")]
+  public static extern global::System.IntPtr Plot_series(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_background_color")]
+  public static extern global::System.IntPtr Plot_background_color(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_axes_color")]
+  public static extern global::System.IntPtr Plot_axes_color(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_major_grid_color")]
+  public static extern global::System.IntPtr Plot_major_grid_color(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_grid_visible")]
+  public static extern bool Plot_grid_visible(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_has_x_limits")]
+  public static extern bool Plot_has_x_limits(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_has_y_limits")]
+  public static extern bool Plot_has_y_limits(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_x_min")]
+  public static extern double Plot_x_min(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_x_max")]
+  public static extern double Plot_x_max(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_y_min")]
+  public static extern double Plot_y_min(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_y_max")]
+  public static extern double Plot_y_max(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_save")]
+  public static extern void Plot_save(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_save_svg")]
+  public static extern void Plot_save_svg(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_view__SWIG_0")]
+  public static extern void Plot_view__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_view__SWIG_1")]
+  public static extern void Plot_view__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_show__SWIG_0")]
+  public static extern void Plot_show__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_Plot_show__SWIG_1")]
+  public static extern void Plot_show__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_Plot")]
+  public static extern global::System.IntPtr new_Plot();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_create")]
+  public static extern global::System.IntPtr ScatterPlot_create();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_points__SWIG_0")]
+  public static extern global::System.IntPtr ScatterPlot_points__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_points__SWIG_1")]
+  public static extern global::System.IntPtr ScatterPlot_points__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_points__SWIG_2")]
+  public static extern global::System.IntPtr ScatterPlot_points__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_points__SWIG_3")]
+  public static extern global::System.IntPtr ScatterPlot_points__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_line__SWIG_0")]
+  public static extern global::System.IntPtr ScatterPlot_line__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_line__SWIG_1")]
+  public static extern global::System.IntPtr ScatterPlot_line__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_line__SWIG_2")]
+  public static extern global::System.IntPtr ScatterPlot_line__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_line__SWIG_3")]
+  public static extern global::System.IntPtr ScatterPlot_line__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ScatterPlot")]
+  public static extern global::System.IntPtr new_ScatterPlot();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_ScatterPlot")]
+  public static extern void delete_ScatterPlot(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LinePlot_create")]
+  public static extern global::System.IntPtr LinePlot_create();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LinePlot_line__SWIG_0")]
+  public static extern global::System.IntPtr LinePlot_line__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LinePlot_line__SWIG_1")]
+  public static extern global::System.IntPtr LinePlot_line__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LinePlot_line__SWIG_2")]
+  public static extern global::System.IntPtr LinePlot_line__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LinePlot_line__SWIG_3")]
+  public static extern global::System.IntPtr LinePlot_line__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_LinePlot")]
+  public static extern global::System.IntPtr new_LinePlot();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_LinePlot")]
+  public static extern void delete_LinePlot(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_BarChart_create")]
+  public static extern global::System.IntPtr BarChart_create();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_BarChart_bars__SWIG_0")]
+  public static extern global::System.IntPtr BarChart_bars__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_BarChart_bars__SWIG_1")]
+  public static extern global::System.IntPtr BarChart_bars__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_BarChart_bars__SWIG_2")]
+  public static extern global::System.IntPtr BarChart_bars__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, string jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_BarChart_bars__SWIG_3")]
+  public static extern global::System.IntPtr BarChart_bars__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_BarChart")]
+  public static extern global::System.IntPtr new_BarChart();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_BarChart")]
+  public static extern void delete_BarChart(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_p_set")]
+  public static extern void ARIMAOptions_p_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_p_get")]
+  public static extern uint ARIMAOptions_p_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_d_set")]
+  public static extern void ARIMAOptions_d_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_d_get")]
+  public static extern uint ARIMAOptions_d_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_q_set")]
+  public static extern void ARIMAOptions_q_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_q_get")]
+  public static extern uint ARIMAOptions_q_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_p_set")]
+  public static extern void ARIMAOptions_seasonal_p_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_p_get")]
+  public static extern uint ARIMAOptions_seasonal_p_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_d_set")]
+  public static extern void ARIMAOptions_seasonal_d_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_d_get")]
+  public static extern uint ARIMAOptions_seasonal_d_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_q_set")]
+  public static extern void ARIMAOptions_seasonal_q_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_q_get")]
+  public static extern uint ARIMAOptions_seasonal_q_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_period_set")]
+  public static extern void ARIMAOptions_seasonal_period_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seasonal_period_get")]
+  public static extern uint ARIMAOptions_seasonal_period_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_include_mean_set")]
+  public static extern void ARIMAOptions_include_mean_set(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_include_mean_get")]
+  public static extern bool ARIMAOptions_include_mean_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_de_population_size_set")]
+  public static extern void ARIMAOptions_de_population_size_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_de_population_size_get")]
+  public static extern uint ARIMAOptions_de_population_size_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_de_max_generations_set")]
+  public static extern void ARIMAOptions_de_max_generations_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_de_max_generations_get")]
+  public static extern uint ARIMAOptions_de_max_generations_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_coefficient_bound_set")]
+  public static extern void ARIMAOptions_coefficient_bound_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_coefficient_bound_get")]
+  public static extern double ARIMAOptions_coefficient_bound_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seed_set")]
+  public static extern void ARIMAOptions_seed_set(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMAOptions_seed_get")]
+  public static extern ulong ARIMAOptions_seed_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ARIMAOptions")]
+  public static extern global::System.IntPtr new_ARIMAOptions();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_ARIMAOptions")]
+  public static extern void delete_ARIMAOptions(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ARIMA__SWIG_0")]
+  public static extern global::System.IntPtr new_ARIMA__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ARIMA__SWIG_1")]
+  public static extern global::System.IntPtr new_ARIMA__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_options")]
+  public static extern global::System.IntPtr ARIMA_options(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_ar_coefficients")]
+  public static extern global::System.IntPtr ARIMA_ar_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_ma_coefficients")]
+  public static extern global::System.IntPtr ARIMA_ma_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_seasonal_ar_coefficients")]
+  public static extern global::System.IntPtr ARIMA_seasonal_ar_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_seasonal_ma_coefficients")]
+  public static extern global::System.IntPtr ARIMA_seasonal_ma_coefficients(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_mean")]
+  public static extern double ARIMA_mean(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_observations")]
+  public static extern uint ARIMA_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_n_used")]
+  public static extern uint ARIMA_n_used(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_sigma2")]
+  public static extern double ARIMA_sigma2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_log_likelihood")]
+  public static extern double ARIMA_log_likelihood(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_aic")]
+  public static extern double ARIMA_aic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_bic")]
+  public static extern double ARIMA_bic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_fitted_values")]
+  public static extern global::System.IntPtr ARIMA_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_residuals")]
+  public static extern global::System.IntPtr ARIMA_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_forecast")]
+  public static extern global::System.IntPtr ARIMA_forecast(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ARIMA_forecast_with_intervals")]
+  public static extern global::System.IntPtr ARIMA_forecast_with_intervals(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_ARIMA")]
+  public static extern void delete_ARIMA(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_trend_set")]
+  public static extern void ExponentialSmoothingOptions_trend_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_trend_get")]
+  public static extern int ExponentialSmoothingOptions_trend_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_seasonal_set")]
+  public static extern void ExponentialSmoothingOptions_seasonal_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_seasonal_get")]
+  public static extern int ExponentialSmoothingOptions_seasonal_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_seasonal_period_set")]
+  public static extern void ExponentialSmoothingOptions_seasonal_period_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_seasonal_period_get")]
+  public static extern uint ExponentialSmoothingOptions_seasonal_period_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_alpha_set")]
+  public static extern void ExponentialSmoothingOptions_alpha_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_alpha_get")]
+  public static extern double ExponentialSmoothingOptions_alpha_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_beta_set")]
+  public static extern void ExponentialSmoothingOptions_beta_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_beta_get")]
+  public static extern double ExponentialSmoothingOptions_beta_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_gamma_set")]
+  public static extern void ExponentialSmoothingOptions_gamma_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_gamma_get")]
+  public static extern double ExponentialSmoothingOptions_gamma_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_phi_set")]
+  public static extern void ExponentialSmoothingOptions_phi_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_phi_get")]
+  public static extern double ExponentialSmoothingOptions_phi_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_de_population_size_set")]
+  public static extern void ExponentialSmoothingOptions_de_population_size_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_de_population_size_get")]
+  public static extern uint ExponentialSmoothingOptions_de_population_size_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_de_max_generations_set")]
+  public static extern void ExponentialSmoothingOptions_de_max_generations_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_de_max_generations_get")]
+  public static extern uint ExponentialSmoothingOptions_de_max_generations_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_seed_set")]
+  public static extern void ExponentialSmoothingOptions_seed_set(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothingOptions_seed_get")]
+  public static extern ulong ExponentialSmoothingOptions_seed_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ExponentialSmoothingOptions")]
+  public static extern global::System.IntPtr new_ExponentialSmoothingOptions();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_ExponentialSmoothingOptions")]
+  public static extern void delete_ExponentialSmoothingOptions(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ExponentialSmoothing__SWIG_0")]
+  public static extern global::System.IntPtr new_ExponentialSmoothing__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_ExponentialSmoothing__SWIG_1")]
+  public static extern global::System.IntPtr new_ExponentialSmoothing__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_options")]
+  public static extern global::System.IntPtr ExponentialSmoothing_options(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_alpha")]
+  public static extern double ExponentialSmoothing_alpha(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_beta")]
+  public static extern double ExponentialSmoothing_beta(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_gamma")]
+  public static extern double ExponentialSmoothing_gamma(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_phi")]
+  public static extern double ExponentialSmoothing_phi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_observations")]
+  public static extern uint ExponentialSmoothing_observations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_sse")]
+  public static extern double ExponentialSmoothing_sse(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_sigma2")]
+  public static extern double ExponentialSmoothing_sigma2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_log_likelihood")]
+  public static extern double ExponentialSmoothing_log_likelihood(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_aic")]
+  public static extern double ExponentialSmoothing_aic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_bic")]
+  public static extern double ExponentialSmoothing_bic(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_fitted_values")]
+  public static extern global::System.IntPtr ExponentialSmoothing_fitted_values(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_residuals")]
+  public static extern global::System.IntPtr ExponentialSmoothing_residuals(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ExponentialSmoothing_forecast")]
+  public static extern global::System.IntPtr ExponentialSmoothing_forecast(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_ExponentialSmoothing")]
+  public static extern void delete_ExponentialSmoothing(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_statistic_set")]
+  public static extern void HypothesisTestResult_statistic_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_statistic_get")]
+  public static extern double HypothesisTestResult_statistic_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_parameter1_set")]
+  public static extern void HypothesisTestResult_parameter1_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_parameter1_get")]
+  public static extern double HypothesisTestResult_parameter1_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_parameter2_set")]
+  public static extern void HypothesisTestResult_parameter2_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_parameter2_get")]
+  public static extern double HypothesisTestResult_parameter2_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_p_value_set")]
+  public static extern void HypothesisTestResult_p_value_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_p_value_get")]
+  public static extern double HypothesisTestResult_p_value_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_estimate1_set")]
+  public static extern void HypothesisTestResult_estimate1_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_estimate1_get")]
+  public static extern double HypothesisTestResult_estimate1_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_estimate2_set")]
+  public static extern void HypothesisTestResult_estimate2_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_estimate2_get")]
+  public static extern double HypothesisTestResult_estimate2_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_conf_int_lower_set")]
+  public static extern void HypothesisTestResult_conf_int_lower_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_conf_int_lower_get")]
+  public static extern double HypothesisTestResult_conf_int_lower_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_conf_int_upper_set")]
+  public static extern void HypothesisTestResult_conf_int_upper_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_conf_int_upper_get")]
+  public static extern double HypothesisTestResult_conf_int_upper_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_has_conf_int_set")]
+  public static extern void HypothesisTestResult_has_conf_int_set(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_has_conf_int_get")]
+  public static extern bool HypothesisTestResult_has_conf_int_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_alternative_set")]
+  public static extern void HypothesisTestResult_alternative_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_alternative_get")]
+  public static extern int HypothesisTestResult_alternative_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_method_set")]
+  public static extern void HypothesisTestResult_method_set(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_HypothesisTestResult_method_get")]
+  public static extern string HypothesisTestResult_method_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_new_HypothesisTestResult")]
+  public static extern global::System.IntPtr new_HypothesisTestResult();
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_delete_HypothesisTestResult")]
+  public static extern void delete_HypothesisTestResult(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_one_sample__SWIG_0")]
+  public static extern global::System.IntPtr t_test_one_sample__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2, int jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_one_sample__SWIG_1")]
+  public static extern global::System.IntPtr t_test_one_sample__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_one_sample__SWIG_2")]
+  public static extern global::System.IntPtr t_test_one_sample__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_one_sample__SWIG_3")]
+  public static extern global::System.IntPtr t_test_one_sample__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_two_sample__SWIG_0")]
+  public static extern global::System.IntPtr t_test_two_sample__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, bool jarg3, int jarg4, double jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_two_sample__SWIG_1")]
+  public static extern global::System.IntPtr t_test_two_sample__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, bool jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_two_sample__SWIG_2")]
+  public static extern global::System.IntPtr t_test_two_sample__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_two_sample__SWIG_3")]
+  public static extern global::System.IntPtr t_test_two_sample__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_paired__SWIG_0")]
+  public static extern global::System.IntPtr t_test_paired__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_paired__SWIG_1")]
+  public static extern global::System.IntPtr t_test_paired__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_t_test_paired__SWIG_2")]
+  public static extern global::System.IntPtr t_test_paired__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_wilcoxon_signed_rank_test__SWIG_0")]
+  public static extern global::System.IntPtr wilcoxon_signed_rank_test__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_wilcoxon_signed_rank_test__SWIG_1")]
+  public static extern global::System.IntPtr wilcoxon_signed_rank_test__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_wilcoxon_signed_rank_test__SWIG_2")]
+  public static extern global::System.IntPtr wilcoxon_signed_rank_test__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_wilcoxon_rank_sum_test__SWIG_0")]
+  public static extern global::System.IntPtr wilcoxon_rank_sum_test__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_wilcoxon_rank_sum_test__SWIG_1")]
+  public static extern global::System.IntPtr wilcoxon_rank_sum_test__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ks_test_one_sample_normal__SWIG_0")]
+  public static extern global::System.IntPtr ks_test_one_sample_normal__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2, double jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ks_test_one_sample_normal__SWIG_1")]
+  public static extern global::System.IntPtr ks_test_one_sample_normal__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ks_test_one_sample_normal__SWIG_2")]
+  public static extern global::System.IntPtr ks_test_one_sample_normal__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ks_test_one_sample_normal__SWIG_3")]
+  public static extern global::System.IntPtr ks_test_one_sample_normal__SWIG_3(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ks_test_two_sample__SWIG_0")]
+  public static extern global::System.IntPtr ks_test_two_sample__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ks_test_two_sample__SWIG_1")]
+  public static extern global::System.IntPtr ks_test_two_sample__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_chi_squared_goodness_of_fit__SWIG_0")]
+  public static extern global::System.IntPtr chi_squared_goodness_of_fit__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_chi_squared_goodness_of_fit__SWIG_1")]
+  public static extern global::System.IntPtr chi_squared_goodness_of_fit__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_chi_squared_test_independence__SWIG_0")]
+  public static extern global::System.IntPtr chi_squared_test_independence__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, uint jarg3, bool jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_chi_squared_test_independence__SWIG_1")]
+  public static extern global::System.IntPtr chi_squared_test_independence__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, uint jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_one_way_anova")]
+  public static extern global::System.IntPtr one_way_anova(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_kruskal_wallis_test")]
+  public static extern global::System.IntPtr kruskal_wallis_test(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_pearson_correlation_test__SWIG_0")]
+  public static extern global::System.IntPtr pearson_correlation_test__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_pearson_correlation_test__SWIG_1")]
+  public static extern global::System.IntPtr pearson_correlation_test__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_pearson_correlation_test__SWIG_2")]
+  public static extern global::System.IntPtr pearson_correlation_test__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_spearman_correlation_test__SWIG_0")]
+  public static extern global::System.IntPtr spearman_correlation_test__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_spearman_correlation_test__SWIG_1")]
+  public static extern global::System.IntPtr spearman_correlation_test__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_f_test_variance__SWIG_0")]
+  public static extern global::System.IntPtr f_test_variance__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, double jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_f_test_variance__SWIG_1")]
+  public static extern global::System.IntPtr f_test_variance__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_f_test_variance__SWIG_2")]
+  public static extern global::System.IntPtr f_test_variance__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_one_sample__SWIG_0")]
+  public static extern global::System.IntPtr proportion_test_one_sample__SWIG_0(uint jarg1, uint jarg2, double jarg3, int jarg4, bool jarg5, double jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_one_sample__SWIG_1")]
+  public static extern global::System.IntPtr proportion_test_one_sample__SWIG_1(uint jarg1, uint jarg2, double jarg3, int jarg4, bool jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_one_sample__SWIG_2")]
+  public static extern global::System.IntPtr proportion_test_one_sample__SWIG_2(uint jarg1, uint jarg2, double jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_one_sample__SWIG_3")]
+  public static extern global::System.IntPtr proportion_test_one_sample__SWIG_3(uint jarg1, uint jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_one_sample__SWIG_4")]
+  public static extern global::System.IntPtr proportion_test_one_sample__SWIG_4(uint jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_two_sample__SWIG_0")]
+  public static extern global::System.IntPtr proportion_test_two_sample__SWIG_0(uint jarg1, uint jarg2, uint jarg3, uint jarg4, int jarg5, bool jarg6, double jarg7);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_two_sample__SWIG_1")]
+  public static extern global::System.IntPtr proportion_test_two_sample__SWIG_1(uint jarg1, uint jarg2, uint jarg3, uint jarg4, int jarg5, bool jarg6);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_two_sample__SWIG_2")]
+  public static extern global::System.IntPtr proportion_test_two_sample__SWIG_2(uint jarg1, uint jarg2, uint jarg3, uint jarg4, int jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_proportion_test_two_sample__SWIG_3")]
+  public static extern global::System.IntPtr proportion_test_two_sample__SWIG_3(uint jarg1, uint jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_binomial_test__SWIG_0")]
+  public static extern global::System.IntPtr binomial_test__SWIG_0(uint jarg1, uint jarg2, double jarg3, int jarg4, double jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_binomial_test__SWIG_1")]
+  public static extern global::System.IntPtr binomial_test__SWIG_1(uint jarg1, uint jarg2, double jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_binomial_test__SWIG_2")]
+  public static extern global::System.IntPtr binomial_test__SWIG_2(uint jarg1, uint jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_binomial_test__SWIG_3")]
+  public static extern global::System.IntPtr binomial_test__SWIG_3(uint jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_fisher_exact_test_2x2__SWIG_0")]
+  public static extern global::System.IntPtr fisher_exact_test_2x2__SWIG_0(uint jarg1, uint jarg2, uint jarg3, uint jarg4, int jarg5);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_fisher_exact_test_2x2__SWIG_1")]
+  public static extern global::System.IntPtr fisher_exact_test_2x2__SWIG_1(uint jarg1, uint jarg2, uint jarg3, uint jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_shapiro_francia_test")]
+  public static extern global::System.IntPtr shapiro_francia_test(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_ScatterPlot_SWIGUpcast")]
+  public static extern global::System.IntPtr ScatterPlot_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_LinePlot_SWIGUpcast")]
+  public static extern global::System.IntPtr LinePlot_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("datamunge_csharp", EntryPoint="CSharp_BarChart_SWIGUpcast")]
+  public static extern global::System.IntPtr BarChart_SWIGUpcast(global::System.IntPtr jarg1);
 }

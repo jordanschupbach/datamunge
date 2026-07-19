@@ -55,6 +55,16 @@ public class DataFrame {
     this(datamungeJNI.new_DataFrame(), true);
   }
 
+  /**
+   *  Equivalent to the default constructor, exposed as a static factory (like iris()/<br>
+   *         penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument<br>
+   *         constructor's ownership-flagged pointer breaks method dispatch on the result.
+   */
+  public static DataFrame empty() {
+    long cPtr = datamungeJNI.DataFrame_empty();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
   public long nrows() {
     return datamungeJNI.DataFrame_nrows(swigCPtr, this);
   }
@@ -63,8 +73,8 @@ public class DataFrame {
     return datamungeJNI.DataFrame_ncols(swigCPtr, this);
   }
 
-  public SWIGTYPE_p_std__vectorT_std__size_t_t shape() {
-    return new SWIGTYPE_p_std__vectorT_std__size_t_t(datamungeJNI.DataFrame_shape(swigCPtr, this), true);
+  public SizeVector shape() {
+    return new SizeVector(datamungeJNI.DataFrame_shape(swigCPtr, this), true);
   }
 
   public SVector columns() {
@@ -188,6 +198,41 @@ public class DataFrame {
 
   public String to_string() {
     return datamungeJNI.DataFrame_to_string__SWIG_1(swigCPtr, this);
+  }
+
+  /**
+   *  true if column_name holds numeric values, false if it holds strings.
+   */
+  public boolean is_numeric_column(String column_name) {
+    return datamungeJNI.DataFrame_is_numeric_column(swigCPtr, this, column_name);
+  }
+
+  public boolean is_null(String column_name, long row_index) {
+    return datamungeJNI.DataFrame_is_null(swigCPtr, this, column_name, row_index);
+  }
+
+  /**
+   *  The value at (column_name, row_index); throws if the cell is null or the column isn't numeric.
+   */
+  public double numeric_at(String column_name, long row_index) {
+    return datamungeJNI.DataFrame_numeric_at(swigCPtr, this, column_name, row_index);
+  }
+
+  /**
+   *  The value at (column_name, row_index); throws if the cell is null or the column isn't string-typed.
+   */
+  public String string_at(String column_name, long row_index) {
+    return datamungeJNI.DataFrame_string_at(swigCPtr, this, column_name, row_index);
+  }
+
+  public static DataFrame iris() {
+    long cPtr = datamungeJNI.DataFrame_iris();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
+  }
+
+  public static DataFrame penguins() {
+    long cPtr = datamungeJNI.DataFrame_penguins();
+    return (cPtr == 0) ? null : new DataFrame(cPtr, false);
   }
 
 }

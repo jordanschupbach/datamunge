@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+  <rect width="100%" height="100%" fill="rgb(255,255,255)"/>
+  <style>text{font-family:Helvetica,Arial,sans-serif;fill:rgb(55,65,81);}</style>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="72" x2="936" y2="72" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="259.2" y1="72" x2="259.2" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="168.8" x2="936" y2="168.8" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="428.4" y1="72" x2="428.4" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="265.6" x2="936" y2="265.6" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="597.6" y1="72" x2="597.6" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="362.4" x2="936" y2="362.4" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="766.8" y1="72" x2="766.8" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="459.2" x2="936" y2="459.2" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="936" y1="72" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(229,231,235)" stroke-width="1"/>
+  <line x1="90" y1="556" x2="936" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <line x1="90" y1="72" x2="90" y2="556" stroke="rgb(55,65,81)" stroke-width="2"/>
+  <text x="90" y="580" font-size="12" text-anchor="middle">-3.971</text>
+  <text x="80" y="560" font-size="12" text-anchor="end">-nan</text>
+  <text x="259.2" y="580" font-size="12" text-anchor="middle">-3.091</text>
+  <text x="80" y="463.2" font-size="12" text-anchor="end">-nan</text>
+  <text x="428.4" y="580" font-size="12" text-anchor="middle">-2.211</text>
+  <text x="80" y="366.4" font-size="12" text-anchor="end">-nan</text>
+  <text x="597.6" y="580" font-size="12" text-anchor="middle">-1.331</text>
+  <text x="80" y="269.6" font-size="12" text-anchor="end">-nan</text>
+  <text x="766.8" y="580" font-size="12" text-anchor="middle">-0.451</text>
+  <text x="80" y="172.8" font-size="12" text-anchor="end">-nan</text>
+  <text x="936" y="580" font-size="12" text-anchor="middle">0.429</text>
+  <text x="80" y="76" font-size="12" text-anchor="end">-nan</text>
+  <text x="480" y="36" font-size="24" text-anchor="middle">Cross-Validation Curve</text>
+  <text x="480" y="620" font-size="16" text-anchor="middle">log10(lambda)</text>
+  <text x="24" y="320" font-size="16" text-anchor="middle" transform="rotate(-90 24 320)">CV mean squared error</text>
+  <polyline fill="none" stroke="rgb(220,38,38)" stroke-width="2" points="897.545,-nan 889.777,-nan 882.008,-nan 874.24,-nan 866.471,-nan 858.702,-nan 850.934,-nan 843.165,-nan 835.397,-nan 827.628,-nan 819.86,-nan 812.091,-nan 804.322,-nan 796.554,-nan 788.785,-nan 781.017,-nan 773.248,-nan 765.479,-nan 757.711,-nan 749.942,-nan 742.174,-nan 734.405,-nan 726.636,-nan 718.868,-nan 711.099,-nan 703.331,-nan 695.562,-nan 687.793,-nan 680.025,-nan 672.256,-nan 664.488,-nan 656.719,-nan 648.95,-nan 641.182,-nan 633.413,-nan 625.645,-nan 617.876,-nan 610.107,-nan 602.339,-nan 594.57,-nan 586.802,-nan 579.033,-nan 571.264,-nan 563.496,-nan 555.727,-nan 547.959,-nan 540.19,-nan 532.421,-nan 524.653,-nan 516.884,-nan 509.116,-nan 501.347,-nan 493.579,-nan 485.81,-nan 478.041,-nan 470.273,-nan 462.504,-nan 454.736,-nan 446.967,-nan 439.198,-nan 431.43,-nan 423.661,-nan 415.893,-nan 408.124,-nan 400.355,-nan 392.587,-nan 384.818,-nan 377.05,-nan 369.281,-nan 361.512,-nan 353.744,-nan 345.975,-nan 338.207,-nan 330.438,-nan 322.669,-nan 314.901,-nan 307.132,-nan 299.364,-nan 291.595,-nan 283.826,-nan 276.058,-nan 268.289,-nan 260.521,-nan 252.752,-nan 244.983,-nan 237.215,-nan 229.446,-nan 221.678,-nan 213.909,-nan 206.14,-nan 198.372,-nan 190.603,-nan 182.835,-nan 175.066,-nan 167.298,-nan 159.529,-nan 151.76,-nan 143.992,-nan 136.223,-nan 128.455,-nan "/>
+  <circle cx="524.653" cy="-nan" r="8" fill="rgb(220,38,38)"/>
+  <rect x="796" y="60" width="18" height="8" fill="rgb(220,38,38)"/>
+  <text x="822" y="68" font-size="12">CV mean squared error</text>
+  <rect x="796" y="80" width="18" height="8" fill="rgb(220,38,38)"/>
+  <text x="822" y="88" font-size="12">selected lambda</text>
+</svg>

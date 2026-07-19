@@ -5,6 +5,35 @@
 
 // NOTE: no working shared_ptr support in php swig?
 %include <stdint.i>
+// PHP's php.swg defines a real scalar in/out typemap for the bare "size_t" spelling (via
+// %pass_by_val(size_t, "int", CONVERT_INT_IN)) but NOT for "std::size_t" -- and unlike other
+// backends this session, a plain %apply-based alias has no effect here: PHP's std_vector.i
+// generic template's %extend'd set()/get()/push() methods resolve the "value_type" (== T ==
+// std::size_t here) typemap via SWIG's template-substitution machinery at %template()
+// instantiation time, which doesn't consult %apply aliases the same way ordinary function
+// parameters do (confirmed by inspecting the generated wrapper: the %apply version left
+// SizeVector_set's codegen completely unchanged, still demanding a SWIGTYPE_p_std__size_t
+// boxed pointer). Fixed instead with an explicit %typemap(in)/(out) written out by hand,
+// matching exactly what %pass_by_val(size_t, "int", CONVERT_INT_IN) generates for the "size_t"
+// spelling -- this DOES take effect for std::size_t, since typemap declarations (unlike
+// %apply) participate directly in the template-substitution lookup.
+%typemap(in, phptype="int") std::size_t
+%{
+  $1 = (std::size_t) zval_get_long(&$input);
+%}
+%typemap(in, phptype="int") const std::size_t & ($*1_ltype temp)
+%{
+  temp = (std::size_t) zval_get_long(&$input);
+  $1 = &temp;
+%}
+%typemap(out, phptype="int") std::size_t
+%{
+  ZVAL_LONG($result, (zend_long)$1);
+%}
+%typemap(out, phptype="int") const std::size_t &
+%{
+  ZVAL_LONG($result, (zend_long)(*$1));
+%}
 %include <std_vector.i>
 %include <std_string.i>
 %include <std_pair.i>
@@ -97,6 +126,13 @@
 %ignore datamunge::stats::KNNClassifierPrediction;
 %ignore datamunge::stats::KNNRegressor;
 %ignore datamunge::stats::KNNRegressorOptions;
+%ignore datamunge::stats::KMeans;
+%ignore datamunge::stats::KMeansOptions;
+%ignore datamunge::stats::AgglomerativeClustering;
+%ignore datamunge::stats::AgglomerativeClusteringOptions;
+%ignore datamunge::stats::LinkageCriterion;
+%ignore datamunge::stats::DBSCAN;
+%ignore datamunge::stats::DBSCANOptions;
 %ignore datamunge::stats::DistanceMetric;
 %ignore datamunge::stats::GBMClassifier;
 %ignore datamunge::stats::GBMClassifierOptions;
@@ -122,20 +158,52 @@
 %ignore datamunge::stats::GLMPrediction;
 %ignore datamunge::stats::GLMFamily;
 %ignore datamunge::stats::GLMPredictionInterval;
-%ignore datamunge::linalg::Tensor;
-%ignore datamunge::linalg::TensorDType;
-%ignore datamunge::autodiff::Dual;
-%ignore datamunge::autodiff::HyperDual;
-%ignore datamunge::autodiff::Tape;
-%ignore datamunge::autodiff::Var;
 
 %template(IPair) std::pair<int, int>;
 %template(DPair) std::pair<double, double>;
+%template(DVectorPair) std::pair<std::vector<double>, std::vector<double> >;
 %template(DVector) std::vector<double>;
+%template(DVectorVector) std::vector<std::vector<double> >;
 %template(IVector) std::vector<int>;
-%template(SizeVector) std::vector<size_t>;
+// Declared using the exact spelling (std::size_t) the facade header actually uses for every
+// shape/index parameter -- avoids the %apply-based type-aliasing bug where SWIG treats
+// std::vector<size_t> and std::vector<std::size_t> as distinct, incompatible identities
+// (see datamunge_lua_bindings.md / datamunge_d_bindings.md / datamunge_ocaml_bindings.md /
+// datamunge_tcl_bindings.md / datamunge_guile_bindings.md / datamunge_javascript_bindings.md /
+// datamunge_csharp_bindings.md memory for the same bug recurring in Lua, D, OCaml, Tcl, Guile,
+// JS, and C#). Tensor/autodiff %ignore lines removed too -- were needlessly excluded here (same
+// as Go), unlike every other already-ported language; see datamunge_csharp_bindings.md.
+%template(SizeVector) std::vector<std::size_t>;
+%template(SVector) std::vector<std::string>;
 
 %{
   #include "datamunge/datamunge.hpp"
 %}
 %include "datamunge/datamunge.hpp"
+%include "datamunge/plot/plot.hpp"
+%include "datamunge/stats/arima.hpp"
+%include "datamunge/stats/exponential_smoothing.hpp"
+%include "datamunge/stats/hypothesis_test_result.hpp"
+%include "datamunge/stats/t_test.hpp"
+%include "datamunge/stats/wilcoxon_test.hpp"
+%include "datamunge/stats/ks_test.hpp"
+%include "datamunge/stats/chi_squared_test.hpp"
+%include "datamunge/stats/anova_test.hpp"
+%include "datamunge/stats/correlation_test.hpp"
+%include "datamunge/stats/variance_test.hpp"
+%include "datamunge/stats/proportion_test.hpp"
+%include "datamunge/stats/fisher_exact_test.hpp"
+%include "datamunge/stats/normality_test.hpp"
+%include "datamunge/stats/p_adjust.hpp"
+%include "datamunge/optim/function_types.hpp"
+%include "datamunge/optim/gradient_descent.hpp"
+%include "datamunge/optim/adam.hpp"
+%include "datamunge/optim/lbfgs.hpp"
+%include "datamunge/optim/sgd.hpp"
+%include "datamunge/optim/simulated_annealing.hpp"
+%include "datamunge/optim/pso.hpp"
+%include "datamunge/optim/differential_evolution.hpp"
+%include "datamunge/optim/genetic_algorithm.hpp"
+%include "datamunge/bayes/map.hpp"
+%include "datamunge/bayes/hmc.hpp"
+%include "datamunge/bayes/nuts.hpp"

@@ -159,6 +159,63 @@ inline double invert_monotonic_cdf(double p, CdfFn cdf, double lo, double hi) {
   return 0.5 * (lo + hi);
 }
 
+// Series expansion (Numerical Recipes' gser) for the regularized lower incomplete gamma
+// function P(a, x), valid/fast-converging for x < a + 1.
+inline double incomplete_gamma_series(double a, double x) {
+  constexpr int    max_iterations = 200;
+  constexpr double epsilon        = 3.0e-16;
+
+  if (x <= 0.0) return 0.0;
+  double term = 1.0 / a;
+  double sum  = term;
+  double ap   = a;
+  for (int n = 0; n < max_iterations; ++n) {
+    ap += 1.0;
+    term *= x / ap;
+    sum += term;
+    if (std::abs(term) < std::abs(sum) * epsilon) break;
+  }
+  return sum * std::exp(-x + a * std::log(x) - std::lgamma(a));
+}
+
+// Continued-fraction expansion (Numerical Recipes' gcf) for the regularized upper
+// incomplete gamma function Q(a, x) = 1 - P(a, x), valid/fast-converging for x >= a + 1.
+inline double incomplete_gamma_cf(double a, double x) {
+  constexpr int    max_iterations = 200;
+  constexpr double epsilon        = 3.0e-16;
+  constexpr double tiny           = 1.0e-300;
+
+  double b = x + 1.0 - a;
+  double c = 1.0 / tiny;
+  double d = 1.0 / b;
+  double h = d;
+  for (int i = 1; i <= max_iterations; ++i) {
+    const double an = -static_cast<double>(i) * (static_cast<double>(i) - a);
+    b += 2.0;
+    d = an * d + b; if (std::abs(d) < tiny) d = tiny;
+    c = b + an / c; if (std::abs(c) < tiny) c = tiny;
+    d = 1.0 / d;
+    const double delta = d * c;
+    h *= delta;
+    if (std::abs(delta - 1.0) < epsilon) break;
+  }
+  return std::exp(-x + a * std::log(x) - std::lgamma(a)) * h;
+}
+
+// Regularized lower incomplete gamma function P(a, x) = gamma(a, x) / Gamma(a), used to
+// derive the chi-squared cumulative distribution function.
+inline double regularized_lower_incomplete_gamma(double a, double x) {
+  if (!(a > 0.0)) throw std::invalid_argument("regularized_lower_incomplete_gamma: a must be > 0");
+  if (x < 0.0) throw std::invalid_argument("regularized_lower_incomplete_gamma: x must be >= 0");
+  if (x == 0.0) return 0.0;
+  if (x < a + 1.0) return incomplete_gamma_series(a, x);
+  return 1.0 - incomplete_gamma_cf(a, x);
+}
+
+inline double log_choose(double n, double k) {
+  return std::lgamma(n + 1.0) - std::lgamma(k + 1.0) - std::lgamma(n - k + 1.0);
+}
+
 } // namespace detail
 
 inline double uniform_pdf(double x, double a = 0.0, double b = 1.0) {
@@ -501,6 +558,71 @@ inline double f_quantile(double p, double df1, double df2) {
   if (p == 1.0) return std::numeric_limits<double>::infinity();
   return detail::invert_monotonic_cdf(
       p, [df1, df2](double x) { return f_cdf(x, df1, df2); }, 1e-6, 1.0);
+}
+
+inline double chi_squared_pdf(double x, double df) {
+  detail::require_positive(df, "chi_squared_pdf", "df");
+  if (x < 0.0) return 0.0;
+  if (x == 0.0) return (df < 2.0) ? std::numeric_limits<double>::infinity() : (df == 2.0 ? 0.5 : 0.0);
+  const double half_df = 0.5 * df;
+  const double log_pdf = (half_df - 1.0) * std::log(x) - 0.5 * x - std::lgamma(half_df) - half_df * std::log(2.0);
+  return std::exp(log_pdf);
+}
+
+inline double chi_squared_cdf(double x, double df) {
+  detail::require_positive(df, "chi_squared_cdf", "df");
+  if (x <= 0.0) return 0.0;
+  return detail::regularized_lower_incomplete_gamma(0.5 * df, 0.5 * x);
+}
+
+inline double chi_squared_quantile(double p, double df) {
+  detail::require_probability(p, "chi_squared_quantile");
+  detail::require_positive(df, "chi_squared_quantile", "df");
+  if (p == 0.0) return 0.0;
+  if (p == 1.0) return std::numeric_limits<double>::infinity();
+  return detail::invert_monotonic_cdf(
+      p, [df](double x) { return chi_squared_cdf(x, df); }, 1e-6, std::max(df, 1.0));
+}
+
+inline double binomial_pdf(std::size_t k, std::size_t n, double p) {
+  detail::require_probability(p, "binomial_pdf");
+  if (k > n) return 0.0;
+  if (p == 0.0) return (k == 0) ? 1.0 : 0.0;
+  if (p == 1.0) return (k == n) ? 1.0 : 0.0;
+  const double log_pmf = detail::log_choose(static_cast<double>(n), static_cast<double>(k))
+                        + static_cast<double>(k) * std::log(p)
+                        + static_cast<double>(n - k) * std::log1p(-p);
+  return std::exp(log_pmf);
+}
+
+inline double binomial_cdf(std::size_t k, std::size_t n, double p) {
+  detail::require_probability(p, "binomial_cdf");
+  if (k >= n) return 1.0;
+  double sum = 0.0;
+  for (std::size_t i = 0; i <= k; ++i) sum += binomial_pdf(i, n, p);
+  return std::min(1.0, sum);
+}
+
+// Hypergeometric distribution: drawing n items without replacement from a population of
+// size population containing successes_in_population successes; pmf/cdf of the number of
+// successes k in the sample. Used by Fisher's exact test.
+inline double hypergeometric_pdf(std::size_t k, std::size_t population, std::size_t successes_in_population,
+                                  std::size_t n) {
+  if (successes_in_population > population || n > population) return 0.0;
+  const std::size_t failures_in_population = population - successes_in_population;
+  if (k > successes_in_population || (n - k) > failures_in_population) return 0.0;
+  const double log_pmf = detail::log_choose(static_cast<double>(successes_in_population), static_cast<double>(k))
+                        + detail::log_choose(static_cast<double>(failures_in_population), static_cast<double>(n - k))
+                        - detail::log_choose(static_cast<double>(population), static_cast<double>(n));
+  return std::exp(log_pmf);
+}
+
+inline double hypergeometric_cdf(std::size_t k, std::size_t population, std::size_t successes_in_population,
+                                  std::size_t n) {
+  const std::size_t lo = (n > population - successes_in_population) ? n - (population - successes_in_population) : 0;
+  double sum = 0.0;
+  for (std::size_t i = lo; i <= k; ++i) sum += hypergeometric_pdf(i, population, successes_in_population, n);
+  return std::min(1.0, sum);
 }
 
 } // namespace datamunge::random
