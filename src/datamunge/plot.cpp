@@ -1,5 +1,8 @@
 #include <datamunge/plot/plot.hpp>
 
+#include <datamunge/datamunge.hpp>
+#include <datamunge/random/distributions.hpp>
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -77,6 +80,26 @@ struct Image {
     pixels[idx + 2U] = static_cast<std::uint8_t>(std::clamp(color.b, 0, 255));
   }
 
+  void blend_pixel(int x, int y, RGB color, double opacity) {
+    if (x < 0 || y < 0 || opacity <= 0.0) {
+      return;
+    }
+    const auto ux = static_cast<std::size_t>(x);
+    const auto uy = static_cast<std::size_t>(y);
+    if (ux >= width || uy >= height) {
+      return;
+    }
+    const std::size_t idx = (uy * width + ux) * 3U;
+    const double alpha = std::clamp(opacity, 0.0, 1.0);
+    const auto blend = [alpha](std::uint8_t destination, int source) {
+      return static_cast<std::uint8_t>(std::lround(
+          static_cast<double>(destination) * (1.0 - alpha) + std::clamp(source, 0, 255) * alpha));
+    };
+    pixels[idx + 0U] = blend(pixels[idx + 0U], color.r);
+    pixels[idx + 1U] = blend(pixels[idx + 1U], color.g);
+    pixels[idx + 2U] = blend(pixels[idx + 2U], color.b);
+  }
+
   void fill_rect(int x0, int y0, int x1, int y1, RGB color) {
     if (x0 > x1) {
       std::swap(x0, x1);
@@ -114,6 +137,29 @@ std::string xml_escape(const std::string& s) {
   return out;
 }
 
+constexpr std::array<RGB, 8> kDefaultPalette = {{
+    {37, 99, 235},
+    {220, 38, 38},
+    {22, 163, 74},
+    {217, 119, 6},
+    {124, 58, 237},
+    {219, 39, 119},
+    {8, 145, 178},
+    {161, 98, 7},
+}};
+
+/// R's "type 7" sample quantile (the default used by both `quantile()` and `boxplot.stats()`).
+double quantile_type7(const std::vector<double>& sorted, double p) {
+  const auto n = sorted.size();
+  if (n == 1) {
+    return sorted.front();
+  }
+  const double h = (static_cast<double>(n) - 1.0) * p;
+  const auto   lo = static_cast<std::size_t>(std::floor(h));
+  const auto   hi = static_cast<std::size_t>(std::ceil(h));
+  return sorted[lo] + (h - static_cast<double>(lo)) * (sorted[hi] - sorted[lo]);
+}
+
 void require_xy_same_size(const std::vector<double>& x,
                           const std::vector<double>& y,
                           const char*                fn) {
@@ -131,24 +177,39 @@ Bounds compute_bounds(const Plot& plot) {
   }
 
   Bounds b;
-  bool first = true;
+  bool   first = true;
+  auto   include = [&](double x, double y) {
+    if (first) {
+      b.x_min = b.x_max = x;
+      b.y_min = b.y_max = y;
+      first = false;
+    } else {
+      b.x_min = std::min(b.x_min, x);
+      b.x_max = std::max(b.x_max, x);
+      b.y_min = std::min(b.y_min, y);
+      b.y_max = std::max(b.y_max, y);
+    }
+  };
+
   for (const auto& series : plot.series()) {
-    for (std::size_t i = 0; i < series.x.size(); ++i) {
-      const double x = series.x[i];
-      const double y = series.y[i];
-      if (first) {
-        b.x_min = b.x_max = x;
-        b.y_min = b.y_max = y;
-        first = false;
-      } else {
-        b.x_min = std::min(b.x_min, x);
-        b.x_max = std::max(b.x_max, x);
-        b.y_min = std::min(b.y_min, y);
-        b.y_max = std::max(b.y_max, y);
+    if (series.kind == DataSeries::Kind::Box) {
+      // x = {position}; y = {whisker_lo, q1, median, q3, whisker_hi, outliers...}
+      const double position = series.x.empty() ? 0.0 : series.x[0];
+      for (double value : series.y) {
+        include(position, value);
       }
+      continue;
+    }
+    for (std::size_t i = 0; i < series.x.size(); ++i) {
+      include(series.x[i], series.y[i]);
       if (series.kind == DataSeries::Kind::Bar) {
         b.y_min = std::min(b.y_min, 0.0);
       }
+    }
+  }
+  for (const auto& line : plot.reference_lines()) {
+    if (line.vertical) {
+      include(line.value, first ? 0.0 : b.y_min);
     }
   }
 
@@ -226,106 +287,248 @@ std::string format_tick(double value) {
   return s;
 }
 
-std::string svg_string(const Plot& plot) {
-  const Layout layout = compute_layout(plot);
-
-  std::ostringstream out;
-  out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-  out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << plot.width()
-      << "\" height=\"" << plot.height() << "\" viewBox=\"0 0 " << plot.width() << " "
-      << plot.height() << "\">\n";
+void write_axes_and_grid(std::ostringstream& out, const Plot& plot, const Layout& layout) {
   out << "  <rect width=\"100%\" height=\"100%\" fill=\"" << rgb_css(plot.background_color())
       << "\"/>\n";
   out << "  <style>"
       << "text{font-family:Helvetica,Arial,sans-serif;fill:" << rgb_css(plot.axes_color()) << ";}"
       << "</style>\n";
 
-  if (plot.grid_visible()) {
-    for (int i = 0; i <= 5; ++i) {
-      const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
-      const double ty = layout.top + layout.plot_h * static_cast<double>(i) / 5.0;
-      out << "  <line x1=\"" << tx << "\" y1=\"" << layout.top << "\" x2=\"" << tx
-          << "\" y2=\"" << layout.top + layout.plot_h << "\" stroke=\""
-          << rgb_css(plot.major_grid_color()) << "\" stroke-width=\"1\"/>\n";
-      out << "  <line x1=\"" << layout.left << "\" y1=\"" << ty << "\" x2=\""
-          << layout.left + layout.plot_w << "\" y2=\"" << ty << "\" stroke=\""
-          << rgb_css(plot.major_grid_color()) << "\" stroke-width=\"1\"/>\n";
+  const bool categorical = !plot.x_tick_label_list().empty();
+
+  if (!plot.axes_hidden()) {
+    if (plot.grid_visible()) {
+      for (int i = 0; i <= 5; ++i) {
+        const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
+        const double ty = layout.top + layout.plot_h * static_cast<double>(i) / 5.0;
+        out << "  <line x1=\"" << tx << "\" y1=\"" << layout.top << "\" x2=\"" << tx
+            << "\" y2=\"" << layout.top + layout.plot_h << "\" stroke=\""
+            << rgb_css(plot.major_grid_color()) << "\" stroke-width=\"1\"/>\n";
+        out << "  <line x1=\"" << layout.left << "\" y1=\"" << ty << "\" x2=\""
+            << layout.left + layout.plot_w << "\" y2=\"" << ty << "\" stroke=\""
+            << rgb_css(plot.major_grid_color()) << "\" stroke-width=\"1\"/>\n";
+      }
     }
-  }
 
-  out << "  <line x1=\"" << layout.left << "\" y1=\"" << layout.top + layout.plot_h
-      << "\" x2=\"" << layout.left + layout.plot_w << "\" y2=\"" << layout.top + layout.plot_h
-      << "\" stroke=\"" << rgb_css(plot.axes_color()) << "\" stroke-width=\"2\"/>\n";
-  out << "  <line x1=\"" << layout.left << "\" y1=\"" << layout.top << "\" x2=\""
-      << layout.left << "\" y2=\"" << layout.top + layout.plot_h << "\" stroke=\""
-      << rgb_css(plot.axes_color()) << "\" stroke-width=\"2\"/>\n";
+    out << "  <line x1=\"" << layout.left << "\" y1=\"" << layout.top + layout.plot_h
+        << "\" x2=\"" << layout.left + layout.plot_w << "\" y2=\"" << layout.top + layout.plot_h
+        << "\" stroke=\"" << rgb_css(plot.axes_color()) << "\" stroke-width=\"2\"/>\n";
+    out << "  <line x1=\"" << layout.left << "\" y1=\"" << layout.top << "\" x2=\""
+        << layout.left << "\" y2=\"" << layout.top + layout.plot_h << "\" stroke=\""
+        << rgb_css(plot.axes_color()) << "\" stroke-width=\"2\"/>\n";
 
-  for (int i = 0; i <= 5; ++i) {
-    const double xv = layout.bounds.x_min
-                    + (layout.bounds.x_max - layout.bounds.x_min) * static_cast<double>(i) / 5.0;
-    const double yv = layout.bounds.y_min
-                    + (layout.bounds.y_max - layout.bounds.y_min) * static_cast<double>(i) / 5.0;
-    const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
-    const double ty = layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0;
-    out << "  <text x=\"" << tx << "\" y=\"" << layout.top + layout.plot_h + 24
-        << "\" font-size=\"12\" text-anchor=\"middle\">" << format_tick(xv) << "</text>\n";
-    out << "  <text x=\"" << layout.left - 10 << "\" y=\"" << ty + 4
-        << "\" font-size=\"12\" text-anchor=\"end\">" << format_tick(yv) << "</text>\n";
+    if (categorical) {
+      const auto& labels = plot.x_tick_label_list();
+      for (std::size_t i = 0; i < labels.size(); ++i) {
+        const double tx = map_x(layout, static_cast<double>(i));
+        out << "  <text x=\"" << tx << "\" y=\"" << layout.top + layout.plot_h + 24
+            << "\" font-size=\"12\" text-anchor=\"middle\">" << xml_escape(labels[i])
+            << "</text>\n";
+      }
+      for (int i = 0; i <= 5; ++i) {
+        const double yv = layout.bounds.y_min + (layout.bounds.y_max - layout.bounds.y_min)
+                                                     * static_cast<double>(i) / 5.0;
+        const double ty = layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0;
+        out << "  <text x=\"" << layout.left - 10 << "\" y=\"" << ty + 4
+            << "\" font-size=\"12\" text-anchor=\"end\">" << format_tick(yv) << "</text>\n";
+      }
+    } else {
+      for (int i = 0; i <= 5; ++i) {
+        const double xv = layout.bounds.x_min + (layout.bounds.x_max - layout.bounds.x_min)
+                                                     * static_cast<double>(i) / 5.0;
+        const double yv = layout.bounds.y_min + (layout.bounds.y_max - layout.bounds.y_min)
+                                                     * static_cast<double>(i) / 5.0;
+        const double tx = layout.left + layout.plot_w * static_cast<double>(i) / 5.0;
+        const double ty = layout.top + layout.plot_h - layout.plot_h * static_cast<double>(i) / 5.0;
+        out << "  <text x=\"" << tx << "\" y=\"" << layout.top + layout.plot_h + 24
+            << "\" font-size=\"12\" text-anchor=\"middle\">" << format_tick(xv) << "</text>\n";
+        out << "  <text x=\"" << layout.left - 10 << "\" y=\"" << ty + 4
+            << "\" font-size=\"12\" text-anchor=\"end\">" << format_tick(yv) << "</text>\n";
+      }
+    }
   }
 
   out << "  <text x=\"" << plot.width() / 2.0
       << "\" y=\"36\" font-size=\"24\" text-anchor=\"middle\">"
       << xml_escape(plot.title_text()) << "</text>\n";
-  out << "  <text x=\"" << plot.width() / 2.0 << "\" y=\"" << plot.height() - 20
-      << "\" font-size=\"16\" text-anchor=\"middle\">" << xml_escape(plot.x_label_text())
-      << "</text>\n";
-  out << "  <text x=\"24\" y=\"" << plot.height() / 2.0
-      << "\" font-size=\"16\" text-anchor=\"middle\" transform=\"rotate(-90 24 "
-      << plot.height() / 2.0 << ")\">" << xml_escape(plot.y_label_text()) << "</text>\n";
+  if (!plot.axes_hidden()) {
+    out << "  <text x=\"" << plot.width() / 2.0 << "\" y=\"" << plot.height() - 20
+        << "\" font-size=\"16\" text-anchor=\"middle\">" << xml_escape(plot.x_label_text())
+        << "</text>\n";
+    out << "  <text x=\"24\" y=\"" << plot.height() / 2.0
+        << "\" font-size=\"16\" text-anchor=\"middle\" transform=\"rotate(-90 24 "
+        << plot.height() / 2.0 << ")\">" << xml_escape(plot.y_label_text()) << "</text>\n";
+  }
+}
+
+void write_series(std::ostringstream& out, const Plot& plot, const Layout& layout) {
+  for (const auto& line : plot.reference_lines()) {
+    const std::string color = rgb_css(line.color);
+    double x0, y0, x1, y1;
+    if (line.vertical) {
+      x0 = x1 = map_x(layout, line.value);
+      y0 = layout.top;
+      y1 = layout.top + layout.plot_h;
+    } else {
+      x0 = layout.left;
+      x1 = layout.left + layout.plot_w;
+      y0 = map_y(layout, line.value + line.slope * layout.bounds.x_min);
+      y1 = map_y(layout, line.value + line.slope * layout.bounds.x_max);
+    }
+    out << "  <line x1=\"" << x0 << "\" y1=\"" << y0 << "\" x2=\"" << x1 << "\" y2=\"" << y1
+        << "\" stroke=\"" << color << "\" stroke-width=\"" << line.stroke_width << "\"/>\n";
+  }
 
   for (const auto& series : plot.series()) {
     const std::string color = rgb_css(series.color);
-    if (series.kind == DataSeries::Kind::Line) {
-      out << "  <polyline fill=\"none\" stroke=\"" << color << "\" stroke-width=\""
-          << series.stroke_width << "\" points=\"";
-      for (std::size_t i = 0; i < series.x.size(); ++i) {
-        out << map_x(layout, series.x[i]) << "," << map_y(layout, series.y[i]) << " ";
+    switch (series.kind) {
+      case DataSeries::Kind::Line: {
+        out << "  <polyline fill=\"none\" stroke=\"" << color << "\" stroke-width=\""
+            << series.stroke_width << "\" points=\"";
+        for (std::size_t i = 0; i < series.x.size(); ++i) {
+          out << map_x(layout, series.x[i]) << "," << map_y(layout, series.y[i]) << " ";
+        }
+        out << "\"/>\n";
+        break;
       }
-      out << "\"/>\n";
-    } else if (series.kind == DataSeries::Kind::Scatter) {
-      for (std::size_t i = 0; i < series.x.size(); ++i) {
-        out << "  <circle cx=\"" << map_x(layout, series.x[i]) << "\" cy=\""
-            << map_y(layout, series.y[i]) << "\" r=\"" << series.marker_size << "\" fill=\""
-            << color << "\"/>\n";
+      case DataSeries::Kind::Scatter: {
+        for (std::size_t i = 0; i < series.x.size(); ++i) {
+          out << "  <circle cx=\"" << map_x(layout, series.x[i]) << "\" cy=\""
+              << map_y(layout, series.y[i]) << "\" r=\"" << series.marker_size << "\" fill=\""
+              << color << "\"/>\n";
+        }
+        break;
       }
-    } else if (series.kind == DataSeries::Kind::Bar) {
-      for (std::size_t i = 0; i < series.x.size(); ++i) {
-        const double x_left = map_x(layout, series.x[i] - series.bar_width / 2.0);
-        const double x_right = map_x(layout, series.x[i] + series.bar_width / 2.0);
-        const double y0 = map_y(layout, 0.0);
-        const double y1 = map_y(layout, series.y[i]);
-        const double rect_y = std::min(y0, y1);
-        const double rect_h = std::abs(y1 - y0);
-        out << "  <rect x=\"" << x_left << "\" y=\"" << rect_y << "\" width=\""
-            << (x_right - x_left) << "\" height=\"" << rect_h << "\" fill=\"" << color
-            << "\" fill-opacity=\"0.85\"/>\n";
+      case DataSeries::Kind::Bar: {
+        for (std::size_t i = 0; i < series.x.size(); ++i) {
+          const double x_left = map_x(layout, series.x[i] - series.bar_width / 2.0);
+          const double x_right = map_x(layout, series.x[i] + series.bar_width / 2.0);
+          const double y0 = map_y(layout, 0.0);
+          const double y1 = map_y(layout, series.y[i]);
+          const double rect_y = std::min(y0, y1);
+          const double rect_h = std::abs(y1 - y0);
+          out << "  <rect x=\"" << x_left << "\" y=\"" << rect_y << "\" width=\""
+              << (x_right - x_left) << "\" height=\"" << rect_h << "\" fill=\"" << color
+              << "\" fill-opacity=\"0.85\"/>\n";
+        }
+        break;
+      }
+      case DataSeries::Kind::Box: {
+        if (series.x.empty() || series.y.size() < 5) {
+          break;
+        }
+        const double position = series.x[0];
+        const double lo = series.y[0];
+        const double q1 = series.y[1];
+        const double median = series.y[2];
+        const double q3 = series.y[3];
+        const double hi = series.y[4];
+        const double half = series.bar_width / 2.0;
+        const double cx = map_x(layout, position);
+        const double x_left = map_x(layout, position - half);
+        const double x_right = map_x(layout, position + half);
+        out << "  <line x1=\"" << cx << "\" y1=\"" << map_y(layout, lo) << "\" x2=\"" << cx
+            << "\" y2=\"" << map_y(layout, q1) << "\" stroke=\"" << color
+            << "\" stroke-width=\"1.5\"/>\n";
+        out << "  <line x1=\"" << cx << "\" y1=\"" << map_y(layout, q3) << "\" x2=\"" << cx
+            << "\" y2=\"" << map_y(layout, hi) << "\" stroke=\"" << color
+            << "\" stroke-width=\"1.5\"/>\n";
+        out << "  <line x1=\"" << x_left << "\" y1=\"" << map_y(layout, lo) << "\" x2=\""
+            << x_right << "\" y2=\"" << map_y(layout, lo) << "\" stroke=\"" << color
+            << "\" stroke-width=\"1.5\"/>\n";
+        out << "  <line x1=\"" << x_left << "\" y1=\"" << map_y(layout, hi) << "\" x2=\""
+            << x_right << "\" y2=\"" << map_y(layout, hi) << "\" stroke=\"" << color
+            << "\" stroke-width=\"1.5\"/>\n";
+        const double box_top = map_y(layout, q3);
+        const double box_bottom = map_y(layout, q1);
+        out << "  <rect x=\"" << x_left << "\" y=\"" << box_top << "\" width=\""
+            << (x_right - x_left) << "\" height=\"" << (box_bottom - box_top) << "\" fill=\""
+            << color << "\" fill-opacity=\"0.35\" stroke=\"" << color
+            << "\" stroke-width=\"1.5\"/>\n";
+        out << "  <line x1=\"" << x_left << "\" y1=\"" << map_y(layout, median) << "\" x2=\""
+            << x_right << "\" y2=\"" << map_y(layout, median) << "\" stroke=\"" << color
+            << "\" stroke-width=\"2\"/>\n";
+        for (std::size_t i = 5; i < series.y.size(); ++i) {
+          out << "  <circle cx=\"" << cx << "\" cy=\"" << map_y(layout, series.y[i])
+              << "\" r=\"3\" fill=\"" << color << "\"/>\n";
+        }
+        break;
+      }
+      case DataSeries::Kind::Polygon: {
+        out << "  <polygon points=\"";
+        for (std::size_t i = 0; i < series.x.size(); ++i) {
+          out << map_x(layout, series.x[i]) << "," << map_y(layout, series.y[i]) << " ";
+        }
+        if (series.filled) {
+          out << "\" fill=\"" << color << "\" stroke=\"" << color << "\" stroke-width=\"1\"/>\n";
+        } else {
+          out << "\" fill=\"none\" stroke=\"" << color << "\" stroke-width=\""
+              << series.stroke_width << "\"/>\n";
+        }
+        break;
+      }
+      case DataSeries::Kind::Text: {
+        if (series.x.empty()) {
+          break;
+        }
+        out << "  <text x=\"" << map_x(layout, series.x[0]) << "\" y=\""
+            << map_y(layout, series.y[0]) << "\" font-size=\"" << series.marker_size
+            << "\" fill=\"" << color << "\" text-anchor=\"middle\">" << xml_escape(series.label)
+            << "</text>\n";
+        break;
+      }
+      case DataSeries::Kind::Segment: {
+        for (std::size_t i = 0; i + 1 < series.x.size(); i += 2) {
+          out << "  <line x1=\"" << map_x(layout, series.x[i]) << "\" y1=\""
+              << map_y(layout, series.y[i]) << "\" x2=\"" << map_x(layout, series.x[i + 1])
+              << "\" y2=\"" << map_y(layout, series.y[i + 1]) << "\" stroke=\"" << color
+              << "\" stroke-width=\"" << series.stroke_width << "\"/>\n";
+        }
+        break;
       }
     }
   }
 
   double legend_y = layout.top;
-  for (const auto& series : plot.series()) {
-    if (series.label.empty()) {
-      continue;
+  if (!plot.legend_entries().empty()) {
+    for (const auto& entry : plot.legend_entries()) {
+      const double x0 = layout.left + layout.plot_w - 140.0;
+      out << "  <rect x=\"" << x0 << "\" y=\"" << legend_y - 12
+          << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(entry.color) << "\"/>\n";
+      out << "  <text x=\"" << x0 + 26 << "\" y=\"" << legend_y - 4 << "\" font-size=\"12\">"
+          << xml_escape(entry.label) << "</text>\n";
+      legend_y += 20.0;
     }
-    const double x0 = layout.left + layout.plot_w - 140.0;
-    out << "  <rect x=\"" << x0 << "\" y=\"" << legend_y - 12
-        << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(series.color) << "\"/>\n";
-    out << "  <text x=\"" << x0 + 26 << "\" y=\"" << legend_y - 4 << "\" font-size=\"12\">"
-        << xml_escape(series.label) << "</text>\n";
-    legend_y += 20.0;
+  } else {
+    for (const auto& series : plot.series()) {
+      if (series.label.empty() || series.kind == DataSeries::Kind::Text) {
+        continue;
+      }
+      const double x0 = layout.left + layout.plot_w - 140.0;
+      out << "  <rect x=\"" << x0 << "\" y=\"" << legend_y - 12
+          << "\" width=\"18\" height=\"8\" fill=\"" << rgb_css(series.color) << "\"/>\n";
+      out << "  <text x=\"" << x0 + 26 << "\" y=\"" << legend_y - 4 << "\" font-size=\"12\">"
+          << xml_escape(series.label) << "</text>\n";
+      legend_y += 20.0;
+    }
   }
+}
 
+std::string svg_body(const Plot& plot) {
+  const Layout layout = compute_layout(plot);
+  std::ostringstream out;
+  write_axes_and_grid(out, plot, layout);
+  write_series(out, plot, layout);
+  return out.str();
+}
+
+std::string svg_string(const Plot& plot) {
+  std::ostringstream out;
+  out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << plot.width()
+      << "\" height=\"" << plot.height() << "\" viewBox=\"0 0 " << plot.width() << " "
+      << plot.height() << "\">\n";
+  out << svg_body(plot);
   out << "</svg>\n";
   return out.str();
 }
@@ -387,12 +590,33 @@ Glyph glyph_for(char ch) {
   }
 }
 
-void draw_circle(Image& image, int cx, int cy, int radius, RGB color) {
-  radius = std::max(radius, 1);
-  for (int dy = -radius; dy <= radius; ++dy) {
-    for (int dx = -radius; dx <= radius; ++dx) {
-      if (dx * dx + dy * dy <= radius * radius) {
-        image.set_pixel(cx + dx, cy + dy, color);
+void draw_circle(Image& image, double cx, double cy, double radius, RGB color) {
+  constexpr int samples_per_axis = 4;
+  radius = std::max(radius, 1.0);
+  const double radius_squared = radius * radius;
+  const int x_begin = static_cast<int>(std::floor(cx - radius - 0.5));
+  const int x_end = static_cast<int>(std::ceil(cx + radius + 0.5));
+  const int y_begin = static_cast<int>(std::floor(cy - radius - 0.5));
+  const int y_end = static_cast<int>(std::ceil(cy + radius + 0.5));
+  for (int y = y_begin; y <= y_end; ++y) {
+    for (int x = x_begin; x <= x_end; ++x) {
+      int covered_samples = 0;
+      for (int sample_y = 0; sample_y < samples_per_axis; ++sample_y) {
+        for (int sample_x = 0; sample_x < samples_per_axis; ++sample_x) {
+          const double px = static_cast<double>(x)
+                          + (static_cast<double>(sample_x) + 0.5) / samples_per_axis;
+          const double py = static_cast<double>(y)
+                          + (static_cast<double>(sample_y) + 0.5) / samples_per_axis;
+          const double dx = px - cx;
+          const double dy = py - cy;
+          if (dx * dx + dy * dy <= radius_squared) {
+            ++covered_samples;
+          }
+        }
+      }
+      if (covered_samples != 0) {
+        image.blend_pixel(
+            x, y, color, static_cast<double>(covered_samples) / (samples_per_axis * samples_per_axis));
       }
     }
   }
@@ -402,11 +626,11 @@ void draw_line(Image& image, double x0, double y0, double x1, double y1, RGB col
   const double dx = x1 - x0;
   const double dy = y1 - y0;
   const int steps = std::max(1, static_cast<int>(std::ceil(std::max(std::abs(dx), std::abs(dy)))));
-  const int radius = std::max(1, static_cast<int>(std::round(width / 2.0)));
+  const double radius = std::max(1.0, std::round(width / 2.0));
   for (int i = 0; i <= steps; ++i) {
     const double t = static_cast<double>(i) / static_cast<double>(steps);
-    const int px = static_cast<int>(std::lround(x0 + dx * t));
-    const int py = static_cast<int>(std::lround(y0 + dy * t));
+    const double px = x0 + dx * t;
+    const double py = y0 + dy * t;
     draw_circle(image, px, py, radius, color);
   }
 }
@@ -520,9 +744,9 @@ Image rasterize(const Plot& plot) {
     } else if (series.kind == DataSeries::Kind::Scatter) {
       for (std::size_t i = 0; i < series.x.size(); ++i) {
         draw_circle(image,
-                    static_cast<int>(std::lround(map_x(layout, series.x[i]))),
-                    static_cast<int>(std::lround(map_y(layout, series.y[i]))),
-                    std::max(1, static_cast<int>(std::lround(series.marker_size))),
+                    map_x(layout, series.x[i]),
+                    map_y(layout, series.y[i]),
+                    std::max(1.0, series.marker_size),
                     series.color);
       }
     } else if (series.kind == DataSeries::Kind::Bar) {
@@ -629,9 +853,9 @@ Image rasterize(const Plot& plot, Bounds bounds) {
     } else if (series.kind == DataSeries::Kind::Scatter) {
       for (std::size_t i = 0; i < series.x.size(); ++i) {
         draw_circle(image,
-                    static_cast<int>(std::lround(map_x(layout, series.x[i]))),
-                    static_cast<int>(std::lround(map_y(layout, series.y[i]))),
-                    std::max(1, static_cast<int>(std::lround(series.marker_size))),
+                    map_x(layout, series.x[i]),
+                    map_y(layout, series.y[i]),
+                    std::max(1.0, series.marker_size),
                     series.color);
       }
     } else if (series.kind == DataSeries::Kind::Bar) {
@@ -996,22 +1220,36 @@ void blit_scaled_image(const Image& src,
 
   for (int y = y_begin; y < y_end; ++y) {
     for (int x = x_begin; x < x_end; ++x) {
-      const int src_x =
-          static_cast<int>(std::floor((static_cast<double>(x) - draw_x) / scale));
-      const int src_y =
-          static_cast<int>(std::floor((static_cast<double>(y) - draw_y) / scale));
-      if (src_x < 0 || src_y < 0 || src_x >= static_cast<int>(src.width)
-          || src_y >= static_cast<int>(src.height)) {
+      // Sample at pixel centres and blend the four neighboring source pixels.  Nearest-neighbor
+      // sampling made the plot visibly blocky whenever the viewer was resized or zoomed.
+      const double source_x = (static_cast<double>(x) + 0.5 - draw_x) / scale - 0.5;
+      const double source_y = (static_cast<double>(y) + 0.5 - draw_y) / scale - 0.5;
+      if (source_x < -0.5 || source_y < -0.5
+          || source_x > static_cast<double>(src.width) - 0.5
+          || source_y > static_cast<double>(src.height) - 0.5) {
         continue;
       }
-      const std::size_t src_idx =
-          (static_cast<std::size_t>(src_y) * src.width + static_cast<std::size_t>(src_x)) * 3U;
+      const int x0 = std::clamp(static_cast<int>(std::floor(source_x)), 0, static_cast<int>(src.width) - 1);
+      const int y0 = std::clamp(static_cast<int>(std::floor(source_y)), 0, static_cast<int>(src.height) - 1);
+      const int x1 = std::min(x0 + 1, static_cast<int>(src.width) - 1);
+      const int y1 = std::min(y0 + 1, static_cast<int>(src.height) - 1);
+      const double tx = std::clamp(source_x - std::floor(source_x), 0.0, 1.0);
+      const double ty = std::clamp(source_y - std::floor(source_y), 0.0, 1.0);
+      const auto sample = [&](int sx, int sy, std::size_t channel) {
+        return static_cast<double>(src.pixels[
+            (static_cast<std::size_t>(sy) * src.width + static_cast<std::size_t>(sx)) * 3U + channel]);
+      };
+      const auto interpolate = [&](std::size_t channel) {
+        const double top = sample(x0, y0, channel) * (1.0 - tx) + sample(x1, y0, channel) * tx;
+        const double bottom = sample(x0, y1, channel) * (1.0 - tx) + sample(x1, y1, channel) * tx;
+        return static_cast<int>(std::lround(top * (1.0 - ty) + bottom * ty));
+      };
       dst.set_pixel(x,
                     y,
                     RGB{
-                        static_cast<int>(src.pixels[src_idx + 0U]),
-                        static_cast<int>(src.pixels[src_idx + 1U]),
-                        static_cast<int>(src.pixels[src_idx + 2U]),
+                        interpolate(0U),
+                        interpolate(1U),
+                        interpolate(2U),
                     });
     }
   }
@@ -1050,7 +1288,6 @@ void show_x11_plot(const Plot& plot, const std::string& title_hint) {
   if (display == nullptr) {
     throw std::runtime_error("Plot::show: could not connect to the X11 display");
   }
-
   const int screen = DefaultScreen(display);
   Visual* visual = DefaultVisual(display, screen);
   const int depth = DefaultDepth(display, screen);
@@ -1231,7 +1468,10 @@ void show_x11_plot(const Plot& plot, const std::string& title_hint) {
     XDestroyImage(ximage);
   }
   XFreeGC(display, gc);
-  XDestroyWindow(display, window);
+  // XCloseDisplay destroys client-owned resources, including `window`.  Do not issue an
+  // additional XDestroyWindow request here: a window manager may destroy the window while
+  // processing its close request, leaving a race that produces an asynchronous BadWindow
+  // error and causes Xlib's default error handler to terminate the process.
   XCloseDisplay(display);
 }
 #endif
@@ -1299,6 +1539,16 @@ Plot& Plot::y_limits(double min_y, double max_y) {
   return *this;
 }
 
+Plot& Plot::hide_axes(bool enabled) {
+  hide_axes_ = enabled;
+  return *this;
+}
+
+Plot& Plot::x_tick_labels(std::vector<std::string> labels) {
+  x_tick_labels_ = std::move(labels);
+  return *this;
+}
+
 void Plot::save_svg(const std::string& path) const {
   std::ofstream out(path);
   if (!out) {
@@ -1345,16 +1595,252 @@ DataSeries& Plot::add_series(DataSeries series) {
   return series_.back();
 }
 
-ScatterPlot ScatterPlot::create() {
-  return ScatterPlot{};
+Plot& Plot::add_reference_line(ABLine line) {
+  ablines_.push_back(line);
+  return *this;
 }
 
-ScatterPlot& ScatterPlot::points(std::vector<double> x,
-                                 std::vector<double> y,
-                                 std::string         label,
-                                 RGB                 color,
-                                 double              marker_size) {
-  require_xy_same_size(x, y, "ScatterPlot::points");
+Plot& Plot::add_legend_entry(LegendEntry entry) {
+  legend_entries_.push_back(std::move(entry));
+  return *this;
+}
+
+RPlot RPlot::create() {
+  return RPlot{};
+}
+
+RPlot RPlot::plot(std::vector<double> x, std::vector<double> y, std::string type, std::string label, RGB color) {
+  require_xy_same_size(x, y, "RPlot::plot");
+  RPlot p;
+  if (type == "p") {
+    p.points(x, y, std::move(label), color);
+  } else if (type == "l") {
+    p.line(x, y, std::move(label), color);
+  } else if (type == "b") {
+    p.line(x, y, std::move(label), color);
+    p.points(std::move(x), std::move(y), "", color);
+  } else {
+    throw std::invalid_argument("RPlot::plot: type must be one of \"p\", \"l\", \"b\"");
+  }
+  return p;
+}
+
+RPlot RPlot::hist(std::vector<double> data, std::size_t bins, std::string label, RGB color) {
+  if (data.empty()) {
+    throw std::invalid_argument("RPlot::hist: data must not be empty");
+  }
+  if (bins == 0) {
+    throw std::invalid_argument("RPlot::hist: bins must be positive");
+  }
+  double lo = *std::min_element(data.begin(), data.end());
+  double hi = *std::max_element(data.begin(), data.end());
+  if (hi <= lo) {
+    hi = lo + 1.0;
+  }
+  const double bin_width = (hi - lo) / static_cast<double>(bins);
+
+  std::vector<double> counts(bins, 0.0);
+  for (double value : data) {
+    auto idx = static_cast<std::ptrdiff_t>((value - lo) / bin_width);
+    idx = std::clamp<std::ptrdiff_t>(idx, 0, static_cast<std::ptrdiff_t>(bins) - 1);
+    counts[static_cast<std::size_t>(idx)] += 1.0;
+  }
+
+  std::vector<double> centers(bins);
+  for (std::size_t i = 0; i < bins; ++i) {
+    centers[i] = lo + (static_cast<double>(i) + 0.5) * bin_width;
+  }
+
+  RPlot p;
+  DataSeries series;
+  series.kind = DataSeries::Kind::Bar;
+  series.x = std::move(centers);
+  series.y = std::move(counts);
+  series.label = std::move(label);
+  series.color = color;
+  series.bar_width = bin_width;
+  p.add_series(std::move(series));
+  p.title("Histogram").x_label("x").y_label("Frequency");
+  return p;
+}
+
+RPlot RPlot::barplot(std::vector<double> heights, std::vector<std::string> names, std::string label, RGB color) {
+  if (heights.empty()) {
+    throw std::invalid_argument("RPlot::barplot: heights must not be empty");
+  }
+  if (!names.empty() && names.size() != heights.size()) {
+    throw std::invalid_argument("RPlot::barplot: names must match heights in size");
+  }
+  std::vector<double> positions(heights.size());
+  for (std::size_t i = 0; i < heights.size(); ++i) {
+    positions[i] = static_cast<double>(i);
+  }
+
+  RPlot p;
+  DataSeries series;
+  series.kind = DataSeries::Kind::Bar;
+  series.x = std::move(positions);
+  series.y = std::move(heights);
+  series.label = std::move(label);
+  series.color = color;
+  series.bar_width = 0.8;
+  p.add_series(std::move(series));
+  if (!names.empty()) {
+    p.x_tick_labels(std::move(names));
+  }
+  return p;
+}
+
+RPlot RPlot::boxplot(std::vector<std::vector<double>> groups, std::vector<std::string> names, RGB color) {
+  if (groups.empty()) {
+    throw std::invalid_argument("RPlot::boxplot: groups must not be empty");
+  }
+  if (!names.empty() && names.size() != groups.size()) {
+    throw std::invalid_argument("RPlot::boxplot: names must match groups in size");
+  }
+
+  RPlot p;
+  for (std::size_t g = 0; g < groups.size(); ++g) {
+    if (groups[g].empty()) {
+      throw std::invalid_argument("RPlot::boxplot: group must not be empty");
+    }
+    std::vector<double> sorted = groups[g];
+    std::sort(sorted.begin(), sorted.end());
+    const double q1 = quantile_type7(sorted, 0.25);
+    const double median = quantile_type7(sorted, 0.5);
+    const double q3 = quantile_type7(sorted, 0.75);
+    const double iqr = q3 - q1;
+    const double lower_fence = q1 - 1.5 * iqr;
+    const double upper_fence = q3 + 1.5 * iqr;
+
+    double whisker_lo = sorted.front();
+    double whisker_hi = sorted.back();
+    std::vector<double> outliers;
+    for (double value : sorted) {
+      if (value < lower_fence || value > upper_fence) {
+        outliers.push_back(value);
+      }
+    }
+    for (double value : sorted) {
+      if (value >= lower_fence) {
+        whisker_lo = value;
+        break;
+      }
+    }
+    for (auto it = sorted.rbegin(); it != sorted.rend(); ++it) {
+      if (*it <= upper_fence) {
+        whisker_hi = *it;
+        break;
+      }
+    }
+
+    DataSeries series;
+    series.kind = DataSeries::Kind::Box;
+    series.x = {static_cast<double>(g)};
+    series.y = {whisker_lo, q1, median, q3, whisker_hi};
+    series.y.insert(series.y.end(), outliers.begin(), outliers.end());
+    series.color = color;
+    series.bar_width = 0.6;
+    p.add_series(std::move(series));
+  }
+  if (!names.empty()) {
+    p.x_tick_labels(std::move(names));
+  }
+  return p;
+}
+
+RPlot RPlot::pie(std::vector<double> values, std::vector<std::string> names, std::vector<RGB> colors) {
+  if (values.empty()) {
+    throw std::invalid_argument("RPlot::pie: values must not be empty");
+  }
+  double total = 0.0;
+  for (double v : values) {
+    if (v < 0.0) {
+      throw std::invalid_argument("RPlot::pie: values must be non-negative");
+    }
+    total += v;
+  }
+  if (total <= 0.0) {
+    throw std::invalid_argument("RPlot::pie: values must sum to a positive total");
+  }
+  if (!names.empty() && names.size() != values.size()) {
+    throw std::invalid_argument("RPlot::pie: names must match values in size");
+  }
+
+  constexpr double kPi = 3.14159265358979323846;
+  constexpr int    kArcSegments = 24;
+
+  RPlot p;
+  double angle = kPi / 2.0; // start at 12 o'clock
+  for (std::size_t i = 0; i < values.size(); ++i) {
+    const double sweep = (values[i] / total) * 2.0 * kPi;
+    const double end_angle = angle - sweep; // sweep clockwise
+    const RGB    color = colors.empty() ? kDefaultPalette[i % kDefaultPalette.size()] : colors[i % colors.size()];
+
+    DataSeries series;
+    series.kind = DataSeries::Kind::Polygon;
+    series.filled = true;
+    series.color = color;
+    series.x.push_back(0.0);
+    series.y.push_back(0.0);
+    for (int s = 0; s <= kArcSegments; ++s) {
+      const double t = angle + (end_angle - angle) * static_cast<double>(s) / static_cast<double>(kArcSegments);
+      series.x.push_back(std::cos(t));
+      series.y.push_back(std::sin(t));
+    }
+    if (!names.empty()) {
+      series.label = names[i];
+    }
+    p.add_series(std::move(series));
+
+    const double mid = (angle + end_angle) / 2.0;
+    if (!names.empty()) {
+      p.text(1.15 * std::cos(mid), 1.15 * std::sin(mid), names[i], RGB{17, 24, 39}, 13.0);
+    }
+    angle = end_angle;
+  }
+
+  p.hide_axes(true).show_grid(false).x_limits(-1.4, 1.4).y_limits(-1.4, 1.4);
+  return p;
+}
+
+RPlot RPlot::curve(datamunge::Callback& f, double from, double to, std::size_t n, std::string label, RGB color) {
+  if (n < 2) {
+    throw std::invalid_argument("RPlot::curve: n must be at least 2");
+  }
+  if (!(to > from)) {
+    throw std::invalid_argument("RPlot::curve: require to > from");
+  }
+  std::vector<double> x(n);
+  std::vector<double> y(n);
+  for (std::size_t i = 0; i < n; ++i) {
+    x[i] = from + (to - from) * static_cast<double>(i) / static_cast<double>(n - 1);
+    y[i] = f.call(x[i]);
+  }
+  RPlot p;
+  p.line(std::move(x), std::move(y), std::move(label), color);
+  return p;
+}
+
+RPlot RPlot::qqnorm(std::vector<double> data, std::string label, RGB color) {
+  if (data.size() < 2) {
+    throw std::invalid_argument("RPlot::qqnorm: data must have at least two values");
+  }
+  std::vector<double> sorted = std::move(data);
+  std::sort(sorted.begin(), sorted.end());
+  const std::size_t   n = sorted.size();
+  std::vector<double> theoretical(n);
+  for (std::size_t i = 0; i < n; ++i) {
+    theoretical[i] = random::normal_quantile((static_cast<double>(i) + 0.5) / static_cast<double>(n));
+  }
+  RPlot p;
+  p.points(std::move(theoretical), std::move(sorted), std::move(label), color);
+  p.title("Normal Q-Q").x_label("Theoretical Quantiles").y_label("Sample Quantiles");
+  return p;
+}
+
+RPlot& RPlot::points(std::vector<double> x, std::vector<double> y, std::string label, RGB color, double marker_size) {
+  require_xy_same_size(x, y, "RPlot::points");
   DataSeries series;
   series.kind = DataSeries::Kind::Scatter;
   series.x = std::move(x);
@@ -1366,12 +1852,8 @@ ScatterPlot& ScatterPlot::points(std::vector<double> x,
   return *this;
 }
 
-ScatterPlot& ScatterPlot::line(std::vector<double> x,
-                               std::vector<double> y,
-                               std::string         label,
-                               RGB                 color,
-                               double              stroke_width) {
-  require_xy_same_size(x, y, "ScatterPlot::line");
+RPlot& RPlot::line(std::vector<double> x, std::vector<double> y, std::string label, RGB color, double stroke_width) {
+  require_xy_same_size(x, y, "RPlot::line");
   DataSeries series;
   series.kind = DataSeries::Kind::Line;
   series.x = std::move(x);
@@ -1383,37 +1865,12 @@ ScatterPlot& ScatterPlot::line(std::vector<double> x,
   return *this;
 }
 
-LinePlot LinePlot::create() {
-  return LinePlot{};
+RPlot& RPlot::lines(std::vector<double> x, std::vector<double> y, std::string label, RGB color, double stroke_width) {
+  return line(std::move(x), std::move(y), std::move(label), color, stroke_width);
 }
 
-LinePlot& LinePlot::line(std::vector<double> x,
-                         std::vector<double> y,
-                         std::string         label,
-                         RGB                 color,
-                         double              stroke_width) {
-  require_xy_same_size(x, y, "LinePlot::line");
-  DataSeries series;
-  series.kind = DataSeries::Kind::Line;
-  series.x = std::move(x);
-  series.y = std::move(y);
-  series.label = std::move(label);
-  series.color = color;
-  series.stroke_width = stroke_width;
-  add_series(std::move(series));
-  return *this;
-}
-
-BarChart BarChart::create() {
-  return BarChart{};
-}
-
-BarChart& BarChart::bars(std::vector<double> x,
-                         std::vector<double> y,
-                         std::string         label,
-                         RGB                 color,
-                         double              bar_width) {
-  require_xy_same_size(x, y, "BarChart::bars");
+RPlot& RPlot::bars(std::vector<double> x, std::vector<double> y, std::string label, RGB color, double bar_width) {
+  require_xy_same_size(x, y, "RPlot::bars");
   DataSeries series;
   series.kind = DataSeries::Kind::Bar;
   series.x = std::move(x);
@@ -1423,6 +1880,167 @@ BarChart& BarChart::bars(std::vector<double> x,
   series.bar_width = bar_width;
   add_series(std::move(series));
   return *this;
+}
+
+RPlot& RPlot::box(double position, double whisker_lo, double q1, double median, double q3, double whisker_hi,
+                   std::vector<double> outliers, RGB color, double width) {
+  DataSeries series;
+  series.kind = DataSeries::Kind::Box;
+  series.x = {position};
+  series.y = {whisker_lo, q1, median, q3, whisker_hi};
+  series.y.insert(series.y.end(), outliers.begin(), outliers.end());
+  series.color = color;
+  series.bar_width = width;
+  add_series(std::move(series));
+  return *this;
+}
+
+RPlot& RPlot::abline(double intercept, double slope, RGB color, double stroke_width) {
+  ABLine line;
+  line.vertical = false;
+  line.value = intercept;
+  line.slope = slope;
+  line.color = color;
+  line.stroke_width = stroke_width;
+  add_reference_line(line);
+  return *this;
+}
+
+RPlot& RPlot::abline_h(double y_value, RGB color, double stroke_width) {
+  return abline(y_value, 0.0, color, stroke_width);
+}
+
+RPlot& RPlot::abline_v(double x_value, RGB color, double stroke_width) {
+  ABLine line;
+  line.vertical = true;
+  line.value = x_value;
+  line.color = color;
+  line.stroke_width = stroke_width;
+  add_reference_line(line);
+  return *this;
+}
+
+RPlot& RPlot::qqline(std::vector<double> data, RGB color, double stroke_width) {
+  if (data.size() < 2) {
+    throw std::invalid_argument("RPlot::qqline: data must have at least two values");
+  }
+  std::sort(data.begin(), data.end());
+  const double q1_sample = quantile_type7(data, 0.25);
+  const double q3_sample = quantile_type7(data, 0.75);
+  const double q1_theoretical = random::normal_quantile(0.25);
+  const double q3_theoretical = random::normal_quantile(0.75);
+  const double slope = (q3_sample - q1_sample) / (q3_theoretical - q1_theoretical);
+  const double intercept = q1_sample - slope * q1_theoretical;
+  return abline(intercept, slope, color, stroke_width);
+}
+
+RPlot& RPlot::legend(std::vector<std::string> labels, std::vector<RGB> colors) {
+  if (labels.size() != colors.size()) {
+    throw std::invalid_argument("RPlot::legend: labels and colors must have the same size");
+  }
+  for (std::size_t i = 0; i < labels.size(); ++i) {
+    add_legend_entry(LegendEntry{std::move(labels[i]), colors[i]});
+  }
+  return *this;
+}
+
+RPlot& RPlot::text(double x, double y, std::string label, RGB color, double font_size) {
+  DataSeries series;
+  series.kind = DataSeries::Kind::Text;
+  series.x = {x};
+  series.y = {y};
+  series.label = std::move(label);
+  series.color = color;
+  series.marker_size = font_size;
+  add_series(std::move(series));
+  return *this;
+}
+
+RPlot& RPlot::polygon(std::vector<double> x, std::vector<double> y, RGB color, bool filled) {
+  require_xy_same_size(x, y, "RPlot::polygon");
+  DataSeries series;
+  series.kind = DataSeries::Kind::Polygon;
+  series.x = std::move(x);
+  series.y = std::move(y);
+  series.color = color;
+  series.filled = filled;
+  add_series(std::move(series));
+  return *this;
+}
+
+RPlot& RPlot::segments(std::vector<double> x0, std::vector<double> y0, std::vector<double> x1, std::vector<double> y1, RGB color, double stroke_width) {
+  if (x0.size() != y0.size() || x0.size() != x1.size() || x0.size() != y1.size()) {
+    throw std::invalid_argument("RPlot::segments: x0, y0, x1, y1 must have the same size");
+  }
+  if (x0.empty()) {
+    throw std::invalid_argument("RPlot::segments: must not be empty");
+  }
+  DataSeries series;
+  series.kind = DataSeries::Kind::Segment;
+  series.color = color;
+  series.stroke_width = stroke_width;
+  series.x.reserve(x0.size() * 2U);
+  series.y.reserve(x0.size() * 2U);
+  for (std::size_t i = 0; i < x0.size(); ++i) {
+    series.x.push_back(x0[i]);
+    series.x.push_back(x1[i]);
+    series.y.push_back(y0[i]);
+    series.y.push_back(y1[i]);
+  }
+  add_series(std::move(series));
+  return *this;
+}
+
+RLayout RLayout::create(std::size_t rows, std::size_t cols) {
+  if (rows == 0 || cols == 0) {
+    throw std::invalid_argument("RLayout::create: rows and cols must be positive");
+  }
+  RLayout layout;
+  layout.rows_ = rows;
+  layout.cols_ = cols;
+  return layout;
+}
+
+RLayout& RLayout::add(const Plot& panel) {
+  if (panels_.size() >= rows_ * cols_) {
+    throw std::invalid_argument("RLayout::add: layout is already full");
+  }
+  panels_.push_back(Panel{panel.width(), panel.height(), svg_body(panel)});
+  return *this;
+}
+
+RLayout& RLayout::size(std::size_t width, std::size_t height) {
+  width_ = width;
+  height_ = height;
+  return *this;
+}
+
+void RLayout::save_svg(const std::string& path) const {
+  std::ofstream out(path);
+  if (!out) {
+    throw std::runtime_error("RLayout::save_svg: could not open output file");
+  }
+  const double cell_w = static_cast<double>(width_) / static_cast<double>(cols_);
+  const double cell_h = static_cast<double>(height_) / static_cast<double>(rows_);
+  out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << width_ << "\" height=\""
+      << height_ << "\" viewBox=\"0 0 " << width_ << " " << height_ << "\">\n";
+  out << "  <rect width=\"100%\" height=\"100%\" fill=\"rgb(255,255,255)\"/>\n";
+  for (std::size_t i = 0; i < panels_.size(); ++i) {
+    const std::size_t row = i / cols_;
+    const std::size_t col = i % cols_;
+    const double       x = static_cast<double>(col) * cell_w;
+    const double       y = static_cast<double>(row) * cell_h;
+    out << "  <svg x=\"" << x << "\" y=\"" << y << "\" width=\"" << cell_w << "\" height=\""
+        << cell_h << "\" viewBox=\"0 0 " << panels_[i].width << " " << panels_[i].height
+        << "\">\n"
+        << panels_[i].svg_fragment << "  </svg>\n";
+  }
+  out << "</svg>\n";
+}
+
+void RLayout::save(const std::string& path) const {
+  save_svg(path);
 }
 
 } // namespace datamunge::plot

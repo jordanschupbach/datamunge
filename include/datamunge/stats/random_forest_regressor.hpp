@@ -67,8 +67,8 @@ class RandomForestRegressor {
 
     [[nodiscard]] std::vector<double> predict(const dstruct::DataFrame& newdata) const;
 
-    [[nodiscard]] plot::ScatterPlot plot_predicted_vs_actual() const;
-    [[nodiscard]] plot::ScatterPlot plot_residuals_vs_fitted() const;
+    [[nodiscard]] plot::RPlot plot_predicted_vs_actual() const;
+    [[nodiscard]] plot::RPlot plot_residuals_vs_fitted() const;
 
  private:
     void fit(const dstruct::DataFrame& data, RandomForestRegressorOptions options);

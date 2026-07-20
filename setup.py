@@ -57,7 +57,7 @@ ext_modules = [
         "pydatamunge._datamunge",
         sources=sources,
         include_dirs=include_dirs,
-        libraries=["z"],  # zlib, for datamunge::image's PNG codec
+        libraries=[],  # 'xml2'
         extra_compile_args=["-O3", "-std=c++23"],
     ),
 ]

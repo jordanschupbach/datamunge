@@ -1,3 +1,4 @@
+#include <datamunge/algebra/algebra.hpp>
 #include <datamunge/autodiff/autodiff.hpp>
 #include <datamunge/bayes/bayes.hpp>
 #include <datamunge/cv/cv.hpp>
@@ -7,6 +8,7 @@
 #include <datamunge/image/imaging.hpp>
 #include <datamunge/linalg/tensor.hpp>
 #include <datamunge/optim/optim.hpp>
+#include <datamunge/plot/ggplot.hpp>
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/random/random.hpp>
 #include <datamunge/stats/stats.hpp>
@@ -133,6 +135,7 @@ class DataFrame {
 
  private:
   friend class LM;
+  friend class GGPlot;
   friend class LDA;
   friend class SVM;
   friend class DecisionTreeClassifier;
@@ -166,6 +169,42 @@ class DataFrame {
   static std::vector<std::string> split_encoded_strings(const std::string& encoded_values);
 
   dstruct::DataFrame frame_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::plot::GGPlot — a ggplot2-style grammar-of-graphics
+///        builder. Geom/theme/scale/facet calls are chainable, mirroring ggplot2's own layered
+///        `ggplot(df, aes(...)) + geom_point() + ...` style as closely as C++ method chaining allows.
+class GGPlot {
+ public:
+  /// @param color_column,fill_column,group_column Optional discrete grouping columns; pass "" to omit.
+  GGPlot(const DataFrame& data, const std::string& x_column, const std::string& y_column = "",
+         const std::string& color_column = "", const std::string& fill_column = "",
+         const std::string& group_column = "");
+
+  GGPlot& geom_point(datamunge::plot::RGB color = {37, 99, 235}, double size = 3.0);
+  GGPlot& geom_line(datamunge::plot::RGB color = {37, 99, 235}, double width = 1.5);
+  GGPlot& geom_bar(datamunge::plot::RGB color = {37, 99, 235});
+  GGPlot& geom_col(datamunge::plot::RGB color = {37, 99, 235});
+  GGPlot& geom_histogram(std::size_t bins = 30, datamunge::plot::RGB color = {96, 165, 250});
+  GGPlot& geom_boxplot(datamunge::plot::RGB color = {96, 165, 250});
+  GGPlot& geom_smooth(datamunge::plot::RGB color = {220, 38, 38});
+  GGPlot& geom_area(datamunge::plot::RGB color = {96, 165, 250});
+  GGPlot& geom_ribbon(const std::string& ymin_column, const std::string& ymax_column,
+                      datamunge::plot::RGB color = {96, 165, 250});
+  GGPlot& geom_density(datamunge::plot::RGB color = {37, 99, 235});
+
+  GGPlot& facet_wrap(const std::string& column, std::size_t ncol = 0);
+  GGPlot& theme_minimal();
+  GGPlot& theme_bw();
+  GGPlot& theme_classic();
+  GGPlot& scale_color_manual(const std::vector<datamunge::plot::RGB>& values);
+  GGPlot& labs(const std::string& title = "", const std::string& x = "", const std::string& y = "");
+
+  void save(const std::string& path) const;
+  void save_svg(const std::string& path) const;
+
+ private:
+  datamunge::plot::GGPlot impl_;
 };
 
 /// @brief SWIG-friendly facade for datamunge::stats::LM — R-`lm()`-style linear models fit from a DataFrame.
@@ -216,10 +255,10 @@ class LM {
   ///        term/df/sum_sq/mean_sq/f_value/p_value.
   [[nodiscard]] DataFrame* anova() const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_normal_qq() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_scale_location() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_leverage() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_normal_qq() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_scale_location() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_leverage() const;
 
   /// @brief Saves all four diagnostic plots as "<path_prefix>_<name>.svg".
   void save_diagnostic_plots(const std::string& path_prefix) const;
@@ -407,7 +446,7 @@ class LDA {
   /// @brief "class" column, LD1/LD2/... discriminant scores, and posterior_<class> probability columns.
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_discriminants() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_discriminants() const;
   void                                       save_discriminant_plot(const std::string& path) const;
 
  private:
@@ -471,10 +510,10 @@ class DecisionTreeClassifier {
 
   /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
   ///        points overlaid in a distinct marker.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of predicted class regions plus training points; requires exactly 2 predictors.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -504,8 +543,8 @@ class DecisionTreeRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::DecisionTreeRegressor tree_;
@@ -545,11 +584,11 @@ class RandomForestClassifier {
 
   /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
   ///        points overlaid in a distinct marker.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of majority-vote predicted class regions plus training points; requires exactly 2
   ///        predictors.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -584,8 +623,8 @@ class RandomForestRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::RandomForestRegressor forest_;
@@ -632,12 +671,12 @@ class ElasticNet {
 
   /// @brief Coefficient trace (one series per predictor) across the lambda path; throws unless lambda was
   ///        auto-selected.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_coefficient_path() const;
   /// @brief Cross-validated MSE across the lambda path with the selected lambda marked; throws unless lambda
   ///        was auto-selected.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::ElasticNet net_;
@@ -673,10 +712,10 @@ class Ridge {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_coefficient_path() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::Ridge ridge_;
@@ -714,10 +753,10 @@ class Lasso {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_coefficient_path() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_coefficient_path() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::Lasso lasso_;
@@ -750,10 +789,10 @@ class KNNClassifier {
 
   /// @brief Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
   ///        points overlaid in a distinct marker.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of predicted class regions plus training points; requires exactly 2 predictors.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -782,8 +821,8 @@ class KNNRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
 
  private:
   stats::KNNRegressor knn_;
@@ -914,12 +953,12 @@ class GBMClassifier {
   /// @brief "class" column plus one numeric probability column per class (prob_<class>).
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
 
  private:
   stats::GBMClassifier gbm_;
@@ -949,9 +988,9 @@ class GBMRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
 
  private:
   stats::GBMRegressor gbm_;
@@ -987,12 +1026,12 @@ class XGBoostClassifier {
   /// @brief "class" column plus one numeric probability column per class (prob_<class>).
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
 
  private:
   stats::XGBoostClassifier xgb_;
@@ -1022,9 +1061,9 @@ class XGBoostRegressor {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_training_deviance() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_training_deviance() const;
 
  private:
   stats::XGBoostRegressor xgb_;
@@ -1059,10 +1098,10 @@ class KernelRegression {
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
   /// @brief Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200) const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_cv_curve() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200) const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_cv_curve() const;
 
  private:
   stats::KernelRegression kernel_regression_;
@@ -1106,11 +1145,11 @@ class GaussianProcessRegression {
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
                                         double level = 0.95) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200,
+  [[nodiscard]] datamunge::plot::RPlot plot_fit(const DataFrame& data, std::size_t grid_resolution = 200,
                                                        double level = 0.95) const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_predicted_vs_actual() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_length_scale_profile() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_predicted_vs_actual() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_length_scale_profile() const;
 
  private:
   stats::GaussianProcessRegression gpr_;
@@ -1141,10 +1180,10 @@ class NaiveBayesClassifier {
   /// @brief "class" column plus one numeric probability column per class (prob_<class>).
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_classification(const DataFrame& data, const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                   const std::string& y_feature) const;
   /// @brief Background grid of predicted class regions; requires exactly two predictors, both numeric.
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_decision_regions(const std::string& x_feature,
+  [[nodiscard]] datamunge::plot::RPlot plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    std::size_t grid_resolution = 60) const;
 
@@ -1201,10 +1240,10 @@ class GLM {
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
                                         double level = 0.95) const;
 
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_fitted() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_normal_qq() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_scale_location() const;
-  [[nodiscard]] datamunge::plot::ScatterPlot plot_residuals_vs_leverage() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_fitted() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_normal_qq() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_scale_location() const;
+  [[nodiscard]] datamunge::plot::RPlot plot_residuals_vs_leverage() const;
   void                                        save_diagnostic_plots(const std::string& path_prefix) const;
 
  private:

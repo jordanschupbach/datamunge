@@ -84,13 +84,13 @@ class RandomForestClassifier {
 
     // Scatter of `data` in the (x_feature, y_feature) plane, colored by
     // true class, with a distinct marker overlaid on misclassified points.
-    [[nodiscard]] plot::ScatterPlot plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
+    [[nodiscard]] plot::RPlot plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
                                                          const std::string& y_feature) const;
 
     // Background grid of majority-vote predicted class regions in the
     // (x_feature, y_feature) plane overlaid with the training points. Only
     // valid when the model has exactly two predictors.
-    [[nodiscard]] plot::ScatterPlot plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+    [[nodiscard]] plot::RPlot plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
                                                           std::size_t grid_resolution = 60) const;
 
  private:

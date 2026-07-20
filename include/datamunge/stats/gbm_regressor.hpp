@@ -64,9 +64,9 @@ class GBMRegressor {
 
     [[nodiscard]] std::vector<double> predict(const dstruct::DataFrame& newdata) const;
 
-    [[nodiscard]] plot::ScatterPlot plot_predicted_vs_actual() const;
-    [[nodiscard]] plot::ScatterPlot plot_residuals_vs_fitted() const;
-    [[nodiscard]] plot::ScatterPlot plot_training_deviance() const;
+    [[nodiscard]] plot::RPlot plot_predicted_vs_actual() const;
+    [[nodiscard]] plot::RPlot plot_residuals_vs_fitted() const;
+    [[nodiscard]] plot::RPlot plot_training_deviance() const;
 
  private:
     void fit(const dstruct::DataFrame& data);

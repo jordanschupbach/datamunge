@@ -93,7 +93,7 @@ int main() {
     for (std::size_t i = 0; i < grid_x.size(); ++i)
         grid_true[i] = std::sin(20.0 / (grid_x[i] + 0.25));
 
-    auto plot = ScatterPlot::create();
+    auto plot = RPlot::create();
     plot.points(x, y, "samples", {37, 99, 235}, 6.0)
         .line(grid_x,
               grid_true,

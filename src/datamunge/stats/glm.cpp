@@ -529,14 +529,14 @@ dstruct::DataFrame GLM::predict_frame(const dstruct::DataFrame& newdata, GLMPred
     return frame;
 }
 
-plot::ScatterPlot GLM::plot_residuals_vs_fitted() const {
-    auto p = plot::ScatterPlot::create();
+plot::RPlot GLM::plot_residuals_vs_fitted() const {
+    auto p = plot::RPlot::create();
     p.points(fitted_, deviance_residuals_, "deviance residuals");
     p.title("Residuals vs Fitted").x_label("Fitted values").y_label("Residuals");
     return p;
 }
 
-plot::ScatterPlot GLM::plot_normal_qq() const {
+plot::RPlot GLM::plot_normal_qq() const {
     std::vector<double> sorted = standardized_residuals_;
     std::sort(sorted.begin(), sorted.end());
     const std::size_t   n = sorted.size();
@@ -544,25 +544,25 @@ plot::ScatterPlot GLM::plot_normal_qq() const {
     for (std::size_t i = 0; i < n; ++i)
         theoretical[i] = random::normal_quantile((static_cast<double>(i) + 0.5) / static_cast<double>(n));
 
-    auto p = plot::ScatterPlot::create();
+    auto p = plot::RPlot::create();
     p.points(theoretical, sorted, "standardized deviance residuals");
     p.title("Normal Q-Q").x_label("Theoretical Quantiles").y_label("Standardized residuals");
     return p;
 }
 
-plot::ScatterPlot GLM::plot_scale_location() const {
+plot::RPlot GLM::plot_scale_location() const {
     std::vector<double> sqrt_abs_std(standardized_residuals_.size());
     for (std::size_t i = 0; i < standardized_residuals_.size(); ++i)
         sqrt_abs_std[i] = std::sqrt(std::fabs(standardized_residuals_[i]));
 
-    auto p = plot::ScatterPlot::create();
+    auto p = plot::RPlot::create();
     p.points(fitted_, sqrt_abs_std, "sqrt(|standardized residuals|)");
     p.title("Scale-Location").x_label("Fitted values").y_label("sqrt(|Standardized residuals|)");
     return p;
 }
 
-plot::ScatterPlot GLM::plot_residuals_vs_leverage() const {
-    auto p = plot::ScatterPlot::create();
+plot::RPlot GLM::plot_residuals_vs_leverage() const {
+    auto p = plot::RPlot::create();
     p.points(leverage_, standardized_residuals_, "standardized residuals");
     p.title("Residuals vs Leverage").x_label("Leverage").y_label("Standardized residuals");
     return p;

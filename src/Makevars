@@ -19,7 +19,6 @@ $(OBJECTS): $(HEADERS)
 
 PKG_CPPFLAGS +=  -I$(CURDIR)/../include # $(shell pkg-config --cflags libxml-2.0)
 # PKG_LIBS += $(shell pkg-config --libs libxml-2.0)
-PKG_LIBS += -lz
 
 clean:
 	rm -f ./*.o ./datamunge_r_wrap.o ./datamunger.so ./datamunge/*.o ./datamunge/*.so

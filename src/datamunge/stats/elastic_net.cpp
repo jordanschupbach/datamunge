@@ -344,7 +344,7 @@ std::vector<double> ElasticNet::predict(const dstruct::DataFrame& newdata) const
     return expand_to_full(dm.used_row_indices, newdata.nrows(), compact);
 }
 
-plot::ScatterPlot ElasticNet::plot_coefficient_path() const {
+plot::RPlot ElasticNet::plot_coefficient_path() const {
     if (!lambda_was_selected_)
         throw std::invalid_argument("ElasticNet::plot_coefficient_path: no path available for a fixed-lambda fit");
 
@@ -355,7 +355,7 @@ plot::ScatterPlot ElasticNet::plot_coefficient_path() const {
         {37, 99, 235}, {220, 38, 38}, {22, 163, 74}, {217, 119, 6}, {124, 58, 237}, {8, 145, 178},
     };
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t j = 0; j < predictor_names_.size(); ++j) {
         std::vector<double> trace(lambda_path_.size());
         for (std::size_t k = 0; k < lambda_path_.size(); ++k) trace[k] = path_coefficients_(k, j);
@@ -365,14 +365,14 @@ plot::ScatterPlot ElasticNet::plot_coefficient_path() const {
     return plot;
 }
 
-plot::ScatterPlot ElasticNet::plot_cv_curve() const {
+plot::RPlot ElasticNet::plot_cv_curve() const {
     if (!lambda_was_selected_)
         throw std::invalid_argument("ElasticNet::plot_cv_curve: no cross-validation curve for a fixed-lambda fit");
 
     std::vector<double> log_lambda(lambda_path_.size());
     for (std::size_t k = 0; k < lambda_path_.size(); ++k) log_lambda[k] = std::log10(lambda_path_[k]);
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     plot.line(log_lambda, cv_mse_path_, "CV mean squared error");
     plot.points({log_lambda[best_lambda_index_]}, {cv_mse_path_[best_lambda_index_]}, "selected lambda",
                {220, 38, 38}, 8.0);
@@ -380,15 +380,15 @@ plot::ScatterPlot ElasticNet::plot_cv_curve() const {
     return plot;
 }
 
-plot::ScatterPlot ElasticNet::plot_predicted_vs_actual() const {
-    auto plot = plot::ScatterPlot::create();
+plot::RPlot ElasticNet::plot_predicted_vs_actual() const {
+    auto plot = plot::RPlot::create();
     plot.points(training_y_, fitted_, "predictions");
     plot.title("Predicted vs Actual").x_label("Actual").y_label("Predicted");
     return plot;
 }
 
-plot::ScatterPlot ElasticNet::plot_residuals_vs_fitted() const {
-    auto plot = plot::ScatterPlot::create();
+plot::RPlot ElasticNet::plot_residuals_vs_fitted() const {
+    auto plot = plot::RPlot::create();
     plot.points(fitted_, residuals_, "residuals");
     plot.title("Residuals vs Fitted").x_label("Fitted values").y_label("Residuals");
     return plot;

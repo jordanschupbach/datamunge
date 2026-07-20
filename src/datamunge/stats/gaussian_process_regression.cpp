@@ -288,7 +288,7 @@ GaussianProcessRegressionPrediction GaussianProcessRegression::predict_detail(co
     return result;
 }
 
-plot::ScatterPlot GaussianProcessRegression::plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution,
+plot::RPlot GaussianProcessRegression::plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution,
                                                        double level) const {
     if (predictor_names_.size() != 1)
         throw std::invalid_argument("GaussianProcessRegression::plot_fit: only supported for a single-predictor "
@@ -314,7 +314,7 @@ plot::ScatterPlot GaussianProcessRegression::plot_fit(const dstruct::DataFrame& 
     grid.add_column(x_feature, grid_x);
     const auto detail = predict_detail(grid, level);
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
 
     std::vector<double> actual_x, actual_y;
     for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -333,29 +333,29 @@ plot::ScatterPlot GaussianProcessRegression::plot_fit(const dstruct::DataFrame& 
     return plot;
 }
 
-plot::ScatterPlot GaussianProcessRegression::plot_predicted_vs_actual() const {
-    auto plot = plot::ScatterPlot::create();
+plot::RPlot GaussianProcessRegression::plot_predicted_vs_actual() const {
+    auto plot = plot::RPlot::create();
     plot.points(training_y_, fitted_, "predictions");
     plot.title("Predicted vs Actual (leave-one-out)").x_label("Actual").y_label("Predicted");
     return plot;
 }
 
-plot::ScatterPlot GaussianProcessRegression::plot_residuals_vs_fitted() const {
+plot::RPlot GaussianProcessRegression::plot_residuals_vs_fitted() const {
     std::vector<double> residuals(training_y_.size());
     for (std::size_t i = 0; i < training_y_.size(); ++i) residuals[i] = training_y_[i] - fitted_[i];
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     plot.points(fitted_, residuals, "residuals");
     plot.title("Residuals vs Fitted (leave-one-out)").x_label("Fitted values").y_label("Residuals");
     return plot;
 }
 
-plot::ScatterPlot GaussianProcessRegression::plot_length_scale_profile() const {
+plot::RPlot GaussianProcessRegression::plot_length_scale_profile() const {
     if (!length_scale_was_selected())
         throw std::invalid_argument("GaussianProcessRegression::plot_length_scale_profile: length_scale was not "
                                     "auto-selected");
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     plot.line(length_scale_grid_, length_scale_profile_ll_, "profile log marginal likelihood");
     const auto best_it = std::max_element(length_scale_profile_ll_.begin(), length_scale_profile_ll_.end());
     const auto best_k   = static_cast<std::size_t>(best_it - length_scale_profile_ll_.begin());

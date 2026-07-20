@@ -1,6 +1,7 @@
 #include <datamunge/image/png.hpp>
 
-#include <zlib.h>
+#include <datamunge/image/detail/crc32.hpp>
+#include <datamunge/image/detail/zlib_codec.hpp>
 
 #include <algorithm>
 #include <cstdint>
@@ -33,12 +34,11 @@ std::uint32_t read_u32be(std::istream& in) {
 }
 
 std::uint32_t png_crc32(const char type[4], const std::vector<unsigned char>& data) {
-    uLong crc = crc32(0L, Z_NULL, 0);
-    crc = crc32(crc, reinterpret_cast<const Bytef*>(type), 4);
+    std::uint32_t crc = detail::crc32_update(0, reinterpret_cast<const unsigned char*>(type), 4);
     if (!data.empty()) {
-        crc = crc32(crc, data.data(), static_cast<uInt>(data.size()));
+        crc = detail::crc32_update(crc, data.data(), data.size());
     }
-    return static_cast<std::uint32_t>(crc);
+    return crc;
 }
 
 void write_chunk(std::ostream& out, const char type[4], const std::vector<unsigned char>& data) {
@@ -178,11 +178,11 @@ Image read_png(const std::string& path) {
 
     const std::size_t stride = static_cast<std::size_t>(width) * bpp;
     const std::size_t raw_size = (stride + 1) * static_cast<std::size_t>(height);
-    std::vector<unsigned char> raw(raw_size);
-    uLongf dest_len = static_cast<uLongf>(raw_size);
-    const int rc = uncompress(raw.data(), &dest_len, compressed.data(), static_cast<uLong>(compressed.size()));
-    if (rc != Z_OK || dest_len != raw_size) {
-        throw std::runtime_error("read_png: failed to decompress IDAT stream in '" + path + "' (corrupt or truncated file)");
+    std::vector<unsigned char> raw;
+    try {
+        raw = detail::zlib_decompress(compressed, raw_size);
+    } catch (const std::runtime_error& e) {
+        throw std::runtime_error("read_png: failed to decompress IDAT stream in '" + path + "' (" + e.what() + ")");
     }
 
     Image img(static_cast<int>(width), static_cast<int>(height), mode);
@@ -247,13 +247,7 @@ void write_png(const Image& img, const std::string& path) {
                     raw.begin() + static_cast<std::ptrdiff_t>(raw_row_start) + 1);
     }
 
-    uLongf bound = compressBound(static_cast<uLong>(raw.size()));
-    std::vector<unsigned char> compressed(bound);
-    const int rc = compress2(compressed.data(), &bound, raw.data(), static_cast<uLong>(raw.size()), Z_DEFAULT_COMPRESSION);
-    if (rc != Z_OK) {
-        throw std::runtime_error("write_png: zlib compression failed while writing '" + path + "'");
-    }
-    compressed.resize(bound);
+    const std::vector<unsigned char> compressed = detail::zlib_compress(raw);
 
     std::ofstream out(path, std::ios::binary);
     if (!out) {

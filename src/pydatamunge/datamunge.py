@@ -750,6 +750,748 @@ class SVector(object):
 
 # Register SVector in _datamunge:
 _datamunge.SVector_swigregister(SVector)
+class RGB(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    r = property(_datamunge.RGB_r_get, _datamunge.RGB_r_set)
+    g = property(_datamunge.RGB_g_get, _datamunge.RGB_g_set)
+    b = property(_datamunge.RGB_b_get, _datamunge.RGB_b_set)
+
+    def __init__(self):
+        _datamunge.RGB_swiginit(self, _datamunge.new_RGB())
+    __swig_destroy__ = _datamunge.delete_RGB
+
+# Register RGB in _datamunge:
+_datamunge.RGB_swigregister(RGB)
+class DataSeries(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    Kind_Scatter = _datamunge.DataSeries_Kind_Scatter
+    Kind_Line = _datamunge.DataSeries_Kind_Line
+    Kind_Bar = _datamunge.DataSeries_Kind_Bar
+    Kind_Box = _datamunge.DataSeries_Kind_Box
+    Kind_Polygon = _datamunge.DataSeries_Kind_Polygon
+    Kind_Text = _datamunge.DataSeries_Kind_Text
+    Kind_Segment = _datamunge.DataSeries_Kind_Segment
+    kind = property(_datamunge.DataSeries_kind_get, _datamunge.DataSeries_kind_set)
+    x = property(_datamunge.DataSeries_x_get, _datamunge.DataSeries_x_set)
+    y = property(_datamunge.DataSeries_y_get, _datamunge.DataSeries_y_set)
+    label = property(_datamunge.DataSeries_label_get, _datamunge.DataSeries_label_set)
+    color = property(_datamunge.DataSeries_color_get, _datamunge.DataSeries_color_set)
+    stroke_width = property(_datamunge.DataSeries_stroke_width_get, _datamunge.DataSeries_stroke_width_set)
+    marker_size = property(_datamunge.DataSeries_marker_size_get, _datamunge.DataSeries_marker_size_set)
+    bar_width = property(_datamunge.DataSeries_bar_width_get, _datamunge.DataSeries_bar_width_set)
+    filled = property(_datamunge.DataSeries_filled_get, _datamunge.DataSeries_filled_set)
+
+    def __init__(self):
+        _datamunge.DataSeries_swiginit(self, _datamunge.new_DataSeries())
+    __swig_destroy__ = _datamunge.delete_DataSeries
+
+# Register DataSeries in _datamunge:
+_datamunge.DataSeries_swigregister(DataSeries)
+class ABLine(object):
+    r"""A straight reference line spanning the full plotting area, as drawn by R's `abline()`."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    vertical = property(_datamunge.ABLine_vertical_get, _datamunge.ABLine_vertical_set)
+    value = property(_datamunge.ABLine_value_get, _datamunge.ABLine_value_set)
+    slope = property(_datamunge.ABLine_slope_get, _datamunge.ABLine_slope_set)
+    color = property(_datamunge.ABLine_color_get, _datamunge.ABLine_color_set)
+    stroke_width = property(_datamunge.ABLine_stroke_width_get, _datamunge.ABLine_stroke_width_set)
+
+    def __init__(self):
+        _datamunge.ABLine_swiginit(self, _datamunge.new_ABLine())
+    __swig_destroy__ = _datamunge.delete_ABLine
+
+# Register ABLine in _datamunge:
+_datamunge.ABLine_swigregister(ABLine)
+class LegendEntry(object):
+    r"""
+    One manually-specified legend row, as drawn by R's `legend()`. When a plot has any manual
+    entries, they replace the default auto-generated (one-row-per-labeled-series) legend.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    label = property(_datamunge.LegendEntry_label_get, _datamunge.LegendEntry_label_set)
+    color = property(_datamunge.LegendEntry_color_get, _datamunge.LegendEntry_color_set)
+
+    def __init__(self):
+        _datamunge.LegendEntry_swiginit(self, _datamunge.new_LegendEntry())
+    __swig_destroy__ = _datamunge.delete_LegendEntry
+
+# Register LegendEntry in _datamunge:
+_datamunge.LegendEntry_swigregister(LegendEntry)
+class Plot(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_Plot
+
+    def size(self, width, height):
+        return _datamunge.Plot_size(self, width, height)
+
+    def title(self, value):
+        return _datamunge.Plot_title(self, value)
+
+    def x_label(self, value):
+        return _datamunge.Plot_x_label(self, value)
+
+    def y_label(self, value):
+        return _datamunge.Plot_y_label(self, value)
+
+    def background(self, color):
+        return _datamunge.Plot_background(self, color)
+
+    def axis_color(self, color):
+        return _datamunge.Plot_axis_color(self, color)
+
+    def grid_color(self, color):
+        return _datamunge.Plot_grid_color(self, color)
+
+    def show_grid(self, enabled=True):
+        return _datamunge.Plot_show_grid(self, enabled)
+
+    def x_limits(self, min_x, max_x):
+        return _datamunge.Plot_x_limits(self, min_x, max_x)
+
+    def y_limits(self, min_y, max_y):
+        return _datamunge.Plot_y_limits(self, min_y, max_y)
+
+    def hide_axes(self, enabled=True):
+        return _datamunge.Plot_hide_axes(self, enabled)
+
+    def x_tick_labels(self, labels):
+        return _datamunge.Plot_x_tick_labels(self, labels)
+
+    def width(self):
+        return _datamunge.Plot_width(self)
+
+    def height(self):
+        return _datamunge.Plot_height(self)
+
+    def title_text(self):
+        return _datamunge.Plot_title_text(self)
+
+    def x_label_text(self):
+        return _datamunge.Plot_x_label_text(self)
+
+    def y_label_text(self):
+        return _datamunge.Plot_y_label_text(self)
+
+    def series(self):
+        return _datamunge.Plot_series(self)
+
+    def background_color(self):
+        return _datamunge.Plot_background_color(self)
+
+    def axes_color(self):
+        return _datamunge.Plot_axes_color(self)
+
+    def major_grid_color(self):
+        return _datamunge.Plot_major_grid_color(self)
+
+    def grid_visible(self):
+        return _datamunge.Plot_grid_visible(self)
+
+    def has_x_limits(self):
+        return _datamunge.Plot_has_x_limits(self)
+
+    def has_y_limits(self):
+        return _datamunge.Plot_has_y_limits(self)
+
+    def x_min(self):
+        return _datamunge.Plot_x_min(self)
+
+    def x_max(self):
+        return _datamunge.Plot_x_max(self)
+
+    def y_min(self):
+        return _datamunge.Plot_y_min(self)
+
+    def y_max(self):
+        return _datamunge.Plot_y_max(self)
+
+    def axes_hidden(self):
+        return _datamunge.Plot_axes_hidden(self)
+
+    def x_tick_label_list(self):
+        return _datamunge.Plot_x_tick_label_list(self)
+
+    def reference_lines(self):
+        return _datamunge.Plot_reference_lines(self)
+
+    def legend_entries(self):
+        return _datamunge.Plot_legend_entries(self)
+
+    def save(self, path):
+        return _datamunge.Plot_save(self, path)
+
+    def save_svg(self, path):
+        return _datamunge.Plot_save_svg(self, path)
+
+    def view(self, *args):
+        return _datamunge.Plot_view(self, *args)
+
+    def show(self, *args):
+        return _datamunge.Plot_show(self, *args)
+
+    def __init__(self):
+        _datamunge.Plot_swiginit(self, _datamunge.new_Plot())
+
+# Register Plot in _datamunge:
+_datamunge.Plot_swigregister(Plot)
+class RPlot(Plot):
+    r"""
+    A single R-base-graphics-style plot (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
+    `curve()`, `qqnorm()`, ...) plus the chainable "add to current plot" verbs R exposes as
+    separate top-level functions (`points()`, `lines()`, `abline()`, `legend()`, `text()`, ...).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def create():
+        return _datamunge.RPlot_create()
+
+    @staticmethod
+    def plot(*args):
+        r"""Mimics R's `plot(x, y, type = "p"|"l"|"b")`."""
+        return _datamunge.RPlot_plot(*args)
+
+    @staticmethod
+    def hist(*args):
+        r"""Mimics R's `hist(x, breaks = bins)`. Bin edges are equal-width over the data range."""
+        return _datamunge.RPlot_hist(*args)
+
+    @staticmethod
+    def barplot(*args):
+        r"""Mimics R's `barplot(heights, names.arg = names)`."""
+        return _datamunge.RPlot_barplot(*args)
+
+    @staticmethod
+    def boxplot(*args):
+        r"""Mimics R's `boxplot(...)` over one or more groups."""
+        return _datamunge.RPlot_boxplot(*args)
+
+    @staticmethod
+    def pie(*args):
+        r"""Mimics R's `pie(x, labels = names)`."""
+        return _datamunge.RPlot_pie(*args)
+
+    @staticmethod
+    def curve(*args):
+        r"""Mimics R's `curve(expr, from, to)`; `f` is sampled at `n` evenly-spaced points."""
+        return _datamunge.RPlot_curve(*args)
+
+    @staticmethod
+    def qqnorm(*args):
+        r"""Mimics R's `qqnorm(y)`: plots sample quantiles of `data` against standard-normal quantiles."""
+        return _datamunge.RPlot_qqnorm(*args)
+
+    def points(self, *args):
+        return _datamunge.RPlot_points(self, *args)
+
+    def line(self, *args):
+        return _datamunge.RPlot_line(self, *args)
+
+    def lines(self, *args):
+        return _datamunge.RPlot_lines(self, *args)
+
+    def bars(self, *args):
+        r"""Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this)."""
+        return _datamunge.RPlot_bars(self, *args)
+
+    def box(self, *args):
+        r"""Lower-level box-and-whisker primitive at an arbitrary x position (`boxplot()` builds on this)."""
+        return _datamunge.RPlot_box(self, *args)
+
+    def abline(self, *args):
+        return _datamunge.RPlot_abline(self, *args)
+
+    def abline_h(self, *args):
+        return _datamunge.RPlot_abline_h(self, *args)
+
+    def abline_v(self, *args):
+        return _datamunge.RPlot_abline_v(self, *args)
+
+    def qqline(self, *args):
+        r"""
+        Mimics R's `qqline()`: draws the line through the 1st and 3rd sample/theoretical quartiles
+        of `data`, the same data that was passed to `qqnorm()`.
+        """
+        return _datamunge.RPlot_qqline(self, *args)
+
+    def legend(self, labels, colors):
+        return _datamunge.RPlot_legend(self, labels, colors)
+
+    def text(self, *args):
+        return _datamunge.RPlot_text(self, *args)
+
+    def polygon(self, *args):
+        return _datamunge.RPlot_polygon(self, *args)
+
+    def segments(self, *args):
+        return _datamunge.RPlot_segments(self, *args)
+
+    def __init__(self):
+        _datamunge.RPlot_swiginit(self, _datamunge.new_RPlot())
+    __swig_destroy__ = _datamunge.delete_RPlot
+
+# Register RPlot in _datamunge:
+_datamunge.RPlot_swigregister(RPlot)
+class RLayout(object):
+    r"""
+    Tiles independently-built `Plot` objects into one multi-panel figure, mimicking R's
+    `par(mfrow = c(rows, cols))`.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def create(rows, cols):
+        return _datamunge.RLayout_create(rows, cols)
+
+    def add(self, panel):
+        return _datamunge.RLayout_add(self, panel)
+
+    def size(self, width, height):
+        return _datamunge.RLayout_size(self, width, height)
+
+    def save(self, path):
+        return _datamunge.RLayout_save(self, path)
+
+    def save_svg(self, path):
+        return _datamunge.RLayout_save_svg(self, path)
+
+    def __init__(self):
+        _datamunge.RLayout_swiginit(self, _datamunge.new_RLayout())
+    __swig_destroy__ = _datamunge.delete_RLayout
+
+# Register RLayout in _datamunge:
+_datamunge.RLayout_swigregister(RLayout)
+class RGBVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.RGBVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.RGBVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.RGBVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.RGBVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.RGBVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.RGBVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.RGBVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.RGBVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.RGBVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.RGBVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.RGBVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.RGBVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.RGBVector_empty(self)
+
+    def size(self):
+        return _datamunge.RGBVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.RGBVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.RGBVector_begin(self)
+
+    def end(self):
+        return _datamunge.RGBVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.RGBVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.RGBVector_rend(self)
+
+    def clear(self):
+        return _datamunge.RGBVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.RGBVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.RGBVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.RGBVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.RGBVector_swiginit(self, _datamunge.new_RGBVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.RGBVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.RGBVector_front(self)
+
+    def back(self):
+        return _datamunge.RGBVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.RGBVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.RGBVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.RGBVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.RGBVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.RGBVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_RGBVector
+
+# Register RGBVector in _datamunge:
+_datamunge.RGBVector_swigregister(RGBVector)
+class DataSeriesVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.DataSeriesVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.DataSeriesVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.DataSeriesVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.DataSeriesVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.DataSeriesVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.DataSeriesVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.DataSeriesVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.DataSeriesVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.DataSeriesVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.DataSeriesVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.DataSeriesVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.DataSeriesVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.DataSeriesVector_empty(self)
+
+    def size(self):
+        return _datamunge.DataSeriesVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.DataSeriesVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.DataSeriesVector_begin(self)
+
+    def end(self):
+        return _datamunge.DataSeriesVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.DataSeriesVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.DataSeriesVector_rend(self)
+
+    def clear(self):
+        return _datamunge.DataSeriesVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.DataSeriesVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.DataSeriesVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.DataSeriesVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.DataSeriesVector_swiginit(self, _datamunge.new_DataSeriesVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.DataSeriesVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.DataSeriesVector_front(self)
+
+    def back(self):
+        return _datamunge.DataSeriesVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.DataSeriesVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.DataSeriesVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.DataSeriesVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.DataSeriesVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.DataSeriesVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_DataSeriesVector
+
+# Register DataSeriesVector in _datamunge:
+_datamunge.DataSeriesVector_swigregister(DataSeriesVector)
+class ABLineVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.ABLineVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.ABLineVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.ABLineVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.ABLineVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.ABLineVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.ABLineVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.ABLineVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.ABLineVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.ABLineVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.ABLineVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.ABLineVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.ABLineVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.ABLineVector_empty(self)
+
+    def size(self):
+        return _datamunge.ABLineVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.ABLineVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.ABLineVector_begin(self)
+
+    def end(self):
+        return _datamunge.ABLineVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.ABLineVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.ABLineVector_rend(self)
+
+    def clear(self):
+        return _datamunge.ABLineVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.ABLineVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.ABLineVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.ABLineVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.ABLineVector_swiginit(self, _datamunge.new_ABLineVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.ABLineVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.ABLineVector_front(self)
+
+    def back(self):
+        return _datamunge.ABLineVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.ABLineVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.ABLineVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.ABLineVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.ABLineVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.ABLineVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_ABLineVector
+
+# Register ABLineVector in _datamunge:
+_datamunge.ABLineVector_swigregister(ABLineVector)
+class LegendEntryVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.LegendEntryVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.LegendEntryVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.LegendEntryVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.LegendEntryVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.LegendEntryVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.LegendEntryVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.LegendEntryVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.LegendEntryVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.LegendEntryVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.LegendEntryVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.LegendEntryVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.LegendEntryVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.LegendEntryVector_empty(self)
+
+    def size(self):
+        return _datamunge.LegendEntryVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.LegendEntryVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.LegendEntryVector_begin(self)
+
+    def end(self):
+        return _datamunge.LegendEntryVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.LegendEntryVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.LegendEntryVector_rend(self)
+
+    def clear(self):
+        return _datamunge.LegendEntryVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.LegendEntryVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.LegendEntryVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.LegendEntryVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.LegendEntryVector_swiginit(self, _datamunge.new_LegendEntryVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.LegendEntryVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.LegendEntryVector_front(self)
+
+    def back(self):
+        return _datamunge.LegendEntryVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.LegendEntryVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.LegendEntryVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.LegendEntryVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.LegendEntryVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.LegendEntryVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_LegendEntryVector
+
+# Register LegendEntryVector in _datamunge:
+_datamunge.LegendEntryVector_swigregister(LegendEntryVector)
 
 def hello():
     r"""Prints a hello message to standard output."""
@@ -976,6 +1718,77 @@ class DataFrame(object):
 
 # Register DataFrame in _datamunge:
 _datamunge.DataFrame_swigregister(DataFrame)
+class GGPlot(object):
+    r"""
+    SWIG-friendly facade for datamunge::plot::GGPlot — a ggplot2-style grammar-of-graphics
+           builder. Geom/theme/scale/facet calls are chainable, mirroring ggplot2's own layered
+           `ggplot(df, aes(...)) + geom_point() + ...` style as closely as C++ method chaining allows.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r""":param color_column,fill_column,group_column: Optional discrete grouping columns; pass "" to omit."""
+        _datamunge.GGPlot_swiginit(self, _datamunge.new_GGPlot(*args))
+
+    def geom_point(self, *args):
+        return _datamunge.GGPlot_geom_point(self, *args)
+
+    def geom_line(self, *args):
+        return _datamunge.GGPlot_geom_line(self, *args)
+
+    def geom_bar(self, *args):
+        return _datamunge.GGPlot_geom_bar(self, *args)
+
+    def geom_col(self, *args):
+        return _datamunge.GGPlot_geom_col(self, *args)
+
+    def geom_histogram(self, *args):
+        return _datamunge.GGPlot_geom_histogram(self, *args)
+
+    def geom_boxplot(self, *args):
+        return _datamunge.GGPlot_geom_boxplot(self, *args)
+
+    def geom_smooth(self, *args):
+        return _datamunge.GGPlot_geom_smooth(self, *args)
+
+    def geom_area(self, *args):
+        return _datamunge.GGPlot_geom_area(self, *args)
+
+    def geom_ribbon(self, *args):
+        return _datamunge.GGPlot_geom_ribbon(self, *args)
+
+    def geom_density(self, *args):
+        return _datamunge.GGPlot_geom_density(self, *args)
+
+    def facet_wrap(self, column, ncol=0):
+        return _datamunge.GGPlot_facet_wrap(self, column, ncol)
+
+    def theme_minimal(self):
+        return _datamunge.GGPlot_theme_minimal(self)
+
+    def theme_bw(self):
+        return _datamunge.GGPlot_theme_bw(self)
+
+    def theme_classic(self):
+        return _datamunge.GGPlot_theme_classic(self)
+
+    def scale_color_manual(self, values):
+        return _datamunge.GGPlot_scale_color_manual(self, values)
+
+    def labs(self, *args):
+        return _datamunge.GGPlot_labs(self, *args)
+
+    def save(self, path):
+        return _datamunge.GGPlot_save(self, path)
+
+    def save_svg(self, path):
+        return _datamunge.GGPlot_save_svg(self, path)
+    __swig_destroy__ = _datamunge.delete_GGPlot
+
+# Register GGPlot in _datamunge:
+_datamunge.GGPlot_swigregister(GGPlot)
 class LM(object):
     r"""SWIG-friendly facade for datamunge::stats::LM — R-`lm()`-style linear models fit from a DataFrame."""
 
@@ -3520,194 +4333,6 @@ class Var(object):
 
 # Register Var in _datamunge:
 _datamunge.Var_swigregister(Var)
-class RGB(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    r = property(_datamunge.RGB_r_get, _datamunge.RGB_r_set)
-    g = property(_datamunge.RGB_g_get, _datamunge.RGB_g_set)
-    b = property(_datamunge.RGB_b_get, _datamunge.RGB_b_set)
-
-    def __init__(self):
-        _datamunge.RGB_swiginit(self, _datamunge.new_RGB())
-    __swig_destroy__ = _datamunge.delete_RGB
-
-# Register RGB in _datamunge:
-_datamunge.RGB_swigregister(RGB)
-class DataSeries(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    Kind_Scatter = _datamunge.DataSeries_Kind_Scatter
-    Kind_Line = _datamunge.DataSeries_Kind_Line
-    Kind_Bar = _datamunge.DataSeries_Kind_Bar
-    kind = property(_datamunge.DataSeries_kind_get, _datamunge.DataSeries_kind_set)
-    x = property(_datamunge.DataSeries_x_get, _datamunge.DataSeries_x_set)
-    y = property(_datamunge.DataSeries_y_get, _datamunge.DataSeries_y_set)
-    label = property(_datamunge.DataSeries_label_get, _datamunge.DataSeries_label_set)
-    color = property(_datamunge.DataSeries_color_get, _datamunge.DataSeries_color_set)
-    stroke_width = property(_datamunge.DataSeries_stroke_width_get, _datamunge.DataSeries_stroke_width_set)
-    marker_size = property(_datamunge.DataSeries_marker_size_get, _datamunge.DataSeries_marker_size_set)
-    bar_width = property(_datamunge.DataSeries_bar_width_get, _datamunge.DataSeries_bar_width_set)
-
-    def __init__(self):
-        _datamunge.DataSeries_swiginit(self, _datamunge.new_DataSeries())
-    __swig_destroy__ = _datamunge.delete_DataSeries
-
-# Register DataSeries in _datamunge:
-_datamunge.DataSeries_swigregister(DataSeries)
-class Plot(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    __swig_destroy__ = _datamunge.delete_Plot
-
-    def size(self, width, height):
-        return _datamunge.Plot_size(self, width, height)
-
-    def title(self, value):
-        return _datamunge.Plot_title(self, value)
-
-    def x_label(self, value):
-        return _datamunge.Plot_x_label(self, value)
-
-    def y_label(self, value):
-        return _datamunge.Plot_y_label(self, value)
-
-    def background(self, color):
-        return _datamunge.Plot_background(self, color)
-
-    def axis_color(self, color):
-        return _datamunge.Plot_axis_color(self, color)
-
-    def grid_color(self, color):
-        return _datamunge.Plot_grid_color(self, color)
-
-    def show_grid(self, enabled=True):
-        return _datamunge.Plot_show_grid(self, enabled)
-
-    def x_limits(self, min_x, max_x):
-        return _datamunge.Plot_x_limits(self, min_x, max_x)
-
-    def y_limits(self, min_y, max_y):
-        return _datamunge.Plot_y_limits(self, min_y, max_y)
-
-    def width(self):
-        return _datamunge.Plot_width(self)
-
-    def height(self):
-        return _datamunge.Plot_height(self)
-
-    def title_text(self):
-        return _datamunge.Plot_title_text(self)
-
-    def x_label_text(self):
-        return _datamunge.Plot_x_label_text(self)
-
-    def y_label_text(self):
-        return _datamunge.Plot_y_label_text(self)
-
-    def series(self):
-        return _datamunge.Plot_series(self)
-
-    def background_color(self):
-        return _datamunge.Plot_background_color(self)
-
-    def axes_color(self):
-        return _datamunge.Plot_axes_color(self)
-
-    def major_grid_color(self):
-        return _datamunge.Plot_major_grid_color(self)
-
-    def grid_visible(self):
-        return _datamunge.Plot_grid_visible(self)
-
-    def has_x_limits(self):
-        return _datamunge.Plot_has_x_limits(self)
-
-    def has_y_limits(self):
-        return _datamunge.Plot_has_y_limits(self)
-
-    def x_min(self):
-        return _datamunge.Plot_x_min(self)
-
-    def x_max(self):
-        return _datamunge.Plot_x_max(self)
-
-    def y_min(self):
-        return _datamunge.Plot_y_min(self)
-
-    def y_max(self):
-        return _datamunge.Plot_y_max(self)
-
-    def save(self, path):
-        return _datamunge.Plot_save(self, path)
-
-    def save_svg(self, path):
-        return _datamunge.Plot_save_svg(self, path)
-
-    def view(self, *args):
-        return _datamunge.Plot_view(self, *args)
-
-    def show(self, *args):
-        return _datamunge.Plot_show(self, *args)
-
-    def __init__(self):
-        _datamunge.Plot_swiginit(self, _datamunge.new_Plot())
-
-# Register Plot in _datamunge:
-_datamunge.Plot_swigregister(Plot)
-class ScatterPlot(Plot):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    @staticmethod
-    def create():
-        return _datamunge.ScatterPlot_create()
-
-    def points(self, *args):
-        return _datamunge.ScatterPlot_points(self, *args)
-
-    def line(self, *args):
-        return _datamunge.ScatterPlot_line(self, *args)
-
-    def __init__(self):
-        _datamunge.ScatterPlot_swiginit(self, _datamunge.new_ScatterPlot())
-    __swig_destroy__ = _datamunge.delete_ScatterPlot
-
-# Register ScatterPlot in _datamunge:
-_datamunge.ScatterPlot_swigregister(ScatterPlot)
-class LinePlot(Plot):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    @staticmethod
-    def create():
-        return _datamunge.LinePlot_create()
-
-    def line(self, *args):
-        return _datamunge.LinePlot_line(self, *args)
-
-    def __init__(self):
-        _datamunge.LinePlot_swiginit(self, _datamunge.new_LinePlot())
-    __swig_destroy__ = _datamunge.delete_LinePlot
-
-# Register LinePlot in _datamunge:
-_datamunge.LinePlot_swigregister(LinePlot)
-class BarChart(Plot):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    @staticmethod
-    def create():
-        return _datamunge.BarChart_create()
-
-    def bars(self, *args):
-        return _datamunge.BarChart_bars(self, *args)
-
-    def __init__(self):
-        _datamunge.BarChart_swiginit(self, _datamunge.new_BarChart())
-    __swig_destroy__ = _datamunge.delete_BarChart
-
-# Register BarChart in _datamunge:
-_datamunge.BarChart_swigregister(BarChart)
 class ARIMAOptions(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -8606,4 +9231,1028 @@ class AlphaBetaGammaFilter(object):
 
 # Register AlphaBetaGammaFilter in _datamunge:
 _datamunge.AlphaBetaGammaFilter_swigregister(AlphaBetaGammaFilter)
+class Polynomial(object):
+    r"""
+    Dense univariate polynomial over the reals, stored as coefficients in ascending
+           degree order (coefficients()[i] is the coefficient of x^i). Always kept trimmed --
+           no trailing (highest-degree) zero coefficients, except for the zero polynomial itself,
+           which is stored as the single coefficient {0.0}.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.Polynomial_swiginit(self, _datamunge.new_Polynomial(*args))
+
+    def degree(self):
+        r"""
+        Degree of the polynomial; the zero polynomial has degree 0 (there is no
+               universally-agreed convention for its "true" degree of -infinity, and 0 keeps
+               every coefficient()/loop bound in this module well-defined).
+        """
+        return _datamunge.Polynomial_degree(self)
+
+    def is_zero(self):
+        return _datamunge.Polynomial_is_zero(self)
+
+    def coefficient(self, i):
+        r"""Coefficient of x^i; 0.0 for any i outside [0, degree()] (including negative i)."""
+        return _datamunge.Polynomial_coefficient(self, i)
+
+    def coefficients(self):
+        return _datamunge.Polynomial_coefficients(self)
+
+    def evaluate(self, x):
+        r"""Evaluates the polynomial at x via Horner's method."""
+        return _datamunge.Polynomial_evaluate(self, x)
+
+    def derivative(self):
+        return _datamunge.Polynomial_derivative(self)
+
+    def antiderivative(self):
+        r"""
+        The antiderivative with zero constant term (i.e. integral from 0 to x, as a
+               polynomial in x).
+        """
+        return _datamunge.Polynomial_antiderivative(self)
+
+    def add(self, other):
+        return _datamunge.Polynomial_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.Polynomial_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.Polynomial_multiply(self, other)
+
+    def scale(self, factor):
+        return _datamunge.Polynomial_scale(self, factor)
+
+    def negate(self):
+        return _datamunge.Polynomial_negate(self)
+
+    def to_string(self):
+        return _datamunge.Polynomial_to_string(self)
+
+    def __eq__(self, other):
+        r"""
+        Member (not free-function) equality, matching Point2D's convention -- SWIG maps
+               a free `operator==` to a single module-level `__eq__` in the Python backend,
+               which collides across every type that defines one (e.g. image::Pixel's), while
+               a member operator becomes a per-class `__eq__` with no such collision.
+        """
+        return _datamunge.Polynomial___eq__(self, other)
+
+    def __ne__(self, other):
+        return _datamunge.Polynomial___ne__(self, other)
+    __swig_destroy__ = _datamunge.delete_Polynomial
+
+# Register Polynomial in _datamunge:
+_datamunge.Polynomial_swigregister(Polynomial)
+
+def poly_quotient(a, b):
+    r"""
+    The quotient from a.divmod(b) -- a binding-friendly alternative to divmod() itself,
+           which returns a std::pair<Polynomial, Polynomial> that this codebase avoids exposing
+           directly to SWIG bindings (matching the vector-returning-alternative pattern used
+           elsewhere for similarly pair/map-shaped C++ APIs).
+    """
+    return _datamunge.poly_quotient(a, b)
+
+def poly_remainder(a, b):
+    r"""
+    The remainder from a.divmod(b); see poly_quotient() for why this exists alongside
+           the pair-returning divmod() method.
+    """
+    return _datamunge.poly_remainder(a, b)
+class PolynomialVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.PolynomialVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.PolynomialVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.PolynomialVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.PolynomialVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.PolynomialVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.PolynomialVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.PolynomialVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.PolynomialVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.PolynomialVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.PolynomialVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.PolynomialVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.PolynomialVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.PolynomialVector_empty(self)
+
+    def size(self):
+        return _datamunge.PolynomialVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.PolynomialVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.PolynomialVector_begin(self)
+
+    def end(self):
+        return _datamunge.PolynomialVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.PolynomialVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.PolynomialVector_rend(self)
+
+    def clear(self):
+        return _datamunge.PolynomialVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.PolynomialVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.PolynomialVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.PolynomialVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.PolynomialVector_swiginit(self, _datamunge.new_PolynomialVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.PolynomialVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.PolynomialVector_front(self)
+
+    def back(self):
+        return _datamunge.PolynomialVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.PolynomialVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.PolynomialVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.PolynomialVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.PolynomialVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.PolynomialVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_PolynomialVector
+
+# Register PolynomialVector in _datamunge:
+_datamunge.PolynomialVector_swigregister(PolynomialVector)
+
+def monic(p):
+    r"""
+    Monic-normalizes p by dividing through by its leading coefficient (no-op on the zero
+           polynomial).
+    """
+    return _datamunge.monic(p)
+
+def poly_gcd(a, b):
+    r"""
+    GCD of two polynomials via the classical Euclidean algorithm (repeated
+           divmod-and-swap), returned monic.
+    """
+    return _datamunge.poly_gcd(a, b)
+class PolyExtendedGcdResult(object):
+    r"""
+    Result of the extended Euclidean algorithm on two polynomials: `gcd`, plus the
+           Bezout coefficients `s`/`t` such that `s.multiply(a).add(t.multiply(b)) == gcd`.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    gcd = property(_datamunge.PolyExtendedGcdResult_gcd_get, _datamunge.PolyExtendedGcdResult_gcd_set)
+    s = property(_datamunge.PolyExtendedGcdResult_s_get, _datamunge.PolyExtendedGcdResult_s_set)
+    t = property(_datamunge.PolyExtendedGcdResult_t_get, _datamunge.PolyExtendedGcdResult_t_set)
+
+    def __init__(self):
+        _datamunge.PolyExtendedGcdResult_swiginit(self, _datamunge.new_PolyExtendedGcdResult())
+    __swig_destroy__ = _datamunge.delete_PolyExtendedGcdResult
+
+# Register PolyExtendedGcdResult in _datamunge:
+_datamunge.PolyExtendedGcdResult_swigregister(PolyExtendedGcdResult)
+
+def poly_extended_gcd(a, b):
+    r"""
+    Extended Euclidean algorithm: computes gcd(a, b) along with Bezout coefficients s, t
+           satisfying `s*a + t*b == gcd`. `gcd` is returned monic (s and t are scaled to match).
+    """
+    return _datamunge.poly_extended_gcd(a, b)
+
+def poly_gcd_pseudo_remainder_sequence(a, b):
+    r"""
+    GCD via a pseudo-remainder sequence: like poly_gcd(), but each step scales the
+           dividend by lc(divisor)^(degree gap + 1) before dividing (pseudo-division), the
+           classical technique subresultant-PRS algorithms are built on. This is the basic
+           (unscaled) variant -- it avoids the fraction-heavy divisions plain Euclidean division
+           would need over an exact (e.g. integer) coefficient field, but does not add the
+           further subresultant coefficient-growth control a full implementation would. Over
+           doubles it is numerically a different (and typically larger-magnitude-intermediate)
+           path to the same monic result as poly_gcd().
+    """
+    return _datamunge.poly_gcd_pseudo_remainder_sequence(a, b)
+
+def lagrange_interpolate(xs, ys):
+    r"""
+    The unique polynomial of degree < n through the n points (xs[i], ys[i]), built via
+           Lagrange's basis-polynomial formula (O(n^2)).
+    :raises: std::invalid_argument if xs/ys sizes disagree, are empty, or xs has a duplicate.
+    """
+    return _datamunge.lagrange_interpolate(xs, ys)
+
+def newton_interpolate(xs, ys):
+    r"""
+    The same unique interpolating polynomial as lagrange_interpolate(), built instead via
+           Newton's divided differences (an O(n^2) triangular table, then expanded into
+           standard-basis coefficients). Included as the classical alternative construction:
+           useful when points are added incrementally, since the divided-difference table
+           extends by one row per new point rather than being rebuilt from scratch.
+    :raises: std::invalid_argument if xs/ys sizes disagree, are empty, or xs has a duplicate.
+    """
+    return _datamunge.newton_interpolate(xs, ys)
+
+def sylvester_matrix(a, b):
+    return _datamunge.sylvester_matrix(a, b)
+
+def determinant(mat):
+    return _datamunge.determinant(mat)
+
+def resultant(a, b):
+    r"""
+    The resultant of a and b: the determinant of their Sylvester matrix. Zero if and
+           only if a and b share a common root (equivalently, a nonconstant common factor).
+    """
+    return _datamunge.resultant(a, b)
+
+def discriminant(p):
+    r"""
+    The discriminant of p: `(-1)^(n(n-1)/2) * resultant(p, p') / lc(p)`, where n =
+           degree(p). Zero if and only if p has a repeated root.
+    """
+    return _datamunge.discriminant(p)
+class RationalFunction(object):
+    r"""
+    A ratio of two polynomials (numerator / denominator), kept automatically reduced by
+           their GCD -- e.g. (x^2-1)/(x-1) simplifies to x+1 -- with the denominator normalized
+           to monic.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.RationalFunction_swiginit(self, _datamunge.new_RationalFunction(*args))
+
+    def numerator(self):
+        return _datamunge.RationalFunction_numerator(self)
+
+    def denominator(self):
+        return _datamunge.RationalFunction_denominator(self)
+
+    def evaluate(self, x):
+        r""":raises: std::domain_error if x is a pole (denominator evaluates to zero at x)."""
+        return _datamunge.RationalFunction_evaluate(self, x)
+
+    def add(self, other):
+        return _datamunge.RationalFunction_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.RationalFunction_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.RationalFunction_multiply(self, other)
+
+    def divide(self, other):
+        r""":raises: std::invalid_argument if other is the zero rational function."""
+        return _datamunge.RationalFunction_divide(self, other)
+
+    def to_string(self):
+        return _datamunge.RationalFunction_to_string(self)
+    __swig_destroy__ = _datamunge.delete_RationalFunction
+
+# Register RationalFunction in _datamunge:
+_datamunge.RationalFunction_swigregister(RationalFunction)
+
+def sturm_sequence(p):
+    r"""
+    Builds the Sturm sequence of p: p0 = p, p1 = p', and p_(i+1) = -rem(p_(i-1), p_i)
+           until reaching a constant (or zero) polynomial. Used to count/isolate the real roots
+           of p in an interval via sign changes (Sturm's theorem). p should be square-free for
+           the sign-change count to equal the number of DISTINCT real roots exactly; callers
+           with a polynomial that may have repeated roots should first run
+           square_free_factorization() and apply Sturm's theorem to each factor.
+    """
+    return _datamunge.sturm_sequence(p)
+
+def sturm_sign_changes(seq, x):
+    return _datamunge.sturm_sign_changes(seq, x)
+
+def cauchy_root_bound(p):
+    return _datamunge.cauchy_root_bound(p)
+
+def sturm_root_count(p, a, b):
+    r"""
+    The number of DISTINCT real roots of p in the interval (a, b], via Sturm's theorem
+           (the difference in sign-change count between the sequence evaluated at a and at b).
+    """
+    return _datamunge.sturm_root_count(p, a, b)
+class RealRootIntervals(object):
+    r"""
+    Isolating intervals for every distinct real root of p: parallel lower/upper bound
+           vectors where each (lower[i], upper[i]) contains exactly one root. Found by bisecting
+           a starting interval (a Cauchy bound on root magnitude) driven by sturm_root_count().
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    lower = property(_datamunge.RealRootIntervals_lower_get, _datamunge.RealRootIntervals_lower_set)
+    upper = property(_datamunge.RealRootIntervals_upper_get, _datamunge.RealRootIntervals_upper_set)
+
+    def __init__(self):
+        _datamunge.RealRootIntervals_swiginit(self, _datamunge.new_RealRootIntervals())
+    __swig_destroy__ = _datamunge.delete_RealRootIntervals
+
+# Register RealRootIntervals in _datamunge:
+_datamunge.RealRootIntervals_swigregister(RealRootIntervals)
+
+def isolate_real_roots(p):
+    return _datamunge.isolate_real_roots(p)
+
+def refine_root(p, lo, hi, tolerance=1e-10):
+    r"""
+    Refines a single isolating interval [lo, hi] (known to contain exactly one root) to
+           within `tolerance` via sign-based bisection (cheaper than re-running Sturm's theorem
+           once a root is already isolated to one per interval).
+    """
+    return _datamunge.refine_root(p, lo, hi, tolerance)
+
+def real_roots(p, tolerance=1e-10):
+    r"""
+    All distinct real roots of p, isolated via Sturm's theorem then refined by
+           bisection to within `tolerance`.
+    """
+    return _datamunge.real_roots(p, tolerance)
+
+def descartes_sign_changes(p):
+    r"""
+    Descartes' rule of signs: the number of sign changes in p's coefficient sequence
+           (highest to lowest degree, skipping zero coefficients) -- an upper bound on the
+           number of positive real roots of p (counted with multiplicity); the true count
+           differs from this bound by a nonnegative even number.
+    """
+    return _datamunge.descartes_sign_changes(p)
+
+def descartes_negative_root_bound(p):
+    r"""
+    Upper bound on the number of NEGATIVE real roots of p, via Descartes' rule applied
+           to p(-x) (same even-gap caveat as descartes_sign_changes()).
+    """
+    return _datamunge.descartes_negative_root_bound(p)
+class SquareFreeFactorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.SquareFreeFactorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.SquareFreeFactorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.SquareFreeFactorVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.SquareFreeFactorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.SquareFreeFactorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.SquareFreeFactorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.SquareFreeFactorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.SquareFreeFactorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.SquareFreeFactorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.SquareFreeFactorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.SquareFreeFactorVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.SquareFreeFactorVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.SquareFreeFactorVector_empty(self)
+
+    def size(self):
+        return _datamunge.SquareFreeFactorVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.SquareFreeFactorVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.SquareFreeFactorVector_begin(self)
+
+    def end(self):
+        return _datamunge.SquareFreeFactorVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.SquareFreeFactorVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.SquareFreeFactorVector_rend(self)
+
+    def clear(self):
+        return _datamunge.SquareFreeFactorVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.SquareFreeFactorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.SquareFreeFactorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.SquareFreeFactorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.SquareFreeFactorVector_swiginit(self, _datamunge.new_SquareFreeFactorVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.SquareFreeFactorVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.SquareFreeFactorVector_front(self)
+
+    def back(self):
+        return _datamunge.SquareFreeFactorVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.SquareFreeFactorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.SquareFreeFactorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.SquareFreeFactorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.SquareFreeFactorVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.SquareFreeFactorVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_SquareFreeFactorVector
+
+# Register SquareFreeFactorVector in _datamunge:
+_datamunge.SquareFreeFactorVector_swigregister(SquareFreeFactorVector)
+class SquareFreeFactor(object):
+    r"""
+    One factor of a square-free decomposition: `factor` (itself square-free, i.e. no
+           repeated roots) appears with multiplicity `multiplicity` in the original polynomial.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    factor = property(_datamunge.SquareFreeFactor_factor_get, _datamunge.SquareFreeFactor_factor_set)
+    multiplicity = property(_datamunge.SquareFreeFactor_multiplicity_get, _datamunge.SquareFreeFactor_multiplicity_set)
+
+    def __init__(self):
+        _datamunge.SquareFreeFactor_swiginit(self, _datamunge.new_SquareFreeFactor())
+    __swig_destroy__ = _datamunge.delete_SquareFreeFactor
+
+# Register SquareFreeFactor in _datamunge:
+_datamunge.SquareFreeFactor_swigregister(SquareFreeFactor)
+
+def square_free_factorization(p):
+    r"""
+    Yun's algorithm: factors p (char-0 coefficients, doubles here) into square-free
+           pieces, each paired with its multiplicity, such that p equals the product of
+           `factor_i ^ multiplicity_i` up to an overall constant. Each returned `factor` is
+           itself square-free (no repeated roots) and the `multiplicity`-i factors are pairwise
+           coprime.
+    """
+    return _datamunge.square_free_factorization(p)
+
+def to_integer(v):
+    return _datamunge.to_integer(v)
+
+def mod_pow(base, exponent, modulus):
+    r"""
+    (base^exponent) mod modulus via binary exponentiation. All three arguments and the
+           result are doubles holding exact integer values -- this module avoids std::size_t
+           and other unsigned fixed-width types in binding-facing signatures, so plain `double`
+           (exact up to 2^53) is used for modular-integer arithmetic throughout.
+    :raises: std::invalid_argument if modulus <= 0 or exponent < 0.
+    """
+    return _datamunge.mod_pow(base, exponent, modulus)
+
+def mod_inverse(a, m):
+    r"""
+    Modular multiplicative inverse of a mod m, via the extended Euclidean algorithm.
+    :raises: std::invalid_argument if gcd(a, m) != 1 (no inverse exists) or m <= 0.
+    """
+    return _datamunge.mod_inverse(a, m)
+
+def crt(remainders, moduli):
+    r"""
+    Chinese Remainder Theorem: the unique x in [0, product(moduli)) such that
+           `x == remainders[i] (mod moduli[i])` for every i, given pairwise-coprime positive
+           moduli.
+    :raises: std::invalid_argument if sizes disagree, are empty, a modulus is non-positive, the
+                moduli aren't pairwise coprime, or the combined modulus would exceed 2^53 (past the
+                point a double can represent every integer exactly).
+    """
+    return _datamunge.crt(remainders, moduli)
+
+def berlekamp_factor_mod(poly, prime):
+    r"""
+    Binding-friendly wrapper around berlekamp_factor() using doubles (exact up to 2^53)
+           for both the input polynomial and the prime, matching this module's
+           std::size_t/fixed-width-integer-avoidance convention for SWIG-facing signatures
+           (`std::vector<long long>` has no proven binding template in this codebase, while
+           `std::vector<double>` already does). See berlekamp_factor() for the algorithm and
+           preconditions.
+    """
+    return _datamunge.berlekamp_factor_mod(poly, prime)
+MonomialOrder_Lex = _datamunge.MonomialOrder_Lex
+MonomialOrder_Grlex = _datamunge.MonomialOrder_Grlex
+MonomialOrder_Grevlex = _datamunge.MonomialOrder_Grevlex
+
+def total_degree(exponents):
+    return _datamunge.total_degree(exponents)
+
+def compare_monomials(a, b, order):
+    r"""
+    Returns -1, 0, or 1 as monomial `a` is smaller, equal to, or larger than `b` under
+           `order`. `a` and `b` must have the same length.
+    """
+    return _datamunge.compare_monomials(a, b, order)
+class IVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.IVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.IVectorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.IVectorVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.IVectorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.IVectorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.IVectorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.IVectorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.IVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.IVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.IVectorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.IVectorVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.IVectorVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.IVectorVector_empty(self)
+
+    def size(self):
+        return _datamunge.IVectorVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.IVectorVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.IVectorVector_begin(self)
+
+    def end(self):
+        return _datamunge.IVectorVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.IVectorVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.IVectorVector_rend(self)
+
+    def clear(self):
+        return _datamunge.IVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.IVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.IVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.IVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.IVectorVector_swiginit(self, _datamunge.new_IVectorVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.IVectorVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.IVectorVector_front(self)
+
+    def back(self):
+        return _datamunge.IVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.IVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.IVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.IVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.IVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.IVectorVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_IVectorVector
+
+# Register IVectorVector in _datamunge:
+_datamunge.IVectorVector_swigregister(IVectorVector)
+class MultivariatePolynomial(object):
+    r"""
+    Sparse multivariate polynomial over the reals in a fixed number of variables (x0,
+           x1, ...), stored internally as a map from exponent vector to coefficient. Exposed to
+           bindings via parallel arrays (exponents()/coefficients()) rather than the internal
+           map, matching this module's std::map-avoidance convention for SWIG-facing types.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type num_variables: int
+        :param num_variables: Number of variables every exponent vector must have.
+        :type exponents: std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > >
+        :param exponents: One entry per term; each inner vector has length num_variables.
+        :type coefficients: std::vector< double,std::allocator< double > >
+        :param coefficients: Parallel to exponents; terms with equal exponent vectors are
+                   summed, and any resulting zero coefficient is dropped.
+        """
+        _datamunge.MultivariatePolynomial_swiginit(self, _datamunge.new_MultivariatePolynomial(*args))
+
+    def num_variables(self):
+        return _datamunge.MultivariatePolynomial_num_variables(self)
+
+    def num_terms(self):
+        return _datamunge.MultivariatePolynomial_num_terms(self)
+
+    def is_zero(self):
+        return _datamunge.MultivariatePolynomial_is_zero(self)
+
+    def exponents(self):
+        return _datamunge.MultivariatePolynomial_exponents(self)
+
+    def coefficients(self):
+        return _datamunge.MultivariatePolynomial_coefficients(self)
+
+    def evaluate(self, point):
+        return _datamunge.MultivariatePolynomial_evaluate(self, point)
+
+    def add(self, other):
+        return _datamunge.MultivariatePolynomial_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.MultivariatePolynomial_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.MultivariatePolynomial_multiply(self, other)
+
+    def scale(self, factor):
+        return _datamunge.MultivariatePolynomial_scale(self, factor)
+
+    def leading_exponent(self, order):
+        r""":raises: std::invalid_argument if this is the zero polynomial."""
+        return _datamunge.MultivariatePolynomial_leading_exponent(self, order)
+
+    def leading_coefficient(self, order):
+        return _datamunge.MultivariatePolynomial_leading_coefficient(self, order)
+
+    def to_string(self):
+        return _datamunge.MultivariatePolynomial_to_string(self)
+    __swig_destroy__ = _datamunge.delete_MultivariatePolynomial
+
+# Register MultivariatePolynomial in _datamunge:
+_datamunge.MultivariatePolynomial_swigregister(MultivariatePolynomial)
+class MultivariatePolynomialVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.MultivariatePolynomialVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.MultivariatePolynomialVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.MultivariatePolynomialVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.MultivariatePolynomialVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.MultivariatePolynomialVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.MultivariatePolynomialVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.MultivariatePolynomialVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.MultivariatePolynomialVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.MultivariatePolynomialVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.MultivariatePolynomialVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.MultivariatePolynomialVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.MultivariatePolynomialVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.MultivariatePolynomialVector_empty(self)
+
+    def size(self):
+        return _datamunge.MultivariatePolynomialVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.MultivariatePolynomialVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.MultivariatePolynomialVector_begin(self)
+
+    def end(self):
+        return _datamunge.MultivariatePolynomialVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.MultivariatePolynomialVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.MultivariatePolynomialVector_rend(self)
+
+    def clear(self):
+        return _datamunge.MultivariatePolynomialVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.MultivariatePolynomialVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.MultivariatePolynomialVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.MultivariatePolynomialVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.MultivariatePolynomialVector_swiginit(self, _datamunge.new_MultivariatePolynomialVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.MultivariatePolynomialVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.MultivariatePolynomialVector_front(self)
+
+    def back(self):
+        return _datamunge.MultivariatePolynomialVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.MultivariatePolynomialVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.MultivariatePolynomialVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.MultivariatePolynomialVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.MultivariatePolynomialVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.MultivariatePolynomialVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_MultivariatePolynomialVector
+
+# Register MultivariatePolynomialVector in _datamunge:
+_datamunge.MultivariatePolynomialVector_swigregister(MultivariatePolynomialVector)
+
+def lcm_exponent(a, b):
+    return _datamunge.lcm_exponent(a, b)
+
+def monomial_divides(divisor, dividend):
+    return _datamunge.monomial_divides(divisor, dividend)
+
+def s_polynomial(f, g, order):
+    r"""
+    S-polynomial of f and g: the combination that cancels their leading terms via the
+           LCM of their leading monomials -- Buchberger's algorithm's basic building block.
+    """
+    return _datamunge.s_polynomial(f, g, order)
+
+def reduce(p, basis, order):
+    r"""
+    Reduces p modulo `basis` (repeated division: subtract a multiple of whichever basis
+           element's leading term divides p's current leading term, moving undivided leading
+           terms into the remainder) until nothing is left, returning the remainder.
+    """
+    return _datamunge.reduce(p, basis, order)
+
+def multivariate_reduce(p, basis, order):
+    r"""
+    Reduces p modulo `basis` under `order`, returning the remainder (the "normal form"
+           of p with respect to basis). Zero if and only if p lies in the ideal generated by a
+           Groebner basis `basis`.
+    """
+    return _datamunge.multivariate_reduce(p, basis, order)
+
+def groebner_basis(generators, order):
+    r"""
+    Buchberger's algorithm: computes a Groebner basis of the ideal generated by
+           `generators` under `order`. Basic textbook form (no Buchberger-criterion
+           pair-skipping optimizations, matching this module's "simple, correct" scoping
+           elsewhere) -- reduces every S-polynomial against the CURRENT basis and appends any
+           nonzero remainder until no pair produces one.
+    """
+    return _datamunge.groebner_basis(generators, order)
+ExprOp_Const = _datamunge.ExprOp_Const
+ExprOp_Var = _datamunge.ExprOp_Var
+ExprOp_Add = _datamunge.ExprOp_Add
+ExprOp_Sub = _datamunge.ExprOp_Sub
+ExprOp_Mul = _datamunge.ExprOp_Mul
+ExprOp_Div = _datamunge.ExprOp_Div
+ExprOp_Pow = _datamunge.ExprOp_Pow
+ExprOp_Neg = _datamunge.ExprOp_Neg
+ExprOp_Sin = _datamunge.ExprOp_Sin
+ExprOp_Cos = _datamunge.ExprOp_Cos
+ExprOp_Exp = _datamunge.ExprOp_Exp
+ExprOp_Log = _datamunge.ExprOp_Log
+class ExprNode(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    op = property(_datamunge.ExprNode_op_get, _datamunge.ExprNode_op_set)
+    value = property(_datamunge.ExprNode_value_get, _datamunge.ExprNode_value_set)
+    name = property(_datamunge.ExprNode_name_get, _datamunge.ExprNode_name_set)
+    left = property(_datamunge.ExprNode_left_get, _datamunge.ExprNode_left_set)
+    right = property(_datamunge.ExprNode_right_get, _datamunge.ExprNode_right_set)
+
+    def __init__(self):
+        _datamunge.ExprNode_swiginit(self, _datamunge.new_ExprNode())
+    __swig_destroy__ = _datamunge.delete_ExprNode
+
+# Register ExprNode in _datamunge:
+_datamunge.ExprNode_swigregister(ExprNode)
+class Expr(object):
+    r"""
+    A symbolic expression tree over +, -, *, /, ^ (power) and sin/cos/exp/log, supporting
+           symbolic differentiation, basic algebraic simplification, and numeric evaluation.
+           Value type wrapping a shared, immutable node tree -- copies are cheap and structural
+           sharing across copies is always safe since nodes are never mutated after
+           construction.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        _datamunge.Expr_swiginit(self, _datamunge.new_Expr())
+
+    @staticmethod
+    def constant(value):
+        return _datamunge.Expr_constant(value)
+
+    @staticmethod
+    def variable(name):
+        return _datamunge.Expr_variable(name)
+
+    def add(self, other):
+        return _datamunge.Expr_add(self, other)
+
+    def subtract(self, other):
+        return _datamunge.Expr_subtract(self, other)
+
+    def multiply(self, other):
+        return _datamunge.Expr_multiply(self, other)
+
+    def divide(self, other):
+        return _datamunge.Expr_divide(self, other)
+
+    def power(self, exponent):
+        return _datamunge.Expr_power(self, exponent)
+
+    def negate(self):
+        return _datamunge.Expr_negate(self)
+
+    def sin(self):
+        return _datamunge.Expr_sin(self)
+
+    def cos(self):
+        return _datamunge.Expr_cos(self)
+
+    def exp(self):
+        return _datamunge.Expr_exp(self)
+
+    def log(self):
+        return _datamunge.Expr_log(self)
+
+    def differentiate(self, var):
+        r"""
+        The symbolic derivative with respect to `var` (any other variable name is
+               treated as a constant).
+        :raises: std::invalid_argument if the expression contains `base ^ exponent` where
+                    `exponent` is not a constant (only the constant-exponent power rule is
+                    supported).
+        """
+        return _datamunge.Expr_differentiate(self, var)
+
+    def simplify(self):
+        r"""
+        Basic algebraic simplification: constant folding, plus identities like x+0, x*1,
+               x*0, x/1, x^0, x^1. Not a full computer-algebra simplifier (no factoring,
+               collecting like terms, or trig identities).
+        """
+        return _datamunge.Expr_simplify(self)
+
+    def evaluate(self, names, values):
+        r"""
+        Evaluates the expression, binding each entry of `names` to the corresponding
+               entry of `values` (parallel arrays, must be the same length).
+        :raises: std::invalid_argument if names/values sizes disagree or a variable in the
+                    expression has no binding.
+        """
+        return _datamunge.Expr_evaluate(self, names, values)
+
+    def to_string(self):
+        return _datamunge.Expr_to_string(self)
+    __swig_destroy__ = _datamunge.delete_Expr
+
+# Register Expr in _datamunge:
+_datamunge.Expr_swigregister(Expr)
 

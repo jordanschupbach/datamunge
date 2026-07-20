@@ -5942,6 +5942,590 @@ SWIGEXPORT void SWIGSTDCALL CSharp_delete_GLMM(void * jarg1) {
 }
 
 
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_0(void * jarg1, const char * jarg2, const char * jarg3, const char * jarg4, double jarg5, unsigned int jarg6, double jarg7, unsigned int jarg8, unsigned int jarg9, unsigned int jarg10) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  std::size_t arg10 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (std::size_t)jarg8; 
+  arg9 = (std::size_t)jarg9; 
+  arg10 = (std::size_t)jarg10; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),SWIG_STD_MOVE(arg10));
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_1(void * jarg1, const char * jarg2, const char * jarg3, const char * jarg4, double jarg5, unsigned int jarg6, double jarg7, unsigned int jarg8, unsigned int jarg9) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (std::size_t)jarg8; 
+  arg9 = (std::size_t)jarg9; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_2(void * jarg1, const char * jarg2, const char * jarg3, const char * jarg4, double jarg5, unsigned int jarg6, double jarg7, unsigned int jarg8) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (double)jarg7; 
+  arg8 = (std::size_t)jarg8; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8));
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_3(void * jarg1, const char * jarg2, const char * jarg3, const char * jarg4, double jarg5, unsigned int jarg6, double jarg7) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  arg7 = (double)jarg7; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_4(void * jarg1, const char * jarg2, const char * jarg3, const char * jarg4, double jarg5, unsigned int jarg6) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (double)jarg5; 
+  arg6 = (std::size_t)jarg6; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6));
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_5(void * jarg1, const char * jarg2, const char * jarg3, const char * jarg4, double jarg5) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  arg5 = (double)jarg5; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_6(void * jarg1, const char * jarg2, const char * jarg3, const char * jarg4) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  if (!jarg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg4_str(jarg4);
+  arg4 = &arg4_str; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_7(void * jarg1, const char * jarg2, const char * jarg3) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  if (!jarg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg3_str(jarg3);
+  arg3 = &arg3_str; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INLAMixedModel__SWIG_8(void * jarg1, const char * jarg2) {
+  void * jresult ;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  arg1 = (datamunge::DataFrame *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  if (!jarg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return 0;
+  }
+  std::string arg2_str(jarg2);
+  arg2 = &arg2_str; 
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT const char * SWIGSTDCALL CSharp_INLAMixedModel_formula_text(void * jarg1) {
+  const char * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->formula_text();
+  jresult = SWIG_csharp_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT const char * SWIGSTDCALL CSharp_INLAMixedModel_family(void * jarg1) {
+  const char * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->family();
+  jresult = SWIG_csharp_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT const char * SWIGSTDCALL CSharp_INLAMixedModel_group_variable(void * jarg1) {
+  const char * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_variable();
+  jresult = SWIG_csharp_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_random_effect_names(void * jarg1) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_names();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_INLAMixedModel_observations(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->observations();
+  jresult = (unsigned int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_INLAMixedModel_num_groups(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->num_groups();
+  jresult = (unsigned int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_fixed_effects_mean(void * jarg1) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_mean();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_fixed_effects_sd(void * jarg1) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_sd();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_coefficient_names(void * jarg1) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->coefficient_names();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_random_effect_std_devs(void * jarg1) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_std_devs();
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_INLAMixedModel_residual_std_dev(void * jarg1) {
+  double jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->residual_std_dev();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_group_labels(void * jarg1) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_labels();
+  jresult = new std::vector< std::string >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_random_effects_mean_for_group(void * jarg1, unsigned int jarg2) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_mean_for_group(SWIG_STD_MOVE(arg2));
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_random_effects_sd_for_group(void * jarg1, unsigned int jarg2) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_sd_for_group(SWIG_STD_MOVE(arg2));
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_INLAMixedModel_log_marginal_likelihood(void * jarg1) {
+  double jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->log_marginal_likelihood();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT const char * SWIGSTDCALL CSharp_INLAMixedModel_summary(void * jarg1) {
+  const char * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  result = ((datamunge::INLAMixedModel const *)arg1)->summary();
+  jresult = SWIG_csharp_string_callback((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_INLAMixedModel_print_summary(void * jarg1) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  ((datamunge::INLAMixedModel const *)arg1)->print_summary();
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_INLAMixedModel_predict(void * jarg1, void * jarg2) {
+  void * jresult ;
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  arg2 = (datamunge::DataFrame *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::DataFrame const & is null", 0);
+    return 0;
+  } 
+  result = ((datamunge::INLAMixedModel const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_INLAMixedModel(void * jarg1) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  
+  arg1 = (datamunge::INLAMixedModel *)jarg1; 
+  delete arg1;
+}
+
+
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_LDA__SWIG_0(void * jarg1, const char * jarg2, void * jarg3) {
   void * jresult ;
   datamunge::DataFrame *arg1 = 0 ;
@@ -16822,6 +17406,208 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_outer(void * jarg1, void * jarg2) {
 }
 
 
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_from_image(void * jarg1) {
+  void * jresult ;
+  datamunge::image::Image *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::image::Image *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::image::Image const & is null", 0);
+    return 0;
+  } 
+  result = (datamunge::Tensor *)datamunge::Tensor::from_image((datamunge::image::Image const &)*arg1);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_conv2d__SWIG_0(void * jarg1, void * jarg2, void * jarg3, int jarg4, int jarg5) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  int arg5 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg2 = (datamunge::Tensor *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg3 = (datamunge::Tensor *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg4 = (int)jarg4; 
+  arg5 = (int)jarg5; 
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4,arg5);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_conv2d__SWIG_1(void * jarg1, void * jarg2, void * jarg3, int jarg4) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg2 = (datamunge::Tensor *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg3 = (datamunge::Tensor *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg4 = (int)jarg4; 
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_conv2d__SWIG_2(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg2 = (datamunge::Tensor *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  arg3 = (datamunge::Tensor *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::Tensor const & is null", 0);
+    return 0;
+  } 
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_max_pool2d__SWIG_0(void * jarg1, int jarg2, int jarg3) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1; 
+  arg2 = (int)jarg2; 
+  arg3 = (int)jarg3; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2,arg3);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_max_pool2d__SWIG_1(void * jarg1, int jarg2) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1; 
+  arg2 = (int)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_avg_pool2d__SWIG_0(void * jarg1, int jarg2, int jarg3) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1; 
+  arg2 = (int)jarg2; 
+  arg3 = (int)jarg3; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2,arg3);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_avg_pool2d__SWIG_1(void * jarg1, int jarg2) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1; 
+  arg2 = (int)jarg2; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_relu(void * jarg1) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->relu();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_sigmoid(void * jarg1) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sigmoid();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_Tensor_softmax(void * jarg1) {
+  void * jresult ;
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)jarg1; 
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->softmax();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT const char * SWIGSTDCALL CSharp_Tensor_to_string__SWIG_0(void * jarg1, unsigned int jarg2) {
   const char * jresult ;
   datamunge::Tensor *arg1 = 0 ;
@@ -21637,6 +22423,862 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_shapiro_francia_test(void * jarg1) {
   result = datamunge::stats::shapiro_francia_test((std::vector< double > const &)*arg1);
   jresult = new datamunge::stats::HypothesisTestResult(result); 
   return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_p_adjust__SWIG_0(void * jarg1, int jarg2) {
+  void * jresult ;
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::PAdjustMethod arg2 ;
+  std::vector< double > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  arg2 = (datamunge::stats::PAdjustMethod)jarg2; 
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1,arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_p_adjust__SWIG_1(void * jarg1) {
+  void * jresult ;
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_westfall_young_adjust(void * jarg1, void * jarg2) {
+  void * jresult ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (std::vector< std::vector< double > > *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< std::vector< double > > const & is null", 0);
+    return 0;
+  } 
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  result = datamunge::stats::westfall_young_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_romano_wolf_adjust(void * jarg1, void * jarg2) {
+  void * jresult ;
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (std::vector< std::vector< double > > *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< std::vector< double > > const & is null", 0);
+    return 0;
+  } 
+  arg2 = (std::vector< double > *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  result = datamunge::stats::romano_wolf_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMOptions_num_samples_set(void * jarg1, unsigned int jarg2) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->num_samples = arg2;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_RWMOptions_num_samples_get(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  result =  ((arg1)->num_samples);
+  jresult = (unsigned int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMOptions_num_warmup_set(void * jarg1, unsigned int jarg2) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->num_warmup = arg2;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_RWMOptions_num_warmup_get(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  result =  ((arg1)->num_warmup);
+  jresult = (unsigned int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMOptions_initial_step_size_set(void * jarg1, double jarg2) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->initial_step_size = arg2;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_RWMOptions_initial_step_size_get(void * jarg1) {
+  double jresult ;
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  result = (double) ((arg1)->initial_step_size);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMOptions_target_accept_rate_set(void * jarg1, double jarg2) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->target_accept_rate = arg2;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_RWMOptions_target_accept_rate_get(void * jarg1) {
+  double jresult ;
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  result = (double) ((arg1)->target_accept_rate);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMOptions_seed_set(void * jarg1, unsigned long long jarg2) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  arg2 = (std::uint64_t)jarg2; 
+  if (arg1) (arg1)->seed = arg2;
+}
+
+
+SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_RWMOptions_seed_get(void * jarg1) {
+  unsigned long long jresult ;
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  result = (std::uint64_t) ((arg1)->seed);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_RWMOptions() {
+  void * jresult ;
+  datamunge::bayes::RWMOptions *result = 0 ;
+  
+  result = (datamunge::bayes::RWMOptions *)new datamunge::bayes::RWMOptions();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_RWMOptions(void * jarg1) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMResult_samples_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1; 
+  arg2 = (std::vector< std::vector< double > > *)jarg2; 
+  if (arg1) (arg1)->samples = *arg2;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_RWMResult_samples_get(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1; 
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMResult_accept_rate_set(void * jarg1, double jarg2) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->accept_rate = arg2;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_RWMResult_accept_rate_get(void * jarg1) {
+  double jresult ;
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1; 
+  result = (double) ((arg1)->accept_rate);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_RWMResult_final_step_size_set(void * jarg1, double jarg2) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->final_step_size = arg2;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_RWMResult_final_step_size_get(void * jarg1) {
+  double jresult ;
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1; 
+  result = (double) ((arg1)->final_step_size);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_RWMResult() {
+  void * jresult ;
+  datamunge::bayes::RWMResult *result = 0 ;
+  
+  result = (datamunge::bayes::RWMResult *)new datamunge::bayes::RWMResult();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_RWMResult(void * jarg1) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_RandomWalkMetropolis__SWIG_0(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::RWMOptions arg1 ;
+  datamunge::bayes::RWMOptions *argp1 ;
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  
+  argp1 = (datamunge::bayes::RWMOptions *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null datamunge::bayes::RWMOptions", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis(SWIG_STD_MOVE(arg1));
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_RandomWalkMetropolis__SWIG_1() {
+  void * jresult ;
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_RandomWalkMetropolis_sample(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult ;
+  datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  datamunge::bayes::RWMResult result;
+  
+  arg1 = (datamunge::bayes::RandomWalkMetropolis *)jarg1; 
+  arg2 = (datamunge::optim::ArbitraryFunction *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::optim::ArbitraryFunction & is null", 0);
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  result = ((datamunge::bayes::RandomWalkMetropolis const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  jresult = new datamunge::bayes::RWMResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_RandomWalkMetropolis(void * jarg1) {
+  datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::RandomWalkMetropolis *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsOptions_num_samples_set(void * jarg1, unsigned int jarg2) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->num_samples = arg2;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_GibbsOptions_num_samples_get(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  result =  ((arg1)->num_samples);
+  jresult = (unsigned int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsOptions_num_warmup_set(void * jarg1, unsigned int jarg2) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->num_warmup = arg2;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_GibbsOptions_num_warmup_get(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  result =  ((arg1)->num_warmup);
+  jresult = (unsigned int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsOptions_initial_step_sizes_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  arg2 = (std::vector< double > *)jarg2; 
+  if (arg1) (arg1)->initial_step_sizes = *arg2;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_GibbsOptions_initial_step_sizes_get(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  result = (std::vector< double > *)& ((arg1)->initial_step_sizes);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsOptions_target_accept_rate_set(void * jarg1, double jarg2) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->target_accept_rate = arg2;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_GibbsOptions_target_accept_rate_get(void * jarg1) {
+  double jresult ;
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  result = (double) ((arg1)->target_accept_rate);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsOptions_seed_set(void * jarg1, unsigned long long jarg2) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  arg2 = (std::uint64_t)jarg2; 
+  if (arg1) (arg1)->seed = arg2;
+}
+
+
+SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_GibbsOptions_seed_get(void * jarg1) {
+  unsigned long long jresult ;
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  result = (std::uint64_t) ((arg1)->seed);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GibbsOptions() {
+  void * jresult ;
+  datamunge::bayes::GibbsOptions *result = 0 ;
+  
+  result = (datamunge::bayes::GibbsOptions *)new datamunge::bayes::GibbsOptions();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_GibbsOptions(void * jarg1) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsResult_samples_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)jarg1; 
+  arg2 = (std::vector< std::vector< double > > *)jarg2; 
+  if (arg1) (arg1)->samples = *arg2;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_GibbsResult_samples_get(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)jarg1; 
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsResult_accept_rates_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)jarg1; 
+  arg2 = (std::vector< double > *)jarg2; 
+  if (arg1) (arg1)->accept_rates = *arg2;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_GibbsResult_accept_rates_get(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)jarg1; 
+  result = (std::vector< double > *)& ((arg1)->accept_rates);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_GibbsResult_final_step_sizes_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)jarg1; 
+  arg2 = (std::vector< double > *)jarg2; 
+  if (arg1) (arg1)->final_step_sizes = *arg2;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_GibbsResult_final_step_sizes_get(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)jarg1; 
+  result = (std::vector< double > *)& ((arg1)->final_step_sizes);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GibbsResult() {
+  void * jresult ;
+  datamunge::bayes::GibbsResult *result = 0 ;
+  
+  result = (datamunge::bayes::GibbsResult *)new datamunge::bayes::GibbsResult();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_GibbsResult(void * jarg1) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GibbsSampler__SWIG_0(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::GibbsOptions arg1 ;
+  datamunge::bayes::GibbsOptions *argp1 ;
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  
+  argp1 = (datamunge::bayes::GibbsOptions *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null datamunge::bayes::GibbsOptions", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler(SWIG_STD_MOVE(arg1));
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GibbsSampler__SWIG_1() {
+  void * jresult ;
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_GibbsSampler_sample(void * jarg1, void * jarg2, void * jarg3) {
+  void * jresult ;
+  datamunge::bayes::GibbsSampler *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  datamunge::bayes::GibbsResult result;
+  
+  arg1 = (datamunge::bayes::GibbsSampler *)jarg1; 
+  arg2 = (datamunge::optim::ArbitraryFunction *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::optim::ArbitraryFunction & is null", 0);
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  result = ((datamunge::bayes::GibbsSampler const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  jresult = new datamunge::bayes::GibbsResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_GibbsSampler(void * jarg1) {
+  datamunge::bayes::GibbsSampler *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsSampler *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_ImportanceSamplingOptions_num_samples_set(void * jarg1, unsigned int jarg2) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)jarg1; 
+  arg2 = (std::size_t)jarg2; 
+  if (arg1) (arg1)->num_samples = arg2;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_ImportanceSamplingOptions_num_samples_get(void * jarg1) {
+  unsigned int jresult ;
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)jarg1; 
+  result =  ((arg1)->num_samples);
+  jresult = (unsigned int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_ImportanceSamplingOptions_seed_set(void * jarg1, unsigned long long jarg2) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)jarg1; 
+  arg2 = (std::uint64_t)jarg2; 
+  if (arg1) (arg1)->seed = arg2;
+}
+
+
+SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_ImportanceSamplingOptions_seed_get(void * jarg1) {
+  unsigned long long jresult ;
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)jarg1; 
+  result = (std::uint64_t) ((arg1)->seed);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_ImportanceSamplingOptions() {
+  void * jresult ;
+  datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+  
+  result = (datamunge::bayes::ImportanceSamplingOptions *)new datamunge::bayes::ImportanceSamplingOptions();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_ImportanceSamplingOptions(void * jarg1) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_ImportanceSamplingResult_samples_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  arg2 = (std::vector< std::vector< double > > *)jarg2; 
+  if (arg1) (arg1)->samples = *arg2;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_ImportanceSamplingResult_samples_get(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_ImportanceSamplingResult_normalized_weights_set(void * jarg1, void * jarg2) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  arg2 = (std::vector< double > *)jarg2; 
+  if (arg1) (arg1)->normalized_weights = *arg2;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_ImportanceSamplingResult_normalized_weights_get(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  result = (std::vector< double > *)& ((arg1)->normalized_weights);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_ImportanceSamplingResult_effective_sample_size_set(void * jarg1, double jarg2) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->effective_sample_size = arg2;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_ImportanceSamplingResult_effective_sample_size_get(void * jarg1) {
+  double jresult ;
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  result = (double) ((arg1)->effective_sample_size);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_ImportanceSamplingResult_log_evidence_set(void * jarg1, double jarg2) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  arg2 = (double)jarg2; 
+  if (arg1) (arg1)->log_evidence = arg2;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_ImportanceSamplingResult_log_evidence_get(void * jarg1) {
+  double jresult ;
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  result = (double) ((arg1)->log_evidence);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_ImportanceSamplingResult() {
+  void * jresult ;
+  datamunge::bayes::ImportanceSamplingResult *result = 0 ;
+  
+  result = (datamunge::bayes::ImportanceSamplingResult *)new datamunge::bayes::ImportanceSamplingResult();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_ImportanceSamplingResult(void * jarg1) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_ImportanceSampling__SWIG_0(void * jarg1) {
+  void * jresult ;
+  datamunge::bayes::ImportanceSamplingOptions arg1 ;
+  datamunge::bayes::ImportanceSamplingOptions *argp1 ;
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  
+  argp1 = (datamunge::bayes::ImportanceSamplingOptions *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null datamunge::bayes::ImportanceSamplingOptions", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling(SWIG_STD_MOVE(arg1));
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_ImportanceSampling__SWIG_1() {
+  void * jresult ;
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_ImportanceSampling_sample(void * jarg1, void * jarg2, void * jarg3, void * jarg4) {
+  void * jresult ;
+  datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  datamunge::bayes::ImportanceSamplingResult result;
+  
+  arg1 = (datamunge::bayes::ImportanceSampling *)jarg1; 
+  arg2 = (datamunge::optim::ArbitraryFunction *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "datamunge::optim::ArbitraryFunction & is null", 0);
+    return 0;
+  } 
+  arg3 = (std::vector< double > *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  arg4 = (std::vector< std::vector< double > > *)jarg4;
+  if (!arg4) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< std::vector< double > > const & is null", 0);
+    return 0;
+  } 
+  result = ((datamunge::bayes::ImportanceSampling const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4);
+  jresult = new datamunge::bayes::ImportanceSamplingResult(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_ImportanceSampling(void * jarg1) {
+  datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSampling *)jarg1; 
+  delete arg1;
 }
 
 

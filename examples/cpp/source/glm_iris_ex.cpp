@@ -67,7 +67,7 @@ int main() {
     grid.add_column("Petal.Width", grid_width);
     const auto curve = logit.predict(grid, GLMPredictionInterval::Confidence);
 
-    auto plot = datamunge::plot::ScatterPlot::create();
+    auto plot = datamunge::plot::RPlot::create();
     std::vector<double> obs_x0, obs_y0, obs_x1, obs_y1;
     for (std::size_t i = 0; i < is_virginica.size(); ++i) {
         (is_virginica[i] > 0.5 ? obs_x1 : obs_x0).push_back(petal_length[i]);

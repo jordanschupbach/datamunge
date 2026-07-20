@@ -204,12 +204,12 @@ KNNClassifierPrediction KNNClassifier::predict_detail(const dstruct::DataFrame& 
     return result;
 }
 
-plot::ScatterPlot KNNClassifier::plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
+plot::RPlot KNNClassifier::plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
                                                       const std::string& y_feature) const {
     const auto  predictions = predict(data);
     const auto& response    = design_.response_name;
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -240,7 +240,7 @@ plot::ScatterPlot KNNClassifier::plot_classification(const dstruct::DataFrame& d
     return plot;
 }
 
-plot::ScatterPlot KNNClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+plot::RPlot KNNClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
                                                         std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
         throw std::invalid_argument("KNNClassifier::plot_decision_regions: model must have exactly 2 predictors");
@@ -263,7 +263,7 @@ plot::ScatterPlot KNNClassifier::plot_decision_regions(const std::string& x_feat
     y_min -= y_pad;
     y_max += y_pad;
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     std::vector<std::vector<double>> grid_x(classes_.size()), grid_y(classes_.size());
     for (std::size_t gx = 0; gx < grid_resolution; ++gx) {
         for (std::size_t gy = 0; gy < grid_resolution; ++gy) {

@@ -141,6 +141,7 @@ prebuild-r:
   perl -0777 -pi -e "s/'R_swig_SeasonalType_(?!SeasonalType_)/'R_swig_SeasonalType_SeasonalType_/g" R/datamunger.R
   perl -0777 -pi -e "s/'R_swig_Alternative_(?!Alternative_)/'R_swig_Alternative_Alternative_/g" R/datamunger.R
   perl -0777 -pi -e "s/'R_swig_PAdjustMethod_(?!PAdjustMethod_)/'R_swig_PAdjustMethod_PAdjustMethod_/g" R/datamunger.R
+  perl -0777 -pi -e "s/'R_swig_MonomialOrder_(?!MonomialOrder_)/'R_swig_MonomialOrder_MonomialOrder_/g" R/datamunger.R
   # Work around a second swig-jse R-backend bug: std::vector<std::size_t> (used throughout
   # this codebase, vs. the bare std::vector<size_t> the SizeVector %template/%apply fix is
   # keyed to -- see the size_t %apply notes elsewhere in this file) gets its own, never-
@@ -158,6 +159,14 @@ prebuild-r:
   # match, so only by-value vector<size_t> returns (e.g. KMeans_labels, DataFrame_shape,
   # Tensor_shape) get unwrapped.
   perl -0777 -pi -e "s/;ans = (\.Call\('R_swig_[^\n]*?PACKAGE='datamunger'\));\n\s*ans <- if \(is\.null\(ans\)\) ans\n\s*else new\(\"_p_std__vectorT_size_t_t\", ref=ans\);\n\s*\n\s*ans\n/;\$1;\n/g" R/datamunger.R
+  # Fourth swig-jse R-backend bug: an overload-dispatch check for a std::vector<std::vector<double>>
+  # parameter (e.g. RPlot::boxplot's `groups`) generates
+  # `all(sapply(argv[[1]], is.integer) || sapply(argv[[1]], is.numeric))` -- the `||` between
+  # two per-element sapply() results is only safe when the list has exactly one element (both
+  # sides then reduce to length-1 logicals); with two or more groups each side is a longer
+  # vector and R >= 4.3 hard-errors on `||`/`&&` with non-scalar operands. Use the element-wise
+  # `|` operator instead (still safe pre-4.3), which `all()` can then correctly reduce.
+  perl -0777 -pi -e "s/sapply\(argv\[\[1\]\] , is\.integer\) \|\| sapply\(argv\[\[1\]\], is\.numeric\)/sapply(argv[[1]] , is.integer) | sapply(argv[[1]], is.numeric)/g" R/datamunger.R
 
 prebuild-perl:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"

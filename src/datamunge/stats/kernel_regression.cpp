@@ -231,7 +231,7 @@ std::vector<double> KernelRegression::predict(const dstruct::DataFrame& newdata)
     return result;
 }
 
-plot::ScatterPlot KernelRegression::plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution) const {
+plot::RPlot KernelRegression::plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution) const {
     if (predictor_names_.size() != 1)
         throw std::invalid_argument("KernelRegression::plot_fit: only supported for a single-predictor model");
     const auto& x_feature = predictor_names_[0];
@@ -249,7 +249,7 @@ plot::ScatterPlot KernelRegression::plot_fit(const dstruct::DataFrame& data, std
     grid.add_column(x_feature, grid_x);
     const auto grid_y = predict(grid);
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
 
     std::vector<double> actual_x, actual_y;
     for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -266,24 +266,24 @@ plot::ScatterPlot KernelRegression::plot_fit(const dstruct::DataFrame& data, std
     return plot;
 }
 
-plot::ScatterPlot KernelRegression::plot_predicted_vs_actual() const {
-    auto plot = plot::ScatterPlot::create();
+plot::RPlot KernelRegression::plot_predicted_vs_actual() const {
+    auto plot = plot::RPlot::create();
     plot.points(training_y_, fitted_, "predictions");
     plot.title("Predicted vs Actual (leave-one-out)").x_label("Actual").y_label("Predicted");
     return plot;
 }
 
-plot::ScatterPlot KernelRegression::plot_residuals_vs_fitted() const {
+plot::RPlot KernelRegression::plot_residuals_vs_fitted() const {
     std::vector<double> residuals(training_y_.size());
     for (std::size_t i = 0; i < training_y_.size(); ++i) residuals[i] = training_y_[i] - fitted_[i];
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     plot.points(fitted_, residuals, "residuals");
     plot.title("Residuals vs Fitted (leave-one-out)").x_label("Fitted values").y_label("Residuals");
     return plot;
 }
 
-plot::ScatterPlot KernelRegression::plot_cv_curve() const {
+plot::RPlot KernelRegression::plot_cv_curve() const {
     if (!bandwidth_was_selected_)
         throw std::invalid_argument("KernelRegression::plot_cv_curve: no cross-validation curve for a fixed-"
                                     "bandwidth fit");
@@ -291,7 +291,7 @@ plot::ScatterPlot KernelRegression::plot_cv_curve() const {
     const auto best_it = std::min_element(cv_mse_.begin(), cv_mse_.end());
     const auto best_k   = static_cast<std::size_t>(best_it - cv_mse_.begin());
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     plot.line(bandwidth_grid_, cv_mse_, "LOO CV mean squared error");
     plot.points({bandwidth_grid_[best_k]}, {cv_mse_[best_k]}, "selected bandwidth", {220, 38, 38}, 8.0);
     plot.title("Bandwidth Cross-Validation Curve").x_label("Bandwidth").y_label("LOO mean squared error");

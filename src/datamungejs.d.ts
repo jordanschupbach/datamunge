@@ -289,6 +289,89 @@ export  class DataFrame {
  static penguins(): DataFrame;
 }
 
+export  class GGPlot {
+
+  constructor(data: DataFrame, x_column: string, y_column: string, color_column: string, fill_column: string, group_column: string);
+
+  constructor(data: DataFrame, x_column: string, y_column: string, color_column: string, fill_column: string);
+
+  constructor(data: DataFrame, x_column: string, y_column: string, color_column: string);
+
+  constructor(data: DataFrame, x_column: string, y_column: string);
+
+  constructor(data: DataFrame, x_column: string);
+
+  geom_point(color: any, size: number): GGPlot;
+
+  geom_point(color: any): GGPlot;
+
+  geom_point(): GGPlot;
+
+  geom_line(color: any, width: number): GGPlot;
+
+  geom_line(color: any): GGPlot;
+
+  geom_line(): GGPlot;
+
+  geom_bar(color: any): GGPlot;
+
+  geom_bar(): GGPlot;
+
+  geom_col(color: any): GGPlot;
+
+  geom_col(): GGPlot;
+
+  geom_histogram(bins: any, color: any): GGPlot;
+
+  geom_histogram(bins: any): GGPlot;
+
+  geom_histogram(): GGPlot;
+
+  geom_boxplot(color: any): GGPlot;
+
+  geom_boxplot(): GGPlot;
+
+  geom_smooth(color: any): GGPlot;
+
+  geom_smooth(): GGPlot;
+
+  geom_area(color: any): GGPlot;
+
+  geom_area(): GGPlot;
+
+  geom_ribbon(ymin_column: string, ymax_column: string, color: any): GGPlot;
+
+  geom_ribbon(ymin_column: string, ymax_column: string): GGPlot;
+
+  geom_density(color: any): GGPlot;
+
+  geom_density(): GGPlot;
+
+  facet_wrap(column: string, ncol: any): GGPlot;
+
+  facet_wrap(column: string): GGPlot;
+
+  theme_minimal(): GGPlot;
+
+  theme_bw(): GGPlot;
+
+  theme_classic(): GGPlot;
+
+  scale_color_manual(values: any): GGPlot;
+
+  labs(title: string, x: string, y: string): GGPlot;
+
+  labs(title: string, x: string): GGPlot;
+
+  labs(title: string): GGPlot;
+
+  labs(): GGPlot;
+
+  save(path: string): void;
+
+  save_svg(path: string): void;
+}
+
 export  class LM {
 
   constructor(data: DataFrame, formula: string, weights_column: string);
@@ -502,6 +585,63 @@ export  class GLMM {
   aic(): number;
 
   bic(): number;
+
+  summary(): string;
+
+  print_summary(): void;
+
+  predict(newdata: DataFrame): any;
+}
+
+export  class INLAMixedModel {
+
+  constructor(data: DataFrame, formula: string, family: string, strategy: string, fixed_effect_prior_sd: number, grid_points_per_dim: any, grid_span: number, mode_population_size: any, mode_max_generations: any, seed: any);
+
+  constructor(data: DataFrame, formula: string, family: string, strategy: string, fixed_effect_prior_sd: number, grid_points_per_dim: any, grid_span: number, mode_population_size: any, mode_max_generations: any);
+
+  constructor(data: DataFrame, formula: string, family: string, strategy: string, fixed_effect_prior_sd: number, grid_points_per_dim: any, grid_span: number, mode_population_size: any);
+
+  constructor(data: DataFrame, formula: string, family: string, strategy: string, fixed_effect_prior_sd: number, grid_points_per_dim: any, grid_span: number);
+
+  constructor(data: DataFrame, formula: string, family: string, strategy: string, fixed_effect_prior_sd: number, grid_points_per_dim: any);
+
+  constructor(data: DataFrame, formula: string, family: string, strategy: string, fixed_effect_prior_sd: number);
+
+  constructor(data: DataFrame, formula: string, family: string, strategy: string);
+
+  constructor(data: DataFrame, formula: string, family: string);
+
+  constructor(data: DataFrame, formula: string);
+
+  formula_text(): string;
+
+  family(): string;
+
+  group_variable(): string;
+
+  random_effect_names(): any;
+
+  observations(): any;
+
+  num_groups(): any;
+
+  fixed_effects_mean(): any;
+
+  fixed_effects_sd(): any;
+
+  coefficient_names(): any;
+
+  random_effect_std_devs(): any;
+
+  residual_std_dev(): number;
+
+  group_labels(): any;
+
+  random_effects_mean_for_group(group_index: any): any;
+
+  random_effects_sd_for_group(group_index: any): any;
+
+  log_marginal_likelihood(): number;
 
   summary(): string;
 
@@ -1762,6 +1902,28 @@ export  class Tensor {
 
   outer(other: Tensor): Tensor;
 
+ static from_image(img: any): Tensor;
+
+ static conv2d(input: Tensor, kernel: Tensor, bias: Tensor, stride: number, padding: number): Tensor;
+
+ static conv2d(input: Tensor, kernel: Tensor, bias: Tensor, stride: number): Tensor;
+
+ static conv2d(input: Tensor, kernel: Tensor, bias: Tensor): Tensor;
+
+  max_pool2d(pool_size: number, stride: number): Tensor;
+
+  max_pool2d(pool_size: number): Tensor;
+
+  avg_pool2d(pool_size: number, stride: number): Tensor;
+
+  avg_pool2d(pool_size: number): Tensor;
+
+  relu(): Tensor;
+
+  sigmoid(): Tensor;
+
+  softmax(): Tensor;
+
   to_string(max_elements: any): string;
 
   to_string(): string;
@@ -1944,6 +2106,14 @@ export  class DataSeries {
 
  static readonly Kind_Bar: DataSeries_Kind;
 
+ static readonly Kind_Box: DataSeries_Kind;
+
+ static readonly Kind_Polygon: DataSeries_Kind;
+
+ static readonly Kind_Text: DataSeries_Kind;
+
+ static readonly Kind_Segment: DataSeries_Kind;
+
   kind: any;
 
   x: any;
@@ -1959,6 +2129,32 @@ export  class DataSeries {
   marker_size: number;
 
   bar_width: number;
+
+  filled: boolean;
+
+  constructor();
+}
+
+export  class ABLine {
+
+  vertical: boolean;
+
+  value: number;
+
+  slope: number;
+
+  color: RGB;
+
+  stroke_width: number;
+
+  constructor();
+}
+
+export  class LegendEntry {
+
+  label: string;
+
+  color: RGB;
 
   constructor();
 }
@@ -1986,6 +2182,12 @@ export  class Plot {
   x_limits(min_x: number, max_x: number): Plot;
 
   y_limits(min_y: number, max_y: number): Plot;
+
+  hide_axes(enabled: boolean): Plot;
+
+  hide_axes(): Plot;
+
+  x_tick_labels(labels: any): Plot;
 
   width(): any;
 
@@ -2019,6 +2221,14 @@ export  class Plot {
 
   y_max(): number;
 
+  axes_hidden(): boolean;
+
+  x_tick_label_list(): any;
+
+  reference_lines(): any;
+
+  legend_entries(): any;
+
   save(path: string): void;
 
   save_svg(path: string): void;
@@ -2034,55 +2244,158 @@ export  class Plot {
   constructor();
 }
 
-export  class ScatterPlot extends Plot {
+export  class RPlot extends Plot {
 
- static create(): ScatterPlot;
+ static create(): RPlot;
 
-  points(x: any, y: any, label: string, color: RGB, marker_size: number): ScatterPlot;
+ static plot(x: any, y: any, type: string, label: string, color: RGB): RPlot;
 
-  points(x: any, y: any, label: string, color: RGB): ScatterPlot;
+ static plot(x: any, y: any, type: string, label: string): RPlot;
 
-  points(x: any, y: any, label: string): ScatterPlot;
+ static plot(x: any, y: any, type: string): RPlot;
 
-  points(x: any, y: any): ScatterPlot;
+ static plot(x: any, y: any): RPlot;
 
-  line(x: any, y: any, label: string, color: RGB, stroke_width: number): ScatterPlot;
+ static hist(data: any, bins: any, label: string, color: RGB): RPlot;
 
-  line(x: any, y: any, label: string, color: RGB): ScatterPlot;
+ static hist(data: any, bins: any, label: string): RPlot;
 
-  line(x: any, y: any, label: string): ScatterPlot;
+ static hist(data: any, bins: any): RPlot;
 
-  line(x: any, y: any): ScatterPlot;
+ static hist(data: any): RPlot;
+
+ static barplot(heights: any, names: any, label: string, color: RGB): RPlot;
+
+ static barplot(heights: any, names: any, label: string): RPlot;
+
+ static barplot(heights: any, names: any): RPlot;
+
+ static barplot(heights: any): RPlot;
+
+ static boxplot(groups: any, names: any, color: RGB): RPlot;
+
+ static boxplot(groups: any, names: any): RPlot;
+
+ static boxplot(groups: any): RPlot;
+
+ static pie(values: any, names: any, colors: any): RPlot;
+
+ static pie(values: any, names: any): RPlot;
+
+ static pie(values: any): RPlot;
+
+ static curve(f: Callback, from: number, to: number, n: any, label: string, color: RGB): RPlot;
+
+ static curve(f: Callback, from: number, to: number, n: any, label: string): RPlot;
+
+ static curve(f: Callback, from: number, to: number, n: any): RPlot;
+
+ static curve(f: Callback, from: number, to: number): RPlot;
+
+ static qqnorm(data: any, label: string, color: RGB): RPlot;
+
+ static qqnorm(data: any, label: string): RPlot;
+
+ static qqnorm(data: any): RPlot;
+
+  points(x: any, y: any, label: string, color: RGB, marker_size: number): RPlot;
+
+  points(x: any, y: any, label: string, color: RGB): RPlot;
+
+  points(x: any, y: any, label: string): RPlot;
+
+  points(x: any, y: any): RPlot;
+
+  line(x: any, y: any, label: string, color: RGB, stroke_width: number): RPlot;
+
+  line(x: any, y: any, label: string, color: RGB): RPlot;
+
+  line(x: any, y: any, label: string): RPlot;
+
+  line(x: any, y: any): RPlot;
+
+  lines(x: any, y: any, label: string, color: RGB, stroke_width: number): RPlot;
+
+  lines(x: any, y: any, label: string, color: RGB): RPlot;
+
+  lines(x: any, y: any, label: string): RPlot;
+
+  lines(x: any, y: any): RPlot;
+
+  bars(x: any, y: any, label: string, color: RGB, bar_width: number): RPlot;
+
+  bars(x: any, y: any, label: string, color: RGB): RPlot;
+
+  bars(x: any, y: any, label: string): RPlot;
+
+  bars(x: any, y: any): RPlot;
+
+  box(position: number, whisker_lo: number, q1: number, median: number, q3: number, whisker_hi: number, outliers: any, color: RGB, width: number): RPlot;
+
+  box(position: number, whisker_lo: number, q1: number, median: number, q3: number, whisker_hi: number, outliers: any, color: RGB): RPlot;
+
+  box(position: number, whisker_lo: number, q1: number, median: number, q3: number, whisker_hi: number, outliers: any): RPlot;
+
+  box(position: number, whisker_lo: number, q1: number, median: number, q3: number, whisker_hi: number): RPlot;
+
+  abline(intercept: number, slope: number, color: RGB, stroke_width: number): RPlot;
+
+  abline(intercept: number, slope: number, color: RGB): RPlot;
+
+  abline(intercept: number, slope: number): RPlot;
+
+  abline_h(y_value: number, color: RGB, stroke_width: number): RPlot;
+
+  abline_h(y_value: number, color: RGB): RPlot;
+
+  abline_h(y_value: number): RPlot;
+
+  abline_v(x_value: number, color: RGB, stroke_width: number): RPlot;
+
+  abline_v(x_value: number, color: RGB): RPlot;
+
+  abline_v(x_value: number): RPlot;
+
+  qqline(data: any, color: RGB, stroke_width: number): RPlot;
+
+  qqline(data: any, color: RGB): RPlot;
+
+  qqline(data: any): RPlot;
+
+  legend(labels: any, colors: any): RPlot;
+
+  text(x: number, y: number, label: string, color: RGB, font_size: number): RPlot;
+
+  text(x: number, y: number, label: string, color: RGB): RPlot;
+
+  text(x: number, y: number, label: string): RPlot;
+
+  polygon(x: any, y: any, color: RGB, filled: boolean): RPlot;
+
+  polygon(x: any, y: any, color: RGB): RPlot;
+
+  polygon(x: any, y: any): RPlot;
+
+  segments(x0: any, y0: any, x1: any, y1: any, color: RGB, stroke_width: number): RPlot;
+
+  segments(x0: any, y0: any, x1: any, y1: any, color: RGB): RPlot;
+
+  segments(x0: any, y0: any, x1: any, y1: any): RPlot;
 
   constructor();
 }
 
-export  class LinePlot extends Plot {
+export  class RLayout {
 
- static create(): LinePlot;
+ static create(rows: any, cols: any): RLayout;
 
-  line(x: any, y: any, label: string, color: RGB, stroke_width: number): LinePlot;
+  add(panel: Plot | RPlot): RLayout;
 
-  line(x: any, y: any, label: string, color: RGB): LinePlot;
+  size(width: any, height: any): RLayout;
 
-  line(x: any, y: any, label: string): LinePlot;
+  save(path: string): void;
 
-  line(x: any, y: any): LinePlot;
-
-  constructor();
-}
-
-export  class BarChart extends Plot {
-
- static create(): BarChart;
-
-  bars(x: any, y: any, label: string, color: RGB, bar_width: number): BarChart;
-
-  bars(x: any, y: any, label: string, color: RGB): BarChart;
-
-  bars(x: any, y: any, label: string): BarChart;
-
-  bars(x: any, y: any): BarChart;
+  save_svg(path: string): void;
 
   constructor();
 }
@@ -2369,6 +2682,30 @@ export function fisher_exact_test_2x2(a: any, b: any, c: any, d: any, alternativ
 export function fisher_exact_test_2x2(a: any, b: any, c: any, d: any): HypothesisTestResult;
 
 export function shapiro_francia_test(x: any): HypothesisTestResult;
+
+export const PAdjustMethod_Bonferroni: PAdjustMethod;
+
+export const PAdjustMethod_Holm: PAdjustMethod;
+
+export const PAdjustMethod_Hochberg: PAdjustMethod;
+
+export const PAdjustMethod_Hommel: PAdjustMethod;
+
+export const PAdjustMethod_BH: PAdjustMethod;
+
+export const PAdjustMethod_BY: PAdjustMethod;
+
+export const PAdjustMethod_None: PAdjustMethod;
+
+export type PAdjustMethod = number & { readonly [_SWIG_type_tag]: 'PAdjustMethod'; };
+
+export function p_adjust(p: any, method: any): any;
+
+export function p_adjust(p: any): any;
+
+export function westfall_young_adjust(resampled_p: any, sorted_p: any): any;
+
+export function romano_wolf_adjust(resampled_p: any, sorted_p: any): any;
 
 export abstract class ArbitraryFunction {
 
@@ -2730,4 +3067,107 @@ export  class NUTS {
   sample(log_posterior: DifferentiableFunction | DifferentiableSeparableFunction, initial_params: any): NUTSResult;
 }
 
+export  class RWMOptions {
+
+  num_samples: any;
+
+  num_warmup: any;
+
+  initial_step_size: number;
+
+  target_accept_rate: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class RWMResult {
+
+  samples: any;
+
+  accept_rate: number;
+
+  final_step_size: number;
+
+  constructor();
+}
+
+export  class RandomWalkMetropolis {
+
+  constructor(options: RWMOptions);
+
+  constructor();
+
+  sample(log_posterior: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, initial_params: any): RWMResult;
+}
+
+export  class GibbsOptions {
+
+  num_samples: any;
+
+  num_warmup: any;
+
+  initial_step_sizes: any;
+
+  target_accept_rate: number;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class GibbsResult {
+
+  samples: any;
+
+  accept_rates: any;
+
+  final_step_sizes: any;
+
+  constructor();
+}
+
+export  class GibbsSampler {
+
+  constructor(options: GibbsOptions);
+
+  constructor();
+
+  sample(log_posterior: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, initial_params: any): GibbsResult;
+}
+
+export  class ImportanceSamplingOptions {
+
+  num_samples: any;
+
+  seed: number;
+
+  constructor();
+}
+
+export  class ImportanceSamplingResult {
+
+  samples: any;
+
+  normalized_weights: any;
+
+  effective_sample_size: number;
+
+  log_evidence: number;
+
+  constructor();
+}
+
+export  class ImportanceSampling {
+
+  constructor(options: ImportanceSamplingOptions);
+
+  constructor();
+
+  sample(log_target: ArbitraryFunction | DifferentiableSeparableFunction | DifferentiableFunction | SeparableFunction, proposal_mean: any, proposal_covariance: any): ImportanceSamplingResult;
+}
+
+
+export type Callback = (unknown & { readonly [_SWIG_type_tag]: 'Callback'; }) | null;
 
