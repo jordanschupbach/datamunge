@@ -246,18 +246,18 @@ std::vector<double> DecisionTreeRegressor::predict(const dstruct::DataFrame& new
     return result;
 }
 
-plot::ScatterPlot DecisionTreeRegressor::plot_predicted_vs_actual() const {
-    auto plot = plot::ScatterPlot::create();
+plot::RPlot DecisionTreeRegressor::plot_predicted_vs_actual() const {
+    auto plot = plot::RPlot::create();
     plot.points(training_y_, fitted_values_, "predictions");
     plot.title("Predicted vs Actual").x_label("Actual").y_label("Predicted");
     return plot;
 }
 
-plot::ScatterPlot DecisionTreeRegressor::plot_residuals_vs_fitted() const {
+plot::RPlot DecisionTreeRegressor::plot_residuals_vs_fitted() const {
     std::vector<double> residuals(training_y_.size());
     for (std::size_t i = 0; i < training_y_.size(); ++i) residuals[i] = training_y_[i] - fitted_values_[i];
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     plot.points(fitted_values_, residuals, "residuals");
     plot.title("Residuals vs Fitted").x_label("Fitted values").y_label("Residuals");
     return plot;

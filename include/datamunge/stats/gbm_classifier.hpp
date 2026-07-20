@@ -71,11 +71,11 @@ class GBMClassifier {
     [[nodiscard]] std::vector<std::string>          predict(const dstruct::DataFrame& newdata) const;
     [[nodiscard]] GBMClassifierPrediction           predict_detail(const dstruct::DataFrame& newdata) const;
 
-    [[nodiscard]] plot::ScatterPlot plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
+    [[nodiscard]] plot::RPlot plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
                                                          const std::string& y_feature) const;
-    [[nodiscard]] plot::ScatterPlot plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+    [[nodiscard]] plot::RPlot plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
                                                           std::size_t grid_resolution = 60) const;
-    [[nodiscard]] plot::ScatterPlot plot_training_deviance() const;
+    [[nodiscard]] plot::RPlot plot_training_deviance() const;
 
  private:
     void fit(const dstruct::DataFrame& data);

@@ -27,7 +27,6 @@ let
     buildInputs = [
       pkgs.clang
       pkgs.arrow-cpp
-      pkgs.zlib
     ];
 
     cmakeFlags = [

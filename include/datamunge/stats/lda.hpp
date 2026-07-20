@@ -70,7 +70,7 @@ class LDA {
     // Scatter of the training data's first two discriminant scores
     // (LD1 vs LD2; LD1 vs a jittered baseline if there is only one),
     // colored by true class.
-    [[nodiscard]] plot::ScatterPlot plot_discriminants() const;
+    [[nodiscard]] plot::RPlot plot_discriminants() const;
     void                            save_discriminant_plot(const std::string& path) const;
 
  private:

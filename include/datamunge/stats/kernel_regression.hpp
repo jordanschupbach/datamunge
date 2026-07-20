@@ -78,12 +78,12 @@ class KernelRegression {
 
     // Scatter of `data` plus the fitted kernel-regression curve across the
     // predictor's range; only valid for a single-predictor model (throws otherwise).
-    [[nodiscard]] plot::ScatterPlot plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution = 200) const;
-    [[nodiscard]] plot::ScatterPlot plot_predicted_vs_actual() const;
-    [[nodiscard]] plot::ScatterPlot plot_residuals_vs_fitted() const;
+    [[nodiscard]] plot::RPlot plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution = 200) const;
+    [[nodiscard]] plot::RPlot plot_predicted_vs_actual() const;
+    [[nodiscard]] plot::RPlot plot_residuals_vs_fitted() const;
     // Leave-one-out CV curve across the bandwidth grid with the selected bandwidth marked; throws unless the
     // bandwidth was auto-selected.
-    [[nodiscard]] plot::ScatterPlot plot_cv_curve() const;
+    [[nodiscard]] plot::RPlot plot_cv_curve() const;
 
  private:
     void   fit(const dstruct::DataFrame& data);

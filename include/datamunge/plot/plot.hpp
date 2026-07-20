@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+namespace datamunge {
+class Callback;
+} // namespace datamunge
+
 namespace datamunge::plot {
 
 struct RGB {
@@ -17,6 +21,10 @@ struct DataSeries {
     Scatter,
     Line,
     Bar,
+    Box,     // one box-and-whisker: x = {position}, y = {whisker_lo, q1, median, q3, whisker_hi, outlier...}
+    Polygon, // closed polygon / pie wedge: x/y are vertices, `filled` selects fill vs. stroke-only
+    Text,    // single label drawn at (x[0], y[0]); `label` is the text, `marker_size` is the font size
+    Segment, // disconnected line segments: consecutive pairs (x[2i],y[2i])-(x[2i+1],y[2i+1])
   };
 
   Kind                kind{Kind::Line};
@@ -27,6 +35,23 @@ struct DataSeries {
   double              stroke_width{2.0};
   double              marker_size{4.0};
   double              bar_width{0.8};
+  bool                filled{false};
+};
+
+/// A straight reference line spanning the full plotting area, as drawn by R's `abline()`.
+struct ABLine {
+  bool   vertical{false};
+  double value{0.0}; ///< y-intercept for a sloped/horizontal line; x-position for a vertical line
+  double slope{0.0};
+  RGB    color{0, 0, 0};
+  double stroke_width{1.0};
+};
+
+/// One manually-specified legend row, as drawn by R's `legend()`. When a plot has any manual
+/// entries, they replace the default auto-generated (one-row-per-labeled-series) legend.
+struct LegendEntry {
+  std::string label;
+  RGB         color{0, 0, 0};
 };
 
 class Plot {
@@ -43,6 +68,8 @@ class Plot {
   Plot& show_grid(bool enabled = true);
   Plot& x_limits(double min_x, double max_x);
   Plot& y_limits(double min_y, double max_y);
+  Plot& hide_axes(bool enabled = true);
+  Plot& x_tick_labels(std::vector<std::string> labels);
 
   std::size_t width() const noexcept { return width_; }
   std::size_t height() const noexcept { return height_; }
@@ -60,6 +87,10 @@ class Plot {
   double x_max() const noexcept { return x_max_; }
   double y_min() const noexcept { return y_min_; }
   double y_max() const noexcept { return y_max_; }
+  bool axes_hidden() const noexcept { return hide_axes_; }
+  const std::vector<std::string>& x_tick_label_list() const noexcept { return x_tick_labels_; }
+  const std::vector<ABLine>& reference_lines() const noexcept { return ablines_; }
+  const std::vector<LegendEntry>& legend_entries() const noexcept { return legend_entries_; }
 
   void save(const std::string& path) const;
   void save_svg(const std::string& path) const;
@@ -68,11 +99,11 @@ class Plot {
 
  protected:
   DataSeries& add_series(DataSeries series);
+  Plot&       add_reference_line(ABLine line);
+  Plot&       add_legend_entry(LegendEntry entry);
 
  private:
-  friend class ScatterPlot;
-  friend class LinePlot;
-  friend class BarChart;
+  friend class RPlot;
 
   std::size_t width_{960};
   std::size_t height_{640};
@@ -85,49 +116,142 @@ class Plot {
   bool        show_grid_{true};
   bool        has_x_limits_{false};
   bool        has_y_limits_{false};
+  bool        hide_axes_{false};
   double      x_min_{0.0};
   double      x_max_{1.0};
   double      y_min_{0.0};
   double      y_max_{1.0};
-  std::vector<DataSeries> series_;
+  std::vector<DataSeries>  series_;
+  std::vector<ABLine>      ablines_;
+  std::vector<LegendEntry> legend_entries_;
+  std::vector<std::string> x_tick_labels_;
 };
 
-class ScatterPlot final : public Plot {
+/// A single R-base-graphics-style plot (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
+/// `curve()`, `qqnorm()`, ...) plus the chainable "add to current plot" verbs R exposes as
+/// separate top-level functions (`points()`, `lines()`, `abline()`, `legend()`, `text()`, ...).
+class RPlot final : public Plot {
  public:
-  static ScatterPlot create();
+  static RPlot create();
 
-  ScatterPlot& points(std::vector<double> x,
-                      std::vector<double> y,
-                      std::string         label = "",
-                      RGB                 color = {37, 99, 235},
-                      double              marker_size = 4.0);
-  ScatterPlot& line(std::vector<double> x,
-                    std::vector<double> y,
-                    std::string         label = "",
-                    RGB                 color = {220, 38, 38},
-                    double              stroke_width = 2.0);
-};
+  /// Mimics R's `plot(x, y, type = "p"|"l"|"b")`.
+  static RPlot plot(std::vector<double> x,
+                     std::vector<double> y,
+                     std::string         type = "p",
+                     std::string         label = "",
+                     RGB                 color = {37, 99, 235});
 
-class LinePlot final : public Plot {
- public:
-  static LinePlot create();
+  /// Mimics R's `hist(x, breaks = bins)`. Bin edges are equal-width over the data range.
+  static RPlot hist(std::vector<double> data,
+                     std::size_t         bins = 10,
+                     std::string         label = "",
+                     RGB                 color = {96, 165, 250});
 
-  LinePlot& line(std::vector<double> x,
+  /// Mimics R's `barplot(heights, names.arg = names)`.
+  static RPlot barplot(std::vector<double>      heights,
+                        std::vector<std::string> names = {},
+                        std::string              label = "",
+                        RGB                       color = {22, 163, 74});
+
+  /// Mimics R's `boxplot(...)` over one or more groups.
+  static RPlot boxplot(std::vector<std::vector<double>> groups,
+                        std::vector<std::string>         names = {},
+                        RGB                               color = {96, 165, 250});
+
+  /// Mimics R's `pie(x, labels = names)`.
+  static RPlot pie(std::vector<double>      values,
+                    std::vector<std::string> names = {},
+                    std::vector<RGB>         colors = {});
+
+  /// Mimics R's `curve(expr, from, to)`; `f` is sampled at `n` evenly-spaced points.
+  static RPlot curve(datamunge::Callback& f,
+                      double               from,
+                      double               to,
+                      std::size_t          n = 101,
+                      std::string          label = "",
+                      RGB                  color = {220, 38, 38});
+
+  /// Mimics R's `qqnorm(y)`: plots sample quantiles of `data` against standard-normal quantiles.
+  static RPlot qqnorm(std::vector<double> data, std::string label = "sample", RGB color = {37, 99, 235});
+
+  RPlot& points(std::vector<double> x,
+                std::vector<double> y,
+                std::string         label = "",
+                RGB                 color = {37, 99, 235},
+                double              marker_size = 4.0);
+  RPlot& line(std::vector<double> x,
+              std::vector<double> y,
+              std::string         label = "",
+              RGB                 color = {220, 38, 38},
+              double              stroke_width = 2.0);
+  RPlot& lines(std::vector<double> x,
+               std::vector<double> y,
+               std::string         label = "",
+               RGB                 color = {220, 38, 38},
+               double              stroke_width = 2.0);
+  /// Lower-level bar primitive at arbitrary x positions (`barplot()`/`hist()` build on this).
+  RPlot& bars(std::vector<double> x,
+              std::vector<double> y,
+              std::string         label = "",
+              RGB                 color = {22, 163, 74},
+              double              bar_width = 0.8);
+  /// Lower-level box-and-whisker primitive at an arbitrary x position (`boxplot()` builds on this).
+  RPlot& box(double              position,
+             double              whisker_lo,
+             double              q1,
+             double              median,
+             double              q3,
+             double              whisker_hi,
+             std::vector<double> outliers = {},
+             RGB                 color = {96, 165, 250},
+             double              width = 0.6);
+
+  RPlot& abline(double intercept, double slope, RGB color = {0, 0, 0}, double stroke_width = 1.0);
+  RPlot& abline_h(double y_value, RGB color = {0, 0, 0}, double stroke_width = 1.0);
+  RPlot& abline_v(double x_value, RGB color = {0, 0, 0}, double stroke_width = 1.0);
+
+  /// Mimics R's `qqline()`: draws the line through the 1st and 3rd sample/theoretical quartiles
+  /// of `data`, the same data that was passed to `qqnorm()`.
+  RPlot& qqline(std::vector<double> data, RGB color = {220, 38, 38}, double stroke_width = 1.5);
+
+  RPlot& legend(std::vector<std::string> labels, std::vector<RGB> colors);
+  RPlot& text(double x, double y, std::string label, RGB color = {17, 24, 39}, double font_size = 14.0);
+  RPlot& polygon(std::vector<double> x,
                  std::vector<double> y,
-                 std::string         label = "",
-                 RGB                 color = {220, 38, 38},
-                 double              stroke_width = 2.0);
+                 RGB                 color = {37, 99, 235},
+                 bool                filled = true);
+  RPlot& segments(std::vector<double> x0,
+                  std::vector<double> y0,
+                  std::vector<double> x1,
+                  std::vector<double> y1,
+                  RGB                 color = {0, 0, 0},
+                  double              stroke_width = 1.0);
 };
 
-class BarChart final : public Plot {
+/// Tiles independently-built `Plot` objects into one multi-panel figure, mimicking R's
+/// `par(mfrow = c(rows, cols))`.
+class RLayout final {
  public:
-  static BarChart create();
+  static RLayout create(std::size_t rows, std::size_t cols);
 
-  BarChart& bars(std::vector<double> x,
-                 std::vector<double> y,
-                 std::string         label = "",
-                 RGB                 color = {22, 163, 74},
-                 double              bar_width = 0.8);
+  RLayout& add(const Plot& panel);
+  RLayout& size(std::size_t width, std::size_t height);
+
+  void save(const std::string& path) const;
+  void save_svg(const std::string& path) const;
+
+ private:
+  struct Panel {
+    std::size_t width;
+    std::size_t height;
+    std::string svg_fragment; ///< rendered eagerly in add(), so panels need not outlive save()
+  };
+
+  std::size_t rows_{1};
+  std::size_t cols_{1};
+  std::size_t width_{960};
+  std::size_t height_{640};
+  std::vector<Panel> panels_;
 };
 
 } // namespace datamunge::plot

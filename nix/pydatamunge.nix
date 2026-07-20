@@ -7,7 +7,6 @@
   buildPythonPackage,
   libxml2,
   pkg-config,
-  zlib,
 }:
 buildPythonPackage rec {
   pname = "pydatamunge";
@@ -22,7 +21,6 @@ buildPythonPackage rec {
   };
   buildInputs = [
     pkg-config
-    zlib
   ];
   nativeBuildInputs = [
     pkg-config

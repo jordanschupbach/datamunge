@@ -213,6 +213,94 @@ std::vector<std::string> DataFrame::split_encoded_strings(const std::string& enc
   return values;
 }
 
+GGPlot::GGPlot(const DataFrame& data, const std::string& x_column, const std::string& y_column,
+              const std::string& color_column, const std::string& fill_column, const std::string& group_column)
+    : impl_(plot::GGPlot::create(data.frame_, plot::Aes{x_column, y_column, color_column, fill_column, group_column})) {}
+
+GGPlot& GGPlot::geom_point(plot::RGB color, double size) {
+  impl_.geom_point(color, size);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_line(plot::RGB color, double width) {
+  impl_.geom_line(color, width);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_bar(plot::RGB color) {
+  impl_.geom_bar(color);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_col(plot::RGB color) {
+  impl_.geom_col(color);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_histogram(std::size_t bins, plot::RGB color) {
+  impl_.geom_histogram(bins, color);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_boxplot(plot::RGB color) {
+  impl_.geom_boxplot(color);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_smooth(plot::RGB color) {
+  impl_.geom_smooth(color);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_area(plot::RGB color) {
+  impl_.geom_area(color);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_ribbon(const std::string& ymin_column, const std::string& ymax_column, plot::RGB color) {
+  impl_.geom_ribbon(ymin_column, ymax_column, color);
+  return *this;
+}
+
+GGPlot& GGPlot::geom_density(plot::RGB color) {
+  impl_.geom_density(color);
+  return *this;
+}
+
+GGPlot& GGPlot::facet_wrap(const std::string& column, std::size_t ncol) {
+  impl_.facet_wrap(column, ncol);
+  return *this;
+}
+
+GGPlot& GGPlot::theme_minimal() {
+  impl_.theme_minimal();
+  return *this;
+}
+
+GGPlot& GGPlot::theme_bw() {
+  impl_.theme_bw();
+  return *this;
+}
+
+GGPlot& GGPlot::theme_classic() {
+  impl_.theme_classic();
+  return *this;
+}
+
+GGPlot& GGPlot::scale_color_manual(const std::vector<plot::RGB>& values) {
+  impl_.scale_color_manual(values);
+  return *this;
+}
+
+GGPlot& GGPlot::labs(const std::string& title, const std::string& x, const std::string& y) {
+  impl_.labs(title, x, y);
+  return *this;
+}
+
+void GGPlot::save(const std::string& path) const { impl_.save(path); }
+
+void GGPlot::save_svg(const std::string& path) const { impl_.save_svg(path); }
+
 LM::LM(const DataFrame& data, const std::string& formula, const std::string& weights_column)
     : lm_(data.frame_, formula,
           stats::LmOptions{weights_column.empty() ? std::nullopt : std::optional<std::string>(weights_column)}) {}
@@ -313,13 +401,13 @@ DataFrame* LM::anova() const {
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot LM::plot_residuals_vs_fitted() const { return lm_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot LM::plot_residuals_vs_fitted() const { return lm_.plot_residuals_vs_fitted(); }
 
-datamunge::plot::ScatterPlot LM::plot_normal_qq() const { return lm_.plot_normal_qq(); }
+datamunge::plot::RPlot LM::plot_normal_qq() const { return lm_.plot_normal_qq(); }
 
-datamunge::plot::ScatterPlot LM::plot_scale_location() const { return lm_.plot_scale_location(); }
+datamunge::plot::RPlot LM::plot_scale_location() const { return lm_.plot_scale_location(); }
 
-datamunge::plot::ScatterPlot LM::plot_residuals_vs_leverage() const { return lm_.plot_residuals_vs_leverage(); }
+datamunge::plot::RPlot LM::plot_residuals_vs_leverage() const { return lm_.plot_residuals_vs_leverage(); }
 
 void LM::save_diagnostic_plots(const std::string& path_prefix) const { lm_.save_diagnostic_plots(path_prefix); }
 
@@ -489,7 +577,7 @@ DataFrame* LDA::predict_frame(const DataFrame& newdata) const {
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot LDA::plot_discriminants() const { return lda_.plot_discriminants(); }
+datamunge::plot::RPlot LDA::plot_discriminants() const { return lda_.plot_discriminants(); }
 
 void LDA::save_discriminant_plot(const std::string& path) const { lda_.save_discriminant_plot(path); }
 
@@ -710,13 +798,13 @@ DataFrame* DecisionTreeClassifier::predict_frame(const DataFrame& newdata) const
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot DecisionTreeClassifier::plot_classification(const DataFrame& data,
+datamunge::plot::RPlot DecisionTreeClassifier::plot_classification(const DataFrame& data,
                                                                          const std::string& x_feature,
                                                                          const std::string& y_feature) const {
   return tree_.plot_classification(data.frame_, x_feature, y_feature);
 }
 
-datamunge::plot::ScatterPlot DecisionTreeClassifier::plot_decision_regions(const std::string& x_feature,
+datamunge::plot::RPlot DecisionTreeClassifier::plot_decision_regions(const std::string& x_feature,
                                                                            const std::string& y_feature,
                                                                            const std::size_t grid_resolution) const {
   return tree_.plot_decision_regions(x_feature, y_feature, grid_resolution);
@@ -759,11 +847,11 @@ std::vector<double> DecisionTreeRegressor::predict(const DataFrame& newdata) con
   return tree_.predict(newdata.frame_);
 }
 
-datamunge::plot::ScatterPlot DecisionTreeRegressor::plot_predicted_vs_actual() const {
+datamunge::plot::RPlot DecisionTreeRegressor::plot_predicted_vs_actual() const {
   return tree_.plot_predicted_vs_actual();
 }
 
-datamunge::plot::ScatterPlot DecisionTreeRegressor::plot_residuals_vs_fitted() const {
+datamunge::plot::RPlot DecisionTreeRegressor::plot_residuals_vs_fitted() const {
   return tree_.plot_residuals_vs_fitted();
 }
 
@@ -847,13 +935,13 @@ DataFrame* RandomForestClassifier::predict_frame(const DataFrame& newdata) const
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot RandomForestClassifier::plot_classification(const DataFrame& data,
+datamunge::plot::RPlot RandomForestClassifier::plot_classification(const DataFrame& data,
                                                                           const std::string& x_feature,
                                                                           const std::string& y_feature) const {
   return forest_.plot_classification(data.frame_, x_feature, y_feature);
 }
 
-datamunge::plot::ScatterPlot RandomForestClassifier::plot_decision_regions(const std::string& x_feature,
+datamunge::plot::RPlot RandomForestClassifier::plot_decision_regions(const std::string& x_feature,
                                                                             const std::string& y_feature,
                                                                             const std::size_t grid_resolution) const {
   return forest_.plot_decision_regions(x_feature, y_feature, grid_resolution);
@@ -905,11 +993,11 @@ std::vector<double> RandomForestRegressor::predict(const DataFrame& newdata) con
   return forest_.predict(newdata.frame_);
 }
 
-datamunge::plot::ScatterPlot RandomForestRegressor::plot_predicted_vs_actual() const {
+datamunge::plot::RPlot RandomForestRegressor::plot_predicted_vs_actual() const {
   return forest_.plot_predicted_vs_actual();
 }
 
-datamunge::plot::ScatterPlot RandomForestRegressor::plot_residuals_vs_fitted() const {
+datamunge::plot::RPlot RandomForestRegressor::plot_residuals_vs_fitted() const {
   return forest_.plot_residuals_vs_fitted();
 }
 
@@ -965,13 +1053,13 @@ void ElasticNet::print_summary() const { net_.print_summary(); }
 
 std::vector<double> ElasticNet::predict(const DataFrame& newdata) const { return net_.predict(newdata.frame_); }
 
-datamunge::plot::ScatterPlot ElasticNet::plot_coefficient_path() const { return net_.plot_coefficient_path(); }
+datamunge::plot::RPlot ElasticNet::plot_coefficient_path() const { return net_.plot_coefficient_path(); }
 
-datamunge::plot::ScatterPlot ElasticNet::plot_cv_curve() const { return net_.plot_cv_curve(); }
+datamunge::plot::RPlot ElasticNet::plot_cv_curve() const { return net_.plot_cv_curve(); }
 
-datamunge::plot::ScatterPlot ElasticNet::plot_predicted_vs_actual() const { return net_.plot_predicted_vs_actual(); }
+datamunge::plot::RPlot ElasticNet::plot_predicted_vs_actual() const { return net_.plot_predicted_vs_actual(); }
 
-datamunge::plot::ScatterPlot ElasticNet::plot_residuals_vs_fitted() const { return net_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot ElasticNet::plot_residuals_vs_fitted() const { return net_.plot_residuals_vs_fitted(); }
 
 Ridge::Ridge(const DataFrame& data, const std::string& formula, const double lambda, const std::size_t n_lambda,
             const std::size_t cv_folds, const bool standardize, const std::uint64_t seed)
@@ -1019,13 +1107,13 @@ void Ridge::print_summary() const { ridge_.print_summary(); }
 
 std::vector<double> Ridge::predict(const DataFrame& newdata) const { return ridge_.predict(newdata.frame_); }
 
-datamunge::plot::ScatterPlot Ridge::plot_coefficient_path() const { return ridge_.plot_coefficient_path(); }
+datamunge::plot::RPlot Ridge::plot_coefficient_path() const { return ridge_.plot_coefficient_path(); }
 
-datamunge::plot::ScatterPlot Ridge::plot_cv_curve() const { return ridge_.plot_cv_curve(); }
+datamunge::plot::RPlot Ridge::plot_cv_curve() const { return ridge_.plot_cv_curve(); }
 
-datamunge::plot::ScatterPlot Ridge::plot_predicted_vs_actual() const { return ridge_.plot_predicted_vs_actual(); }
+datamunge::plot::RPlot Ridge::plot_predicted_vs_actual() const { return ridge_.plot_predicted_vs_actual(); }
 
-datamunge::plot::ScatterPlot Ridge::plot_residuals_vs_fitted() const { return ridge_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot Ridge::plot_residuals_vs_fitted() const { return ridge_.plot_residuals_vs_fitted(); }
 
 Lasso::Lasso(const DataFrame& data, const std::string& formula, const double lambda, const std::size_t n_lambda,
             const std::size_t cv_folds, const bool standardize, const std::uint64_t seed)
@@ -1075,13 +1163,13 @@ void Lasso::print_summary() const { lasso_.print_summary(); }
 
 std::vector<double> Lasso::predict(const DataFrame& newdata) const { return lasso_.predict(newdata.frame_); }
 
-datamunge::plot::ScatterPlot Lasso::plot_coefficient_path() const { return lasso_.plot_coefficient_path(); }
+datamunge::plot::RPlot Lasso::plot_coefficient_path() const { return lasso_.plot_coefficient_path(); }
 
-datamunge::plot::ScatterPlot Lasso::plot_cv_curve() const { return lasso_.plot_cv_curve(); }
+datamunge::plot::RPlot Lasso::plot_cv_curve() const { return lasso_.plot_cv_curve(); }
 
-datamunge::plot::ScatterPlot Lasso::plot_predicted_vs_actual() const { return lasso_.plot_predicted_vs_actual(); }
+datamunge::plot::RPlot Lasso::plot_predicted_vs_actual() const { return lasso_.plot_predicted_vs_actual(); }
 
-datamunge::plot::ScatterPlot Lasso::plot_residuals_vs_fitted() const { return lasso_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot Lasso::plot_residuals_vs_fitted() const { return lasso_.plot_residuals_vs_fitted(); }
 
 KNNClassifier::KNNClassifier(const DataFrame& data, const std::string& formula, const std::size_t k,
                              const std::string& metric, const bool weighted, const bool standardize)
@@ -1148,12 +1236,12 @@ DataFrame* KNNClassifier::predict_frame(const DataFrame& newdata) const {
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot KNNClassifier::plot_classification(const DataFrame& data, const std::string& x_feature,
+datamunge::plot::RPlot KNNClassifier::plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                  const std::string& y_feature) const {
   return knn_.plot_classification(data.frame_, x_feature, y_feature);
 }
 
-datamunge::plot::ScatterPlot KNNClassifier::plot_decision_regions(const std::string& x_feature,
+datamunge::plot::RPlot KNNClassifier::plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    const std::size_t grid_resolution) const {
   return knn_.plot_decision_regions(x_feature, y_feature, grid_resolution);
@@ -1188,9 +1276,9 @@ void KNNRegressor::print_summary() const { knn_.print_summary(); }
 
 std::vector<double> KNNRegressor::predict(const DataFrame& newdata) const { return knn_.predict(newdata.frame_); }
 
-datamunge::plot::ScatterPlot KNNRegressor::plot_predicted_vs_actual() const { return knn_.plot_predicted_vs_actual(); }
+datamunge::plot::RPlot KNNRegressor::plot_predicted_vs_actual() const { return knn_.plot_predicted_vs_actual(); }
 
-datamunge::plot::ScatterPlot KNNRegressor::plot_residuals_vs_fitted() const { return knn_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot KNNRegressor::plot_residuals_vs_fitted() const { return knn_.plot_residuals_vs_fitted(); }
 
 KMeans::KMeans(const DataFrame& data, const std::vector<std::string>& feature_columns, const std::size_t n_clusters,
               const std::size_t max_iterations, const std::size_t n_init, const double tolerance, const std::size_t seed)
@@ -1386,18 +1474,18 @@ DataFrame* GBMClassifier::predict_frame(const DataFrame& newdata) const {
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot GBMClassifier::plot_classification(const DataFrame& data, const std::string& x_feature,
+datamunge::plot::RPlot GBMClassifier::plot_classification(const DataFrame& data, const std::string& x_feature,
                                                                  const std::string& y_feature) const {
   return gbm_.plot_classification(data.frame_, x_feature, y_feature);
 }
 
-datamunge::plot::ScatterPlot GBMClassifier::plot_decision_regions(const std::string& x_feature,
+datamunge::plot::RPlot GBMClassifier::plot_decision_regions(const std::string& x_feature,
                                                                    const std::string& y_feature,
                                                                    const std::size_t grid_resolution) const {
   return gbm_.plot_decision_regions(x_feature, y_feature, grid_resolution);
 }
 
-datamunge::plot::ScatterPlot GBMClassifier::plot_training_deviance() const { return gbm_.plot_training_deviance(); }
+datamunge::plot::RPlot GBMClassifier::plot_training_deviance() const { return gbm_.plot_training_deviance(); }
 
 GBMRegressor::GBMRegressor(const DataFrame& data, const std::string& formula, const std::size_t n_trees,
                            const double learning_rate, const std::size_t max_depth,
@@ -1437,11 +1525,11 @@ void GBMRegressor::print_summary() const { gbm_.print_summary(); }
 
 std::vector<double> GBMRegressor::predict(const DataFrame& newdata) const { return gbm_.predict(newdata.frame_); }
 
-datamunge::plot::ScatterPlot GBMRegressor::plot_predicted_vs_actual() const { return gbm_.plot_predicted_vs_actual(); }
+datamunge::plot::RPlot GBMRegressor::plot_predicted_vs_actual() const { return gbm_.plot_predicted_vs_actual(); }
 
-datamunge::plot::ScatterPlot GBMRegressor::plot_residuals_vs_fitted() const { return gbm_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot GBMRegressor::plot_residuals_vs_fitted() const { return gbm_.plot_residuals_vs_fitted(); }
 
-datamunge::plot::ScatterPlot GBMRegressor::plot_training_deviance() const { return gbm_.plot_training_deviance(); }
+datamunge::plot::RPlot GBMRegressor::plot_training_deviance() const { return gbm_.plot_training_deviance(); }
 
 XGBoostClassifier::XGBoostClassifier(const DataFrame& data, const std::string& formula, const std::size_t n_trees,
                                      const double learning_rate, const std::size_t max_depth, const double lambda,
@@ -1522,19 +1610,19 @@ DataFrame* XGBoostClassifier::predict_frame(const DataFrame& newdata) const {
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot XGBoostClassifier::plot_classification(const DataFrame& data,
+datamunge::plot::RPlot XGBoostClassifier::plot_classification(const DataFrame& data,
                                                                      const std::string& x_feature,
                                                                      const std::string& y_feature) const {
   return xgb_.plot_classification(data.frame_, x_feature, y_feature);
 }
 
-datamunge::plot::ScatterPlot XGBoostClassifier::plot_decision_regions(const std::string& x_feature,
+datamunge::plot::RPlot XGBoostClassifier::plot_decision_regions(const std::string& x_feature,
                                                                        const std::string& y_feature,
                                                                        const std::size_t grid_resolution) const {
   return xgb_.plot_decision_regions(x_feature, y_feature, grid_resolution);
 }
 
-datamunge::plot::ScatterPlot XGBoostClassifier::plot_training_deviance() const { return xgb_.plot_training_deviance(); }
+datamunge::plot::RPlot XGBoostClassifier::plot_training_deviance() const { return xgb_.plot_training_deviance(); }
 
 XGBoostRegressor::XGBoostRegressor(const DataFrame& data, const std::string& formula, const std::size_t n_trees,
                                    const double learning_rate, const std::size_t max_depth, const double lambda,
@@ -1579,11 +1667,11 @@ void XGBoostRegressor::print_summary() const { xgb_.print_summary(); }
 
 std::vector<double> XGBoostRegressor::predict(const DataFrame& newdata) const { return xgb_.predict(newdata.frame_); }
 
-datamunge::plot::ScatterPlot XGBoostRegressor::plot_predicted_vs_actual() const { return xgb_.plot_predicted_vs_actual(); }
+datamunge::plot::RPlot XGBoostRegressor::plot_predicted_vs_actual() const { return xgb_.plot_predicted_vs_actual(); }
 
-datamunge::plot::ScatterPlot XGBoostRegressor::plot_residuals_vs_fitted() const { return xgb_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot XGBoostRegressor::plot_residuals_vs_fitted() const { return xgb_.plot_residuals_vs_fitted(); }
 
-datamunge::plot::ScatterPlot XGBoostRegressor::plot_training_deviance() const { return xgb_.plot_training_deviance(); }
+datamunge::plot::RPlot XGBoostRegressor::plot_training_deviance() const { return xgb_.plot_training_deviance(); }
 
 KernelRegression::KernelRegression(const DataFrame& data, const std::string& formula, const std::string& kernel,
                                    const double bandwidth, const std::size_t n_bandwidth, const bool standardize)
@@ -1624,20 +1712,20 @@ std::vector<double> KernelRegression::predict(const DataFrame& newdata) const {
   return kernel_regression_.predict(newdata.frame_);
 }
 
-datamunge::plot::ScatterPlot KernelRegression::plot_fit(const DataFrame& data,
+datamunge::plot::RPlot KernelRegression::plot_fit(const DataFrame& data,
                                                         const std::size_t grid_resolution) const {
   return kernel_regression_.plot_fit(data.frame_, grid_resolution);
 }
 
-datamunge::plot::ScatterPlot KernelRegression::plot_predicted_vs_actual() const {
+datamunge::plot::RPlot KernelRegression::plot_predicted_vs_actual() const {
   return kernel_regression_.plot_predicted_vs_actual();
 }
 
-datamunge::plot::ScatterPlot KernelRegression::plot_residuals_vs_fitted() const {
+datamunge::plot::RPlot KernelRegression::plot_residuals_vs_fitted() const {
   return kernel_regression_.plot_residuals_vs_fitted();
 }
 
-datamunge::plot::ScatterPlot KernelRegression::plot_cv_curve() const { return kernel_regression_.plot_cv_curve(); }
+datamunge::plot::RPlot KernelRegression::plot_cv_curve() const { return kernel_regression_.plot_cv_curve(); }
 
 GaussianProcessRegression::GaussianProcessRegression(const DataFrame& data, const std::string& formula,
                                                       const double length_scale, const double noise_ratio,
@@ -1707,21 +1795,21 @@ DataFrame* GaussianProcessRegression::predict_frame(const DataFrame& newdata, co
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot GaussianProcessRegression::plot_fit(const DataFrame& data,
+datamunge::plot::RPlot GaussianProcessRegression::plot_fit(const DataFrame& data,
                                                                   const std::size_t grid_resolution,
                                                                   const double level) const {
   return gpr_.plot_fit(data.frame_, grid_resolution, level);
 }
 
-datamunge::plot::ScatterPlot GaussianProcessRegression::plot_predicted_vs_actual() const {
+datamunge::plot::RPlot GaussianProcessRegression::plot_predicted_vs_actual() const {
   return gpr_.plot_predicted_vs_actual();
 }
 
-datamunge::plot::ScatterPlot GaussianProcessRegression::plot_residuals_vs_fitted() const {
+datamunge::plot::RPlot GaussianProcessRegression::plot_residuals_vs_fitted() const {
   return gpr_.plot_residuals_vs_fitted();
 }
 
-datamunge::plot::ScatterPlot GaussianProcessRegression::plot_length_scale_profile() const {
+datamunge::plot::RPlot GaussianProcessRegression::plot_length_scale_profile() const {
   return gpr_.plot_length_scale_profile();
 }
 
@@ -1788,13 +1876,13 @@ DataFrame* NaiveBayesClassifier::predict_frame(const DataFrame& newdata) const {
   return new DataFrame(std::move(frame));
 }
 
-datamunge::plot::ScatterPlot NaiveBayesClassifier::plot_classification(const DataFrame& data,
+datamunge::plot::RPlot NaiveBayesClassifier::plot_classification(const DataFrame& data,
                                                                         const std::string& x_feature,
                                                                         const std::string& y_feature) const {
   return nb_.plot_classification(data.frame_, x_feature, y_feature);
 }
 
-datamunge::plot::ScatterPlot NaiveBayesClassifier::plot_decision_regions(const std::string& x_feature,
+datamunge::plot::RPlot NaiveBayesClassifier::plot_decision_regions(const std::string& x_feature,
                                                                           const std::string& y_feature,
                                                                           const std::size_t grid_resolution) const {
   return nb_.plot_decision_regions(x_feature, y_feature, grid_resolution);
@@ -1891,13 +1979,13 @@ DataFrame* GLM::predict_frame(const DataFrame& newdata, const std::string& inter
   return new DataFrame(glm_.predict_frame(newdata.frame_, kind, level));
 }
 
-datamunge::plot::ScatterPlot GLM::plot_residuals_vs_fitted() const { return glm_.plot_residuals_vs_fitted(); }
+datamunge::plot::RPlot GLM::plot_residuals_vs_fitted() const { return glm_.plot_residuals_vs_fitted(); }
 
-datamunge::plot::ScatterPlot GLM::plot_normal_qq() const { return glm_.plot_normal_qq(); }
+datamunge::plot::RPlot GLM::plot_normal_qq() const { return glm_.plot_normal_qq(); }
 
-datamunge::plot::ScatterPlot GLM::plot_scale_location() const { return glm_.plot_scale_location(); }
+datamunge::plot::RPlot GLM::plot_scale_location() const { return glm_.plot_scale_location(); }
 
-datamunge::plot::ScatterPlot GLM::plot_residuals_vs_leverage() const { return glm_.plot_residuals_vs_leverage(); }
+datamunge::plot::RPlot GLM::plot_residuals_vs_leverage() const { return glm_.plot_residuals_vs_leverage(); }
 
 void GLM::save_diagnostic_plots(const std::string& path_prefix) const { glm_.save_diagnostic_plots(path_prefix); }
 

@@ -10,7 +10,7 @@
 
 using datamunge::fda::PSplineOptions;
 using datamunge::fda::fit_pspline;
-using datamunge::plot::ScatterPlot;
+using datamunge::plot::RPlot;
 using datamunge::random::SplitMix64;
 
 int main() {
@@ -50,7 +50,7 @@ int main() {
   const auto out_dir = std::filesystem::path("build/debug/examples");
   std::filesystem::create_directories(out_dir);
 
-  auto plot = ScatterPlot::create();
+  auto plot = RPlot::create();
   plot.points(x, y, "samples", {37, 99, 235}, 6.0)
       .line(grid_x, grid_true, "true signal", {22, 163, 74}, 2.0)
       .line(grid_x, grid_y, "cubic B-spline fit", {220, 38, 38}, 3.0)

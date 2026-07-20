@@ -92,13 +92,13 @@ class GaussianProcessRegression {
 
     // Scatter of `data` plus the GP posterior mean and a Gaussian confidence band; only valid
     // for a single-predictor model (throws otherwise).
-    [[nodiscard]] plot::ScatterPlot plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution = 200,
+    [[nodiscard]] plot::RPlot plot_fit(const dstruct::DataFrame& data, std::size_t grid_resolution = 200,
                                              double level = 0.95) const;
-    [[nodiscard]] plot::ScatterPlot plot_predicted_vs_actual() const;
-    [[nodiscard]] plot::ScatterPlot plot_residuals_vs_fitted() const;
+    [[nodiscard]] plot::RPlot plot_predicted_vs_actual() const;
+    [[nodiscard]] plot::RPlot plot_residuals_vs_fitted() const;
     // Profile log marginal likelihood across the length-scale grid; throws unless length_scale
     // was auto-selected.
-    [[nodiscard]] plot::ScatterPlot plot_length_scale_profile() const;
+    [[nodiscard]] plot::RPlot plot_length_scale_profile() const;
 
  private:
     void fit(const dstruct::DataFrame& data);

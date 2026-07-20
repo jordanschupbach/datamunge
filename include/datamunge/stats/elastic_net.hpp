@@ -84,12 +84,12 @@ class ElasticNet {
     // Coefficient trace (one line per predictor) across the lambda path in
     // log10(lambda) space. Only meaningful when lambda was auto-selected
     // (throws otherwise, since a fixed-lambda fit has no path).
-    [[nodiscard]] plot::ScatterPlot plot_coefficient_path() const;
+    [[nodiscard]] plot::RPlot plot_coefficient_path() const;
     // Cross-validated MSE across the lambda path, with the selected lambda
     // marked. Only meaningful when lambda was auto-selected.
-    [[nodiscard]] plot::ScatterPlot plot_cv_curve() const;
-    [[nodiscard]] plot::ScatterPlot plot_predicted_vs_actual() const;
-    [[nodiscard]] plot::ScatterPlot plot_residuals_vs_fitted() const;
+    [[nodiscard]] plot::RPlot plot_cv_curve() const;
+    [[nodiscard]] plot::RPlot plot_predicted_vs_actual() const;
+    [[nodiscard]] plot::RPlot plot_residuals_vs_fitted() const;
 
  protected:
     // Used by Ridge/Lasso to fix alpha while still exposing formula-based

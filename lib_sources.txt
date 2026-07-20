@@ -1,6 +1,7 @@
 datamunge/datamunge
 datamunge/datamunge_c
 datamunge/plot
+datamunge/plot/ggplot
 datamunge/random
 datamunge/stats/agglomerative_clustering
 datamunge/stats/dbscan
@@ -67,3 +68,4 @@ datamunge/stats/p_adjust
 datamunge/image/netpbm
 datamunge/image/bmp
 datamunge/image/png
+datamunge/image/zlib_codec

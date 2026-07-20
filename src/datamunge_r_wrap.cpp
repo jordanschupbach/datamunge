@@ -1476,111 +1476,133 @@ SWIGINTERN void SWIG_R_Raise(SEXP obj, const char *msg) {
 #define SWIGTYPE_p_datamunge__ElasticNet swig_types[9]
 #define SWIGTYPE_p_datamunge__GBMClassifier swig_types[10]
 #define SWIGTYPE_p_datamunge__GBMRegressor swig_types[11]
-#define SWIGTYPE_p_datamunge__GLM swig_types[12]
-#define SWIGTYPE_p_datamunge__GLMM swig_types[13]
-#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[14]
-#define SWIGTYPE_p_datamunge__HyperDual swig_types[15]
-#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[16]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[17]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[18]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[19]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[20]
-#define SWIGTYPE_p_datamunge__LDA swig_types[21]
-#define SWIGTYPE_p_datamunge__LM swig_types[22]
-#define SWIGTYPE_p_datamunge__LMM swig_types[23]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[24]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[25]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[26]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[27]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[28]
-#define SWIGTYPE_p_datamunge__SVM swig_types[29]
-#define SWIGTYPE_p_datamunge__Tape swig_types[30]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[31]
-#define SWIGTYPE_p_datamunge__Var swig_types[32]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[33]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[34]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[35]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[36]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[37]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[38]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[39]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[40]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[41]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[42]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[43]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[44]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[45]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[46]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[47]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[48]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[49]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[50]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[51]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[52]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[53]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[54]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[55]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[56]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[57]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[58]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[59]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[60]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[61]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[62]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[63]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[64]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[65]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[66]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[67]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[68]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[69]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[70]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[71]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[72]
-#define SWIGTYPE_p_datamunge__plot__BarChart swig_types[73]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[74]
-#define SWIGTYPE_p_datamunge__plot__LinePlot swig_types[75]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[76]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[77]
-#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[78]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[79]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[80]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[81]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[82]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[83]
-#define SWIGTYPE_p_difference_type swig_types[84]
-#define SWIGTYPE_p_first_type swig_types[85]
-#define SWIGTYPE_p_int swig_types[86]
-#define SWIGTYPE_p_long_long swig_types[87]
-#define SWIGTYPE_p_second_type swig_types[88]
-#define SWIGTYPE_p_short swig_types[89]
-#define SWIGTYPE_p_signed_char swig_types[90]
-#define SWIGTYPE_p_size_type swig_types[91]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[92]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[93]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[94]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[95]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[96]
-#define SWIGTYPE_p_std__invalid_argument swig_types[97]
-#define SWIGTYPE_p_std__out_of_range swig_types[98]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[99]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[100]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[101]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[102]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[103]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[104]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[105]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[106]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[107]
-#define SWIGTYPE_p_unsigned_char swig_types[108]
-#define SWIGTYPE_p_unsigned_int swig_types[109]
-#define SWIGTYPE_p_unsigned_long_long swig_types[110]
-#define SWIGTYPE_p_unsigned_short swig_types[111]
-#define SWIGTYPE_p_value_type swig_types[112]
+#define SWIGTYPE_p_datamunge__GGPlot swig_types[12]
+#define SWIGTYPE_p_datamunge__GLM swig_types[13]
+#define SWIGTYPE_p_datamunge__GLMM swig_types[14]
+#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[15]
+#define SWIGTYPE_p_datamunge__HyperDual swig_types[16]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[17]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[18]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[19]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[20]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[21]
+#define SWIGTYPE_p_datamunge__LDA swig_types[22]
+#define SWIGTYPE_p_datamunge__LM swig_types[23]
+#define SWIGTYPE_p_datamunge__LMM swig_types[24]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[25]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[26]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[27]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[28]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[29]
+#define SWIGTYPE_p_datamunge__SVM swig_types[30]
+#define SWIGTYPE_p_datamunge__Tape swig_types[31]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[32]
+#define SWIGTYPE_p_datamunge__Var swig_types[33]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[34]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[35]
+#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[36]
+#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[37]
+#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[38]
+#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[39]
+#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[40]
+#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[41]
+#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[42]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[43]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[44]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[45]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[46]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[47]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[48]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[51]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[52]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[53]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[54]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[55]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[56]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[57]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[58]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[59]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[60]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[61]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[62]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[63]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[64]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[65]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[66]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[67]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[68]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[69]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[70]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[71]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[72]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[73]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[74]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[75]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[76]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[77]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[78]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[79]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[80]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[81]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[82]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[83]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[84]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[85]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[86]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[87]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[88]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[89]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[90]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[91]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[92]
+#define SWIGTYPE_p_difference_type swig_types[93]
+#define SWIGTYPE_p_first_type swig_types[94]
+#define SWIGTYPE_p_int swig_types[95]
+#define SWIGTYPE_p_long_long swig_types[96]
+#define SWIGTYPE_p_second_type swig_types[97]
+#define SWIGTYPE_p_short swig_types[98]
+#define SWIGTYPE_p_signed_char swig_types[99]
+#define SWIGTYPE_p_size_type swig_types[100]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[101]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[102]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[103]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[104]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[105]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[106]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[107]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[108]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[109]
+#define SWIGTYPE_p_std__invalid_argument swig_types[110]
+#define SWIGTYPE_p_std__out_of_range swig_types[111]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[112]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[113]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[114]
+#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[115]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[116]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[117]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[118]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t swig_types[119]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[120]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t swig_types[121]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t swig_types[122]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[123]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[124]
+#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[125]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[126]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[127]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[128]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[129]
+#define SWIGTYPE_p_unsigned_char swig_types[130]
+#define SWIGTYPE_p_unsigned_int swig_types[131]
+#define SWIGTYPE_p_unsigned_long_long swig_types[132]
+#define SWIGTYPE_p_unsigned_short swig_types[133]
+#define SWIGTYPE_p_value_type swig_types[134]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[114];
-SWIGINTERN swig_module_info swig_module = {swig_types, 113, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[136];
+SWIGINTERN swig_module_info swig_module = {swig_types, 135, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -3607,6 +3629,206 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__append(std::vector< std::string > *
 
   #include "datamunge/datamunge.hpp"
 
+
+  namespace swig {
+    template <>  struct traits< datamunge::algebra::Polynomial > {
+      typedef pointer_category category;
+      static const char* type_name() { return"datamunge::algebra::Polynomial"; }
+    };
+  }
+
+
+      namespace swig {
+	template <>  struct traits<std::vector< datamunge::algebra::Polynomial, std::allocator< datamunge::algebra::Polynomial > > > {
+	  typedef pointer_category category;
+	  static const char* type_name() {
+	    return "std::vector<" "datamunge::algebra::Polynomial" "," "std::allocator< datamunge::algebra::Polynomial >" " >";
+	  }
+	};
+      }
+    
+SWIGINTERN bool std_vector_Sl_datamunge_algebra_Polynomial_Sg____nonzero__(std::vector< datamunge::algebra::Polynomial > const *self){
+      return !(self->empty());
+    }
+SWIGINTERN std::vector< datamunge::algebra::Polynomial >::size_type std_vector_Sl_datamunge_algebra_Polynomial_Sg____len__(std::vector< datamunge::algebra::Polynomial > const *self){
+      return self->size();
+    }
+SWIGINTERN std::vector< datamunge::algebra::Polynomial >::value_type std_vector_Sl_datamunge_algebra_Polynomial_Sg__pop(std::vector< datamunge::algebra::Polynomial > *self){
+      if (self->size() == 0)
+	throw std::out_of_range("pop from empty container");
+      std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > >::value_type x = self->back();
+      self->pop_back();
+      return x;
+    }
+SWIGINTERN std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *std_vector_Sl_datamunge_algebra_Polynomial_Sg____getslice__(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::difference_type i,std::vector< datamunge::algebra::Polynomial >::difference_type j){
+      return swig::getslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Polynomial_Sg____setslice__(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::difference_type i,std::vector< datamunge::algebra::Polynomial >::difference_type j,std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > const &is){
+      swig::setslice(self, i, j, is);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Polynomial_Sg____delslice__(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::difference_type i,std::vector< datamunge::algebra::Polynomial >::difference_type j){
+      swig::delslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Polynomial_Sg____delitem__(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::difference_type i){
+      self->erase(swig::getpos(self,i));
+    }
+SWIGINTERN std::vector< datamunge::algebra::Polynomial >::value_type const &std_vector_Sl_datamunge_algebra_Polynomial_Sg____getitem__(std::vector< datamunge::algebra::Polynomial > const *self,std::vector< datamunge::algebra::Polynomial >::difference_type i){
+      return *(swig::cgetpos(self, i));
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Polynomial_Sg____setitem__(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::difference_type i,std::vector< datamunge::algebra::Polynomial >::value_type const &x){
+      *(swig::getpos(self,i)) = x;
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_Polynomial_Sg__append(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::value_type const &x){
+      self->push_back(x);
+    }
+
+  namespace swig {
+    template <>  struct traits< datamunge::algebra::SquareFreeFactor > {
+      typedef pointer_category category;
+      static const char* type_name() { return"datamunge::algebra::SquareFreeFactor"; }
+    };
+  }
+
+
+      namespace swig {
+	template <>  struct traits<std::vector< datamunge::algebra::SquareFreeFactor, std::allocator< datamunge::algebra::SquareFreeFactor > > > {
+	  typedef pointer_category category;
+	  static const char* type_name() {
+	    return "std::vector<" "datamunge::algebra::SquareFreeFactor" "," "std::allocator< datamunge::algebra::SquareFreeFactor >" " >";
+	  }
+	};
+      }
+    
+SWIGINTERN bool std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____nonzero__(std::vector< datamunge::algebra::SquareFreeFactor > const *self){
+      return !(self->empty());
+    }
+SWIGINTERN std::vector< datamunge::algebra::SquareFreeFactor >::size_type std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____len__(std::vector< datamunge::algebra::SquareFreeFactor > const *self){
+      return self->size();
+    }
+SWIGINTERN std::vector< datamunge::algebra::SquareFreeFactor >::value_type std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg__pop(std::vector< datamunge::algebra::SquareFreeFactor > *self){
+      if (self->size() == 0)
+	throw std::out_of_range("pop from empty container");
+      std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > >::value_type x = self->back();
+      self->pop_back();
+      return x;
+    }
+SWIGINTERN std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____getslice__(std::vector< datamunge::algebra::SquareFreeFactor > *self,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type i,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type j){
+      return swig::getslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____setslice__(std::vector< datamunge::algebra::SquareFreeFactor > *self,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type i,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type j,std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > const &is){
+      swig::setslice(self, i, j, is);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____delslice__(std::vector< datamunge::algebra::SquareFreeFactor > *self,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type i,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type j){
+      swig::delslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____delitem__(std::vector< datamunge::algebra::SquareFreeFactor > *self,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type i){
+      self->erase(swig::getpos(self,i));
+    }
+SWIGINTERN std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____getitem__(std::vector< datamunge::algebra::SquareFreeFactor > const *self,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type i){
+      return *(swig::cgetpos(self, i));
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____setitem__(std::vector< datamunge::algebra::SquareFreeFactor > *self,std::vector< datamunge::algebra::SquareFreeFactor >::difference_type i,std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &x){
+      *(swig::getpos(self,i)) = x;
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg__append(std::vector< datamunge::algebra::SquareFreeFactor > *self,std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &x){
+      self->push_back(x);
+    }
+
+  namespace swig {
+    template <>  struct traits< std::vector< std::vector<int> > > {
+      typedef pointer_category category;
+      static const char* type_name() {
+        return"std::vector< std::vector<int> >";
+      }
+    };
+  }
+ 
+SWIGINTERN bool std_vector_Sl_std_vector_Sl_int_Sg__Sg____nonzero__(std::vector< std::vector< int > > const *self){
+      return !(self->empty());
+    }
+SWIGINTERN std::vector< std::vector< int > >::size_type std_vector_Sl_std_vector_Sl_int_Sg__Sg____len__(std::vector< std::vector< int > > const *self){
+      return self->size();
+    }
+SWIGINTERN std::vector< std::vector< int > >::value_type std_vector_Sl_std_vector_Sl_int_Sg__Sg__pop(std::vector< std::vector< int > > *self){
+      if (self->size() == 0)
+	throw std::out_of_range("pop from empty container");
+      std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > >::value_type x = self->back();
+      self->pop_back();
+      return x;
+    }
+SWIGINTERN std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *std_vector_Sl_std_vector_Sl_int_Sg__Sg____getslice__(std::vector< std::vector< int > > *self,std::vector< std::vector< int > >::difference_type i,std::vector< std::vector< int > >::difference_type j){
+      return swig::getslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_std_vector_Sl_int_Sg__Sg____setslice__(std::vector< std::vector< int > > *self,std::vector< std::vector< int > >::difference_type i,std::vector< std::vector< int > >::difference_type j,std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > const &is){
+      swig::setslice(self, i, j, is);
+    }
+SWIGINTERN void std_vector_Sl_std_vector_Sl_int_Sg__Sg____delslice__(std::vector< std::vector< int > > *self,std::vector< std::vector< int > >::difference_type i,std::vector< std::vector< int > >::difference_type j){
+      swig::delslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_std_vector_Sl_int_Sg__Sg____delitem__(std::vector< std::vector< int > > *self,std::vector< std::vector< int > >::difference_type i){
+      self->erase(swig::getpos(self,i));
+    }
+SWIGINTERN std::vector< std::vector< int > >::value_type const &std_vector_Sl_std_vector_Sl_int_Sg__Sg____getitem__(std::vector< std::vector< int > > const *self,std::vector< std::vector< int > >::difference_type i){
+      return *(swig::cgetpos(self, i));
+    }
+SWIGINTERN void std_vector_Sl_std_vector_Sl_int_Sg__Sg____setitem__(std::vector< std::vector< int > > *self,std::vector< std::vector< int > >::difference_type i,std::vector< std::vector< int > >::value_type const &x){
+      *(swig::getpos(self,i)) = x;
+    }
+SWIGINTERN void std_vector_Sl_std_vector_Sl_int_Sg__Sg__append(std::vector< std::vector< int > > *self,std::vector< std::vector< int > >::value_type const &x){
+      self->push_back(x);
+    }
+
+  namespace swig {
+    template <>  struct traits< datamunge::algebra::MultivariatePolynomial > {
+      typedef pointer_category category;
+      static const char* type_name() { return"datamunge::algebra::MultivariatePolynomial"; }
+    };
+  }
+
+
+      namespace swig {
+	template <>  struct traits<std::vector< datamunge::algebra::MultivariatePolynomial, std::allocator< datamunge::algebra::MultivariatePolynomial > > > {
+	  typedef pointer_category category;
+	  static const char* type_name() {
+	    return "std::vector<" "datamunge::algebra::MultivariatePolynomial" "," "std::allocator< datamunge::algebra::MultivariatePolynomial >" " >";
+	  }
+	};
+      }
+    
+SWIGINTERN bool std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____nonzero__(std::vector< datamunge::algebra::MultivariatePolynomial > const *self){
+      return !(self->empty());
+    }
+SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::size_type std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____len__(std::vector< datamunge::algebra::MultivariatePolynomial > const *self){
+      return self->size();
+    }
+SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::value_type std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__pop(std::vector< datamunge::algebra::MultivariatePolynomial > *self){
+      if (self->size() == 0)
+	throw std::out_of_range("pop from empty container");
+      std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > >::value_type x = self->back();
+      self->pop_back();
+      return x;
+    }
+SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____getslice__(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type i,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type j){
+      return swig::getslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____setslice__(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type i,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type j,std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &is){
+      swig::setslice(self, i, j, is);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____delslice__(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type i,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type j){
+      swig::delslice(self, i, j);
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____delitem__(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type i){
+      self->erase(swig::getpos(self,i));
+    }
+SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____getitem__(std::vector< datamunge::algebra::MultivariatePolynomial > const *self,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type i){
+      return *(swig::cgetpos(self, i));
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____setitem__(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type i,std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &x){
+      *(swig::getpos(self,i)) = x;
+    }
+SWIGINTERN void std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__append(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &x){
+      self->push_back(x);
+    }
 
 #ifdef __cplusplus
 extern "C" {
@@ -11952,6 +12174,1891 @@ R_swig_delete_DataFrame ( SEXP self)
 
 
 SWIGEXPORT SEXP
+R_swig_new_GGPlot__SWIG_0 ( SEXP data, SEXP x_column, SEXP y_column, SEXP color_column, SEXP fill_column, SEXP group_column)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::string *arg5 = 0 ;
+    std::string *arg6 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    int res6 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(x_column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(y_column, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(color_column, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string(fill_column, &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res6 = SWIG_AsPtr_std_string(group_column, &ptr);
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "new_GGPlot" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      arg6 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GGPlot__SWIG_1 ( SEXP data, SEXP x_column, SEXP y_column, SEXP color_column, SEXP fill_column)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::string *arg5 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(x_column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(y_column, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(color_column, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string(fill_column, &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GGPlot__SWIG_2 ( SEXP data, SEXP x_column, SEXP y_column, SEXP color_column)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(x_column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(y_column, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(color_column, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GGPlot__SWIG_3 ( SEXP data, SEXP x_column, SEXP y_column)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(x_column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(y_column, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GGPlot__SWIG_4 ( SEXP data, SEXP x_column)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(x_column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_point__SWIG_0 ( SEXP self, SEXP color, SEXP size, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_point" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    arg3 = static_cast< double >(REAL(size)[0]);
+    result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2),arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_point__SWIG_1 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_point" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_point__SWIG_2 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_point" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_point();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_line__SWIG_0 ( SEXP self, SEXP color, SEXP width, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_line" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    arg3 = static_cast< double >(REAL(width)[0]);
+    result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2),arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_line__SWIG_1 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_line" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_line__SWIG_2 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_line" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_line();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_bar__SWIG_0 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_bar" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_bar__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_bar" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_bar();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_col__SWIG_0 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_col" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_col__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_col" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_col();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_histogram__SWIG_0 ( SEXP self, SEXP bins, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::size_t arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_histogram" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    ecode2 = SWIG_AsVal_int(bins, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GGPlot_geom_histogram" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_histogram__SWIG_1 ( SEXP self, SEXP bins, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_histogram" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    ecode2 = SWIG_AsVal_int(bins, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GGPlot_geom_histogram" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_histogram__SWIG_2 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_histogram" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_histogram();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_boxplot__SWIG_0 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_boxplot" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_boxplot__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_boxplot" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_boxplot();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_smooth__SWIG_0 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_smooth" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_smooth__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_smooth" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_smooth();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_area__SWIG_0 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_area" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_area__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_area" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_area();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_ribbon__SWIG_0 ( SEXP self, SEXP ymin_column, SEXP ymax_column, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    datamunge::plot::RGB arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    void *argp4 ;
+    int res4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_ribbon" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(ymin_column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(ymax_column, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      res4 = SWIG_R_ConvertPtr(color, &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_ribbon__SWIG_1 ( SEXP self, SEXP ymin_column, SEXP ymax_column, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_ribbon" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(ymin_column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(ymax_column, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_density__SWIG_0 ( SEXP self, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_density" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_geom_density__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_density" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_density();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_facet_wrap__SWIG_0 ( SEXP self, SEXP column, SEXP ncol, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_facet_wrap" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ecode3 = SWIG_AsVal_int(ncol, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GGPlot_facet_wrap" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_facet_wrap__SWIG_1 ( SEXP self, SEXP column, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_facet_wrap" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_theme_minimal ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_theme_minimal" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->theme_minimal();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_theme_bw ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_theme_bw" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->theme_bw();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_theme_classic ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_theme_classic" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->theme_classic();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_scale_color_manual ( SEXP self, SEXP values, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_scale_color_manual" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    res2 = SWIG_R_ConvertPtr(values, &argp2, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > * >(argp2);
+    result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_labs__SWIG_0 ( SEXP self, SEXP title, SEXP x, SEXP y, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(title, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(x, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(y, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "GGPlot_labs" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_labs__SWIG_1 ( SEXP self, SEXP title, SEXP x, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(title, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(x, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_labs__SWIG_2 ( SEXP self, SEXP title, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(title, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_labs__SWIG_3 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::GGPlot *result = 0 ;
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->labs();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_save ( SEXP self, SEXP path)
+{
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_save" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(path, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::GGPlot const *)arg1)->save((std::string const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_save_svg ( SEXP self, SEXP path)
+{
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_save_svg" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(path, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::GGPlot const *)arg1)->save_svg((std::string const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_GGPlot ( SEXP self)
+{
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GGPlot" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_new_LM__SWIG_0 ( SEXP data, SEXP formula, SEXP weights_column)
 {
   {
@@ -13105,7 +15212,7 @@ SWIGEXPORT SEXP
 R_swig_LM_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::LM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -13119,7 +15226,7 @@ R_swig_LM_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -13135,7 +15242,7 @@ SWIGEXPORT SEXP
 R_swig_LM_plot_normal_qq ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::LM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -13149,7 +15256,7 @@ R_swig_LM_plot_normal_qq ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -13165,7 +15272,7 @@ SWIGEXPORT SEXP
 R_swig_LM_plot_scale_location ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::LM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -13179,7 +15286,7 @@ R_swig_LM_plot_scale_location ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_scale_location();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -13195,7 +15302,7 @@ SWIGEXPORT SEXP
 R_swig_LM_plot_residuals_vs_leverage ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::LM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -13209,7 +15316,7 @@ R_swig_LM_plot_residuals_vs_leverage ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -17911,7 +20018,7 @@ SWIGEXPORT SEXP
 R_swig_LDA_plot_discriminants ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::LDA *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -17925,7 +20032,7 @@ R_swig_LDA_plot_discriminants ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
     result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -19560,7 +21667,7 @@ SWIGEXPORT SEXP
 R_swig_DecisionTreeClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::DecisionTreeClassifier *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -19611,7 +21718,7 @@ R_swig_DecisionTreeClassifier_plot_classification ( SEXP self, SEXP data, SEXP x
       arg4 = ptr;
     }
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
     vmaxset(r_vmax);
@@ -19631,7 +21738,7 @@ SWIGEXPORT SEXP
 R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::DecisionTreeClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -19679,7 +21786,7 @@ R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -19699,7 +21806,7 @@ SWIGEXPORT SEXP
 R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::DecisionTreeClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -19739,7 +21846,7 @@ R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_
       arg3 = ptr;
     }
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -20399,7 +22506,7 @@ SWIGEXPORT SEXP
 R_swig_DecisionTreeRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::DecisionTreeRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -20413,7 +22520,7 @@ R_swig_DecisionTreeRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_c
     }
     arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
     result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -20429,7 +22536,7 @@ SWIGEXPORT SEXP
 R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::DecisionTreeRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -20443,7 +22550,7 @@ R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_c
     }
     arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
     result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -21738,7 +23845,7 @@ SWIGEXPORT SEXP
 R_swig_RandomForestClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::RandomForestClassifier *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -21789,7 +23896,7 @@ R_swig_RandomForestClassifier_plot_classification ( SEXP self, SEXP data, SEXP x
       arg4 = ptr;
     }
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
     vmaxset(r_vmax);
@@ -21809,7 +23916,7 @@ SWIGEXPORT SEXP
 R_swig_RandomForestClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::RandomForestClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -21857,7 +23964,7 @@ R_swig_RandomForestClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -21877,7 +23984,7 @@ SWIGEXPORT SEXP
 R_swig_RandomForestClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::RandomForestClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -21917,7 +24024,7 @@ R_swig_RandomForestClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_
       arg3 = ptr;
     }
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -23057,7 +25164,7 @@ SWIGEXPORT SEXP
 R_swig_RandomForestRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::RandomForestRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -23071,7 +25178,7 @@ R_swig_RandomForestRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_c
     }
     arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
     result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -23087,7 +25194,7 @@ SWIGEXPORT SEXP
 R_swig_RandomForestRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::RandomForestRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -23101,7 +25208,7 @@ R_swig_RandomForestRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_c
     }
     arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
     result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -24153,7 +26260,7 @@ SWIGEXPORT SEXP
 R_swig_ElasticNet_plot_coefficient_path ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::ElasticNet *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -24167,7 +26274,7 @@ R_swig_ElasticNet_plot_coefficient_path ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -24183,7 +26290,7 @@ SWIGEXPORT SEXP
 R_swig_ElasticNet_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::ElasticNet *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -24197,7 +26304,7 @@ R_swig_ElasticNet_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -24213,7 +26320,7 @@ SWIGEXPORT SEXP
 R_swig_ElasticNet_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::ElasticNet *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -24227,7 +26334,7 @@ R_swig_ElasticNet_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -24243,7 +26350,7 @@ SWIGEXPORT SEXP
 R_swig_ElasticNet_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::ElasticNet *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -24257,7 +26364,7 @@ R_swig_ElasticNet_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -25189,7 +27296,7 @@ SWIGEXPORT SEXP
 R_swig_Ridge_plot_coefficient_path ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Ridge *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -25203,7 +27310,7 @@ R_swig_Ridge_plot_coefficient_path ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -25219,7 +27326,7 @@ SWIGEXPORT SEXP
 R_swig_Ridge_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Ridge *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -25233,7 +27340,7 @@ R_swig_Ridge_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -25249,7 +27356,7 @@ SWIGEXPORT SEXP
 R_swig_Ridge_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Ridge *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -25263,7 +27370,7 @@ R_swig_Ridge_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -25279,7 +27386,7 @@ SWIGEXPORT SEXP
 R_swig_Ridge_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Ridge *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -25293,7 +27400,7 @@ R_swig_Ridge_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -26255,7 +28362,7 @@ SWIGEXPORT SEXP
 R_swig_Lasso_plot_coefficient_path ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Lasso *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -26269,7 +28376,7 @@ R_swig_Lasso_plot_coefficient_path ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -26285,7 +28392,7 @@ SWIGEXPORT SEXP
 R_swig_Lasso_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Lasso *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -26299,7 +28406,7 @@ R_swig_Lasso_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -26315,7 +28422,7 @@ SWIGEXPORT SEXP
 R_swig_Lasso_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Lasso *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -26329,7 +28436,7 @@ R_swig_Lasso_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -26345,7 +28452,7 @@ SWIGEXPORT SEXP
 R_swig_Lasso_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::Lasso *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -26359,7 +28466,7 @@ R_swig_Lasso_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -27049,7 +29156,7 @@ SWIGEXPORT SEXP
 R_swig_KNNClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KNNClassifier *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -27100,7 +29207,7 @@ R_swig_KNNClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature,
       arg4 = ptr;
     }
     result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
     vmaxset(r_vmax);
@@ -27120,7 +29227,7 @@ SWIGEXPORT SEXP
 R_swig_KNNClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KNNClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -27168,7 +29275,7 @@ R_swig_KNNClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, 
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -27188,7 +29295,7 @@ SWIGEXPORT SEXP
 R_swig_KNNClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KNNClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -27228,7 +29335,7 @@ R_swig_KNNClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, 
       arg3 = ptr;
     }
     result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -27881,7 +29988,7 @@ SWIGEXPORT SEXP
 R_swig_KNNRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KNNRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -27895,7 +30002,7 @@ R_swig_KNNRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
     result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -27911,7 +30018,7 @@ SWIGEXPORT SEXP
 R_swig_KNNRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KNNRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -27925,7 +30032,7 @@ R_swig_KNNRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
     result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -31670,7 +33777,7 @@ SWIGEXPORT SEXP
 R_swig_GBMClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GBMClassifier *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -31721,7 +33828,7 @@ R_swig_GBMClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature,
       arg4 = ptr;
     }
     result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
     vmaxset(r_vmax);
@@ -31741,7 +33848,7 @@ SWIGEXPORT SEXP
 R_swig_GBMClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GBMClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -31789,7 +33896,7 @@ R_swig_GBMClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, 
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -31809,7 +33916,7 @@ SWIGEXPORT SEXP
 R_swig_GBMClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GBMClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -31849,7 +33956,7 @@ R_swig_GBMClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, 
       arg3 = ptr;
     }
     result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -31869,7 +33976,7 @@ SWIGEXPORT SEXP
 R_swig_GBMClassifier_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GBMClassifier *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -31883,7 +33990,7 @@ R_swig_GBMClassifier_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GBMClassifier * >(argp1);
     result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -32829,7 +34936,7 @@ SWIGEXPORT SEXP
 R_swig_GBMRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GBMRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -32843,7 +34950,7 @@ R_swig_GBMRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -32859,7 +34966,7 @@ SWIGEXPORT SEXP
 R_swig_GBMRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GBMRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -32873,7 +34980,7 @@ R_swig_GBMRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -32889,7 +34996,7 @@ SWIGEXPORT SEXP
 R_swig_GBMRegressor_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GBMRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -32903,7 +35010,7 @@ R_swig_GBMRegressor_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -34188,7 +36295,7 @@ SWIGEXPORT SEXP
 R_swig_XGBoostClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::XGBoostClassifier *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -34239,7 +36346,7 @@ R_swig_XGBoostClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feat
       arg4 = ptr;
     }
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
     vmaxset(r_vmax);
@@ -34259,7 +36366,7 @@ SWIGEXPORT SEXP
 R_swig_XGBoostClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::XGBoostClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -34307,7 +36414,7 @@ R_swig_XGBoostClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_featu
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -34327,7 +36434,7 @@ SWIGEXPORT SEXP
 R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::XGBoostClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -34367,7 +36474,7 @@ R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_featu
       arg3 = ptr;
     }
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -34387,7 +36494,7 @@ SWIGEXPORT SEXP
 R_swig_XGBoostClassifier_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::XGBoostClassifier *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -34401,7 +36508,7 @@ R_swig_XGBoostClassifier_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::XGBoostClassifier * >(argp1);
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -35645,7 +37752,7 @@ SWIGEXPORT SEXP
 R_swig_XGBoostRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::XGBoostRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -35659,7 +37766,7 @@ R_swig_XGBoostRegressor_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -35675,7 +37782,7 @@ SWIGEXPORT SEXP
 R_swig_XGBoostRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::XGBoostRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -35689,7 +37796,7 @@ R_swig_XGBoostRegressor_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -35705,7 +37812,7 @@ SWIGEXPORT SEXP
 R_swig_XGBoostRegressor_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::XGBoostRegressor *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -35719,7 +37826,7 @@ R_swig_XGBoostRegressor_plot_training_deviance ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -36459,7 +38566,7 @@ SWIGEXPORT SEXP
 R_swig_KernelRegression_plot_fit__SWIG_0 ( SEXP self, SEXP data, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KernelRegression *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::size_t arg3 ;
@@ -36492,7 +38599,7 @@ R_swig_KernelRegression_plot_fit__SWIG_0 ( SEXP self, SEXP data, SEXP grid_resol
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -36508,7 +38615,7 @@ SWIGEXPORT SEXP
 R_swig_KernelRegression_plot_fit__SWIG_1 ( SEXP self, SEXP data, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KernelRegression *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     void *argp1 = 0 ;
@@ -36533,7 +38640,7 @@ R_swig_KernelRegression_plot_fit__SWIG_1 ( SEXP self, SEXP data, SEXP s_swig_cop
     }
     arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
     result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -36549,7 +38656,7 @@ SWIGEXPORT SEXP
 R_swig_KernelRegression_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KernelRegression *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -36563,7 +38670,7 @@ R_swig_KernelRegression_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -36579,7 +38686,7 @@ SWIGEXPORT SEXP
 R_swig_KernelRegression_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KernelRegression *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -36593,7 +38700,7 @@ R_swig_KernelRegression_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -36609,7 +38716,7 @@ SWIGEXPORT SEXP
 R_swig_KernelRegression_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::KernelRegression *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -36623,7 +38730,7 @@ R_swig_KernelRegression_plot_cv_curve ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -37662,7 +39769,7 @@ SWIGEXPORT SEXP
 R_swig_GaussianProcessRegression_plot_fit__SWIG_0 ( SEXP self, SEXP data, SEXP grid_resolution, SEXP level, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GaussianProcessRegression *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::size_t arg3 ;
@@ -37697,7 +39804,7 @@ R_swig_GaussianProcessRegression_plot_fit__SWIG_0 ( SEXP self, SEXP data, SEXP g
     arg3 = static_cast< std::size_t >(val3);
     arg4 = static_cast< double >(REAL(level)[0]);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -37713,7 +39820,7 @@ SWIGEXPORT SEXP
 R_swig_GaussianProcessRegression_plot_fit__SWIG_1 ( SEXP self, SEXP data, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GaussianProcessRegression *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::size_t arg3 ;
@@ -37746,7 +39853,7 @@ R_swig_GaussianProcessRegression_plot_fit__SWIG_1 ( SEXP self, SEXP data, SEXP g
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -37762,7 +39869,7 @@ SWIGEXPORT SEXP
 R_swig_GaussianProcessRegression_plot_fit__SWIG_2 ( SEXP self, SEXP data, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GaussianProcessRegression *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     void *argp1 = 0 ;
@@ -37787,7 +39894,7 @@ R_swig_GaussianProcessRegression_plot_fit__SWIG_2 ( SEXP self, SEXP data, SEXP s
     }
     arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -37803,7 +39910,7 @@ SWIGEXPORT SEXP
 R_swig_GaussianProcessRegression_plot_predicted_vs_actual ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GaussianProcessRegression *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -37817,7 +39924,7 @@ R_swig_GaussianProcessRegression_plot_predicted_vs_actual ( SEXP self, SEXP s_sw
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -37833,7 +39940,7 @@ SWIGEXPORT SEXP
 R_swig_GaussianProcessRegression_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GaussianProcessRegression *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -37847,7 +39954,7 @@ R_swig_GaussianProcessRegression_plot_residuals_vs_fitted ( SEXP self, SEXP s_sw
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -37863,7 +39970,7 @@ SWIGEXPORT SEXP
 R_swig_GaussianProcessRegression_plot_length_scale_profile ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GaussianProcessRegression *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -37877,7 +39984,7 @@ R_swig_GaussianProcessRegression_plot_length_scale_profile ( SEXP self, SEXP s_s
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -38394,7 +40501,7 @@ SWIGEXPORT SEXP
 R_swig_NaiveBayesClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::NaiveBayesClassifier *arg1 = 0 ;
     datamunge::DataFrame *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -38445,7 +40552,7 @@ R_swig_NaiveBayesClassifier_plot_classification ( SEXP self, SEXP data, SEXP x_f
       arg4 = ptr;
     }
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
     vmaxset(r_vmax);
@@ -38465,7 +40572,7 @@ SWIGEXPORT SEXP
 R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP grid_resolution, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::NaiveBayesClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -38513,7 +40620,7 @@ R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_0 ( SEXP self, SEXP x_fe
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -38533,7 +40640,7 @@ SWIGEXPORT SEXP
 R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_feature, SEXP y_feature, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::NaiveBayesClassifier *arg1 = 0 ;
     std::string *arg2 = 0 ;
     std::string *arg3 = 0 ;
@@ -38573,7 +40680,7 @@ R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_1 ( SEXP self, SEXP x_fe
       arg3 = ptr;
     }
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
     vmaxset(r_vmax);
@@ -39995,7 +42102,7 @@ SWIGEXPORT SEXP
 R_swig_GLM_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GLM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -40009,7 +42116,7 @@ R_swig_GLM_plot_residuals_vs_fitted ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -40025,7 +42132,7 @@ SWIGEXPORT SEXP
 R_swig_GLM_plot_normal_qq ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GLM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -40039,7 +42146,7 @@ R_swig_GLM_plot_normal_qq ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -40055,7 +42162,7 @@ SWIGEXPORT SEXP
 R_swig_GLM_plot_scale_location ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GLM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -40069,7 +42176,7 @@ R_swig_GLM_plot_scale_location ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -40085,7 +42192,7 @@ SWIGEXPORT SEXP
 R_swig_GLM_plot_residuals_vs_leverage ( SEXP self, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     datamunge::GLM *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
@@ -40099,7 +42206,7 @@ R_swig_GLM_plot_residuals_vs_leverage ( SEXP self, SEXP s_swig_copy)
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -46638,6 +48745,94 @@ R_swig_DataSeries_Kind_Bar_get ( SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
+R_swig_DataSeries_Kind_Box_get ( SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::DataSeries::Kind result;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::DataSeries::Kind)datamunge::plot::DataSeries::Kind::Box;
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataSeries_Kind_Polygon_get ( SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::DataSeries::Kind result;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::DataSeries::Kind)datamunge::plot::DataSeries::Kind::Polygon;
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataSeries_Kind_Text_get ( SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::DataSeries::Kind result;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::DataSeries::Kind)datamunge::plot::DataSeries::Kind::Text;
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataSeries_Kind_Segment_get ( SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::DataSeries::Kind result;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::DataSeries::Kind)datamunge::plot::DataSeries::Kind::Segment;
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_DataSeries_kind_set ( SEXP self, SEXP s_kind)
 {
   {
@@ -47163,6 +49358,67 @@ R_swig_DataSeries_bar_width_get ( SEXP self, SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
+R_swig_DataSeries_filled_set ( SEXP self, SEXP s_filled)
+{
+  {
+    datamunge::plot::DataSeries *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+    arg2 = LOGICAL(s_filled)[0] ? true : false;
+    if (arg1) (arg1)->filled = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataSeries_filled_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::plot::DataSeries *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+    result = (bool) ((arg1)->filled);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_new_DataSeries ( )
 {
   {
@@ -47200,6 +49456,562 @@ R_swig_delete_DataSeries ( SEXP self)
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DataSeries" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_vertical_set ( SEXP self, SEXP s_vertical)
+{
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    arg2 = LOGICAL(s_vertical)[0] ? true : false;
+    if (arg1) (arg1)->vertical = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_vertical_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (bool) ((arg1)->vertical);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_value_set ( SEXP self, SEXP s_value)
+{
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    arg2 = static_cast< double >(REAL(s_value)[0]);
+    if (arg1) (arg1)->value = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_value_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (double) ((arg1)->value);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_slope_set ( SEXP self, SEXP s_slope)
+{
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    arg2 = static_cast< double >(REAL(s_slope)[0]);
+    if (arg1) (arg1)->slope = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_slope_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (double) ((arg1)->slope);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_color_set ( SEXP self, SEXP s_color)
+{
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    datamunge::plot::RGB *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_color, &argp2, SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::plot::RGB *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+    if (arg1) (arg1)->color = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_color_get ( SEXP self)
+{
+  {
+    datamunge::plot::RGB *result = 0 ;
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (datamunge::plot::RGB *)& ((arg1)->color);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_stroke_width_set ( SEXP self, SEXP s_stroke_width)
+{
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    arg2 = static_cast< double >(REAL(s_stroke_width)[0]);
+    if (arg1) (arg1)->stroke_width = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ABLine_stroke_width_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (double) ((arg1)->stroke_width);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_ABLine ( )
+{
+  {
+    datamunge::plot::ABLine *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ABLine, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_ABLine ( SEXP self)
+{
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ABLine, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ABLine" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LegendEntry_label_set ( SEXP self, SEXP s_label)
+{
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_set" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(s_label, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_label_set" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LegendEntry_label_set" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    if (arg1) (arg1)->label = *arg2;
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LegendEntry_label_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string *result = 0 ;
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_get" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    result = (std::string *) & ((arg1)->label);
+    r_ans = SWIG_From_std_string(static_cast< std::string >(*result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LegendEntry_color_set ( SEXP self, SEXP s_color)
+{
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    datamunge::plot::RGB *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_set" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_color, &argp2, SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::plot::RGB *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+    if (arg1) (arg1)->color = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_LegendEntry_color_get ( SEXP self)
+{
+  {
+    datamunge::plot::RGB *result = 0 ;
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_get" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    result = (datamunge::plot::RGB *)& ((arg1)->color);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_LegendEntry ( )
+{
+  {
+    datamunge::plot::LegendEntry *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LegendEntry, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_LegendEntry ( SEXP self)
+{
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LegendEntry, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LegendEntry" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
     delete arg1;
     r_ans = R_NilValue;
     vmaxset(r_vmax);
@@ -47660,6 +50472,108 @@ R_swig_Plot_y_limits ( SEXP self, SEXP min_y, SEXP max_y, SEXP s_swig_copy)
     arg2 = static_cast< double >(REAL(min_y)[0]);
     arg3 = static_cast< double >(REAL(max_y)[0]);
     result = (datamunge::plot::Plot *) &(arg1)->y_limits(arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Plot_hide_axes__SWIG_0 ( SEXP self, SEXP enabled, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::Plot *result = 0 ;
+    datamunge::plot::Plot *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    arg2 = LOGICAL(enabled)[0] ? true : false;
+    result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Plot_hide_axes__SWIG_1 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::Plot *result = 0 ;
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Plot_x_tick_labels ( SEXP self, SEXP labels, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::Plot *result = 0 ;
+    datamunge::plot::Plot *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_labels" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(labels, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Plot_x_tick_labels" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(arg2));
     r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
@@ -48153,6 +51067,126 @@ R_swig_Plot_y_max ( SEXP self, SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
+R_swig_Plot_axes_hidden ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_hidden" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Plot_x_tick_label_list ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::string,std::allocator< std::string > > *result = 0 ;
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_label_list" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (std::vector< std::string,std::allocator< std::string > > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+    r_ans = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(*result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Plot_reference_lines ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::plot::ABLine,std::allocator< datamunge::plot::ABLine > > *result = 0 ;
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_reference_lines" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (std::vector< datamunge::plot::ABLine,std::allocator< datamunge::plot::ABLine > > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Plot_legend_entries ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::plot::LegendEntry,std::allocator< datamunge::plot::LegendEntry > > *result = 0 ;
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_legend_entries" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (std::vector< datamunge::plot::LegendEntry,std::allocator< datamunge::plot::LegendEntry > > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_Plot_save ( SEXP self, SEXP path)
 {
   {
@@ -48409,16 +51443,16 @@ R_swig_new_Plot ( )
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_create ( SEXP s_swig_copy)
+R_swig_RPlot_create ( SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     unsigned int r_nprotect = 0;
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    result = datamunge::plot::ScatterPlot::create();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
+    result = datamunge::plot::RPlot::create();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48431,11 +51465,1217 @@ R_swig_ScatterPlot_create ( SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_points__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP marker_size, SEXP s_swig_copy)
+R_swig_RPlot_plot__SWIG_0 ( SEXP x, SEXP y, SEXP type, SEXP label, SEXP color, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::string arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(type, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_plot__SWIG_1 ( SEXP x, SEXP y, SEXP type, SEXP label, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::string arg3 ;
+    std::string arg4 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(type, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_plot__SWIG_2 ( SEXP x, SEXP y, SEXP type, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::string arg3 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(type, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_plot__SWIG_3 ( SEXP x, SEXP y, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_hist__SWIG_0 ( SEXP data, SEXP bins, SEXP label, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::size_t arg2 ;
+    std::string arg3 ;
+    datamunge::plot::RGB arg4 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    ecode2 = SWIG_AsVal_int(bins, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hist" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res4 = SWIG_R_ConvertPtr(color, &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_hist__SWIG_1 ( SEXP data, SEXP bins, SEXP label, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::size_t arg2 ;
+    std::string arg3 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    ecode2 = SWIG_AsVal_int(bins, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hist" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_hist__SWIG_2 ( SEXP data, SEXP bins, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::size_t arg2 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    ecode2 = SWIG_AsVal_int(bins, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hist" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_hist__SWIG_3 ( SEXP data, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_barplot__SWIG_0 ( SEXP heights, SEXP names, SEXP label, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    std::string arg3 ;
+    datamunge::plot::RGB arg4 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(heights, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res4 = SWIG_R_ConvertPtr(color, &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_barplot__SWIG_1 ( SEXP heights, SEXP names, SEXP label, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    std::string arg3 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(heights, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_barplot__SWIG_2 ( SEXP heights, SEXP names, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(heights, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_barplot__SWIG_3 ( SEXP heights, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(heights, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_boxplot__SWIG_0 ( SEXP groups, SEXP names, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+      int res = swig::asptr(groups, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_boxplot" "', argument " "1"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_boxplot" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_boxplot__SWIG_1 ( SEXP groups, SEXP names, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+      int res = swig::asptr(groups, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_boxplot" "', argument " "1"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_boxplot" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_boxplot__SWIG_2 ( SEXP groups, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+      int res = swig::asptr(groups, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_boxplot" "', argument " "1"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_pie__SWIG_0 ( SEXP values, SEXP names, SEXP colors, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    SwigValueWrapper< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > > arg3 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_pie" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_pie" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(colors, &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >""'");
+      } else {
+        arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > * >(argp3));
+      }
+    }
+    result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_pie__SWIG_1 ( SEXP values, SEXP names, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_pie" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_pie" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_pie__SWIG_2 ( SEXP values, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_pie" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_curve__SWIG_0 ( SEXP f, SEXP from, SEXP to, SEXP n, SEXP label, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::size_t arg4 ;
+    std::string arg5 ;
+    datamunge::plot::RGB arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    void *argp6 ;
+    int res6 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(f, &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    arg2 = static_cast< double >(REAL(from)[0]);
+    arg3 = static_cast< double >(REAL(to)[0]);
+    ecode4 = SWIG_AsVal_int(n, &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_curve" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_curve" "', argument " "5"" of type '" "std::string""'"); 
+      }
+      arg5 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res6 = SWIG_R_ConvertPtr(color, &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp6) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      }
+    }
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_curve__SWIG_1 ( SEXP f, SEXP from, SEXP to, SEXP n, SEXP label, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::size_t arg4 ;
+    std::string arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(f, &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    arg2 = static_cast< double >(REAL(from)[0]);
+    arg3 = static_cast< double >(REAL(to)[0]);
+    ecode4 = SWIG_AsVal_int(n, &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_curve" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_curve" "', argument " "5"" of type '" "std::string""'"); 
+      }
+      arg5 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_curve__SWIG_2 ( SEXP f, SEXP from, SEXP to, SEXP n, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::size_t arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(f, &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    arg2 = static_cast< double >(REAL(from)[0]);
+    arg3 = static_cast< double >(REAL(to)[0]);
+    ecode4 = SWIG_AsVal_int(n, &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_curve" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_curve__SWIG_3 ( SEXP f, SEXP from, SEXP to, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(f, &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    arg2 = static_cast< double >(REAL(from)[0]);
+    arg3 = static_cast< double >(REAL(to)[0]);
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_qqnorm__SWIG_0 ( SEXP data, SEXP label, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::string arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqnorm" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqnorm" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_qqnorm__SWIG_1 ( SEXP data, SEXP label, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    std::string arg2 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqnorm" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqnorm" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_qqnorm__SWIG_2 ( SEXP data, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    std::vector< double,std::allocator< double > > arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqnorm" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_points__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP marker_size, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -48449,16 +52689,16 @@ R_swig_ScatterPlot_points__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48467,7 +52707,7 @@ R_swig_ScatterPlot_points__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48476,7 +52716,7 @@ R_swig_ScatterPlot_points__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48484,17 +52724,17 @@ R_swig_ScatterPlot_points__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
     arg6 = static_cast< double >(REAL(marker_size)[0]);
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48507,11 +52747,11 @@ R_swig_ScatterPlot_points__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_points__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
+R_swig_RPlot_points__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -48524,16 +52764,16 @@ R_swig_ScatterPlot_points__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48542,7 +52782,7 @@ R_swig_ScatterPlot_points__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48551,7 +52791,7 @@ R_swig_ScatterPlot_points__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48559,16 +52799,16 @@ R_swig_ScatterPlot_points__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48581,11 +52821,11 @@ R_swig_ScatterPlot_points__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_points__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
+R_swig_RPlot_points__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -48595,16 +52835,16 @@ R_swig_ScatterPlot_points__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48613,7 +52853,7 @@ R_swig_ScatterPlot_points__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48622,13 +52862,13 @@ R_swig_ScatterPlot_points__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48641,11 +52881,11 @@ R_swig_ScatterPlot_points__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP 
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_points__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
+R_swig_RPlot_points__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     void *argp1 = 0 ;
@@ -48654,16 +52894,16 @@ R_swig_ScatterPlot_points__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48672,13 +52912,13 @@ R_swig_ScatterPlot_points__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48691,11 +52931,11 @@ R_swig_ScatterPlot_points__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
+R_swig_RPlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -48709,16 +52949,16 @@ R_swig_ScatterPlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48727,7 +52967,7 @@ R_swig_ScatterPlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48736,7 +52976,7 @@ R_swig_ScatterPlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48744,17 +52984,17 @@ R_swig_ScatterPlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
     arg6 = static_cast< double >(REAL(stroke_width)[0]);
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48767,11 +53007,11 @@ R_swig_ScatterPlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
+R_swig_RPlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -48784,16 +53024,16 @@ R_swig_ScatterPlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48802,7 +53042,7 @@ R_swig_ScatterPlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48811,7 +53051,7 @@ R_swig_ScatterPlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48819,16 +53059,16 @@ R_swig_ScatterPlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48841,11 +53081,11 @@ R_swig_ScatterPlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP co
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
+R_swig_RPlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -48855,16 +53095,16 @@ R_swig_ScatterPlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48873,7 +53113,7 @@ R_swig_ScatterPlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48882,13 +53122,13 @@ R_swig_ScatterPlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48901,11 +53141,11 @@ R_swig_ScatterPlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_
 
 
 SWIGEXPORT SEXP
-R_swig_ScatterPlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
+R_swig_RPlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     void *argp1 = 0 ;
@@ -48914,16 +53154,16 @@ R_swig_ScatterPlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -48932,13 +53172,13 @@ R_swig_ScatterPlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -48951,85 +53191,11 @@ R_swig_ScatterPlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
-R_swig_new_ScatterPlot ( )
+R_swig_RPlot_lines__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::ScatterPlot *result = 0 ;
-    unsigned int r_nprotect = 0;
-    SEXP r_ans = R_NilValue ;
-    VMAXTYPE r_vmax = vmaxget() ;
-    
-    result = (datamunge::plot::ScatterPlot *)new datamunge::plot::ScatterPlot();
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN |  0 );
-    vmaxset(r_vmax);
-    if(r_nprotect)  Rf_unprotect(r_nprotect);
-    
-    return r_ans;
-    fail: SWIGUNUSED;
-  }
-  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
-  return R_NilValue;
-}
-
-
-SWIGEXPORT SEXP
-R_swig_delete_ScatterPlot ( SEXP self)
-{
-  {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    unsigned int r_nprotect = 0;
-    SEXP r_ans = R_NilValue ;
-    VMAXTYPE r_vmax = vmaxget() ;
-    
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_DISOWN |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ScatterPlot" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
-    delete arg1;
-    r_ans = R_NilValue;
-    vmaxset(r_vmax);
-    if(r_nprotect)  Rf_unprotect(r_nprotect);
-    
-    R_ClearExternalPtr(self);
-    return r_ans;
-    fail: SWIGUNUSED;
-  }
-  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
-  return R_NilValue;
-}
-
-
-SWIGEXPORT SEXP
-R_swig_LinePlot_create ( SEXP s_swig_copy)
-{
-  {
-    datamunge::plot::LinePlot result;
-    unsigned int r_nprotect = 0;
-    SEXP r_ans = R_NilValue ;
-    VMAXTYPE r_vmax = vmaxget() ;
-    
-    result = datamunge::plot::LinePlot::create();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::LinePlot(result)), SWIGTYPE_p_datamunge__plot__LinePlot, SWIG_POINTER_OWN |  0 );
-    vmaxset(r_vmax);
-    if(r_nprotect)  Rf_unprotect(r_nprotect);
-    
-    return r_ans;
-    fail: SWIGUNUSED;
-  }
-  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
-  return R_NilValue;
-}
-
-
-SWIGEXPORT SEXP
-R_swig_LinePlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
-{
-  {
-    datamunge::plot::LinePlot *result = 0 ;
-    datamunge::plot::LinePlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -49043,16 +53209,16 @@ R_swig_LinePlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49061,7 +53227,7 @@ R_swig_LinePlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49070,7 +53236,7 @@ R_swig_LinePlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49078,17 +53244,17 @@ R_swig_LinePlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
     arg6 = static_cast< double >(REAL(stroke_width)[0]);
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49101,11 +53267,11 @@ R_swig_LinePlot_line__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
 
 
 SWIGEXPORT SEXP
-R_swig_LinePlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
+R_swig_RPlot_lines__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::LinePlot *result = 0 ;
-    datamunge::plot::LinePlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -49118,16 +53284,16 @@ R_swig_LinePlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49136,7 +53302,7 @@ R_swig_LinePlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49145,7 +53311,7 @@ R_swig_LinePlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49153,16 +53319,16 @@ R_swig_LinePlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49175,11 +53341,11 @@ R_swig_LinePlot_line__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
 
 
 SWIGEXPORT SEXP
-R_swig_LinePlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
+R_swig_RPlot_lines__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::LinePlot *result = 0 ;
-    datamunge::plot::LinePlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -49189,16 +53355,16 @@ R_swig_LinePlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49207,7 +53373,7 @@ R_swig_LinePlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49216,13 +53382,13 @@ R_swig_LinePlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49235,11 +53401,11 @@ R_swig_LinePlot_line__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
 
 
 SWIGEXPORT SEXP
-R_swig_LinePlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
+R_swig_RPlot_lines__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::LinePlot *result = 0 ;
-    datamunge::plot::LinePlot *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     void *argp1 = 0 ;
@@ -49248,16 +53414,16 @@ R_swig_LinePlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49266,13 +53432,13 @@ R_swig_LinePlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49285,85 +53451,11 @@ R_swig_LinePlot_line__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
-R_swig_new_LinePlot ( )
+R_swig_RPlot_bars__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP bar_width, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::LinePlot *result = 0 ;
-    unsigned int r_nprotect = 0;
-    SEXP r_ans = R_NilValue ;
-    VMAXTYPE r_vmax = vmaxget() ;
-    
-    result = (datamunge::plot::LinePlot *)new datamunge::plot::LinePlot();
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, SWIG_POINTER_OWN |  0 );
-    vmaxset(r_vmax);
-    if(r_nprotect)  Rf_unprotect(r_nprotect);
-    
-    return r_ans;
-    fail: SWIGUNUSED;
-  }
-  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
-  return R_NilValue;
-}
-
-
-SWIGEXPORT SEXP
-R_swig_delete_LinePlot ( SEXP self)
-{
-  {
-    datamunge::plot::LinePlot *arg1 = 0 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    unsigned int r_nprotect = 0;
-    SEXP r_ans = R_NilValue ;
-    VMAXTYPE r_vmax = vmaxget() ;
-    
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__LinePlot, SWIG_POINTER_DISOWN |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LinePlot" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
-    delete arg1;
-    r_ans = R_NilValue;
-    vmaxset(r_vmax);
-    if(r_nprotect)  Rf_unprotect(r_nprotect);
-    
-    R_ClearExternalPtr(self);
-    return r_ans;
-    fail: SWIGUNUSED;
-  }
-  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
-  return R_NilValue;
-}
-
-
-SWIGEXPORT SEXP
-R_swig_BarChart_create ( SEXP s_swig_copy)
-{
-  {
-    datamunge::plot::BarChart result;
-    unsigned int r_nprotect = 0;
-    SEXP r_ans = R_NilValue ;
-    VMAXTYPE r_vmax = vmaxget() ;
-    
-    result = datamunge::plot::BarChart::create();
-    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::BarChart(result)), SWIGTYPE_p_datamunge__plot__BarChart, SWIG_POINTER_OWN |  0 );
-    vmaxset(r_vmax);
-    if(r_nprotect)  Rf_unprotect(r_nprotect);
-    
-    return r_ans;
-    fail: SWIGUNUSED;
-  }
-  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
-  return R_NilValue;
-}
-
-
-SWIGEXPORT SEXP
-R_swig_BarChart_bars__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP bar_width, SEXP s_swig_copy)
-{
-  {
-    datamunge::plot::BarChart *result = 0 ;
-    datamunge::plot::BarChart *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -49377,16 +53469,16 @@ R_swig_BarChart_bars__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49395,7 +53487,7 @@ R_swig_BarChart_bars__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49404,7 +53496,7 @@ R_swig_BarChart_bars__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49412,17 +53504,17 @@ R_swig_BarChart_bars__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
     arg6 = static_cast< double >(REAL(bar_width)[0]);
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49435,11 +53527,11 @@ R_swig_BarChart_bars__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
 
 
 SWIGEXPORT SEXP
-R_swig_BarChart_bars__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
+R_swig_RPlot_bars__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::BarChart *result = 0 ;
-    datamunge::plot::BarChart *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -49452,16 +53544,16 @@ R_swig_BarChart_bars__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49470,7 +53562,7 @@ R_swig_BarChart_bars__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49479,7 +53571,7 @@ R_swig_BarChart_bars__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49487,16 +53579,16 @@ R_swig_BarChart_bars__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
     {
       res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49509,11 +53601,11 @@ R_swig_BarChart_bars__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color
 
 
 SWIGEXPORT SEXP
-R_swig_BarChart_bars__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
+R_swig_RPlot_bars__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::BarChart *result = 0 ;
-    datamunge::plot::BarChart *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     std::string arg4 ;
@@ -49523,16 +53615,16 @@ R_swig_BarChart_bars__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49541,7 +53633,7 @@ R_swig_BarChart_bars__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49550,13 +53642,13 @@ R_swig_BarChart_bars__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string(label, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49569,11 +53661,11 @@ R_swig_BarChart_bars__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swi
 
 
 SWIGEXPORT SEXP
-R_swig_BarChart_bars__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
+R_swig_RPlot_bars__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::BarChart *result = 0 ;
-    datamunge::plot::BarChart *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double,std::allocator< double > > arg2 ;
     std::vector< double,std::allocator< double > > arg3 ;
     void *argp1 = 0 ;
@@ -49582,16 +53674,16 @@ R_swig_BarChart_bars__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(x, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg2 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -49600,13 +53692,13 @@ R_swig_BarChart_bars__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
       std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
       int res = swig::asptr(y, &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
       }
       arg3 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49619,16 +53711,62 @@ R_swig_BarChart_bars__SWIG_3 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
 
 
 SWIGEXPORT SEXP
-R_swig_new_BarChart ( )
+R_swig_RPlot_box__SWIG_0 ( SEXP self, SEXP position, SEXP whisker_lo, SEXP q1, SEXP median, SEXP q3, SEXP whisker_hi, SEXP outliers, SEXP color, SEXP width, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::BarChart *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    std::vector< double,std::allocator< double > > arg8 ;
+    datamunge::plot::RGB arg9 ;
+    double arg10 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp9 ;
+    int res9 = 0 ;
     unsigned int r_nprotect = 0;
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    result = (datamunge::plot::BarChart *)new datamunge::plot::BarChart();
-    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, SWIG_POINTER_OWN |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(position)[0]);
+    arg3 = static_cast< double >(REAL(whisker_lo)[0]);
+    arg4 = static_cast< double >(REAL(q1)[0]);
+    arg5 = static_cast< double >(REAL(median)[0]);
+    arg6 = static_cast< double >(REAL(q3)[0]);
+    arg7 = static_cast< double >(REAL(whisker_hi)[0]);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(outliers, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_box" "', argument " "8"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg8 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res9 = SWIG_R_ConvertPtr(color, &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res9)) {
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp9) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+      }
+    }
+    arg10 = static_cast< double >(REAL(width)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),arg10);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -49641,21 +53779,1638 @@ R_swig_new_BarChart ( )
 
 
 SWIGEXPORT SEXP
-R_swig_delete_BarChart ( SEXP self)
+R_swig_RPlot_box__SWIG_1 ( SEXP self, SEXP position, SEXP whisker_lo, SEXP q1, SEXP median, SEXP q3, SEXP whisker_hi, SEXP outliers, SEXP color, SEXP s_swig_copy)
 {
   {
-    datamunge::plot::BarChart *arg1 = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    std::vector< double,std::allocator< double > > arg8 ;
+    datamunge::plot::RGB arg9 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp9 ;
+    int res9 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(position)[0]);
+    arg3 = static_cast< double >(REAL(whisker_lo)[0]);
+    arg4 = static_cast< double >(REAL(q1)[0]);
+    arg5 = static_cast< double >(REAL(median)[0]);
+    arg6 = static_cast< double >(REAL(q3)[0]);
+    arg7 = static_cast< double >(REAL(whisker_hi)[0]);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(outliers, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_box" "', argument " "8"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg8 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res9 = SWIG_R_ConvertPtr(color, &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res9)) {
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp9) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_box__SWIG_2 ( SEXP self, SEXP position, SEXP whisker_lo, SEXP q1, SEXP median, SEXP q3, SEXP whisker_hi, SEXP outliers, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    std::vector< double,std::allocator< double > > arg8 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     unsigned int r_nprotect = 0;
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
     
-    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__BarChart, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_BarChart" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(position)[0]);
+    arg3 = static_cast< double >(REAL(whisker_lo)[0]);
+    arg4 = static_cast< double >(REAL(q1)[0]);
+    arg5 = static_cast< double >(REAL(median)[0]);
+    arg6 = static_cast< double >(REAL(q3)[0]);
+    arg7 = static_cast< double >(REAL(whisker_hi)[0]);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(outliers, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_box" "', argument " "8"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg8 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_box__SWIG_3 ( SEXP self, SEXP position, SEXP whisker_lo, SEXP q1, SEXP median, SEXP q3, SEXP whisker_hi, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(position)[0]);
+    arg3 = static_cast< double >(REAL(whisker_lo)[0]);
+    arg4 = static_cast< double >(REAL(q1)[0]);
+    arg5 = static_cast< double >(REAL(median)[0]);
+    arg6 = static_cast< double >(REAL(q3)[0]);
+    arg7 = static_cast< double >(REAL(whisker_hi)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline__SWIG_0 ( SEXP self, SEXP intercept, SEXP slope, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    datamunge::plot::RGB arg4 ;
+    double arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(intercept)[0]);
+    arg3 = static_cast< double >(REAL(slope)[0]);
+    {
+      res4 = SWIG_R_ConvertPtr(color, &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    arg5 = static_cast< double >(REAL(stroke_width)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4),arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline__SWIG_1 ( SEXP self, SEXP intercept, SEXP slope, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    datamunge::plot::RGB arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(intercept)[0]);
+    arg3 = static_cast< double >(REAL(slope)[0]);
+    {
+      res4 = SWIG_R_ConvertPtr(color, &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline__SWIG_2 ( SEXP self, SEXP intercept, SEXP slope, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(intercept)[0]);
+    arg3 = static_cast< double >(REAL(slope)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline_h__SWIG_0 ( SEXP self, SEXP y_value, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(y_value)[0]);
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    arg4 = static_cast< double >(REAL(stroke_width)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3),arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline_h__SWIG_1 ( SEXP self, SEXP y_value, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(y_value)[0]);
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline_h__SWIG_2 ( SEXP self, SEXP y_value, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(y_value)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline_v__SWIG_0 ( SEXP self, SEXP x_value, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(x_value)[0]);
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    arg4 = static_cast< double >(REAL(stroke_width)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3),arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline_v__SWIG_1 ( SEXP self, SEXP x_value, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(x_value)[0]);
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_abline_v__SWIG_2 ( SEXP self, SEXP x_value, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(x_value)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_qqline__SWIG_0 ( SEXP self, SEXP data, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    datamunge::plot::RGB arg3 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqline" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    arg4 = static_cast< double >(REAL(stroke_width)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_qqline__SWIG_1 ( SEXP self, SEXP data, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqline" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_qqline__SWIG_2 ( SEXP self, SEXP data, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(data, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqline" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_legend ( SEXP self, SEXP labels, SEXP colors, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > arg2 ;
+    SwigValueWrapper< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_legend" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      int res = swig::asptr(labels, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_legend" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(colors, &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > >""'");
+      } else {
+        arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_text__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP font_size, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    double arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(x)[0]);
+    arg3 = static_cast< double >(REAL(y)[0]);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_text" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    arg6 = static_cast< double >(REAL(font_size)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_text__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(x)[0]);
+    arg3 = static_cast< double >(REAL(y)[0]);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_text" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_R_ConvertPtr(color, &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_text__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP label, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::string arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    arg2 = static_cast< double >(REAL(x)[0]);
+    arg3 = static_cast< double >(REAL(y)[0]);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string(label, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_text" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_polygon__SWIG_0 ( SEXP self, SEXP x, SEXP y, SEXP color, SEXP filled, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::vector< double,std::allocator< double > > arg3 ;
+    datamunge::plot::RGB arg4 ;
+    bool arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_polygon" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_polygon" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res4 = SWIG_R_ConvertPtr(color, &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    arg5 = LOGICAL(filled)[0] ? true : false;
+    result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_polygon__SWIG_1 ( SEXP self, SEXP x, SEXP y, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::vector< double,std::allocator< double > > arg3 ;
+    datamunge::plot::RGB arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_polygon" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_polygon" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res4 = SWIG_R_ConvertPtr(color, &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_polygon__SWIG_2 ( SEXP self, SEXP x, SEXP y, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::vector< double,std::allocator< double > > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_polygon" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_polygon" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_segments__SWIG_0 ( SEXP self, SEXP x0, SEXP y0, SEXP x1, SEXP y1, SEXP color, SEXP stroke_width, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::vector< double,std::allocator< double > > arg3 ;
+    std::vector< double,std::allocator< double > > arg4 ;
+    std::vector< double,std::allocator< double > > arg5 ;
+    datamunge::plot::RGB arg6 ;
+    double arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp6 ;
+    int res6 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x0, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y0, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x1, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "4"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y1, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg5 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res6 = SWIG_R_ConvertPtr(color, &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp6) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      }
+    }
+    arg7 = static_cast< double >(REAL(stroke_width)[0]);
+    result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_segments__SWIG_1 ( SEXP self, SEXP x0, SEXP y0, SEXP x1, SEXP y1, SEXP color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::vector< double,std::allocator< double > > arg3 ;
+    std::vector< double,std::allocator< double > > arg4 ;
+    std::vector< double,std::allocator< double > > arg5 ;
+    datamunge::plot::RGB arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp6 ;
+    int res6 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x0, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y0, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x1, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "4"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y1, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg5 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res6 = SWIG_R_ConvertPtr(color, &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp6) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RPlot_segments__SWIG_2 ( SEXP self, SEXP x0, SEXP y0, SEXP x1, SEXP y1, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > arg2 ;
+    std::vector< double,std::allocator< double > > arg3 ;
+    std::vector< double,std::allocator< double > > arg4 ;
+    std::vector< double,std::allocator< double > > arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x0, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y0, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(x1, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "4"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(y1, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_segments" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg5 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RPlot ( )
+{
+  {
+    datamunge::plot::RPlot *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_RPlot ( SEXP self)
+{
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RPlot" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RLayout_create ( SEXP rows, SEXP cols, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RLayout result;
+    std::size_t arg1 ;
+    std::size_t arg2 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(rows, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "RLayout_create" "', argument " "1"" of type '" "std::size_t""'");
+    } 
+    arg1 = static_cast< std::size_t >(val1);
+    ecode2 = SWIG_AsVal_int(cols, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RLayout_create" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RLayout_add ( SEXP self, SEXP panel, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RLayout *result = 0 ;
+    datamunge::plot::RLayout *arg1 = 0 ;
+    datamunge::plot::Plot *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_add" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    res2 = SWIG_R_ConvertPtr(panel, &argp2, SWIGTYPE_p_datamunge__plot__Plot,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::plot::Plot const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::plot::Plot const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::plot::Plot * >(argp2);
+    result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RLayout_size ( SEXP self, SEXP width, SEXP height, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RLayout *result = 0 ;
+    datamunge::plot::RLayout *arg1 = 0 ;
+    std::size_t arg2 ;
+    std::size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_size" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    ecode2 = SWIG_AsVal_int(width, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RLayout_size" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_int(height, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RLayout_size" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RLayout_save ( SEXP self, SEXP path)
+{
+  {
+    datamunge::plot::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save" "', argument " "1"" of type '" "datamunge::plot::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(path, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RLayout_save_svg ( SEXP self, SEXP path)
+{
+  {
+    datamunge::plot::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save_svg" "', argument " "1"" of type '" "datamunge::plot::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(path, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RLayout ( )
+{
+  {
+    datamunge::plot::RLayout *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_RLayout ( SEXP self)
+{
+  {
+    datamunge::plot::RLayout *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RLayout" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
     delete arg1;
     r_ans = R_NilValue;
     vmaxset(r_vmax);
@@ -66666,6 +72421,8786 @@ R_swig_delete_ImportanceSampling ( SEXP self)
 }
 
 
+SWIGEXPORT SEXP
+R_swig_new_Polynomial__SWIG_0 ( )
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::Polynomial *)new datamunge::algebra::Polynomial();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_Polynomial__SWIG_1 ( SEXP constant)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    double arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(constant)[0]);
+    result = (datamunge::algebra::Polynomial *)new datamunge::algebra::Polynomial(arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_Polynomial__SWIG_2 ( SEXP coeffs)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    std::vector< double,std::allocator< double > > arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      int res = swig::asptr(coeffs, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "new_Polynomial" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::algebra::Polynomial *)new datamunge::algebra::Polynomial(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_degree ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    int result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_degree" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = (int)((datamunge::algebra::Polynomial const *)arg1)->degree();
+    r_ans = Rf_ScalarInteger(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_is_zero ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_is_zero" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = (bool)((datamunge::algebra::Polynomial const *)arg1)->is_zero();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_coefficient ( SEXP self, SEXP i, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_coefficient" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    arg2 = static_cast< int >(INTEGER(i)[0]);
+    result = (double)((datamunge::algebra::Polynomial const *)arg1)->coefficient(arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_coefficients ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > *result = 0 ;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_coefficients" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = (std::vector< double,std::allocator< double > > *) &((datamunge::algebra::Polynomial const *)arg1)->coefficients();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_evaluate ( SEXP self, SEXP x, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_evaluate" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    arg2 = static_cast< double >(REAL(x)[0]);
+    result = (double)((datamunge::algebra::Polynomial const *)arg1)->evaluate(arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_derivative ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_derivative" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->derivative();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_antiderivative ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_antiderivative" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->antiderivative();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_add ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_add" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Polynomial_add" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Polynomial_add" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->add((datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_subtract ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_subtract" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Polynomial_subtract" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Polynomial_subtract" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->subtract((datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_multiply ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_multiply" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Polynomial_multiply" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Polynomial_multiply" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->multiply((datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_scale ( SEXP self, SEXP factor, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_scale" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    arg2 = static_cast< double >(REAL(factor)[0]);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->scale(arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_negate ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_negate" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->negate();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_to_string ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_to_string" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = ((datamunge::algebra::Polynomial const *)arg1)->to_string();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_EqualEqual ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_EqualEqual" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Polynomial_EqualEqual" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Polynomial_EqualEqual" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = (bool)((datamunge::algebra::Polynomial const *)arg1)->operator ==((datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Polynomial_NotEqual ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_NotEqual" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Polynomial_NotEqual" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Polynomial_NotEqual" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = (bool)((datamunge::algebra::Polynomial const *)arg1)->operator !=((datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_Polynomial ( SEXP self)
+{
+  {
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Polynomial" "', argument " "1"" of type '" "datamunge::algebra::Polynomial *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_poly_quotient ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(a, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "poly_quotient" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_quotient" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(b, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "poly_quotient" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_quotient" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = datamunge::algebra::poly_quotient((datamunge::algebra::Polynomial const &)*arg1,(datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_poly_remainder ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(a, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "poly_remainder" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_remainder" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(b, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "poly_remainder" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_remainder" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = datamunge::algebra::poly_remainder((datamunge::algebra::Polynomial const &)*arg1,(datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___nonzero__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___nonzero__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = (bool)std_vector_Sl_datamunge_algebra_Polynomial_Sg____nonzero__((std::vector< datamunge::algebra::Polynomial > const *)arg1);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___len__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial >::size_type result;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___len__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = std_vector_Sl_datamunge_algebra_Polynomial_Sg____len__((std::vector< datamunge::algebra::Polynomial > const *)arg1);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_pop ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial >::value_type result;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_pop" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    try {
+      result = std_vector_Sl_datamunge_algebra_Polynomial_Sg__pop(arg1);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj((new std::vector< datamunge::algebra::Polynomial >::value_type(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___getslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *result = 0 ;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___getslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector___getslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PolynomialVector___getslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val3);
+    try {
+      result = (std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *)std_vector_Sl_datamunge_algebra_Polynomial_Sg____getslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___setslice__ ( SEXP self, SEXP i, SEXP j, SEXP is)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg3 ;
+    std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___setslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector___setslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PolynomialVector___setslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val3);
+    {
+      std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *ptr = (std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *)0;
+      res4 = swig::asptr(is, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "PolynomialVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PolynomialVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    try {
+      std_vector_Sl_datamunge_algebra_Polynomial_Sg____setslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),(std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > const &)*arg4);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    } catch(std::invalid_argument &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::invalid_argument(static_cast< const std::invalid_argument& >(_e))), SWIGTYPE_p_std__invalid_argument, SWIG_POINTER_OWN), "C/C++ exception of type " "std::invalid_argument"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___delslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___delslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector___delslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PolynomialVector___delslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val3);
+    try {
+      std_vector_Sl_datamunge_algebra_Polynomial_Sg____delslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___delitem__ ( SEXP self, SEXP i)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___delitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector___delitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val2);
+    try {
+      std_vector_Sl_datamunge_algebra_Polynomial_Sg____delitem__(arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___getitem__ ( SEXP self, SEXP i, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___getitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector___getitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val2);
+    try {
+      result = (std::vector< datamunge::algebra::Polynomial >::value_type *) &std_vector_Sl_datamunge_algebra_Polynomial_Sg____getitem__((std::vector< datamunge::algebra::Polynomial > const *)arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector___setitem__ ( SEXP self, SEXP i, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::Polynomial >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector___setitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector___setitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::difference_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "PolynomialVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PolynomialVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial >::value_type * >(argp3);
+    try {
+      std_vector_Sl_datamunge_algebra_Polynomial_Sg____setitem__(arg1,SWIG_STD_MOVE(arg2),(datamunge::algebra::Polynomial const &)*arg3);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_append ( SEXP self, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_append" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(x, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PolynomialVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PolynomialVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial >::value_type * >(argp2);
+    std_vector_Sl_datamunge_algebra_Polynomial_Sg__append(arg1,(datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_PolynomialVector__SWIG_0 ( )
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (std::vector< datamunge::algebra::Polynomial > *)new std::vector< datamunge::algebra::Polynomial >();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_PolynomialVector__SWIG_1 ( SEXP other)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *result = 0 ;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *ptr = (std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *)0;
+      res1 = swig::asptr(other, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_PolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_PolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (std::vector< datamunge::algebra::Polynomial > *)new std::vector< datamunge::algebra::Polynomial >((std::vector< datamunge::algebra::Polynomial > const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_empty ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_empty" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = (bool)((std::vector< datamunge::algebra::Polynomial > const *)arg1)->empty();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_size ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial >::size_type result;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_size" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = ((std::vector< datamunge::algebra::Polynomial > const *)arg1)->size();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_swap ( SEXP self, SEXP v)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_swap" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(v, &argp2, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PolynomialVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial > &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PolynomialVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial > &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp2);
+    (arg1)->swap(*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_clear ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_clear" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    (arg1)->clear();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_get_allocator ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    SwigValueWrapper< std::allocator< datamunge::algebra::Polynomial > > result;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_get_allocator" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = ((std::vector< datamunge::algebra::Polynomial > const *)arg1)->get_allocator();
+    r_ans = SWIG_R_NewPointerObj((new std::vector< datamunge::algebra::Polynomial >::allocator_type(result)), SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_PolynomialVector__SWIG_2 ( SEXP size)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *result = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::size_type arg1 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_PolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< datamunge::algebra::Polynomial >::size_type >(val1);
+    result = (std::vector< datamunge::algebra::Polynomial > *)new std::vector< datamunge::algebra::Polynomial >(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_pop_back ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_pop_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    (arg1)->pop_back();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_resize__SWIG_0 ( SEXP self, SEXP new_size)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::size_type >(val2);
+    (arg1)->resize(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_PolynomialVector__SWIG_3 ( SEXP size, SEXP value)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *result = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::size_type arg1 ;
+    std::vector< datamunge::algebra::Polynomial >::value_type *arg2 = 0 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_PolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< datamunge::algebra::Polynomial >::size_type >(val1);
+    res2 = SWIG_R_ConvertPtr(value, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_PolynomialVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_PolynomialVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial >::value_type * >(argp2);
+    result = (std::vector< datamunge::algebra::Polynomial > *)new std::vector< datamunge::algebra::Polynomial >(SWIG_STD_MOVE(arg1),(std::vector< datamunge::algebra::Polynomial >::value_type const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_push_back ( SEXP self, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_push_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(x, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PolynomialVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PolynomialVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial >::value_type * >(argp2);
+    (arg1)->push_back((std::vector< datamunge::algebra::Polynomial >::value_type const &)*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_front ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_front" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = (std::vector< datamunge::algebra::Polynomial >::value_type *) &((std::vector< datamunge::algebra::Polynomial > const *)arg1)->front();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_back ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = (std::vector< datamunge::algebra::Polynomial >::value_type *) &((std::vector< datamunge::algebra::Polynomial > const *)arg1)->back();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_assign ( SEXP self, SEXP n, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::size_type arg2 ;
+    std::vector< datamunge::algebra::Polynomial >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_assign" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector_assign" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::size_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "PolynomialVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PolynomialVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial >::value_type * >(argp3);
+    (arg1)->assign(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::Polynomial >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_resize__SWIG_1 ( SEXP self, SEXP new_size, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::size_type arg2 ;
+    std::vector< datamunge::algebra::Polynomial >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::size_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "PolynomialVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PolynomialVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::Polynomial >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial >::value_type * >(argp3);
+    (arg1)->resize(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::Polynomial >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_reserve ( SEXP self, SEXP n)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::Polynomial >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_reserve" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PolynomialVector_reserve" "', argument " "2"" of type '" "std::vector< datamunge::algebra::Polynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::Polynomial >::size_type >(val2);
+    (arg1)->reserve(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolynomialVector_capacity ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial >::size_type result;
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolynomialVector_capacity" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    result = ((std::vector< datamunge::algebra::Polynomial > const *)arg1)->capacity();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_PolynomialVector ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_PolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::Polynomial > * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_monic ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "monic" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "monic" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = datamunge::algebra::monic((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_poly_gcd ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial arg1 ;
+    datamunge::algebra::Polynomial arg2 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      res1 = SWIG_R_ConvertPtr(a, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "poly_gcd" "', argument " "1"" of type '" "datamunge::algebra::Polynomial""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_gcd" "', argument " "1"" of type '" "datamunge::algebra::Polynomial""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::algebra::Polynomial * >(argp1));
+      }
+    }
+    {
+      res2 = SWIG_R_ConvertPtr(b, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "poly_gcd" "', argument " "2"" of type '" "datamunge::algebra::Polynomial""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_gcd" "', argument " "2"" of type '" "datamunge::algebra::Polynomial""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::algebra::Polynomial * >(argp2));
+      }
+    }
+    result = datamunge::algebra::poly_gcd(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolyExtendedGcdResult_gcd_set ( SEXP self, SEXP s_gcd)
+{
+  {
+    datamunge::algebra::PolyExtendedGcdResult *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolyExtendedGcdResult_gcd_set" "', argument " "1"" of type '" "datamunge::algebra::PolyExtendedGcdResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::PolyExtendedGcdResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_gcd, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PolyExtendedGcdResult_gcd_set" "', argument " "2"" of type '" "datamunge::algebra::Polynomial *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    if (arg1) (arg1)->gcd = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolyExtendedGcdResult_gcd_get ( SEXP self)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    datamunge::algebra::PolyExtendedGcdResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolyExtendedGcdResult_gcd_get" "', argument " "1"" of type '" "datamunge::algebra::PolyExtendedGcdResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::PolyExtendedGcdResult * >(argp1);
+    result = (datamunge::algebra::Polynomial *)& ((arg1)->gcd);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolyExtendedGcdResult_s_set ( SEXP self, SEXP s_s)
+{
+  {
+    datamunge::algebra::PolyExtendedGcdResult *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolyExtendedGcdResult_s_set" "', argument " "1"" of type '" "datamunge::algebra::PolyExtendedGcdResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::PolyExtendedGcdResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_s, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PolyExtendedGcdResult_s_set" "', argument " "2"" of type '" "datamunge::algebra::Polynomial *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    if (arg1) (arg1)->s = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolyExtendedGcdResult_s_get ( SEXP self)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    datamunge::algebra::PolyExtendedGcdResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolyExtendedGcdResult_s_get" "', argument " "1"" of type '" "datamunge::algebra::PolyExtendedGcdResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::PolyExtendedGcdResult * >(argp1);
+    result = (datamunge::algebra::Polynomial *)& ((arg1)->s);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolyExtendedGcdResult_t_set ( SEXP self, SEXP s_t)
+{
+  {
+    datamunge::algebra::PolyExtendedGcdResult *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolyExtendedGcdResult_t_set" "', argument " "1"" of type '" "datamunge::algebra::PolyExtendedGcdResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::PolyExtendedGcdResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_t, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PolyExtendedGcdResult_t_set" "', argument " "2"" of type '" "datamunge::algebra::Polynomial *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    if (arg1) (arg1)->t = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_PolyExtendedGcdResult_t_get ( SEXP self)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    datamunge::algebra::PolyExtendedGcdResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PolyExtendedGcdResult_t_get" "', argument " "1"" of type '" "datamunge::algebra::PolyExtendedGcdResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::PolyExtendedGcdResult * >(argp1);
+    result = (datamunge::algebra::Polynomial *)& ((arg1)->t);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_PolyExtendedGcdResult ( )
+{
+  {
+    datamunge::algebra::PolyExtendedGcdResult *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::PolyExtendedGcdResult *)new datamunge::algebra::PolyExtendedGcdResult();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_PolyExtendedGcdResult ( SEXP self)
+{
+  {
+    datamunge::algebra::PolyExtendedGcdResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_PolyExtendedGcdResult" "', argument " "1"" of type '" "datamunge::algebra::PolyExtendedGcdResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::PolyExtendedGcdResult * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_poly_extended_gcd ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::PolyExtendedGcdResult result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(a, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "poly_extended_gcd" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_extended_gcd" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(b, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "poly_extended_gcd" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_extended_gcd" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = datamunge::algebra::poly_extended_gcd((datamunge::algebra::Polynomial const &)*arg1,(datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::PolyExtendedGcdResult(result)), SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_poly_gcd_pseudo_remainder_sequence ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    datamunge::algebra::Polynomial arg1 ;
+    datamunge::algebra::Polynomial arg2 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      res1 = SWIG_R_ConvertPtr(a, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "poly_gcd_pseudo_remainder_sequence" "', argument " "1"" of type '" "datamunge::algebra::Polynomial""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_gcd_pseudo_remainder_sequence" "', argument " "1"" of type '" "datamunge::algebra::Polynomial""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::algebra::Polynomial * >(argp1));
+      }
+    }
+    {
+      res2 = SWIG_R_ConvertPtr(b, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "poly_gcd_pseudo_remainder_sequence" "', argument " "2"" of type '" "datamunge::algebra::Polynomial""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "poly_gcd_pseudo_remainder_sequence" "', argument " "2"" of type '" "datamunge::algebra::Polynomial""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::algebra::Polynomial * >(argp2));
+      }
+    }
+    result = datamunge::algebra::poly_gcd_pseudo_remainder_sequence(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_lagrange_interpolate ( SEXP xs, SEXP ys, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    std::vector< double,std::allocator< double > > *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res1 = swig::asptr(xs, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lagrange_interpolate" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "lagrange_interpolate" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res2 = swig::asptr(ys, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lagrange_interpolate" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "lagrange_interpolate" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = datamunge::algebra::lagrange_interpolate((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_newton_interpolate ( SEXP xs, SEXP ys, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial result;
+    std::vector< double,std::allocator< double > > *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res1 = swig::asptr(xs, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "newton_interpolate" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "newton_interpolate" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res2 = swig::asptr(ys, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "newton_interpolate" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "newton_interpolate" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = datamunge::algebra::newton_interpolate((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Polynomial(result)), SWIGTYPE_p_datamunge__algebra__Polynomial, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_sylvester_matrix ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(a, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sylvester_matrix" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sylvester_matrix" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(b, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "sylvester_matrix" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sylvester_matrix" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = datamunge::algebra::detail::sylvester_matrix((datamunge::algebra::Polynomial const &)*arg1,(datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_determinant ( SEXP mat, SEXP s_swig_copy)
+{
+  {
+    double result;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+      int res = swig::asptr(mat, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "determinant" "', argument " "1"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (double)datamunge::algebra::detail::determinant(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_resultant ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(a, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "resultant" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "resultant" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(b, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "resultant" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "resultant" "', argument " "2"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    result = (double)datamunge::algebra::resultant((datamunge::algebra::Polynomial const &)*arg1,(datamunge::algebra::Polynomial const &)*arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_discriminant ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "discriminant" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "discriminant" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = (double)datamunge::algebra::discriminant((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RationalFunction__SWIG_0 ( )
+{
+  {
+    datamunge::algebra::RationalFunction *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::RationalFunction *)new datamunge::algebra::RationalFunction();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__RationalFunction, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RationalFunction__SWIG_1 ( SEXP numerator, SEXP denominator)
+{
+  {
+    datamunge::algebra::RationalFunction *result = 0 ;
+    datamunge::algebra::Polynomial arg1 ;
+    datamunge::algebra::Polynomial arg2 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      res1 = SWIG_R_ConvertPtr(numerator, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_RationalFunction" "', argument " "1"" of type '" "datamunge::algebra::Polynomial""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_RationalFunction" "', argument " "1"" of type '" "datamunge::algebra::Polynomial""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::algebra::Polynomial * >(argp1));
+      }
+    }
+    {
+      res2 = SWIG_R_ConvertPtr(denominator, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_RationalFunction" "', argument " "2"" of type '" "datamunge::algebra::Polynomial""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_RationalFunction" "', argument " "2"" of type '" "datamunge::algebra::Polynomial""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::algebra::Polynomial * >(argp2));
+      }
+    }
+    result = (datamunge::algebra::RationalFunction *)new datamunge::algebra::RationalFunction(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__RationalFunction, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_numerator ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_numerator" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    result = (datamunge::algebra::Polynomial *) &((datamunge::algebra::RationalFunction const *)arg1)->numerator();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_denominator ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_denominator" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    result = (datamunge::algebra::Polynomial *) &((datamunge::algebra::RationalFunction const *)arg1)->denominator();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_evaluate ( SEXP self, SEXP x, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_evaluate" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    arg2 = static_cast< double >(REAL(x)[0]);
+    result = (double)((datamunge::algebra::RationalFunction const *)arg1)->evaluate(arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_add ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::RationalFunction result;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    datamunge::algebra::RationalFunction *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_add" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__RationalFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RationalFunction_add" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RationalFunction_add" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp2);
+    result = ((datamunge::algebra::RationalFunction const *)arg1)->add((datamunge::algebra::RationalFunction const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::RationalFunction(result)), SWIGTYPE_p_datamunge__algebra__RationalFunction, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_subtract ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::RationalFunction result;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    datamunge::algebra::RationalFunction *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_subtract" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__RationalFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RationalFunction_subtract" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RationalFunction_subtract" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp2);
+    result = ((datamunge::algebra::RationalFunction const *)arg1)->subtract((datamunge::algebra::RationalFunction const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::RationalFunction(result)), SWIGTYPE_p_datamunge__algebra__RationalFunction, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_multiply ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::RationalFunction result;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    datamunge::algebra::RationalFunction *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_multiply" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__RationalFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RationalFunction_multiply" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RationalFunction_multiply" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp2);
+    result = ((datamunge::algebra::RationalFunction const *)arg1)->multiply((datamunge::algebra::RationalFunction const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::RationalFunction(result)), SWIGTYPE_p_datamunge__algebra__RationalFunction, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_divide ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::RationalFunction result;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    datamunge::algebra::RationalFunction *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_divide" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__RationalFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RationalFunction_divide" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RationalFunction_divide" "', argument " "2"" of type '" "datamunge::algebra::RationalFunction const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp2);
+    result = ((datamunge::algebra::RationalFunction const *)arg1)->divide((datamunge::algebra::RationalFunction const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::RationalFunction(result)), SWIGTYPE_p_datamunge__algebra__RationalFunction, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RationalFunction_to_string ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_to_string" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    result = ((datamunge::algebra::RationalFunction const *)arg1)->to_string();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_RationalFunction ( SEXP self)
+{
+  {
+    datamunge::algebra::RationalFunction *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RationalFunction, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RationalFunction" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_sturm_sequence ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sturm_sequence" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sturm_sequence" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = datamunge::algebra::sturm_sequence((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = swig::from(static_cast< std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_sturm_sign_changes ( SEXP seq, SEXP x, SEXP s_swig_copy)
+{
+  {
+    int result;
+    std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *arg1 = 0 ;
+    double arg2 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *ptr = (std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *)0;
+      res1 = swig::asptr(seq, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sturm_sign_changes" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sturm_sign_changes" "', argument " "1"" of type '" "std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    arg2 = static_cast< double >(REAL(x)[0]);
+    result = (int)datamunge::algebra::detail::sturm_sign_changes((std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > const &)*arg1,arg2);
+    r_ans = Rf_ScalarInteger(result);
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_cauchy_root_bound ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cauchy_root_bound" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "cauchy_root_bound" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = (double)datamunge::algebra::detail::cauchy_root_bound((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_sturm_root_count ( SEXP p, SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    int result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sturm_root_count" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sturm_root_count" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    arg2 = static_cast< double >(REAL(a)[0]);
+    arg3 = static_cast< double >(REAL(b)[0]);
+    result = (int)datamunge::algebra::sturm_root_count((datamunge::algebra::Polynomial const &)*arg1,arg2,arg3);
+    r_ans = Rf_ScalarInteger(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RealRootIntervals_lower_set ( SEXP self, SEXP s_lower)
+{
+  {
+    datamunge::algebra::RealRootIntervals *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RealRootIntervals, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealRootIntervals_lower_set" "', argument " "1"" of type '" "datamunge::algebra::RealRootIntervals *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RealRootIntervals * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_lower, &argp2, SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealRootIntervals_lower_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+    if (arg1) (arg1)->lower = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RealRootIntervals_lower_get ( SEXP self)
+{
+  {
+    std::vector< double,std::allocator< double > > *result = 0 ;
+    datamunge::algebra::RealRootIntervals *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RealRootIntervals, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealRootIntervals_lower_get" "', argument " "1"" of type '" "datamunge::algebra::RealRootIntervals *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RealRootIntervals * >(argp1);
+    result = (std::vector< double,std::allocator< double > > *)& ((arg1)->lower);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RealRootIntervals_upper_set ( SEXP self, SEXP s_upper)
+{
+  {
+    datamunge::algebra::RealRootIntervals *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RealRootIntervals, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealRootIntervals_upper_set" "', argument " "1"" of type '" "datamunge::algebra::RealRootIntervals *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RealRootIntervals * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_upper, &argp2, SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RealRootIntervals_upper_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+    if (arg1) (arg1)->upper = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RealRootIntervals_upper_get ( SEXP self)
+{
+  {
+    std::vector< double,std::allocator< double > > *result = 0 ;
+    datamunge::algebra::RealRootIntervals *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RealRootIntervals, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RealRootIntervals_upper_get" "', argument " "1"" of type '" "datamunge::algebra::RealRootIntervals *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RealRootIntervals * >(argp1);
+    result = (std::vector< double,std::allocator< double > > *)& ((arg1)->upper);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RealRootIntervals ( )
+{
+  {
+    datamunge::algebra::RealRootIntervals *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::RealRootIntervals *)new datamunge::algebra::RealRootIntervals();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__RealRootIntervals, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_RealRootIntervals ( SEXP self)
+{
+  {
+    datamunge::algebra::RealRootIntervals *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__RealRootIntervals, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RealRootIntervals" "', argument " "1"" of type '" "datamunge::algebra::RealRootIntervals *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::RealRootIntervals * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_isolate_real_roots ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::RealRootIntervals result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "isolate_real_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "isolate_real_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = datamunge::algebra::isolate_real_roots((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::RealRootIntervals(result)), SWIGTYPE_p_datamunge__algebra__RealRootIntervals, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_refine_root__SWIG_0 ( SEXP p, SEXP lo, SEXP hi, SEXP tolerance, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "refine_root" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "refine_root" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    arg2 = static_cast< double >(REAL(lo)[0]);
+    arg3 = static_cast< double >(REAL(hi)[0]);
+    arg4 = static_cast< double >(REAL(tolerance)[0]);
+    result = (double)datamunge::algebra::refine_root((datamunge::algebra::Polynomial const &)*arg1,arg2,arg3,arg4);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_refine_root__SWIG_1 ( SEXP p, SEXP lo, SEXP hi, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "refine_root" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "refine_root" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    arg2 = static_cast< double >(REAL(lo)[0]);
+    arg3 = static_cast< double >(REAL(hi)[0]);
+    result = (double)datamunge::algebra::refine_root((datamunge::algebra::Polynomial const &)*arg1,arg2,arg3);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_real_roots__SWIG_0 ( SEXP p, SEXP tolerance, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "real_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "real_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    arg2 = static_cast< double >(REAL(tolerance)[0]);
+    result = datamunge::algebra::real_roots((datamunge::algebra::Polynomial const &)*arg1,arg2);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_real_roots__SWIG_1 ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "real_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "real_roots" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = datamunge::algebra::real_roots((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_descartes_sign_changes ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    int result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "descartes_sign_changes" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "descartes_sign_changes" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = (int)datamunge::algebra::descartes_sign_changes((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = Rf_ScalarInteger(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_descartes_negative_root_bound ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    int result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "descartes_negative_root_bound" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "descartes_negative_root_bound" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = (int)datamunge::algebra::descartes_negative_root_bound((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = Rf_ScalarInteger(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___nonzero__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___nonzero__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = (bool)std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____nonzero__((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___len__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type result;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___len__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____len__((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_pop ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type result;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_pop" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    try {
+      result = std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg__pop(arg1);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj((new std::vector< datamunge::algebra::SquareFreeFactor >::value_type(result)), SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___getslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *result = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg2 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___getslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector___getslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "SquareFreeFactorVector___getslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val3);
+    try {
+      result = (std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *)std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____getslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___setslice__ ( SEXP self, SEXP i, SEXP j, SEXP is)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg2 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg3 ;
+    std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___setslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector___setslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "SquareFreeFactorVector___setslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val3);
+    {
+      std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *ptr = (std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *)0;
+      res4 = swig::asptr(is, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "SquareFreeFactorVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SquareFreeFactorVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    try {
+      std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____setslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),(std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > const &)*arg4);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    } catch(std::invalid_argument &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::invalid_argument(static_cast< const std::invalid_argument& >(_e))), SWIGTYPE_p_std__invalid_argument, SWIG_POINTER_OWN), "C/C++ exception of type " "std::invalid_argument"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___delslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg2 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___delslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector___delslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "SquareFreeFactorVector___delslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val3);
+    try {
+      std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____delslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___delitem__ ( SEXP self, SEXP i)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___delitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector___delitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val2);
+    try {
+      std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____delitem__(arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___getitem__ ( SEXP self, SEXP i, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___getitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector___getitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val2);
+    try {
+      result = (std::vector< datamunge::algebra::SquareFreeFactor >::value_type *) &std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____getitem__((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector___setitem__ ( SEXP self, SEXP i, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::difference_type arg2 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector___setitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector___setitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::difference_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "SquareFreeFactorVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SquareFreeFactorVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor >::value_type * >(argp3);
+    try {
+      std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg____setitem__(arg1,SWIG_STD_MOVE(arg2),(datamunge::algebra::SquareFreeFactor const &)*arg3);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_append ( SEXP self, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_append" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(x, &argp2, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "SquareFreeFactorVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SquareFreeFactorVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor >::value_type * >(argp2);
+    std_vector_Sl_datamunge_algebra_SquareFreeFactor_Sg__append(arg1,(datamunge::algebra::SquareFreeFactor const &)*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_SquareFreeFactorVector__SWIG_0 ( )
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (std::vector< datamunge::algebra::SquareFreeFactor > *)new std::vector< datamunge::algebra::SquareFreeFactor >();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_SquareFreeFactorVector__SWIG_1 ( SEXP other)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *result = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *ptr = (std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *)0;
+      res1 = swig::asptr(other, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_SquareFreeFactorVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_SquareFreeFactorVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (std::vector< datamunge::algebra::SquareFreeFactor > *)new std::vector< datamunge::algebra::SquareFreeFactor >((std::vector< datamunge::algebra::SquareFreeFactor > const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_empty ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_empty" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = (bool)((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1)->empty();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_size ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type result;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_size" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = ((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1)->size();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_swap ( SEXP self, SEXP v)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_swap" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(v, &argp2, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "SquareFreeFactorVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SquareFreeFactorVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp2);
+    (arg1)->swap(*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_clear ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_clear" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    (arg1)->clear();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_get_allocator ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    SwigValueWrapper< std::allocator< datamunge::algebra::SquareFreeFactor > > result;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_get_allocator" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = ((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1)->get_allocator();
+    r_ans = SWIG_R_NewPointerObj((new std::vector< datamunge::algebra::SquareFreeFactor >::allocator_type(result)), SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_SquareFreeFactorVector__SWIG_2 ( SEXP size)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *result = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type arg1 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_SquareFreeFactorVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::size_type >(val1);
+    result = (std::vector< datamunge::algebra::SquareFreeFactor > *)new std::vector< datamunge::algebra::SquareFreeFactor >(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_pop_back ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_pop_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    (arg1)->pop_back();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_resize__SWIG_0 ( SEXP self, SEXP new_size)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::size_type >(val2);
+    (arg1)->resize(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_SquareFreeFactorVector__SWIG_3 ( SEXP size, SEXP value)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *result = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type arg1 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *arg2 = 0 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_SquareFreeFactorVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::size_type >(val1);
+    res2 = SWIG_R_ConvertPtr(value, &argp2, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_SquareFreeFactorVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_SquareFreeFactorVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor >::value_type * >(argp2);
+    result = (std::vector< datamunge::algebra::SquareFreeFactor > *)new std::vector< datamunge::algebra::SquareFreeFactor >(SWIG_STD_MOVE(arg1),(std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_push_back ( SEXP self, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_push_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(x, &argp2, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "SquareFreeFactorVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SquareFreeFactorVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor >::value_type * >(argp2);
+    (arg1)->push_back((std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &)*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_front ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_front" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = (std::vector< datamunge::algebra::SquareFreeFactor >::value_type *) &((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1)->front();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_back ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = (std::vector< datamunge::algebra::SquareFreeFactor >::value_type *) &((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1)->back();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_assign ( SEXP self, SEXP n, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type arg2 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_assign" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector_assign" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::size_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "SquareFreeFactorVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SquareFreeFactorVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor >::value_type * >(argp3);
+    (arg1)->assign(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_resize__SWIG_1 ( SEXP self, SEXP new_size, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type arg2 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::size_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "SquareFreeFactorVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "SquareFreeFactorVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor >::value_type * >(argp3);
+    (arg1)->resize(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::SquareFreeFactor >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_reserve ( SEXP self, SEXP n)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_reserve" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "SquareFreeFactorVector_reserve" "', argument " "2"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::SquareFreeFactor >::size_type >(val2);
+    (arg1)->reserve(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactorVector_capacity ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor >::size_type result;
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactorVector_capacity" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    result = ((std::vector< datamunge::algebra::SquareFreeFactor > const *)arg1)->capacity();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_SquareFreeFactorVector ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_SquareFreeFactorVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::SquareFreeFactor > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::SquareFreeFactor > * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactor_factor_set ( SEXP self, SEXP s_factor)
+{
+  {
+    datamunge::algebra::SquareFreeFactor *arg1 = 0 ;
+    datamunge::algebra::Polynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactor_factor_set" "', argument " "1"" of type '" "datamunge::algebra::SquareFreeFactor *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::SquareFreeFactor * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_factor, &argp2, SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "SquareFreeFactor_factor_set" "', argument " "2"" of type '" "datamunge::algebra::Polynomial *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp2);
+    if (arg1) (arg1)->factor = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactor_factor_get ( SEXP self)
+{
+  {
+    datamunge::algebra::Polynomial *result = 0 ;
+    datamunge::algebra::SquareFreeFactor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactor_factor_get" "', argument " "1"" of type '" "datamunge::algebra::SquareFreeFactor *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::SquareFreeFactor * >(argp1);
+    result = (datamunge::algebra::Polynomial *)& ((arg1)->factor);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactor_multiplicity_set ( SEXP self, SEXP s_multiplicity)
+{
+  {
+    datamunge::algebra::SquareFreeFactor *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactor_multiplicity_set" "', argument " "1"" of type '" "datamunge::algebra::SquareFreeFactor *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::SquareFreeFactor * >(argp1);
+    arg2 = static_cast< int >(INTEGER(s_multiplicity)[0]);
+    if (arg1) (arg1)->multiplicity = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_SquareFreeFactor_multiplicity_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    int result;
+    datamunge::algebra::SquareFreeFactor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SquareFreeFactor_multiplicity_get" "', argument " "1"" of type '" "datamunge::algebra::SquareFreeFactor *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::SquareFreeFactor * >(argp1);
+    result = (int) ((arg1)->multiplicity);
+    r_ans = Rf_ScalarInteger(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_SquareFreeFactor ( )
+{
+  {
+    datamunge::algebra::SquareFreeFactor *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::SquareFreeFactor *)new datamunge::algebra::SquareFreeFactor();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_SquareFreeFactor ( SEXP self)
+{
+  {
+    datamunge::algebra::SquareFreeFactor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__SquareFreeFactor, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_SquareFreeFactor" "', argument " "1"" of type '" "datamunge::algebra::SquareFreeFactor *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::SquareFreeFactor * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_square_free_factorization ( SEXP p, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > result;
+    datamunge::algebra::Polynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__Polynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "square_free_factorization" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "square_free_factorization" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+    result = datamunge::algebra::square_free_factorization((datamunge::algebra::Polynomial const &)*arg1);
+    r_ans = swig::from(static_cast< std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_to_integer ( SEXP v, SEXP s_swig_copy)
+{
+  {
+    std::int64_t result;
+    double arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(v)[0]);
+    result = (std::int64_t)datamunge::algebra::detail::to_integer(arg1);
+    r_ans = SWIG_From_long(static_cast< long >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_mod_pow ( SEXP base, SEXP exponent, SEXP modulus, SEXP s_swig_copy)
+{
+  {
+    double result;
+    double arg1 ;
+    double arg2 ;
+    double arg3 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(base)[0]);
+    arg2 = static_cast< double >(REAL(exponent)[0]);
+    arg3 = static_cast< double >(REAL(modulus)[0]);
+    result = (double)datamunge::algebra::mod_pow(arg1,arg2,arg3);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_mod_inverse ( SEXP a, SEXP m, SEXP s_swig_copy)
+{
+  {
+    double result;
+    double arg1 ;
+    double arg2 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(a)[0]);
+    arg2 = static_cast< double >(REAL(m)[0]);
+    result = (double)datamunge::algebra::mod_inverse(arg1,arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_crt ( SEXP remainders, SEXP moduli, SEXP s_swig_copy)
+{
+  {
+    double result;
+    std::vector< double,std::allocator< double > > *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res1 = swig::asptr(remainders, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "crt" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "crt" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res2 = swig::asptr(moduli, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "crt" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "crt" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (double)datamunge::algebra::crt((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_berlekamp_factor_mod ( SEXP poly, SEXP prime, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > result;
+    std::vector< double,std::allocator< double > > *arg1 = 0 ;
+    double arg2 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res1 = swig::asptr(poly, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "berlekamp_factor_mod" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "berlekamp_factor_mod" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    arg2 = static_cast< double >(REAL(prime)[0]);
+    result = datamunge::algebra::berlekamp_factor_mod((std::vector< double,std::allocator< double > > const &)*arg1,arg2);
+    r_ans = swig::from(static_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > >(result));
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MonomialOrder_MonomialOrder_Lex_get ( SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MonomialOrder result;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::MonomialOrder)datamunge::algebra::MonomialOrder::Lex;
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MonomialOrder_MonomialOrder_Grlex_get ( SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MonomialOrder result;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::MonomialOrder)datamunge::algebra::MonomialOrder::Grlex;
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MonomialOrder_MonomialOrder_Grevlex_get ( SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MonomialOrder result;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::MonomialOrder)datamunge::algebra::MonomialOrder::Grevlex;
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_total_degree ( SEXP exponents, SEXP s_swig_copy)
+{
+  {
+    int result;
+    std::vector< int,std::allocator< int > > *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res1 = swig::asptr(exponents, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "total_degree" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "total_degree" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (int)datamunge::algebra::detail::total_degree((std::vector< int,std::allocator< int > > const &)*arg1);
+    r_ans = Rf_ScalarInteger(result);
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_compare_monomials ( SEXP a, SEXP b, SEXP order, SEXP s_swig_copy)
+{
+  {
+    int result;
+    std::vector< int,std::allocator< int > > *arg1 = 0 ;
+    std::vector< int,std::allocator< int > > *arg2 = 0 ;
+    datamunge::algebra::MonomialOrder arg3 ;
+    int res1 = SWIG_OLDOBJ ;
+    int res2 = SWIG_OLDOBJ ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res1 = swig::asptr(a, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "compare_monomials" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "compare_monomials" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res2 = swig::asptr(b, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "compare_monomials" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "compare_monomials" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ecode3 = SWIG_AsVal_int(order, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "compare_monomials" "', argument " "3"" of type '" "datamunge::algebra::MonomialOrder""'");
+    } 
+    arg3 = static_cast< datamunge::algebra::MonomialOrder >(val3);
+    result = (int)datamunge::algebra::detail::compare_monomials((std::vector< int,std::allocator< int > > const &)*arg1,(std::vector< int,std::allocator< int > > const &)*arg2,arg3);
+    r_ans = Rf_ScalarInteger(result);
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___nonzero__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___nonzero__" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = (bool)std_vector_Sl_std_vector_Sl_int_Sg__Sg____nonzero__((std::vector< std::vector< int > > const *)arg1);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___len__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int > >::size_type result;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___len__" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = std_vector_Sl_std_vector_Sl_int_Sg__Sg____len__((std::vector< std::vector< int > > const *)arg1);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_pop ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int > >::value_type result;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_pop" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    try {
+      result = std_vector_Sl_std_vector_Sl_int_Sg__Sg__pop(arg1);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___getslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *result = 0 ;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::difference_type arg2 ;
+    std::vector< std::vector< int > >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___getslice__" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector___getslice__" "', argument " "2"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "IVectorVector___getslice__" "', argument " "3"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< std::vector< int > >::difference_type >(val3);
+    try {
+      result = (std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *)std_vector_Sl_std_vector_Sl_int_Sg__Sg____getslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___setslice__ ( SEXP self, SEXP i, SEXP j, SEXP is)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::difference_type arg2 ;
+    std::vector< std::vector< int > >::difference_type arg3 ;
+    std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___setslice__" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector___setslice__" "', argument " "2"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "IVectorVector___setslice__" "', argument " "3"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< std::vector< int > >::difference_type >(val3);
+    {
+      std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *ptr = (std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *)0;
+      res4 = swig::asptr(is, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "IVectorVector___setslice__" "', argument " "4"" of type '" "std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IVectorVector___setslice__" "', argument " "4"" of type '" "std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    try {
+      std_vector_Sl_std_vector_Sl_int_Sg__Sg____setslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),(std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > const &)*arg4);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    } catch(std::invalid_argument &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::invalid_argument(static_cast< const std::invalid_argument& >(_e))), SWIGTYPE_p_std__invalid_argument, SWIG_POINTER_OWN), "C/C++ exception of type " "std::invalid_argument"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___delslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::difference_type arg2 ;
+    std::vector< std::vector< int > >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___delslice__" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector___delslice__" "', argument " "2"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "IVectorVector___delslice__" "', argument " "3"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< std::vector< int > >::difference_type >(val3);
+    try {
+      std_vector_Sl_std_vector_Sl_int_Sg__Sg____delslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___delitem__ ( SEXP self, SEXP i)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___delitem__" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector___delitem__" "', argument " "2"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::difference_type >(val2);
+    try {
+      std_vector_Sl_std_vector_Sl_int_Sg__Sg____delitem__(arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___getitem__ ( SEXP self, SEXP i, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int > >::value_type *result = 0 ;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___getitem__" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector___getitem__" "', argument " "2"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::difference_type >(val2);
+    try {
+      result = (std::vector< std::vector< int > >::value_type *) &std_vector_Sl_std_vector_Sl_int_Sg__Sg____getitem__((std::vector< std::vector< int > > const *)arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(*result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector___setitem__ ( SEXP self, SEXP i, SEXP x)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::difference_type arg2 ;
+    std::vector< std::vector< int > >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector___setitem__" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector___setitem__" "', argument " "2"" of type '" "std::vector< std::vector< int > >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::difference_type >(val2);
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res3 = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "IVectorVector___setitem__" "', argument " "3"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IVectorVector___setitem__" "', argument " "3"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    try {
+      std_vector_Sl_std_vector_Sl_int_Sg__Sg____setitem__(arg1,SWIG_STD_MOVE(arg2),(std::vector< int,std::allocator< int > > const &)*arg3);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_append ( SEXP self, SEXP x)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_append" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res2 = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "IVectorVector_append" "', argument " "2"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IVectorVector_append" "', argument " "2"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    std_vector_Sl_std_vector_Sl_int_Sg__Sg__append(arg1,(std::vector< int,std::allocator< int > > const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_IVectorVector__SWIG_0 ( )
+{
+  {
+    std::vector< std::vector< int > > *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (std::vector< std::vector< int > > *)new std::vector< std::vector< int > >();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_IVectorVector__SWIG_1 ( SEXP other)
+{
+  {
+    std::vector< std::vector< int > > *result = 0 ;
+    std::vector< std::vector< int,std::allocator< int > > > *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *ptr = (std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *)0;
+      res1 = swig::asptr(other, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_IVectorVector" "', argument " "1"" of type '" "std::vector< std::vector< int,std::allocator< int > > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_IVectorVector" "', argument " "1"" of type '" "std::vector< std::vector< int,std::allocator< int > > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (std::vector< std::vector< int > > *)new std::vector< std::vector< int > >((std::vector< std::vector< int,std::allocator< int > > > const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_empty ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_empty" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = (bool)((std::vector< std::vector< int > > const *)arg1)->empty();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_size ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int > >::size_type result;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_size" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = ((std::vector< std::vector< int > > const *)arg1)->size();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_swap ( SEXP self, SEXP v)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int,std::allocator< int > > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_swap" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(v, &argp2, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "IVectorVector_swap" "', argument " "2"" of type '" "std::vector< std::vector< int,std::allocator< int > > > &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IVectorVector_swap" "', argument " "2"" of type '" "std::vector< std::vector< int,std::allocator< int > > > &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< int,std::allocator< int > > > * >(argp2);
+    (arg1)->swap(*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_clear ( SEXP self)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_clear" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    (arg1)->clear();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_get_allocator ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    SwigValueWrapper< std::allocator< std::vector< int,std::allocator< int > > > > result;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_get_allocator" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = ((std::vector< std::vector< int > > const *)arg1)->get_allocator();
+    r_ans = SWIG_R_NewPointerObj((new std::vector< std::vector< int > >::allocator_type(result)), SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_IVectorVector__SWIG_2 ( SEXP size)
+{
+  {
+    std::vector< std::vector< int > > *result = 0 ;
+    std::vector< std::vector< int > >::size_type arg1 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_IVectorVector" "', argument " "1"" of type '" "std::vector< std::vector< int > >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< std::vector< int > >::size_type >(val1);
+    result = (std::vector< std::vector< int > > *)new std::vector< std::vector< int > >(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_pop_back ( SEXP self)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_pop_back" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    (arg1)->pop_back();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_resize__SWIG_0 ( SEXP self, SEXP new_size)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_resize" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector_resize" "', argument " "2"" of type '" "std::vector< std::vector< int > >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::size_type >(val2);
+    (arg1)->resize(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_IVectorVector__SWIG_3 ( SEXP size, SEXP value)
+{
+  {
+    std::vector< std::vector< int > > *result = 0 ;
+    std::vector< std::vector< int > >::size_type arg1 ;
+    std::vector< std::vector< int > >::value_type *arg2 = 0 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_IVectorVector" "', argument " "1"" of type '" "std::vector< std::vector< int > >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< std::vector< int > >::size_type >(val1);
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res2 = swig::asptr(value, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_IVectorVector" "', argument " "2"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_IVectorVector" "', argument " "2"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (std::vector< std::vector< int > > *)new std::vector< std::vector< int > >(SWIG_STD_MOVE(arg1),(std::vector< std::vector< int > >::value_type const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_push_back ( SEXP self, SEXP x)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_push_back" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res2 = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "IVectorVector_push_back" "', argument " "2"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IVectorVector_push_back" "', argument " "2"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    (arg1)->push_back((std::vector< std::vector< int > >::value_type const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_front ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int > >::value_type *result = 0 ;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_front" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = (std::vector< std::vector< int > >::value_type *) &((std::vector< std::vector< int > > const *)arg1)->front();
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(*result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_back ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int > >::value_type *result = 0 ;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_back" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = (std::vector< std::vector< int > >::value_type *) &((std::vector< std::vector< int > > const *)arg1)->back();
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(*result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_assign ( SEXP self, SEXP n, SEXP x)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::size_type arg2 ;
+    std::vector< std::vector< int > >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_assign" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector_assign" "', argument " "2"" of type '" "std::vector< std::vector< int > >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::size_type >(val2);
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res3 = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "IVectorVector_assign" "', argument " "3"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IVectorVector_assign" "', argument " "3"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    (arg1)->assign(SWIG_STD_MOVE(arg2),(std::vector< std::vector< int > >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_resize__SWIG_1 ( SEXP self, SEXP new_size, SEXP x)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::size_type arg2 ;
+    std::vector< std::vector< int > >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_resize" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector_resize" "', argument " "2"" of type '" "std::vector< std::vector< int > >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::size_type >(val2);
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res3 = swig::asptr(x, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "IVectorVector_resize" "', argument " "3"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IVectorVector_resize" "', argument " "3"" of type '" "std::vector< std::vector< int > >::value_type const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    (arg1)->resize(SWIG_STD_MOVE(arg2),(std::vector< std::vector< int > >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_reserve ( SEXP self, SEXP n)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    std::vector< std::vector< int > >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_reserve" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IVectorVector_reserve" "', argument " "2"" of type '" "std::vector< std::vector< int > >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< std::vector< int > >::size_type >(val2);
+    (arg1)->reserve(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_IVectorVector_capacity ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int > >::size_type result;
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IVectorVector_capacity" "', argument " "1"" of type '" "std::vector< std::vector< int > > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    result = ((std::vector< std::vector< int > > const *)arg1)->capacity();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_IVectorVector ( SEXP self)
+{
+  {
+    std::vector< std::vector< int > > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_IVectorVector" "', argument " "1"" of type '" "std::vector< std::vector< int > > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< std::vector< int > > * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_MultivariatePolynomial__SWIG_0 ( )
+{
+  {
+    datamunge::algebra::MultivariatePolynomial *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::MultivariatePolynomial *)new datamunge::algebra::MultivariatePolynomial();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_MultivariatePolynomial__SWIG_1 ( SEXP num_variables)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial *result = 0 ;
+    int arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< int >(INTEGER(num_variables)[0]);
+    result = (datamunge::algebra::MultivariatePolynomial *)new datamunge::algebra::MultivariatePolynomial(arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_MultivariatePolynomial__SWIG_2 ( SEXP num_variables, SEXP exponents, SEXP coefficients)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial *result = 0 ;
+    int arg1 ;
+    std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *arg2 = 0 ;
+    std::vector< double,std::allocator< double > > *arg3 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< int >(INTEGER(num_variables)[0]);
+    {
+      std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *ptr = (std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *)0;
+      res2 = swig::asptr(exponents, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MultivariatePolynomial" "', argument " "2"" of type '" "std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MultivariatePolynomial" "', argument " "2"" of type '" "std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res3 = swig::asptr(coefficients, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_MultivariatePolynomial" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MultivariatePolynomial" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::algebra::MultivariatePolynomial *)new datamunge::algebra::MultivariatePolynomial(arg1,(std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_num_variables ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    int result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_num_variables" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    result = (int)((datamunge::algebra::MultivariatePolynomial const *)arg1)->num_variables();
+    r_ans = Rf_ScalarInteger(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_num_terms ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    int result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_num_terms" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    result = (int)((datamunge::algebra::MultivariatePolynomial const *)arg1)->num_terms();
+    r_ans = Rf_ScalarInteger(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_is_zero ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_is_zero" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    result = (bool)((datamunge::algebra::MultivariatePolynomial const *)arg1)->is_zero();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_exponents ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_exponents" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->exponents();
+    r_ans = swig::from(static_cast< std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_coefficients ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_coefficients" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->coefficients();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_evaluate ( SEXP self, SEXP point, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_evaluate" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res2 = swig::asptr(point, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MultivariatePolynomial_evaluate" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomial_evaluate" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (double)((datamunge::algebra::MultivariatePolynomial const *)arg1)->evaluate((std::vector< double,std::allocator< double > > const &)*arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_add ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    datamunge::algebra::MultivariatePolynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_add" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MultivariatePolynomial_add" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomial_add" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp2);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->add((datamunge::algebra::MultivariatePolynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::MultivariatePolynomial(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_subtract ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    datamunge::algebra::MultivariatePolynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_subtract" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MultivariatePolynomial_subtract" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomial_subtract" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp2);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->subtract((datamunge::algebra::MultivariatePolynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::MultivariatePolynomial(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_multiply ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    datamunge::algebra::MultivariatePolynomial *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_multiply" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MultivariatePolynomial_multiply" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomial_multiply" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp2);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->multiply((datamunge::algebra::MultivariatePolynomial const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::MultivariatePolynomial(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_scale ( SEXP self, SEXP factor, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_scale" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    arg2 = static_cast< double >(REAL(factor)[0]);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->scale(arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::MultivariatePolynomial(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_leading_exponent ( SEXP self, SEXP order, SEXP s_swig_copy)
+{
+  {
+    std::vector< int,std::allocator< int > > result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    datamunge::algebra::MonomialOrder arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_leading_exponent" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    ecode2 = SWIG_AsVal_int(order, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomial_leading_exponent" "', argument " "2"" of type '" "datamunge::algebra::MonomialOrder""'");
+    } 
+    arg2 = static_cast< datamunge::algebra::MonomialOrder >(val2);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->leading_exponent(arg2);
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_leading_coefficient ( SEXP self, SEXP order, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    datamunge::algebra::MonomialOrder arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_leading_coefficient" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    ecode2 = SWIG_AsVal_int(order, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomial_leading_coefficient" "', argument " "2"" of type '" "datamunge::algebra::MonomialOrder""'");
+    } 
+    arg2 = static_cast< datamunge::algebra::MonomialOrder >(val2);
+    result = (double)((datamunge::algebra::MultivariatePolynomial const *)arg1)->leading_coefficient(arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomial_to_string ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomial_to_string" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    result = ((datamunge::algebra::MultivariatePolynomial const *)arg1)->to_string();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_MultivariatePolynomial ( SEXP self)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_MultivariatePolynomial" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___nonzero__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___nonzero__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = (bool)std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____nonzero__((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1);
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___len__ ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type result;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___len__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____len__((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_pop ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type result;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_pop" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    try {
+      result = std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__pop(arg1);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj((new std::vector< datamunge::algebra::MultivariatePolynomial >::value_type(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___getslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *result = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___getslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector___getslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MultivariatePolynomialVector___getslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val3);
+    try {
+      result = (std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *)std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____getslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___setslice__ ( SEXP self, SEXP i, SEXP j, SEXP is)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg3 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___setslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector___setslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MultivariatePolynomialVector___setslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val3);
+    {
+      std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *ptr = (std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *)0;
+      res4 = swig::asptr(is, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "MultivariatePolynomialVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomialVector___setslice__" "', argument " "4"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    try {
+      std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____setslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),(std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &)*arg4);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    } catch(std::invalid_argument &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::invalid_argument(static_cast< const std::invalid_argument& >(_e))), SWIGTYPE_p_std__invalid_argument, SWIG_POINTER_OWN), "C/C++ exception of type " "std::invalid_argument"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___delslice__ ( SEXP self, SEXP i, SEXP j)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___delslice__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector___delslice__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val2);
+    ecode3 = SWIG_AsVal_int(j, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MultivariatePolynomialVector___delslice__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg3 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val3);
+    try {
+      std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____delslice__(arg1,SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___delitem__ ( SEXP self, SEXP i)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___delitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector___delitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val2);
+    try {
+      std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____delitem__(arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___getitem__ ( SEXP self, SEXP i, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___getitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector___getitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val2);
+    try {
+      result = (std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *) &std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____getitem__((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1,SWIG_STD_MOVE(arg2));
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector___setitem__ ( SEXP self, SEXP i, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type arg2 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector___setitem__" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(i, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector___setitem__" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::difference_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MultivariatePolynomialVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomialVector___setitem__" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::value_type * >(argp3);
+    try {
+      std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg____setitem__(arg1,SWIG_STD_MOVE(arg2),(datamunge::algebra::MultivariatePolynomial const &)*arg3);
+    } catch(std::out_of_range &_e) {
+      SWIG_R_Raise(SWIG_R_NewPointerObj((new std::out_of_range(static_cast< const std::out_of_range& >(_e))), SWIGTYPE_p_std__out_of_range, SWIG_POINTER_OWN), "C/C++ exception of type " "std::out_of_range"); return R_NilValue;
+    }
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_append ( SEXP self, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_append" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(x, &argp2, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MultivariatePolynomialVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomialVector_append" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::value_type * >(argp2);
+    std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__append(arg1,(datamunge::algebra::MultivariatePolynomial const &)*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_MultivariatePolynomialVector__SWIG_0 ( )
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (std::vector< datamunge::algebra::MultivariatePolynomial > *)new std::vector< datamunge::algebra::MultivariatePolynomial >();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_MultivariatePolynomialVector__SWIG_1 ( SEXP other)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *result = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *ptr = (std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *)0;
+      res1 = swig::asptr(other, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MultivariatePolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MultivariatePolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (std::vector< datamunge::algebra::MultivariatePolynomial > *)new std::vector< datamunge::algebra::MultivariatePolynomial >((std::vector< datamunge::algebra::MultivariatePolynomial > const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_empty ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_empty" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = (bool)((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1)->empty();
+    r_ans = Rf_ScalarLogical(result);
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_size ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type result;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_size" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = ((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1)->size();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_swap ( SEXP self, SEXP v)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_swap" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(v, &argp2, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MultivariatePolynomialVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomialVector_swap" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp2);
+    (arg1)->swap(*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_clear ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_clear" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    (arg1)->clear();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_get_allocator ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    SwigValueWrapper< std::allocator< datamunge::algebra::MultivariatePolynomial > > result;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_get_allocator" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = ((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1)->get_allocator();
+    r_ans = SWIG_R_NewPointerObj((new std::vector< datamunge::algebra::MultivariatePolynomial >::allocator_type(result)), SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_MultivariatePolynomialVector__SWIG_2 ( SEXP size)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *result = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type arg1 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_MultivariatePolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::size_type >(val1);
+    result = (std::vector< datamunge::algebra::MultivariatePolynomial > *)new std::vector< datamunge::algebra::MultivariatePolynomial >(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_pop_back ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_pop_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    (arg1)->pop_back();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_resize__SWIG_0 ( SEXP self, SEXP new_size)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::size_type >(val2);
+    (arg1)->resize(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_MultivariatePolynomialVector__SWIG_3 ( SEXP size, SEXP value)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *result = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type arg1 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *arg2 = 0 ;
+    int val1 ;
+    int ecode1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_int(size, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_MultivariatePolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::size_type""'");
+    } 
+    arg1 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::size_type >(val1);
+    res2 = SWIG_R_ConvertPtr(value, &argp2, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_MultivariatePolynomialVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_MultivariatePolynomialVector" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::value_type * >(argp2);
+    result = (std::vector< datamunge::algebra::MultivariatePolynomial > *)new std::vector< datamunge::algebra::MultivariatePolynomial >(SWIG_STD_MOVE(arg1),(std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_push_back ( SEXP self, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_push_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    res2 = SWIG_R_ConvertPtr(x, &argp2, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MultivariatePolynomialVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomialVector_push_back" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::value_type * >(argp2);
+    (arg1)->push_back((std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &)*arg2);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_front ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_front" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = (std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *) &((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1)->front();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_back ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *result = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_back" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = (std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *) &((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1)->back();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_assign ( SEXP self, SEXP n, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type arg2 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_assign" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector_assign" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::size_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MultivariatePolynomialVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomialVector_assign" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::value_type * >(argp3);
+    (arg1)->assign(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_resize__SWIG_1 ( SEXP self, SEXP new_size, SEXP x)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type arg2 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_resize" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(new_size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector_resize" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::size_type >(val2);
+    res3 = SWIG_R_ConvertPtr(x, &argp3, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MultivariatePolynomialVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MultivariatePolynomialVector_resize" "', argument " "3"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &""'"); 
+    }
+    arg3 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::value_type * >(argp3);
+    (arg1)->resize(SWIG_STD_MOVE(arg2),(std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &)*arg3);
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_reserve ( SEXP self, SEXP n)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_reserve" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    ecode2 = SWIG_AsVal_int(n, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MultivariatePolynomialVector_reserve" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial >::size_type""'");
+    } 
+    arg2 = static_cast< std::vector< datamunge::algebra::MultivariatePolynomial >::size_type >(val2);
+    (arg1)->reserve(SWIG_STD_MOVE(arg2));
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_MultivariatePolynomialVector_capacity ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial >::size_type result;
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultivariatePolynomialVector_capacity" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > const *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    result = ((std::vector< datamunge::algebra::MultivariatePolynomial > const *)arg1)->capacity();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_MultivariatePolynomialVector ( SEXP self)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial > *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_MultivariatePolynomialVector" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial > *""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< datamunge::algebra::MultivariatePolynomial > * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_lcm_exponent ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    std::vector< int,std::allocator< int > > result;
+    std::vector< int,std::allocator< int > > *arg1 = 0 ;
+    std::vector< int,std::allocator< int > > *arg2 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res1 = swig::asptr(a, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lcm_exponent" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "lcm_exponent" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res2 = swig::asptr(b, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lcm_exponent" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "lcm_exponent" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = datamunge::algebra::detail::lcm_exponent((std::vector< int,std::allocator< int > > const &)*arg1,(std::vector< int,std::allocator< int > > const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_monomial_divides ( SEXP divisor, SEXP dividend, SEXP s_swig_copy)
+{
+  {
+    bool result;
+    std::vector< int,std::allocator< int > > *arg1 = 0 ;
+    std::vector< int,std::allocator< int > > *arg2 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res1 = swig::asptr(divisor, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "monomial_divides" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "monomial_divides" "', argument " "1"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res2 = swig::asptr(dividend, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "monomial_divides" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "monomial_divides" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (bool)datamunge::algebra::detail::monomial_divides((std::vector< int,std::allocator< int > > const &)*arg1,(std::vector< int,std::allocator< int > > const &)*arg2);
+    r_ans = Rf_ScalarLogical(result);
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_s_polynomial ( SEXP f, SEXP g, SEXP order, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    datamunge::algebra::MultivariatePolynomial *arg2 = 0 ;
+    datamunge::algebra::MonomialOrder arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(f, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "s_polynomial" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "s_polynomial" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    res2 = SWIG_R_ConvertPtr(g, &argp2, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "s_polynomial" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "s_polynomial" "', argument " "2"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp2);
+    ecode3 = SWIG_AsVal_int(order, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "s_polynomial" "', argument " "3"" of type '" "datamunge::algebra::MonomialOrder""'");
+    } 
+    arg3 = static_cast< datamunge::algebra::MonomialOrder >(val3);
+    result = datamunge::algebra::detail::s_polynomial((datamunge::algebra::MultivariatePolynomial const &)*arg1,(datamunge::algebra::MultivariatePolynomial const &)*arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::MultivariatePolynomial(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_reduce ( SEXP p, SEXP basis, SEXP order, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial result;
+    datamunge::algebra::MultivariatePolynomial arg1 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *arg2 = 0 ;
+    datamunge::algebra::MonomialOrder arg3 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "reduce" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "reduce" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1));
+      }
+    }
+    {
+      std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *ptr = (std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *)0;
+      res2 = swig::asptr(basis, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "reduce" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "reduce" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ecode3 = SWIG_AsVal_int(order, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "reduce" "', argument " "3"" of type '" "datamunge::algebra::MonomialOrder""'");
+    } 
+    arg3 = static_cast< datamunge::algebra::MonomialOrder >(val3);
+    result = datamunge::algebra::detail::reduce(SWIG_STD_MOVE(arg1),(std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &)*arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::MultivariatePolynomial(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_multivariate_reduce ( SEXP p, SEXP basis, SEXP order, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::MultivariatePolynomial result;
+    datamunge::algebra::MultivariatePolynomial *arg1 = 0 ;
+    std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *arg2 = 0 ;
+    datamunge::algebra::MonomialOrder arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(p, &argp1, SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "multivariate_reduce" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "multivariate_reduce" "', argument " "1"" of type '" "datamunge::algebra::MultivariatePolynomial const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::MultivariatePolynomial * >(argp1);
+    {
+      std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *ptr = (std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *)0;
+      res2 = swig::asptr(basis, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "multivariate_reduce" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "multivariate_reduce" "', argument " "2"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ecode3 = SWIG_AsVal_int(order, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "multivariate_reduce" "', argument " "3"" of type '" "datamunge::algebra::MonomialOrder""'");
+    } 
+    arg3 = static_cast< datamunge::algebra::MonomialOrder >(val3);
+    result = datamunge::algebra::multivariate_reduce((datamunge::algebra::MultivariatePolynomial const &)*arg1,(std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > const &)*arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::MultivariatePolynomial(result)), SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_groebner_basis ( SEXP generators, SEXP order, SEXP s_swig_copy)
+{
+  {
+    std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > result;
+    std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > arg1 ;
+    datamunge::algebra::MonomialOrder arg2 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *ptr = (std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *)0;
+      int res = swig::asptr(generators, &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "groebner_basis" "', argument " "1"" of type '" "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > >""'"); 
+      }
+      arg1 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    ecode2 = SWIG_AsVal_int(order, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "groebner_basis" "', argument " "2"" of type '" "datamunge::algebra::MonomialOrder""'");
+    } 
+    arg2 = static_cast< datamunge::algebra::MonomialOrder >(val2);
+    result = datamunge::algebra::groebner_basis(SWIG_STD_MOVE(arg1),arg2);
+    r_ans = swig::from(static_cast< std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_Expr ( )
+{
+  {
+    datamunge::algebra::Expr *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::algebra::Expr *)new datamunge::algebra::Expr();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_constant ( SEXP value, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    double arg1 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(value)[0]);
+    result = datamunge::algebra::Expr::constant(arg1);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_variable ( SEXP name, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    std::string *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string(name, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_variable" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_variable" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = datamunge::algebra::Expr::variable((std::string const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_add ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    datamunge::algebra::Expr *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_add" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Expr,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_add" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_add" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Expr * >(argp2);
+    result = ((datamunge::algebra::Expr const *)arg1)->add((datamunge::algebra::Expr const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_subtract ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    datamunge::algebra::Expr *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_subtract" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Expr,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_subtract" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_subtract" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Expr * >(argp2);
+    result = ((datamunge::algebra::Expr const *)arg1)->subtract((datamunge::algebra::Expr const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_multiply ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    datamunge::algebra::Expr *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_multiply" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Expr,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_multiply" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_multiply" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Expr * >(argp2);
+    result = ((datamunge::algebra::Expr const *)arg1)->multiply((datamunge::algebra::Expr const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_divide ( SEXP self, SEXP other, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    datamunge::algebra::Expr *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_divide" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__algebra__Expr,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_divide" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_divide" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Expr * >(argp2);
+    result = ((datamunge::algebra::Expr const *)arg1)->divide((datamunge::algebra::Expr const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_power ( SEXP self, SEXP exponent, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    datamunge::algebra::Expr *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_power" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    res2 = SWIG_R_ConvertPtr(exponent, &argp2, SWIGTYPE_p_datamunge__algebra__Expr,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_power" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_power" "', argument " "2"" of type '" "datamunge::algebra::Expr const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::algebra::Expr * >(argp2);
+    result = ((datamunge::algebra::Expr const *)arg1)->power((datamunge::algebra::Expr const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_negate ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_negate" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    result = ((datamunge::algebra::Expr const *)arg1)->negate();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_sin ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_sin" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    result = ((datamunge::algebra::Expr const *)arg1)->sin();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_cos ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_cos" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    result = ((datamunge::algebra::Expr const *)arg1)->cos();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_exp ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_exp" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    result = ((datamunge::algebra::Expr const *)arg1)->exp();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_log ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_log" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    result = ((datamunge::algebra::Expr const *)arg1)->log();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_differentiate ( SEXP self, SEXP var, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_differentiate" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(var, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_differentiate" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_differentiate" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = ((datamunge::algebra::Expr const *)arg1)->differentiate((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_simplify ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::algebra::Expr result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_simplify" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    result = ((datamunge::algebra::Expr const *)arg1)->simplify();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::algebra::Expr(result)), SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_evaluate ( SEXP self, SEXP names, SEXP values, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    std::vector< double,std::allocator< double > > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_evaluate" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(names, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Expr_evaluate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_evaluate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res3 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Expr_evaluate" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Expr_evaluate" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (double)((datamunge::algebra::Expr const *)arg1)->evaluate((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Expr_to_string ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_to_string" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    result = ((datamunge::algebra::Expr const *)arg1)->to_string();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_Expr ( SEXP self)
+{
+  {
+    datamunge::algebra::Expr *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__algebra__Expr, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Expr" "', argument " "1"" of type '" "datamunge::algebra::Expr *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
 #ifdef __cplusplus
 }
 #endif
@@ -66684,14 +81219,8 @@ static void *_p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__Arbitr
 static void *_p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::DifferentiableSeparableFunction *) x));
 }
-static void *_p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::BarChart *) x));
-}
-static void *_p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::LinePlot *) x));
-}
-static void *_p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::ScatterPlot *) x));
+static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
 }
 SWIGINTERN swig_type_info _swigt__p_allocator_type = {"_p_allocator_type", "allocator_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
@@ -66705,6 +81234,7 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__Dual = {"_p_datamunge__Dual", "da
 SWIGINTERN swig_type_info _swigt__p_datamunge__ElasticNet = {"_p_datamunge__ElasticNet", "datamunge::ElasticNet *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GBMClassifier = {"_p_datamunge__GBMClassifier", "datamunge::GBMClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GBMRegressor = {"_p_datamunge__GBMRegressor", "datamunge::GBMRegressor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__GGPlot = {"_p_datamunge__GGPlot", "datamunge::GGPlot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GLM = {"_p_datamunge__GLM", "datamunge::GLM *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GLMM = {"_p_datamunge__GLMM", "datamunge::GLMM *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GaussianProcessRegression = {"_p_datamunge__GaussianProcessRegression", "datamunge::GaussianProcessRegression *", 0, 0, (void*)0, 0};
@@ -66728,6 +81258,13 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor",
 SWIGINTERN swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostClassifier = {"_p_datamunge__XGBoostClassifier", "datamunge::XGBoostClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostRegressor = {"_p_datamunge__XGBoostRegressor", "datamunge::XGBoostRegressor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__Expr = {"_p_datamunge__algebra__Expr", "datamunge::algebra::Expr *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__MultivariatePolynomial = {"_p_datamunge__algebra__MultivariatePolynomial", "std::vector< datamunge::algebra::MultivariatePolynomial >::value_type *|datamunge::algebra::MultivariatePolynomial *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__PolyExtendedGcdResult = {"_p_datamunge__algebra__PolyExtendedGcdResult", "datamunge::algebra::PolyExtendedGcdResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__Polynomial = {"_p_datamunge__algebra__Polynomial", "std::vector< datamunge::algebra::Polynomial >::value_type *|datamunge::algebra::Polynomial *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RationalFunction = {"_p_datamunge__algebra__RationalFunction", "datamunge::algebra::RationalFunction *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RealRootIntervals = {"_p_datamunge__algebra__RealRootIntervals", "datamunge::algebra::RealRootIntervals *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__SquareFreeFactor = {"_p_datamunge__algebra__SquareFreeFactor", "std::vector< datamunge::algebra::SquareFreeFactor >::value_type *|datamunge::algebra::SquareFreeFactor *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsOptions = {"_p_datamunge__bayes__GibbsOptions", "datamunge::bayes::GibbsOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsResult = {"_p_datamunge__bayes__GibbsResult", "datamunge::bayes::GibbsResult *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsSampler = {"_p_datamunge__bayes__GibbsSampler", "datamunge::bayes::GibbsSampler *", 0, 0, (void*)0, 0};
@@ -66766,12 +81303,13 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SGDOptions = {"_p_datamung
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SeparableFunction = {"_p_datamunge__optim__SeparableFunction", "datamunge::optim::SeparableFunction *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealing = {"_p_datamunge__optim__SimulatedAnnealing", "datamunge::optim::SimulatedAnnealing *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealingOptions = {"_p_datamunge__optim__SimulatedAnnealingOptions", "datamunge::optim::SimulatedAnnealingOptions *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__BarChart = {"_p_datamunge__plot__BarChart", "datamunge::plot::BarChart *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__LinePlot = {"_p_datamunge__plot__LinePlot", "datamunge::plot::LinePlot *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::plot::Plot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGB *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ScatterPlot = {"_p_datamunge__plot__ScatterPlot", "datamunge::plot::ScatterPlot *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
@@ -66785,22 +81323,35 @@ SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_typ
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_signed_char = {"_p_signed_char", "int8_t *|int_fast8_t *|int_least8_t *|signed char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t = {"_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t", "std::vector< datamunge::algebra::MultivariatePolynomial >::allocator_type *|std::allocator< datamunge::algebra::MultivariatePolynomial > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__allocatorT_datamunge__algebra__Polynomial_t = {"_p_std__allocatorT_datamunge__algebra__Polynomial_t", "std::vector< datamunge::algebra::Polynomial >::allocator_type *|std::allocator< datamunge::algebra::Polynomial > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t = {"_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t", "std::vector< datamunge::algebra::SquareFreeFactor >::allocator_type *|std::allocator< datamunge::algebra::SquareFreeFactor > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_double_t = {"_p_std__allocatorT_double_t", "std::vector< double >::allocator_type *|std::allocator< double > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_int_t = {"_p_std__allocatorT_int_t", "std::vector< int >::allocator_type *|std::allocator< int > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_size_t_t = {"_p_std__allocatorT_size_t_t", "std::vector< size_t >::allocator_type *|std::allocator< size_t > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_std__string_t = {"_p_std__allocatorT_std__string_t", "std::vector< std::string >::allocator_type *|std::allocator< std::string > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__allocatorT_std__vectorT_double_t_t = {"_p_std__allocatorT_std__vectorT_double_t_t", "std::vector< std::vector< double > >::allocator_type *|std::allocator< std::vector< double,std::allocator< double > > > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__allocatorT_std__vectorT_int_t_t = {"_p_std__allocatorT_std__vectorT_int_t_t", "std::vector< std::vector< int > >::allocator_type *|std::allocator< std::vector< int,std::allocator< int > > > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__invalid_argument = {"_p_std__invalid_argument", "std::invalid_argument *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__out_of_range = {"_p_std__out_of_range", "std::out_of_range *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_double_double_t", "std::pair< double,double > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > > > *|std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t = {"_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t", "datamunge::algebra::detail::ExprNodePtr *|std::shared_ptr< datamunge::algebra::detail::ExprNode > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t = {"_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t", "std::vector< datamunge::algebra::MultivariatePolynomial,std::allocator< datamunge::algebra::MultivariatePolynomial > > *|std::vector< datamunge::algebra::MultivariatePolynomial > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__algebra__Polynomial_t = {"_p_std__vectorT_datamunge__algebra__Polynomial_t", "std::vector< datamunge::algebra::Polynomial,std::allocator< datamunge::algebra::Polynomial > > *|std::vector< datamunge::algebra::Polynomial > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t = {"_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t", "std::vector< datamunge::algebra::SquareFreeFactor,std::allocator< datamunge::algebra::SquareFreeFactor > > *|std::vector< datamunge::algebra::SquareFreeFactor > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t = {"_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t", "std::vector< datamunge::plot::ABLine,std::allocator< datamunge::plot::ABLine > > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t = {"_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t", "std::vector< datamunge::plot::DataSeries,std::allocator< datamunge::plot::DataSeries > > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t", "std::vector< datamunge::plot::LegendEntry,std::allocator< datamunge::plot::LegendEntry > > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t = {"_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t", "std::vector< datamunge::plot::RGB,std::allocator< datamunge::plot::RGB > > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double,std::allocator< double > > *|std::vector< double > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int,std::allocator< int > > *|std::vector< int > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_long_long_std__allocatorT_long_long_t_t = {"_p_std__vectorT_long_long_std__allocatorT_long_long_t_t", "datamunge::algebra::detail::GfPoly *|std::vector< long long,std::allocator< long long > > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t,std::allocator< size_t > > *|std::vector< size_t > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string,std::allocator< std::string > > *|std::vector< std::string > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__vectorT_double_t_t = {"_p_std__vectorT_std__vectorT_double_t_t", "std::vector< std::vector< double,std::allocator< double > > > *|std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *|std::vector< std::vector< double > > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__vectorT_int_t_t = {"_p_std__vectorT_std__vectorT_int_t_t", "std::vector< std::vector< int,std::allocator< int > > > *|std::vector< std::vector< int,std::allocator< int > >,std::allocator< std::vector< int,std::allocator< int > > > > *|std::vector< std::vector< int > > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "uint8_t *|uint_fast8_t *|uint_least8_t *|unsigned char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint32_t *|uint_fast16_t *|uint_fast32_t *|uint_least32_t *|uintptr_t *|unsigned int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
@@ -66823,6 +81374,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__ElasticNet,
   &_swigt__p_datamunge__GBMClassifier,
   &_swigt__p_datamunge__GBMRegressor,
+  &_swigt__p_datamunge__GGPlot,
   &_swigt__p_datamunge__GLM,
   &_swigt__p_datamunge__GLMM,
   &_swigt__p_datamunge__GaussianProcessRegression,
@@ -66846,6 +81398,13 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__Var,
   &_swigt__p_datamunge__XGBoostClassifier,
   &_swigt__p_datamunge__XGBoostRegressor,
+  &_swigt__p_datamunge__algebra__Expr,
+  &_swigt__p_datamunge__algebra__MultivariatePolynomial,
+  &_swigt__p_datamunge__algebra__PolyExtendedGcdResult,
+  &_swigt__p_datamunge__algebra__Polynomial,
+  &_swigt__p_datamunge__algebra__RationalFunction,
+  &_swigt__p_datamunge__algebra__RealRootIntervals,
+  &_swigt__p_datamunge__algebra__SquareFreeFactor,
   &_swigt__p_datamunge__bayes__GibbsOptions,
   &_swigt__p_datamunge__bayes__GibbsResult,
   &_swigt__p_datamunge__bayes__GibbsSampler,
@@ -66884,12 +81443,13 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__optim__SeparableFunction,
   &_swigt__p_datamunge__optim__SimulatedAnnealing,
   &_swigt__p_datamunge__optim__SimulatedAnnealingOptions,
-  &_swigt__p_datamunge__plot__BarChart,
+  &_swigt__p_datamunge__plot__ABLine,
   &_swigt__p_datamunge__plot__DataSeries,
-  &_swigt__p_datamunge__plot__LinePlot,
+  &_swigt__p_datamunge__plot__LegendEntry,
   &_swigt__p_datamunge__plot__Plot,
   &_swigt__p_datamunge__plot__RGB,
-  &_swigt__p_datamunge__plot__ScatterPlot,
+  &_swigt__p_datamunge__plot__RLayout,
+  &_swigt__p_datamunge__plot__RPlot,
   &_swigt__p_datamunge__stats__ARIMA,
   &_swigt__p_datamunge__stats__ARIMAOptions,
   &_swigt__p_datamunge__stats__ExponentialSmoothing,
@@ -66903,22 +81463,35 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_short,
   &_swigt__p_signed_char,
   &_swigt__p_size_type,
+  &_swigt__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t,
+  &_swigt__p_std__allocatorT_datamunge__algebra__Polynomial_t,
+  &_swigt__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t,
   &_swigt__p_std__allocatorT_double_t,
   &_swigt__p_std__allocatorT_int_t,
   &_swigt__p_std__allocatorT_size_t_t,
   &_swigt__p_std__allocatorT_std__string_t,
   &_swigt__p_std__allocatorT_std__vectorT_double_t_t,
+  &_swigt__p_std__allocatorT_std__vectorT_int_t_t,
   &_swigt__p_std__invalid_argument,
   &_swigt__p_std__out_of_range,
   &_swigt__p_std__pairT_double_double_t,
   &_swigt__p_std__pairT_int_int_t,
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
+  &_swigt__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t,
+  &_swigt__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t,
+  &_swigt__p_std__vectorT_datamunge__algebra__Polynomial_t,
+  &_swigt__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t,
+  &_swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t,
   &_swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t,
+  &_swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t,
+  &_swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
+  &_swigt__p_std__vectorT_long_long_std__allocatorT_long_long_t_t,
   &_swigt__p_std__vectorT_size_t_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_std__vectorT_std__vectorT_double_t_t,
+  &_swigt__p_std__vectorT_std__vectorT_int_t_t,
   &_swigt__p_unsigned_char,
   &_swigt__p_unsigned_int,
   &_swigt__p_unsigned_long_long,
@@ -66938,6 +81511,7 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__Dual[] = {  {&_swigt__p_datamunge
 SWIGINTERN swig_cast_info _swigc__p_datamunge__ElasticNet[] = {  {&_swigt__p_datamunge__ElasticNet, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GBMClassifier[] = {  {&_swigt__p_datamunge__GBMClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GBMRegressor[] = {  {&_swigt__p_datamunge__GBMRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__GGPlot[] = {  {&_swigt__p_datamunge__GGPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GLM[] = {  {&_swigt__p_datamunge__GLM, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GLMM[] = {  {&_swigt__p_datamunge__GLMM, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GaussianProcessRegression[] = {  {&_swigt__p_datamunge__GaussianProcessRegression, 0, 0, 0},{0, 0, 0, 0}};
@@ -66961,6 +81535,13 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamun
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostClassifier[] = {  {&_swigt__p_datamunge__XGBoostClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostRegressor[] = {  {&_swigt__p_datamunge__XGBoostRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__Expr[] = {  {&_swigt__p_datamunge__algebra__Expr, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__MultivariatePolynomial[] = {  {&_swigt__p_datamunge__algebra__MultivariatePolynomial, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__PolyExtendedGcdResult[] = {  {&_swigt__p_datamunge__algebra__PolyExtendedGcdResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__Polynomial[] = {  {&_swigt__p_datamunge__algebra__Polynomial, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RationalFunction[] = {  {&_swigt__p_datamunge__algebra__RationalFunction, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RealRootIntervals[] = {  {&_swigt__p_datamunge__algebra__RealRootIntervals, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__SquareFreeFactor[] = {  {&_swigt__p_datamunge__algebra__SquareFreeFactor, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsOptions[] = {  {&_swigt__p_datamunge__bayes__GibbsOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsResult[] = {  {&_swigt__p_datamunge__bayes__GibbsResult, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsSampler[] = {  {&_swigt__p_datamunge__bayes__GibbsSampler, 0, 0, 0},{0, 0, 0, 0}};
@@ -66999,12 +81580,13 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SGDOptions[] = {  {&_swigt
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SeparableFunction[] = {  {&_swigt__p_datamunge__optim__SeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealing[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealing, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealingOptions[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealingOptions, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__BarChart[] = {  {&_swigt__p_datamunge__plot__BarChart, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ABLine[] = {  {&_swigt__p_datamunge__plot__ABLine, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__DataSeries[] = {  {&_swigt__p_datamunge__plot__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__LinePlot[] = {  {&_swigt__p_datamunge__plot__LinePlot, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__BarChart, _p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__LinePlot, _p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__ScatterPlot, _p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__LegendEntry[] = {  {&_swigt__p_datamunge__plot__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__RPlot, _p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RGB[] = {  {&_swigt__p_datamunge__plot__RGB, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ScatterPlot[] = {  {&_swigt__p_datamunge__plot__ScatterPlot, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RLayout[] = {  {&_swigt__p_datamunge__plot__RLayout, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RPlot[] = {  {&_swigt__p_datamunge__plot__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ARIMA[] = {  {&_swigt__p_datamunge__stats__ARIMA, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ARIMAOptions[] = {  {&_swigt__p_datamunge__stats__ARIMAOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothing[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothing, 0, 0, 0},{0, 0, 0, 0}};
@@ -67018,22 +81600,35 @@ SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t[] = {  {&_swigt__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_datamunge__algebra__Polynomial_t[] = {  {&_swigt__p_std__allocatorT_datamunge__algebra__Polynomial_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t[] = {  {&_swigt__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_double_t[] = {  {&_swigt__p_std__allocatorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_int_t[] = {  {&_swigt__p_std__allocatorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_size_t_t[] = {  {&_swigt__p_std__allocatorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_std__string_t[] = {  {&_swigt__p_std__allocatorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_std__vectorT_double_t_t[] = {  {&_swigt__p_std__allocatorT_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__allocatorT_std__vectorT_int_t_t[] = {  {&_swigt__p_std__allocatorT_std__vectorT_int_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__invalid_argument[] = {  {&_swigt__p_std__invalid_argument, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__out_of_range[] = {  {&_swigt__p_std__out_of_range, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__p_std__pairT_double_double_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std__pairT_int_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t[] = {  {&_swigt__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t[] = {  {&_swigt__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__algebra__Polynomial_t[] = {  {&_swigt__p_std__vectorT_datamunge__algebra__Polynomial_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t[] = {  {&_swigt__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_long_long_std__allocatorT_long_long_t_t[] = {  {&_swigt__p_std__vectorT_long_long_std__allocatorT_long_long_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__vectorT_double_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__vectorT_int_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_int_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_char[] = {  {&_swigt__p_unsigned_char, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_int[] = {  {&_swigt__p_unsigned_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_unsigned_long_long[] = {  {&_swigt__p_unsigned_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -67053,6 +81648,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__ElasticNet,
   _swigc__p_datamunge__GBMClassifier,
   _swigc__p_datamunge__GBMRegressor,
+  _swigc__p_datamunge__GGPlot,
   _swigc__p_datamunge__GLM,
   _swigc__p_datamunge__GLMM,
   _swigc__p_datamunge__GaussianProcessRegression,
@@ -67076,6 +81672,13 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__Var,
   _swigc__p_datamunge__XGBoostClassifier,
   _swigc__p_datamunge__XGBoostRegressor,
+  _swigc__p_datamunge__algebra__Expr,
+  _swigc__p_datamunge__algebra__MultivariatePolynomial,
+  _swigc__p_datamunge__algebra__PolyExtendedGcdResult,
+  _swigc__p_datamunge__algebra__Polynomial,
+  _swigc__p_datamunge__algebra__RationalFunction,
+  _swigc__p_datamunge__algebra__RealRootIntervals,
+  _swigc__p_datamunge__algebra__SquareFreeFactor,
   _swigc__p_datamunge__bayes__GibbsOptions,
   _swigc__p_datamunge__bayes__GibbsResult,
   _swigc__p_datamunge__bayes__GibbsSampler,
@@ -67114,12 +81717,13 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__optim__SeparableFunction,
   _swigc__p_datamunge__optim__SimulatedAnnealing,
   _swigc__p_datamunge__optim__SimulatedAnnealingOptions,
-  _swigc__p_datamunge__plot__BarChart,
+  _swigc__p_datamunge__plot__ABLine,
   _swigc__p_datamunge__plot__DataSeries,
-  _swigc__p_datamunge__plot__LinePlot,
+  _swigc__p_datamunge__plot__LegendEntry,
   _swigc__p_datamunge__plot__Plot,
   _swigc__p_datamunge__plot__RGB,
-  _swigc__p_datamunge__plot__ScatterPlot,
+  _swigc__p_datamunge__plot__RLayout,
+  _swigc__p_datamunge__plot__RPlot,
   _swigc__p_datamunge__stats__ARIMA,
   _swigc__p_datamunge__stats__ARIMAOptions,
   _swigc__p_datamunge__stats__ExponentialSmoothing,
@@ -67133,22 +81737,35 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_short,
   _swigc__p_signed_char,
   _swigc__p_size_type,
+  _swigc__p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t,
+  _swigc__p_std__allocatorT_datamunge__algebra__Polynomial_t,
+  _swigc__p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t,
   _swigc__p_std__allocatorT_double_t,
   _swigc__p_std__allocatorT_int_t,
   _swigc__p_std__allocatorT_size_t_t,
   _swigc__p_std__allocatorT_std__string_t,
   _swigc__p_std__allocatorT_std__vectorT_double_t_t,
+  _swigc__p_std__allocatorT_std__vectorT_int_t_t,
   _swigc__p_std__invalid_argument,
   _swigc__p_std__out_of_range,
   _swigc__p_std__pairT_double_double_t,
   _swigc__p_std__pairT_int_int_t,
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
+  _swigc__p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t,
+  _swigc__p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t,
+  _swigc__p_std__vectorT_datamunge__algebra__Polynomial_t,
+  _swigc__p_std__vectorT_datamunge__algebra__SquareFreeFactor_t,
+  _swigc__p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t,
   _swigc__p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t,
+  _swigc__p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t,
+  _swigc__p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t,
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
+  _swigc__p_std__vectorT_long_long_std__allocatorT_long_long_t_t,
   _swigc__p_std__vectorT_size_t_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_std__vectorT_std__vectorT_double_t_t,
+  _swigc__p_std__vectorT_std__vectorT_int_t_t,
   _swigc__p_unsigned_char,
   _swigc__p_unsigned_int,
   _swigc__p_unsigned_long_long,
@@ -67575,13 +82192,16 @@ extern "C" {
 #endif
 
 SWIGINTERN R_CallMethodDef CallEntries[] = {
+   {"R_swig_RLayout_add", (DL_FUNC) &R_swig_RLayout_add, 3},
    {"R_swig_DataFrame_shape", (DL_FUNC) &R_swig_DataFrame_shape, 2},
    {"R_swig_GLM_deviance", (DL_FUNC) &R_swig_GLM_deviance, 2},
    {"R_swig_new_XGBoostClassifier__SWIG_0", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_0, 13},
    {"R_swig_new_XGBoostClassifier__SWIG_1", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_1, 12},
    {"R_swig_NaiveBayesClassifier_print_summary", (DL_FUNC) &R_swig_NaiveBayesClassifier_print_summary, 1},
    {"R_swig_new_XGBoostClassifier__SWIG_2", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_2, 11},
+   {"R_swig_Expr_evaluate", (DL_FUNC) &R_swig_Expr_evaluate, 4},
    {"R_swig_new_XGBoostClassifier__SWIG_3", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_3, 10},
+   {"R_swig_descartes_sign_changes", (DL_FUNC) &R_swig_descartes_sign_changes, 2},
    {"R_swig_new_XGBoostClassifier__SWIG_4", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_4, 9},
    {"R_swig_delete_GradientDescentOptions", (DL_FUNC) &R_swig_delete_GradientDescentOptions, 1},
    {"R_swig_new_XGBoostClassifier__SWIG_5", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_5, 8},
@@ -67594,9 +82214,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Plot_save", (DL_FUNC) &R_swig_Plot_save, 2},
    {"R_swig_new_XGBoostClassifier__SWIG_9", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_9, 4},
    {"R_swig_Tensor_sum", (DL_FUNC) &R_swig_Tensor_sum, 2},
+   {"R_swig_ABLine_color_get", (DL_FUNC) &R_swig_ABLine_color_get, 1},
    {"R_swig_GBMRegressor_n_trees", (DL_FUNC) &R_swig_GBMRegressor_n_trees, 2},
+   {"R_swig_RPlot_text__SWIG_0", (DL_FUNC) &R_swig_RPlot_text__SWIG_0, 7},
    {"R_swig_GBMClassifier_n_trees", (DL_FUNC) &R_swig_GBMClassifier_n_trees, 2},
+   {"R_swig_RPlot_text__SWIG_1", (DL_FUNC) &R_swig_RPlot_text__SWIG_1, 6},
    {"R_swig_DataSeries_Kind_Scatter_get", (DL_FUNC) &R_swig_DataSeries_Kind_Scatter_get, 1},
+   {"R_swig_RPlot_text__SWIG_2", (DL_FUNC) &R_swig_RPlot_text__SWIG_2, 5},
+   {"R_swig_Polynomial_scale", (DL_FUNC) &R_swig_Polynomial_scale, 3},
    {"R_swig_GaussianProcessRegression_summary", (DL_FUNC) &R_swig_GaussianProcessRegression_summary, 2},
    {"R_swig_SVM_predict_frame", (DL_FUNC) &R_swig_SVM_predict_frame, 2},
    {"R_swig_GLM_plot_scale_location", (DL_FUNC) &R_swig_GLM_plot_scale_location, 2},
@@ -67605,12 +82230,16 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DecisionTreeRegressor_rmse", (DL_FUNC) &R_swig_DecisionTreeRegressor_rmse, 2},
    {"R_swig_DVector_size", (DL_FUNC) &R_swig_DVector_size, 2},
    {"R_swig_new_INLAMixedModel__SWIG_0", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_0, 10},
+   {"R_swig_RPlot_hist__SWIG_0", (DL_FUNC) &R_swig_RPlot_hist__SWIG_0, 5},
    {"R_swig_new_INLAMixedModel__SWIG_1", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_1, 9},
    {"R_swig_LM_t_values", (DL_FUNC) &R_swig_LM_t_values, 2},
    {"R_swig_DataFrame_add_numeric_column__SWIG_0", (DL_FUNC) &R_swig_DataFrame_add_numeric_column__SWIG_0, 4},
+   {"R_swig_RPlot_hist__SWIG_1", (DL_FUNC) &R_swig_RPlot_hist__SWIG_1, 4},
    {"R_swig_new_INLAMixedModel__SWIG_2", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_2, 8},
    {"R_swig_DataFrame_add_numeric_column__SWIG_1", (DL_FUNC) &R_swig_DataFrame_add_numeric_column__SWIG_1, 3},
+   {"R_swig_RPlot_hist__SWIG_2", (DL_FUNC) &R_swig_RPlot_hist__SWIG_2, 3},
    {"R_swig_new_INLAMixedModel__SWIG_3", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_3, 7},
+   {"R_swig_RPlot_hist__SWIG_3", (DL_FUNC) &R_swig_RPlot_hist__SWIG_3, 2},
    {"R_swig_new_INLAMixedModel__SWIG_4", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_4, 6},
    {"R_swig_ImportanceSamplingResult_log_evidence_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_log_evidence_set, 2},
    {"R_swig_new_INLAMixedModel__SWIG_5", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_5, 5},
@@ -67629,18 +82258,26 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Ridge_formula_text", (DL_FUNC) &R_swig_Ridge_formula_text, 2},
    {"R_swig_SizeVector_back", (DL_FUNC) &R_swig_SizeVector_back, 2},
    {"R_swig_GaussianProcessRegression_length_scale_grid", (DL_FUNC) &R_swig_GaussianProcessRegression_length_scale_grid, 2},
+   {"R_swig_Plot_hide_axes__SWIG_0", (DL_FUNC) &R_swig_Plot_hide_axes__SWIG_0, 3},
    {"R_swig_HyperDual_exp", (DL_FUNC) &R_swig_HyperDual_exp, 2},
+   {"R_swig_Plot_legend_entries", (DL_FUNC) &R_swig_Plot_legend_entries, 2},
    {"R_swig_SizeVector___getslice__", (DL_FUNC) &R_swig_SizeVector___getslice__, 3},
+   {"R_swig_Plot_hide_axes__SWIG_1", (DL_FUNC) &R_swig_Plot_hide_axes__SWIG_1, 2},
    {"R_swig_GLMM_coefficients", (DL_FUNC) &R_swig_GLMM_coefficients, 2},
+   {"R_swig_Polynomial_evaluate", (DL_FUNC) &R_swig_Polynomial_evaluate, 3},
    {"R_swig_Lasso_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_Lasso_plot_residuals_vs_fitted, 2},
    {"R_swig_new_HMCResult", (DL_FUNC) &R_swig_new_HMCResult, 0},
    {"R_swig_NaiveBayesClassifier_summary", (DL_FUNC) &R_swig_NaiveBayesClassifier_summary, 2},
+   {"R_swig_MultivariatePolynomial_to_string", (DL_FUNC) &R_swig_MultivariatePolynomial_to_string, 2},
    {"R_swig_DataSeries_kind_get", (DL_FUNC) &R_swig_DataSeries_kind_get, 2},
    {"R_swig_SVector___delitem__", (DL_FUNC) &R_swig_SVector___delitem__, 2},
    {"R_swig_GBMRegressor_fitted_values", (DL_FUNC) &R_swig_GBMRegressor_fitted_values, 2},
    {"R_swig_Lasso_predict", (DL_FUNC) &R_swig_Lasso_predict, 3},
+   {"R_swig_sturm_sign_changes", (DL_FUNC) &R_swig_sturm_sign_changes, 3},
    {"R_swig_KernelRegression_bandwidth_grid", (DL_FUNC) &R_swig_KernelRegression_bandwidth_grid, 2},
    {"R_swig_LDA_observations", (DL_FUNC) &R_swig_LDA_observations, 2},
+   {"R_swig_ABLine_value_set", (DL_FUNC) &R_swig_ABLine_value_set, 2},
+   {"R_swig_crt", (DL_FUNC) &R_swig_crt, 3},
    {"R_swig_KNNClassifier_observations", (DL_FUNC) &R_swig_KNNClassifier_observations, 2},
    {"R_swig_HypothesisTestResult_parameter2_set", (DL_FUNC) &R_swig_HypothesisTestResult_parameter2_set, 2},
    {"R_swig_HyperDual_negate", (DL_FUNC) &R_swig_HyperDual_negate, 2},
@@ -67648,18 +82285,23 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_LBFGSOptions", (DL_FUNC) &R_swig_new_LBFGSOptions, 0},
    {"R_swig_kruskal_wallis_test", (DL_FUNC) &R_swig_kruskal_wallis_test, 3},
    {"R_swig_XGBoostClassifier_feature_importance", (DL_FUNC) &R_swig_XGBoostClassifier_feature_importance, 2},
+   {"R_swig_Polynomial_is_zero", (DL_FUNC) &R_swig_Polynomial_is_zero, 2},
    {"R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_1", (DL_FUNC) &R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_1, 4},
    {"R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_0, 5},
+   {"R_swig_RPlot_boxplot__SWIG_0", (DL_FUNC) &R_swig_RPlot_boxplot__SWIG_0, 4},
    {"R_swig_RWMOptions_seed_set", (DL_FUNC) &R_swig_RWMOptions_seed_set, 2},
    {"R_swig_Tensor_set_string", (DL_FUNC) &R_swig_Tensor_set_string, 3},
+   {"R_swig_RPlot_boxplot__SWIG_1", (DL_FUNC) &R_swig_RPlot_boxplot__SWIG_1, 3},
    {"R_swig_delete_HMCOptions", (DL_FUNC) &R_swig_delete_HMCOptions, 1},
    {"R_swig_Dual_tanh", (DL_FUNC) &R_swig_Dual_tanh, 2},
+   {"R_swig_RPlot_boxplot__SWIG_2", (DL_FUNC) &R_swig_RPlot_boxplot__SWIG_2, 2},
    {"R_swig_GibbsOptions_num_warmup_get", (DL_FUNC) &R_swig_GibbsOptions_num_warmup_get, 2},
    {"R_swig_make_dvector", (DL_FUNC) &R_swig_make_dvector, 4},
    {"R_swig_LM_adjusted_r_squared", (DL_FUNC) &R_swig_LM_adjusted_r_squared, 2},
    {"R_swig_LDA_predict_frame", (DL_FUNC) &R_swig_LDA_predict_frame, 2},
    {"R_swig_ARIMAOptions_q_get", (DL_FUNC) &R_swig_ARIMAOptions_q_get, 2},
    {"R_swig_delete_RWMOptions", (DL_FUNC) &R_swig_delete_RWMOptions, 1},
+   {"R_swig_IVectorVector___nonzero__", (DL_FUNC) &R_swig_IVectorVector___nonzero__, 2},
    {"R_swig_HyperDual_subtract_scalar", (DL_FUNC) &R_swig_HyperDual_subtract_scalar, 3},
    {"R_swig_SVector_assign", (DL_FUNC) &R_swig_SVector_assign, 3},
    {"R_swig_ARIMA_bic", (DL_FUNC) &R_swig_ARIMA_bic, 2},
@@ -67669,7 +82311,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GLM_confidence_interval_upper__SWIG_0", (DL_FUNC) &R_swig_GLM_confidence_interval_upper__SWIG_0, 3},
    {"R_swig_GLM_confidence_interval_upper__SWIG_1", (DL_FUNC) &R_swig_GLM_confidence_interval_upper__SWIG_1, 2},
    {"R_swig_DVectorVector_append", (DL_FUNC) &R_swig_DVectorVector_append, 2},
+   {"R_swig_RPlot_segments__SWIG_0", (DL_FUNC) &R_swig_RPlot_segments__SWIG_0, 8},
    {"R_swig_NUTSOptions_max_tree_depth_set", (DL_FUNC) &R_swig_NUTSOptions_max_tree_depth_set, 2},
+   {"R_swig_sturm_sequence", (DL_FUNC) &R_swig_sturm_sequence, 2},
+   {"R_swig_RPlot_segments__SWIG_1", (DL_FUNC) &R_swig_RPlot_segments__SWIG_1, 7},
+   {"R_swig_RPlot_segments__SWIG_2", (DL_FUNC) &R_swig_RPlot_segments__SWIG_2, 6},
    {"R_swig_Plot_background_color", (DL_FUNC) &R_swig_Plot_background_color, 2},
    {"R_swig_KernelRegression_print_summary", (DL_FUNC) &R_swig_KernelRegression_print_summary, 1},
    {"R_swig_PSOOptions_seed_get", (DL_FUNC) &R_swig_PSOOptions_seed_get, 2},
@@ -67683,11 +82329,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_HMCOptions_num_leapfrog_steps_set", (DL_FUNC) &R_swig_HMCOptions_num_leapfrog_steps_set, 2},
    {"R_swig_SizeVector___nonzero__", (DL_FUNC) &R_swig_SizeVector___nonzero__, 2},
    {"R_swig_SVM_predict", (DL_FUNC) &R_swig_SVM_predict, 3},
+   {"R_swig_Polynomial_negate", (DL_FUNC) &R_swig_Polynomial_negate, 2},
    {"R_swig_Plot_has_y_limits", (DL_FUNC) &R_swig_Plot_has_y_limits, 2},
    {"R_swig_p_adjust__SWIG_0", (DL_FUNC) &R_swig_p_adjust__SWIG_0, 3},
    {"R_swig_delete_Tensor", (DL_FUNC) &R_swig_delete_Tensor, 1},
    {"R_swig_p_adjust__SWIG_1", (DL_FUNC) &R_swig_p_adjust__SWIG_1, 2},
    {"R_swig_SGDOptions_shuffle_get", (DL_FUNC) &R_swig_SGDOptions_shuffle_get, 2},
+   {"R_swig_PolynomialVector_swap", (DL_FUNC) &R_swig_PolynomialVector_swap, 2},
+   {"R_swig_delete_GGPlot", (DL_FUNC) &R_swig_delete_GGPlot, 1},
    {"R_swig_ExponentialSmoothingOptions_seed_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seed_get, 2},
    {"R_swig_HMCOptions_num_samples_get", (DL_FUNC) &R_swig_HMCOptions_num_samples_get, 2},
    {"R_swig_HypothesisTestResult_has_conf_int_set", (DL_FUNC) &R_swig_HypothesisTestResult_has_conf_int_set, 2},
@@ -67700,56 +82349,76 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_DEOptions", (DL_FUNC) &R_swig_new_DEOptions, 0},
    {"R_swig_SizeVector_append", (DL_FUNC) &R_swig_SizeVector_append, 2},
    {"R_swig_NUTSOptions_initial_step_size_set", (DL_FUNC) &R_swig_NUTSOptions_initial_step_size_set, 2},
+   {"R_swig_sturm_root_count", (DL_FUNC) &R_swig_sturm_root_count, 4},
+   {"R_swig_RealRootIntervals_upper_get", (DL_FUNC) &R_swig_RealRootIntervals_upper_get, 1},
    {"R_swig_Dual_derivative", (DL_FUNC) &R_swig_Dual_derivative, 2},
    {"R_swig_DecisionTreeClassifier_feature_importance", (DL_FUNC) &R_swig_DecisionTreeClassifier_feature_importance, 2},
    {"R_swig_DecisionTreeRegressor_predict", (DL_FUNC) &R_swig_DecisionTreeRegressor_predict, 3},
    {"R_swig_DataSeries_color_get", (DL_FUNC) &R_swig_DataSeries_color_get, 1},
-   {"R_swig_ExponentialSmoothing_fitted_values", (DL_FUNC) &R_swig_ExponentialSmoothing_fitted_values, 2},
    {"R_swig_AgglomerativeClustering_print_summary", (DL_FUNC) &R_swig_AgglomerativeClustering_print_summary, 1},
+   {"R_swig_ExponentialSmoothing_fitted_values", (DL_FUNC) &R_swig_ExponentialSmoothing_fitted_values, 2},
    {"R_swig_KMeans_n_clusters", (DL_FUNC) &R_swig_KMeans_n_clusters, 2},
    {"R_swig_HypothesisTestResult_parameter1_get", (DL_FUNC) &R_swig_HypothesisTestResult_parameter1_get, 2},
    {"R_swig_Dual_exp", (DL_FUNC) &R_swig_Dual_exp, 2},
    {"R_swig_RandomForestRegressor_fitted_values", (DL_FUNC) &R_swig_RandomForestRegressor_fitted_values, 2},
    {"R_swig_DVectorVector_swap", (DL_FUNC) &R_swig_DVectorVector_swap, 2},
    {"R_swig_GibbsResult_samples_get", (DL_FUNC) &R_swig_GibbsResult_samples_get, 1},
+   {"R_swig_SquareFreeFactorVector___nonzero__", (DL_FUNC) &R_swig_SquareFreeFactorVector___nonzero__, 2},
+   {"R_swig_SquareFreeFactorVector_resize__SWIG_0", (DL_FUNC) &R_swig_SquareFreeFactorVector_resize__SWIG_0, 2},
    {"R_swig_AgglomerativeClustering_feature_names", (DL_FUNC) &R_swig_AgglomerativeClustering_feature_names, 2},
    {"R_swig_NaiveBayesClassifier_classes", (DL_FUNC) &R_swig_NaiveBayesClassifier_classes, 2},
+   {"R_swig_SquareFreeFactorVector_resize__SWIG_1", (DL_FUNC) &R_swig_SquareFreeFactorVector_resize__SWIG_1, 3},
+   {"R_swig_RPlot_qqnorm__SWIG_0", (DL_FUNC) &R_swig_RPlot_qqnorm__SWIG_0, 4},
    {"R_swig_Tensor_subtract_scalar", (DL_FUNC) &R_swig_Tensor_subtract_scalar, 2},
+   {"R_swig_RPlot_qqnorm__SWIG_1", (DL_FUNC) &R_swig_RPlot_qqnorm__SWIG_1, 3},
+   {"R_swig_RPlot_qqnorm__SWIG_2", (DL_FUNC) &R_swig_RPlot_qqnorm__SWIG_2, 2},
    {"R_swig_XGBoostRegressor_training_deviance", (DL_FUNC) &R_swig_XGBoostRegressor_training_deviance, 2},
    {"R_swig_ExponentialSmoothingOptions_gamma_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_gamma_set, 2},
+   {"R_swig_delete_RPlot", (DL_FUNC) &R_swig_delete_RPlot, 1},
    {"R_swig_delete_NaiveBayesClassifier", (DL_FUNC) &R_swig_delete_NaiveBayesClassifier, 1},
    {"R_swig_RWMOptions_target_accept_rate_set", (DL_FUNC) &R_swig_RWMOptions_target_accept_rate_set, 2},
    {"R_swig_DataSeries_stroke_width_set", (DL_FUNC) &R_swig_DataSeries_stroke_width_set, 2},
    {"R_swig_DataSeries_bar_width_set", (DL_FUNC) &R_swig_DataSeries_bar_width_set, 2},
    {"R_swig_GLMM_observations", (DL_FUNC) &R_swig_GLMM_observations, 2},
+   {"R_swig_RPlot_qqline__SWIG_0", (DL_FUNC) &R_swig_RPlot_qqline__SWIG_0, 5},
    {"R_swig_delete_DVectorVector", (DL_FUNC) &R_swig_delete_DVectorVector, 1},
+   {"R_swig_RPlot_qqline__SWIG_1", (DL_FUNC) &R_swig_RPlot_qqline__SWIG_1, 4},
+   {"R_swig_RPlot_qqline__SWIG_2", (DL_FUNC) &R_swig_RPlot_qqline__SWIG_2, 3},
    {"R_swig_LMM_random_effect_correlation", (DL_FUNC) &R_swig_LMM_random_effect_correlation, 4},
    {"R_swig_SVM_predictor_names", (DL_FUNC) &R_swig_SVM_predictor_names, 2},
    {"R_swig_GradientDescentOptions_tolerance_get", (DL_FUNC) &R_swig_GradientDescentOptions_tolerance_get, 2},
+   {"R_swig_resultant", (DL_FUNC) &R_swig_resultant, 3},
+   {"R_swig_new_Expr", (DL_FUNC) &R_swig_new_Expr, 0},
    {"R_swig_DataFrame_empty", (DL_FUNC) &R_swig_DataFrame_empty, 0},
    {"R_swig_new_LMM__SWIG_0", (DL_FUNC) &R_swig_new_LMM__SWIG_0, 7},
    {"R_swig_new_LMM__SWIG_1", (DL_FUNC) &R_swig_new_LMM__SWIG_1, 6},
    {"R_swig_Tensor_set_string_flat", (DL_FUNC) &R_swig_Tensor_set_string_flat, 3},
    {"R_swig_DataFrame_numeric_max", (DL_FUNC) &R_swig_DataFrame_numeric_max, 3},
    {"R_swig_new_LMM__SWIG_2", (DL_FUNC) &R_swig_new_LMM__SWIG_2, 5},
+   {"R_swig_delete_MultivariatePolynomial", (DL_FUNC) &R_swig_delete_MultivariatePolynomial, 1},
    {"R_swig_new_LMM__SWIG_3", (DL_FUNC) &R_swig_new_LMM__SWIG_3, 4},
    {"R_swig_new_LMM__SWIG_4", (DL_FUNC) &R_swig_new_LMM__SWIG_4, 3},
    {"R_swig_delete_DPair", (DL_FUNC) &R_swig_delete_DPair, 1},
    {"R_swig_new_LMM__SWIG_5", (DL_FUNC) &R_swig_new_LMM__SWIG_5, 2},
    {"R_swig_AgglomerativeClustering_merge_size", (DL_FUNC) &R_swig_AgglomerativeClustering_merge_size, 3},
    {"R_swig_DVector_assign", (DL_FUNC) &R_swig_DVector_assign, 3},
+   {"R_swig_ABLine_vertical_get", (DL_FUNC) &R_swig_ABLine_vertical_get, 2},
    {"R_swig_DecisionTreeClassifier_predictor_names", (DL_FUNC) &R_swig_DecisionTreeClassifier_predictor_names, 2},
    {"R_swig_HyperDual_tanh", (DL_FUNC) &R_swig_HyperDual_tanh, 2},
+   {"R_swig_IVectorVector_resize__SWIG_0", (DL_FUNC) &R_swig_IVectorVector_resize__SWIG_0, 2},
+   {"R_swig_IVectorVector_resize__SWIG_1", (DL_FUNC) &R_swig_IVectorVector_resize__SWIG_1, 3},
    {"R_swig_Var_sin", (DL_FUNC) &R_swig_Var_sin, 2},
    {"R_swig_HyperDual_eps1eps2", (DL_FUNC) &R_swig_HyperDual_eps1eps2, 2},
+   {"R_swig_IVectorVector_size", (DL_FUNC) &R_swig_IVectorVector_size, 2},
    {"R_swig_ElasticNet_fitted_values", (DL_FUNC) &R_swig_ElasticNet_fitted_values, 2},
    {"R_swig_PSOOptions_inertia_strategy_get", (DL_FUNC) &R_swig_PSOOptions_inertia_strategy_get, 2},
    {"R_swig_INLAMixedModel_fixed_effects_mean", (DL_FUNC) &R_swig_INLAMixedModel_fixed_effects_mean, 2},
    {"R_swig_Var_subtract", (DL_FUNC) &R_swig_Var_subtract, 3},
    {"R_swig_Ridge_predict", (DL_FUNC) &R_swig_Ridge_predict, 3},
    {"R_swig_GAOptions_blend_alpha_set", (DL_FUNC) &R_swig_GAOptions_blend_alpha_set, 2},
-   {"R_swig_DifferentiableSeparableFunction_num_functions", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_num_functions, 2},
    {"R_swig_RandomForestClassifier_feature_importance", (DL_FUNC) &R_swig_RandomForestClassifier_feature_importance, 2},
+   {"R_swig_DifferentiableSeparableFunction_num_functions", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_num_functions, 2},
+   {"R_swig_GGPlot_theme_classic", (DL_FUNC) &R_swig_GGPlot_theme_classic, 2},
    {"R_swig_MAPOptions_history_size_set", (DL_FUNC) &R_swig_MAPOptions_history_size_set, 2},
    {"R_swig_HyperDual_eps1", (DL_FUNC) &R_swig_HyperDual_eps1, 2},
    {"R_swig_DVectorVector___nonzero__", (DL_FUNC) &R_swig_DVectorVector___nonzero__, 2},
@@ -67758,6 +82427,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_INLAMixedModel_group_variable", (DL_FUNC) &R_swig_INLAMixedModel_group_variable, 2},
    {"R_swig_LMM_standard_errors", (DL_FUNC) &R_swig_LMM_standard_errors, 2},
    {"R_swig_DPair_second_get", (DL_FUNC) &R_swig_DPair_second_get, 2},
+   {"R_swig_ABLine_slope_set", (DL_FUNC) &R_swig_ABLine_slope_set, 2},
    {"R_swig_DataFrame_select_encoded", (DL_FUNC) &R_swig_DataFrame_select_encoded, 2},
    {"R_swig_NUTSResult_final_step_size_get", (DL_FUNC) &R_swig_NUTSResult_final_step_size_get, 2},
    {"R_swig_IVector___setslice__", (DL_FUNC) &R_swig_IVector___setslice__, 4},
@@ -67767,27 +82437,31 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DecisionTreeRegressor_predictor_names", (DL_FUNC) &R_swig_DecisionTreeRegressor_predictor_names, 2},
    {"R_swig_ExponentialSmoothing_log_likelihood", (DL_FUNC) &R_swig_ExponentialSmoothing_log_likelihood, 2},
    {"R_swig_LMM_is_reml", (DL_FUNC) &R_swig_LMM_is_reml, 2},
+   {"R_swig_PolynomialVector___nonzero__", (DL_FUNC) &R_swig_PolynomialVector___nonzero__, 2},
    {"R_swig_ExponentialSmoothingOptions_alpha_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_alpha_set, 2},
+   {"R_swig_PolyExtendedGcdResult_t_set", (DL_FUNC) &R_swig_PolyExtendedGcdResult_t_set, 2},
    {"R_swig_Ridge_fitted_values", (DL_FUNC) &R_swig_Ridge_fitted_values, 2},
    {"R_swig_GLMM_iterations", (DL_FUNC) &R_swig_GLMM_iterations, 2},
    {"R_swig_SGDOptions_seed_get", (DL_FUNC) &R_swig_SGDOptions_seed_get, 2},
-   {"R_swig_ScatterPlot_line__SWIG_0", (DL_FUNC) &R_swig_ScatterPlot_line__SWIG_0, 7},
-   {"R_swig_ScatterPlot_line__SWIG_1", (DL_FUNC) &R_swig_ScatterPlot_line__SWIG_1, 6},
+   {"R_swig_Expr_divide", (DL_FUNC) &R_swig_Expr_divide, 3},
    {"R_swig_new_GeneticAlgorithm__SWIG_0", (DL_FUNC) &R_swig_new_GeneticAlgorithm__SWIG_0, 1},
    {"R_swig_new_ImportanceSamplingOptions", (DL_FUNC) &R_swig_new_ImportanceSamplingOptions, 0},
-   {"R_swig_ScatterPlot_line__SWIG_2", (DL_FUNC) &R_swig_ScatterPlot_line__SWIG_2, 5},
    {"R_swig_new_GeneticAlgorithm__SWIG_1", (DL_FUNC) &R_swig_new_GeneticAlgorithm__SWIG_1, 0},
    {"R_swig_HMCOptions_num_warmup_get", (DL_FUNC) &R_swig_HMCOptions_num_warmup_get, 2},
-   {"R_swig_ScatterPlot_line__SWIG_3", (DL_FUNC) &R_swig_ScatterPlot_line__SWIG_3, 4},
+   {"R_swig_delete_RationalFunction", (DL_FUNC) &R_swig_delete_RationalFunction, 1},
    {"R_swig_DecisionTreeClassifier_depth", (DL_FUNC) &R_swig_DecisionTreeClassifier_depth, 2},
+   {"R_swig_MultivariatePolynomialVector_pop_back", (DL_FUNC) &R_swig_MultivariatePolynomialVector_pop_back, 1},
    {"R_swig_DecisionTreeClassifier_training_accuracy", (DL_FUNC) &R_swig_DecisionTreeClassifier_training_accuracy, 2},
    {"R_swig_delete_NUTSResult", (DL_FUNC) &R_swig_delete_NUTSResult, 1},
+   {"R_swig_DataSeries_Kind_Box_get", (DL_FUNC) &R_swig_DataSeries_Kind_Box_get, 1},
    {"R_swig_IVector___getslice__", (DL_FUNC) &R_swig_IVector___getslice__, 3},
    {"R_swig_ElasticNet_coefficients", (DL_FUNC) &R_swig_ElasticNet_coefficients, 2},
    {"R_swig_new_SimulatedAnnealing__SWIG_0", (DL_FUNC) &R_swig_new_SimulatedAnnealing__SWIG_0, 1},
    {"R_swig_delete_GibbsResult", (DL_FUNC) &R_swig_delete_GibbsResult, 1},
    {"R_swig_new_SimulatedAnnealing__SWIG_1", (DL_FUNC) &R_swig_new_SimulatedAnnealing__SWIG_1, 0},
    {"R_swig_SGDOptions_tolerance_set", (DL_FUNC) &R_swig_SGDOptions_tolerance_set, 2},
+   {"R_swig_MonomialOrder_MonomialOrder_Lex_get", (DL_FUNC) &R_swig_MonomialOrder_MonomialOrder_Lex_get, 1},
+   {"R_swig_MultivariatePolynomialVector_front", (DL_FUNC) &R_swig_MultivariatePolynomialVector_front, 2},
    {"R_swig_GibbsOptions_seed_get", (DL_FUNC) &R_swig_GibbsOptions_seed_get, 2},
    {"R_swig_RGB_b_set", (DL_FUNC) &R_swig_RGB_b_set, 2},
    {"R_swig_Tensor_sqrt", (DL_FUNC) &R_swig_Tensor_sqrt, 1},
@@ -67799,6 +82473,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DecisionTreeClassifier_plot_classification", (DL_FUNC) &R_swig_DecisionTreeClassifier_plot_classification, 5},
    {"R_swig_GaussianProcessRegression_length_scale_was_selected", (DL_FUNC) &R_swig_GaussianProcessRegression_length_scale_was_selected, 2},
    {"R_swig_ARIMAOptions_de_population_size_get", (DL_FUNC) &R_swig_ARIMAOptions_de_population_size_get, 2},
+   {"R_swig_compare_monomials", (DL_FUNC) &R_swig_compare_monomials, 4},
    {"R_swig_LBFGSOptions_max_iterations_set", (DL_FUNC) &R_swig_LBFGSOptions_max_iterations_set, 2},
    {"R_swig_DataFrame_add_string_column_encoded__SWIG_0", (DL_FUNC) &R_swig_DataFrame_add_string_column_encoded__SWIG_0, 4},
    {"R_swig_DataFrame_add_string_column_encoded__SWIG_1", (DL_FUNC) &R_swig_DataFrame_add_string_column_encoded__SWIG_1, 3},
@@ -67807,11 +82482,12 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_abs", (DL_FUNC) &R_swig_Tensor_abs, 1},
    {"R_swig_ARIMAOptions_seasonal_d_get", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_d_get, 2},
    {"R_swig_t_test_paired__SWIG_2", (DL_FUNC) &R_swig_t_test_paired__SWIG_2, 3},
+   {"R_swig_PolynomialVector_push_back", (DL_FUNC) &R_swig_PolynomialVector_push_back, 2},
    {"R_swig_ExponentialSmoothingOptions_beta_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_beta_get, 2},
    {"R_swig_wilcoxon_rank_sum_test__SWIG_0", (DL_FUNC) &R_swig_wilcoxon_rank_sum_test__SWIG_0, 4},
    {"R_swig_wilcoxon_rank_sum_test__SWIG_1", (DL_FUNC) &R_swig_wilcoxon_rank_sum_test__SWIG_1, 3},
-   {"R_swig_DifferentiableSeparableFunction_gradient_term", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_gradient_term, 4},
    {"R_swig_DifferentiableFunction_gradient", (DL_FUNC) &R_swig_DifferentiableFunction_gradient, 3},
+   {"R_swig_DifferentiableSeparableFunction_gradient_term", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_gradient_term, 4},
    {"R_swig_DataFrame_group_by_sum", (DL_FUNC) &R_swig_DataFrame_group_by_sum, 3},
    {"R_swig_GLM_fitted_values", (DL_FUNC) &R_swig_GLM_fitted_values, 2},
    {"R_swig_AdamOptions_beta1_set", (DL_FUNC) &R_swig_AdamOptions_beta1_set, 2},
@@ -67824,6 +82500,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_HMCResult_accept_rate_get", (DL_FUNC) &R_swig_HMCResult_accept_rate_get, 2},
    {"R_swig_SVector_push_back", (DL_FUNC) &R_swig_SVector_push_back, 2},
    {"R_swig_Plot_x_min", (DL_FUNC) &R_swig_Plot_x_min, 2},
+   {"R_swig_PolyExtendedGcdResult_s_get", (DL_FUNC) &R_swig_PolyExtendedGcdResult_s_get, 1},
    {"R_swig_KNNRegressor_fitted_values", (DL_FUNC) &R_swig_KNNRegressor_fitted_values, 2},
    {"R_swig_delete_ArbitraryFunction", (DL_FUNC) &R_swig_delete_ArbitraryFunction, 1},
    {"R_swig_PSOOptions_ring_neighbors_get", (DL_FUNC) &R_swig_PSOOptions_ring_neighbors_get, 2},
@@ -67833,7 +82510,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GAOptions_seed_set", (DL_FUNC) &R_swig_GAOptions_seed_set, 2},
    {"R_swig_DataFrame_fill_null_string", (DL_FUNC) &R_swig_DataFrame_fill_null_string, 3},
    {"R_swig_GaussianProcessRegression_observations", (DL_FUNC) &R_swig_GaussianProcessRegression_observations, 2},
+   {"R_swig_lagrange_interpolate", (DL_FUNC) &R_swig_lagrange_interpolate, 3},
    {"R_swig_DVectorVector_pop_back", (DL_FUNC) &R_swig_DVectorVector_pop_back, 1},
+   {"R_swig_RealRootIntervals_lower_get", (DL_FUNC) &R_swig_RealRootIntervals_lower_get, 1},
    {"R_swig_DVectorPair_first_set", (DL_FUNC) &R_swig_DVectorPair_first_set, 2},
    {"R_swig_LM_confidence_interval_upper__SWIG_0", (DL_FUNC) &R_swig_LM_confidence_interval_upper__SWIG_0, 3},
    {"R_swig_LMM_formula_text", (DL_FUNC) &R_swig_LMM_formula_text, 2},
@@ -67857,6 +82536,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector_back", (DL_FUNC) &R_swig_DVector_back, 2},
    {"R_swig_SVector___delslice__", (DL_FUNC) &R_swig_SVector___delslice__, 3},
    {"R_swig_GibbsResult_accept_rates_set", (DL_FUNC) &R_swig_GibbsResult_accept_rates_set, 2},
+   {"R_swig_SquareFreeFactorVector_front", (DL_FUNC) &R_swig_SquareFreeFactorVector_front, 2},
    {"R_swig_delete_DecisionTreeRegressor", (DL_FUNC) &R_swig_delete_DecisionTreeRegressor, 1},
    {"R_swig_new_DVectorVector__SWIG_0", (DL_FUNC) &R_swig_new_DVectorVector__SWIG_0, 0},
    {"R_swig_RandomForestRegressor_plot_predicted_vs_actual", (DL_FUNC) &R_swig_RandomForestRegressor_plot_predicted_vs_actual, 2},
@@ -67867,45 +82547,59 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SVector___getitem__", (DL_FUNC) &R_swig_SVector___getitem__, 3},
    {"R_swig_LMM_summary", (DL_FUNC) &R_swig_LMM_summary, 2},
    {"R_swig_ElasticNet_lambda_path", (DL_FUNC) &R_swig_ElasticNet_lambda_path, 2},
-   {"R_swig_t_test_two_sample__SWIG_0", (DL_FUNC) &R_swig_t_test_two_sample__SWIG_0, 6},
    {"R_swig_new_DVectorVector__SWIG_3", (DL_FUNC) &R_swig_new_DVectorVector__SWIG_3, 2},
+   {"R_swig_t_test_two_sample__SWIG_0", (DL_FUNC) &R_swig_t_test_two_sample__SWIG_0, 6},
    {"R_swig_SVector_swap", (DL_FUNC) &R_swig_SVector_swap, 2},
-   {"R_swig_t_test_two_sample__SWIG_1", (DL_FUNC) &R_swig_t_test_two_sample__SWIG_1, 5},
    {"R_swig_Tensor_add", (DL_FUNC) &R_swig_Tensor_add, 2},
+   {"R_swig_t_test_two_sample__SWIG_1", (DL_FUNC) &R_swig_t_test_two_sample__SWIG_1, 5},
    {"R_swig_LMM_z_values", (DL_FUNC) &R_swig_LMM_z_values, 2},
-   {"R_swig_t_test_two_sample__SWIG_2", (DL_FUNC) &R_swig_t_test_two_sample__SWIG_2, 4},
    {"R_swig_Var_negate", (DL_FUNC) &R_swig_Var_negate, 2},
+   {"R_swig_t_test_two_sample__SWIG_2", (DL_FUNC) &R_swig_t_test_two_sample__SWIG_2, 4},
    {"R_swig_t_test_two_sample__SWIG_3", (DL_FUNC) &R_swig_t_test_two_sample__SWIG_3, 3},
    {"R_swig_GBMRegressor_predict", (DL_FUNC) &R_swig_GBMRegressor_predict, 3},
    {"R_swig_GBMClassifier_predict", (DL_FUNC) &R_swig_GBMClassifier_predict, 3},
    {"R_swig_Plot_show_grid__SWIG_0", (DL_FUNC) &R_swig_Plot_show_grid__SWIG_0, 3},
    {"R_swig_HypothesisTestResult_p_value_get", (DL_FUNC) &R_swig_HypothesisTestResult_p_value_get, 2},
    {"R_swig_Plot_show_grid__SWIG_1", (DL_FUNC) &R_swig_Plot_show_grid__SWIG_1, 2},
+   {"R_swig_GGPlot_geom_bar__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_bar__SWIG_0, 3},
    {"R_swig_new_MAPOptions", (DL_FUNC) &R_swig_new_MAPOptions, 0},
+   {"R_swig_GGPlot_geom_bar__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_bar__SWIG_1, 2},
+   {"R_swig_Expr_multiply", (DL_FUNC) &R_swig_Expr_multiply, 3},
    {"R_swig_ExponentialSmoothingOptions_phi_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_phi_set, 2},
    {"R_swig_KMeans_cluster_center", (DL_FUNC) &R_swig_KMeans_cluster_center, 3},
    {"R_swig_GAOptions_elite_count_set", (DL_FUNC) &R_swig_GAOptions_elite_count_set, 2},
    {"R_swig_AdamOptions_epsilon_set", (DL_FUNC) &R_swig_AdamOptions_epsilon_set, 2},
    {"R_swig_GibbsResult_final_step_sizes_get", (DL_FUNC) &R_swig_GibbsResult_final_step_sizes_get, 1},
+   {"R_swig_MonomialOrder_MonomialOrder_Grevlex_get", (DL_FUNC) &R_swig_MonomialOrder_MonomialOrder_Grevlex_get, 1},
    {"R_swig_SVM_print_summary", (DL_FUNC) &R_swig_SVM_print_summary, 1},
    {"R_swig_DVector___setslice__", (DL_FUNC) &R_swig_DVector___setslice__, 4},
    {"R_swig_SVector_front", (DL_FUNC) &R_swig_SVector_front, 2},
+   {"R_swig_PolynomialVector___setitem__", (DL_FUNC) &R_swig_PolynomialVector___setitem__, 3},
    {"R_swig_TrendType_TrendType_None_get", (DL_FUNC) &R_swig_TrendType_TrendType_None_get, 1},
+   {"R_swig_GGPlot_geom_area__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_area__SWIG_0, 3},
+   {"R_swig_GGPlot_geom_area__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_area__SWIG_1, 2},
    {"R_swig_Lasso_coefficients", (DL_FUNC) &R_swig_Lasso_coefficients, 2},
    {"R_swig_DataFrame_drop_duplicates_encoded", (DL_FUNC) &R_swig_DataFrame_drop_duplicates_encoded, 2},
    {"R_swig_LMM_bic", (DL_FUNC) &R_swig_LMM_bic, 2},
+   {"R_swig_MultivariatePolynomialVector___delitem__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___delitem__, 2},
    {"R_swig_SimulatedAnnealingOptions_cooling_rate_get", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_cooling_rate_get, 2},
+   {"R_swig_SquareFreeFactorVector_push_back", (DL_FUNC) &R_swig_SquareFreeFactorVector_push_back, 2},
+   {"R_swig_RationalFunction_add", (DL_FUNC) &R_swig_RationalFunction_add, 3},
    {"R_swig_Tensor_argmax", (DL_FUNC) &R_swig_Tensor_argmax, 2},
    {"R_swig_GBMClassifier_confusion_matrix", (DL_FUNC) &R_swig_GBMClassifier_confusion_matrix, 1},
    {"R_swig_Plot_x_limits", (DL_FUNC) &R_swig_Plot_x_limits, 4},
+   {"R_swig_MultivariatePolynomial_subtract", (DL_FUNC) &R_swig_MultivariatePolynomial_subtract, 3},
    {"R_swig_ExponentialSmoothing_sse", (DL_FUNC) &R_swig_ExponentialSmoothing_sse, 2},
    {"R_swig_Plot_grid_visible", (DL_FUNC) &R_swig_Plot_grid_visible, 2},
+   {"R_swig_MultivariatePolynomial_exponents", (DL_FUNC) &R_swig_MultivariatePolynomial_exponents, 2},
    {"R_swig_GLMM_summary", (DL_FUNC) &R_swig_GLMM_summary, 2},
    {"R_swig_delete_NUTSOptions", (DL_FUNC) &R_swig_delete_NUTSOptions, 1},
+   {"R_swig_MultivariatePolynomial_leading_coefficient", (DL_FUNC) &R_swig_MultivariatePolynomial_leading_coefficient, 3},
    {"R_swig_GLMM_random_effect_names", (DL_FUNC) &R_swig_GLMM_random_effect_names, 2},
    {"R_swig_GaussianProcessRegression_plot_predicted_vs_actual", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_predicted_vs_actual, 2},
    {"R_swig_DVector___getslice__", (DL_FUNC) &R_swig_DVector___getslice__, 3},
    {"R_swig_AgglomerativeClustering_cut", (DL_FUNC) &R_swig_AgglomerativeClustering_cut, 3},
+   {"R_swig_Expr_sin", (DL_FUNC) &R_swig_Expr_sin, 2},
    {"R_swig_DPair_first_set", (DL_FUNC) &R_swig_DPair_first_set, 2},
    {"R_swig_delete_PSO", (DL_FUNC) &R_swig_delete_PSO, 1},
    {"R_swig_GBMRegressor_rmse", (DL_FUNC) &R_swig_GBMRegressor_rmse, 2},
@@ -67913,9 +82607,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_not_equal", (DL_FUNC) &R_swig_Tensor_not_equal, 2},
    {"R_swig_SVM_confusion_matrix", (DL_FUNC) &R_swig_SVM_confusion_matrix, 1},
    {"R_swig_DecisionTreeRegressor_plot_predicted_vs_actual", (DL_FUNC) &R_swig_DecisionTreeRegressor_plot_predicted_vs_actual, 2},
-   {"R_swig_new_ScatterPlot", (DL_FUNC) &R_swig_new_ScatterPlot, 0},
    {"R_swig_DVectorPair_second_get", (DL_FUNC) &R_swig_DVectorPair_second_get, 1},
+   {"R_swig_RPlot_polygon__SWIG_0", (DL_FUNC) &R_swig_RPlot_polygon__SWIG_0, 6},
    {"R_swig_Tape_backward", (DL_FUNC) &R_swig_Tape_backward, 3},
+   {"R_swig_RPlot_polygon__SWIG_1", (DL_FUNC) &R_swig_RPlot_polygon__SWIG_1, 5},
+   {"R_swig_RPlot_polygon__SWIG_2", (DL_FUNC) &R_swig_RPlot_polygon__SWIG_2, 4},
    {"R_swig_SeparableFunction_num_functions", (DL_FUNC) &R_swig_SeparableFunction_num_functions, 2},
    {"R_swig_SeasonalType_SeasonalType_Multiplicative_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_Multiplicative_get, 1},
    {"R_swig_Tensor_argmin_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_argmin_axis__SWIG_0, 3},
@@ -67928,10 +82624,15 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Plot_series", (DL_FUNC) &R_swig_Plot_series, 2},
    {"R_swig_DBSCAN_print_summary", (DL_FUNC) &R_swig_DBSCAN_print_summary, 1},
    {"R_swig_XGBoostRegressor_summary", (DL_FUNC) &R_swig_XGBoostRegressor_summary, 2},
+   {"R_swig_LegendEntry_label_set", (DL_FUNC) &R_swig_LegendEntry_label_set, 2},
+   {"R_swig_RPlot_create", (DL_FUNC) &R_swig_RPlot_create, 1},
+   {"R_swig_IVectorVector___setitem__", (DL_FUNC) &R_swig_IVectorVector___setitem__, 3},
    {"R_swig_SizeVector___delslice__", (DL_FUNC) &R_swig_SizeVector___delslice__, 3},
+   {"R_swig_isolate_real_roots", (DL_FUNC) &R_swig_isolate_real_roots, 2},
    {"R_swig_LDA_print_summary", (DL_FUNC) &R_swig_LDA_print_summary, 1},
    {"R_swig_ARIMA_observations", (DL_FUNC) &R_swig_ARIMA_observations, 2},
    {"R_swig_delete_Tape", (DL_FUNC) &R_swig_delete_Tape, 1},
+   {"R_swig_DataSeries_Kind_Segment_get", (DL_FUNC) &R_swig_DataSeries_Kind_Segment_get, 1},
    {"R_swig_delete_RandomWalkMetropolis", (DL_FUNC) &R_swig_delete_RandomWalkMetropolis, 1},
    {"R_swig_GaussianProcessRegression_plot_fit__SWIG_0", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_fit__SWIG_0, 5},
    {"R_swig_DataFrame_penguins", (DL_FUNC) &R_swig_DataFrame_penguins, 0},
@@ -67940,14 +82641,20 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GLM_confidence_interval_lower__SWIG_0", (DL_FUNC) &R_swig_GLM_confidence_interval_lower__SWIG_0, 3},
    {"R_swig_GaussianProcessRegression_plot_fit__SWIG_2", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_fit__SWIG_2, 3},
    {"R_swig_GLM_confidence_interval_lower__SWIG_1", (DL_FUNC) &R_swig_GLM_confidence_interval_lower__SWIG_1, 2},
+   {"R_swig_SquareFreeFactorVector_get_allocator", (DL_FUNC) &R_swig_SquareFreeFactorVector_get_allocator, 2},
    {"R_swig_new_SGD__SWIG_0", (DL_FUNC) &R_swig_new_SGD__SWIG_0, 1},
    {"R_swig_DVectorVector_pop", (DL_FUNC) &R_swig_DVectorVector_pop, 2},
    {"R_swig_new_SGD__SWIG_1", (DL_FUNC) &R_swig_new_SGD__SWIG_1, 0},
    {"R_swig_GaussianProcessRegression_rmse", (DL_FUNC) &R_swig_GaussianProcessRegression_rmse, 2},
    {"R_swig_XGBoostClassifier_confusion_matrix", (DL_FUNC) &R_swig_XGBoostClassifier_confusion_matrix, 1},
+   {"R_swig_new_RPlot", (DL_FUNC) &R_swig_new_RPlot, 0},
+   {"R_swig_ABLine_stroke_width_get", (DL_FUNC) &R_swig_ABLine_stroke_width_get, 2},
    {"R_swig_SizeVector_front", (DL_FUNC) &R_swig_SizeVector_front, 2},
    {"R_swig_DVectorVector_resize__SWIG_0", (DL_FUNC) &R_swig_DVectorVector_resize__SWIG_0, 2},
+   {"R_swig_RationalFunction_to_string", (DL_FUNC) &R_swig_RationalFunction_to_string, 2},
    {"R_swig_DVectorVector_resize__SWIG_1", (DL_FUNC) &R_swig_DVectorVector_resize__SWIG_1, 3},
+   {"R_swig_PolynomialVector___len__", (DL_FUNC) &R_swig_PolynomialVector___len__, 2},
+   {"R_swig_SquareFreeFactorVector___delslice__", (DL_FUNC) &R_swig_SquareFreeFactorVector___delslice__, 3},
    {"R_swig_Tensor_apply", (DL_FUNC) &R_swig_Tensor_apply, 2},
    {"R_swig_SizeVector___setitem__", (DL_FUNC) &R_swig_SizeVector___setitem__, 3},
    {"R_swig_Plot_title_text", (DL_FUNC) &R_swig_Plot_title_text, 2},
@@ -67956,12 +82663,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_INLAMixedModel_predict", (DL_FUNC) &R_swig_INLAMixedModel_predict, 3},
    {"R_swig_AgglomerativeClustering_merge_cluster_a", (DL_FUNC) &R_swig_AgglomerativeClustering_merge_cluster_a, 3},
    {"R_swig_AgglomerativeClustering_merge_cluster_b", (DL_FUNC) &R_swig_AgglomerativeClustering_merge_cluster_b, 3},
+   {"R_swig_new_ABLine", (DL_FUNC) &R_swig_new_ABLine, 0},
    {"R_swig_delete_DVector", (DL_FUNC) &R_swig_delete_DVector, 1},
    {"R_swig_ARIMA_aic", (DL_FUNC) &R_swig_ARIMA_aic, 2},
    {"R_swig_HypothesisTestResult_conf_int_upper_set", (DL_FUNC) &R_swig_HypothesisTestResult_conf_int_upper_set, 2},
    {"R_swig_IVector___setitem__", (DL_FUNC) &R_swig_IVector___setitem__, 3},
    {"R_swig_LM_confidence_interval_lower__SWIG_0", (DL_FUNC) &R_swig_LM_confidence_interval_lower__SWIG_0, 3},
    {"R_swig_LM_confidence_interval_lower__SWIG_1", (DL_FUNC) &R_swig_LM_confidence_interval_lower__SWIG_1, 2},
+   {"R_swig_new_LegendEntry", (DL_FUNC) &R_swig_new_LegendEntry, 0},
    {"R_swig_PSOOptions_tolerance_get", (DL_FUNC) &R_swig_PSOOptions_tolerance_get, 2},
    {"R_swig_new_GAOptions", (DL_FUNC) &R_swig_new_GAOptions, 0},
    {"R_swig_ARIMAOptions_include_mean_set", (DL_FUNC) &R_swig_ARIMAOptions_include_mean_set, 2},
@@ -67971,46 +82680,61 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GradientDescentOptions_step_size_get", (DL_FUNC) &R_swig_GradientDescentOptions_step_size_get, 2},
    {"R_swig_XGBoostRegressor_plot_training_deviance", (DL_FUNC) &R_swig_XGBoostRegressor_plot_training_deviance, 2},
    {"R_swig_new_GLMM__SWIG_0", (DL_FUNC) &R_swig_new_GLMM__SWIG_0, 9},
+   {"R_swig_IVectorVector___setslice__", (DL_FUNC) &R_swig_IVectorVector___setslice__, 4},
    {"R_swig_Var_tanh", (DL_FUNC) &R_swig_Var_tanh, 2},
    {"R_swig_new_GLMM__SWIG_1", (DL_FUNC) &R_swig_new_GLMM__SWIG_1, 8},
    {"R_swig_Dual_cos", (DL_FUNC) &R_swig_Dual_cos, 2},
-   {"R_swig_Alternative_Alternative_TwoSided_get", (DL_FUNC) &R_swig_Alternative_Alternative_TwoSided_get, 1},
    {"R_swig_new_GLMM__SWIG_2", (DL_FUNC) &R_swig_new_GLMM__SWIG_2, 7},
-   {"R_swig_ExponentialSmoothing_options", (DL_FUNC) &R_swig_ExponentialSmoothing_options, 2},
+   {"R_swig_Alternative_Alternative_TwoSided_get", (DL_FUNC) &R_swig_Alternative_Alternative_TwoSided_get, 1},
    {"R_swig_new_GLMM__SWIG_3", (DL_FUNC) &R_swig_new_GLMM__SWIG_3, 6},
+   {"R_swig_ExponentialSmoothing_options", (DL_FUNC) &R_swig_ExponentialSmoothing_options, 2},
    {"R_swig_DataFrame_numeric_mean", (DL_FUNC) &R_swig_DataFrame_numeric_mean, 3},
    {"R_swig_new_GLMM__SWIG_4", (DL_FUNC) &R_swig_new_GLMM__SWIG_4, 5},
+   {"R_swig_SquareFreeFactorVector___setitem__", (DL_FUNC) &R_swig_SquareFreeFactorVector___setitem__, 3},
+   {"R_swig_MultivariatePolynomialVector_pop", (DL_FUNC) &R_swig_MultivariatePolynomialVector_pop, 2},
    {"R_swig_DataSeries_y_set", (DL_FUNC) &R_swig_DataSeries_y_set, 2},
-   {"R_swig_ks_test_two_sample__SWIG_0", (DL_FUNC) &R_swig_ks_test_two_sample__SWIG_0, 4},
    {"R_swig_new_GLMM__SWIG_5", (DL_FUNC) &R_swig_new_GLMM__SWIG_5, 4},
    {"R_swig_GLMM_coefficient_names", (DL_FUNC) &R_swig_GLMM_coefficient_names, 2},
+   {"R_swig_ks_test_two_sample__SWIG_0", (DL_FUNC) &R_swig_ks_test_two_sample__SWIG_0, 4},
    {"R_swig_HyperDual_multiply_scalar", (DL_FUNC) &R_swig_HyperDual_multiply_scalar, 3},
-   {"R_swig_ks_test_two_sample__SWIG_1", (DL_FUNC) &R_swig_ks_test_two_sample__SWIG_1, 3},
    {"R_swig_new_GLMM__SWIG_6", (DL_FUNC) &R_swig_new_GLMM__SWIG_6, 3},
    {"R_swig_KernelRegression_plot_predicted_vs_actual", (DL_FUNC) &R_swig_KernelRegression_plot_predicted_vs_actual, 2},
+   {"R_swig_ks_test_two_sample__SWIG_1", (DL_FUNC) &R_swig_ks_test_two_sample__SWIG_1, 3},
    {"R_swig_new_GLMM__SWIG_7", (DL_FUNC) &R_swig_new_GLMM__SWIG_7, 2},
    {"R_swig_Var_exp", (DL_FUNC) &R_swig_Var_exp, 2},
    {"R_swig_HyperDual_value", (DL_FUNC) &R_swig_HyperDual_value, 2},
+   {"R_swig_SquareFreeFactor_factor_get", (DL_FUNC) &R_swig_SquareFreeFactor_factor_get, 1},
    {"R_swig_ElasticNet_predict", (DL_FUNC) &R_swig_ElasticNet_predict, 3},
    {"R_swig_XGBoostRegressor_r_squared", (DL_FUNC) &R_swig_XGBoostRegressor_r_squared, 2},
+   {"R_swig_IVectorVector_back", (DL_FUNC) &R_swig_IVectorVector_back, 2},
+   {"R_swig_to_integer", (DL_FUNC) &R_swig_to_integer, 2},
    {"R_swig_XGBoostRegressor_predictor_names", (DL_FUNC) &R_swig_XGBoostRegressor_predictor_names, 2},
    {"R_swig_wilcoxon_signed_rank_test__SWIG_0", (DL_FUNC) &R_swig_wilcoxon_signed_rank_test__SWIG_0, 4},
    {"R_swig_wilcoxon_signed_rank_test__SWIG_1", (DL_FUNC) &R_swig_wilcoxon_signed_rank_test__SWIG_1, 3},
    {"R_swig_DEOptions_seed_set", (DL_FUNC) &R_swig_DEOptions_seed_set, 2},
+   {"R_swig_MultivariatePolynomialVector_assign", (DL_FUNC) &R_swig_MultivariatePolynomialVector_assign, 3},
    {"R_swig_wilcoxon_signed_rank_test__SWIG_2", (DL_FUNC) &R_swig_wilcoxon_signed_rank_test__SWIG_2, 2},
    {"R_swig_ImportanceSampling_sample", (DL_FUNC) &R_swig_ImportanceSampling_sample, 5},
+   {"R_swig_new_MultivariatePolynomialVector__SWIG_0", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_0, 0},
+   {"R_swig_new_MultivariatePolynomialVector__SWIG_1", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_1, 1},
+   {"R_swig_new_MultivariatePolynomialVector__SWIG_2", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_2, 1},
    {"R_swig_ARIMAOptions_de_max_generations_set", (DL_FUNC) &R_swig_ARIMAOptions_de_max_generations_set, 2},
    {"R_swig_INLAMixedModel_random_effect_std_devs", (DL_FUNC) &R_swig_INLAMixedModel_random_effect_std_devs, 2},
    {"R_swig_LM_coefficients", (DL_FUNC) &R_swig_LM_coefficients, 2},
    {"R_swig_new_ARIMA__SWIG_0", (DL_FUNC) &R_swig_new_ARIMA__SWIG_0, 2},
-   {"R_swig_f_test_variance__SWIG_0", (DL_FUNC) &R_swig_f_test_variance__SWIG_0, 5},
+   {"R_swig_new_MultivariatePolynomialVector__SWIG_3", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_3, 2},
+   {"R_swig_RPlot_abline_v__SWIG_0", (DL_FUNC) &R_swig_RPlot_abline_v__SWIG_0, 5},
    {"R_swig_new_ARIMA__SWIG_1", (DL_FUNC) &R_swig_new_ARIMA__SWIG_1, 1},
    {"R_swig_ARIMAOptions_seed_get", (DL_FUNC) &R_swig_ARIMAOptions_seed_get, 2},
+   {"R_swig_f_test_variance__SWIG_0", (DL_FUNC) &R_swig_f_test_variance__SWIG_0, 5},
+   {"R_swig_SquareFreeFactorVector_swap", (DL_FUNC) &R_swig_SquareFreeFactorVector_swap, 2},
    {"R_swig_INLAMixedModel_num_groups", (DL_FUNC) &R_swig_INLAMixedModel_num_groups, 2},
+   {"R_swig_RPlot_abline_v__SWIG_1", (DL_FUNC) &R_swig_RPlot_abline_v__SWIG_1, 4},
    {"R_swig_f_test_variance__SWIG_1", (DL_FUNC) &R_swig_f_test_variance__SWIG_1, 4},
    {"R_swig_DVector_get_allocator", (DL_FUNC) &R_swig_DVector_get_allocator, 2},
-   {"R_swig_f_test_variance__SWIG_2", (DL_FUNC) &R_swig_f_test_variance__SWIG_2, 3},
    {"R_swig_delete_SVector", (DL_FUNC) &R_swig_delete_SVector, 1},
+   {"R_swig_RPlot_abline_v__SWIG_2", (DL_FUNC) &R_swig_RPlot_abline_v__SWIG_2, 3},
+   {"R_swig_f_test_variance__SWIG_2", (DL_FUNC) &R_swig_f_test_variance__SWIG_2, 3},
    {"R_swig_GAOptions_crossover_rate_get", (DL_FUNC) &R_swig_GAOptions_crossover_rate_get, 2},
    {"R_swig_DataFrame_fill_null_numeric", (DL_FUNC) &R_swig_DataFrame_fill_null_numeric, 3},
    {"R_swig_LM_r_squared", (DL_FUNC) &R_swig_LM_r_squared, 2},
@@ -68021,45 +82745,59 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataFrame_numeric_min", (DL_FUNC) &R_swig_DataFrame_numeric_min, 3},
    {"R_swig_GAOptions_elitism_set", (DL_FUNC) &R_swig_GAOptions_elitism_set, 2},
    {"R_swig_KernelRegression_fitted_values", (DL_FUNC) &R_swig_KernelRegression_fitted_values, 2},
-   {"R_swig_BarChart_create", (DL_FUNC) &R_swig_BarChart_create, 1},
+   {"R_swig_RationalFunction_evaluate", (DL_FUNC) &R_swig_RationalFunction_evaluate, 3},
+   {"R_swig_delete_SquareFreeFactor", (DL_FUNC) &R_swig_delete_SquareFreeFactor, 1},
+   {"R_swig_mod_pow", (DL_FUNC) &R_swig_mod_pow, 4},
    {"R_swig_sum_dvector", (DL_FUNC) &R_swig_sum_dvector, 2},
    {"R_swig_ARIMAOptions_p_set", (DL_FUNC) &R_swig_ARIMAOptions_p_set, 2},
    {"R_swig_ElasticNet_lambda_was_selected", (DL_FUNC) &R_swig_ElasticNet_lambda_was_selected, 2},
+   {"R_swig_LegendEntry_color_get", (DL_FUNC) &R_swig_LegendEntry_color_get, 1},
    {"R_swig_ElasticNet_non_zero_coefficients", (DL_FUNC) &R_swig_ElasticNet_non_zero_coefficients, 2},
    {"R_swig_DataFrame_select", (DL_FUNC) &R_swig_DataFrame_select, 2},
    {"R_swig_DataFrame_ncols", (DL_FUNC) &R_swig_DataFrame_ncols, 2},
    {"R_swig_Plot_view__SWIG_0", (DL_FUNC) &R_swig_Plot_view__SWIG_0, 2},
    {"R_swig_Plot_view__SWIG_1", (DL_FUNC) &R_swig_Plot_view__SWIG_1, 1},
    {"R_swig_PSOOptions_inertia_weight_get", (DL_FUNC) &R_swig_PSOOptions_inertia_weight_get, 2},
-   {"R_swig_PAdjustMethod_PAdjustMethod_Holm_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_Holm_get, 1},
    {"R_swig_KernelRegression_plot_fit__SWIG_0", (DL_FUNC) &R_swig_KernelRegression_plot_fit__SWIG_0, 4},
-   {"R_swig_SeparableFunction_evaluate", (DL_FUNC) &R_swig_SeparableFunction_evaluate, 3},
+   {"R_swig_PAdjustMethod_PAdjustMethod_Holm_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_Holm_get, 1},
+   {"R_swig_PolynomialVector_front", (DL_FUNC) &R_swig_PolynomialVector_front, 2},
    {"R_swig_KernelRegression_plot_fit__SWIG_1", (DL_FUNC) &R_swig_KernelRegression_plot_fit__SWIG_1, 3},
+   {"R_swig_SeparableFunction_evaluate", (DL_FUNC) &R_swig_SeparableFunction_evaluate, 3},
    {"R_swig_GibbsOptions_target_accept_rate_set", (DL_FUNC) &R_swig_GibbsOptions_target_accept_rate_set, 2},
+   {"R_swig_PolyExtendedGcdResult_gcd_get", (DL_FUNC) &R_swig_PolyExtendedGcdResult_gcd_get, 1},
    {"R_swig_DVectorVector___setitem__", (DL_FUNC) &R_swig_DVectorVector___setitem__, 3},
    {"R_swig_DEOptions_tolerance_get", (DL_FUNC) &R_swig_DEOptions_tolerance_get, 2},
    {"R_swig_LMM_deviance", (DL_FUNC) &R_swig_LMM_deviance, 2},
+   {"R_swig_SquareFreeFactorVector_append", (DL_FUNC) &R_swig_SquareFreeFactorVector_append, 2},
    {"R_swig_Tensor_multiply", (DL_FUNC) &R_swig_Tensor_multiply, 2},
+   {"R_swig_GGPlot_geom_col__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_col__SWIG_0, 3},
    {"R_swig_LBFGSOptions_armijo_c1_set", (DL_FUNC) &R_swig_LBFGSOptions_armijo_c1_set, 2},
    {"R_swig_delete_GLMM", (DL_FUNC) &R_swig_delete_GLMM, 1},
    {"R_swig_NaiveBayesClassifier_observations", (DL_FUNC) &R_swig_NaiveBayesClassifier_observations, 2},
+   {"R_swig_GGPlot_geom_col__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_col__SWIG_1, 2},
    {"R_swig_GLMM_bic", (DL_FUNC) &R_swig_GLMM_bic, 2},
    {"R_swig_RGB_r_get", (DL_FUNC) &R_swig_RGB_r_get, 2},
    {"R_swig_RWMOptions_num_samples_set", (DL_FUNC) &R_swig_RWMOptions_num_samples_set, 2},
    {"R_swig_new_GibbsSampler__SWIG_0", (DL_FUNC) &R_swig_new_GibbsSampler__SWIG_0, 1},
    {"R_swig_new_GibbsSampler__SWIG_1", (DL_FUNC) &R_swig_new_GibbsSampler__SWIG_1, 0},
+   {"R_swig_mod_inverse", (DL_FUNC) &R_swig_mod_inverse, 3},
    {"R_swig_ElasticNet_observations", (DL_FUNC) &R_swig_ElasticNet_observations, 2},
    {"R_swig_RandomForestClassifier_predict_frame", (DL_FUNC) &R_swig_RandomForestClassifier_predict_frame, 2},
    {"R_swig_DVector_push_back", (DL_FUNC) &R_swig_DVector_push_back, 2},
+   {"R_swig_cauchy_root_bound", (DL_FUNC) &R_swig_cauchy_root_bound, 2},
    {"R_swig_DataSeries_x_get", (DL_FUNC) &R_swig_DataSeries_x_get, 1},
    {"R_swig_DVector___nonzero__", (DL_FUNC) &R_swig_DVector___nonzero__, 2},
+   {"R_swig_MultivariatePolynomialVector_size", (DL_FUNC) &R_swig_MultivariatePolynomialVector_size, 2},
    {"R_swig_ElasticNet_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_ElasticNet_plot_residuals_vs_fitted, 2},
    {"R_swig_Tensor_multiply_scalar", (DL_FUNC) &R_swig_Tensor_multiply_scalar, 2},
    {"R_swig_Tensor_string_at", (DL_FUNC) &R_swig_Tensor_string_at, 3},
    {"R_swig_SVector_pop", (DL_FUNC) &R_swig_SVector_pop, 2},
+   {"R_swig_IVectorVector_assign", (DL_FUNC) &R_swig_IVectorVector_assign, 3},
+   {"R_swig_MultivariatePolynomialVector_get_allocator", (DL_FUNC) &R_swig_MultivariatePolynomialVector_get_allocator, 2},
    {"R_swig_ExponentialSmoothingOptions_trend_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_trend_set, 2},
    {"R_swig_ImportanceSamplingResult_normalized_weights_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_normalized_weights_set, 2},
    {"R_swig_ImportanceSamplingResult_normalized_weights_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_normalized_weights_get, 1},
+   {"R_swig_MultivariatePolynomialVector_clear", (DL_FUNC) &R_swig_MultivariatePolynomialVector_clear, 1},
    {"R_swig_AdamOptions_tolerance_get", (DL_FUNC) &R_swig_AdamOptions_tolerance_get, 2},
    {"R_swig_DEOptions_max_generations_set", (DL_FUNC) &R_swig_DEOptions_max_generations_set, 2},
    {"R_swig_AdamOptions_max_iterations_get", (DL_FUNC) &R_swig_AdamOptions_max_iterations_get, 2},
@@ -68071,6 +82809,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_SGD", (DL_FUNC) &R_swig_delete_SGD, 1},
    {"R_swig_PSOOptions_max_iterations_set", (DL_FUNC) &R_swig_PSOOptions_max_iterations_set, 2},
    {"R_swig_Lasso_plot_cv_curve", (DL_FUNC) &R_swig_Lasso_plot_cv_curve, 2},
+   {"R_swig_SquareFreeFactorVector_pop", (DL_FUNC) &R_swig_SquareFreeFactorVector_pop, 2},
    {"R_swig_ARIMA_fitted_values", (DL_FUNC) &R_swig_ARIMA_fitted_values, 2},
    {"R_swig_DecisionTreeClassifier_leaf_count", (DL_FUNC) &R_swig_DecisionTreeClassifier_leaf_count, 2},
    {"R_swig_Lasso_lambda_path", (DL_FUNC) &R_swig_Lasso_lambda_path, 2},
@@ -68081,8 +82820,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GaussianProcessRegression_length_scale", (DL_FUNC) &R_swig_GaussianProcessRegression_length_scale, 2},
    {"R_swig_TrendType_TrendType_Additive_get", (DL_FUNC) &R_swig_TrendType_TrendType_Additive_get, 1},
    {"R_swig_DecisionTreeClassifier_node_count", (DL_FUNC) &R_swig_DecisionTreeClassifier_node_count, 2},
-   {"R_swig_GradientDescentOptions_momentum_set", (DL_FUNC) &R_swig_GradientDescentOptions_momentum_set, 2},
+   {"R_swig_Polynomial_multiply", (DL_FUNC) &R_swig_Polynomial_multiply, 3},
+   {"R_swig_PolynomialVector_pop", (DL_FUNC) &R_swig_PolynomialVector_pop, 2},
    {"R_swig_GaussianProcessRegression_predictor_names", (DL_FUNC) &R_swig_GaussianProcessRegression_predictor_names, 2},
+   {"R_swig_GradientDescentOptions_momentum_set", (DL_FUNC) &R_swig_GradientDescentOptions_momentum_set, 2},
    {"R_swig_Tensor_outer", (DL_FUNC) &R_swig_Tensor_outer, 2},
    {"R_swig_NUTSOptions_num_warmup_get", (DL_FUNC) &R_swig_NUTSOptions_num_warmup_get, 2},
    {"R_swig_GaussianProcessRegression_noise_ratio_was_selected", (DL_FUNC) &R_swig_GaussianProcessRegression_noise_ratio_was_selected, 2},
@@ -68102,9 +82843,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LDA_training_accuracy", (DL_FUNC) &R_swig_LDA_training_accuracy, 2},
    {"R_swig_GAOptions_max_generations_get", (DL_FUNC) &R_swig_GAOptions_max_generations_get, 2},
    {"R_swig_GradientDescentOptions_max_iterations_get", (DL_FUNC) &R_swig_GradientDescentOptions_max_iterations_get, 2},
+   {"R_swig_MonomialOrder_MonomialOrder_Grlex_get", (DL_FUNC) &R_swig_MonomialOrder_MonomialOrder_Grlex_get, 1},
    {"R_swig_RGB_g_get", (DL_FUNC) &R_swig_RGB_g_get, 2},
    {"R_swig_SimulatedAnnealingOptions_initial_temperature_set", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_initial_temperature_set, 2},
    {"R_swig_SimulatedAnnealingOptions_initial_temperature_get", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_initial_temperature_get, 2},
+   {"R_swig_RPlot_legend", (DL_FUNC) &R_swig_RPlot_legend, 4},
    {"R_swig_Tensor_power_scalar", (DL_FUNC) &R_swig_Tensor_power_scalar, 2},
    {"R_swig_HMCOptions_initial_step_size_set", (DL_FUNC) &R_swig_HMCOptions_initial_step_size_set, 2},
    {"R_swig_new_GibbsOptions", (DL_FUNC) &R_swig_new_GibbsOptions, 0},
@@ -68112,57 +82855,66 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_NUTSResult_samples_set", (DL_FUNC) &R_swig_NUTSResult_samples_set, 2},
    {"R_swig_Tensor_from_bool_values", (DL_FUNC) &R_swig_Tensor_from_bool_values, 2},
    {"R_swig_ExponentialSmoothing_residuals", (DL_FUNC) &R_swig_ExponentialSmoothing_residuals, 2},
+   {"R_swig_Expr_simplify", (DL_FUNC) &R_swig_Expr_simplify, 2},
+   {"R_swig_RPlot_points__SWIG_0", (DL_FUNC) &R_swig_RPlot_points__SWIG_0, 7},
+   {"R_swig_RPlot_points__SWIG_1", (DL_FUNC) &R_swig_RPlot_points__SWIG_1, 6},
+   {"R_swig_MultivariatePolynomialVector_resize__SWIG_0", (DL_FUNC) &R_swig_MultivariatePolynomialVector_resize__SWIG_0, 2},
    {"R_swig_SizeVector_pop", (DL_FUNC) &R_swig_SizeVector_pop, 2},
+   {"R_swig_RPlot_points__SWIG_2", (DL_FUNC) &R_swig_RPlot_points__SWIG_2, 5},
+   {"R_swig_MultivariatePolynomialVector_resize__SWIG_1", (DL_FUNC) &R_swig_MultivariatePolynomialVector_resize__SWIG_1, 3},
    {"R_swig_Ridge_plot_predicted_vs_actual", (DL_FUNC) &R_swig_Ridge_plot_predicted_vs_actual, 2},
    {"R_swig_GLM_plot_residuals_vs_leverage", (DL_FUNC) &R_swig_GLM_plot_residuals_vs_leverage, 2},
+   {"R_swig_RPlot_points__SWIG_3", (DL_FUNC) &R_swig_RPlot_points__SWIG_3, 4},
+   {"R_swig_new_RLayout", (DL_FUNC) &R_swig_new_RLayout, 0},
    {"R_swig_Dual_divide_scalar", (DL_FUNC) &R_swig_Dual_divide_scalar, 3},
    {"R_swig_Dual_abs", (DL_FUNC) &R_swig_Dual_abs, 2},
    {"R_swig_HMCResult_final_step_size_get", (DL_FUNC) &R_swig_HMCResult_final_step_size_get, 2},
    {"R_swig_new_Var", (DL_FUNC) &R_swig_new_Var, 2},
-   {"R_swig_ScatterPlot_points__SWIG_0", (DL_FUNC) &R_swig_ScatterPlot_points__SWIG_0, 7},
    {"R_swig_HMC_sample", (DL_FUNC) &R_swig_HMC_sample, 4},
-   {"R_swig_ScatterPlot_points__SWIG_1", (DL_FUNC) &R_swig_ScatterPlot_points__SWIG_1, 6},
    {"R_swig_GAOptions_selection_strategy_set", (DL_FUNC) &R_swig_GAOptions_selection_strategy_set, 2},
    {"R_swig_HMCOptions_seed_get", (DL_FUNC) &R_swig_HMCOptions_seed_get, 2},
    {"R_swig_GLMM_family", (DL_FUNC) &R_swig_GLMM_family, 2},
    {"R_swig_new_KNNRegressor__SWIG_0", (DL_FUNC) &R_swig_new_KNNRegressor__SWIG_0, 6},
-   {"R_swig_ScatterPlot_points__SWIG_2", (DL_FUNC) &R_swig_ScatterPlot_points__SWIG_2, 5},
    {"R_swig_new_KNNRegressor__SWIG_1", (DL_FUNC) &R_swig_new_KNNRegressor__SWIG_1, 5},
-   {"R_swig_ScatterPlot_points__SWIG_3", (DL_FUNC) &R_swig_ScatterPlot_points__SWIG_3, 4},
    {"R_swig_new_PSOOptions", (DL_FUNC) &R_swig_new_PSOOptions, 0},
    {"R_swig_DEOptions_crossover_strategy_set", (DL_FUNC) &R_swig_DEOptions_crossover_strategy_set, 2},
    {"R_swig_GibbsOptions_num_samples_set", (DL_FUNC) &R_swig_GibbsOptions_num_samples_set, 2},
    {"R_swig_new_KNNRegressor__SWIG_2", (DL_FUNC) &R_swig_new_KNNRegressor__SWIG_2, 4},
    {"R_swig_new_KNNRegressor__SWIG_3", (DL_FUNC) &R_swig_new_KNNRegressor__SWIG_3, 3},
    {"R_swig_SimulatedAnnealingOptions_step_std_dev_set", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_step_std_dev_set, 2},
+   {"R_swig_SquareFreeFactorVector_clear", (DL_FUNC) &R_swig_SquareFreeFactorVector_clear, 1},
    {"R_swig_new_KNNRegressor__SWIG_4", (DL_FUNC) &R_swig_new_KNNRegressor__SWIG_4, 2},
    {"R_swig_SimulatedAnnealingOptions_seed_set", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_seed_set, 2},
+   {"R_swig_RPlot_abline_h__SWIG_0", (DL_FUNC) &R_swig_RPlot_abline_h__SWIG_0, 5},
+   {"R_swig_RPlot_abline_h__SWIG_1", (DL_FUNC) &R_swig_RPlot_abline_h__SWIG_1, 4},
    {"R_swig_XGBoostClassifier_summary", (DL_FUNC) &R_swig_XGBoostClassifier_summary, 2},
+   {"R_swig_RPlot_abline_h__SWIG_2", (DL_FUNC) &R_swig_RPlot_abline_h__SWIG_2, 3},
    {"R_swig_Tensor_flatten", (DL_FUNC) &R_swig_Tensor_flatten, 1},
-   {"R_swig_new_HypothesisTestResult", (DL_FUNC) &R_swig_new_HypothesisTestResult, 0},
    {"R_swig_LMM_residual_variance", (DL_FUNC) &R_swig_LMM_residual_variance, 2},
+   {"R_swig_new_HypothesisTestResult", (DL_FUNC) &R_swig_new_HypothesisTestResult, 0},
    {"R_swig_delete_MAPOptions", (DL_FUNC) &R_swig_delete_MAPOptions, 1},
+   {"R_swig_Polynomial_derivative", (DL_FUNC) &R_swig_Polynomial_derivative, 2},
    {"R_swig_Tensor_string_at_flat", (DL_FUNC) &R_swig_Tensor_string_at_flat, 3},
    {"R_swig_RWMResult_accept_rate_set", (DL_FUNC) &R_swig_RWMResult_accept_rate_set, 2},
    {"R_swig_ExponentialSmoothing_bic", (DL_FUNC) &R_swig_ExponentialSmoothing_bic, 2},
    {"R_swig_NUTSOptions_num_samples_set", (DL_FUNC) &R_swig_NUTSOptions_num_samples_set, 2},
+   {"R_swig_RPlot_box__SWIG_0", (DL_FUNC) &R_swig_RPlot_box__SWIG_0, 11},
    {"R_swig_NUTSResult_accept_rate_get", (DL_FUNC) &R_swig_NUTSResult_accept_rate_get, 2},
+   {"R_swig_RPlot_box__SWIG_1", (DL_FUNC) &R_swig_RPlot_box__SWIG_1, 10},
    {"R_swig_LBFGSOptions_wolfe_c2_set", (DL_FUNC) &R_swig_LBFGSOptions_wolfe_c2_set, 2},
+   {"R_swig_RPlot_box__SWIG_2", (DL_FUNC) &R_swig_RPlot_box__SWIG_2, 9},
    {"R_swig_PSOOptions_topology_set", (DL_FUNC) &R_swig_PSOOptions_topology_set, 2},
    {"R_swig_Plot_height", (DL_FUNC) &R_swig_Plot_height, 2},
+   {"R_swig_RPlot_box__SWIG_3", (DL_FUNC) &R_swig_RPlot_box__SWIG_3, 8},
    {"R_swig_HypothesisTestResult_alternative_set", (DL_FUNC) &R_swig_HypothesisTestResult_alternative_set, 2},
    {"R_swig_Lasso_observations", (DL_FUNC) &R_swig_Lasso_observations, 2},
    {"R_swig_delete_DVectorPair", (DL_FUNC) &R_swig_delete_DVectorPair, 1},
    {"R_swig_ARIMAOptions_d_get", (DL_FUNC) &R_swig_ARIMAOptions_d_get, 2},
    {"R_swig_LM_has_intercept", (DL_FUNC) &R_swig_LM_has_intercept, 2},
-   {"R_swig_BarChart_bars__SWIG_0", (DL_FUNC) &R_swig_BarChart_bars__SWIG_0, 7},
    {"R_swig_SVector_clear", (DL_FUNC) &R_swig_SVector_clear, 1},
-   {"R_swig_BarChart_bars__SWIG_1", (DL_FUNC) &R_swig_BarChart_bars__SWIG_1, 6},
    {"R_swig_NUTSResult_num_divergences_get", (DL_FUNC) &R_swig_NUTSResult_num_divergences_get, 2},
    {"R_swig_NaiveBayesClassifier_predictor_names", (DL_FUNC) &R_swig_NaiveBayesClassifier_predictor_names, 2},
-   {"R_swig_BarChart_bars__SWIG_2", (DL_FUNC) &R_swig_BarChart_bars__SWIG_2, 5},
    {"R_swig_Tensor_conv2d__SWIG_0", (DL_FUNC) &R_swig_Tensor_conv2d__SWIG_0, 5},
-   {"R_swig_BarChart_bars__SWIG_3", (DL_FUNC) &R_swig_BarChart_bars__SWIG_3, 4},
    {"R_swig_LMM_coefficient_names", (DL_FUNC) &R_swig_LMM_coefficient_names, 2},
    {"R_swig_Tensor_conv2d__SWIG_1", (DL_FUNC) &R_swig_Tensor_conv2d__SWIG_1, 4},
    {"R_swig_DEOptions_crossover_rate_get", (DL_FUNC) &R_swig_DEOptions_crossover_rate_get, 2},
@@ -68172,20 +82924,29 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_proportion_test_one_sample__SWIG_1", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_1, 6},
    {"R_swig_proportion_test_one_sample__SWIG_2", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_2, 5},
    {"R_swig_MAPOptions_tolerance_get", (DL_FUNC) &R_swig_MAPOptions_tolerance_get, 2},
+   {"R_swig_Expr_exp", (DL_FUNC) &R_swig_Expr_exp, 2},
    {"R_swig_proportion_test_one_sample__SWIG_3", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_3, 4},
    {"R_swig_RandomForestClassifier_summary", (DL_FUNC) &R_swig_RandomForestClassifier_summary, 2},
-   {"R_swig_proportion_test_one_sample__SWIG_4", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_4, 3},
    {"R_swig_DataFrame_numeric_sum", (DL_FUNC) &R_swig_DataFrame_numeric_sum, 3},
+   {"R_swig_proportion_test_one_sample__SWIG_4", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_4, 3},
    {"R_swig_DataSeries_marker_size_set", (DL_FUNC) &R_swig_DataSeries_marker_size_set, 2},
    {"R_swig_SizeVector_get_allocator", (DL_FUNC) &R_swig_SizeVector_get_allocator, 2},
    {"R_swig_delete_MAP", (DL_FUNC) &R_swig_delete_MAP, 1},
    {"R_swig_SVector___len__", (DL_FUNC) &R_swig_SVector___len__, 2},
    {"R_swig_delete_Var", (DL_FUNC) &R_swig_delete_Var, 1},
+   {"R_swig_IVectorVector_front", (DL_FUNC) &R_swig_IVectorVector_front, 2},
    {"R_swig_RandomForestClassifier_print_summary", (DL_FUNC) &R_swig_RandomForestClassifier_print_summary, 1},
+   {"R_swig_new_GGPlot__SWIG_0", (DL_FUNC) &R_swig_new_GGPlot__SWIG_0, 6},
+   {"R_swig_new_GGPlot__SWIG_1", (DL_FUNC) &R_swig_new_GGPlot__SWIG_1, 5},
    {"R_swig_Tensor_to_string__SWIG_0", (DL_FUNC) &R_swig_Tensor_to_string__SWIG_0, 3},
    {"R_swig_PSOOptions_social_coefficient_get", (DL_FUNC) &R_swig_PSOOptions_social_coefficient_get, 2},
+   {"R_swig_groebner_basis", (DL_FUNC) &R_swig_groebner_basis, 3},
+   {"R_swig_new_GGPlot__SWIG_2", (DL_FUNC) &R_swig_new_GGPlot__SWIG_2, 4},
    {"R_swig_Tensor_to_string__SWIG_1", (DL_FUNC) &R_swig_Tensor_to_string__SWIG_1, 2},
    {"R_swig_DataFrame_columns", (DL_FUNC) &R_swig_DataFrame_columns, 2},
+   {"R_swig_new_GGPlot__SWIG_3", (DL_FUNC) &R_swig_new_GGPlot__SWIG_3, 3},
+   {"R_swig_IVectorVector___getslice__", (DL_FUNC) &R_swig_IVectorVector___getslice__, 3},
+   {"R_swig_new_GGPlot__SWIG_4", (DL_FUNC) &R_swig_new_GGPlot__SWIG_4, 2},
    {"R_swig_DVectorVector_assign", (DL_FUNC) &R_swig_DVectorVector_assign, 3},
    {"R_swig_GAOptions_crossover_strategy_get", (DL_FUNC) &R_swig_GAOptions_crossover_strategy_get, 2},
    {"R_swig_KernelRegression_r_squared", (DL_FUNC) &R_swig_KernelRegression_r_squared, 2},
@@ -68193,6 +82954,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Dual_add", (DL_FUNC) &R_swig_Dual_add, 3},
    {"R_swig_LDA_scaling", (DL_FUNC) &R_swig_LDA_scaling, 1},
    {"R_swig_GLM_linear_predictors", (DL_FUNC) &R_swig_GLM_linear_predictors, 2},
+   {"R_swig_DataSeries_Kind_Polygon_get", (DL_FUNC) &R_swig_DataSeries_Kind_Polygon_get, 1},
    {"R_swig_RWMOptions_initial_step_size_get", (DL_FUNC) &R_swig_RWMOptions_initial_step_size_get, 2},
    {"R_swig_Tensor_argmin", (DL_FUNC) &R_swig_Tensor_argmin, 2},
    {"R_swig_LM_predict", (DL_FUNC) &R_swig_LM_predict, 3},
@@ -68200,23 +82962,32 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_SizeVector__SWIG_0", (DL_FUNC) &R_swig_new_SizeVector__SWIG_0, 0},
    {"R_swig_Tensor_sum_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_sum_axis__SWIG_0, 3},
    {"R_swig_new_SizeVector__SWIG_1", (DL_FUNC) &R_swig_new_SizeVector__SWIG_1, 1},
+   {"R_swig_sylvester_matrix", (DL_FUNC) &R_swig_sylvester_matrix, 3},
    {"R_swig_Tensor_sum_axis__SWIG_1", (DL_FUNC) &R_swig_Tensor_sum_axis__SWIG_1, 2},
    {"R_swig_new_SizeVector__SWIG_2", (DL_FUNC) &R_swig_new_SizeVector__SWIG_2, 1},
    {"R_swig_Tensor_matmul", (DL_FUNC) &R_swig_Tensor_matmul, 2},
    {"R_swig_new_SizeVector__SWIG_3", (DL_FUNC) &R_swig_new_SizeVector__SWIG_3, 2},
    {"R_swig_delete_LM", (DL_FUNC) &R_swig_delete_LM, 1},
    {"R_swig_SVector_get_allocator", (DL_FUNC) &R_swig_SVector_get_allocator, 2},
+   {"R_swig_RPlot_abline__SWIG_0", (DL_FUNC) &R_swig_RPlot_abline__SWIG_0, 6},
    {"R_swig_delete_Dual", (DL_FUNC) &R_swig_delete_Dual, 1},
-   {"R_swig_delete_LinePlot", (DL_FUNC) &R_swig_delete_LinePlot, 1},
+   {"R_swig_MultivariatePolynomialVector___len__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___len__, 2},
+   {"R_swig_RPlot_abline__SWIG_1", (DL_FUNC) &R_swig_RPlot_abline__SWIG_1, 5},
    {"R_swig_IPair_second_set", (DL_FUNC) &R_swig_IPair_second_set, 2},
    {"R_swig_LMM_aic", (DL_FUNC) &R_swig_LMM_aic, 2},
+   {"R_swig_RPlot_abline__SWIG_2", (DL_FUNC) &R_swig_RPlot_abline__SWIG_2, 4},
+   {"R_swig_RPlot_lines__SWIG_0", (DL_FUNC) &R_swig_RPlot_lines__SWIG_0, 7},
    {"R_swig_delete_Plot", (DL_FUNC) &R_swig_delete_Plot, 1},
+   {"R_swig_RPlot_lines__SWIG_1", (DL_FUNC) &R_swig_RPlot_lines__SWIG_1, 6},
    {"R_swig_IVector_front", (DL_FUNC) &R_swig_IVector_front, 2},
+   {"R_swig_RPlot_lines__SWIG_2", (DL_FUNC) &R_swig_RPlot_lines__SWIG_2, 5},
    {"R_swig_DVectorVector___len__", (DL_FUNC) &R_swig_DVectorVector___len__, 2},
    {"R_swig_ARIMA_seasonal_ar_coefficients", (DL_FUNC) &R_swig_ARIMA_seasonal_ar_coefficients, 2},
+   {"R_swig_RPlot_lines__SWIG_3", (DL_FUNC) &R_swig_RPlot_lines__SWIG_3, 4},
    {"R_swig_DEOptions_mutation_strategy_set", (DL_FUNC) &R_swig_DEOptions_mutation_strategy_set, 2},
    {"R_swig_RWMResult_samples_set", (DL_FUNC) &R_swig_RWMResult_samples_set, 2},
    {"R_swig_KNNRegressor_observations", (DL_FUNC) &R_swig_KNNRegressor_observations, 2},
+   {"R_swig_Plot_x_tick_label_list", (DL_FUNC) &R_swig_Plot_x_tick_label_list, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_0", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_0, 11},
    {"R_swig_SeasonalType_SeasonalType_None_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_None_get, 1},
    {"R_swig_new_RandomForestClassifier__SWIG_1", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_1, 10},
@@ -68229,31 +83000,38 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SGDOptions_step_size_set", (DL_FUNC) &R_swig_SGDOptions_step_size_set, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_4", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_4, 7},
    {"R_swig_GAOptions_population_size_set", (DL_FUNC) &R_swig_GAOptions_population_size_set, 2},
-   {"R_swig_ExponentialSmoothing_beta", (DL_FUNC) &R_swig_ExponentialSmoothing_beta, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_5", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_5, 6},
    {"R_swig_XGBoostClassifier_classes", (DL_FUNC) &R_swig_XGBoostClassifier_classes, 2},
+   {"R_swig_ExponentialSmoothing_beta", (DL_FUNC) &R_swig_ExponentialSmoothing_beta, 2},
    {"R_swig_LBFGSOptions_max_line_search_trials_set", (DL_FUNC) &R_swig_LBFGSOptions_max_line_search_trials_set, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_6", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_6, 5},
    {"R_swig_new_RandomForestClassifier__SWIG_7", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_7, 4},
    {"R_swig_INLAMixedModel_group_labels", (DL_FUNC) &R_swig_INLAMixedModel_group_labels, 2},
+   {"R_swig_total_degree", (DL_FUNC) &R_swig_total_degree, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_8", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_8, 3},
    {"R_swig_Dual_value", (DL_FUNC) &R_swig_Dual_value, 2},
+   {"R_swig_Expr_negate", (DL_FUNC) &R_swig_Expr_negate, 2},
    {"R_swig_SizeVector_clear", (DL_FUNC) &R_swig_SizeVector_clear, 1},
    {"R_swig_new_RandomForestClassifier__SWIG_9", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_9, 2},
+   {"R_swig_MultivariatePolynomialVector_push_back", (DL_FUNC) &R_swig_MultivariatePolynomialVector_push_back, 2},
    {"R_swig_SizeVector_resize__SWIG_0", (DL_FUNC) &R_swig_SizeVector_resize__SWIG_0, 2},
    {"R_swig_SizeVector_resize__SWIG_1", (DL_FUNC) &R_swig_SizeVector_resize__SWIG_1, 3},
    {"R_swig_DataSeries_label_get", (DL_FUNC) &R_swig_DataSeries_label_get, 2},
    {"R_swig_SeasonalType_SeasonalType_Additive_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_Additive_get, 1},
    {"R_swig_DifferentiableSeparableFunction_gradient", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_gradient, 3},
+   {"R_swig_SquareFreeFactorVector_capacity", (DL_FUNC) &R_swig_SquareFreeFactorVector_capacity, 2},
+   {"R_swig_SquareFreeFactor_multiplicity_set", (DL_FUNC) &R_swig_SquareFreeFactor_multiplicity_set, 2},
    {"R_swig_KernelRegression_rmse", (DL_FUNC) &R_swig_KernelRegression_rmse, 2},
    {"R_swig_ImportanceSamplingResult_log_evidence_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_log_evidence_get, 2},
    {"R_swig_DVectorVector___setslice__", (DL_FUNC) &R_swig_DVectorVector___setslice__, 4},
    {"R_swig_SizeVector___len__", (DL_FUNC) &R_swig_SizeVector___len__, 2},
    {"R_swig_DataFrame_numeric_at", (DL_FUNC) &R_swig_DataFrame_numeric_at, 4},
+   {"R_swig_poly_extended_gcd", (DL_FUNC) &R_swig_poly_extended_gcd, 3},
    {"R_swig_HyperDual_subtract", (DL_FUNC) &R_swig_HyperDual_subtract, 3},
    {"R_swig_delete_KMeans", (DL_FUNC) &R_swig_delete_KMeans, 1},
    {"R_swig_GLMM_has_random_intercept", (DL_FUNC) &R_swig_GLMM_has_random_intercept, 2},
    {"R_swig_ARIMA_n_used", (DL_FUNC) &R_swig_ARIMA_n_used, 2},
+   {"R_swig_Plot_reference_lines", (DL_FUNC) &R_swig_Plot_reference_lines, 2},
    {"R_swig_GLM_predict", (DL_FUNC) &R_swig_GLM_predict, 3},
    {"R_swig_KMeans_summary", (DL_FUNC) &R_swig_KMeans_summary, 2},
    {"R_swig_RandomForestClassifier_classes", (DL_FUNC) &R_swig_RandomForestClassifier_classes, 2},
@@ -68263,16 +83041,19 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataFrame_string_at", (DL_FUNC) &R_swig_DataFrame_string_at, 4},
    {"R_swig_KernelRegression_predict", (DL_FUNC) &R_swig_KernelRegression_predict, 3},
    {"R_swig_GLM_predict_frame__SWIG_2", (DL_FUNC) &R_swig_GLM_predict_frame__SWIG_2, 2},
+   {"R_swig_DataSeries_filled_set", (DL_FUNC) &R_swig_DataSeries_filled_set, 2},
    {"R_swig_ARIMA_forecast_with_intervals", (DL_FUNC) &R_swig_ARIMA_forecast_with_intervals, 3},
    {"R_swig_Plot_title", (DL_FUNC) &R_swig_Plot_title, 3},
    {"R_swig_RWMOptions_num_warmup_set", (DL_FUNC) &R_swig_RWMOptions_num_warmup_set, 2},
    {"R_swig_DVector_reserve", (DL_FUNC) &R_swig_DVector_reserve, 2},
+   {"R_swig_ABLine_value_get", (DL_FUNC) &R_swig_ABLine_value_get, 2},
    {"R_swig_IVector___delslice__", (DL_FUNC) &R_swig_IVector___delslice__, 3},
    {"R_swig_Lasso_lambda", (DL_FUNC) &R_swig_Lasso_lambda, 2},
    {"R_swig_HypothesisTestResult_parameter2_get", (DL_FUNC) &R_swig_HypothesisTestResult_parameter2_get, 2},
    {"R_swig_delete_GeneticAlgorithm", (DL_FUNC) &R_swig_delete_GeneticAlgorithm, 1},
    {"R_swig_ExponentialSmoothing_alpha", (DL_FUNC) &R_swig_ExponentialSmoothing_alpha, 2},
    {"R_swig_chi_squared_goodness_of_fit__SWIG_0", (DL_FUNC) &R_swig_chi_squared_goodness_of_fit__SWIG_0, 3},
+   {"R_swig_PolynomialVector___setslice__", (DL_FUNC) &R_swig_PolynomialVector___setslice__, 4},
    {"R_swig_GLMM_formula_text", (DL_FUNC) &R_swig_GLMM_formula_text, 2},
    {"R_swig_chi_squared_goodness_of_fit__SWIG_1", (DL_FUNC) &R_swig_chi_squared_goodness_of_fit__SWIG_1, 2},
    {"R_swig_RWMOptions_seed_get", (DL_FUNC) &R_swig_RWMOptions_seed_get, 2},
@@ -68280,9 +83061,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ARIMA_forecast", (DL_FUNC) &R_swig_ARIMA_forecast, 3},
    {"R_swig_GBMClassifier_plot_classification", (DL_FUNC) &R_swig_GBMClassifier_plot_classification, 5},
    {"R_swig_ImportanceSamplingResult_samples_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_samples_get, 1},
+   {"R_swig_PolynomialVector_reserve", (DL_FUNC) &R_swig_PolynomialVector_reserve, 2},
+   {"R_swig_poly_gcd_pseudo_remainder_sequence", (DL_FUNC) &R_swig_poly_gcd_pseudo_remainder_sequence, 3},
    {"R_swig_new_XGBoostClassifier__SWIG_10", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_10, 3},
+   {"R_swig_berlekamp_factor_mod", (DL_FUNC) &R_swig_berlekamp_factor_mod, 3},
    {"R_swig_new_XGBoostClassifier__SWIG_11", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_11, 2},
-   {"R_swig_new_BarChart", (DL_FUNC) &R_swig_new_BarChart, 0},
    {"R_swig_NUTSOptions_max_tree_depth_get", (DL_FUNC) &R_swig_NUTSOptions_max_tree_depth_get, 2},
    {"R_swig_GaussianProcessRegression_predict", (DL_FUNC) &R_swig_GaussianProcessRegression_predict, 3},
    {"R_swig_new_GBMRegressor__SWIG_0", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_0, 9},
@@ -68290,13 +83073,17 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_GBMRegressor__SWIG_1", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_1, 8},
    {"R_swig_Var_cos", (DL_FUNC) &R_swig_Var_cos, 2},
    {"R_swig_new_GBMRegressor__SWIG_2", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_2, 7},
+   {"R_swig_GGPlot_geom_point__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_point__SWIG_0, 4},
    {"R_swig_new_GBMRegressor__SWIG_3", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_3, 6},
+   {"R_swig_GGPlot_geom_point__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_point__SWIG_1, 3},
    {"R_swig_new_GBMRegressor__SWIG_4", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_4, 5},
    {"R_swig_LMM_random_effects_for_group", (DL_FUNC) &R_swig_LMM_random_effects_for_group, 3},
+   {"R_swig_GGPlot_geom_point__SWIG_2", (DL_FUNC) &R_swig_GGPlot_geom_point__SWIG_2, 2},
    {"R_swig_new_GBMRegressor__SWIG_5", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_5, 4},
    {"R_swig_ARIMA_options", (DL_FUNC) &R_swig_ARIMA_options, 2},
    {"R_swig_LM_f_p_value", (DL_FUNC) &R_swig_LM_f_p_value, 2},
    {"R_swig_new_GBMRegressor__SWIG_6", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_6, 3},
+   {"R_swig_MultivariatePolynomialVector___getitem__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___getitem__, 3},
    {"R_swig_new_GBMRegressor__SWIG_7", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_7, 2},
    {"R_swig_Dual_log", (DL_FUNC) &R_swig_Dual_log, 2},
    {"R_swig_Tensor_zeros", (DL_FUNC) &R_swig_Tensor_zeros, 1},
@@ -68308,24 +83095,29 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Lasso_predictor_names", (DL_FUNC) &R_swig_Lasso_predictor_names, 2},
    {"R_swig_new_GradientDescent__SWIG_0", (DL_FUNC) &R_swig_new_GradientDescent__SWIG_0, 1},
    {"R_swig_new_DifferentialEvolution__SWIG_1", (DL_FUNC) &R_swig_new_DifferentialEvolution__SWIG_1, 0},
+   {"R_swig_PolynomialVector_size", (DL_FUNC) &R_swig_PolynomialVector_size, 2},
    {"R_swig_PAdjustMethod_PAdjustMethod_BH_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_BH_get, 1},
    {"R_swig_new_GradientDescent__SWIG_1", (DL_FUNC) &R_swig_new_GradientDescent__SWIG_1, 0},
    {"R_swig_RandomForestClassifier_max_features_used", (DL_FUNC) &R_swig_RandomForestClassifier_max_features_used, 2},
    {"R_swig_ImportanceSamplingOptions_num_samples_set", (DL_FUNC) &R_swig_ImportanceSamplingOptions_num_samples_set, 2},
+   {"R_swig_GGPlot_scale_color_manual", (DL_FUNC) &R_swig_GGPlot_scale_color_manual, 3},
    {"R_swig_DataFrame_drop_duplicates__SWIG_0", (DL_FUNC) &R_swig_DataFrame_drop_duplicates__SWIG_0, 2},
+   {"R_swig_PolynomialVector_clear", (DL_FUNC) &R_swig_PolynomialVector_clear, 1},
    {"R_swig_hello", (DL_FUNC) &R_swig_hello, 0},
-   {"R_swig_HypothesisTestResult_has_conf_int_get", (DL_FUNC) &R_swig_HypothesisTestResult_has_conf_int_get, 2},
    {"R_swig_DataFrame_drop_duplicates__SWIG_1", (DL_FUNC) &R_swig_DataFrame_drop_duplicates__SWIG_1, 1},
+   {"R_swig_HypothesisTestResult_has_conf_int_get", (DL_FUNC) &R_swig_HypothesisTestResult_has_conf_int_get, 2},
    {"R_swig_DBSCAN_observations", (DL_FUNC) &R_swig_DBSCAN_observations, 2},
    {"R_swig_ARIMAOptions_seasonal_p_get", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_p_get, 2},
    {"R_swig_delete_AdamOptions", (DL_FUNC) &R_swig_delete_AdamOptions, 1},
+   {"R_swig_MultivariatePolynomialVector_back", (DL_FUNC) &R_swig_MultivariatePolynomialVector_back, 2},
+   {"R_swig_GGPlot_theme_minimal", (DL_FUNC) &R_swig_GGPlot_theme_minimal, 2},
    {"R_swig_HyperDual_add_scalar", (DL_FUNC) &R_swig_HyperDual_add_scalar, 3},
    {"R_swig_SizeVector_swap", (DL_FUNC) &R_swig_SizeVector_swap, 2},
    {"R_swig_GAOptions_tolerance_set", (DL_FUNC) &R_swig_GAOptions_tolerance_set, 2},
-   {"R_swig_fisher_exact_test_2x2__SWIG_0", (DL_FUNC) &R_swig_fisher_exact_test_2x2__SWIG_0, 6},
    {"R_swig_ElasticNet_plot_coefficient_path", (DL_FUNC) &R_swig_ElasticNet_plot_coefficient_path, 2},
-   {"R_swig_fisher_exact_test_2x2__SWIG_1", (DL_FUNC) &R_swig_fisher_exact_test_2x2__SWIG_1, 5},
+   {"R_swig_fisher_exact_test_2x2__SWIG_0", (DL_FUNC) &R_swig_fisher_exact_test_2x2__SWIG_0, 6},
    {"R_swig_NaiveBayesClassifier_predict", (DL_FUNC) &R_swig_NaiveBayesClassifier_predict, 3},
+   {"R_swig_fisher_exact_test_2x2__SWIG_1", (DL_FUNC) &R_swig_fisher_exact_test_2x2__SWIG_1, 5},
    {"R_swig_NUTSOptions_initial_step_size_get", (DL_FUNC) &R_swig_NUTSOptions_initial_step_size_get, 2},
    {"R_swig_HyperDual_tan", (DL_FUNC) &R_swig_HyperDual_tan, 2},
    {"R_swig_LMM_p_values", (DL_FUNC) &R_swig_LMM_p_values, 2},
@@ -68333,11 +83125,15 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_reshape", (DL_FUNC) &R_swig_Tensor_reshape, 2},
    {"R_swig_Plot_grid_color", (DL_FUNC) &R_swig_Plot_grid_color, 3},
    {"R_swig_LM_studentized_residuals", (DL_FUNC) &R_swig_LM_studentized_residuals, 2},
+   {"R_swig_RationalFunction_multiply", (DL_FUNC) &R_swig_RationalFunction_multiply, 3},
    {"R_swig_DVectorVector_size", (DL_FUNC) &R_swig_DVectorVector_size, 2},
    {"R_swig_GaussianProcessRegression_r_squared", (DL_FUNC) &R_swig_GaussianProcessRegression_r_squared, 2},
+   {"R_swig_GGPlot_save_svg", (DL_FUNC) &R_swig_GGPlot_save_svg, 2},
+   {"R_swig_RLayout_size", (DL_FUNC) &R_swig_RLayout_size, 4},
    {"R_swig_delete_KNNClassifier", (DL_FUNC) &R_swig_delete_KNNClassifier, 1},
    {"R_swig_new_RGB", (DL_FUNC) &R_swig_new_RGB, 0},
    {"R_swig_Tensor_avg_pool2d__SWIG_0", (DL_FUNC) &R_swig_Tensor_avg_pool2d__SWIG_0, 3},
+   {"R_swig_IVectorVector___delitem__", (DL_FUNC) &R_swig_IVectorVector___delitem__, 2},
    {"R_swig_Tensor_avg_pool2d__SWIG_1", (DL_FUNC) &R_swig_Tensor_avg_pool2d__SWIG_1, 2},
    {"R_swig_KNNRegressor_rmse", (DL_FUNC) &R_swig_KNNRegressor_rmse, 2},
    {"R_swig_DVector___setitem__", (DL_FUNC) &R_swig_DVector___setitem__, 3},
@@ -68351,14 +83147,21 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LM_plot_normal_qq", (DL_FUNC) &R_swig_LM_plot_normal_qq, 2},
    {"R_swig_DataSeries_bar_width_get", (DL_FUNC) &R_swig_DataSeries_bar_width_get, 2},
    {"R_swig_new_LBFGS__SWIG_1", (DL_FUNC) &R_swig_new_LBFGS__SWIG_1, 0},
+   {"R_swig_Polynomial_degree", (DL_FUNC) &R_swig_Polynomial_degree, 2},
+   {"R_swig_DataSeries_Kind_Text_get", (DL_FUNC) &R_swig_DataSeries_Kind_Text_get, 1},
    {"R_swig_ArbitraryFunction_evaluate", (DL_FUNC) &R_swig_ArbitraryFunction_evaluate, 3},
    {"R_swig_Tensor_ndim", (DL_FUNC) &R_swig_Tensor_ndim, 2},
+   {"R_swig_RPlot_bars__SWIG_0", (DL_FUNC) &R_swig_RPlot_bars__SWIG_0, 7},
+   {"R_swig_RPlot_bars__SWIG_1", (DL_FUNC) &R_swig_RPlot_bars__SWIG_1, 6},
    {"R_swig_KNNRegressor_plot_predicted_vs_actual", (DL_FUNC) &R_swig_KNNRegressor_plot_predicted_vs_actual, 2},
+   {"R_swig_RPlot_bars__SWIG_2", (DL_FUNC) &R_swig_RPlot_bars__SWIG_2, 5},
+   {"R_swig_RPlot_bars__SWIG_3", (DL_FUNC) &R_swig_RPlot_bars__SWIG_3, 4},
    {"R_swig_SizeVector___delitem__", (DL_FUNC) &R_swig_SizeVector___delitem__, 2},
    {"R_swig_delete_RandomForestClassifier", (DL_FUNC) &R_swig_delete_RandomForestClassifier, 1},
    {"R_swig_RandomForestRegressor_oob_r_squared", (DL_FUNC) &R_swig_RandomForestRegressor_oob_r_squared, 2},
    {"R_swig_KNNRegressor_predictor_names", (DL_FUNC) &R_swig_KNNRegressor_predictor_names, 2},
    {"R_swig_Ridge_predictor_names", (DL_FUNC) &R_swig_Ridge_predictor_names, 2},
+   {"R_swig_MultivariatePolynomialVector_reserve", (DL_FUNC) &R_swig_MultivariatePolynomialVector_reserve, 2},
    {"R_swig_GLMM_aic", (DL_FUNC) &R_swig_GLMM_aic, 2},
    {"R_swig_SGDOptions_batch_size_set", (DL_FUNC) &R_swig_SGDOptions_batch_size_set, 2},
    {"R_swig_ImportanceSamplingResult_effective_sample_size_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_effective_sample_size_set, 2},
@@ -68370,7 +83173,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector_front", (DL_FUNC) &R_swig_DVector_front, 2},
    {"R_swig_Plot_size", (DL_FUNC) &R_swig_Plot_size, 4},
    {"R_swig_IVector___delitem__", (DL_FUNC) &R_swig_IVector___delitem__, 2},
+   {"R_swig_GGPlot_geom_ribbon__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_ribbon__SWIG_0, 5},
    {"R_swig_delete_Lasso", (DL_FUNC) &R_swig_delete_Lasso, 1},
+   {"R_swig_GGPlot_geom_ribbon__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_ribbon__SWIG_1, 4},
    {"R_swig_NUTSOptions_max_delta_error_set", (DL_FUNC) &R_swig_NUTSOptions_max_delta_error_set, 2},
    {"R_swig_delete_NUTS", (DL_FUNC) &R_swig_delete_NUTS, 1},
    {"R_swig_PSOOptions_population_size_set", (DL_FUNC) &R_swig_PSOOptions_population_size_set, 2},
@@ -68386,6 +83191,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Ridge_coefficients", (DL_FUNC) &R_swig_Ridge_coefficients, 2},
    {"R_swig_Lasso_print_summary", (DL_FUNC) &R_swig_Lasso_print_summary, 1},
    {"R_swig_DVector___delslice__", (DL_FUNC) &R_swig_DVector___delslice__, 3},
+   {"R_swig_ABLine_slope_get", (DL_FUNC) &R_swig_ABLine_slope_get, 2},
    {"R_swig_RandomWalkMetropolis_sample", (DL_FUNC) &R_swig_RandomWalkMetropolis_sample, 4},
    {"R_swig_ImportanceSamplingOptions_seed_set", (DL_FUNC) &R_swig_ImportanceSamplingOptions_seed_set, 2},
    {"R_swig_LM_sigma", (DL_FUNC) &R_swig_LM_sigma, 2},
@@ -68395,6 +83201,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LDA_proportion_of_trace", (DL_FUNC) &R_swig_LDA_proportion_of_trace, 2},
    {"R_swig_LM_plot_scale_location", (DL_FUNC) &R_swig_LM_plot_scale_location, 2},
    {"R_swig_GAOptions_mutation_rate_set", (DL_FUNC) &R_swig_GAOptions_mutation_rate_set, 2},
+   {"R_swig_Polynomial_coefficient", (DL_FUNC) &R_swig_Polynomial_coefficient, 3},
    {"R_swig_SizeVector_capacity", (DL_FUNC) &R_swig_SizeVector_capacity, 2},
    {"R_swig_DBSCAN_summary", (DL_FUNC) &R_swig_DBSCAN_summary, 2},
    {"R_swig_GLM_null_deviance", (DL_FUNC) &R_swig_GLM_null_deviance, 2},
@@ -68406,6 +83213,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_AgglomerativeClustering__SWIG_0", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_0, 5},
    {"R_swig_Plot_y_min", (DL_FUNC) &R_swig_Plot_y_min, 2},
    {"R_swig_new_Lasso__SWIG_1", (DL_FUNC) &R_swig_new_Lasso__SWIG_1, 6},
+   {"R_swig_PolyExtendedGcdResult_t_get", (DL_FUNC) &R_swig_PolyExtendedGcdResult_t_get, 1},
+   {"R_swig_SquareFreeFactorVector___delitem__", (DL_FUNC) &R_swig_SquareFreeFactorVector___delitem__, 2},
    {"R_swig_LMM_fitted_values", (DL_FUNC) &R_swig_LMM_fitted_values, 2},
    {"R_swig_new_AgglomerativeClustering__SWIG_1", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_1, 4},
    {"R_swig_new_Lasso__SWIG_2", (DL_FUNC) &R_swig_new_Lasso__SWIG_2, 5},
@@ -68419,6 +83228,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SizeVector_reserve", (DL_FUNC) &R_swig_SizeVector_reserve, 2},
    {"R_swig_new_AgglomerativeClustering__SWIG_4", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_4, 5},
    {"R_swig_new_Lasso__SWIG_5", (DL_FUNC) &R_swig_new_Lasso__SWIG_5, 2},
+   {"R_swig_Expr_constant", (DL_FUNC) &R_swig_Expr_constant, 2},
    {"R_swig_new_AgglomerativeClustering__SWIG_5", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_5, 4},
    {"R_swig_IPair_first_set", (DL_FUNC) &R_swig_IPair_first_set, 2},
    {"R_swig_DecisionTreeRegressor_leaf_count", (DL_FUNC) &R_swig_DecisionTreeRegressor_leaf_count, 2},
@@ -68430,14 +83240,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_NUTSOptions_seed_set", (DL_FUNC) &R_swig_NUTSOptions_seed_set, 2},
    {"R_swig_Lasso_non_zero_coefficients", (DL_FUNC) &R_swig_Lasso_non_zero_coefficients, 2},
    {"R_swig_LDA_priors", (DL_FUNC) &R_swig_LDA_priors, 2},
-   {"R_swig_delete_ExponentialSmoothing", (DL_FUNC) &R_swig_delete_ExponentialSmoothing, 1},
    {"R_swig_new_ExponentialSmoothingOptions", (DL_FUNC) &R_swig_new_ExponentialSmoothingOptions, 0},
+   {"R_swig_delete_ExponentialSmoothing", (DL_FUNC) &R_swig_delete_ExponentialSmoothing, 1},
    {"R_swig_DataFrame_iris", (DL_FUNC) &R_swig_DataFrame_iris, 0},
    {"R_swig_delete_ImportanceSamplingOptions", (DL_FUNC) &R_swig_delete_ImportanceSamplingOptions, 1},
    {"R_swig_Tensor_dtype_name", (DL_FUNC) &R_swig_Tensor_dtype_name, 2},
-   {"R_swig_HypothesisTestResult_method_set", (DL_FUNC) &R_swig_HypothesisTestResult_method_set, 2},
    {"R_swig_GaussianProcessRegression_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_residuals_vs_fitted, 2},
    {"R_swig_new_SVM__SWIG_0", (DL_FUNC) &R_swig_new_SVM__SWIG_0, 8},
+   {"R_swig_HypothesisTestResult_method_set", (DL_FUNC) &R_swig_HypothesisTestResult_method_set, 2},
    {"R_swig_new_SVM__SWIG_1", (DL_FUNC) &R_swig_new_SVM__SWIG_1, 7},
    {"R_swig_new_SVM__SWIG_2", (DL_FUNC) &R_swig_new_SVM__SWIG_2, 6},
    {"R_swig_new_SVM__SWIG_3", (DL_FUNC) &R_swig_new_SVM__SWIG_3, 5},
@@ -68445,18 +83255,18 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Var_abs", (DL_FUNC) &R_swig_Var_abs, 2},
    {"R_swig_new_SVM__SWIG_4", (DL_FUNC) &R_swig_new_SVM__SWIG_4, 4},
    {"R_swig_new_SVM__SWIG_5", (DL_FUNC) &R_swig_new_SVM__SWIG_5, 3},
-   {"R_swig_HypothesisTestResult_estimate2_set", (DL_FUNC) &R_swig_HypothesisTestResult_estimate2_set, 2},
    {"R_swig_new_SVM__SWIG_6", (DL_FUNC) &R_swig_new_SVM__SWIG_6, 2},
    {"R_swig_IVector_size", (DL_FUNC) &R_swig_IVector_size, 2},
+   {"R_swig_HypothesisTestResult_estimate2_set", (DL_FUNC) &R_swig_HypothesisTestResult_estimate2_set, 2},
    {"R_swig_Tensor_divide", (DL_FUNC) &R_swig_Tensor_divide, 2},
    {"R_swig_INLAMixedModel_log_marginal_likelihood", (DL_FUNC) &R_swig_INLAMixedModel_log_marginal_likelihood, 2},
    {"R_swig_RGB_b_get", (DL_FUNC) &R_swig_RGB_b_get, 2},
    {"R_swig_LBFGSOptions_history_size_get", (DL_FUNC) &R_swig_LBFGSOptions_history_size_get, 2},
    {"R_swig_delete_GradientDescent", (DL_FUNC) &R_swig_delete_GradientDescent, 1},
    {"R_swig_DVectorVector___getslice__", (DL_FUNC) &R_swig_DVectorVector___getslice__, 3},
-   {"R_swig_ExponentialSmoothing_phi", (DL_FUNC) &R_swig_ExponentialSmoothing_phi, 2},
    {"R_swig_DecisionTreeRegressor_print_summary", (DL_FUNC) &R_swig_DecisionTreeRegressor_print_summary, 1},
    {"R_swig_KNNRegressor_summary", (DL_FUNC) &R_swig_KNNRegressor_summary, 2},
+   {"R_swig_ExponentialSmoothing_phi", (DL_FUNC) &R_swig_ExponentialSmoothing_phi, 2},
    {"R_swig_Tensor_stack2", (DL_FUNC) &R_swig_Tensor_stack2, 3},
    {"R_swig_LBFGSOptions_max_iterations_get", (DL_FUNC) &R_swig_LBFGSOptions_max_iterations_get, 2},
    {"R_swig_ARIMA_log_likelihood", (DL_FUNC) &R_swig_ARIMA_log_likelihood, 2},
@@ -68466,35 +83276,51 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_transpose__SWIG_1", (DL_FUNC) &R_swig_Tensor_transpose__SWIG_1, 1},
    {"R_swig_Dual_sqrt", (DL_FUNC) &R_swig_Dual_sqrt, 2},
    {"R_swig_DVectorVector___delitem__", (DL_FUNC) &R_swig_DVectorVector___delitem__, 2},
+   {"R_swig_PolynomialVector_append", (DL_FUNC) &R_swig_PolynomialVector_append, 2},
    {"R_swig_GLMM_random_effect_std_devs", (DL_FUNC) &R_swig_GLMM_random_effect_std_devs, 2},
    {"R_swig_IVector_capacity", (DL_FUNC) &R_swig_IVector_capacity, 2},
    {"R_swig_AdamOptions_beta1_get", (DL_FUNC) &R_swig_AdamOptions_beta1_get, 2},
+   {"R_swig_Plot_axes_hidden", (DL_FUNC) &R_swig_Plot_axes_hidden, 2},
    {"R_swig_Plot_y_label_text", (DL_FUNC) &R_swig_Plot_y_label_text, 2},
+   {"R_swig_IVectorVector_clear", (DL_FUNC) &R_swig_IVectorVector_clear, 1},
    {"R_swig_LDA_predictor_names", (DL_FUNC) &R_swig_LDA_predictor_names, 2},
    {"R_swig_ExponentialSmoothing_forecast", (DL_FUNC) &R_swig_ExponentialSmoothing_forecast, 3},
+   {"R_swig_new_IVectorVector__SWIG_0", (DL_FUNC) &R_swig_new_IVectorVector__SWIG_0, 0},
    {"R_swig_GaussianProcessRegression_fitted_values", (DL_FUNC) &R_swig_GaussianProcessRegression_fitted_values, 2},
    {"R_swig_KNNClassifier_predictor_names", (DL_FUNC) &R_swig_KNNClassifier_predictor_names, 2},
    {"R_swig_delete_HMCResult", (DL_FUNC) &R_swig_delete_HMCResult, 1},
+   {"R_swig_new_IVectorVector__SWIG_1", (DL_FUNC) &R_swig_new_IVectorVector__SWIG_1, 1},
    {"R_swig_Tensor_arange__SWIG_0", (DL_FUNC) &R_swig_Tensor_arange__SWIG_0, 3},
+   {"R_swig_new_IVectorVector__SWIG_2", (DL_FUNC) &R_swig_new_IVectorVector__SWIG_2, 1},
    {"R_swig_Tensor_arange__SWIG_1", (DL_FUNC) &R_swig_Tensor_arange__SWIG_1, 2},
+   {"R_swig_PolynomialVector___delitem__", (DL_FUNC) &R_swig_PolynomialVector___delitem__, 2},
+   {"R_swig_new_RationalFunction__SWIG_0", (DL_FUNC) &R_swig_new_RationalFunction__SWIG_0, 0},
+   {"R_swig_new_IVectorVector__SWIG_3", (DL_FUNC) &R_swig_new_IVectorVector__SWIG_3, 2},
    {"R_swig_GibbsSampler_sample", (DL_FUNC) &R_swig_GibbsSampler_sample, 4},
+   {"R_swig_new_RationalFunction__SWIG_1", (DL_FUNC) &R_swig_new_RationalFunction__SWIG_1, 2},
+   {"R_swig_MultivariatePolynomial_evaluate", (DL_FUNC) &R_swig_MultivariatePolynomial_evaluate, 3},
    {"R_swig_delete_GBMClassifier", (DL_FUNC) &R_swig_delete_GBMClassifier, 1},
+   {"R_swig_Expr_cos", (DL_FUNC) &R_swig_Expr_cos, 2},
+   {"R_swig_MultivariatePolynomial_num_variables", (DL_FUNC) &R_swig_MultivariatePolynomial_num_variables, 2},
    {"R_swig_KNNClassifier_plot_classification", (DL_FUNC) &R_swig_KNNClassifier_plot_classification, 5},
    {"R_swig_ExponentialSmoothing_aic", (DL_FUNC) &R_swig_ExponentialSmoothing_aic, 2},
    {"R_swig_new_SimulatedAnnealingOptions", (DL_FUNC) &R_swig_new_SimulatedAnnealingOptions, 0},
    {"R_swig_DEOptions_differential_weight_set", (DL_FUNC) &R_swig_DEOptions_differential_weight_set, 2},
    {"R_swig_GLM_test_statistics", (DL_FUNC) &R_swig_GLM_test_statistics, 2},
    {"R_swig_delete_XGBoostRegressor", (DL_FUNC) &R_swig_delete_XGBoostRegressor, 1},
+   {"R_swig_PolynomialVector___getslice__", (DL_FUNC) &R_swig_PolynomialVector___getslice__, 3},
    {"R_swig_IVector_pop", (DL_FUNC) &R_swig_IVector_pop, 2},
    {"R_swig_GLMM_z_values", (DL_FUNC) &R_swig_GLMM_z_values, 2},
    {"R_swig_RandomForestRegressor_max_features_used", (DL_FUNC) &R_swig_RandomForestRegressor_max_features_used, 2},
    {"R_swig_Tensor_shape", (DL_FUNC) &R_swig_Tensor_shape, 2},
+   {"R_swig_PolynomialVector_capacity", (DL_FUNC) &R_swig_PolynomialVector_capacity, 2},
    {"R_swig_delete_RandomForestRegressor", (DL_FUNC) &R_swig_delete_RandomForestRegressor, 1},
    {"R_swig_new_RandomForestRegressor__SWIG_0", (DL_FUNC) &R_swig_new_RandomForestRegressor__SWIG_0, 10},
    {"R_swig_GAOptions_seed_get", (DL_FUNC) &R_swig_GAOptions_seed_get, 2},
    {"R_swig_Ridge_summary", (DL_FUNC) &R_swig_Ridge_summary, 2},
    {"R_swig_RandomForestClassifier_plot_classification", (DL_FUNC) &R_swig_RandomForestClassifier_plot_classification, 5},
    {"R_swig_new_RandomForestRegressor__SWIG_1", (DL_FUNC) &R_swig_new_RandomForestRegressor__SWIG_1, 9},
+   {"R_swig_MultivariatePolynomial_scale", (DL_FUNC) &R_swig_MultivariatePolynomial_scale, 3},
    {"R_swig_new_RandomForestRegressor__SWIG_2", (DL_FUNC) &R_swig_new_RandomForestRegressor__SWIG_2, 8},
    {"R_swig_new_RandomForestRegressor__SWIG_3", (DL_FUNC) &R_swig_new_RandomForestRegressor__SWIG_3, 7},
    {"R_swig_Tensor_slice__SWIG_0", (DL_FUNC) &R_swig_Tensor_slice__SWIG_0, 5},
@@ -68507,7 +83333,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_RandomForestRegressor__SWIG_6", (DL_FUNC) &R_swig_new_RandomForestRegressor__SWIG_6, 4},
    {"R_swig_new_RandomForestRegressor__SWIG_7", (DL_FUNC) &R_swig_new_RandomForestRegressor__SWIG_7, 3},
    {"R_swig_new_RandomForestRegressor__SWIG_8", (DL_FUNC) &R_swig_new_RandomForestRegressor__SWIG_8, 2},
+   {"R_swig_delete_Expr", (DL_FUNC) &R_swig_delete_Expr, 1},
    {"R_swig_delete_LBFGSOptions", (DL_FUNC) &R_swig_delete_LBFGSOptions, 1},
+   {"R_swig_discriminant", (DL_FUNC) &R_swig_discriminant, 2},
    {"R_swig_Tensor_greater", (DL_FUNC) &R_swig_Tensor_greater, 2},
    {"R_swig_IVector_clear", (DL_FUNC) &R_swig_IVector_clear, 1},
    {"R_swig_HMCResult_samples_get", (DL_FUNC) &R_swig_HMCResult_samples_get, 1},
@@ -68520,9 +83348,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ARIMAOptions_seasonal_period_set", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_period_set, 2},
    {"R_swig_delete_DataFrame", (DL_FUNC) &R_swig_delete_DataFrame, 1},
    {"R_swig_AdamOptions_step_size_get", (DL_FUNC) &R_swig_AdamOptions_step_size_get, 2},
+   {"R_swig_IVectorVector___delslice__", (DL_FUNC) &R_swig_IVectorVector___delslice__, 3},
    {"R_swig_delete_GBMRegressor", (DL_FUNC) &R_swig_delete_GBMRegressor, 1},
    {"R_swig_SVector_size", (DL_FUNC) &R_swig_SVector_size, 2},
    {"R_swig_delete_Adam", (DL_FUNC) &R_swig_delete_Adam, 1},
+   {"R_swig_lcm_exponent", (DL_FUNC) &R_swig_lcm_exponent, 3},
    {"R_swig_PAdjustMethod_PAdjustMethod_BY_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_BY_get, 1},
    {"R_swig_NUTS_sample", (DL_FUNC) &R_swig_NUTS_sample, 4},
    {"R_swig_new_DecisionTreeRegressor__SWIG_0", (DL_FUNC) &R_swig_new_DecisionTreeRegressor__SWIG_0, 5},
@@ -68545,6 +83375,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Ridge_plot_cv_curve", (DL_FUNC) &R_swig_Ridge_plot_cv_curve, 2},
    {"R_swig_new_KMeans__SWIG_6", (DL_FUNC) &R_swig_new_KMeans__SWIG_6, 7},
    {"R_swig_new_KMeans__SWIG_7", (DL_FUNC) &R_swig_new_KMeans__SWIG_7, 6},
+   {"R_swig_PolynomialVector_get_allocator", (DL_FUNC) &R_swig_PolynomialVector_get_allocator, 2},
+   {"R_swig_monomial_divides", (DL_FUNC) &R_swig_monomial_divides, 3},
    {"R_swig_Tensor_max_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_max_axis__SWIG_0, 3},
    {"R_swig_new_KMeans__SWIG_8", (DL_FUNC) &R_swig_new_KMeans__SWIG_8, 5},
    {"R_swig_PAdjustMethod_PAdjustMethod_Hommel_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_Hommel_get, 1},
@@ -68559,6 +83391,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GAOptions_elite_count_get", (DL_FUNC) &R_swig_GAOptions_elite_count_get, 2},
    {"R_swig_new_Ridge__SWIG_1", (DL_FUNC) &R_swig_new_Ridge__SWIG_1, 6},
    {"R_swig_AdamOptions_epsilon_get", (DL_FUNC) &R_swig_AdamOptions_epsilon_get, 2},
+   {"R_swig_new_RealRootIntervals", (DL_FUNC) &R_swig_new_RealRootIntervals, 0},
    {"R_swig_new_Ridge__SWIG_2", (DL_FUNC) &R_swig_new_Ridge__SWIG_2, 5},
    {"R_swig_DataFrame_is_null", (DL_FUNC) &R_swig_DataFrame_is_null, 4},
    {"R_swig_new_Ridge__SWIG_3", (DL_FUNC) &R_swig_new_Ridge__SWIG_3, 4},
@@ -68572,49 +83405,67 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SVector___nonzero__", (DL_FUNC) &R_swig_SVector___nonzero__, 2},
    {"R_swig_Tensor_greater_equal", (DL_FUNC) &R_swig_Tensor_greater_equal, 2},
    {"R_swig_GBMRegressor_observations", (DL_FUNC) &R_swig_GBMRegressor_observations, 2},
-   {"R_swig_DifferentiableSeparableFunction_evaluate", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_evaluate, 3},
    {"R_swig_GLMM_num_groups", (DL_FUNC) &R_swig_GLMM_num_groups, 2},
+   {"R_swig_DifferentiableSeparableFunction_evaluate", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_evaluate, 3},
+   {"R_swig_new_SquareFreeFactorVector__SWIG_0", (DL_FUNC) &R_swig_new_SquareFreeFactorVector__SWIG_0, 0},
    {"R_swig_delete_Ridge", (DL_FUNC) &R_swig_delete_Ridge, 1},
+   {"R_swig_delete_RealRootIntervals", (DL_FUNC) &R_swig_delete_RealRootIntervals, 1},
+   {"R_swig_new_SquareFreeFactorVector__SWIG_1", (DL_FUNC) &R_swig_new_SquareFreeFactorVector__SWIG_1, 1},
    {"R_swig_KernelRegression_observations", (DL_FUNC) &R_swig_KernelRegression_observations, 2},
+   {"R_swig_new_SquareFreeFactorVector__SWIG_2", (DL_FUNC) &R_swig_new_SquareFreeFactorVector__SWIG_2, 1},
+   {"R_swig_new_SquareFreeFactorVector__SWIG_3", (DL_FUNC) &R_swig_new_SquareFreeFactorVector__SWIG_3, 2},
    {"R_swig_HyperDual_sqrt", (DL_FUNC) &R_swig_HyperDual_sqrt, 2},
    {"R_swig_LDA_num_discriminants", (DL_FUNC) &R_swig_LDA_num_discriminants, 2},
    {"R_swig_new_XGBoostRegressor__SWIG_10", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_10, 3},
    {"R_swig_new_XGBoostRegressor__SWIG_11", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_11, 2},
    {"R_swig_Ridge_has_intercept", (DL_FUNC) &R_swig_Ridge_has_intercept, 2},
    {"R_swig_GradientDescent_optimize", (DL_FUNC) &R_swig_GradientDescent_optimize, 4},
+   {"R_swig_ABLine_color_set", (DL_FUNC) &R_swig_ABLine_color_set, 2},
+   {"R_swig_Expr_differentiate", (DL_FUNC) &R_swig_Expr_differentiate, 3},
    {"R_swig_DPair_first_get", (DL_FUNC) &R_swig_DPair_first_get, 2},
    {"R_swig_delete_XGBoostClassifier", (DL_FUNC) &R_swig_delete_XGBoostClassifier, 1},
+   {"R_swig_delete_MultivariatePolynomialVector", (DL_FUNC) &R_swig_delete_MultivariatePolynomialVector, 1},
    {"R_swig_RandomForestClassifier_training_accuracy", (DL_FUNC) &R_swig_RandomForestClassifier_training_accuracy, 2},
    {"R_swig_Tensor_prod_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_prod_axis__SWIG_0, 3},
    {"R_swig_SizeVector_pop_back", (DL_FUNC) &R_swig_SizeVector_pop_back, 1},
    {"R_swig_LMM_group_labels", (DL_FUNC) &R_swig_LMM_group_labels, 2},
    {"R_swig_Tensor_prod_axis__SWIG_1", (DL_FUNC) &R_swig_Tensor_prod_axis__SWIG_1, 2},
+   {"R_swig_new_PolyExtendedGcdResult", (DL_FUNC) &R_swig_new_PolyExtendedGcdResult, 0},
    {"R_swig_GLMM_group_variable", (DL_FUNC) &R_swig_GLMM_group_variable, 2},
-   {"R_swig_delete_ScatterPlot", (DL_FUNC) &R_swig_delete_ScatterPlot, 1},
+   {"R_swig_SquareFreeFactorVector_pop_back", (DL_FUNC) &R_swig_SquareFreeFactorVector_pop_back, 1},
    {"R_swig_XGBoostClassifier_n_trees", (DL_FUNC) &R_swig_XGBoostClassifier_n_trees, 2},
    {"R_swig_new_Callback", (DL_FUNC) &R_swig_new_Callback, 0},
    {"R_swig_ElasticNet_rmse", (DL_FUNC) &R_swig_ElasticNet_rmse, 2},
    {"R_swig_INLAMixedModel_observations", (DL_FUNC) &R_swig_INLAMixedModel_observations, 2},
    {"R_swig_HyperDual_pow", (DL_FUNC) &R_swig_HyperDual_pow, 3},
+   {"R_swig_RPlot_line__SWIG_0", (DL_FUNC) &R_swig_RPlot_line__SWIG_0, 7},
    {"R_swig_DVector_swap", (DL_FUNC) &R_swig_DVector_swap, 2},
    {"R_swig_RandomForestRegressor_summary", (DL_FUNC) &R_swig_RandomForestRegressor_summary, 2},
    {"R_swig_delete_SimulatedAnnealing", (DL_FUNC) &R_swig_delete_SimulatedAnnealing, 1},
+   {"R_swig_RPlot_line__SWIG_1", (DL_FUNC) &R_swig_RPlot_line__SWIG_1, 6},
    {"R_swig_SVM_summary", (DL_FUNC) &R_swig_SVM_summary, 2},
+   {"R_swig_RPlot_line__SWIG_2", (DL_FUNC) &R_swig_RPlot_line__SWIG_2, 5},
    {"R_swig_DataFrame_to_string__SWIG_0", (DL_FUNC) &R_swig_DataFrame_to_string__SWIG_0, 3},
+   {"R_swig_RPlot_line__SWIG_3", (DL_FUNC) &R_swig_RPlot_line__SWIG_3, 4},
    {"R_swig_DataFrame_to_string__SWIG_1", (DL_FUNC) &R_swig_DataFrame_to_string__SWIG_1, 2},
    {"R_swig_Dual_subtract_scalar", (DL_FUNC) &R_swig_Dual_subtract_scalar, 3},
    {"R_swig_LMM_predict", (DL_FUNC) &R_swig_LMM_predict, 3},
    {"R_swig_Tensor_set", (DL_FUNC) &R_swig_Tensor_set, 3},
+   {"R_swig_PolynomialVector_back", (DL_FUNC) &R_swig_PolynomialVector_back, 2},
+   {"R_swig_LegendEntry_label_get", (DL_FUNC) &R_swig_LegendEntry_label_get, 2},
+   {"R_swig_IVectorVector_get_allocator", (DL_FUNC) &R_swig_IVectorVector_get_allocator, 2},
    {"R_swig_new_SGDOptions", (DL_FUNC) &R_swig_new_SGDOptions, 0},
    {"R_swig_ARIMAOptions_coefficient_bound_set", (DL_FUNC) &R_swig_ARIMAOptions_coefficient_bound_set, 2},
    {"R_swig_DataFrame_nrows", (DL_FUNC) &R_swig_DataFrame_nrows, 2},
    {"R_swig_new_DVector__SWIG_0", (DL_FUNC) &R_swig_new_DVector__SWIG_0, 0},
+   {"R_swig_SquareFreeFactorVector_assign", (DL_FUNC) &R_swig_SquareFreeFactorVector_assign, 3},
    {"R_swig_new_DVector__SWIG_1", (DL_FUNC) &R_swig_new_DVector__SWIG_1, 1},
    {"R_swig_SVector_resize__SWIG_0", (DL_FUNC) &R_swig_SVector_resize__SWIG_0, 2},
    {"R_swig_LM_standard_errors", (DL_FUNC) &R_swig_LM_standard_errors, 2},
    {"R_swig_new_DVector__SWIG_2", (DL_FUNC) &R_swig_new_DVector__SWIG_2, 1},
    {"R_swig_SVector_resize__SWIG_1", (DL_FUNC) &R_swig_SVector_resize__SWIG_1, 3},
    {"R_swig_new_DVector__SWIG_3", (DL_FUNC) &R_swig_new_DVector__SWIG_3, 2},
+   {"R_swig_MultivariatePolynomialVector___setslice__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___setslice__, 4},
    {"R_swig_KernelRegression_bandwidth_was_selected", (DL_FUNC) &R_swig_KernelRegression_bandwidth_was_selected, 2},
    {"R_swig_DataSeries_kind_set", (DL_FUNC) &R_swig_DataSeries_kind_set, 2},
    {"R_swig_RandomForestClassifier_n_trees", (DL_FUNC) &R_swig_RandomForestClassifier_n_trees, 2},
@@ -68626,6 +83477,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_min_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_min_axis__SWIG_0, 3},
    {"R_swig_Tensor_min_axis__SWIG_1", (DL_FUNC) &R_swig_Tensor_min_axis__SWIG_1, 2},
    {"R_swig_DataSeries_Kind_Bar_get", (DL_FUNC) &R_swig_DataSeries_Kind_Bar_get, 1},
+   {"R_swig_real_roots__SWIG_0", (DL_FUNC) &R_swig_real_roots__SWIG_0, 3},
+   {"R_swig_real_roots__SWIG_1", (DL_FUNC) &R_swig_real_roots__SWIG_1, 2},
    {"R_swig_Dual_add_scalar", (DL_FUNC) &R_swig_Dual_add_scalar, 3},
    {"R_swig_DVectorVector_back", (DL_FUNC) &R_swig_DVectorVector_back, 2},
    {"R_swig_Tensor_prod", (DL_FUNC) &R_swig_Tensor_prod, 2},
@@ -68637,30 +83490,39 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Plot_x_label", (DL_FUNC) &R_swig_Plot_x_label, 3},
    {"R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1", (DL_FUNC) &R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1, 4},
    {"R_swig_XGBoostClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_XGBoostClassifier_plot_decision_regions__SWIG_0, 5},
+   {"R_swig_Polynomial_add", (DL_FUNC) &R_swig_Polynomial_add, 3},
    {"R_swig_HypothesisTestResult_conf_int_upper_get", (DL_FUNC) &R_swig_HypothesisTestResult_conf_int_upper_get, 2},
    {"R_swig_GibbsOptions_num_warmup_set", (DL_FUNC) &R_swig_GibbsOptions_num_warmup_set, 2},
+   {"R_swig_RationalFunction_numerator", (DL_FUNC) &R_swig_RationalFunction_numerator, 2},
+   {"R_swig_new_MultivariatePolynomial__SWIG_0", (DL_FUNC) &R_swig_new_MultivariatePolynomial__SWIG_0, 0},
    {"R_swig_GLMM_predict", (DL_FUNC) &R_swig_GLMM_predict, 3},
    {"R_swig_LMM_residual_std_dev", (DL_FUNC) &R_swig_LMM_residual_std_dev, 2},
    {"R_swig_IVector___len__", (DL_FUNC) &R_swig_IVector___len__, 2},
+   {"R_swig_new_MultivariatePolynomial__SWIG_1", (DL_FUNC) &R_swig_new_MultivariatePolynomial__SWIG_1, 1},
    {"R_swig_ARIMAOptions_q_set", (DL_FUNC) &R_swig_ARIMAOptions_q_set, 2},
+   {"R_swig_new_MultivariatePolynomial__SWIG_2", (DL_FUNC) &R_swig_new_MultivariatePolynomial__SWIG_2, 3},
+   {"R_swig_MultivariatePolynomialVector___getslice__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___getslice__, 3},
+   {"R_swig_Expr_subtract", (DL_FUNC) &R_swig_Expr_subtract, 3},
    {"R_swig_LM_print_summary", (DL_FUNC) &R_swig_LM_print_summary, 1},
+   {"R_swig_delete_LegendEntry", (DL_FUNC) &R_swig_delete_LegendEntry, 1},
    {"R_swig_ARIMAOptions_include_mean_get", (DL_FUNC) &R_swig_ARIMAOptions_include_mean_get, 2},
    {"R_swig_IVector_get_allocator", (DL_FUNC) &R_swig_IVector_get_allocator, 2},
    {"R_swig_new_KMeans__SWIG_10", (DL_FUNC) &R_swig_new_KMeans__SWIG_10, 3},
    {"R_swig_ElasticNet_formula_text", (DL_FUNC) &R_swig_ElasticNet_formula_text, 2},
    {"R_swig_Var_multiply", (DL_FUNC) &R_swig_Var_multiply, 3},
+   {"R_swig_newton_interpolate", (DL_FUNC) &R_swig_newton_interpolate, 3},
    {"R_swig_RandomForestRegressor_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_RandomForestRegressor_plot_residuals_vs_fitted, 2},
    {"R_swig_new_KMeans__SWIG_11", (DL_FUNC) &R_swig_new_KMeans__SWIG_11, 2},
-   {"R_swig_proportion_test_two_sample__SWIG_0", (DL_FUNC) &R_swig_proportion_test_two_sample__SWIG_0, 8},
    {"R_swig_DecisionTreeClassifier_observations", (DL_FUNC) &R_swig_DecisionTreeClassifier_observations, 2},
+   {"R_swig_proportion_test_two_sample__SWIG_0", (DL_FUNC) &R_swig_proportion_test_two_sample__SWIG_0, 8},
    {"R_swig_GBMRegressor_r_squared", (DL_FUNC) &R_swig_GBMRegressor_r_squared, 2},
    {"R_swig_proportion_test_two_sample__SWIG_1", (DL_FUNC) &R_swig_proportion_test_two_sample__SWIG_1, 7},
-   {"R_swig_proportion_test_two_sample__SWIG_2", (DL_FUNC) &R_swig_proportion_test_two_sample__SWIG_2, 6},
    {"R_swig_RandomForestRegressor_feature_importance", (DL_FUNC) &R_swig_RandomForestRegressor_feature_importance, 2},
+   {"R_swig_proportion_test_two_sample__SWIG_2", (DL_FUNC) &R_swig_proportion_test_two_sample__SWIG_2, 6},
    {"R_swig_PSOOptions_seed_set", (DL_FUNC) &R_swig_PSOOptions_seed_set, 2},
-   {"R_swig_proportion_test_two_sample__SWIG_3", (DL_FUNC) &R_swig_proportion_test_two_sample__SWIG_3, 5},
    {"R_swig_new_GBMClassifier__SWIG_0", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_0, 9},
    {"R_swig_KernelRegression_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_KernelRegression_plot_residuals_vs_fitted, 2},
+   {"R_swig_proportion_test_two_sample__SWIG_3", (DL_FUNC) &R_swig_proportion_test_two_sample__SWIG_3, 5},
    {"R_swig_new_GBMClassifier__SWIG_1", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_1, 8},
    {"R_swig_ElasticNet_alpha", (DL_FUNC) &R_swig_ElasticNet_alpha, 2},
    {"R_swig_Plot_show__SWIG_0", (DL_FUNC) &R_swig_Plot_show__SWIG_0, 2},
@@ -68670,12 +83532,17 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_HMC", (DL_FUNC) &R_swig_delete_HMC, 1},
    {"R_swig_new_GBMClassifier__SWIG_3", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_3, 6},
    {"R_swig_INLAMixedModel_random_effects_sd_for_group", (DL_FUNC) &R_swig_INLAMixedModel_random_effects_sd_for_group, 3},
+   {"R_swig_PolynomialVector_pop_back", (DL_FUNC) &R_swig_PolynomialVector_pop_back, 1},
    {"R_swig_new_GBMClassifier__SWIG_4", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_4, 5},
    {"R_swig_new_GBMClassifier__SWIG_5", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_5, 4},
    {"R_swig_new_GBMClassifier__SWIG_6", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_6, 3},
+   {"R_swig_RPlot_plot__SWIG_0", (DL_FUNC) &R_swig_RPlot_plot__SWIG_0, 6},
    {"R_swig_new_GBMClassifier__SWIG_7", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_7, 2},
+   {"R_swig_RPlot_plot__SWIG_1", (DL_FUNC) &R_swig_RPlot_plot__SWIG_1, 5},
+   {"R_swig_RPlot_plot__SWIG_2", (DL_FUNC) &R_swig_RPlot_plot__SWIG_2, 4},
    {"R_swig_Tensor_power", (DL_FUNC) &R_swig_Tensor_power, 2},
    {"R_swig_LDA_confusion_matrix", (DL_FUNC) &R_swig_LDA_confusion_matrix, 1},
+   {"R_swig_RPlot_plot__SWIG_3", (DL_FUNC) &R_swig_RPlot_plot__SWIG_3, 3},
    {"R_swig_DataSeries_y_get", (DL_FUNC) &R_swig_DataSeries_y_get, 1},
    {"R_swig_XGBoostRegressor_predict", (DL_FUNC) &R_swig_XGBoostRegressor_predict, 3},
    {"R_swig_new_NaiveBayesClassifier__SWIG_0", (DL_FUNC) &R_swig_new_NaiveBayesClassifier__SWIG_0, 4},
@@ -68698,18 +83565,23 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_PSO__SWIG_1", (DL_FUNC) &R_swig_new_PSO__SWIG_1, 0},
    {"R_swig_SVector___setitem__", (DL_FUNC) &R_swig_SVector___setitem__, 3},
    {"R_swig_new_SVector__SWIG_2", (DL_FUNC) &R_swig_new_SVector__SWIG_2, 1},
+   {"R_swig_SquareFreeFactorVector_size", (DL_FUNC) &R_swig_SquareFreeFactorVector_size, 2},
    {"R_swig_DVector_clear", (DL_FUNC) &R_swig_DVector_clear, 1},
    {"R_swig_new_SVector__SWIG_3", (DL_FUNC) &R_swig_new_SVector__SWIG_3, 2},
    {"R_swig_ARIMAOptions_de_max_generations_get", (DL_FUNC) &R_swig_ARIMAOptions_de_max_generations_get, 2},
+   {"R_swig_Expr_variable", (DL_FUNC) &R_swig_Expr_variable, 2},
+   {"R_swig_RealRootIntervals_upper_set", (DL_FUNC) &R_swig_RealRootIntervals_upper_set, 2},
    {"R_swig_ElasticNet_plot_cv_curve", (DL_FUNC) &R_swig_ElasticNet_plot_cv_curve, 2},
    {"R_swig_Ridge_observations", (DL_FUNC) &R_swig_Ridge_observations, 2},
    {"R_swig_DataSeries_color_set", (DL_FUNC) &R_swig_DataSeries_color_set, 2},
    {"R_swig_LM_anova", (DL_FUNC) &R_swig_LM_anova, 1},
    {"R_swig_new_DecisionTreeClassifier__SWIG_0", (DL_FUNC) &R_swig_new_DecisionTreeClassifier__SWIG_0, 6},
    {"R_swig_XGBoostRegressor_plot_predicted_vs_actual", (DL_FUNC) &R_swig_XGBoostRegressor_plot_predicted_vs_actual, 2},
-   {"R_swig_HypothesisTestResult_parameter1_set", (DL_FUNC) &R_swig_HypothesisTestResult_parameter1_set, 2},
+   {"R_swig_poly_quotient", (DL_FUNC) &R_swig_poly_quotient, 3},
    {"R_swig_new_DecisionTreeClassifier__SWIG_1", (DL_FUNC) &R_swig_new_DecisionTreeClassifier__SWIG_1, 5},
    {"R_swig_RandomForestRegressor_predictor_names", (DL_FUNC) &R_swig_RandomForestRegressor_predictor_names, 2},
+   {"R_swig_HypothesisTestResult_parameter1_set", (DL_FUNC) &R_swig_HypothesisTestResult_parameter1_set, 2},
+   {"R_swig_Expr_add", (DL_FUNC) &R_swig_Expr_add, 3},
    {"R_swig_LMM_has_random_intercept", (DL_FUNC) &R_swig_LMM_has_random_intercept, 2},
    {"R_swig_new_DecisionTreeClassifier__SWIG_2", (DL_FUNC) &R_swig_new_DecisionTreeClassifier__SWIG_2, 4},
    {"R_swig_new_DecisionTreeClassifier__SWIG_3", (DL_FUNC) &R_swig_new_DecisionTreeClassifier__SWIG_3, 3},
@@ -68720,6 +83592,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_XGBoostRegressor_print_summary", (DL_FUNC) &R_swig_XGBoostRegressor_print_summary, 1},
    {"R_swig_delete_SVM", (DL_FUNC) &R_swig_delete_SVM, 1},
    {"R_swig_LM_predict_frame__SWIG_0", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_0, 4},
+   {"R_swig_IVectorVector_push_back", (DL_FUNC) &R_swig_IVectorVector_push_back, 2},
    {"R_swig_LM_predict_frame__SWIG_1", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_1, 3},
    {"R_swig_GibbsResult_samples_set", (DL_FUNC) &R_swig_GibbsResult_samples_set, 2},
    {"R_swig_ARIMAOptions_p_get", (DL_FUNC) &R_swig_ARIMAOptions_p_get, 2},
@@ -68732,10 +83605,12 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GibbsOptions_target_accept_rate_get", (DL_FUNC) &R_swig_GibbsOptions_target_accept_rate_get, 2},
    {"R_swig_Var_value", (DL_FUNC) &R_swig_Var_value, 2},
    {"R_swig_Tensor_mean", (DL_FUNC) &R_swig_Tensor_mean, 2},
+   {"R_swig_GGPlot_save", (DL_FUNC) &R_swig_GGPlot_save, 2},
    {"R_swig_Ridge_lambda_was_selected", (DL_FUNC) &R_swig_Ridge_lambda_was_selected, 2},
    {"R_swig_new_LDA__SWIG_0", (DL_FUNC) &R_swig_new_LDA__SWIG_0, 3},
    {"R_swig_GradientDescentOptions_tolerance_set", (DL_FUNC) &R_swig_GradientDescentOptions_tolerance_set, 2},
    {"R_swig_LBFGSOptions_armijo_c1_get", (DL_FUNC) &R_swig_LBFGSOptions_armijo_c1_get, 2},
+   {"R_swig_square_free_factorization", (DL_FUNC) &R_swig_square_free_factorization, 2},
    {"R_swig_GBMRegressor_print_summary", (DL_FUNC) &R_swig_GBMRegressor_print_summary, 1},
    {"R_swig_GaussianProcessRegression_noise_variance", (DL_FUNC) &R_swig_GaussianProcessRegression_noise_variance, 2},
    {"R_swig_new_LDA__SWIG_1", (DL_FUNC) &R_swig_new_LDA__SWIG_1, 2},
@@ -68744,13 +83619,24 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LM_rank", (DL_FUNC) &R_swig_LM_rank, 2},
    {"R_swig_IVector_back", (DL_FUNC) &R_swig_IVector_back, 2},
    {"R_swig_delete_DEOptions", (DL_FUNC) &R_swig_delete_DEOptions, 1},
+   {"R_swig_SquareFreeFactorVector___len__", (DL_FUNC) &R_swig_SquareFreeFactorVector___len__, 2},
    {"R_swig_Ridge_intercept", (DL_FUNC) &R_swig_Ridge_intercept, 2},
+   {"R_swig_MultivariatePolynomialVector_empty", (DL_FUNC) &R_swig_MultivariatePolynomialVector_empty, 2},
+   {"R_swig_poly_gcd", (DL_FUNC) &R_swig_poly_gcd, 3},
+   {"R_swig_ABLine_vertical_set", (DL_FUNC) &R_swig_ABLine_vertical_set, 2},
    {"R_swig_GaussianProcessRegression_plot_length_scale_profile", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_length_scale_profile, 2},
+   {"R_swig_PolynomialVector___getitem__", (DL_FUNC) &R_swig_PolynomialVector___getitem__, 3},
    {"R_swig_INLAMixedModel_random_effect_names", (DL_FUNC) &R_swig_INLAMixedModel_random_effect_names, 2},
    {"R_swig_ExponentialSmoothingOptions_trend_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_trend_get, 2},
+   {"R_swig_Polynomial_coefficients", (DL_FUNC) &R_swig_Polynomial_coefficients, 2},
+   {"R_swig_GGPlot_geom_line__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_line__SWIG_0, 4},
+   {"R_swig_new_SquareFreeFactor", (DL_FUNC) &R_swig_new_SquareFreeFactor, 0},
+   {"R_swig_GGPlot_geom_line__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_line__SWIG_1, 3},
    {"R_swig_DEOptions_max_generations_get", (DL_FUNC) &R_swig_DEOptions_max_generations_get, 2},
+   {"R_swig_GGPlot_geom_line__SWIG_2", (DL_FUNC) &R_swig_GGPlot_geom_line__SWIG_2, 2},
    {"R_swig_PSOOptions_inertia_strategy_set", (DL_FUNC) &R_swig_PSOOptions_inertia_strategy_set, 2},
    {"R_swig_KNNClassifier_summary", (DL_FUNC) &R_swig_KNNClassifier_summary, 2},
+   {"R_swig_IVectorVector_swap", (DL_FUNC) &R_swig_IVectorVector_swap, 2},
    {"R_swig_Var_tan", (DL_FUNC) &R_swig_Var_tan, 2},
    {"R_swig_LBFGSOptions_tolerance_get", (DL_FUNC) &R_swig_LBFGSOptions_tolerance_get, 2},
    {"R_swig_DataFrame_is_numeric_column", (DL_FUNC) &R_swig_DataFrame_is_numeric_column, 3},
@@ -68768,9 +83654,13 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_KernelRegression__SWIG_4", (DL_FUNC) &R_swig_new_KernelRegression__SWIG_4, 2},
    {"R_swig_DPair_second_set", (DL_FUNC) &R_swig_DPair_second_set, 2},
    {"R_swig_DVectorVector_front", (DL_FUNC) &R_swig_DVectorVector_front, 2},
+   {"R_swig_GGPlot_geom_histogram__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_histogram__SWIG_0, 4},
    {"R_swig_NUTSResult_final_step_size_set", (DL_FUNC) &R_swig_NUTSResult_final_step_size_set, 2},
+   {"R_swig_GGPlot_geom_histogram__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_histogram__SWIG_1, 3},
    {"R_swig_GBMRegressor_feature_importance", (DL_FUNC) &R_swig_GBMRegressor_feature_importance, 2},
+   {"R_swig_GGPlot_geom_histogram__SWIG_2", (DL_FUNC) &R_swig_GGPlot_geom_histogram__SWIG_2, 2},
    {"R_swig_ElasticNet_summary", (DL_FUNC) &R_swig_ElasticNet_summary, 2},
+   {"R_swig_reduce", (DL_FUNC) &R_swig_reduce, 4},
    {"R_swig_NaiveBayesClassifier_class_priors", (DL_FUNC) &R_swig_NaiveBayesClassifier_class_priors, 2},
    {"R_swig_SGDOptions_seed_set", (DL_FUNC) &R_swig_SGDOptions_seed_set, 2},
    {"R_swig_GBMClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_GBMClassifier_plot_decision_regions__SWIG_0, 5},
@@ -68784,15 +83674,17 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GAOptions_mutation_std_dev_get", (DL_FUNC) &R_swig_GAOptions_mutation_std_dev_get, 2},
    {"R_swig_NUTSOptions_target_accept_rate_get", (DL_FUNC) &R_swig_NUTSOptions_target_accept_rate_get, 2},
    {"R_swig_delete_DecisionTreeClassifier", (DL_FUNC) &R_swig_delete_DecisionTreeClassifier, 1},
-   {"R_swig_LinePlot_line__SWIG_0", (DL_FUNC) &R_swig_LinePlot_line__SWIG_0, 7},
    {"R_swig_Tensor_expand_dims", (DL_FUNC) &R_swig_Tensor_expand_dims, 2},
    {"R_swig_RandomForestRegressor_observations", (DL_FUNC) &R_swig_RandomForestRegressor_observations, 2},
-   {"R_swig_LinePlot_line__SWIG_1", (DL_FUNC) &R_swig_LinePlot_line__SWIG_1, 6},
-   {"R_swig_LinePlot_line__SWIG_2", (DL_FUNC) &R_swig_LinePlot_line__SWIG_2, 5},
+   {"R_swig_GGPlot_labs__SWIG_0", (DL_FUNC) &R_swig_GGPlot_labs__SWIG_0, 5},
    {"R_swig_Ridge_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_Ridge_plot_residuals_vs_fitted, 2},
-   {"R_swig_LinePlot_line__SWIG_3", (DL_FUNC) &R_swig_LinePlot_line__SWIG_3, 4},
+   {"R_swig_GGPlot_labs__SWIG_1", (DL_FUNC) &R_swig_GGPlot_labs__SWIG_1, 4},
+   {"R_swig_Expr_power", (DL_FUNC) &R_swig_Expr_power, 3},
+   {"R_swig_GGPlot_labs__SWIG_2", (DL_FUNC) &R_swig_GGPlot_labs__SWIG_2, 3},
    {"R_swig_new_GibbsResult", (DL_FUNC) &R_swig_new_GibbsResult, 0},
+   {"R_swig_IVectorVector___getitem__", (DL_FUNC) &R_swig_IVectorVector___getitem__, 3},
    {"R_swig_Tensor_set_flat", (DL_FUNC) &R_swig_Tensor_set_flat, 3},
+   {"R_swig_GGPlot_labs__SWIG_3", (DL_FUNC) &R_swig_GGPlot_labs__SWIG_3, 2},
    {"R_swig_new_DVectorPair__SWIG_0", (DL_FUNC) &R_swig_new_DVectorPair__SWIG_0, 0},
    {"R_swig_DVectorVector___delslice__", (DL_FUNC) &R_swig_DVectorVector___delslice__, 3},
    {"R_swig_HMCOptions_initial_step_size_get", (DL_FUNC) &R_swig_HMCOptions_initial_step_size_get, 2},
@@ -68805,13 +83697,17 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_AgglomerativeClustering_summary", (DL_FUNC) &R_swig_AgglomerativeClustering_summary, 2},
    {"R_swig_RandomForestRegressor_oob_rmse", (DL_FUNC) &R_swig_RandomForestRegressor_oob_rmse, 2},
    {"R_swig_GibbsOptions_seed_set", (DL_FUNC) &R_swig_GibbsOptions_seed_set, 2},
+   {"R_swig_delete_PolynomialVector", (DL_FUNC) &R_swig_delete_PolynomialVector, 1},
    {"R_swig_KNNClassifier_predict_frame", (DL_FUNC) &R_swig_KNNClassifier_predict_frame, 2},
    {"R_swig_RandomForestRegressor_print_summary", (DL_FUNC) &R_swig_RandomForestRegressor_print_summary, 1},
    {"R_swig_SVector_back", (DL_FUNC) &R_swig_SVector_back, 2},
    {"R_swig_new_NUTS__SWIG_0", (DL_FUNC) &R_swig_new_NUTS__SWIG_0, 1},
+   {"R_swig_SquareFreeFactorVector_empty", (DL_FUNC) &R_swig_SquareFreeFactorVector_empty, 2},
    {"R_swig_ARIMAOptions_de_population_size_set", (DL_FUNC) &R_swig_ARIMAOptions_de_population_size_set, 2},
    {"R_swig_LM_f_statistic", (DL_FUNC) &R_swig_LM_f_statistic, 2},
    {"R_swig_new_NUTS__SWIG_1", (DL_FUNC) &R_swig_new_NUTS__SWIG_1, 0},
+   {"R_swig_GGPlot_geom_density__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_density__SWIG_0, 3},
+   {"R_swig_GGPlot_geom_density__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_density__SWIG_1, 2},
    {"R_swig_GBMRegressor_summary", (DL_FUNC) &R_swig_GBMRegressor_summary, 2},
    {"R_swig_ElasticNet_cv_mean_squared_error", (DL_FUNC) &R_swig_ElasticNet_cv_mean_squared_error, 2},
    {"R_swig_GAOptions_selection_strategy_get", (DL_FUNC) &R_swig_GAOptions_selection_strategy_get, 2},
@@ -68824,6 +83720,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_KernelRegression_plot_cv_curve", (DL_FUNC) &R_swig_KernelRegression_plot_cv_curve, 2},
    {"R_swig_ExponentialSmoothingOptions_beta_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_beta_set, 2},
    {"R_swig_SimulatedAnnealingOptions_step_std_dev_get", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_step_std_dev_get, 2},
+   {"R_swig_Expr_log", (DL_FUNC) &R_swig_Expr_log, 2},
    {"R_swig_SimulatedAnnealingOptions_seed_get", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_seed_get, 2},
    {"R_swig_delete_KernelRegression", (DL_FUNC) &R_swig_delete_KernelRegression, 1},
    {"R_swig_new_GaussianProcessRegression__SWIG_0", (DL_FUNC) &R_swig_new_GaussianProcessRegression__SWIG_0, 7},
@@ -68832,6 +83729,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_Tape", (DL_FUNC) &R_swig_new_Tape, 0},
    {"R_swig_Tensor_subtract", (DL_FUNC) &R_swig_Tensor_subtract, 2},
    {"R_swig_new_GaussianProcessRegression__SWIG_3", (DL_FUNC) &R_swig_new_GaussianProcessRegression__SWIG_3, 4},
+   {"R_swig_GGPlot_theme_bw", (DL_FUNC) &R_swig_GGPlot_theme_bw, 2},
    {"R_swig_new_GaussianProcessRegression__SWIG_4", (DL_FUNC) &R_swig_new_GaussianProcessRegression__SWIG_4, 3},
    {"R_swig_GLM_formula_text", (DL_FUNC) &R_swig_GLM_formula_text, 2},
    {"R_swig_new_GaussianProcessRegression__SWIG_5", (DL_FUNC) &R_swig_new_GaussianProcessRegression__SWIG_5, 2},
@@ -68842,15 +83740,18 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector___getitem__", (DL_FUNC) &R_swig_IVector___getitem__, 3},
    {"R_swig_LBFGSOptions_wolfe_c2_get", (DL_FUNC) &R_swig_LBFGSOptions_wolfe_c2_get, 2},
    {"R_swig_HMCResult_accept_rate_set", (DL_FUNC) &R_swig_HMCResult_accept_rate_set, 2},
+   {"R_swig_PolynomialVector___delslice__", (DL_FUNC) &R_swig_PolynomialVector___delslice__, 3},
    {"R_swig_GLMM_fitted_values", (DL_FUNC) &R_swig_GLMM_fitted_values, 2},
    {"R_swig_PSOOptions_topology_get", (DL_FUNC) &R_swig_PSOOptions_topology_get, 2},
    {"R_swig_SVector_empty", (DL_FUNC) &R_swig_SVector_empty, 2},
    {"R_swig_HypothesisTestResult_alternative_get", (DL_FUNC) &R_swig_HypothesisTestResult_alternative_get, 2},
+   {"R_swig_PolyExtendedGcdResult_s_set", (DL_FUNC) &R_swig_PolyExtendedGcdResult_s_set, 2},
    {"R_swig_LMM_coefficients", (DL_FUNC) &R_swig_LMM_coefficients, 2},
    {"R_swig_KMeans_print_summary", (DL_FUNC) &R_swig_KMeans_print_summary, 1},
    {"R_swig_KNNRegressor_k", (DL_FUNC) &R_swig_KNNRegressor_k, 2},
    {"R_swig_Ridge_r_squared", (DL_FUNC) &R_swig_Ridge_r_squared, 2},
    {"R_swig_Ridge_lambda_path", (DL_FUNC) &R_swig_Ridge_lambda_path, 2},
+   {"R_swig_MultivariatePolynomialVector___nonzero__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___nonzero__, 2},
    {"R_swig_Ridge_lambda", (DL_FUNC) &R_swig_Ridge_lambda, 2},
    {"R_swig_Var_sqrt", (DL_FUNC) &R_swig_Var_sqrt, 2},
    {"R_swig_GLM_save_diagnostic_plots", (DL_FUNC) &R_swig_GLM_save_diagnostic_plots, 2},
@@ -68863,8 +83764,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LM_coefficient_names", (DL_FUNC) &R_swig_LM_coefficient_names, 2},
    {"R_swig_new_HMCOptions", (DL_FUNC) &R_swig_new_HMCOptions, 0},
    {"R_swig_GLM_coefficient_names", (DL_FUNC) &R_swig_GLM_coefficient_names, 2},
+   {"R_swig_RealRootIntervals_lower_set", (DL_FUNC) &R_swig_RealRootIntervals_lower_set, 2},
    {"R_swig_INLAMixedModel_coefficient_names", (DL_FUNC) &R_swig_INLAMixedModel_coefficient_names, 2},
    {"R_swig_KMeans_feature_names", (DL_FUNC) &R_swig_KMeans_feature_names, 2},
+   {"R_swig_IVectorVector___len__", (DL_FUNC) &R_swig_IVectorVector___len__, 2},
+   {"R_swig_SquareFreeFactorVector___getitem__", (DL_FUNC) &R_swig_SquareFreeFactorVector___getitem__, 3},
    {"R_swig_DataSeries_marker_size_get", (DL_FUNC) &R_swig_DataSeries_marker_size_get, 2},
    {"R_swig_XGBoostClassifier_predict_frame", (DL_FUNC) &R_swig_XGBoostClassifier_predict_frame, 2},
    {"R_swig_Tensor_max_pool2d__SWIG_0", (DL_FUNC) &R_swig_Tensor_max_pool2d__SWIG_0, 3},
@@ -68881,15 +83785,21 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Ridge_print_summary", (DL_FUNC) &R_swig_Ridge_print_summary, 1},
    {"R_swig_new_DBSCAN__SWIG_5", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_5, 4},
    {"R_swig_delete_RWMResult", (DL_FUNC) &R_swig_delete_RWMResult, 1},
+   {"R_swig_Polynomial_subtract", (DL_FUNC) &R_swig_Polynomial_subtract, 3},
+   {"R_swig_IVectorVector_pop", (DL_FUNC) &R_swig_IVectorVector_pop, 2},
    {"R_swig_new_DBSCAN__SWIG_6", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_6, 3},
    {"R_swig_new_DBSCAN__SWIG_7", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_7, 2},
+   {"R_swig_GGPlot_geom_boxplot__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_boxplot__SWIG_0, 3},
    {"R_swig_DBSCAN_labels", (DL_FUNC) &R_swig_DBSCAN_labels, 2},
+   {"R_swig_GGPlot_geom_boxplot__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_boxplot__SWIG_1, 2},
    {"R_swig_GBMRegressor_plot_predicted_vs_actual", (DL_FUNC) &R_swig_GBMRegressor_plot_predicted_vs_actual, 2},
+   {"R_swig_RLayout_create", (DL_FUNC) &R_swig_RLayout_create, 3},
    {"R_swig_HypothesisTestResult_p_value_set", (DL_FUNC) &R_swig_HypothesisTestResult_p_value_set, 2},
    {"R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted, 2},
    {"R_swig_INLAMixedModel_family", (DL_FUNC) &R_swig_INLAMixedModel_family, 2},
    {"R_swig_XGBoostClassifier_predict", (DL_FUNC) &R_swig_XGBoostClassifier_predict, 3},
    {"R_swig_delete_SGDOptions", (DL_FUNC) &R_swig_delete_SGDOptions, 1},
+   {"R_swig_delete_SquareFreeFactorVector", (DL_FUNC) &R_swig_delete_SquareFreeFactorVector, 1},
    {"R_swig_XGBoostClassifier_observations", (DL_FUNC) &R_swig_XGBoostClassifier_observations, 2},
    {"R_swig_delete_HyperDual", (DL_FUNC) &R_swig_delete_HyperDual, 1},
    {"R_swig_GLM_standardized_residuals", (DL_FUNC) &R_swig_GLM_standardized_residuals, 2},
@@ -68904,6 +83814,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_ImportanceSamplingResult", (DL_FUNC) &R_swig_delete_ImportanceSamplingResult, 1},
    {"R_swig_RWMResult_samples_get", (DL_FUNC) &R_swig_RWMResult_samples_get, 1},
    {"R_swig_GBMClassifier_classes", (DL_FUNC) &R_swig_GBMClassifier_classes, 2},
+   {"R_swig_SquareFreeFactorVector_reserve", (DL_FUNC) &R_swig_SquareFreeFactorVector_reserve, 2},
    {"R_swig_SimulatedAnnealingOptions_cooling_rate_set", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_cooling_rate_set, 2},
    {"R_swig_SizeVector_empty", (DL_FUNC) &R_swig_SizeVector_empty, 2},
    {"R_swig_DVectorVector___getitem__", (DL_FUNC) &R_swig_DVectorVector___getitem__, 3},
@@ -68918,10 +83829,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LBFGSOptions_max_line_search_trials_get", (DL_FUNC) &R_swig_LBFGSOptions_max_line_search_trials_get, 2},
    {"R_swig_ExponentialSmoothingOptions_de_population_size_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_population_size_get, 2},
    {"R_swig_ExponentialSmoothingOptions_de_population_size_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_population_size_set, 2},
+   {"R_swig_delete_PolyExtendedGcdResult", (DL_FUNC) &R_swig_delete_PolyExtendedGcdResult, 1},
    {"R_swig_new_NUTSOptions", (DL_FUNC) &R_swig_new_NUTSOptions, 0},
+   {"R_swig_refine_root__SWIG_0", (DL_FUNC) &R_swig_refine_root__SWIG_0, 5},
    {"R_swig_Tensor_equal", (DL_FUNC) &R_swig_Tensor_equal, 2},
+   {"R_swig_refine_root__SWIG_1", (DL_FUNC) &R_swig_refine_root__SWIG_1, 4},
    {"R_swig_NaiveBayesClassifier_training_accuracy", (DL_FUNC) &R_swig_NaiveBayesClassifier_training_accuracy, 2},
    {"R_swig_RandomForestClassifier_predict", (DL_FUNC) &R_swig_RandomForestClassifier_predict, 3},
+   {"R_swig_SquareFreeFactor_multiplicity_get", (DL_FUNC) &R_swig_SquareFreeFactor_multiplicity_get, 2},
    {"R_swig_NaiveBayesClassifier_predict_frame", (DL_FUNC) &R_swig_NaiveBayesClassifier_predict_frame, 2},
    {"R_swig_GLMM_rank", (DL_FUNC) &R_swig_GLMM_rank, 2},
    {"R_swig_DVectorPair_second_set", (DL_FUNC) &R_swig_DVectorPair_second_set, 2},
@@ -68929,26 +83844,33 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_map_dvector_with_callback", (DL_FUNC) &R_swig_map_dvector_with_callback, 3},
    {"R_swig_IVector_append", (DL_FUNC) &R_swig_IVector_append, 2},
    {"R_swig_delete_SizeVector", (DL_FUNC) &R_swig_delete_SizeVector, 1},
+   {"R_swig_RationalFunction_denominator", (DL_FUNC) &R_swig_RationalFunction_denominator, 2},
    {"R_swig_SVM_observations", (DL_FUNC) &R_swig_SVM_observations, 2},
    {"R_swig_Tensor_negate", (DL_FUNC) &R_swig_Tensor_negate, 1},
+   {"R_swig_MultivariatePolynomial_leading_exponent", (DL_FUNC) &R_swig_MultivariatePolynomial_leading_exponent, 3},
    {"R_swig_LMM_observations", (DL_FUNC) &R_swig_LMM_observations, 2},
-   {"R_swig_ks_test_one_sample_normal__SWIG_0", (DL_FUNC) &R_swig_ks_test_one_sample_normal__SWIG_0, 5},
    {"R_swig_GaussianProcessRegression_log_marginal_likelihood", (DL_FUNC) &R_swig_GaussianProcessRegression_log_marginal_likelihood, 2},
-   {"R_swig_delete_HypothesisTestResult", (DL_FUNC) &R_swig_delete_HypothesisTestResult, 1},
    {"R_swig_AgglomerativeClustering_labels", (DL_FUNC) &R_swig_AgglomerativeClustering_labels, 2},
    {"R_swig_HyperDual_divide_scalar", (DL_FUNC) &R_swig_HyperDual_divide_scalar, 3},
+   {"R_swig_delete_HypothesisTestResult", (DL_FUNC) &R_swig_delete_HypothesisTestResult, 1},
+   {"R_swig_ks_test_one_sample_normal__SWIG_0", (DL_FUNC) &R_swig_ks_test_one_sample_normal__SWIG_0, 5},
    {"R_swig_ks_test_one_sample_normal__SWIG_1", (DL_FUNC) &R_swig_ks_test_one_sample_normal__SWIG_1, 4},
    {"R_swig_ks_test_one_sample_normal__SWIG_2", (DL_FUNC) &R_swig_ks_test_one_sample_normal__SWIG_2, 3},
    {"R_swig_SeparableFunction_evaluate_term", (DL_FUNC) &R_swig_SeparableFunction_evaluate_term, 4},
+   {"R_swig_delete_Polynomial", (DL_FUNC) &R_swig_delete_Polynomial, 1},
    {"R_swig_ks_test_one_sample_normal__SWIG_3", (DL_FUNC) &R_swig_ks_test_one_sample_normal__SWIG_3, 2},
    {"R_swig_ARIMAOptions_seasonal_q_get", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_q_get, 2},
    {"R_swig_Adam_optimize", (DL_FUNC) &R_swig_Adam_optimize, 4},
+   {"R_swig_poly_remainder", (DL_FUNC) &R_swig_poly_remainder, 3},
    {"R_swig_new_KNNClassifier__SWIG_0", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_0, 6},
    {"R_swig_ARIMA_sigma2", (DL_FUNC) &R_swig_ARIMA_sigma2, 2},
    {"R_swig_new_KNNClassifier__SWIG_1", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_1, 5},
+   {"R_swig_DataSeries_filled_get", (DL_FUNC) &R_swig_DataSeries_filled_get, 2},
+   {"R_swig_Polynomial_NotEqual", (DL_FUNC) &R_swig_Polynomial_NotEqual, 3},
    {"R_swig_new_KNNClassifier__SWIG_2", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_2, 4},
    {"R_swig_new_KNNClassifier__SWIG_3", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_3, 3},
    {"R_swig_new_KNNClassifier__SWIG_4", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_4, 2},
+   {"R_swig_monic", (DL_FUNC) &R_swig_monic, 2},
    {"R_swig_LDA_save_discriminant_plot", (DL_FUNC) &R_swig_LDA_save_discriminant_plot, 2},
    {"R_swig_RWMOptions_num_warmup_get", (DL_FUNC) &R_swig_RWMOptions_num_warmup_get, 2},
    {"R_swig_new_IPair__SWIG_0", (DL_FUNC) &R_swig_new_IPair__SWIG_0, 0},
@@ -68957,28 +83879,38 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LDA_classes", (DL_FUNC) &R_swig_LDA_classes, 2},
    {"R_swig_XGBoostRegressor_feature_importance", (DL_FUNC) &R_swig_XGBoostRegressor_feature_importance, 2},
    {"R_swig_new_IPair__SWIG_2", (DL_FUNC) &R_swig_new_IPair__SWIG_2, 1},
+   {"R_swig_new_PolynomialVector__SWIG_0", (DL_FUNC) &R_swig_new_PolynomialVector__SWIG_0, 0},
    {"R_swig_SimulatedAnnealing_optimize", (DL_FUNC) &R_swig_SimulatedAnnealing_optimize, 4},
    {"R_swig_PSO_optimize", (DL_FUNC) &R_swig_PSO_optimize, 6},
+   {"R_swig_new_PolynomialVector__SWIG_1", (DL_FUNC) &R_swig_new_PolynomialVector__SWIG_1, 1},
+   {"R_swig_SquareFreeFactorVector_back", (DL_FUNC) &R_swig_SquareFreeFactorVector_back, 2},
+   {"R_swig_new_PolynomialVector__SWIG_2", (DL_FUNC) &R_swig_new_PolynomialVector__SWIG_2, 1},
+   {"R_swig_new_PolynomialVector__SWIG_3", (DL_FUNC) &R_swig_new_PolynomialVector__SWIG_3, 2},
+   {"R_swig_ABLine_stroke_width_set", (DL_FUNC) &R_swig_ABLine_stroke_width_set, 2},
+   {"R_swig_MultivariatePolynomialVector___setitem__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___setitem__, 3},
    {"R_swig_GLM_aic", (DL_FUNC) &R_swig_GLM_aic, 2},
    {"R_swig_delete_GLM", (DL_FUNC) &R_swig_delete_GLM, 1},
    {"R_swig_SVM_training_accuracy", (DL_FUNC) &R_swig_SVM_training_accuracy, 2},
-   {"R_swig_romano_wolf_adjust", (DL_FUNC) &R_swig_romano_wolf_adjust, 3},
    {"R_swig_Dual_multiply_scalar", (DL_FUNC) &R_swig_Dual_multiply_scalar, 3},
+   {"R_swig_romano_wolf_adjust", (DL_FUNC) &R_swig_romano_wolf_adjust, 3},
    {"R_swig_Plot_save_svg", (DL_FUNC) &R_swig_Plot_save_svg, 2},
    {"R_swig_LM_degrees_of_freedom", (DL_FUNC) &R_swig_LM_degrees_of_freedom, 2},
    {"R_swig_GLM_degrees_of_freedom", (DL_FUNC) &R_swig_GLM_degrees_of_freedom, 2},
+   {"R_swig_MultivariatePolynomial_num_terms", (DL_FUNC) &R_swig_MultivariatePolynomial_num_terms, 2},
+   {"R_swig_MultivariatePolynomialVector___delslice__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___delslice__, 3},
    {"R_swig_RandomForestClassifier_oob_accuracy", (DL_FUNC) &R_swig_RandomForestClassifier_oob_accuracy, 2},
    {"R_swig_Tensor_at_flat", (DL_FUNC) &R_swig_Tensor_at_flat, 3},
    {"R_swig_KNNClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_KNNClassifier_plot_decision_regions__SWIG_0, 5},
-   {"R_swig_Alternative_Alternative_Greater_get", (DL_FUNC) &R_swig_Alternative_Alternative_Greater_get, 1},
    {"R_swig_KNNClassifier_plot_decision_regions__SWIG_1", (DL_FUNC) &R_swig_KNNClassifier_plot_decision_regions__SWIG_1, 4},
+   {"R_swig_Alternative_Alternative_Greater_get", (DL_FUNC) &R_swig_Alternative_Alternative_Greater_get, 1},
    {"R_swig_GBMRegressor_plot_training_deviance", (DL_FUNC) &R_swig_GBMRegressor_plot_training_deviance, 2},
+   {"R_swig_determinant", (DL_FUNC) &R_swig_determinant, 2},
    {"R_swig_GLMM_p_values", (DL_FUNC) &R_swig_GLMM_p_values, 2},
    {"R_swig_IVector_push_back", (DL_FUNC) &R_swig_IVector_push_back, 2},
    {"R_swig_Lasso_fitted_values", (DL_FUNC) &R_swig_Lasso_fitted_values, 2},
    {"R_swig_delete_GibbsSampler", (DL_FUNC) &R_swig_delete_GibbsSampler, 1},
-   {"R_swig_delete_BarChart", (DL_FUNC) &R_swig_delete_BarChart, 1},
    {"R_swig_XGBoostClassifier_print_summary", (DL_FUNC) &R_swig_XGBoostClassifier_print_summary, 1},
+   {"R_swig_MultivariatePolynomial_multiply", (DL_FUNC) &R_swig_MultivariatePolynomial_multiply, 3},
    {"R_swig_IVector_reserve", (DL_FUNC) &R_swig_IVector_reserve, 2},
    {"R_swig_PSOOptions_tolerance_set", (DL_FUNC) &R_swig_PSOOptions_tolerance_set, 2},
    {"R_swig_ExponentialSmoothingOptions_seasonal_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_get, 2},
@@ -68990,14 +83922,18 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GBMClassifier_predict_frame", (DL_FUNC) &R_swig_GBMClassifier_predict_frame, 2},
    {"R_swig_Var_pow", (DL_FUNC) &R_swig_Var_pow, 3},
    {"R_swig_GBMRegressor_predictor_names", (DL_FUNC) &R_swig_GBMRegressor_predictor_names, 2},
+   {"R_swig_PolynomialVector_empty", (DL_FUNC) &R_swig_PolynomialVector_empty, 2},
    {"R_swig_DataFrame_group_by_sum_encoded", (DL_FUNC) &R_swig_DataFrame_group_by_sum_encoded, 3},
-   {"R_swig_GradientDescentOptions_step_size_set", (DL_FUNC) &R_swig_GradientDescentOptions_step_size_set, 2},
    {"R_swig_DVectorVector_push_back", (DL_FUNC) &R_swig_DVectorVector_push_back, 2},
    {"R_swig_NaiveBayesClassifier_confusion_matrix", (DL_FUNC) &R_swig_NaiveBayesClassifier_confusion_matrix, 1},
+   {"R_swig_GradientDescentOptions_step_size_set", (DL_FUNC) &R_swig_GradientDescentOptions_step_size_set, 2},
+   {"R_swig_GGPlot_geom_smooth__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_smooth__SWIG_0, 3},
    {"R_swig_delete_LBFGS", (DL_FUNC) &R_swig_delete_LBFGS, 1},
    {"R_swig_ImportanceSamplingOptions_num_samples_get", (DL_FUNC) &R_swig_ImportanceSamplingOptions_num_samples_get, 2},
+   {"R_swig_GGPlot_geom_smooth__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_smooth__SWIG_1, 2},
    {"R_swig_Tensor_dot", (DL_FUNC) &R_swig_Tensor_dot, 3},
    {"R_swig_Tensor_less_equal", (DL_FUNC) &R_swig_Tensor_less_equal, 2},
+   {"R_swig_Polynomial_antiderivative", (DL_FUNC) &R_swig_Polynomial_antiderivative, 2},
    {"R_swig_delete_LMM", (DL_FUNC) &R_swig_delete_LMM, 1},
    {"R_swig_DecisionTreeClassifier_print_summary", (DL_FUNC) &R_swig_DecisionTreeClassifier_print_summary, 1},
    {"R_swig_INLAMixedModel_random_effects_mean_for_group", (DL_FUNC) &R_swig_INLAMixedModel_random_effects_mean_for_group, 3},
@@ -69010,16 +83946,21 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GAOptions_tolerance_get", (DL_FUNC) &R_swig_GAOptions_tolerance_get, 2},
    {"R_swig_KNNClassifier_classes", (DL_FUNC) &R_swig_KNNClassifier_classes, 2},
    {"R_swig_ExponentialSmoothing_gamma", (DL_FUNC) &R_swig_ExponentialSmoothing_gamma, 2},
+   {"R_swig_RationalFunction_divide", (DL_FUNC) &R_swig_RationalFunction_divide, 3},
    {"R_swig_LBFGS_optimize", (DL_FUNC) &R_swig_LBFGS_optimize, 4},
+   {"R_swig_SquareFreeFactor_factor_set", (DL_FUNC) &R_swig_SquareFreeFactor_factor_set, 2},
    {"R_swig_delete_GibbsOptions", (DL_FUNC) &R_swig_delete_GibbsOptions, 1},
    {"R_swig_KernelRegression_predictor_names", (DL_FUNC) &R_swig_KernelRegression_predictor_names, 2},
+   {"R_swig_IVectorVector_reserve", (DL_FUNC) &R_swig_IVectorVector_reserve, 2},
    {"R_swig_delete_GaussianProcessRegression", (DL_FUNC) &R_swig_delete_GaussianProcessRegression, 1},
    {"R_swig_ElasticNet_print_summary", (DL_FUNC) &R_swig_ElasticNet_print_summary, 1},
    {"R_swig_Lasso_residuals", (DL_FUNC) &R_swig_Lasso_residuals, 2},
    {"R_swig_new_RWMOptions", (DL_FUNC) &R_swig_new_RWMOptions, 0},
    {"R_swig_Tensor_exp", (DL_FUNC) &R_swig_Tensor_exp, 1},
+   {"R_swig_multivariate_reduce", (DL_FUNC) &R_swig_multivariate_reduce, 4},
    {"R_swig_ARIMAOptions_seed_set", (DL_FUNC) &R_swig_ARIMAOptions_seed_set, 2},
    {"R_swig_DecisionTreeRegressor_fitted_values", (DL_FUNC) &R_swig_DecisionTreeRegressor_fitted_values, 2},
+   {"R_swig_Plot_x_tick_labels", (DL_FUNC) &R_swig_Plot_x_tick_labels, 3},
    {"R_swig_RandomForestRegressor_n_trees", (DL_FUNC) &R_swig_RandomForestRegressor_n_trees, 2},
    {"R_swig_IVector_resize__SWIG_0", (DL_FUNC) &R_swig_IVector_resize__SWIG_0, 2},
    {"R_swig_IVector_resize__SWIG_1", (DL_FUNC) &R_swig_IVector_resize__SWIG_1, 3},
@@ -69027,27 +83968,33 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Lasso_cv_mean_squared_error", (DL_FUNC) &R_swig_Lasso_cv_mean_squared_error, 2},
    {"R_swig_GLMM_group_labels", (DL_FUNC) &R_swig_GLMM_group_labels, 2},
    {"R_swig_KNNRegressor_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_KNNRegressor_plot_residuals_vs_fitted, 2},
-   {"R_swig_ScatterPlot_create", (DL_FUNC) &R_swig_ScatterPlot_create, 1},
+   {"R_swig_PolynomialVector_assign", (DL_FUNC) &R_swig_PolynomialVector_assign, 3},
    {"R_swig_LM_fitted_values", (DL_FUNC) &R_swig_LM_fitted_values, 2},
    {"R_swig_GAOptions_crossover_rate_set", (DL_FUNC) &R_swig_GAOptions_crossover_rate_set, 2},
    {"R_swig_Tensor_from_string_values", (DL_FUNC) &R_swig_Tensor_from_string_values, 2},
    {"R_swig_Ridge_rmse", (DL_FUNC) &R_swig_Ridge_rmse, 2},
+   {"R_swig_s_polynomial", (DL_FUNC) &R_swig_s_polynomial, 4},
+   {"R_swig_MultivariatePolynomial_add", (DL_FUNC) &R_swig_MultivariatePolynomial_add, 3},
    {"R_swig_delete_DBSCAN", (DL_FUNC) &R_swig_delete_DBSCAN, 1},
    {"R_swig_Plot_x_label_text", (DL_FUNC) &R_swig_Plot_x_label_text, 2},
+   {"R_swig_LegendEntry_color_set", (DL_FUNC) &R_swig_LegendEntry_color_set, 2},
    {"R_swig_GeneticAlgorithm_optimize", (DL_FUNC) &R_swig_GeneticAlgorithm_optimize, 6},
    {"R_swig_westfall_young_adjust", (DL_FUNC) &R_swig_westfall_young_adjust, 3},
    {"R_swig_DVectorVector_clear", (DL_FUNC) &R_swig_DVectorVector_clear, 1},
    {"R_swig_PSOOptions_inertia_weight_set", (DL_FUNC) &R_swig_PSOOptions_inertia_weight_set, 2},
    {"R_swig_Tensor_softmax", (DL_FUNC) &R_swig_Tensor_softmax, 1},
+   {"R_swig_descartes_negative_root_bound", (DL_FUNC) &R_swig_descartes_negative_root_bound, 2},
    {"R_swig_ExponentialSmoothingOptions_seasonal_period_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_period_get, 2},
    {"R_swig_ExponentialSmoothingOptions_seasonal_period_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_period_set, 2},
-   {"R_swig_spearman_correlation_test__SWIG_0", (DL_FUNC) &R_swig_spearman_correlation_test__SWIG_0, 4},
+   {"R_swig_PolyExtendedGcdResult_gcd_set", (DL_FUNC) &R_swig_PolyExtendedGcdResult_gcd_set, 2},
    {"R_swig_Dual_divide", (DL_FUNC) &R_swig_Dual_divide, 3},
-   {"R_swig_spearman_correlation_test__SWIG_1", (DL_FUNC) &R_swig_spearman_correlation_test__SWIG_1, 3},
+   {"R_swig_spearman_correlation_test__SWIG_0", (DL_FUNC) &R_swig_spearman_correlation_test__SWIG_0, 4},
    {"R_swig_Tensor_eye", (DL_FUNC) &R_swig_Tensor_eye, 1},
+   {"R_swig_spearman_correlation_test__SWIG_1", (DL_FUNC) &R_swig_spearman_correlation_test__SWIG_1, 3},
    {"R_swig_DifferentiableSeparableFunction_evaluate_term", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_evaluate_term, 4},
    {"R_swig_DEOptions_tolerance_set", (DL_FUNC) &R_swig_DEOptions_tolerance_set, 2},
    {"R_swig_SGDOptions_batch_size_get", (DL_FUNC) &R_swig_SGDOptions_batch_size_get, 2},
+   {"R_swig_IVectorVector_capacity", (DL_FUNC) &R_swig_IVectorVector_capacity, 2},
    {"R_swig_Plot_axes_color", (DL_FUNC) &R_swig_Plot_axes_color, 2},
    {"R_swig_DataFrame_numeric_count", (DL_FUNC) &R_swig_DataFrame_numeric_count, 3},
    {"R_swig_KNNClassifier_k", (DL_FUNC) &R_swig_KNNClassifier_k, 2},
@@ -69064,17 +84011,19 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LM_cooks_distance", (DL_FUNC) &R_swig_LM_cooks_distance, 2},
    {"R_swig_t_test_one_sample__SWIG_1", (DL_FUNC) &R_swig_t_test_one_sample__SWIG_1, 4},
    {"R_swig_LMM_random_effect_names", (DL_FUNC) &R_swig_LMM_random_effect_names, 2},
+   {"R_swig_delete_RLayout", (DL_FUNC) &R_swig_delete_RLayout, 1},
    {"R_swig_t_test_one_sample__SWIG_2", (DL_FUNC) &R_swig_t_test_one_sample__SWIG_2, 3},
    {"R_swig_DataSeries_x_set", (DL_FUNC) &R_swig_DataSeries_x_set, 2},
    {"R_swig_t_test_one_sample__SWIG_3", (DL_FUNC) &R_swig_t_test_one_sample__SWIG_3, 2},
-   {"R_swig_new_ExponentialSmoothing__SWIG_0", (DL_FUNC) &R_swig_new_ExponentialSmoothing__SWIG_0, 2},
    {"R_swig_DBSCAN_n_clusters", (DL_FUNC) &R_swig_DBSCAN_n_clusters, 2},
    {"R_swig_Lasso_rmse", (DL_FUNC) &R_swig_Lasso_rmse, 2},
+   {"R_swig_new_ExponentialSmoothing__SWIG_0", (DL_FUNC) &R_swig_new_ExponentialSmoothing__SWIG_0, 2},
    {"R_swig_NUTSOptions_max_delta_error_get", (DL_FUNC) &R_swig_NUTSOptions_max_delta_error_get, 2},
    {"R_swig_new_ExponentialSmoothing__SWIG_1", (DL_FUNC) &R_swig_new_ExponentialSmoothing__SWIG_1, 1},
    {"R_swig_PSOOptions_population_size_get", (DL_FUNC) &R_swig_PSOOptions_population_size_get, 2},
    {"R_swig_GaussianProcessRegression_signal_variance", (DL_FUNC) &R_swig_GaussianProcessRegression_signal_variance, 2},
    {"R_swig_MAPOptions_max_iterations_get", (DL_FUNC) &R_swig_MAPOptions_max_iterations_get, 2},
+   {"R_swig_MultivariatePolynomialVector_swap", (DL_FUNC) &R_swig_MultivariatePolynomialVector_swap, 2},
    {"R_swig_Plot_width", (DL_FUNC) &R_swig_Plot_width, 2},
    {"R_swig_SizeVector___setslice__", (DL_FUNC) &R_swig_SizeVector___setslice__, 4},
    {"R_swig_AdamOptions_beta2_get", (DL_FUNC) &R_swig_AdamOptions_beta2_get, 2},
@@ -69092,23 +84041,30 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_min", (DL_FUNC) &R_swig_Tensor_min, 2},
    {"R_swig_DataFrame_numeric_null_count", (DL_FUNC) &R_swig_DataFrame_numeric_null_count, 3},
    {"R_swig_XGBoostRegressor_fitted_values", (DL_FUNC) &R_swig_XGBoostRegressor_fitted_values, 2},
-   {"R_swig_chi_squared_test_independence__SWIG_0", (DL_FUNC) &R_swig_chi_squared_test_independence__SWIG_0, 5},
    {"R_swig_Dual_sin", (DL_FUNC) &R_swig_Dual_sin, 2},
+   {"R_swig_chi_squared_test_independence__SWIG_0", (DL_FUNC) &R_swig_chi_squared_test_independence__SWIG_0, 5},
    {"R_swig_GAOptions_mutation_rate_get", (DL_FUNC) &R_swig_GAOptions_mutation_rate_get, 2},
    {"R_swig_new_ImportanceSamplingResult", (DL_FUNC) &R_swig_new_ImportanceSamplingResult, 0},
    {"R_swig_chi_squared_test_independence__SWIG_1", (DL_FUNC) &R_swig_chi_squared_test_independence__SWIG_1, 4},
+   {"R_swig_MultivariatePolynomial_is_zero", (DL_FUNC) &R_swig_MultivariatePolynomial_is_zero, 2},
    {"R_swig_GLM_print_summary", (DL_FUNC) &R_swig_GLM_print_summary, 1},
    {"R_swig_new_RandomWalkMetropolis__SWIG_0", (DL_FUNC) &R_swig_new_RandomWalkMetropolis__SWIG_0, 1},
    {"R_swig_pearson_correlation_test__SWIG_0", (DL_FUNC) &R_swig_pearson_correlation_test__SWIG_0, 5},
    {"R_swig_new_RandomWalkMetropolis__SWIG_1", (DL_FUNC) &R_swig_new_RandomWalkMetropolis__SWIG_1, 0},
    {"R_swig_pearson_correlation_test__SWIG_1", (DL_FUNC) &R_swig_pearson_correlation_test__SWIG_1, 4},
    {"R_swig_pearson_correlation_test__SWIG_2", (DL_FUNC) &R_swig_pearson_correlation_test__SWIG_2, 3},
+   {"R_swig_SquareFreeFactorVector___setslice__", (DL_FUNC) &R_swig_SquareFreeFactorVector___setslice__, 4},
    {"R_swig_Tensor_size", (DL_FUNC) &R_swig_Tensor_size, 2},
    {"R_swig_IPair_first_get", (DL_FUNC) &R_swig_IPair_first_get, 2},
    {"R_swig_GAOptions_tournament_size_set", (DL_FUNC) &R_swig_GAOptions_tournament_size_set, 2},
+   {"R_swig_RPlot_barplot__SWIG_0", (DL_FUNC) &R_swig_RPlot_barplot__SWIG_0, 5},
    {"R_swig_HMCOptions_target_accept_rate_set", (DL_FUNC) &R_swig_HMCOptions_target_accept_rate_set, 2},
+   {"R_swig_RPlot_barplot__SWIG_1", (DL_FUNC) &R_swig_RPlot_barplot__SWIG_1, 4},
+   {"R_swig_delete_ABLine", (DL_FUNC) &R_swig_delete_ABLine, 1},
    {"R_swig_new_Plot", (DL_FUNC) &R_swig_new_Plot, 0},
    {"R_swig_delete_IVector", (DL_FUNC) &R_swig_delete_IVector, 1},
+   {"R_swig_RPlot_barplot__SWIG_2", (DL_FUNC) &R_swig_RPlot_barplot__SWIG_2, 3},
+   {"R_swig_RPlot_barplot__SWIG_3", (DL_FUNC) &R_swig_RPlot_barplot__SWIG_3, 2},
    {"R_swig_KNNClassifier_print_summary", (DL_FUNC) &R_swig_KNNClassifier_print_summary, 1},
    {"R_swig_NUTSOptions_seed_get", (DL_FUNC) &R_swig_NUTSOptions_seed_get, 2},
    {"R_swig_GBMClassifier_predictor_names", (DL_FUNC) &R_swig_GBMClassifier_predictor_names, 2},
@@ -69121,42 +84077,50 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_ElasticNet__SWIG_4", (DL_FUNC) &R_swig_new_ElasticNet__SWIG_4, 4},
    {"R_swig_SimulatedAnnealingOptions_max_iterations_get", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_max_iterations_get, 2},
    {"R_swig_new_ElasticNet__SWIG_5", (DL_FUNC) &R_swig_new_ElasticNet__SWIG_5, 3},
-   {"R_swig_HypothesisTestResult_method_get", (DL_FUNC) &R_swig_HypothesisTestResult_method_get, 2},
+   {"R_swig_MultivariatePolynomialVector_capacity", (DL_FUNC) &R_swig_MultivariatePolynomialVector_capacity, 2},
    {"R_swig_new_ElasticNet__SWIG_6", (DL_FUNC) &R_swig_new_ElasticNet__SWIG_6, 2},
+   {"R_swig_HypothesisTestResult_method_get", (DL_FUNC) &R_swig_HypothesisTestResult_method_get, 2},
    {"R_swig_NUTSOptions_num_warmup_set", (DL_FUNC) &R_swig_NUTSOptions_num_warmup_set, 2},
    {"R_swig_GBMClassifier_print_summary", (DL_FUNC) &R_swig_GBMClassifier_print_summary, 1},
    {"R_swig_Tensor_add_scalar", (DL_FUNC) &R_swig_Tensor_add_scalar, 2},
+   {"R_swig_RationalFunction_subtract", (DL_FUNC) &R_swig_RationalFunction_subtract, 3},
    {"R_swig_delete_SeparableFunction", (DL_FUNC) &R_swig_delete_SeparableFunction, 1},
    {"R_swig_DataFrame_add_string_column__SWIG_0", (DL_FUNC) &R_swig_DataFrame_add_string_column__SWIG_0, 4},
    {"R_swig_HypothesisTestResult_estimate2_get", (DL_FUNC) &R_swig_HypothesisTestResult_estimate2_get, 2},
    {"R_swig_DataFrame_add_string_column__SWIG_1", (DL_FUNC) &R_swig_DataFrame_add_string_column__SWIG_1, 3},
+   {"R_swig_SquareFreeFactorVector___getslice__", (DL_FUNC) &R_swig_SquareFreeFactorVector___getslice__, 3},
    {"R_swig_new_DPair__SWIG_0", (DL_FUNC) &R_swig_new_DPair__SWIG_0, 0},
+   {"R_swig_Expr_to_string", (DL_FUNC) &R_swig_Expr_to_string, 2},
    {"R_swig_new_DPair__SWIG_1", (DL_FUNC) &R_swig_new_DPair__SWIG_1, 2},
    {"R_swig_GibbsOptions_initial_step_sizes_set", (DL_FUNC) &R_swig_GibbsOptions_initial_step_sizes_set, 2},
    {"R_swig_new_Tensor__SWIG_0", (DL_FUNC) &R_swig_new_Tensor__SWIG_0, 2},
    {"R_swig_new_DPair__SWIG_2", (DL_FUNC) &R_swig_new_DPair__SWIG_2, 1},
+   {"R_swig_MultivariatePolynomialVector_append", (DL_FUNC) &R_swig_MultivariatePolynomialVector_append, 2},
    {"R_swig_new_Tensor__SWIG_1", (DL_FUNC) &R_swig_new_Tensor__SWIG_1, 1},
    {"R_swig_ElasticNet_residuals", (DL_FUNC) &R_swig_ElasticNet_residuals, 2},
    {"R_swig_GAOptions_max_generations_set", (DL_FUNC) &R_swig_GAOptions_max_generations_set, 2},
-   {"R_swig_LinePlot_create", (DL_FUNC) &R_swig_LinePlot_create, 1},
    {"R_swig_GradientDescentOptions_max_iterations_set", (DL_FUNC) &R_swig_GradientDescentOptions_max_iterations_set, 2},
    {"R_swig_RGB_g_set", (DL_FUNC) &R_swig_RGB_g_set, 2},
    {"R_swig_new_HMC__SWIG_0", (DL_FUNC) &R_swig_new_HMC__SWIG_0, 1},
    {"R_swig_binomial_test__SWIG_0", (DL_FUNC) &R_swig_binomial_test__SWIG_0, 6},
    {"R_swig_new_HMC__SWIG_1", (DL_FUNC) &R_swig_new_HMC__SWIG_1, 0},
    {"R_swig_new_IVector__SWIG_0", (DL_FUNC) &R_swig_new_IVector__SWIG_0, 0},
-   {"R_swig_binomial_test__SWIG_1", (DL_FUNC) &R_swig_binomial_test__SWIG_1, 5},
    {"R_swig_Tensor_index_select", (DL_FUNC) &R_swig_Tensor_index_select, 3},
+   {"R_swig_binomial_test__SWIG_1", (DL_FUNC) &R_swig_binomial_test__SWIG_1, 5},
    {"R_swig_new_IVector__SWIG_1", (DL_FUNC) &R_swig_new_IVector__SWIG_1, 1},
    {"R_swig_binomial_test__SWIG_2", (DL_FUNC) &R_swig_binomial_test__SWIG_2, 4},
    {"R_swig_new_IVector__SWIG_2", (DL_FUNC) &R_swig_new_IVector__SWIG_2, 1},
    {"R_swig_binomial_test__SWIG_3", (DL_FUNC) &R_swig_binomial_test__SWIG_3, 3},
+   {"R_swig_IVectorVector_empty", (DL_FUNC) &R_swig_IVectorVector_empty, 2},
    {"R_swig_new_IVector__SWIG_3", (DL_FUNC) &R_swig_new_IVector__SWIG_3, 2},
    {"R_swig_LM_leverage", (DL_FUNC) &R_swig_LM_leverage, 2},
    {"R_swig_DataSeries_Kind_Line_get", (DL_FUNC) &R_swig_DataSeries_Kind_Line_get, 1},
+   {"R_swig_new_Polynomial__SWIG_0", (DL_FUNC) &R_swig_new_Polynomial__SWIG_0, 0},
+   {"R_swig_new_Polynomial__SWIG_1", (DL_FUNC) &R_swig_new_Polynomial__SWIG_1, 1},
    {"R_swig_new_XGBoostRegressor__SWIG_0", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_0, 13},
-   {"R_swig_one_way_anova", (DL_FUNC) &R_swig_one_way_anova, 3},
+   {"R_swig_new_Polynomial__SWIG_2", (DL_FUNC) &R_swig_new_Polynomial__SWIG_2, 1},
    {"R_swig_new_XGBoostRegressor__SWIG_1", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_1, 12},
+   {"R_swig_one_way_anova", (DL_FUNC) &R_swig_one_way_anova, 3},
    {"R_swig_new_Adam__SWIG_0", (DL_FUNC) &R_swig_new_Adam__SWIG_0, 1},
    {"R_swig_new_XGBoostRegressor__SWIG_2", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_2, 11},
    {"R_swig_new_Adam__SWIG_1", (DL_FUNC) &R_swig_new_Adam__SWIG_1, 0},
@@ -69179,45 +84143,63 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_ImportanceSampling", (DL_FUNC) &R_swig_delete_ImportanceSampling, 1},
    {"R_swig_NUTSResult_accept_rate_set", (DL_FUNC) &R_swig_NUTSResult_accept_rate_set, 2},
    {"R_swig_delete_SimulatedAnnealingOptions", (DL_FUNC) &R_swig_delete_SimulatedAnnealingOptions, 1},
+   {"R_swig_GGPlot_facet_wrap__SWIG_0", (DL_FUNC) &R_swig_GGPlot_facet_wrap__SWIG_0, 4},
    {"R_swig_new_NUTSResult", (DL_FUNC) &R_swig_new_NUTSResult, 0},
+   {"R_swig_GGPlot_facet_wrap__SWIG_1", (DL_FUNC) &R_swig_GGPlot_facet_wrap__SWIG_1, 3},
    {"R_swig_IVector_empty", (DL_FUNC) &R_swig_IVector_empty, 2},
-   {"R_swig_HypothesisTestResult_statistic_get", (DL_FUNC) &R_swig_HypothesisTestResult_statistic_get, 2},
    {"R_swig_HyperDual_multiply", (DL_FUNC) &R_swig_HyperDual_multiply, 3},
    {"R_swig_SVector___setslice__", (DL_FUNC) &R_swig_SVector___setslice__, 4},
+   {"R_swig_HypothesisTestResult_statistic_get", (DL_FUNC) &R_swig_HypothesisTestResult_statistic_get, 2},
    {"R_swig_ARIMAOptions_d_set", (DL_FUNC) &R_swig_ARIMAOptions_d_set, 2},
+   {"R_swig_RPlot_curve__SWIG_0", (DL_FUNC) &R_swig_RPlot_curve__SWIG_0, 7},
+   {"R_swig_RPlot_pie__SWIG_0", (DL_FUNC) &R_swig_RPlot_pie__SWIG_0, 4},
    {"R_swig_GLM_leverage", (DL_FUNC) &R_swig_GLM_leverage, 2},
+   {"R_swig_RPlot_curve__SWIG_1", (DL_FUNC) &R_swig_RPlot_curve__SWIG_1, 6},
    {"R_swig_INLAMixedModel_formula_text", (DL_FUNC) &R_swig_INLAMixedModel_formula_text, 2},
    {"R_swig_DVectorVector_capacity", (DL_FUNC) &R_swig_DVectorVector_capacity, 2},
+   {"R_swig_RPlot_pie__SWIG_1", (DL_FUNC) &R_swig_RPlot_pie__SWIG_1, 3},
    {"R_swig_delete_ExponentialSmoothingOptions", (DL_FUNC) &R_swig_delete_ExponentialSmoothingOptions, 1},
+   {"R_swig_RPlot_curve__SWIG_2", (DL_FUNC) &R_swig_RPlot_curve__SWIG_2, 5},
+   {"R_swig_RPlot_pie__SWIG_2", (DL_FUNC) &R_swig_RPlot_pie__SWIG_2, 2},
    {"R_swig_NUTSResult_num_divergences_set", (DL_FUNC) &R_swig_NUTSResult_num_divergences_set, 2},
+   {"R_swig_RPlot_curve__SWIG_3", (DL_FUNC) &R_swig_RPlot_curve__SWIG_3, 4},
    {"R_swig_DEOptions_crossover_rate_set", (DL_FUNC) &R_swig_DEOptions_crossover_rate_set, 2},
    {"R_swig_KMeans_labels", (DL_FUNC) &R_swig_KMeans_labels, 2},
    {"R_swig_Plot_x_max", (DL_FUNC) &R_swig_Plot_x_max, 2},
    {"R_swig_SGD_optimize", (DL_FUNC) &R_swig_SGD_optimize, 4},
    {"R_swig_new_ImportanceSampling__SWIG_0", (DL_FUNC) &R_swig_new_ImportanceSampling__SWIG_0, 1},
+   {"R_swig_IVectorVector_append", (DL_FUNC) &R_swig_IVectorVector_append, 2},
+   {"R_swig_RLayout_save_svg", (DL_FUNC) &R_swig_RLayout_save_svg, 2},
    {"R_swig_GLM_dispersion", (DL_FUNC) &R_swig_GLM_dispersion, 2},
    {"R_swig_new_ImportanceSampling__SWIG_1", (DL_FUNC) &R_swig_new_ImportanceSampling__SWIG_1, 0},
    {"R_swig_DVector_capacity", (DL_FUNC) &R_swig_DVector_capacity, 2},
    {"R_swig_MAPOptions_tolerance_set", (DL_FUNC) &R_swig_MAPOptions_tolerance_set, 2},
    {"R_swig_ARIMAOptions_seasonal_period_get", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_period_get, 2},
+   {"R_swig_Polynomial_EqualEqual", (DL_FUNC) &R_swig_Polynomial_EqualEqual, 3},
    {"R_swig_KNNRegressor_predict", (DL_FUNC) &R_swig_KNNRegressor_predict, 3},
    {"R_swig_SVector___getslice__", (DL_FUNC) &R_swig_SVector___getslice__, 3},
    {"R_swig_GLM_family", (DL_FUNC) &R_swig_GLM_family, 2},
+   {"R_swig_RLayout_save", (DL_FUNC) &R_swig_RLayout_save, 2},
    {"R_swig_delete_ARIMAOptions", (DL_FUNC) &R_swig_delete_ARIMAOptions, 1},
    {"R_swig_ARIMA_ma_coefficients", (DL_FUNC) &R_swig_ARIMA_ma_coefficients, 2},
    {"R_swig_PSOOptions_social_coefficient_set", (DL_FUNC) &R_swig_PSOOptions_social_coefficient_set, 2},
+   {"R_swig_PolynomialVector_resize__SWIG_0", (DL_FUNC) &R_swig_PolynomialVector_resize__SWIG_0, 2},
    {"R_swig_DecisionTreeClassifier_predict", (DL_FUNC) &R_swig_DecisionTreeClassifier_predict, 3},
    {"R_swig_GBMClassifier_plot_training_deviance", (DL_FUNC) &R_swig_GBMClassifier_plot_training_deviance, 2},
+   {"R_swig_PolynomialVector_resize__SWIG_1", (DL_FUNC) &R_swig_PolynomialVector_resize__SWIG_1, 3},
    {"R_swig_GAOptions_crossover_strategy_set", (DL_FUNC) &R_swig_GAOptions_crossover_strategy_set, 2},
    {"R_swig_Tape_value_at", (DL_FUNC) &R_swig_Tape_value_at, 3},
    {"R_swig_SizeVector_push_back", (DL_FUNC) &R_swig_SizeVector_push_back, 2},
    {"R_swig_GLM_summary", (DL_FUNC) &R_swig_GLM_summary, 2},
    {"R_swig_Tensor_relu", (DL_FUNC) &R_swig_Tensor_relu, 1},
+   {"R_swig_Polynomial_to_string", (DL_FUNC) &R_swig_Polynomial_to_string, 2},
+   {"R_swig_delete_IVectorVector", (DL_FUNC) &R_swig_delete_IVectorVector, 1},
+   {"R_swig_MultivariatePolynomial_coefficients", (DL_FUNC) &R_swig_MultivariatePolynomial_coefficients, 2},
    {"R_swig_KNNRegressor_r_squared", (DL_FUNC) &R_swig_KNNRegressor_r_squared, 2},
    {"R_swig_RWMOptions_initial_step_size_set", (DL_FUNC) &R_swig_RWMOptions_initial_step_size_set, 2},
+   {"R_swig_IVectorVector_pop_back", (DL_FUNC) &R_swig_IVectorVector_pop_back, 1},
    {"R_swig_KernelRegression_summary", (DL_FUNC) &R_swig_KernelRegression_summary, 2},
    {"R_swig_DVector___getitem__", (DL_FUNC) &R_swig_DVector___getitem__, 3},
-   {"R_swig_new_LinePlot", (DL_FUNC) &R_swig_new_LinePlot, 0},
    {"R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_0, 5},
    {"R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_1", (DL_FUNC) &R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_1, 4},
    {NULL, NULL, 0}

@@ -98,10 +98,10 @@ class GLM {
                                                     double                    level = 0.95) const;
 
     // Diagnostic plots using standardized deviance residuals (mirrors R's plot.glm, itself close to plot.lm).
-    [[nodiscard]] plot::ScatterPlot plot_residuals_vs_fitted() const;
-    [[nodiscard]] plot::ScatterPlot plot_normal_qq() const;
-    [[nodiscard]] plot::ScatterPlot plot_scale_location() const;
-    [[nodiscard]] plot::ScatterPlot plot_residuals_vs_leverage() const;
+    [[nodiscard]] plot::RPlot plot_residuals_vs_fitted() const;
+    [[nodiscard]] plot::RPlot plot_normal_qq() const;
+    [[nodiscard]] plot::RPlot plot_scale_location() const;
+    [[nodiscard]] plot::RPlot plot_residuals_vs_leverage() const;
     void                             save_diagnostic_plots(const std::string& path_prefix) const;
 
  private:

@@ -266,13 +266,13 @@ RandomForestClassifierPrediction RandomForestClassifier::predict_detail(const ds
     return result;
 }
 
-plot::ScatterPlot RandomForestClassifier::plot_classification(const dstruct::DataFrame& data,
+plot::RPlot RandomForestClassifier::plot_classification(const dstruct::DataFrame& data,
                                                                const std::string& x_feature,
                                                                const std::string& y_feature) const {
     const auto  predictions = predict(data);
     const auto& response    = design_.response_name;
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -303,7 +303,7 @@ plot::ScatterPlot RandomForestClassifier::plot_classification(const dstruct::Dat
     return plot;
 }
 
-plot::ScatterPlot RandomForestClassifier::plot_decision_regions(const std::string& x_feature,
+plot::RPlot RandomForestClassifier::plot_decision_regions(const std::string& x_feature,
                                                                  const std::string& y_feature,
                                                                  std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
@@ -354,7 +354,7 @@ plot::ScatterPlot RandomForestClassifier::plot_decision_regions(const std::strin
         grid_y[c].push_back(predictor_names_[0] == y_feature ? col0[i] : col1[i]);
     }
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         auto color = kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))];
         color.r    = static_cast<std::uint8_t>(std::min(255, color.r + (255 - color.r) * 3 / 4));

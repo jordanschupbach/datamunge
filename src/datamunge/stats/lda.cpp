@@ -331,8 +331,8 @@ void LDA::print_summary(std::ostream& os) const { os << summary(); }
 
 void LDA::print_summary() const { print_summary(std::cout); }
 
-plot::ScatterPlot LDA::plot_discriminants() const {
-    auto plot = plot::ScatterPlot::create();
+plot::RPlot LDA::plot_discriminants() const {
+    auto plot = plot::RPlot::create();
     const bool has_ld2 = scaling_.cols() > 1;
 
     for (std::size_t c = 0; c < classes_.size(); ++c) {

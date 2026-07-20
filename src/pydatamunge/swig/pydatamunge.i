@@ -103,6 +103,30 @@
 %ignore datamunge::bayes::student_t_lpdf;
 %ignore datamunge::bayes::bernoulli_logit_lpmf;
 %ignore datamunge::bayes::poisson_log_lpmf;
+// Polynomial::divmod returns std::pair<Polynomial, Polynomial> -- this codebase avoids
+// exposing custom-class-pair returns to SWIG bindings directly (see poly_quotient()/
+// poly_remainder(), the binding-friendly free-function alternatives, in polynomial.hpp).
+%ignore datamunge::algebra::Polynomial::divmod;
+// berlekamp_factor() takes/returns std::vector<long long>, a container type with no proven
+// SWIG binding template in this codebase (the size_t vector traits-collision bugs elsewhere
+// make new fixed-width-integer vector templates risky) -- berlekamp_factor_mod() is the
+// double-based binding-friendly wrapper, reusing the already-proven DVector/DVectorVector.
+%ignore datamunge::algebra::berlekamp_factor;
+%ignore datamunge::algebra::detail::gf_mod;
+%ignore datamunge::algebra::detail::gf_trim;
+%ignore datamunge::algebra::detail::gf_degree;
+%ignore datamunge::algebra::detail::gf_is_zero;
+%ignore datamunge::algebra::detail::gf_mod_inverse;
+%ignore datamunge::algebra::detail::gf_divmod;
+%ignore datamunge::algebra::detail::gf_gcd;
+%ignore datamunge::algebra::detail::gf_mul_x_mod;
+// Expr's node tree (detail::ExprNode/ExprOp) is a private implementation detail never touched
+// by the public Expr API directly -- ExprOp is a namespace-level enum class, which hits the
+// same swig-jse R-backend doubled-prefix bug as TrendType/MonomialOrder/etc (see the
+// perl-fix block in justfile's prebuild-r), so it's simplest to just not expose it at all
+// (kept consistent across languages even though Python itself isn't affected by that bug).
+%ignore datamunge::algebra::detail::ExprOp;
+%ignore datamunge::algebra::detail::ExprNode;
 %template(IPair) std::pair<int, int>;
 %template(DPair) std::pair<double, double>;
 %template(DVectorPair) std::pair<std::vector<double>, std::vector<double> >;
@@ -125,8 +149,12 @@
 %{
   #include "datamunge/datamunge.hpp"
 %}
-%include "datamunge/datamunge.hpp"
 %include "datamunge/plot/plot.hpp"
+%template(RGBVector) std::vector<datamunge::plot::RGB>;
+%template(DataSeriesVector) std::vector<datamunge::plot::DataSeries>;
+%template(ABLineVector) std::vector<datamunge::plot::ABLine>;
+%template(LegendEntryVector) std::vector<datamunge::plot::LegendEntry>;
+%include "datamunge/datamunge.hpp"
 %include "datamunge/stats/arima.hpp"
 %include "datamunge/stats/exponential_smoothing.hpp"
 %include "datamunge/stats/hypothesis_test_result.hpp"
@@ -268,3 +296,27 @@
 %template(AlphaBetaStateVector) std::vector<datamunge::filter::AlphaBetaState>;
 %template(AlphaBetaGammaStateVector) std::vector<datamunge::filter::AlphaBetaGammaState>;
 %include "datamunge/filter/alpha_beta_filter.hpp"
+
+%include "datamunge/algebra/polynomial.hpp"
+%template(PolynomialVector) std::vector<datamunge::algebra::Polynomial>;
+
+%include "datamunge/algebra/poly_gcd.hpp"
+%include "datamunge/algebra/interpolation.hpp"
+%include "datamunge/algebra/resultant.hpp"
+%include "datamunge/algebra/rational_function.hpp"
+%include "datamunge/algebra/sturm.hpp"
+%include "datamunge/algebra/descartes.hpp"
+
+%template(SquareFreeFactorVector) std::vector<datamunge::algebra::SquareFreeFactor>;
+%include "datamunge/algebra/square_free.hpp"
+
+%include "datamunge/algebra/modular.hpp"
+%include "datamunge/algebra/poly_factor_gf_p.hpp"
+
+%include "datamunge/algebra/monomial_order.hpp"
+%template(IVectorVector) std::vector<std::vector<int> >;
+%include "datamunge/algebra/multivariate_polynomial.hpp"
+%template(MultivariatePolynomialVector) std::vector<datamunge::algebra::MultivariatePolynomial>;
+%include "datamunge/algebra/groebner.hpp"
+
+%include "datamunge/algebra/expression.hpp"

@@ -100,8 +100,8 @@ for (row in 1:2) cat(" ", H[row, ], "\n")
 
 cat("\n=================== Gradient descent driven by reverse-mode gradients ===================\n")
 point <- c(-1.2, 1.0)  # the classic Rosenbrock starting point
-learning_rate <- 0.001
-n_steps <- 2000
+learning_rate <- 0.0005
+n_steps <- 100000
 for (step in 0:(n_steps - 1)) {
   t <- Tape()
   vx <- Var(t, point[1])
@@ -118,3 +118,4 @@ for (step in 0:(n_steps - 1)) {
   }
 }
 cat("(true minimum is at [1, 1] with loss 0)\n")
+

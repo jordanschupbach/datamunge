@@ -560,6 +560,80 @@ public class Tensor : global::System.IDisposable {
     return ret;
   }
 
+  /// <summary>The Tensor's own image_to_tensor() bridge: ``img`` (already directly SWIG-bindable,        no facade needed) as a [channels, height, width] tensor normalized to [0, 1].</summary>
+  public static Tensor from_image(SWIGTYPE_p_datamunge__image__Image img) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_from_image(SWIGTYPE_p_datamunge__image__Image.getCPtr(img));
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Basic (inference-only) neural-network building blocks -- see        datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying        implementation and full documentation of shapes/semantics.</summary>
+  public static Tensor conv2d(Tensor input, Tensor kernel, Tensor bias, int stride, int padding) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_conv2d__SWIG_0(Tensor.getCPtr(input), Tensor.getCPtr(kernel), Tensor.getCPtr(bias), stride, padding);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Basic (inference-only) neural-network building blocks -- see        datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying        implementation and full documentation of shapes/semantics.</summary>
+  public static Tensor conv2d(Tensor input, Tensor kernel, Tensor bias, int stride) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_conv2d__SWIG_1(Tensor.getCPtr(input), Tensor.getCPtr(kernel), Tensor.getCPtr(bias), stride);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  /// <summary>Basic (inference-only) neural-network building blocks -- see        datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying        implementation and full documentation of shapes/semantics.</summary>
+  public static Tensor conv2d(Tensor input, Tensor kernel, Tensor bias) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_conv2d__SWIG_2(Tensor.getCPtr(input), Tensor.getCPtr(kernel), Tensor.getCPtr(bias));
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    if (datamungePINVOKE.SWIGPendingException.Pending) throw datamungePINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public Tensor max_pool2d(int pool_size, int stride) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_max_pool2d__SWIG_0(swigCPtr, pool_size, stride);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor max_pool2d(int pool_size) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_max_pool2d__SWIG_1(swigCPtr, pool_size);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor avg_pool2d(int pool_size, int stride) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_avg_pool2d__SWIG_0(swigCPtr, pool_size, stride);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor avg_pool2d(int pool_size) {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_avg_pool2d__SWIG_1(swigCPtr, pool_size);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor relu() {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_relu(swigCPtr);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor sigmoid() {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_sigmoid(swigCPtr);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
+  public Tensor softmax() {
+    global::System.IntPtr cPtr = datamungePINVOKE.Tensor_softmax(swigCPtr);
+    Tensor ret = (cPtr == global::System.IntPtr.Zero) ? null : new Tensor(cPtr, false);
+    return ret;
+  }
+
   public string to_string(uint max_elements) {
     string ret = datamungePINVOKE.Tensor_to_string__SWIG_0(swigCPtr, max_elements);
     return ret;

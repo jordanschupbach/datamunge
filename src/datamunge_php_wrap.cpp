@@ -1293,70 +1293,86 @@ SWIG_Php_AppendOutput(zval *target, zval *o, int is_void) {
 #define SWIGTYPE_p_datamunge__ElasticNet swig_types[8]
 #define SWIGTYPE_p_datamunge__GBMClassifier swig_types[9]
 #define SWIGTYPE_p_datamunge__GBMRegressor swig_types[10]
-#define SWIGTYPE_p_datamunge__GLM swig_types[11]
-#define SWIGTYPE_p_datamunge__GLMM swig_types[12]
-#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[13]
-#define SWIGTYPE_p_datamunge__HyperDual swig_types[14]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[15]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[16]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[17]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[18]
-#define SWIGTYPE_p_datamunge__LDA swig_types[19]
-#define SWIGTYPE_p_datamunge__LM swig_types[20]
-#define SWIGTYPE_p_datamunge__LMM swig_types[21]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[22]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[23]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[24]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[25]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[26]
-#define SWIGTYPE_p_datamunge__SVM swig_types[27]
-#define SWIGTYPE_p_datamunge__Tape swig_types[28]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[29]
-#define SWIGTYPE_p_datamunge__Var swig_types[30]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[31]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[32]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[33]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[34]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[35]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[36]
-#define SWIGTYPE_p_datamunge__plot__BarChart swig_types[37]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[38]
-#define SWIGTYPE_p_datamunge__plot__LinePlot swig_types[39]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[40]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[41]
-#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[42]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[43]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[44]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[45]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[46]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[47]
-#define SWIGTYPE_p_difference_type swig_types[48]
-#define SWIGTYPE_p_first_type swig_types[49]
-#define SWIGTYPE_p_int swig_types[50]
-#define SWIGTYPE_p_long_long swig_types[51]
-#define SWIGTYPE_p_second_type swig_types[52]
-#define SWIGTYPE_p_short swig_types[53]
-#define SWIGTYPE_p_signed_char swig_types[54]
-#define SWIGTYPE_p_size_type swig_types[55]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[56]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[57]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[58]
-#define SWIGTYPE_p_std__size_t swig_types[59]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[60]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[61]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[62]
-#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[63]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[64]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[65]
-#define SWIGTYPE_p_unsigned_char swig_types[66]
-#define SWIGTYPE_p_unsigned_int swig_types[67]
-#define SWIGTYPE_p_unsigned_long_long swig_types[68]
-#define SWIGTYPE_p_unsigned_short swig_types[69]
-#define SWIGTYPE_p_value_type swig_types[70]
+#define SWIGTYPE_p_datamunge__GGPlot swig_types[11]
+#define SWIGTYPE_p_datamunge__GLM swig_types[12]
+#define SWIGTYPE_p_datamunge__GLMM swig_types[13]
+#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[14]
+#define SWIGTYPE_p_datamunge__HyperDual swig_types[15]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[16]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[17]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[18]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[19]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[20]
+#define SWIGTYPE_p_datamunge__LDA swig_types[21]
+#define SWIGTYPE_p_datamunge__LM swig_types[22]
+#define SWIGTYPE_p_datamunge__LMM swig_types[23]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[24]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[25]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[26]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[27]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[28]
+#define SWIGTYPE_p_datamunge__SVM swig_types[29]
+#define SWIGTYPE_p_datamunge__Tape swig_types[30]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[31]
+#define SWIGTYPE_p_datamunge__Var swig_types[32]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[33]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[34]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[35]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[36]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[37]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[38]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[39]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[40]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[41]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[42]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[43]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[44]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[45]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[46]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[47]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[48]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[49]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[50]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[51]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[52]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[53]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[54]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[55]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[56]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[57]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[58]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[59]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[60]
+#define SWIGTYPE_p_difference_type swig_types[61]
+#define SWIGTYPE_p_first_type swig_types[62]
+#define SWIGTYPE_p_int swig_types[63]
+#define SWIGTYPE_p_long_long swig_types[64]
+#define SWIGTYPE_p_second_type swig_types[65]
+#define SWIGTYPE_p_short swig_types[66]
+#define SWIGTYPE_p_signed_char swig_types[67]
+#define SWIGTYPE_p_size_type swig_types[68]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[69]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[70]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[71]
+#define SWIGTYPE_p_std__size_t swig_types[72]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[73]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[74]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[75]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[76]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[77]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[78]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[79]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[80]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[81]
+#define SWIGTYPE_p_unsigned_char swig_types[82]
+#define SWIGTYPE_p_unsigned_int swig_types[83]
+#define SWIGTYPE_p_unsigned_long_long swig_types[84]
+#define SWIGTYPE_p_unsigned_short swig_types[85]
+#define SWIGTYPE_p_value_type swig_types[86]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[72];
-SWIGINTERN swig_module_info swig_module = {swig_types, 71, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[88];
+SWIGINTERN swig_module_info swig_module = {swig_types, 87, 0, 0, 0, 0};
 /* header section */
 #define SWIG_name  "datamunge"
 #ifdef __cplusplus
@@ -1679,6 +1695,12 @@ static zend_object_handlers DataFrame_object_handlers;
 static zend_object *SWIG_Php_create_object_DataFrame(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &DataFrame_object_handlers);}
 static void SWIG_Php_free_obj_DataFrame(zend_object *object) {delete (datamunge::DataFrame *)SWIG_Php_free_obj(object);}
 
+static zend_class_entry *SWIG_Php_ce_GGPlot;
+
+static zend_object_handlers GGPlot_object_handlers;
+static zend_object *SWIG_Php_create_object_GGPlot(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &GGPlot_object_handlers);}
+static void SWIG_Php_free_obj_GGPlot(zend_object *object) {delete (datamunge::GGPlot *)SWIG_Php_free_obj(object);}
+
 static zend_class_entry *SWIG_Php_ce_LM;
 
 static zend_object_handlers LM_object_handlers;
@@ -1696,6 +1718,12 @@ static zend_class_entry *SWIG_Php_ce_GLMM;
 static zend_object_handlers GLMM_object_handlers;
 static zend_object *SWIG_Php_create_object_GLMM(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &GLMM_object_handlers);}
 static void SWIG_Php_free_obj_GLMM(zend_object *object) {delete (datamunge::GLMM *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_INLAMixedModel;
+
+static zend_object_handlers INLAMixedModel_object_handlers;
+static zend_object *SWIG_Php_create_object_INLAMixedModel(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &INLAMixedModel_object_handlers);}
+static void SWIG_Php_free_obj_INLAMixedModel(zend_object *object) {delete (datamunge::INLAMixedModel *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_LDA;
 
@@ -1871,29 +1899,35 @@ static zend_object_handlers DataSeries_object_handlers;
 static zend_object *SWIG_Php_create_object_DataSeries(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &DataSeries_object_handlers);}
 static void SWIG_Php_free_obj_DataSeries(zend_object *object) {delete (datamunge::plot::DataSeries *)SWIG_Php_free_obj(object);}
 
+static zend_class_entry *SWIG_Php_ce_ABLine;
+
+static zend_object_handlers ABLine_object_handlers;
+static zend_object *SWIG_Php_create_object_ABLine(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &ABLine_object_handlers);}
+static void SWIG_Php_free_obj_ABLine(zend_object *object) {delete (datamunge::plot::ABLine *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_LegendEntry;
+
+static zend_object_handlers LegendEntry_object_handlers;
+static zend_object *SWIG_Php_create_object_LegendEntry(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &LegendEntry_object_handlers);}
+static void SWIG_Php_free_obj_LegendEntry(zend_object *object) {delete (datamunge::plot::LegendEntry *)SWIG_Php_free_obj(object);}
+
 static zend_class_entry *SWIG_Php_ce_Plot;
 
 static zend_object_handlers Plot_object_handlers;
 static zend_object *SWIG_Php_create_object_Plot(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &Plot_object_handlers);}
 static void SWIG_Php_free_obj_Plot(zend_object *object) {delete (datamunge::plot::Plot *)SWIG_Php_free_obj(object);}
 
-static zend_class_entry *SWIG_Php_ce_ScatterPlot;
+static zend_class_entry *SWIG_Php_ce_RPlot;
 
-static zend_object_handlers ScatterPlot_object_handlers;
-static zend_object *SWIG_Php_create_object_ScatterPlot(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &ScatterPlot_object_handlers);}
-static void SWIG_Php_free_obj_ScatterPlot(zend_object *object) {delete (datamunge::plot::ScatterPlot *)SWIG_Php_free_obj(object);}
+static zend_object_handlers RPlot_object_handlers;
+static zend_object *SWIG_Php_create_object_RPlot(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RPlot_object_handlers);}
+static void SWIG_Php_free_obj_RPlot(zend_object *object) {delete (datamunge::plot::RPlot *)SWIG_Php_free_obj(object);}
 
-static zend_class_entry *SWIG_Php_ce_LinePlot;
+static zend_class_entry *SWIG_Php_ce_RLayout;
 
-static zend_object_handlers LinePlot_object_handlers;
-static zend_object *SWIG_Php_create_object_LinePlot(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &LinePlot_object_handlers);}
-static void SWIG_Php_free_obj_LinePlot(zend_object *object) {delete (datamunge::plot::LinePlot *)SWIG_Php_free_obj(object);}
-
-static zend_class_entry *SWIG_Php_ce_BarChart;
-
-static zend_object_handlers BarChart_object_handlers;
-static zend_object *SWIG_Php_create_object_BarChart(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &BarChart_object_handlers);}
-static void SWIG_Php_free_obj_BarChart(zend_object *object) {delete (datamunge::plot::BarChart *)SWIG_Php_free_obj(object);}
+static zend_object_handlers RLayout_object_handlers;
+static zend_object *SWIG_Php_create_object_RLayout(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RLayout_object_handlers);}
+static void SWIG_Php_free_obj_RLayout(zend_object *object) {delete (datamunge::plot::RLayout *)SWIG_Php_free_obj(object);}
 
 static zend_class_entry *SWIG_Php_ce_ARIMAOptions;
 
@@ -1925,8 +1959,65 @@ static zend_object_handlers HypothesisTestResult_object_handlers;
 static zend_object *SWIG_Php_create_object_HypothesisTestResult(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &HypothesisTestResult_object_handlers);}
 static void SWIG_Php_free_obj_HypothesisTestResult(zend_object *object) {delete (datamunge::stats::HypothesisTestResult *)SWIG_Php_free_obj(object);}
 
+static zend_class_entry *SWIG_Php_ce_RWMOptions;
+
+static zend_object_handlers RWMOptions_object_handlers;
+static zend_object *SWIG_Php_create_object_RWMOptions(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RWMOptions_object_handlers);}
+static void SWIG_Php_free_obj_RWMOptions(zend_object *object) {delete (datamunge::bayes::RWMOptions *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_RWMResult;
+
+static zend_object_handlers RWMResult_object_handlers;
+static zend_object *SWIG_Php_create_object_RWMResult(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RWMResult_object_handlers);}
+static void SWIG_Php_free_obj_RWMResult(zend_object *object) {delete (datamunge::bayes::RWMResult *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_RandomWalkMetropolis;
+
+static zend_object_handlers RandomWalkMetropolis_object_handlers;
+static zend_object *SWIG_Php_create_object_RandomWalkMetropolis(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &RandomWalkMetropolis_object_handlers);}
+static void SWIG_Php_free_obj_RandomWalkMetropolis(zend_object *object) {delete (datamunge::bayes::RandomWalkMetropolis *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_GibbsOptions;
+
+static zend_object_handlers GibbsOptions_object_handlers;
+static zend_object *SWIG_Php_create_object_GibbsOptions(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &GibbsOptions_object_handlers);}
+static void SWIG_Php_free_obj_GibbsOptions(zend_object *object) {delete (datamunge::bayes::GibbsOptions *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_GibbsResult;
+
+static zend_object_handlers GibbsResult_object_handlers;
+static zend_object *SWIG_Php_create_object_GibbsResult(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &GibbsResult_object_handlers);}
+static void SWIG_Php_free_obj_GibbsResult(zend_object *object) {delete (datamunge::bayes::GibbsResult *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_GibbsSampler;
+
+static zend_object_handlers GibbsSampler_object_handlers;
+static zend_object *SWIG_Php_create_object_GibbsSampler(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &GibbsSampler_object_handlers);}
+static void SWIG_Php_free_obj_GibbsSampler(zend_object *object) {delete (datamunge::bayes::GibbsSampler *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_ImportanceSamplingOptions;
+
+static zend_object_handlers ImportanceSamplingOptions_object_handlers;
+static zend_object *SWIG_Php_create_object_ImportanceSamplingOptions(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &ImportanceSamplingOptions_object_handlers);}
+static void SWIG_Php_free_obj_ImportanceSamplingOptions(zend_object *object) {delete (datamunge::bayes::ImportanceSamplingOptions *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_ImportanceSamplingResult;
+
+static zend_object_handlers ImportanceSamplingResult_object_handlers;
+static zend_object *SWIG_Php_create_object_ImportanceSamplingResult(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &ImportanceSamplingResult_object_handlers);}
+static void SWIG_Php_free_obj_ImportanceSamplingResult(zend_object *object) {delete (datamunge::bayes::ImportanceSamplingResult *)SWIG_Php_free_obj(object);}
+
+static zend_class_entry *SWIG_Php_ce_ImportanceSampling;
+
+static zend_object_handlers ImportanceSampling_object_handlers;
+static zend_object *SWIG_Php_create_object_ImportanceSampling(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &ImportanceSampling_object_handlers);}
+static void SWIG_Php_free_obj_ImportanceSampling(zend_object *object) {delete (datamunge::bayes::ImportanceSampling *)SWIG_Php_free_obj(object);}
+
 /* class entry for pointer to _p_datamunge__optim__DifferentiableFunction */
 static zend_class_entry *SWIG_Php_ce__p_datamunge__optim__DifferentiableFunction;
+
+/* class entry for pointer to _p_datamunge__image__Image */
+static zend_class_entry *SWIG_Php_ce__p_datamunge__image__Image;
 
 /* class entry for pointer to _p_unsigned_char */
 static zend_class_entry *SWIG_Php_ce__p_unsigned_char;
@@ -1940,6 +2031,12 @@ static zend_class_entry *SWIG_Php_ce__p_short;
 /* class entry for pointer to _p_std__size_t */
 static zend_class_entry *SWIG_Php_ce__p_std__size_t;
 
+/* class entry for pointer to _p_std__vectorT_datamunge__plot__RGB_t */
+static zend_class_entry *SWIG_Php_ce__p_std__vectorT_datamunge__plot__RGB_t;
+
+/* class entry for pointer to _p_std__vectorT_datamunge__plot__LegendEntry_t */
+static zend_class_entry *SWIG_Php_ce__p_std__vectorT_datamunge__plot__LegendEntry_t;
+
 /* class entry for pointer to _p_size_type */
 static zend_class_entry *SWIG_Php_ce__p_size_type;
 
@@ -1948,6 +2045,9 @@ static zend_class_entry *SWIG_Php_ce__p_long_long;
 
 /* class entry for pointer to _p_int */
 static zend_class_entry *SWIG_Php_ce__p_int;
+
+/* class entry for pointer to _p_std__vectorT_datamunge__plot__ABLine_t */
+static zend_class_entry *SWIG_Php_ce__p_std__vectorT_datamunge__plot__ABLine_t;
 
 /* class entry for pointer to _p_std__vectorT_datamunge__plot__DataSeries_t */
 static zend_class_entry *SWIG_Php_ce__p_std__vectorT_datamunge__plot__DataSeries_t;
@@ -1994,14 +2094,8 @@ static void *_p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__Arbitr
 static void *_p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::DifferentiableSeparableFunction *) x));
 }
-static void *_p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::BarChart *) x));
-}
-static void *_p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::LinePlot *) x));
-}
-static void *_p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::ScatterPlot *) x));
+static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
 }
 SWIGINTERN swig_type_info _swigt__int = {"_int", "int", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "datamunge::AgglomerativeClustering *", 0, 0, (void*)0, 0};
@@ -2014,10 +2108,12 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__Dual = {"_p_datamunge__Dual", "da
 SWIGINTERN swig_type_info _swigt__p_datamunge__ElasticNet = {"_p_datamunge__ElasticNet", "datamunge::ElasticNet *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GBMClassifier = {"_p_datamunge__GBMClassifier", "datamunge::GBMClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GBMRegressor = {"_p_datamunge__GBMRegressor", "datamunge::GBMRegressor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__GGPlot = {"_p_datamunge__GGPlot", "datamunge::GGPlot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GLM = {"_p_datamunge__GLM", "datamunge::GLM *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GLMM = {"_p_datamunge__GLMM", "datamunge::GLMM *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GaussianProcessRegression = {"_p_datamunge__GaussianProcessRegression", "datamunge::GaussianProcessRegression *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__HyperDual = {"_p_datamunge__HyperDual", "datamunge::HyperDual *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__INLAMixedModel = {"_p_datamunge__INLAMixedModel", "datamunge::INLAMixedModel *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KMeans = {"_p_datamunge__KMeans", "datamunge::KMeans *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KNNClassifier = {"_p_datamunge__KNNClassifier", "datamunge::KNNClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KNNRegressor = {"_p_datamunge__KNNRegressor", "datamunge::KNNRegressor *", 0, 0, (void*)0, 0};
@@ -2036,16 +2132,27 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor",
 SWIGINTERN swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostClassifier = {"_p_datamunge__XGBoostClassifier", "datamunge::XGBoostClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostRegressor = {"_p_datamunge__XGBoostRegressor", "datamunge::XGBoostRegressor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsOptions = {"_p_datamunge__bayes__GibbsOptions", "datamunge::bayes::GibbsOptions *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsResult = {"_p_datamunge__bayes__GibbsResult", "datamunge::bayes::GibbsResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsSampler = {"_p_datamunge__bayes__GibbsSampler", "datamunge::bayes::GibbsSampler *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSampling = {"_p_datamunge__bayes__ImportanceSampling", "datamunge::bayes::ImportanceSampling *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingOptions = {"_p_datamunge__bayes__ImportanceSamplingOptions", "datamunge::bayes::ImportanceSamplingOptions *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingResult = {"_p_datamunge__bayes__ImportanceSamplingResult", "datamunge::bayes::ImportanceSamplingResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__bayes__RWMOptions", "datamunge::bayes::RWMOptions *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "datamunge::image::Image *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__ArbitraryFunction = {"_p_datamunge__optim__ArbitraryFunction", "datamunge::optim::ArbitraryFunction *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__DifferentiableSeparableFunction = {"_p_datamunge__optim__DifferentiableSeparableFunction", 0, 0, 0, 0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SeparableFunction = {"_p_datamunge__optim__SeparableFunction", 0, 0, 0, 0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__DifferentiableFunction = {"_p_datamunge__optim__DifferentiableFunction", "datamunge::optim::DifferentiableFunction *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__BarChart = {"_p_datamunge__plot__BarChart", "datamunge::plot::BarChart *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__LinePlot = {"_p_datamunge__plot__LinePlot", "datamunge::plot::LinePlot *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::plot::Plot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGB *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ScatterPlot = {"_p_datamunge__plot__ScatterPlot", "datamunge::plot::ScatterPlot *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
@@ -2063,7 +2170,10 @@ SWIGINTERN swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT
 SWIGINTERN swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "std::vector< std::size_t >::value_type *|std::size_t *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::plot::ABLine > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::plot::DataSeries > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::plot::LegendEntry > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::plot::RGB > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< std::vector< double > >::value_type *|std::vector< double > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "std::vector< std::size_t > *", 0, 0, (void*)0, 0};
@@ -2090,10 +2200,12 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__ElasticNet,
   &_swigt__p_datamunge__GBMClassifier,
   &_swigt__p_datamunge__GBMRegressor,
+  &_swigt__p_datamunge__GGPlot,
   &_swigt__p_datamunge__GLM,
   &_swigt__p_datamunge__GLMM,
   &_swigt__p_datamunge__GaussianProcessRegression,
   &_swigt__p_datamunge__HyperDual,
+  &_swigt__p_datamunge__INLAMixedModel,
   &_swigt__p_datamunge__KMeans,
   &_swigt__p_datamunge__KNNClassifier,
   &_swigt__p_datamunge__KNNRegressor,
@@ -2112,16 +2224,27 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__Var,
   &_swigt__p_datamunge__XGBoostClassifier,
   &_swigt__p_datamunge__XGBoostRegressor,
+  &_swigt__p_datamunge__bayes__GibbsOptions,
+  &_swigt__p_datamunge__bayes__GibbsResult,
+  &_swigt__p_datamunge__bayes__GibbsSampler,
+  &_swigt__p_datamunge__bayes__ImportanceSampling,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingOptions,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingResult,
+  &_swigt__p_datamunge__bayes__RWMOptions,
+  &_swigt__p_datamunge__bayes__RWMResult,
+  &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
+  &_swigt__p_datamunge__image__Image,
   &_swigt__p_datamunge__optim__ArbitraryFunction,
   &_swigt__p_datamunge__optim__DifferentiableFunction,
   &_swigt__p_datamunge__optim__DifferentiableSeparableFunction,
   &_swigt__p_datamunge__optim__SeparableFunction,
-  &_swigt__p_datamunge__plot__BarChart,
+  &_swigt__p_datamunge__plot__ABLine,
   &_swigt__p_datamunge__plot__DataSeries,
-  &_swigt__p_datamunge__plot__LinePlot,
+  &_swigt__p_datamunge__plot__LegendEntry,
   &_swigt__p_datamunge__plot__Plot,
   &_swigt__p_datamunge__plot__RGB,
-  &_swigt__p_datamunge__plot__ScatterPlot,
+  &_swigt__p_datamunge__plot__RLayout,
+  &_swigt__p_datamunge__plot__RPlot,
   &_swigt__p_datamunge__stats__ARIMA,
   &_swigt__p_datamunge__stats__ARIMAOptions,
   &_swigt__p_datamunge__stats__ExponentialSmoothing,
@@ -2139,7 +2262,10 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__pairT_int_int_t,
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
   &_swigt__p_std__size_t,
+  &_swigt__p_std__vectorT_datamunge__plot__ABLine_t,
   &_swigt__p_std__vectorT_datamunge__plot__DataSeries_t,
+  &_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t,
+  &_swigt__p_std__vectorT_datamunge__plot__RGB_t,
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_std__size_t_t,
@@ -2163,10 +2289,12 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__Dual[] = {  {&_swigt__p_datamunge
 SWIGINTERN swig_cast_info _swigc__p_datamunge__ElasticNet[] = {  {&_swigt__p_datamunge__ElasticNet, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GBMClassifier[] = {  {&_swigt__p_datamunge__GBMClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GBMRegressor[] = {  {&_swigt__p_datamunge__GBMRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__GGPlot[] = {  {&_swigt__p_datamunge__GGPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GLM[] = {  {&_swigt__p_datamunge__GLM, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GLMM[] = {  {&_swigt__p_datamunge__GLMM, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GaussianProcessRegression[] = {  {&_swigt__p_datamunge__GaussianProcessRegression, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__HyperDual[] = {  {&_swigt__p_datamunge__HyperDual, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__INLAMixedModel[] = {  {&_swigt__p_datamunge__INLAMixedModel, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KMeans[] = {  {&_swigt__p_datamunge__KMeans, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KNNClassifier[] = {  {&_swigt__p_datamunge__KNNClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KNNRegressor[] = {  {&_swigt__p_datamunge__KNNRegressor, 0, 0, 0},{0, 0, 0, 0}};
@@ -2185,16 +2313,27 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamun
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostClassifier[] = {  {&_swigt__p_datamunge__XGBoostClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostRegressor[] = {  {&_swigt__p_datamunge__XGBoostRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsOptions[] = {  {&_swigt__p_datamunge__bayes__GibbsOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsResult[] = {  {&_swigt__p_datamunge__bayes__GibbsResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsSampler[] = {  {&_swigt__p_datamunge__bayes__GibbsSampler, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSampling[] = {  {&_swigt__p_datamunge__bayes__ImportanceSampling, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingOptions[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingResult[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_datamunge__bayes__RWMOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__DifferentiableSeparableFunction[] = {{&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SeparableFunction[] = {{&_swigt__p_datamunge__optim__SeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__ArbitraryFunction[] = {  {&_swigt__p_datamunge__optim__ArbitraryFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableFunction, _p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__SeparableFunction, _p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__DifferentiableFunction[] = {  {&_swigt__p_datamunge__optim__DifferentiableFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__BarChart[] = {  {&_swigt__p_datamunge__plot__BarChart, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ABLine[] = {  {&_swigt__p_datamunge__plot__ABLine, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__DataSeries[] = {  {&_swigt__p_datamunge__plot__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__LinePlot[] = {  {&_swigt__p_datamunge__plot__LinePlot, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__BarChart, _p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__LinePlot, _p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__ScatterPlot, _p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__LegendEntry[] = {  {&_swigt__p_datamunge__plot__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__RPlot, _p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RGB[] = {  {&_swigt__p_datamunge__plot__RGB, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ScatterPlot[] = {  {&_swigt__p_datamunge__plot__ScatterPlot, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RLayout[] = {  {&_swigt__p_datamunge__plot__RLayout, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RPlot[] = {  {&_swigt__p_datamunge__plot__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ARIMA[] = {  {&_swigt__p_datamunge__stats__ARIMA, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ARIMAOptions[] = {  {&_swigt__p_datamunge__stats__ARIMAOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothing[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothing, 0, 0, 0},{0, 0, 0, 0}};
@@ -2212,7 +2351,10 @@ SWIGINTERN swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std__pairT_int_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__size_t[] = {  {&_swigt__p_std__size_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__ABLine_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__ABLine_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__DataSeries_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__DataSeries_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__RGB_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__RGB_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_std__size_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -2236,10 +2378,12 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__ElasticNet,
   _swigc__p_datamunge__GBMClassifier,
   _swigc__p_datamunge__GBMRegressor,
+  _swigc__p_datamunge__GGPlot,
   _swigc__p_datamunge__GLM,
   _swigc__p_datamunge__GLMM,
   _swigc__p_datamunge__GaussianProcessRegression,
   _swigc__p_datamunge__HyperDual,
+  _swigc__p_datamunge__INLAMixedModel,
   _swigc__p_datamunge__KMeans,
   _swigc__p_datamunge__KNNClassifier,
   _swigc__p_datamunge__KNNRegressor,
@@ -2258,16 +2402,27 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__Var,
   _swigc__p_datamunge__XGBoostClassifier,
   _swigc__p_datamunge__XGBoostRegressor,
+  _swigc__p_datamunge__bayes__GibbsOptions,
+  _swigc__p_datamunge__bayes__GibbsResult,
+  _swigc__p_datamunge__bayes__GibbsSampler,
+  _swigc__p_datamunge__bayes__ImportanceSampling,
+  _swigc__p_datamunge__bayes__ImportanceSamplingOptions,
+  _swigc__p_datamunge__bayes__ImportanceSamplingResult,
+  _swigc__p_datamunge__bayes__RWMOptions,
+  _swigc__p_datamunge__bayes__RWMResult,
+  _swigc__p_datamunge__bayes__RandomWalkMetropolis,
+  _swigc__p_datamunge__image__Image,
   _swigc__p_datamunge__optim__ArbitraryFunction,
   _swigc__p_datamunge__optim__DifferentiableFunction,
   _swigc__p_datamunge__optim__DifferentiableSeparableFunction,
   _swigc__p_datamunge__optim__SeparableFunction,
-  _swigc__p_datamunge__plot__BarChart,
+  _swigc__p_datamunge__plot__ABLine,
   _swigc__p_datamunge__plot__DataSeries,
-  _swigc__p_datamunge__plot__LinePlot,
+  _swigc__p_datamunge__plot__LegendEntry,
   _swigc__p_datamunge__plot__Plot,
   _swigc__p_datamunge__plot__RGB,
-  _swigc__p_datamunge__plot__ScatterPlot,
+  _swigc__p_datamunge__plot__RLayout,
+  _swigc__p_datamunge__plot__RPlot,
   _swigc__p_datamunge__stats__ARIMA,
   _swigc__p_datamunge__stats__ARIMAOptions,
   _swigc__p_datamunge__stats__ExponentialSmoothing,
@@ -2285,7 +2440,10 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__pairT_int_int_t,
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
   _swigc__p_std__size_t,
+  _swigc__p_std__vectorT_datamunge__plot__ABLine_t,
   _swigc__p_std__vectorT_datamunge__plot__DataSeries_t,
+  _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t,
+  _swigc__p_std__vectorT_datamunge__plot__RGB_t,
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_std__size_t_t,
@@ -7121,6 +7279,1756 @@ fail:
 
 
 
+static ZEND_NAMED_FUNCTION(_wrap_new_GGPlot__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  std::string temp5 ;
+  std::string temp6 ;
+  zval args[6];
+  datamunge::GGPlot *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_GGPlot");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  convert_to_string(&args[4]);
+  temp5.assign(Z_STRVAL(args[4]), Z_STRLEN(args[4]));
+  arg5 = &temp5;
+  
+  
+  convert_to_string(&args[5]);
+  temp6.assign(Z_STRVAL(args[5]), Z_STRLEN(args[5]));
+  arg6 = &temp6;
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_GGPlot__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  std::string temp5 ;
+  zval args[5];
+  datamunge::GGPlot *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_GGPlot");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  convert_to_string(&args[4]);
+  temp5.assign(Z_STRVAL(args[4]), Z_STRLEN(args[4]));
+  arg5 = &temp5;
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_GGPlot__SWIG_2) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[4];
+  datamunge::GGPlot *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_GGPlot");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_GGPlot__SWIG_3) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[3];
+  datamunge::GGPlot *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_GGPlot");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_GGPlot__SWIG_4) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[2];
+  datamunge::GGPlot *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_GGPlot");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 1);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,__construct) {
+  int argc;
+  zval argv[6];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_new_GGPlot__SWIG_4(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_new_GGPlot__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _wrap_new_GGPlot__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_STRING) ? 1 : 0;
+            
+            if (_v) {
+              _wrap_new_GGPlot__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_STRING) ? 1 : 0;
+            
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_STRING) ? 1 : 0;
+              
+              if (_v) {
+                _wrap_new_GGPlot__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'new_GGPlot'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_point__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[2];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_point");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2),arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_point__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_point");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_point__SWIG_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_point();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_point) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_point__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_point__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _wrap_GGPlot_geom_point__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_point'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_line__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[2];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_line");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2),arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_line__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_line");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_line__SWIG_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_line();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_line) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_line__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_line__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _wrap_GGPlot_geom_line__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_line'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_bar__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_bar");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_bar__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_bar();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_bar) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_bar__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_bar__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_bar'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_col__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_col");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_col__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_col();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_col) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_col__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_col__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_col'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_histogram__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[2];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of GGPlot_geom_histogram");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_histogram__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_histogram__SWIG_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_histogram) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_histogram__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_LONG &&
+      (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[0])) &&
+      ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[0])));
+    
+    if (_v) {
+      _wrap_GGPlot_geom_histogram__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_LONG &&
+      (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[0])) &&
+      ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[0])));
+    
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_GGPlot_geom_histogram__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_histogram'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_boxplot__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_boxplot");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_boxplot__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_boxplot();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_boxplot) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_boxplot__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_boxplot__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_boxplot'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_smooth__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_smooth");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_smooth__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_smooth();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_smooth) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_smooth__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_smooth__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_smooth'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_area__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_area");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_area__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_area();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_area) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_area__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_area__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_area'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_ribbon__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::RGB arg4 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::plot::RGB *tmp4 ;
+  zval args[3];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 4 of GGPlot_geom_ribbon");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_ribbon__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[2];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_ribbon) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_GGPlot_geom_ribbon__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_GGPlot_geom_ribbon__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_ribbon'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_density__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *tmp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of GGPlot_geom_density");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_geom_density__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_density();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,geom_density) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_geom_density__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_GGPlot_geom_density__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_geom_density'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_facet_wrap__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string temp2 ;
+  zval args[2];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg3 = (std::size_t) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_facet_wrap__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,facet_wrap) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _wrap_GGPlot_facet_wrap__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_LONG &&
+        (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[1])) &&
+        ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[1])));
+      
+      if (_v) {
+        _wrap_GGPlot_facet_wrap__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_facet_wrap'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,theme_minimal) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->theme_minimal();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,theme_bw) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->theme_bw();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,theme_classic) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->theme_classic();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,scale_color_manual) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t for argument 2 of GGPlot_scale_color_manual");
+    return;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_labs__SWIG_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[3];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[2]);
+  temp4.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg4 = &temp4;
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_labs__SWIG_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[2];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[1]);
+  temp3.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg3 = &temp3;
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_labs__SWIG_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_GGPlot_labs__SWIG_3) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__GGPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,labs) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_GGPlot_labs__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _wrap_GGPlot_labs__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_GGPlot_labs__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_STRING) ? 1 : 0;
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_GGPlot_labs__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'GGPlot_labs'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,save) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  ((datamunge::GGPlot const *)arg1)->save((std::string const &)*arg2);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GGPlot,save_svg) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::GGPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  ((datamunge::GGPlot const *)arg1)->save_svg((std::string const &)*arg2);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(GGPlot,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GGPlot,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GGPlot,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
 static ZEND_NAMED_FUNCTION(_wrap_new_LM__SWIG_0) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -8056,7 +9964,7 @@ fail:
 
 static PHP_METHOD(LM,plot_residuals_vs_fitted) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -8065,12 +9973,12 @@ static PHP_METHOD(LM,plot_residuals_vs_fitted) {
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -8079,7 +9987,7 @@ fail:
 
 static PHP_METHOD(LM,plot_normal_qq) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -8088,12 +9996,12 @@ static PHP_METHOD(LM,plot_normal_qq) {
   
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -8102,7 +10010,7 @@ fail:
 
 static PHP_METHOD(LM,plot_scale_location) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -8111,12 +10019,12 @@ static PHP_METHOD(LM,plot_scale_location) {
   
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -8125,7 +10033,7 @@ fail:
 
 static PHP_METHOD(LM,plot_residuals_vs_leverage) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::LM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -8134,12 +10042,12 @@ static PHP_METHOD(LM,plot_residuals_vs_leverage) {
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -10705,6 +12613,1297 @@ fail:
 
 
 
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_0) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  std::size_t arg10 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[10];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 10 || zend_get_parameters_array_ex(10, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg6 = (std::size_t) zval_get_long(&args[5]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[6]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg8 = (std::size_t) zval_get_long(&args[7]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg9 = (std::size_t) zval_get_long(&args[8]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg10 = (std::size_t) zval_get_long(&args[9]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),SWIG_STD_MOVE(arg10));
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[9];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 9 || zend_get_parameters_array_ex(9, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg6 = (std::size_t) zval_get_long(&args[5]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[6]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg8 = (std::size_t) zval_get_long(&args[7]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg9 = (std::size_t) zval_get_long(&args[8]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_2) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[8];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 8 || zend_get_parameters_array_ex(8, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg6 = (std::size_t) zval_get_long(&args[5]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[6]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg8 = (std::size_t) zval_get_long(&args[7]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8));
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_3) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[7];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 7 || zend_get_parameters_array_ex(7, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg6 = (std::size_t) zval_get_long(&args[5]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[6]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_4) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[6];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg6 = (std::size_t) zval_get_long(&args[5]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6));
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_5) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[5];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_6) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  zval args[4];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  
+  convert_to_string(&args[3]);
+  temp4.assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  arg4 = &temp4;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_7) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  zval args[3];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  
+  convert_to_string(&args[2]);
+  temp3.assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  arg3 = &temp3;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_INLAMixedModel__SWIG_8) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[2];
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 1 of new_INLAMixedModel");
+    return;
+  }
+  
+  
+  convert_to_string(&args[1]);
+  temp2.assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  arg2 = &temp2;
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel, 1);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,__construct) {
+  int argc;
+  zval argv[10];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_new_INLAMixedModel__SWIG_8(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_new_INLAMixedModel__SWIG_7(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _wrap_new_INLAMixedModel__SWIG_6(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _wrap_new_INLAMixedModel__SWIG_5(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_LONG &&
+                (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[5])) &&
+                ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[5])));
+              
+              if (_v) {
+                _wrap_new_INLAMixedModel__SWIG_4(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_LONG &&
+                (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[5])) &&
+                ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[5])));
+              
+              if (_v) {
+                _v = (Z_TYPE(argv[6]) == IS_DOUBLE);
+                if (_v) {
+                  _wrap_new_INLAMixedModel__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_LONG &&
+                (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[5])) &&
+                ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[5])));
+              
+              if (_v) {
+                _v = (Z_TYPE(argv[6]) == IS_DOUBLE);
+                if (_v) {
+                  _v = (Z_TYPE(argv[7]) == IS_LONG &&
+                    (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[7])) &&
+                    ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[7])));
+                  
+                  if (_v) {
+                    _wrap_new_INLAMixedModel__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_LONG &&
+                (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[5])) &&
+                ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[5])));
+              
+              if (_v) {
+                _v = (Z_TYPE(argv[6]) == IS_DOUBLE);
+                if (_v) {
+                  _v = (Z_TYPE(argv[7]) == IS_LONG &&
+                    (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[7])) &&
+                    ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[7])));
+                  
+                  if (_v) {
+                    _v = (Z_TYPE(argv[8]) == IS_LONG &&
+                      (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[8])) &&
+                      ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[8])));
+                    
+                    if (_v) {
+                      _wrap_new_INLAMixedModel__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_LONG &&
+                (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[5])) &&
+                ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[5])));
+              
+              if (_v) {
+                _v = (Z_TYPE(argv[6]) == IS_DOUBLE);
+                if (_v) {
+                  _v = (Z_TYPE(argv[7]) == IS_LONG &&
+                    (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[7])) &&
+                    ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[7])));
+                  
+                  if (_v) {
+                    _v = (Z_TYPE(argv[8]) == IS_LONG &&
+                      (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[8])) &&
+                      ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[8])));
+                    
+                    if (_v) {
+                      _v = (Z_TYPE(argv[9]) == IS_LONG &&
+                        (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[9])) &&
+                        ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[9])));
+                      
+                      if (_v) {
+                        _wrap_new_INLAMixedModel__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'new_INLAMixedModel'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,formula_text) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->formula_text();
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,family) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->family();
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,group_variable) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_variable();
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,random_effect_names) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_names();
+  {
+    std::vector< std::string > * resultobj = new std::vector< std::string >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_std__string_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,observations) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->observations();
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,num_groups) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->num_groups();
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,fixed_effects_mean) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_mean();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,fixed_effects_sd) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_sd();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,coefficient_names) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->coefficient_names();
+  {
+    std::vector< std::string > * resultobj = new std::vector< std::string >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_std__string_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,random_effect_std_devs) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_std_devs();
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,residual_std_dev) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->residual_std_dev();
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,group_labels) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_labels();
+  {
+    std::vector< std::string > * resultobj = new std::vector< std::string >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_std__string_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,random_effects_mean_for_group) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_mean_for_group(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,random_effects_sd_for_group) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_sd_for_group(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,log_marginal_likelihood) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->log_marginal_likelihood();
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,summary) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->summary();
+  
+  ZVAL_STRINGL(return_value, (&result)->data(), (&result)->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,print_summary) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  ((datamunge::INLAMixedModel const *)arg1)->print_summary();
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(INLAMixedModel,predict) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  zval args[1];
+  std::vector< double > result;
+  
+  arg1 = (datamunge::INLAMixedModel *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__DataFrame, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__DataFrame for argument 2 of INLAMixedModel_predict");
+    return;
+  }
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(INLAMixedModel,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(INLAMixedModel,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(INLAMixedModel,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
 static ZEND_NAMED_FUNCTION(_wrap_new_LDA__SWIG_0) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -11113,7 +14312,7 @@ fail:
 
 static PHP_METHOD(LDA,plot_discriminants) {
   datamunge::LDA *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::LDA *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -11122,12 +14321,12 @@ static PHP_METHOD(LDA,plot_discriminants) {
   
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -12728,7 +15927,7 @@ static PHP_METHOD(DecisionTreeClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::DecisionTreeClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -12753,12 +15952,12 @@ static PHP_METHOD(DecisionTreeClassifier,plot_classification) {
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -12773,7 +15972,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::DecisionTreeClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -12797,12 +15996,12 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -12816,7 +16015,7 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::DecisionTreeClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -12835,12 +16034,12 @@ static ZEND_NAMED_FUNCTION(_wrap_DecisionTreeClassifier_plot_decision_regions__S
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -13498,7 +16697,7 @@ fail:
 
 static PHP_METHOD(DecisionTreeRegressor,plot_predicted_vs_actual) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::DecisionTreeRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -13507,12 +16706,12 @@ static PHP_METHOD(DecisionTreeRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -13521,7 +16720,7 @@ fail:
 
 static PHP_METHOD(DecisionTreeRegressor,plot_residuals_vs_fitted) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::DecisionTreeRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -13530,12 +16729,12 @@ static PHP_METHOD(DecisionTreeRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -14912,7 +18111,7 @@ static PHP_METHOD(RandomForestClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::RandomForestClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -14937,12 +18136,12 @@ static PHP_METHOD(RandomForestClassifier,plot_classification) {
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -14957,7 +18156,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::RandomForestClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -14981,12 +18180,12 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -15000,7 +18199,7 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::RandomForestClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -15019,12 +18218,12 @@ static ZEND_NAMED_FUNCTION(_wrap_RandomForestClassifier_plot_decision_regions__S
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -16283,7 +19482,7 @@ fail:
 
 static PHP_METHOD(RandomForestRegressor,plot_predicted_vs_actual) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::RandomForestRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -16292,12 +19491,12 @@ static PHP_METHOD(RandomForestRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -16306,7 +19505,7 @@ fail:
 
 static PHP_METHOD(RandomForestRegressor,plot_residuals_vs_fitted) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::RandomForestRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -16315,12 +19514,12 @@ static PHP_METHOD(RandomForestRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -17363,7 +20562,7 @@ fail:
 
 static PHP_METHOD(ElasticNet,plot_coefficient_path) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -17372,12 +20571,12 @@ static PHP_METHOD(ElasticNet,plot_coefficient_path) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -17386,7 +20585,7 @@ fail:
 
 static PHP_METHOD(ElasticNet,plot_cv_curve) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -17395,12 +20594,12 @@ static PHP_METHOD(ElasticNet,plot_cv_curve) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -17409,7 +20608,7 @@ fail:
 
 static PHP_METHOD(ElasticNet,plot_predicted_vs_actual) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -17418,12 +20617,12 @@ static PHP_METHOD(ElasticNet,plot_predicted_vs_actual) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -17432,7 +20631,7 @@ fail:
 
 static PHP_METHOD(ElasticNet,plot_residuals_vs_fitted) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::ElasticNet *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -17441,12 +20640,12 @@ static PHP_METHOD(ElasticNet,plot_residuals_vs_fitted) {
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -18354,7 +21553,7 @@ fail:
 
 static PHP_METHOD(Ridge,plot_coefficient_path) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -18363,12 +21562,12 @@ static PHP_METHOD(Ridge,plot_coefficient_path) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -18377,7 +21576,7 @@ fail:
 
 static PHP_METHOD(Ridge,plot_cv_curve) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -18386,12 +21585,12 @@ static PHP_METHOD(Ridge,plot_cv_curve) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -18400,7 +21599,7 @@ fail:
 
 static PHP_METHOD(Ridge,plot_predicted_vs_actual) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -18409,12 +21608,12 @@ static PHP_METHOD(Ridge,plot_predicted_vs_actual) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -18423,7 +21622,7 @@ fail:
 
 static PHP_METHOD(Ridge,plot_residuals_vs_fitted) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Ridge *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -18432,12 +21631,12 @@ static PHP_METHOD(Ridge,plot_residuals_vs_fitted) {
   
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -19363,7 +22562,7 @@ fail:
 
 static PHP_METHOD(Lasso,plot_coefficient_path) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -19372,12 +22571,12 @@ static PHP_METHOD(Lasso,plot_coefficient_path) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -19386,7 +22585,7 @@ fail:
 
 static PHP_METHOD(Lasso,plot_cv_curve) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -19395,12 +22594,12 @@ static PHP_METHOD(Lasso,plot_cv_curve) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -19409,7 +22608,7 @@ fail:
 
 static PHP_METHOD(Lasso,plot_predicted_vs_actual) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -19418,12 +22617,12 @@ static PHP_METHOD(Lasso,plot_predicted_vs_actual) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -19432,7 +22631,7 @@ fail:
 
 static PHP_METHOD(Lasso,plot_residuals_vs_fitted) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::Lasso *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -19441,12 +22640,12 @@ static PHP_METHOD(Lasso,plot_residuals_vs_fitted) {
   
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -20113,7 +23312,7 @@ static PHP_METHOD(KNNClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KNNClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -20138,12 +23337,12 @@ static PHP_METHOD(KNNClassifier,plot_classification) {
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -20158,7 +23357,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_0) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KNNClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -20182,12 +23381,12 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_0) {
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -20201,7 +23400,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_1) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KNNClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -20220,12 +23419,12 @@ static ZEND_NAMED_FUNCTION(_wrap_KNNClassifier_plot_decision_regions__SWIG_1) {
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -20905,7 +24104,7 @@ fail:
 
 static PHP_METHOD(KNNRegressor,plot_predicted_vs_actual) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KNNRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -20914,12 +24113,12 @@ static PHP_METHOD(KNNRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -20928,7 +24127,7 @@ fail:
 
 static PHP_METHOD(KNNRegressor,plot_residuals_vs_fitted) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KNNRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -20937,12 +24136,12 @@ static PHP_METHOD(KNNRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -24828,7 +28027,7 @@ static PHP_METHOD(GBMClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -24853,12 +28052,12 @@ static PHP_METHOD(GBMClassifier,plot_classification) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -24873,7 +28072,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_0) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -24897,12 +28096,12 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_0) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -24916,7 +28115,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_1) {
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -24935,12 +28134,12 @@ static ZEND_NAMED_FUNCTION(_wrap_GBMClassifier_plot_decision_regions__SWIG_1) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -24994,7 +28193,7 @@ fail:
 
 static PHP_METHOD(GBMClassifier,plot_training_deviance) {
   datamunge::GBMClassifier *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GBMClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -25003,12 +28202,12 @@ static PHP_METHOD(GBMClassifier,plot_training_deviance) {
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -26041,7 +29240,7 @@ fail:
 
 static PHP_METHOD(GBMRegressor,plot_predicted_vs_actual) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GBMRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -26050,12 +29249,12 @@ static PHP_METHOD(GBMRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -26064,7 +29263,7 @@ fail:
 
 static PHP_METHOD(GBMRegressor,plot_residuals_vs_fitted) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GBMRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -26073,12 +29272,12 @@ static PHP_METHOD(GBMRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -26087,7 +29286,7 @@ fail:
 
 static PHP_METHOD(GBMRegressor,plot_training_deviance) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GBMRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -26096,12 +29295,12 @@ static PHP_METHOD(GBMRegressor,plot_training_deviance) {
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -27703,7 +30902,7 @@ static PHP_METHOD(XGBoostClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -27728,12 +30927,12 @@ static PHP_METHOD(XGBoostClassifier,plot_classification) {
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -27748,7 +30947,7 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -27772,12 +30971,12 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -27791,7 +30990,7 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -27810,12 +31009,12 @@ static ZEND_NAMED_FUNCTION(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -27869,7 +31068,7 @@ fail:
 
 static PHP_METHOD(XGBoostClassifier,plot_training_deviance) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::XGBoostClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -27878,12 +31077,12 @@ static PHP_METHOD(XGBoostClassifier,plot_training_deviance) {
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -29453,7 +32652,7 @@ fail:
 
 static PHP_METHOD(XGBoostRegressor,plot_predicted_vs_actual) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::XGBoostRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -29462,12 +32661,12 @@ static PHP_METHOD(XGBoostRegressor,plot_predicted_vs_actual) {
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -29476,7 +32675,7 @@ fail:
 
 static PHP_METHOD(XGBoostRegressor,plot_residuals_vs_fitted) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::XGBoostRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -29485,12 +32684,12 @@ static PHP_METHOD(XGBoostRegressor,plot_residuals_vs_fitted) {
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -29499,7 +32698,7 @@ fail:
 
 static PHP_METHOD(XGBoostRegressor,plot_training_deviance) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::XGBoostRegressor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -29508,12 +32707,12 @@ static PHP_METHOD(XGBoostRegressor,plot_training_deviance) {
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -30211,7 +33410,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_0) {
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -30231,12 +33430,12 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_0) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -30247,7 +33446,7 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_1) {
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -30262,12 +33461,12 @@ static ZEND_NAMED_FUNCTION(_wrap_KernelRegression_plot_fit__SWIG_1) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -30315,7 +33514,7 @@ fail:
 
 static PHP_METHOD(KernelRegression,plot_predicted_vs_actual) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -30324,12 +33523,12 @@ static PHP_METHOD(KernelRegression,plot_predicted_vs_actual) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -30338,7 +33537,7 @@ fail:
 
 static PHP_METHOD(KernelRegression,plot_residuals_vs_fitted) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -30347,12 +33546,12 @@ static PHP_METHOD(KernelRegression,plot_residuals_vs_fitted) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -30361,7 +33560,7 @@ fail:
 
 static PHP_METHOD(KernelRegression,plot_cv_curve) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::KernelRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -30370,12 +33569,12 @@ static PHP_METHOD(KernelRegression,plot_cv_curve) {
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -31389,7 +34588,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_0) {
   std::size_t arg3 ;
   double arg4 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -31414,12 +34613,12 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_0) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -31431,7 +34630,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_1) {
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -31451,12 +34650,12 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_1) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -31467,7 +34666,7 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_2) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   zval args[1];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
@@ -31482,12 +34681,12 @@ static ZEND_NAMED_FUNCTION(_wrap_GaussianProcessRegression_plot_fit__SWIG_2) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -31554,7 +34753,7 @@ fail:
 
 static PHP_METHOD(GaussianProcessRegression,plot_predicted_vs_actual) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -31563,12 +34762,12 @@ static PHP_METHOD(GaussianProcessRegression,plot_predicted_vs_actual) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -31577,7 +34776,7 @@ fail:
 
 static PHP_METHOD(GaussianProcessRegression,plot_residuals_vs_fitted) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -31586,12 +34785,12 @@ static PHP_METHOD(GaussianProcessRegression,plot_residuals_vs_fitted) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -31600,7 +34799,7 @@ fail:
 
 static PHP_METHOD(GaussianProcessRegression,plot_length_scale_profile) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GaussianProcessRegression *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -31609,12 +34808,12 @@ static PHP_METHOD(GaussianProcessRegression,plot_length_scale_profile) {
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -32115,7 +35314,7 @@ static PHP_METHOD(NaiveBayesClassifier,plot_classification) {
   std::string temp3 ;
   std::string temp4 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::NaiveBayesClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -32140,12 +35339,12 @@ static PHP_METHOD(NaiveBayesClassifier,plot_classification) {
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -32160,7 +35359,7 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   std::string temp2 ;
   std::string temp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::NaiveBayesClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
@@ -32184,12 +35383,12 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -32203,7 +35402,7 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   std::string temp2 ;
   std::string temp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::NaiveBayesClassifier *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
@@ -32222,12 +35421,12 @@ static ZEND_NAMED_FUNCTION(_wrap_NaiveBayesClassifier_plot_decision_regions__SWI
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -33528,7 +36727,7 @@ fail:
 
 static PHP_METHOD(GLM,plot_residuals_vs_fitted) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -33537,12 +36736,12 @@ static PHP_METHOD(GLM,plot_residuals_vs_fitted) {
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -33551,7 +36750,7 @@ fail:
 
 static PHP_METHOD(GLM,plot_normal_qq) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -33560,12 +36759,12 @@ static PHP_METHOD(GLM,plot_normal_qq) {
   
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -33574,7 +36773,7 @@ fail:
 
 static PHP_METHOD(GLM,plot_scale_location) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -33583,12 +36782,12 @@ static PHP_METHOD(GLM,plot_scale_location) {
   
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -33597,7 +36796,7 @@ fail:
 
 static PHP_METHOD(GLM,plot_residuals_vs_leverage) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   arg1 = (datamunge::GLM *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 0) {
@@ -33606,12 +36805,12 @@ static PHP_METHOD(GLM,plot_residuals_vs_leverage) {
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
@@ -36270,6 +39469,507 @@ static PHP_METHOD(Tensor,outer) {
   }
   
   result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->outer((datamunge::Tensor const &)*arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Tensor,from_image) {
+  datamunge::image::Image *arg1 = 0 ;
+  zval args[1];
+  datamunge::Tensor *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__image__Image, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__image__Image for argument 1 of Tensor_from_image");
+    return;
+  }
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::from_image((datamunge::image::Image const &)*arg1);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Tensor_conv2d__SWIG_0) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  int arg5 ;
+  zval args[5];
+  datamunge::Tensor *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 1 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg2, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 2 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &arg3, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 3 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg4 = (int) zval_get_long(&args[3]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg5 = (int) zval_get_long(&args[4]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4,arg5);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Tensor_conv2d__SWIG_1) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  zval args[4];
+  datamunge::Tensor *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 1 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg2, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 2 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &arg3, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 3 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg4 = (int) zval_get_long(&args[3]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Tensor_conv2d__SWIG_2) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  zval args[3];
+  datamunge::Tensor *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 1 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg2, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 2 of Tensor_conv2d");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &arg3, SWIGTYPE_p_datamunge__Tensor, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Tensor for argument 3 of Tensor_conv2d");
+    return;
+  }
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Tensor,conv2d) {
+  int argc;
+  zval argv[5];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_Tensor_conv2d__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_LONG &&
+            (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[3])) &&
+            (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[3])));
+          
+          if (_v) {
+            _wrap_Tensor_conv2d__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void**)&tmp, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_LONG &&
+            (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[3])) &&
+            (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[3])));
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_LONG &&
+              (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[4])) &&
+              (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[4])));
+            
+            if (_v) {
+              _wrap_Tensor_conv2d__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'Tensor_conv2d'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Tensor_max_pool2d__SWIG_0) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  zval args[2];
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (int) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg3 = (int) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2,arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Tensor_max_pool2d__SWIG_1) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  zval args[1];
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (int) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Tensor,max_pool2d) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_LONG &&
+      (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[0])) &&
+      (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[0])));
+    
+    if (_v) {
+      _wrap_Tensor_max_pool2d__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_LONG &&
+      (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[0])) &&
+      (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[0])));
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_LONG &&
+        (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[1])) &&
+        (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[1])));
+      
+      if (_v) {
+        _wrap_Tensor_max_pool2d__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'Tensor_max_pool2d'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Tensor_avg_pool2d__SWIG_0) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  zval args[2];
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (int) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg3 = (int) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2,arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Tensor_avg_pool2d__SWIG_1) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  zval args[1];
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (int) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Tensor,avg_pool2d) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_LONG &&
+      (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[0])) &&
+      (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[0])));
+    
+    if (_v) {
+      _wrap_Tensor_avg_pool2d__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    
+    _v = (Z_TYPE(argv[0]) == IS_LONG &&
+      (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[0])) &&
+      (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[0])));
+    
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_LONG &&
+        (INT_MIN <= ZEND_LONG_MIN || (zend_long)INT_MIN <= Z_LVAL(argv[1])) &&
+        (INT_MAX >= ZEND_LONG_MAX || (zend_long)INT_MAX >= Z_LVAL(argv[1])));
+      
+      if (_v) {
+        _wrap_Tensor_avg_pool2d__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'Tensor_avg_pool2d'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Tensor,relu) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->relu();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Tensor,sigmoid) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sigmoid();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Tensor,softmax) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  arg1 = (datamunge::Tensor *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->softmax();
   
   SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__Tensor, 0);
   
@@ -39403,6 +43103,46 @@ fail:
 }
 
 
+static PHP_METHOD(DataSeries,filled_set) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  bool arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,2,CONVERT_BOOL_IN@*/
+  arg2 = (bool) zval_is_true(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->filled = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(DataSeries,filled_get) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::plot::DataSeries *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (bool) ((arg1)->filled);
+  
+  RETVAL_BOOL((result) ? 1 : 0);
+  
+fail:
+  return;
+}
+
+
 static PHP_METHOD(DataSeries,__construct) {
   datamunge::plot::DataSeries *result = 0 ;
   
@@ -39496,6 +43236,13 @@ PHP_METHOD(DataSeries,__set) {
     zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
   }
   
+  else if (strcmp(ZSTR_VAL(arg2),"filled") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("filled_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
   else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
     arg->newobject = zval_get_long(&args[1]);
   }
@@ -39579,6 +43326,13 @@ PHP_METHOD(DataSeries,__get) {
     zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
   }
   
+  else if (strcmp(ZSTR_VAL(arg2),"filled") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("filled_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
   else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
     if(arg->newobject) {
       RETVAL_LONG(1);
@@ -39649,6 +43403,647 @@ PHP_METHOD(DataSeries,__isset) {
   }
   
   else if (strcmp(ZSTR_VAL(arg2),"bar_width") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"filled") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(ABLine,vertical_set) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  bool arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,2,CONVERT_BOOL_IN@*/
+  arg2 = (bool) zval_is_true(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->vertical = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,vertical_get) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (bool) ((arg1)->vertical);
+  
+  RETVAL_BOOL((result) ? 1 : 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,value_set) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->value = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,value_get) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->value);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,slope_set) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->slope = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,slope_get) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->slope);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,color_set) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::plot::RGB *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of ABLine_color_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->color = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,color_get) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,stroke_width_set) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->stroke_width = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,stroke_width_get) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::plot::ABLine *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->stroke_width);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ABLine,__construct) {
+  datamunge::plot::ABLine *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__ABLine, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(ABLine,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"vertical") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("vertical_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"value") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("value_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"slope") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("slope_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"color") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("color_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"stroke_width") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("stroke_width_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ABLine,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"vertical") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("vertical_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"value") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("value_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"slope") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("slope_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"color") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("color_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"stroke_width") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("stroke_width_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ABLine,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"vertical") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"value") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"slope") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"color") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"stroke_width") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(LegendEntry,label_set) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  if (arg1) (arg1)->label = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LegendEntry,label_get) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  std::string *result = 0 ;
+  
+  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::string *) & ((arg1)->label);
+  
+  ZVAL_STRINGL(return_value, result->data(), result->size());
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LegendEntry,color_set) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::plot::RGB *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 2 of LegendEntry_color_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->color = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LegendEntry,color_get) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  
+  arg1 = (datamunge::plot::LegendEntry *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RGB, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(LegendEntry,__construct) {
+  datamunge::plot::LegendEntry *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__LegendEntry, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(LegendEntry,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"label") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("label_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"color") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("color_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(LegendEntry,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"label") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("label_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"color") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("color_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(LegendEntry,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"label") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"color") == 0) {
     RETVAL_TRUE;
   }
   else {
@@ -39976,6 +44371,100 @@ fail:
 }
 
 
+static ZEND_NAMED_FUNCTION(_wrap_Plot_hide_axes__SWIG_0) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool arg2 ;
+  zval args[1];
+  datamunge::plot::Plot *result = 0 ;
+  
+  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,2,CONVERT_BOOL_IN@*/
+  arg2 = (bool) zval_is_true(&args[0]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_Plot_hide_axes__SWIG_1) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Plot,hide_axes) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_Plot_hide_axes__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_TRUE || Z_TYPE(argv[0]) == IS_FALSE);
+    if (_v) {
+      _wrap_Plot_hide_axes__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'Plot_hide_axes'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Plot,x_tick_labels) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< std::string > arg2 ;
+  std::vector< std::string > *tmp2 ;
+  zval args[1];
+  datamunge::plot::Plot *result = 0 ;
+  
+  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of Plot_x_tick_labels");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__Plot, 0);
+  
+fail:
+  return;
+}
+
+
 static PHP_METHOD(Plot,width) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::size_t result;
@@ -40279,6 +44768,78 @@ fail:
 }
 
 
+static PHP_METHOD(Plot,axes_hidden) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool result;
+  
+  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  
+  RETVAL_BOOL((result) ? 1 : 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Plot,x_tick_label_list) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< std::string > *result = 0 ;
+  
+  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_std__string_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Plot,reference_lines) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  
+  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Plot,legend_entries) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  
+  arg1 = (datamunge::plot::Plot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t, 0);
+  
+fail:
+  return;
+}
+
+
 static PHP_METHOD(Plot,save) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -40565,215 +45126,222 @@ fail:
 
 
 
-static PHP_METHOD(ScatterPlot,create) {
-  datamunge::plot::ScatterPlot result;
+static PHP_METHOD(RPlot,create) {
+  datamunge::plot::RPlot result;
   
   if(ZEND_NUM_ARGS() != 0) {
     WRONG_PARAM_COUNT;
   }
   
-  result = datamunge::plot::ScatterPlot::create();
+  result = datamunge::plot::RPlot::create();
   {
-    datamunge::plot::ScatterPlot * resultobj = new datamunge::plot::ScatterPlot(result);
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
     
     
     
     
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_points__SWIG_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_0) {
+  std::vector< double > arg1 ;
   std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
+  std::string arg3 ;
   std::string arg4 ;
   datamunge::plot::RGB arg5 ;
-  double arg6 ;
+  std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
   datamunge::plot::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot result;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_points");
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_plot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_plot");
     return;
   }
   arg2 = *tmp2;
   
   
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_points");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
   convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
   
-  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of ScatterPlot_points");
+  convert_to_string(&args[3]);
+  (&arg4)->assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  
+  
+  if (SWIG_ConvertPtr(&args[4], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_plot");
     return;
   }
   arg5 = *tmp5;
   
-  
-  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
-  arg6 = (double) zval_get_double(&args[4]);
-  /*@SWIG@*/;
-  
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
-  
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_points__SWIG_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_1) {
+  std::vector< double > arg1 ;
   std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
+  std::string arg3 ;
   std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
+  std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
   zval args[4];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot result;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_points");
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_plot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_plot");
     return;
   }
   arg2 = *tmp2;
   
   
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_points");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
   convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
   
-  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of ScatterPlot_points");
-    return;
+  convert_to_string(&args[3]);
+  (&arg4)->assign(Z_STRVAL(args[3]), Z_STRLEN(args[3]));
+  
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
-  arg5 = *tmp5;
-  
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
-  
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_points__SWIG_2) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_2) {
+  std::vector< double > arg1 ;
   std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
+  std::string arg3 ;
+  std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot result;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_points");
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_plot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_plot");
     return;
   }
   arg2 = *tmp2;
   
   
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_points");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
   convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
-  
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_points__SWIG_3) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_plot__SWIG_3) {
+  std::vector< double > arg1 ;
   std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
+  std::vector< double > *tmp1 ;
   std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot result;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_points");
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_plot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_plot");
     return;
   }
   arg2 = *tmp2;
   
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_points");
-    return;
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   }
-  arg3 = *tmp3;
-  
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
-  
 fail:
   return;
 }
 
 
-static PHP_METHOD(ScatterPlot,points) {
+static PHP_METHOD(RPlot,plot) {
   int argc;
   zval argv[5];
   
@@ -40791,7 +45359,7 @@ static PHP_METHOD(ScatterPlot,points) {
         _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
       }
       if (_v) {
-        _wrap_ScatterPlot_points__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        _wrap_RPlot_plot__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
       }
     }
   }
@@ -40810,7 +45378,1639 @@ static PHP_METHOD(ScatterPlot,points) {
         _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
         
         if (_v) {
-          _wrap_ScatterPlot_points__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          _wrap_RPlot_plot__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            _wrap_RPlot_plot__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_STRING) ? 1 : 0;
+          
+          if (_v) {
+            {
+              void *tmp;
+              _v = (SWIG_ConvertPtr(&argv[4], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+            }
+            if (_v) {
+              _wrap_RPlot_plot__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_plot'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_0) {
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RGB arg4 ;
+  std::vector< double > *tmp1 ;
+  datamunge::plot::RGB *tmp4 ;
+  zval args[4];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_hist");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp4, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 4 of RPlot_hist");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_1) {
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::string arg3 ;
+  std::vector< double > *tmp1 ;
+  zval args[3];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_hist");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_2) {
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::vector< double > *tmp1 ;
+  zval args[2];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_hist");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_hist__SWIG_3) {
+  std::vector< double > arg1 ;
+  std::vector< double > *tmp1 ;
+  zval args[1];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_hist");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,hist) {
+  int argc;
+  zval argv[4];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_RPlot_hist__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_LONG &&
+        (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[1])) &&
+        ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[1])));
+      
+      if (_v) {
+        _wrap_RPlot_hist__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_LONG &&
+        (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[1])) &&
+        ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[1])));
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_RPlot_hist__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_LONG &&
+        (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[1])) &&
+        ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[1])));
+      
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _wrap_RPlot_hist__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_hist'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_0) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RGB arg4 ;
+  std::vector< double > *tmp1 ;
+  std::vector< std::string > *tmp2 ;
+  datamunge::plot::RGB *tmp4 ;
+  zval args[4];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_barplot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_barplot");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp4, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 4 of RPlot_barplot");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_1) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::string arg3 ;
+  std::vector< double > *tmp1 ;
+  std::vector< std::string > *tmp2 ;
+  zval args[3];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_barplot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_barplot");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg3)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_2) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::vector< double > *tmp1 ;
+  std::vector< std::string > *tmp2 ;
+  zval args[2];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_barplot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_barplot");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_barplot__SWIG_3) {
+  std::vector< double > arg1 ;
+  std::vector< double > *tmp1 ;
+  zval args[1];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_barplot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,barplot) {
+  int argc;
+  zval argv[4];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_RPlot_barplot__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_barplot__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_RPlot_barplot__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _wrap_RPlot_barplot__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_barplot'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_0) {
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::string > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::vector< std::vector< double > > *tmp1 ;
+  std::vector< std::string > *tmp2 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 1 of RPlot_boxplot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_boxplot");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_boxplot");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_1) {
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::vector< std::vector< double > > *tmp1 ;
+  std::vector< std::string > *tmp2 ;
+  zval args[2];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 1 of RPlot_boxplot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_boxplot");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_boxplot__SWIG_2) {
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::vector< double > > *tmp1 ;
+  zval args[1];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 1 of RPlot_boxplot");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,boxplot) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_RPlot_boxplot__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_boxplot__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_RPlot_boxplot__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_boxplot'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_0) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  std::vector< double > *tmp1 ;
+  std::vector< std::string > *tmp2 ;
+  std::vector< datamunge::plot::RGB > *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_pie");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_pie");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t for argument 3 of RPlot_pie");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_1) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::vector< double > *tmp1 ;
+  std::vector< std::string > *tmp2 ;
+  zval args[2];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_pie");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_pie");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_pie__SWIG_2) {
+  std::vector< double > arg1 ;
+  std::vector< double > *tmp1 ;
+  zval args[1];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_pie");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,pie) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_RPlot_pie__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_pie__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_RPlot_pie__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_pie'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_0) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string arg5 ;
+  datamunge::plot::RGB arg6 ;
+  datamunge::plot::RGB *tmp6 ;
+  zval args[6];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__Callback, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Callback for argument 1 of RPlot_curve");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg4 = (std::size_t) zval_get_long(&args[3]);
+  /*@SWIG@*/;
+  
+  
+  convert_to_string(&args[4]);
+  (&arg5)->assign(Z_STRVAL(args[4]), Z_STRLEN(args[4]));
+  
+  
+  if (SWIG_ConvertPtr(&args[5], (void **) &tmp6, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp6 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 6 of RPlot_curve");
+    return;
+  }
+  arg6 = *tmp6;
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_1) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string arg5 ;
+  zval args[5];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__Callback, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Callback for argument 1 of RPlot_curve");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg4 = (std::size_t) zval_get_long(&args[3]);
+  /*@SWIG@*/;
+  
+  
+  convert_to_string(&args[4]);
+  (&arg5)->assign(Z_STRVAL(args[4]), Z_STRLEN(args[4]));
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_2) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  zval args[4];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__Callback, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Callback for argument 1 of RPlot_curve");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg4 = (std::size_t) zval_get_long(&args[3]);
+  /*@SWIG@*/;
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_curve__SWIG_3) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  zval args[3];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_datamunge__Callback, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__Callback for argument 1 of RPlot_curve");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,curve) {
+  int argc;
+  zval argv[6];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _wrap_RPlot_curve__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_LONG &&
+            (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[3])) &&
+            ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[3])));
+          
+          if (_v) {
+            _wrap_RPlot_curve__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_LONG &&
+            (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[3])) &&
+            ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[3])));
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_STRING) ? 1 : 0;
+            
+            if (_v) {
+              _wrap_RPlot_curve__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_LONG &&
+            (0 <= ZEND_LONG_MIN || (zend_long)0 <= Z_LVAL(argv[3])) &&
+            ((size_t)-1 >= ZEND_LONG_MAX || (zend_long)(size_t)-1 >= Z_LVAL(argv[3])));
+          
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_STRING) ? 1 : 0;
+            
+            if (_v) {
+              {
+                void *tmp;
+                _v = (SWIG_ConvertPtr(&argv[5], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+              }
+              if (_v) {
+                _wrap_RPlot_curve__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_curve'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_0) {
+  std::vector< double > arg1 ;
+  std::string arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::vector< double > *tmp1 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_qqnorm");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  convert_to_string(&args[1]);
+  (&arg2)->assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_qqnorm");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_1) {
+  std::vector< double > arg1 ;
+  std::string arg2 ;
+  std::vector< double > *tmp1 ;
+  zval args[2];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_qqnorm");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  
+  convert_to_string(&args[1]);
+  (&arg2)->assign(Z_STRVAL(args[1]), Z_STRLEN(args[1]));
+  
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqnorm__SWIG_2) {
+  std::vector< double > arg1 ;
+  std::vector< double > *tmp1 ;
+  zval args[1];
+  datamunge::plot::RPlot result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of RPlot_qqnorm");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * resultobj = new datamunge::plot::RPlot(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RPlot, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,qqnorm) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_RPlot_qqnorm__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        _wrap_RPlot_qqnorm__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_STRING) ? 1 : 0;
+      
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_RPlot_qqnorm__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_qqnorm'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[5];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_points");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_points");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_points");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[4];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_points");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_points");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_points");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_points");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_points");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_points__SWIG_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_points");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_points");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,points) {
+  int argc;
+  zval argv[5];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_points__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_RPlot_points__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
         }
       }
     }
@@ -40835,7 +47035,7 @@ static PHP_METHOD(ScatterPlot,points) {
             _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
           }
           if (_v) {
-            _wrap_ScatterPlot_points__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            _wrap_RPlot_points__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
           }
         }
       }
@@ -40863,7 +47063,7 @@ static PHP_METHOD(ScatterPlot,points) {
           if (_v) {
             _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
             if (_v) {
-              _wrap_ScatterPlot_points__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+              _wrap_RPlot_points__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
             }
           }
         }
@@ -40871,14 +47071,14 @@ static PHP_METHOD(ScatterPlot,points) {
     }
   }
   
-  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'ScatterPlot_points'", 0);
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_points'", 0);
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -40888,23 +47088,23 @@ static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_0) {
   std::vector< double > *tmp3 ;
   datamunge::plot::RGB *tmp5 ;
   zval args[5];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
   if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_line");
     return;
   }
   arg2 = *tmp2;
   
   
   if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_line");
     return;
   }
   arg3 = *tmp3;
@@ -40915,7 +47115,7 @@ static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_0) {
   
   
   if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_line");
     return;
   }
   arg5 = *tmp5;
@@ -40925,17 +47125,17 @@ static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_0) {
   arg6 = (double) zval_get_double(&args[4]);
   /*@SWIG@*/;
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
   
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -40944,23 +47144,23 @@ static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_1) {
   std::vector< double > *tmp3 ;
   datamunge::plot::RGB *tmp5 ;
   zval args[4];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
   if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_line");
     return;
   }
   arg2 = *tmp2;
   
   
   if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_line");
     return;
   }
   arg3 = *tmp3;
@@ -40971,45 +47171,45 @@ static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_1) {
   
   
   if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_line");
     return;
   }
   arg5 = *tmp5;
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
   
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_2) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[3];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
   if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_line");
     return;
   }
   arg2 = *tmp2;
   
   
   if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_line");
     return;
   }
   arg3 = *tmp3;
@@ -41018,53 +47218,53 @@ static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_2) {
   convert_to_string(&args[2]);
   (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
   
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
 fail:
   return;
 }
 
 
-static ZEND_NAMED_FUNCTION(_wrap_ScatterPlot_line__SWIG_3) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_line__SWIG_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *tmp2 ;
   std::vector< double > *tmp3 ;
   zval args[2];
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
-  arg1 = (datamunge::plot::ScatterPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
   if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_line");
     return;
   }
   arg2 = *tmp2;
   
   
   if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ScatterPlot_line");
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_line");
     return;
   }
   arg3 = *tmp3;
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
   
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
   
 fail:
   return;
 }
 
 
-static PHP_METHOD(ScatterPlot,line) {
+static PHP_METHOD(RPlot,line) {
   int argc;
   zval argv[5];
   
@@ -41082,7 +47282,7 @@ static PHP_METHOD(ScatterPlot,line) {
         _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
       }
       if (_v) {
-        _wrap_ScatterPlot_line__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        _wrap_RPlot_line__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
       }
     }
   }
@@ -41101,7 +47301,7 @@ static PHP_METHOD(ScatterPlot,line) {
         _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
         
         if (_v) {
-          _wrap_ScatterPlot_line__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          _wrap_RPlot_line__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
         }
       }
     }
@@ -41126,7 +47326,7 @@ static PHP_METHOD(ScatterPlot,line) {
             _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
           }
           if (_v) {
-            _wrap_ScatterPlot_line__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            _wrap_RPlot_line__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
           }
         }
       }
@@ -41154,7 +47354,7 @@ static PHP_METHOD(ScatterPlot,line) {
           if (_v) {
             _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
             if (_v) {
-              _wrap_ScatterPlot_line__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+              _wrap_RPlot_line__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
             }
           }
         }
@@ -41162,22 +47362,2397 @@ static PHP_METHOD(ScatterPlot,line) {
     }
   }
   
-  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'ScatterPlot_line'", 0);
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_line'", 0);
 fail:
   return;
 }
 
 
-static PHP_METHOD(ScatterPlot,__construct) {
-  datamunge::plot::ScatterPlot *result = 0 ;
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[5];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_lines");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_lines");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_lines");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[4];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_lines");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_lines");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_lines");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_lines");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_lines");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_lines__SWIG_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_lines");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_lines");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,lines) {
+  int argc;
+  zval argv[5];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_lines__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_RPlot_lines__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _wrap_RPlot_lines__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _wrap_RPlot_lines__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_lines'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[5];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_bars");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_bars");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_bars");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[4];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_bars");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_bars");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_bars");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_bars");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_bars");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_bars__SWIG_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_bars");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_bars");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,bars) {
+  int argc;
+  zval argv[5];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_bars__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_RPlot_bars__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _wrap_RPlot_bars__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _wrap_RPlot_bars__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_bars'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  datamunge::plot::RGB arg9 ;
+  double arg10 ;
+  std::vector< double > *tmp8 ;
+  datamunge::plot::RGB *tmp9 ;
+  zval args[9];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 9 || zend_get_parameters_array_ex(9, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[3]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[5]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[6], (void **) &tmp8, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp8 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 8 of RPlot_box");
+    return;
+  }
+  arg8 = *tmp8;
+  
+  
+  if (SWIG_ConvertPtr(&args[7], (void **) &tmp9, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp9 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 9 of RPlot_box");
+    return;
+  }
+  arg9 = *tmp9;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg10 = (double) zval_get_double(&args[8]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),arg10);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  datamunge::plot::RGB arg9 ;
+  std::vector< double > *tmp8 ;
+  datamunge::plot::RGB *tmp9 ;
+  zval args[8];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 8 || zend_get_parameters_array_ex(8, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[3]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[5]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[6], (void **) &tmp8, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp8 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 8 of RPlot_box");
+    return;
+  }
+  arg8 = *tmp8;
+  
+  
+  if (SWIG_ConvertPtr(&args[7], (void **) &tmp9, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp9 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 9 of RPlot_box");
+    return;
+  }
+  arg9 = *tmp9;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  std::vector< double > *tmp8 ;
+  zval args[7];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 7 || zend_get_parameters_array_ex(7, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[3]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[5]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[6], (void **) &tmp8, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp8 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 8 of RPlot_box");
+    return;
+  }
+  arg8 = *tmp8;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_box__SWIG_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  zval args[6];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[3]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[5]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,box) {
+  int argc;
+  zval argv[9];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 6) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_DOUBLE);
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_DOUBLE);
+              if (_v) {
+                _wrap_RPlot_box__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_DOUBLE);
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_DOUBLE);
+              if (_v) {
+                {
+                  void *tmp;
+                  _v = (SWIG_ConvertPtr(&argv[6], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+                }
+                if (_v) {
+                  _wrap_RPlot_box__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_DOUBLE);
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_DOUBLE);
+              if (_v) {
+                {
+                  void *tmp;
+                  _v = (SWIG_ConvertPtr(&argv[6], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+                }
+                if (_v) {
+                  {
+                    void *tmp;
+                    _v = (SWIG_ConvertPtr(&argv[7], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+                  }
+                  if (_v) {
+                    _wrap_RPlot_box__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_DOUBLE);
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_DOUBLE);
+              if (_v) {
+                {
+                  void *tmp;
+                  _v = (SWIG_ConvertPtr(&argv[6], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+                }
+                if (_v) {
+                  {
+                    void *tmp;
+                    _v = (SWIG_ConvertPtr(&argv[7], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+                  }
+                  if (_v) {
+                    _v = (Z_TYPE(argv[8]) == IS_DOUBLE);
+                    if (_v) {
+                      _wrap_RPlot_box__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_box'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB arg4 ;
+  double arg5 ;
+  datamunge::plot::RGB *tmp4 ;
+  zval args[4];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 4 of RPlot_abline");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg5 = (double) zval_get_double(&args[3]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4),arg5);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB arg4 ;
+  datamunge::plot::RGB *tmp4 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 4 of RPlot_abline");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,abline) {
+  int argc;
+  zval argv[4];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _wrap_RPlot_abline__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_RPlot_abline__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_DOUBLE);
+          if (_v) {
+            _wrap_RPlot_abline__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_abline'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_abline_h");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3),arg4);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_abline_h");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_h__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,abline_h) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _wrap_RPlot_abline_h__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_abline_h__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _wrap_RPlot_abline_h__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_abline_h'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_abline_v");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3),arg4);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_abline_v");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_abline_v__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,abline_v) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _wrap_RPlot_abline_v__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_abline_v__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _wrap_RPlot_abline_v__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_abline_v'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  std::vector< double > *tmp2 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_qqline");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_qqline");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg4 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),arg4);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::vector< double > *tmp2 ;
+  datamunge::plot::RGB *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_qqline");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 3 of RPlot_qqline");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_qqline__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > *tmp2 ;
+  zval args[1];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_qqline");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,qqline) {
+  int argc;
+  zval argv[3];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_RPlot_qqline__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_qqline__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_DOUBLE);
+        if (_v) {
+          _wrap_RPlot_qqline__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_qqline'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,legend) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< std::string > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  std::vector< std::string > *tmp2 ;
+  std::vector< datamunge::plot::RGB > *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_std__string_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__string_t for argument 2 of RPlot_legend");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t for argument 3 of RPlot_legend");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[5];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_text");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg6 = (double) zval_get_double(&args[4]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  datamunge::plot::RGB *tmp5 ;
+  zval args[4];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of RPlot_text");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_text__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  convert_to_string(&args[2]);
+  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,text) {
+  int argc;
+  zval argv[5];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 3) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          _wrap_RPlot_text__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _wrap_RPlot_text__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    _v = (Z_TYPE(argv[0]) == IS_DOUBLE);
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_DOUBLE);
+      if (_v) {
+        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
+        
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
+            if (_v) {
+              _wrap_RPlot_text__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_text'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RGB arg4 ;
+  bool arg5 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp4 ;
+  zval args[4];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_polygon");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_polygon");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 4 of RPlot_polygon");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,2,CONVERT_BOOL_IN@*/
+  arg5 = (bool) zval_is_true(&args[3]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RGB arg4 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  datamunge::plot::RGB *tmp4 ;
+  zval args[3];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_polygon");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_polygon");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 4 of RPlot_polygon");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_polygon__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  zval args[2];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_polygon");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_polygon");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,polygon) {
+  int argc;
+  zval argv[4];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        _wrap_RPlot_polygon__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _wrap_RPlot_polygon__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          _v = (Z_TYPE(argv[3]) == IS_TRUE || Z_TYPE(argv[3]) == IS_FALSE);
+          if (_v) {
+            _wrap_RPlot_polygon__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_polygon'", 0);
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  datamunge::plot::RGB arg6 ;
+  double arg7 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  std::vector< double > *tmp4 ;
+  std::vector< double > *tmp5 ;
+  datamunge::plot::RGB *tmp6 ;
+  zval args[6];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_segments");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_segments");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 4 of RPlot_segments");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 5 of RPlot_segments");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  
+  if (SWIG_ConvertPtr(&args[4], (void **) &tmp6, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp6 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 6 of RPlot_segments");
+    return;
+  }
+  arg6 = *tmp6;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg7 = (double) zval_get_double(&args[5]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  datamunge::plot::RGB arg6 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  std::vector< double > *tmp4 ;
+  std::vector< double > *tmp5 ;
+  datamunge::plot::RGB *tmp6 ;
+  zval args[5];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_segments");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_segments");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 4 of RPlot_segments");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 5 of RPlot_segments");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  
+  if (SWIG_ConvertPtr(&args[4], (void **) &tmp6, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp6 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 6 of RPlot_segments");
+    return;
+  }
+  arg6 = *tmp6;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_RPlot_segments__SWIG_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  std::vector< double > *tmp2 ;
+  std::vector< double > *tmp3 ;
+  std::vector< double > *tmp4 ;
+  std::vector< double > *tmp5 ;
+  zval args[4];
+  datamunge::plot::RPlot *result = 0 ;
+  
+  arg1 = (datamunge::plot::RPlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of RPlot_segments");
+    return;
+  }
+  arg2 = *tmp2;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RPlot_segments");
+    return;
+  }
+  arg3 = *tmp3;
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &tmp4, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 4 of RPlot_segments");
+    return;
+  }
+  arg4 = *tmp4;
+  
+  
+  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp5 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 5 of RPlot_segments");
+    return;
+  }
+  arg5 = *tmp5;
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,segments) {
+  int argc;
+  zval argv[6];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 4) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            _wrap_RPlot_segments__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            {
+              void *tmp;
+              _v = (SWIG_ConvertPtr(&argv[4], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+            }
+            if (_v) {
+              _wrap_RPlot_segments__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      {
+        void *tmp;
+        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+      }
+      if (_v) {
+        {
+          void *tmp;
+          _v = (SWIG_ConvertPtr(&argv[2], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+        }
+        if (_v) {
+          {
+            void *tmp;
+            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+          }
+          if (_v) {
+            {
+              void *tmp;
+              _v = (SWIG_ConvertPtr(&argv[4], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
+            }
+            if (_v) {
+              _v = (Z_TYPE(argv[5]) == IS_DOUBLE);
+              if (_v) {
+                _wrap_RPlot_segments__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'RPlot_segments'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RPlot,__construct) {
+  datamunge::plot::RPlot *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     WRONG_PARAM_COUNT;
   }
   
-  result = (datamunge::plot::ScatterPlot *)new datamunge::plot::ScatterPlot();
+  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
   
-  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot, 1);
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__RPlot, 1);
   
 fail:
   return;
@@ -41186,7 +49761,7 @@ fail:
 
 
 
-PHP_METHOD(ScatterPlot,__set) {
+PHP_METHOD(RPlot,__set) {
   swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
   zval args[2];
   zend_string *arg2 = 0;
@@ -41215,7 +49790,7 @@ fail:
 }
 
 
-PHP_METHOD(ScatterPlot,__get) {
+PHP_METHOD(RPlot,__get) {
   swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
   zval args[1];
   zend_string *arg2 = 0;
@@ -41251,7 +49826,7 @@ fail:
 }
 
 
-PHP_METHOD(ScatterPlot,__isset) {
+PHP_METHOD(RPlot,__isset) {
   swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
   zval args[1];
   zend_string *arg2 = 0;
@@ -41284,328 +49859,153 @@ fail:
 
 
 
-static PHP_METHOD(LinePlot,create) {
-  datamunge::plot::LinePlot result;
-  
-  if(ZEND_NUM_ARGS() != 0) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  result = datamunge::plot::LinePlot::create();
-  {
-    datamunge::plot::LinePlot * resultobj = new datamunge::plot::LinePlot(result);
-    
-    
-    
-    
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__LinePlot, 1);
-  }
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_LinePlot_line__SWIG_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  double arg6 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
-  zval args[5];
-  datamunge::plot::LinePlot *result = 0 ;
-  
-  arg1 = (datamunge::plot::LinePlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
-  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of LinePlot_line");
-    return;
-  }
-  arg2 = *tmp2;
-  
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of LinePlot_line");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
-  convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
-  
-  
-  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of LinePlot_line");
-    return;
-  }
-  arg5 = *tmp5;
-  
-  
-  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
-  arg6 = (double) zval_get_double(&args[4]);
-  /*@SWIG@*/;
-  
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
-  
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_LinePlot_line__SWIG_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
-  zval args[4];
-  datamunge::plot::LinePlot *result = 0 ;
-  
-  arg1 = (datamunge::plot::LinePlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
-  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of LinePlot_line");
-    return;
-  }
-  arg2 = *tmp2;
-  
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of LinePlot_line");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
-  convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
-  
-  
-  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of LinePlot_line");
-    return;
-  }
-  arg5 = *tmp5;
-  
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
-  
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_LinePlot_line__SWIG_2) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  zval args[3];
-  datamunge::plot::LinePlot *result = 0 ;
-  
-  arg1 = (datamunge::plot::LinePlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of LinePlot_line");
-    return;
-  }
-  arg2 = *tmp2;
-  
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of LinePlot_line");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
-  convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
-  
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
-  
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_LinePlot_line__SWIG_3) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
+static PHP_METHOD(RLayout,create) {
+  std::size_t arg1 ;
+  std::size_t arg2 ;
   zval args[2];
-  datamunge::plot::LinePlot *result = 0 ;
+  datamunge::plot::RLayout result;
   
-  arg1 = (datamunge::plot::LinePlot *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
   if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
     WRONG_PARAM_COUNT;
   }
   
   
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of LinePlot_line");
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg1 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RLayout * resultobj = new datamunge::plot::RLayout(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__RLayout, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RLayout,add) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::plot::Plot *arg2 = 0 ;
+  zval args[1];
+  datamunge::plot::RLayout *result = 0 ;
+  
+  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__plot__Plot, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__Plot for argument 2 of RLayout_add");
     return;
   }
-  arg2 = *tmp2;
   
+  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
   
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of LinePlot_line");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RLayout, 0);
   
 fail:
   return;
 }
 
 
-static PHP_METHOD(LinePlot,line) {
-  int argc;
-  zval argv[5];
+static PHP_METHOD(RLayout,size) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  zval args[2];
+  datamunge::plot::RLayout *result = 0 ;
   
-  argc = ZEND_NUM_ARGS();
-  zend_get_parameters_array_ex(argc, argv);
-  if (argc == 2) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _wrap_LinePlot_line__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
-        
-        if (_v) {
-          _wrap_LinePlot_line__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
-        
-        if (_v) {
-          {
-            void *tmp;
-            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
-          }
-          if (_v) {
-            _wrap_LinePlot_line__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-          }
-        }
-      }
-    }
-  }
-  if (argc == 5) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
-        
-        if (_v) {
-          {
-            void *tmp;
-            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
-          }
-          if (_v) {
-            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
-            if (_v) {
-              _wrap_LinePlot_line__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-            }
-          }
-        }
-      }
-    }
+  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
   }
   
-  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'LinePlot_line'", 0);
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg3 = (std::size_t) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__RLayout, 0);
+  
 fail:
   return;
 }
 
 
-static PHP_METHOD(LinePlot,__construct) {
-  datamunge::plot::LinePlot *result = 0 ;
+static PHP_METHOD(RLayout,save) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RLayout,save_svg) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::plot::RLayout *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  convert_to_string(&args[0]);
+  temp2.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
+  arg2 = &temp2;
+  
+  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RLayout,__construct) {
+  datamunge::plot::RLayout *result = 0 ;
   
   if(ZEND_NUM_ARGS() != 0) {
     WRONG_PARAM_COUNT;
   }
   
-  result = (datamunge::plot::LinePlot *)new datamunge::plot::LinePlot();
+  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
   
-  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot, 1);
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__RLayout, 1);
   
 fail:
   return;
@@ -41614,7 +50014,7 @@ fail:
 
 
 
-PHP_METHOD(LinePlot,__set) {
+PHP_METHOD(RLayout,__set) {
   swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
   zval args[2];
   zend_string *arg2 = 0;
@@ -41635,15 +50035,13 @@ PHP_METHOD(LinePlot,__set) {
   
   else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
     arg->newobject = zval_get_long(&args[1]);
-  } else {
-    PHP_MN(Plot___set)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
   }
 fail:
   return;
 }
 
 
-PHP_METHOD(LinePlot,__get) {
+PHP_METHOD(RLayout,__get) {
   swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
   zval args[1];
   zend_string *arg2 = 0;
@@ -41672,14 +50070,14 @@ PHP_METHOD(LinePlot,__get) {
   }
   
   else {
-    PHP_MN(Plot___get)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+    RETVAL_NULL();
   }
 fail:
   return;
 }
 
 
-PHP_METHOD(LinePlot,__isset) {
+PHP_METHOD(RLayout,__isset) {
   swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
   zval args[1];
   zend_string *arg2 = 0;
@@ -41703,435 +50101,7 @@ PHP_METHOD(LinePlot,__isset) {
   }
   
   else {
-    PHP_MN(Plot___isset)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
-  }
-fail:
-  return;
-}
-
-
-
-
-static PHP_METHOD(BarChart,create) {
-  datamunge::plot::BarChart result;
-  
-  if(ZEND_NUM_ARGS() != 0) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  result = datamunge::plot::BarChart::create();
-  {
-    datamunge::plot::BarChart * resultobj = new datamunge::plot::BarChart(result);
-    
-    
-    
-    
-    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__plot__BarChart, 1);
-  }
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_BarChart_bars__SWIG_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  double arg6 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
-  zval args[5];
-  datamunge::plot::BarChart *result = 0 ;
-  
-  arg1 = (datamunge::plot::BarChart *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
-  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of BarChart_bars");
-    return;
-  }
-  arg2 = *tmp2;
-  
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of BarChart_bars");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
-  convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
-  
-  
-  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of BarChart_bars");
-    return;
-  }
-  arg5 = *tmp5;
-  
-  
-  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
-  arg6 = (double) zval_get_double(&args[4]);
-  /*@SWIG@*/;
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-  
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_BarChart_bars__SWIG_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  datamunge::plot::RGB *tmp5 ;
-  zval args[4];
-  datamunge::plot::BarChart *result = 0 ;
-  
-  arg1 = (datamunge::plot::BarChart *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
-  if(ZEND_NUM_ARGS() != 4 || zend_get_parameters_array_ex(4, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of BarChart_bars");
-    return;
-  }
-  arg2 = *tmp2;
-  
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of BarChart_bars");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
-  convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
-  
-  
-  if (SWIG_ConvertPtr(&args[3], (void **) &tmp5, SWIGTYPE_p_datamunge__plot__RGB, 0) < 0 || tmp5 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_datamunge__plot__RGB for argument 5 of BarChart_bars");
-    return;
-  }
-  arg5 = *tmp5;
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-  
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_BarChart_bars__SWIG_2) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  zval args[3];
-  datamunge::plot::BarChart *result = 0 ;
-  
-  arg1 = (datamunge::plot::BarChart *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of BarChart_bars");
-    return;
-  }
-  arg2 = *tmp2;
-  
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of BarChart_bars");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  
-  convert_to_string(&args[2]);
-  (&arg4)->assign(Z_STRVAL(args[2]), Z_STRLEN(args[2]));
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-  
-fail:
-  return;
-}
-
-
-static ZEND_NAMED_FUNCTION(_wrap_BarChart_bars__SWIG_3) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::vector< double > *tmp2 ;
-  std::vector< double > *tmp3 ;
-  zval args[2];
-  datamunge::plot::BarChart *result = 0 ;
-  
-  arg1 = (datamunge::plot::BarChart *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  if (SWIG_ConvertPtr(&args[0], (void **) &tmp2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp2 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of BarChart_bars");
-    return;
-  }
-  arg2 = *tmp2;
-  
-  
-  if (SWIG_ConvertPtr(&args[1], (void **) &tmp3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || tmp3 == NULL) {
-    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of BarChart_bars");
-    return;
-  }
-  arg3 = *tmp3;
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  
-  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-  
-fail:
-  return;
-}
-
-
-static PHP_METHOD(BarChart,bars) {
-  int argc;
-  zval argv[5];
-  
-  argc = ZEND_NUM_ARGS();
-  zend_get_parameters_array_ex(argc, argv);
-  if (argc == 2) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _wrap_BarChart_bars__SWIG_3(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
-        
-        if (_v) {
-          _wrap_BarChart_bars__SWIG_2(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
-        
-        if (_v) {
-          {
-            void *tmp;
-            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
-          }
-          if (_v) {
-            _wrap_BarChart_bars__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-          }
-        }
-      }
-    }
-  }
-  if (argc == 5) {
-    int _v = 0;
-    {
-      void *tmp;
-      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-    }
-    if (_v) {
-      {
-        void *tmp;
-        _v = (SWIG_ConvertPtr(&argv[1], (void **)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
-      }
-      if (_v) {
-        _v = (Z_TYPE(argv[2]) == IS_STRING) ? 1 : 0;
-        
-        if (_v) {
-          {
-            void *tmp;
-            _v = (SWIG_ConvertPtr(&argv[3], (void **)&tmp, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL) >= 0);
-          }
-          if (_v) {
-            _v = (Z_TYPE(argv[4]) == IS_DOUBLE);
-            if (_v) {
-              _wrap_BarChart_bars__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'BarChart_bars'", 0);
-fail:
-  return;
-}
-
-
-static PHP_METHOD(BarChart,__construct) {
-  datamunge::plot::BarChart *result = 0 ;
-  
-  if(ZEND_NUM_ARGS() != 0) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  result = (datamunge::plot::BarChart *)new datamunge::plot::BarChart();
-  
-  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__plot__BarChart, 1);
-  
-fail:
-  return;
-}
-
-
-
-
-PHP_METHOD(BarChart,__set) {
-  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
-  zval args[2];
-  zend_string *arg2 = 0;
-  
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  if (!arg) {
-    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
-    return;
-  }
-  arg2 = Z_STR(args[0]);
-  
-  if (!arg2) {
-    RETVAL_NULL();
-  }
-  
-  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
-    arg->newobject = zval_get_long(&args[1]);
-  } else {
-    PHP_MN(Plot___set)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
-  }
-fail:
-  return;
-}
-
-
-PHP_METHOD(BarChart,__get) {
-  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
-  zval args[1];
-  zend_string *arg2 = 0;
-  
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  if (!arg) {
-    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
-    return;
-  }
-  arg2 = Z_STR(args[0]);
-  
-  if (!arg2) {
-    RETVAL_NULL();
-  }
-  
-  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
-    if(arg->newobject) {
-      RETVAL_LONG(1);
-    }
-    else {
-      RETVAL_LONG(0);
-    }
-  }
-  
-  else {
-    PHP_MN(Plot___get)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
-  }
-fail:
-  return;
-}
-
-
-PHP_METHOD(BarChart,__isset) {
-  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
-  zval args[1];
-  zend_string *arg2 = 0;
-  
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  if(!arg) {
-    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
-    return;
-  }
-  arg2 = Z_STR(args[0]);
-  
-  if (!arg2) {
     RETVAL_FALSE;
-  }
-  
-  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
-    RETVAL_TRUE;
-  }
-  
-  else {
-    PHP_MN(Plot___isset)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
   }
 fail:
   return;
@@ -48772,6 +56742,2823 @@ fail:
 }
 
 
+static ZEND_NAMED_FUNCTION(_wrap_p_adjust__SWIG_0) {
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::PAdjustMethod arg2 ;
+  zval args[2];
+  std::vector< double > result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of p_adjust");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (datamunge::stats::PAdjustMethod) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1,arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_p_adjust__SWIG_1) {
+  std::vector< double > *arg1 = 0 ;
+  zval args[1];
+  std::vector< double > result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of p_adjust");
+    return;
+  }
+  
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_p_adjust) {
+  int argc;
+  zval argv[2];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_p_adjust__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void**)&tmp, SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _v = (Z_TYPE(argv[1]) == IS_LONG);
+      if (_v) {
+        _wrap_p_adjust__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+      }
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'p_adjust'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(datamunge,westfall_young_adjust) {
+  PHP_FN(westfall_young_adjust)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(westfall_young_adjust) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  zval args[2];
+  std::vector< double > result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 1 of westfall_young_adjust");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of westfall_young_adjust");
+    return;
+  }
+  
+  result = datamunge::stats::westfall_young_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(datamunge,romano_wolf_adjust) {
+  PHP_FN(romano_wolf_adjust)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(romano_wolf_adjust) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  zval args[2];
+  std::vector< double > result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 1 of romano_wolf_adjust");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of romano_wolf_adjust");
+    return;
+  }
+  
+  result = datamunge::stats::romano_wolf_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,num_samples_set) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->num_samples = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,num_samples_get) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result =  ((arg1)->num_samples);
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,num_warmup_set) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->num_warmup = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,num_warmup_get) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result =  ((arg1)->num_warmup);
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,initial_step_size_set) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->initial_step_size = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,initial_step_size_get) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->initial_step_size);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,target_accept_rate_set) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->target_accept_rate = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,target_accept_rate_get) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->target_accept_rate);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,seed_set) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,27,CONVERT_UNSIGNED_LONG_LONG_IN@*/
+  switch (Z_TYPE(args[0])) {
+  case IS_DOUBLE:
+    arg2 = (std::uint64_t) Z_DVAL(args[0]);
+    break;
+    case IS_STRING: {
+      char * endptr;
+      errno = 0;
+      arg2 = (std::uint64_t) strtoull(Z_STRVAL(args[0]), &endptr, 10);
+      if (*endptr == '\0' && !errno) break;
+    }
+    /* FALL THRU */
+  default:
+    arg2 = (std::uint64_t) zval_get_long(&args[0]);
+  }
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->seed = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,seed_get) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  arg1 = (datamunge::bayes::RWMOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::uint64_t) ((arg1)->seed);
+  
+  if (result <= (unsigned long long)LONG_MAX) {
+    RETVAL_LONG((long)(result));
+  } else {
+    RETVAL_NEW_STR(zend_strpprintf(0, "%llu", (unsigned long long)result));
+  }
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMOptions,__construct) {
+  datamunge::bayes::RWMOptions *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::RWMOptions *)new datamunge::bayes::RWMOptions();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__RWMOptions, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(RWMOptions,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_samples_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_warmup") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_warmup_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"initial_step_size") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("initial_step_size_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"target_accept_rate") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("target_accept_rate_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("seed_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(RWMOptions,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_samples_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_warmup") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_warmup_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"initial_step_size") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("initial_step_size_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"target_accept_rate") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("target_accept_rate_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("seed_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(RWMOptions,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_warmup") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"initial_step_size") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"target_accept_rate") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(RWMResult,samples_set) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 2 of RWMResult_samples_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->samples = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMResult,samples_get) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::RWMResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMResult,accept_rate_set) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->accept_rate = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMResult,accept_rate_get) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->accept_rate);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMResult,final_step_size_set) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::RWMResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->final_step_size = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMResult,final_step_size_get) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::RWMResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->final_step_size);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RWMResult,__construct) {
+  datamunge::bayes::RWMResult *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::RWMResult *)new datamunge::bayes::RWMResult();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__RWMResult, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(RWMResult,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("samples_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"accept_rate") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("accept_rate_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"final_step_size") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("final_step_size_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(RWMResult,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("samples_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"accept_rate") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("accept_rate_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"final_step_size") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("final_step_size_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(RWMResult,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"accept_rate") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"final_step_size") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_RandomWalkMetropolis__SWIG_0) {
+  datamunge::bayes::RWMOptions arg1 ;
+  datamunge::bayes::RWMOptions *tmp1 ;
+  zval args[1];
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__bayes__RWMOptions for argument 1 of new_RandomWalkMetropolis");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis(SWIG_STD_MOVE(arg1));
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_RandomWalkMetropolis__SWIG_1) {
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, 1);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RandomWalkMetropolis,__construct) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_new_RandomWalkMetropolis__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__bayes__RWMOptions, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_new_RandomWalkMetropolis__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'new_RandomWalkMetropolis'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(RandomWalkMetropolis,sample) {
+  datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  zval args[2];
+  datamunge::bayes::RWMResult result;
+  
+  arg1 = (datamunge::bayes::RandomWalkMetropolis *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__optim__ArbitraryFunction for argument 2 of RandomWalkMetropolis_sample");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of RandomWalkMetropolis_sample");
+    return;
+  }
+  
+  result = ((datamunge::bayes::RandomWalkMetropolis const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  {
+    datamunge::bayes::RWMResult * resultobj = new datamunge::bayes::RWMResult(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__bayes__RWMResult, 1);
+  }
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(RandomWalkMetropolis,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(RandomWalkMetropolis,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(RandomWalkMetropolis,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(GibbsOptions,num_samples_set) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->num_samples = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,num_samples_get) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result =  ((arg1)->num_samples);
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,num_warmup_set) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->num_warmup = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,num_warmup_get) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result =  ((arg1)->num_warmup);
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,initial_step_sizes_set) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of GibbsOptions_initial_step_sizes_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->initial_step_sizes = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,initial_step_sizes_get) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< double > *)& ((arg1)->initial_step_sizes);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_double_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,target_accept_rate_set) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->target_accept_rate = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,target_accept_rate_get) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->target_accept_rate);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,seed_set) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,27,CONVERT_UNSIGNED_LONG_LONG_IN@*/
+  switch (Z_TYPE(args[0])) {
+  case IS_DOUBLE:
+    arg2 = (std::uint64_t) Z_DVAL(args[0]);
+    break;
+    case IS_STRING: {
+      char * endptr;
+      errno = 0;
+      arg2 = (std::uint64_t) strtoull(Z_STRVAL(args[0]), &endptr, 10);
+      if (*endptr == '\0' && !errno) break;
+    }
+    /* FALL THRU */
+  default:
+    arg2 = (std::uint64_t) zval_get_long(&args[0]);
+  }
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->seed = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,seed_get) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  arg1 = (datamunge::bayes::GibbsOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::uint64_t) ((arg1)->seed);
+  
+  if (result <= (unsigned long long)LONG_MAX) {
+    RETVAL_LONG((long)(result));
+  } else {
+    RETVAL_NEW_STR(zend_strpprintf(0, "%llu", (unsigned long long)result));
+  }
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsOptions,__construct) {
+  datamunge::bayes::GibbsOptions *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::GibbsOptions *)new datamunge::bayes::GibbsOptions();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(GibbsOptions,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_samples_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_warmup") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_warmup_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"initial_step_sizes") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("initial_step_sizes_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"target_accept_rate") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("target_accept_rate_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("seed_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GibbsOptions,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_samples_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_warmup") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_warmup_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"initial_step_sizes") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("initial_step_sizes_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"target_accept_rate") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("target_accept_rate_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("seed_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GibbsOptions,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_warmup") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"initial_step_sizes") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"target_accept_rate") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(GibbsResult,samples_set) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 2 of GibbsResult_samples_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->samples = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsResult,samples_get) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsResult,accept_rates_set) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of GibbsResult_accept_rates_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->accept_rates = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsResult,accept_rates_get) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< double > *)& ((arg1)->accept_rates);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_double_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsResult,final_step_sizes_set) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::GibbsResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of GibbsResult_final_step_sizes_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->final_step_sizes = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsResult,final_step_sizes_get) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::GibbsResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< double > *)& ((arg1)->final_step_sizes);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_double_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsResult,__construct) {
+  datamunge::bayes::GibbsResult *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::GibbsResult *)new datamunge::bayes::GibbsResult();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsResult, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(GibbsResult,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("samples_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"accept_rates") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("accept_rates_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"final_step_sizes") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("final_step_sizes_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GibbsResult,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("samples_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"accept_rates") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("accept_rates_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"final_step_sizes") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("final_step_sizes_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GibbsResult,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"accept_rates") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"final_step_sizes") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_GibbsSampler__SWIG_0) {
+  datamunge::bayes::GibbsOptions arg1 ;
+  datamunge::bayes::GibbsOptions *tmp1 ;
+  zval args[1];
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__bayes__GibbsOptions for argument 1 of new_GibbsSampler");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler(SWIG_STD_MOVE(arg1));
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsSampler, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_GibbsSampler__SWIG_1) {
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsSampler, 1);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsSampler,__construct) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_new_GibbsSampler__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__bayes__GibbsOptions, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_new_GibbsSampler__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'new_GibbsSampler'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(GibbsSampler,sample) {
+  datamunge::bayes::GibbsSampler *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  zval args[2];
+  datamunge::bayes::GibbsResult result;
+  
+  arg1 = (datamunge::bayes::GibbsSampler *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__optim__ArbitraryFunction for argument 2 of GibbsSampler_sample");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of GibbsSampler_sample");
+    return;
+  }
+  
+  result = ((datamunge::bayes::GibbsSampler const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  {
+    datamunge::bayes::GibbsResult * resultobj = new datamunge::bayes::GibbsResult(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__bayes__GibbsResult, 1);
+  }
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(GibbsSampler,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GibbsSampler,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(GibbsSampler,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(ImportanceSamplingOptions,num_samples_set) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->num_samples = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingOptions,num_samples_get) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::size_t result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result =  ((arg1)->num_samples);
+  
+  RETVAL_LONG(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingOptions,seed_set) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,27,CONVERT_UNSIGNED_LONG_LONG_IN@*/
+  switch (Z_TYPE(args[0])) {
+  case IS_DOUBLE:
+    arg2 = (std::uint64_t) Z_DVAL(args[0]);
+    break;
+    case IS_STRING: {
+      char * endptr;
+      errno = 0;
+      arg2 = (std::uint64_t) strtoull(Z_STRVAL(args[0]), &endptr, 10);
+      if (*endptr == '\0' && !errno) break;
+    }
+    /* FALL THRU */
+  default:
+    arg2 = (std::uint64_t) zval_get_long(&args[0]);
+  }
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->seed = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingOptions,seed_get) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::uint64_t result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::uint64_t) ((arg1)->seed);
+  
+  if (result <= (unsigned long long)LONG_MAX) {
+    RETVAL_LONG((long)(result));
+  } else {
+    RETVAL_NEW_STR(zend_strpprintf(0, "%llu", (unsigned long long)result));
+  }
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingOptions,__construct) {
+  datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::ImportanceSamplingOptions *)new datamunge::bayes::ImportanceSamplingOptions();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(ImportanceSamplingOptions,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_samples_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("seed_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ImportanceSamplingOptions,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("num_samples_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("seed_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ImportanceSamplingOptions,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"num_samples") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"seed") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(ImportanceSamplingResult,samples_set) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 2 of ImportanceSamplingResult_samples_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->samples = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,samples_get) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,normalized_weights_set) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_std__vectorT_double_t, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 2 of ImportanceSamplingResult_normalized_weights_set");
+    return;
+  }
+  
+  if (arg1) (arg1)->normalized_weights = *arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,normalized_weights_get) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (std::vector< double > *)& ((arg1)->normalized_weights);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_std__vectorT_double_t, 0);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,effective_sample_size_set) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->effective_sample_size = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,effective_sample_size_get) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->effective_sample_size);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,log_evidence_set) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  if (arg1) (arg1)->log_evidence = arg2;
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,log_evidence_get) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double result;
+  
+  arg1 = (datamunge::bayes::ImportanceSamplingResult *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (double) ((arg1)->log_evidence);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSamplingResult,__construct) {
+  datamunge::bayes::ImportanceSamplingResult *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::ImportanceSamplingResult *)new datamunge::bayes::ImportanceSamplingResult();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(ImportanceSamplingResult,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("samples_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"normalized_weights") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("normalized_weights_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"effective_sample_size") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("effective_sample_size_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"log_evidence") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("log_evidence_set", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 1, &args[1]);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ImportanceSamplingResult,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("samples_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"normalized_weights") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("normalized_weights_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"effective_sample_size") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("effective_sample_size_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"log_evidence") == 0) {
+    zend_string *swig_funcname = ZSTR_INIT_LITERAL("log_evidence_get", 0);
+    zend_function *swig_zend_func = zend_std_get_method(&Z_OBJ_P(ZEND_THIS), swig_funcname, NULL);
+    zend_string_release(swig_funcname);
+    zend_call_known_instance_method(swig_zend_func, Z_OBJ_P(ZEND_THIS), return_value, 0, NULL);
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ImportanceSamplingResult,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  
+  else if (strcmp(ZSTR_VAL(arg2),"samples") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"normalized_weights") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"effective_sample_size") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"log_evidence") == 0) {
+    RETVAL_TRUE;
+  }
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_ImportanceSampling__SWIG_0) {
+  datamunge::bayes::ImportanceSamplingOptions arg1 ;
+  datamunge::bayes::ImportanceSamplingOptions *tmp1 ;
+  zval args[1];
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &tmp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0) < 0 || tmp1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions for argument 1 of new_ImportanceSampling");
+    return;
+  }
+  arg1 = *tmp1;
+  
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling(SWIG_STD_MOVE(arg1));
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSampling, 1);
+  
+fail:
+  return;
+}
+
+
+static ZEND_NAMED_FUNCTION(_wrap_new_ImportanceSampling__SWIG_1) {
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSampling, 1);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSampling,__construct) {
+  int argc;
+  zval argv[1];
+  
+  argc = ZEND_NUM_ARGS();
+  zend_get_parameters_array_ex(argc, argv);
+  if (argc == 0) {
+    _wrap_new_ImportanceSampling__SWIG_1(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      void *tmp;
+      _v = (SWIG_ConvertPtr(&argv[0], (void **)&tmp, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, SWIG_POINTER_NO_NULL) >= 0);
+    }
+    if (_v) {
+      _wrap_new_ImportanceSampling__SWIG_0(INTERNAL_FUNCTION_PARAM_PASSTHRU); return;
+    }
+  }
+  
+  zend_throw_exception(zend_ce_type_error, "No matching function for overloaded 'new_ImportanceSampling'", 0);
+fail:
+  return;
+}
+
+
+static PHP_METHOD(ImportanceSampling,sample) {
+  datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  zval args[3];
+  datamunge::bayes::ImportanceSamplingResult result;
+  
+  arg1 = (datamunge::bayes::ImportanceSampling *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction, 0) < 0 || arg2 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_datamunge__optim__ArbitraryFunction for argument 2 of ImportanceSampling_sample");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg3, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg3 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 3 of ImportanceSampling_sample");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[2], (void **) &arg4, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0) < 0 || arg4 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t for argument 4 of ImportanceSampling_sample");
+    return;
+  }
+  
+  result = ((datamunge::bayes::ImportanceSampling const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4);
+  {
+    datamunge::bayes::ImportanceSamplingResult * resultobj = new datamunge::bayes::ImportanceSamplingResult(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 1);
+  }
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(ImportanceSampling,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ImportanceSampling,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(ImportanceSampling,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
 /* class object handlers for pointer wrappers */
 static zend_object_handlers swig_ptr_object_handlers;
 
@@ -48876,6 +59663,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_map_dvector_with_callba
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,Callback,MAY_BE_NULL,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_one_way_anova swig_arginfo_kruskal_wallis_test
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_p_adjust, 0, 1, DVector, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
+ZEND_END_ARG_INFO()
 #define swig_arginfo_pearson_correlation_test swig_arginfo_f_test_variance
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_proportion_test_one_sample, 0, 2, HypothesisTestResult, 0)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
@@ -48893,6 +59684,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_proportion_test_two_sam
  ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_BOOL,NULL)
  ZEND_ARG_TYPE_MASK(0,arg7,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_romano_wolf_adjust, 0, 2, DVector, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVectorVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_shapiro_francia_test, 0, 1, HypothesisTestResult, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
@@ -48918,21 +59713,42 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_t_test_two_sample, 0, 2
  ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
+#define swig_arginfo_westfall_young_adjust swig_arginfo_romano_wolf_adjust
 #define swig_arginfo_wilcoxon_rank_sum_test swig_arginfo_ks_test_two_sample
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_wilcoxon_signed_rank_test, 0, 1, HypothesisTestResult, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_ABLine, 0, 0, 0)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_ABLine_color_get, 0, 0, RGB, MAY_BE_NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ABLine_color_set, 0, 1, MAY_BE_VOID)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,RGB,MAY_BE_NULL,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ABLine_slope_get, 0, 0, MAY_BE_DOUBLE)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ABLine_slope_set, 0, 1, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_ABLine_stroke_width_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ABLine_stroke_width_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_ABLine_value_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ABLine_value_set swig_arginfo_ABLine_slope_set
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ABLine_vertical_get, 0, 0, MAY_BE_BOOL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ABLine_vertical_set, 0, 1, MAY_BE_VOID)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_BOOL,NULL)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_ARIMA, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,ARIMAOptions,0,NULL)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ARIMA_aic, 0, 0, MAY_BE_DOUBLE)
-ZEND_END_ARG_INFO()
+#define swig_arginfo_ARIMA_aic swig_arginfo_ABLine_slope_get
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_ARIMA_ar_coefficients, 0, 0, DVector, 0)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_ARIMA_bic swig_arginfo_ARIMA_aic
+#define swig_arginfo_ARIMA_bic swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ARIMA_fitted_values swig_arginfo_ARIMA_ar_coefficients
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_ARIMA_forecast, 0, 1, DVector, 0)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
@@ -48940,9 +59756,9 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_ARIMA_forecast_with_intervals, 0, 1, DVectorPair, 0)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_ARIMA_log_likelihood swig_arginfo_ARIMA_aic
+#define swig_arginfo_ARIMA_log_likelihood swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ARIMA_ma_coefficients swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_ARIMA_mean swig_arginfo_ARIMA_aic
+#define swig_arginfo_ARIMA_mean swig_arginfo_ABLine_slope_get
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ARIMA_n_used, 0, 0, MAY_BE_LONG)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_ARIMA_observations swig_arginfo_ARIMA_n_used
@@ -48951,13 +59767,10 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_ARIMA_residuals swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_ARIMA_seasonal_ar_coefficients swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_ARIMA_seasonal_ma_coefficients swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_ARIMA_sigma2 swig_arginfo_ARIMA_aic
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_ARIMAOptions, 0, 0, 0)
-ZEND_END_ARG_INFO()
-#define swig_arginfo_ARIMAOptions_coefficient_bound_get swig_arginfo_ARIMA_aic
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ARIMAOptions_coefficient_bound_set, 0, 1, MAY_BE_VOID)
- ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
-ZEND_END_ARG_INFO()
+#define swig_arginfo_ARIMA_sigma2 swig_arginfo_ABLine_slope_get
+#define swig_arginfo_new_ARIMAOptions swig_arginfo_new_ABLine
+#define swig_arginfo_ARIMAOptions_coefficient_bound_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ARIMAOptions_coefficient_bound_set swig_arginfo_ABLine_slope_set
 #define swig_arginfo_ARIMAOptions_d_get swig_arginfo_ARIMA_n_used
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ARIMAOptions_d_set, 0, 1, MAY_BE_VOID)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
@@ -48966,11 +59779,8 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_ARIMAOptions_de_max_generations_set swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_ARIMAOptions_de_population_size_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ARIMAOptions_de_population_size_set swig_arginfo_ARIMAOptions_d_set
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ARIMAOptions_include_mean_get, 0, 0, MAY_BE_BOOL)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_ARIMAOptions_include_mean_set, 0, 1, MAY_BE_VOID)
- ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_BOOL,NULL)
-ZEND_END_ARG_INFO()
+#define swig_arginfo_ARIMAOptions_include_mean_get swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_ARIMAOptions_include_mean_set swig_arginfo_ABLine_vertical_set
 #define swig_arginfo_ARIMAOptions_p_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ARIMAOptions_p_set swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_ARIMAOptions_q_get swig_arginfo_ARIMA_n_used
@@ -49015,17 +59825,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_AgglomerativeClustering_print_summary swig_arginfo_hello
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_AgglomerativeClustering_summary, 0, 0, MAY_BE_STRING)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_new_BarChart swig_arginfo_new_ARIMAOptions
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_BarChart_bars, 0, 2, BarChart, 0)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
- ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg4,RGB,0,NULL)
- ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_BarChart_create, 0, 0, BarChart, 0)
-ZEND_END_ARG_INFO()
-#define swig_arginfo_new_Callback swig_arginfo_new_ARIMAOptions
+#define swig_arginfo_new_Callback swig_arginfo_new_ABLine
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_Callback_call, 0, 1, MAY_BE_DOUBLE)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
@@ -49048,19 +59848,19 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_DPair, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DPair,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_DPair_first_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_DPair_first_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_DPair_second_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_DPair_second_set swig_arginfo_ARIMAOptions_coefficient_bound_set
+#define swig_arginfo_DPair_first_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_DPair_first_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_DPair_second_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_DPair_second_set swig_arginfo_ABLine_slope_set
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_DVector, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_DVector_capacity swig_arginfo_ARIMA_n_used
 #define swig_arginfo_DVector_clear swig_arginfo_hello
 #define swig_arginfo_DVector_get swig_arginfo_AgglomerativeClustering_merge_distance
-#define swig_arginfo_DVector_is_empty swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_DVector_pop swig_arginfo_ARIMA_aic
-#define swig_arginfo_DVector_push swig_arginfo_ARIMAOptions_coefficient_bound_set
+#define swig_arginfo_DVector_is_empty swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_DVector_pop swig_arginfo_ABLine_slope_get
+#define swig_arginfo_DVector_push swig_arginfo_ABLine_slope_set
 #define swig_arginfo_DVector_reserve swig_arginfo_ARIMAOptions_d_set
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DVector_set, 0, 2, MAY_BE_VOID)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
@@ -49084,7 +59884,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_DVectorVector_capacity swig_arginfo_ARIMA_n_used
 #define swig_arginfo_DVectorVector_clear swig_arginfo_hello
 #define swig_arginfo_DVectorVector_get swig_arginfo_ARIMA_forecast
-#define swig_arginfo_DVectorVector_is_empty swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_DVectorVector_is_empty swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_DVectorVector_pop swig_arginfo_ARIMA_ar_coefficients
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DVectorVector_push, 0, 1, MAY_BE_VOID)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
@@ -49095,7 +59895,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DVectorVector_set, 0, 2, MA
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_DVectorVector_size swig_arginfo_ARIMA_n_used
-#define swig_arginfo_new_DataFrame swig_arginfo_new_ARIMAOptions
+#define swig_arginfo_new_DataFrame swig_arginfo_new_ABLine
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_add_numeric_column, 0, 2, MAY_BE_VOID)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
@@ -49183,24 +59983,23 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataFrame_to_string, 0, 0, MAY_BE_STRING)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_new_DataSeries swig_arginfo_new_ARIMAOptions
-#define swig_arginfo_DataSeries_bar_width_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_DataSeries_bar_width_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DataSeries_color_get, 0, 0, RGB, MAY_BE_NULL)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataSeries_color_set, 0, 1, MAY_BE_VOID)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg1,RGB,MAY_BE_NULL,NULL)
-ZEND_END_ARG_INFO()
+#define swig_arginfo_new_DataSeries swig_arginfo_new_ABLine
+#define swig_arginfo_DataSeries_bar_width_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_DataSeries_bar_width_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_DataSeries_color_get swig_arginfo_ABLine_color_get
+#define swig_arginfo_DataSeries_color_set swig_arginfo_ABLine_color_set
+#define swig_arginfo_DataSeries_filled_get swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_DataSeries_filled_set swig_arginfo_ABLine_vertical_set
 #define swig_arginfo_DataSeries_kind_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_DataSeries_kind_set swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_DataSeries_label_get swig_arginfo_AgglomerativeClustering_summary
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DataSeries_label_set, 0, 1, MAY_BE_VOID)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_DataSeries_marker_size_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_DataSeries_marker_size_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_DataSeries_stroke_width_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_DataSeries_stroke_width_set swig_arginfo_ARIMAOptions_coefficient_bound_set
+#define swig_arginfo_DataSeries_marker_size_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_DataSeries_marker_size_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_DataSeries_stroke_width_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_DataSeries_stroke_width_set swig_arginfo_ABLine_slope_set
 #define swig_arginfo_DataSeries_x_get swig_arginfo_DVectorPair_first_get
 #define swig_arginfo_DataSeries_x_set swig_arginfo_DVectorPair_first_set
 #define swig_arginfo_DataSeries_y_get swig_arginfo_DVectorPair_first_get
@@ -49220,12 +60019,12 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_DecisionTreeClassifier_leaf_count swig_arginfo_ARIMA_n_used
 #define swig_arginfo_DecisionTreeClassifier_node_count swig_arginfo_ARIMA_n_used
 #define swig_arginfo_DecisionTreeClassifier_observations swig_arginfo_ARIMA_n_used
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeClassifier_plot_classification, 0, 3, ScatterPlot, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeClassifier_plot_classification, 0, 3, RPlot, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeClassifier_plot_decision_regions, 0, 2, ScatterPlot, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeClassifier_plot_decision_regions, 0, 2, RPlot, 0)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_LONG,NULL)
@@ -49239,7 +60038,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_DecisionTreeClassifier_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_DecisionTreeClassifier_print_summary swig_arginfo_hello
 #define swig_arginfo_DecisionTreeClassifier_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_DecisionTreeClassifier_training_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_DecisionTreeClassifier_training_accuracy swig_arginfo_ABLine_slope_get
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_DecisionTreeRegressor, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
@@ -49253,7 +60052,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_DecisionTreeRegressor_leaf_count swig_arginfo_ARIMA_n_used
 #define swig_arginfo_DecisionTreeRegressor_node_count swig_arginfo_ARIMA_n_used
 #define swig_arginfo_DecisionTreeRegressor_observations swig_arginfo_ARIMA_n_used
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual, 0, 0, ScatterPlot, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual, 0, 0, RPlot, 0)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_DecisionTreeRegressor_plot_residuals_vs_fitted swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeRegressor_predict, 0, 1, DVector, 0)
@@ -49261,8 +60060,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_DecisionTreeRegressor_p
 ZEND_END_ARG_INFO()
 #define swig_arginfo_DecisionTreeRegressor_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_DecisionTreeRegressor_print_summary swig_arginfo_hello
-#define swig_arginfo_DecisionTreeRegressor_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_DecisionTreeRegressor_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_DecisionTreeRegressor_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_DecisionTreeRegressor_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_DecisionTreeRegressor_summary swig_arginfo_AgglomerativeClustering_summary
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_Dual, 0, 0, 1)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
@@ -49277,7 +60076,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Dual_add_scalar, 0, 1, 
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_Dual_cos swig_arginfo_Dual_abs
-#define swig_arginfo_Dual_derivative swig_arginfo_ARIMA_aic
+#define swig_arginfo_Dual_derivative swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Dual_divide swig_arginfo_Dual_add
 #define swig_arginfo_Dual_divide_scalar swig_arginfo_Dual_add_scalar
 #define swig_arginfo_Dual_exp swig_arginfo_Dual_abs
@@ -49292,7 +60091,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_Dual_subtract_scalar swig_arginfo_Dual_add_scalar
 #define swig_arginfo_Dual_tan swig_arginfo_Dual_abs
 #define swig_arginfo_Dual_tanh swig_arginfo_Dual_abs
-#define swig_arginfo_Dual_value swig_arginfo_ARIMA_aic
+#define swig_arginfo_Dual_value swig_arginfo_ABLine_slope_get
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_ElasticNet, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
@@ -49303,16 +60102,16 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_ElasticNet, 0, 0, 2)
  ZEND_ARG_TYPE_MASK(0,arg7,MAY_BE_BOOL,NULL)
  ZEND_ARG_TYPE_MASK(0,arg8,MAY_BE_LONG|MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_ElasticNet_alpha swig_arginfo_ARIMA_aic
+#define swig_arginfo_ElasticNet_alpha swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ElasticNet_coefficients swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_ElasticNet_cv_mean_squared_error swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_ElasticNet_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_ElasticNet_formula_text swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_ElasticNet_has_intercept swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_ElasticNet_intercept swig_arginfo_ARIMA_aic
-#define swig_arginfo_ElasticNet_lambda swig_arginfo_ARIMA_aic
+#define swig_arginfo_ElasticNet_has_intercept swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_ElasticNet_intercept swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ElasticNet_lambda swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ElasticNet_lambda_path swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_ElasticNet_lambda_was_selected swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_ElasticNet_lambda_was_selected swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_ElasticNet_non_zero_coefficients swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ElasticNet_observations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ElasticNet_plot_coefficient_path swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
@@ -49322,42 +60121,42 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_ElasticNet_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_ElasticNet_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_ElasticNet_print_summary swig_arginfo_hello
-#define swig_arginfo_ElasticNet_r_squared swig_arginfo_ARIMA_aic
+#define swig_arginfo_ElasticNet_r_squared swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ElasticNet_residuals swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_ElasticNet_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_ElasticNet_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ElasticNet_summary swig_arginfo_AgglomerativeClustering_summary
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_ExponentialSmoothing, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,ExponentialSmoothingOptions,0,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_ExponentialSmoothing_aic swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothing_alpha swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothing_beta swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothing_bic swig_arginfo_ARIMA_aic
+#define swig_arginfo_ExponentialSmoothing_aic swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothing_alpha swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothing_beta swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothing_bic swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ExponentialSmoothing_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_ExponentialSmoothing_forecast swig_arginfo_ARIMA_forecast
-#define swig_arginfo_ExponentialSmoothing_gamma swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothing_log_likelihood swig_arginfo_ARIMA_aic
+#define swig_arginfo_ExponentialSmoothing_gamma swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothing_log_likelihood swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ExponentialSmoothing_observations swig_arginfo_ARIMA_n_used
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_ExponentialSmoothing_options, 0, 0, ExponentialSmoothingOptions, 0)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_ExponentialSmoothing_phi swig_arginfo_ARIMA_aic
+#define swig_arginfo_ExponentialSmoothing_phi swig_arginfo_ABLine_slope_get
 #define swig_arginfo_ExponentialSmoothing_residuals swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_ExponentialSmoothing_sigma2 swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothing_sse swig_arginfo_ARIMA_aic
-#define swig_arginfo_new_ExponentialSmoothingOptions swig_arginfo_new_ARIMAOptions
-#define swig_arginfo_ExponentialSmoothingOptions_alpha_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothingOptions_alpha_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_ExponentialSmoothingOptions_beta_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothingOptions_beta_set swig_arginfo_ARIMAOptions_coefficient_bound_set
+#define swig_arginfo_ExponentialSmoothing_sigma2 swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothing_sse swig_arginfo_ABLine_slope_get
+#define swig_arginfo_new_ExponentialSmoothingOptions swig_arginfo_new_ABLine
+#define swig_arginfo_ExponentialSmoothingOptions_alpha_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothingOptions_alpha_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_ExponentialSmoothingOptions_beta_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothingOptions_beta_set swig_arginfo_ABLine_slope_set
 #define swig_arginfo_ExponentialSmoothingOptions_de_max_generations_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ExponentialSmoothingOptions_de_max_generations_set swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_ExponentialSmoothingOptions_de_population_size_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ExponentialSmoothingOptions_de_population_size_set swig_arginfo_ARIMAOptions_d_set
-#define swig_arginfo_ExponentialSmoothingOptions_gamma_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothingOptions_gamma_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_ExponentialSmoothingOptions_phi_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_ExponentialSmoothingOptions_phi_set swig_arginfo_ARIMAOptions_coefficient_bound_set
+#define swig_arginfo_ExponentialSmoothingOptions_gamma_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothingOptions_gamma_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_ExponentialSmoothingOptions_phi_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ExponentialSmoothingOptions_phi_set swig_arginfo_ABLine_slope_set
 #define swig_arginfo_ExponentialSmoothingOptions_seasonal_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ExponentialSmoothingOptions_seasonal_period_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_ExponentialSmoothingOptions_seasonal_period_set swig_arginfo_ARIMAOptions_d_set
@@ -49390,7 +60189,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_GBMClassifier_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_GBMClassifier_print_summary swig_arginfo_hello
 #define swig_arginfo_GBMClassifier_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_GBMClassifier_training_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_GBMClassifier_training_accuracy swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GBMClassifier_training_deviance swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_new_GBMRegressor swig_arginfo_new_GBMClassifier
 #define swig_arginfo_GBMRegressor_feature_importance swig_arginfo_ARIMA_ar_coefficients
@@ -49403,10 +60202,58 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_GBMRegressor_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_GBMRegressor_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_GBMRegressor_print_summary swig_arginfo_hello
-#define swig_arginfo_GBMRegressor_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_GBMRegressor_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_GBMRegressor_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_GBMRegressor_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GBMRegressor_summary swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_GBMRegressor_training_deviance swig_arginfo_ARIMA_ar_coefficients
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_GGPlot, 0, 0, 2)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_facet_wrap, 0, 1, GGPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_geom_area, 0, 0, GGPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_GGPlot_geom_bar swig_arginfo_GGPlot_geom_area
+#define swig_arginfo_GGPlot_geom_boxplot swig_arginfo_GGPlot_geom_area
+#define swig_arginfo_GGPlot_geom_col swig_arginfo_GGPlot_geom_area
+#define swig_arginfo_GGPlot_geom_density swig_arginfo_GGPlot_geom_area
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_geom_histogram, 0, 0, GGPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_geom_line, 0, 0, GGPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_GGPlot_geom_point swig_arginfo_GGPlot_geom_line
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_geom_ribbon, 0, 2, GGPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_GGPlot_geom_smooth swig_arginfo_GGPlot_geom_area
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_labs, 0, 0, GGPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_GGPlot_save swig_arginfo_DataSeries_label_set
+#define swig_arginfo_GGPlot_save_svg swig_arginfo_DataSeries_label_set
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_scale_color_manual, 0, 1, GGPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_std__vectorT_datamunge__plot__RGB_t,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GGPlot_theme_bw, 0, 0, GGPlot, 0)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_GGPlot_theme_classic swig_arginfo_GGPlot_theme_bw
+#define swig_arginfo_GGPlot_theme_minimal swig_arginfo_GGPlot_theme_bw
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_GLM, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
@@ -49415,7 +60262,7 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_GLM, 0, 0, 2)
  ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_GLM_aic swig_arginfo_ARIMA_aic
+#define swig_arginfo_GLM_aic swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GLM_coefficient_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_GLM_coefficients swig_arginfo_ARIMA_ar_coefficients
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GLM_confidence_interval_lower, 0, 0, DVector, 0)
@@ -49423,15 +60270,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GLM_confidence_interval
 ZEND_END_ARG_INFO()
 #define swig_arginfo_GLM_confidence_interval_upper swig_arginfo_GLM_confidence_interval_lower
 #define swig_arginfo_GLM_degrees_of_freedom swig_arginfo_ARIMA_n_used
-#define swig_arginfo_GLM_deviance swig_arginfo_ARIMA_aic
-#define swig_arginfo_GLM_dispersion swig_arginfo_ARIMA_aic
+#define swig_arginfo_GLM_deviance swig_arginfo_ABLine_slope_get
+#define swig_arginfo_GLM_dispersion swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GLM_family swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_GLM_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_GLM_formula_text swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_GLM_has_intercept swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_GLM_has_intercept swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_GLM_leverage swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_GLM_linear_predictors swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_GLM_null_deviance swig_arginfo_ARIMA_aic
+#define swig_arginfo_GLM_null_deviance swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GLM_observations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_GLM_p_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_GLM_pearson_residuals swig_arginfo_ARIMA_ar_coefficients
@@ -49464,17 +60311,17 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_GLMM, 0, 0, 2)
  ZEND_ARG_TYPE_MASK(0,arg8,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_TYPE_MASK(0,arg9,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_GLMM_aic swig_arginfo_ARIMA_aic
-#define swig_arginfo_GLMM_bic swig_arginfo_ARIMA_aic
+#define swig_arginfo_GLMM_aic swig_arginfo_ABLine_slope_get
+#define swig_arginfo_GLMM_bic swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GLMM_coefficient_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_GLMM_coefficients swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_GLMM_deviance swig_arginfo_ARIMA_aic
+#define swig_arginfo_GLMM_deviance swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GLMM_family swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_GLMM_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_GLMM_formula_text swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_GLMM_group_labels swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_GLMM_group_variable swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_GLMM_has_random_intercept swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_GLMM_has_random_intercept swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_GLMM_iterations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_GLMM_num_groups swig_arginfo_ARIMA_n_used
 #define swig_arginfo_GLMM_observations swig_arginfo_ARIMA_n_used
@@ -49502,15 +60349,15 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_GaussianProcessRegression, 0, 0, 2)
  ZEND_ARG_TYPE_MASK(0,arg7,MAY_BE_BOOL,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_GaussianProcessRegression_fitted_values swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_GaussianProcessRegression_length_scale swig_arginfo_ARIMA_aic
+#define swig_arginfo_GaussianProcessRegression_length_scale swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GaussianProcessRegression_length_scale_grid swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_GaussianProcessRegression_length_scale_profile_log_likelihood swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_GaussianProcessRegression_length_scale_was_selected swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_GaussianProcessRegression_log_marginal_likelihood swig_arginfo_ARIMA_aic
-#define swig_arginfo_GaussianProcessRegression_noise_ratio_was_selected swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_GaussianProcessRegression_noise_variance swig_arginfo_ARIMA_aic
+#define swig_arginfo_GaussianProcessRegression_length_scale_was_selected swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_GaussianProcessRegression_log_marginal_likelihood swig_arginfo_ABLine_slope_get
+#define swig_arginfo_GaussianProcessRegression_noise_ratio_was_selected swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_GaussianProcessRegression_noise_variance swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GaussianProcessRegression_observations swig_arginfo_ARIMA_n_used
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GaussianProcessRegression_plot_fit, 0, 1, ScatterPlot, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GaussianProcessRegression_plot_fit, 0, 1, RPlot, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
@@ -49522,10 +60369,38 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_GaussianProcessRegression_predict_frame swig_arginfo_GLM_predict_frame
 #define swig_arginfo_GaussianProcessRegression_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_GaussianProcessRegression_print_summary swig_arginfo_hello
-#define swig_arginfo_GaussianProcessRegression_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_GaussianProcessRegression_rmse swig_arginfo_ARIMA_aic
-#define swig_arginfo_GaussianProcessRegression_signal_variance swig_arginfo_ARIMA_aic
+#define swig_arginfo_GaussianProcessRegression_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_GaussianProcessRegression_rmse swig_arginfo_ABLine_slope_get
+#define swig_arginfo_GaussianProcessRegression_signal_variance swig_arginfo_ABLine_slope_get
 #define swig_arginfo_GaussianProcessRegression_summary swig_arginfo_AgglomerativeClustering_summary
+#define swig_arginfo_new_GibbsOptions swig_arginfo_new_ABLine
+#define swig_arginfo_GibbsOptions_initial_step_sizes_get swig_arginfo_DVectorPair_first_get
+#define swig_arginfo_GibbsOptions_initial_step_sizes_set swig_arginfo_DVectorPair_first_set
+#define swig_arginfo_GibbsOptions_num_samples_get swig_arginfo_ARIMA_n_used
+#define swig_arginfo_GibbsOptions_num_samples_set swig_arginfo_ARIMAOptions_d_set
+#define swig_arginfo_GibbsOptions_num_warmup_get swig_arginfo_ARIMA_n_used
+#define swig_arginfo_GibbsOptions_num_warmup_set swig_arginfo_ARIMAOptions_d_set
+#define swig_arginfo_GibbsOptions_seed_get swig_arginfo_ARIMAOptions_seed_get
+#define swig_arginfo_GibbsOptions_seed_set swig_arginfo_ARIMAOptions_seed_set
+#define swig_arginfo_GibbsOptions_target_accept_rate_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_GibbsOptions_target_accept_rate_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_new_GibbsResult swig_arginfo_new_ABLine
+#define swig_arginfo_GibbsResult_accept_rates_get swig_arginfo_DVectorPair_first_get
+#define swig_arginfo_GibbsResult_accept_rates_set swig_arginfo_DVectorPair_first_set
+#define swig_arginfo_GibbsResult_final_step_sizes_get swig_arginfo_DVectorPair_first_get
+#define swig_arginfo_GibbsResult_final_step_sizes_set swig_arginfo_DVectorPair_first_set
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GibbsResult_samples_get, 0, 0, DVectorVector, MAY_BE_NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_GibbsResult_samples_set, 0, 1, MAY_BE_VOID)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVectorVector,MAY_BE_NULL,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_GibbsSampler, 0, 0, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,GibbsOptions,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_GibbsSampler_sample, 0, 2, GibbsResult, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_datamunge__optim__ArbitraryFunction,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_HyperDual, 0, 0, 1)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
@@ -49542,9 +60417,9 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_HyperDual_cos, 0, 0, Hy
 ZEND_END_ARG_INFO()
 #define swig_arginfo_HyperDual_divide swig_arginfo_HyperDual_add
 #define swig_arginfo_HyperDual_divide_scalar swig_arginfo_HyperDual_add_scalar
-#define swig_arginfo_HyperDual_eps1 swig_arginfo_ARIMA_aic
-#define swig_arginfo_HyperDual_eps1eps2 swig_arginfo_ARIMA_aic
-#define swig_arginfo_HyperDual_eps2 swig_arginfo_ARIMA_aic
+#define swig_arginfo_HyperDual_eps1 swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HyperDual_eps1eps2 swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HyperDual_eps2 swig_arginfo_ABLine_slope_get
 #define swig_arginfo_HyperDual_exp swig_arginfo_HyperDual_cos
 #define swig_arginfo_HyperDual_log swig_arginfo_HyperDual_cos
 #define swig_arginfo_HyperDual_multiply swig_arginfo_HyperDual_add
@@ -49557,30 +60432,60 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_HyperDual_subtract_scalar swig_arginfo_HyperDual_add_scalar
 #define swig_arginfo_HyperDual_tan swig_arginfo_HyperDual_cos
 #define swig_arginfo_HyperDual_tanh swig_arginfo_HyperDual_cos
-#define swig_arginfo_HyperDual_value swig_arginfo_ARIMA_aic
-#define swig_arginfo_new_HypothesisTestResult swig_arginfo_new_ARIMAOptions
+#define swig_arginfo_HyperDual_value swig_arginfo_ABLine_slope_get
+#define swig_arginfo_new_HypothesisTestResult swig_arginfo_new_ABLine
 #define swig_arginfo_HypothesisTestResult_alternative_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_HypothesisTestResult_alternative_set swig_arginfo_ARIMAOptions_d_set
-#define swig_arginfo_HypothesisTestResult_conf_int_lower_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_conf_int_lower_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_HypothesisTestResult_conf_int_upper_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_conf_int_upper_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_HypothesisTestResult_estimate1_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_estimate1_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_HypothesisTestResult_estimate2_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_estimate2_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_HypothesisTestResult_has_conf_int_get swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_HypothesisTestResult_has_conf_int_set swig_arginfo_ARIMAOptions_include_mean_set
+#define swig_arginfo_HypothesisTestResult_conf_int_lower_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_conf_int_lower_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_HypothesisTestResult_conf_int_upper_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_conf_int_upper_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_HypothesisTestResult_estimate1_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_estimate1_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_HypothesisTestResult_estimate2_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_estimate2_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_HypothesisTestResult_has_conf_int_get swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_HypothesisTestResult_has_conf_int_set swig_arginfo_ABLine_vertical_set
 #define swig_arginfo_HypothesisTestResult_method_get swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_HypothesisTestResult_method_set swig_arginfo_DataSeries_label_set
-#define swig_arginfo_HypothesisTestResult_p_value_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_p_value_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_HypothesisTestResult_parameter1_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_parameter1_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_HypothesisTestResult_parameter2_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_parameter2_set swig_arginfo_ARIMAOptions_coefficient_bound_set
-#define swig_arginfo_HypothesisTestResult_statistic_get swig_arginfo_ARIMA_aic
-#define swig_arginfo_HypothesisTestResult_statistic_set swig_arginfo_ARIMAOptions_coefficient_bound_set
+#define swig_arginfo_HypothesisTestResult_p_value_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_p_value_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_HypothesisTestResult_parameter1_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_parameter1_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_HypothesisTestResult_parameter2_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_parameter2_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_HypothesisTestResult_statistic_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_HypothesisTestResult_statistic_set swig_arginfo_ABLine_slope_set
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_INLAMixedModel, 0, 0, 2)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg7,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg8,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg9,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg10,MAY_BE_LONG,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_INLAMixedModel_coefficient_names swig_arginfo_AgglomerativeClustering_feature_names
+#define swig_arginfo_INLAMixedModel_family swig_arginfo_AgglomerativeClustering_summary
+#define swig_arginfo_INLAMixedModel_fixed_effects_mean swig_arginfo_ARIMA_ar_coefficients
+#define swig_arginfo_INLAMixedModel_fixed_effects_sd swig_arginfo_ARIMA_ar_coefficients
+#define swig_arginfo_INLAMixedModel_formula_text swig_arginfo_AgglomerativeClustering_summary
+#define swig_arginfo_INLAMixedModel_group_labels swig_arginfo_AgglomerativeClustering_feature_names
+#define swig_arginfo_INLAMixedModel_group_variable swig_arginfo_AgglomerativeClustering_summary
+#define swig_arginfo_INLAMixedModel_log_marginal_likelihood swig_arginfo_ABLine_slope_get
+#define swig_arginfo_INLAMixedModel_num_groups swig_arginfo_ARIMA_n_used
+#define swig_arginfo_INLAMixedModel_observations swig_arginfo_ARIMA_n_used
+#define swig_arginfo_INLAMixedModel_predict swig_arginfo_DecisionTreeRegressor_predict
+#define swig_arginfo_INLAMixedModel_print_summary swig_arginfo_hello
+#define swig_arginfo_INLAMixedModel_random_effect_names swig_arginfo_AgglomerativeClustering_feature_names
+#define swig_arginfo_INLAMixedModel_random_effect_std_devs swig_arginfo_ARIMA_ar_coefficients
+#define swig_arginfo_INLAMixedModel_random_effects_mean_for_group swig_arginfo_ARIMA_forecast
+#define swig_arginfo_INLAMixedModel_random_effects_sd_for_group swig_arginfo_ARIMA_forecast
+#define swig_arginfo_INLAMixedModel_residual_std_dev swig_arginfo_ABLine_slope_get
+#define swig_arginfo_INLAMixedModel_summary swig_arginfo_AgglomerativeClustering_summary
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_IPair, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,IPair,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
@@ -49595,7 +60500,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_IVector_capacity swig_arginfo_ARIMA_n_used
 #define swig_arginfo_IVector_clear swig_arginfo_hello
 #define swig_arginfo_IVector_get swig_arginfo_AgglomerativeClustering_merge_cluster_a
-#define swig_arginfo_IVector_is_empty swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_IVector_is_empty swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_IVector_pop swig_arginfo_ARIMA_n_used
 #define swig_arginfo_IVector_push swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_IVector_reserve swig_arginfo_ARIMAOptions_d_set
@@ -49604,6 +60509,28 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_IVector_set, 0, 2, MAY_BE_V
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_IVector_size swig_arginfo_ARIMA_n_used
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_ImportanceSampling, 0, 0, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,ImportanceSamplingOptions,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_ImportanceSampling_sample, 0, 3, ImportanceSamplingResult, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_datamunge__optim__ArbitraryFunction,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,DVectorVector,0,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_new_ImportanceSamplingOptions swig_arginfo_new_ABLine
+#define swig_arginfo_ImportanceSamplingOptions_num_samples_get swig_arginfo_ARIMA_n_used
+#define swig_arginfo_ImportanceSamplingOptions_num_samples_set swig_arginfo_ARIMAOptions_d_set
+#define swig_arginfo_ImportanceSamplingOptions_seed_get swig_arginfo_ARIMAOptions_seed_get
+#define swig_arginfo_ImportanceSamplingOptions_seed_set swig_arginfo_ARIMAOptions_seed_set
+#define swig_arginfo_new_ImportanceSamplingResult swig_arginfo_new_ABLine
+#define swig_arginfo_ImportanceSamplingResult_effective_sample_size_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ImportanceSamplingResult_effective_sample_size_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_ImportanceSamplingResult_log_evidence_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_ImportanceSamplingResult_log_evidence_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_ImportanceSamplingResult_normalized_weights_get swig_arginfo_DVectorPair_first_get
+#define swig_arginfo_ImportanceSamplingResult_normalized_weights_set swig_arginfo_DVectorPair_first_set
+#define swig_arginfo_ImportanceSamplingResult_samples_get swig_arginfo_GibbsResult_samples_get
+#define swig_arginfo_ImportanceSamplingResult_samples_set swig_arginfo_GibbsResult_samples_set
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_KMeans, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,SVector,MAY_BE_STRING,NULL)
@@ -49615,7 +60542,7 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_KMeans, 0, 0, 2)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_KMeans_cluster_center swig_arginfo_ARIMA_forecast
 #define swig_arginfo_KMeans_feature_names swig_arginfo_AgglomerativeClustering_feature_names
-#define swig_arginfo_KMeans_inertia swig_arginfo_ARIMA_aic
+#define swig_arginfo_KMeans_inertia swig_arginfo_ABLine_slope_get
 #define swig_arginfo_KMeans_iterations_used swig_arginfo_ARIMA_n_used
 #define swig_arginfo_KMeans_labels swig_arginfo_AgglomerativeClustering_labels
 #define swig_arginfo_KMeans_n_clusters swig_arginfo_ARIMA_n_used
@@ -49644,7 +60571,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_KNNClassifier_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_KNNClassifier_print_summary swig_arginfo_hello
 #define swig_arginfo_KNNClassifier_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_KNNClassifier_training_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_KNNClassifier_training_accuracy swig_arginfo_ABLine_slope_get
 #define swig_arginfo_new_KNNRegressor swig_arginfo_new_KNNClassifier
 #define swig_arginfo_KNNRegressor_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_KNNRegressor_k swig_arginfo_ARIMA_n_used
@@ -49654,8 +60581,8 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_KNNRegressor_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_KNNRegressor_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_KNNRegressor_print_summary swig_arginfo_hello
-#define swig_arginfo_KNNRegressor_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_KNNRegressor_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_KNNRegressor_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_KNNRegressor_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_KNNRegressor_summary swig_arginfo_AgglomerativeClustering_summary
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_KernelRegression, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
@@ -49665,14 +60592,14 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_KernelRegression, 0, 0, 2)
  ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_BOOL,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_KernelRegression_bandwidth swig_arginfo_ARIMA_aic
+#define swig_arginfo_KernelRegression_bandwidth swig_arginfo_ABLine_slope_get
 #define swig_arginfo_KernelRegression_bandwidth_grid swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_KernelRegression_bandwidth_was_selected swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_KernelRegression_bandwidth_was_selected swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_KernelRegression_cv_mean_squared_error swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_KernelRegression_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_KernelRegression_observations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_KernelRegression_plot_cv_curve swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_KernelRegression_plot_fit, 0, 1, ScatterPlot, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_KernelRegression_plot_fit, 0, 1, RPlot, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
@@ -49681,8 +60608,8 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_KernelRegression_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_KernelRegression_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_KernelRegression_print_summary swig_arginfo_hello
-#define swig_arginfo_KernelRegression_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_KernelRegression_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_KernelRegression_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_KernelRegression_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_KernelRegression_summary swig_arginfo_AgglomerativeClustering_summary
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_LDA, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
@@ -49704,13 +60631,13 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_LDA_save_discriminant_plot swig_arginfo_DataSeries_label_set
 #define swig_arginfo_LDA_scaling swig_arginfo_DataFrame_empty
 #define swig_arginfo_LDA_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_LDA_training_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_LDA_training_accuracy swig_arginfo_ABLine_slope_get
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_LM, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_LM_adjusted_r_squared swig_arginfo_ARIMA_aic
+#define swig_arginfo_LM_adjusted_r_squared swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LM_anova swig_arginfo_DataFrame_empty
 #define swig_arginfo_LM_coefficient_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_LM_coefficients swig_arginfo_ARIMA_ar_coefficients
@@ -49718,11 +60645,11 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_LM_confidence_interval_upper swig_arginfo_GLM_confidence_interval_lower
 #define swig_arginfo_LM_cooks_distance swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LM_degrees_of_freedom swig_arginfo_ARIMA_n_used
-#define swig_arginfo_LM_f_p_value swig_arginfo_ARIMA_aic
-#define swig_arginfo_LM_f_statistic swig_arginfo_ARIMA_aic
+#define swig_arginfo_LM_f_p_value swig_arginfo_ABLine_slope_get
+#define swig_arginfo_LM_f_statistic swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LM_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LM_formula_text swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_LM_has_intercept swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_LM_has_intercept swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_LM_leverage swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LM_observations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_LM_p_values swig_arginfo_ARIMA_ar_coefficients
@@ -49733,11 +60660,11 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_LM_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_LM_predict_frame swig_arginfo_GLM_predict_frame
 #define swig_arginfo_LM_print_summary swig_arginfo_hello
-#define swig_arginfo_LM_r_squared swig_arginfo_ARIMA_aic
+#define swig_arginfo_LM_r_squared swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LM_rank swig_arginfo_ARIMA_n_used
 #define swig_arginfo_LM_residuals swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LM_save_diagnostic_plots swig_arginfo_DataSeries_label_set
-#define swig_arginfo_LM_sigma swig_arginfo_ARIMA_aic
+#define swig_arginfo_LM_sigma swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LM_standard_errors swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LM_standardized_residuals swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LM_studentized_residuals swig_arginfo_ARIMA_ar_coefficients
@@ -49752,18 +60679,18 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_LMM, 0, 0, 2)
  ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_TYPE_MASK(0,arg7,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_LMM_aic swig_arginfo_ARIMA_aic
-#define swig_arginfo_LMM_bic swig_arginfo_ARIMA_aic
+#define swig_arginfo_LMM_aic swig_arginfo_ABLine_slope_get
+#define swig_arginfo_LMM_bic swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LMM_coefficient_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_LMM_coefficients swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_LMM_deviance swig_arginfo_ARIMA_aic
+#define swig_arginfo_LMM_deviance swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LMM_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LMM_formula_text swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_LMM_group_labels swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_LMM_group_variable swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_LMM_has_random_intercept swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_LMM_is_reml swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_LMM_log_likelihood swig_arginfo_ARIMA_aic
+#define swig_arginfo_LMM_has_random_intercept swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_LMM_is_reml swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_LMM_log_likelihood swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LMM_num_groups swig_arginfo_ARIMA_n_used
 #define swig_arginfo_LMM_observations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_LMM_p_values swig_arginfo_ARIMA_ar_coefficients
@@ -49774,8 +60701,8 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_LMM_random_effect_std_devs swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LMM_random_effects_for_group swig_arginfo_ARIMA_forecast
 #define swig_arginfo_LMM_rank swig_arginfo_ARIMA_n_used
-#define swig_arginfo_LMM_residual_std_dev swig_arginfo_ARIMA_aic
-#define swig_arginfo_LMM_residual_variance swig_arginfo_ARIMA_aic
+#define swig_arginfo_LMM_residual_std_dev swig_arginfo_ABLine_slope_get
+#define swig_arginfo_LMM_residual_variance swig_arginfo_ABLine_slope_get
 #define swig_arginfo_LMM_residuals swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LMM_standard_errors swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_LMM_summary swig_arginfo_AgglomerativeClustering_summary
@@ -49793,11 +60720,11 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_Lasso_cv_mean_squared_error swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_Lasso_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_Lasso_formula_text swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_Lasso_has_intercept swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_Lasso_intercept swig_arginfo_ARIMA_aic
-#define swig_arginfo_Lasso_lambda swig_arginfo_ARIMA_aic
+#define swig_arginfo_Lasso_has_intercept swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_Lasso_intercept swig_arginfo_ABLine_slope_get
+#define swig_arginfo_Lasso_lambda swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Lasso_lambda_path swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_Lasso_lambda_was_selected swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_Lasso_lambda_was_selected swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_Lasso_non_zero_coefficients swig_arginfo_ARIMA_n_used
 #define swig_arginfo_Lasso_observations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_Lasso_plot_coefficient_path swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
@@ -49807,20 +60734,15 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_Lasso_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_Lasso_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_Lasso_print_summary swig_arginfo_hello
-#define swig_arginfo_Lasso_r_squared swig_arginfo_ARIMA_aic
+#define swig_arginfo_Lasso_r_squared swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Lasso_residuals swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_Lasso_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_Lasso_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Lasso_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_new_LinePlot swig_arginfo_new_ARIMAOptions
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LinePlot_create, 0, 0, LinePlot, 0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_LinePlot_line, 0, 2, LinePlot, 0)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
- ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg4,RGB,0,NULL)
- ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
-ZEND_END_ARG_INFO()
+#define swig_arginfo_new_LegendEntry swig_arginfo_new_ABLine
+#define swig_arginfo_LegendEntry_color_get swig_arginfo_ABLine_color_get
+#define swig_arginfo_LegendEntry_color_set swig_arginfo_ABLine_color_set
+#define swig_arginfo_LegendEntry_label_get swig_arginfo_AgglomerativeClustering_summary
+#define swig_arginfo_LegendEntry_label_set swig_arginfo_DataSeries_label_set
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_NaiveBayesClassifier, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
@@ -49838,21 +60760,29 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_NaiveBayesClassifier_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_NaiveBayesClassifier_print_summary swig_arginfo_hello
 #define swig_arginfo_NaiveBayesClassifier_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_NaiveBayesClassifier_training_accuracy swig_arginfo_ARIMA_aic
-#define swig_arginfo_new_Plot swig_arginfo_new_ARIMAOptions
+#define swig_arginfo_NaiveBayesClassifier_training_accuracy swig_arginfo_ABLine_slope_get
+#define swig_arginfo_new_Plot swig_arginfo_new_ABLine
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_axes_color, 0, 0, RGB, 0)
 ZEND_END_ARG_INFO()
+#define swig_arginfo_Plot_axes_hidden swig_arginfo_ABLine_vertical_get
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_axis_color, 0, 1, Plot, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,RGB,0,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_Plot_background swig_arginfo_Plot_axis_color
 #define swig_arginfo_Plot_background_color swig_arginfo_Plot_axes_color
 #define swig_arginfo_Plot_grid_color swig_arginfo_Plot_axis_color
-#define swig_arginfo_Plot_grid_visible swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_Plot_has_x_limits swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_Plot_has_y_limits swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_Plot_grid_visible swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_Plot_has_x_limits swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_Plot_has_y_limits swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_Plot_height swig_arginfo_ARIMA_n_used
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_hide_axes, 0, 0, Plot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_BOOL,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_legend_entries, 0, 0, SWIG\\_p_std__vectorT_datamunge__plot__LegendEntry_t, 0)
+ZEND_END_ARG_INFO()
 #define swig_arginfo_Plot_major_grid_color swig_arginfo_Plot_axes_color
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_reference_lines, 0, 0, SWIG\\_p_std__vectorT_datamunge__plot__ABLine_t, 0)
+ZEND_END_ARG_INFO()
 #define swig_arginfo_Plot_save swig_arginfo_DataSeries_label_set
 #define swig_arginfo_Plot_save_svg swig_arginfo_DataSeries_label_set
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_series, 0, 0, SWIG\\_p_std__vectorT_datamunge__plot__DataSeries_t, 0)
@@ -49860,9 +60790,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_Plot_show, 0, 0, MAY_BE_VOID)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_show_grid, 0, 0, Plot, 0)
- ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_BOOL,NULL)
-ZEND_END_ARG_INFO()
+#define swig_arginfo_Plot_show_grid swig_arginfo_Plot_hide_axes
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_size, 0, 2, Plot, 0)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
@@ -49879,20 +60807,160 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_x_limits, 0, 2, Pl
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_Plot_x_max swig_arginfo_ARIMA_aic
-#define swig_arginfo_Plot_x_min swig_arginfo_ARIMA_aic
+#define swig_arginfo_Plot_x_max swig_arginfo_ABLine_slope_get
+#define swig_arginfo_Plot_x_min swig_arginfo_ABLine_slope_get
+#define swig_arginfo_Plot_x_tick_label_list swig_arginfo_AgglomerativeClustering_feature_names
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Plot_x_tick_labels, 0, 1, Plot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SVector,0,NULL)
+ZEND_END_ARG_INFO()
 #define swig_arginfo_Plot_y_label swig_arginfo_Plot_title
 #define swig_arginfo_Plot_y_label_text swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_Plot_y_limits swig_arginfo_Plot_x_limits
-#define swig_arginfo_Plot_y_max swig_arginfo_ARIMA_aic
-#define swig_arginfo_Plot_y_min swig_arginfo_ARIMA_aic
-#define swig_arginfo_new_RGB swig_arginfo_new_ARIMAOptions
+#define swig_arginfo_Plot_y_max swig_arginfo_ABLine_slope_get
+#define swig_arginfo_Plot_y_min swig_arginfo_ABLine_slope_get
+#define swig_arginfo_new_RGB swig_arginfo_new_ABLine
 #define swig_arginfo_RGB_b_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_RGB_b_set swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_RGB_g_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_RGB_g_set swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_RGB_r_get swig_arginfo_ARIMA_n_used
 #define swig_arginfo_RGB_r_set swig_arginfo_ARIMAOptions_d_set
+#define swig_arginfo_new_RLayout swig_arginfo_new_ABLine
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RLayout_add, 0, 1, RLayout, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,Plot,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RLayout_create, 0, 2, RLayout, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_RLayout_save swig_arginfo_DataSeries_label_set
+#define swig_arginfo_RLayout_save_svg swig_arginfo_DataSeries_label_set
+#define swig_arginfo_RLayout_size swig_arginfo_RLayout_create
+#define swig_arginfo_new_RPlot swig_arginfo_new_ABLine
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_abline, 0, 2, RPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_abline_h, 0, 1, RPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_RPlot_abline_v swig_arginfo_RPlot_abline_h
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_barplot, 0, 1, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,SVector,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg4,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_bars, 0, 2, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg4,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_box, 0, 6, RPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg7,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg8,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg9,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_boxplot, 0, 1, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVectorVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,SVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_RPlot_create swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_curve, 0, 3, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,Callback,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg6,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_hist, 0, 1, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg4,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_legend, 0, 2, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,SWIG\\_std__vectorT_datamunge__plot__RGB_t,0,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_RPlot_line swig_arginfo_RPlot_bars
+#define swig_arginfo_RPlot_lines swig_arginfo_RPlot_bars
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_pie, 0, 1, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,SVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,SWIG\\_std__vectorT_datamunge__plot__RGB_t,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_plot, 0, 2, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg5,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_RPlot_points swig_arginfo_RPlot_bars
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_polygon, 0, 2, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_BOOL,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_qqline, 0, 1, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_qqnorm, 0, 1, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,RGB,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_segments, 0, 4, RPlot, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg4,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg5,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg6,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RPlot_text, 0, 3, RPlot, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg4,RGB,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+#define swig_arginfo_new_RWMOptions swig_arginfo_new_ABLine
+#define swig_arginfo_RWMOptions_initial_step_size_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_RWMOptions_initial_step_size_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_RWMOptions_num_samples_get swig_arginfo_ARIMA_n_used
+#define swig_arginfo_RWMOptions_num_samples_set swig_arginfo_ARIMAOptions_d_set
+#define swig_arginfo_RWMOptions_num_warmup_get swig_arginfo_ARIMA_n_used
+#define swig_arginfo_RWMOptions_num_warmup_set swig_arginfo_ARIMAOptions_d_set
+#define swig_arginfo_RWMOptions_seed_get swig_arginfo_ARIMAOptions_seed_get
+#define swig_arginfo_RWMOptions_seed_set swig_arginfo_ARIMAOptions_seed_set
+#define swig_arginfo_RWMOptions_target_accept_rate_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_RWMOptions_target_accept_rate_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_new_RWMResult swig_arginfo_new_ABLine
+#define swig_arginfo_RWMResult_accept_rate_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_RWMResult_accept_rate_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_RWMResult_final_step_size_get swig_arginfo_ABLine_slope_get
+#define swig_arginfo_RWMResult_final_step_size_set swig_arginfo_ABLine_slope_set
+#define swig_arginfo_RWMResult_samples_get swig_arginfo_GibbsResult_samples_get
+#define swig_arginfo_RWMResult_samples_set swig_arginfo_GibbsResult_samples_set
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_RandomForestClassifier, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
@@ -49912,7 +60980,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_RandomForestClassifier_max_features_used swig_arginfo_ARIMA_n_used
 #define swig_arginfo_RandomForestClassifier_n_trees swig_arginfo_ARIMA_n_used
 #define swig_arginfo_RandomForestClassifier_observations swig_arginfo_ARIMA_n_used
-#define swig_arginfo_RandomForestClassifier_oob_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_RandomForestClassifier_oob_accuracy swig_arginfo_ABLine_slope_get
 #define swig_arginfo_RandomForestClassifier_plot_classification swig_arginfo_DecisionTreeClassifier_plot_classification
 #define swig_arginfo_RandomForestClassifier_plot_decision_regions swig_arginfo_DecisionTreeClassifier_plot_decision_regions
 #define swig_arginfo_RandomForestClassifier_predict swig_arginfo_DecisionTreeClassifier_predict
@@ -49920,7 +60988,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_RandomForestClassifier_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_RandomForestClassifier_print_summary swig_arginfo_hello
 #define swig_arginfo_RandomForestClassifier_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_RandomForestClassifier_training_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_RandomForestClassifier_training_accuracy swig_arginfo_ABLine_slope_get
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_RandomForestRegressor, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
@@ -49938,26 +61006,33 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_RandomForestRegressor_max_features_used swig_arginfo_ARIMA_n_used
 #define swig_arginfo_RandomForestRegressor_n_trees swig_arginfo_ARIMA_n_used
 #define swig_arginfo_RandomForestRegressor_observations swig_arginfo_ARIMA_n_used
-#define swig_arginfo_RandomForestRegressor_oob_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_RandomForestRegressor_oob_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_RandomForestRegressor_oob_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_RandomForestRegressor_oob_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_RandomForestRegressor_plot_predicted_vs_actual swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
 #define swig_arginfo_RandomForestRegressor_plot_residuals_vs_fitted swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
 #define swig_arginfo_RandomForestRegressor_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_RandomForestRegressor_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_RandomForestRegressor_print_summary swig_arginfo_hello
-#define swig_arginfo_RandomForestRegressor_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_RandomForestRegressor_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_RandomForestRegressor_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_RandomForestRegressor_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_RandomForestRegressor_summary swig_arginfo_AgglomerativeClustering_summary
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_RandomWalkMetropolis, 0, 0, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,RWMOptions,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_RandomWalkMetropolis_sample, 0, 2, RWMResult, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_datamunge__optim__ArbitraryFunction,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
+ZEND_END_ARG_INFO()
 #define swig_arginfo_new_Ridge swig_arginfo_new_Lasso
 #define swig_arginfo_Ridge_coefficients swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_Ridge_cv_mean_squared_error swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_Ridge_fitted_values swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_Ridge_formula_text swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_Ridge_has_intercept swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_Ridge_intercept swig_arginfo_ARIMA_aic
-#define swig_arginfo_Ridge_lambda swig_arginfo_ARIMA_aic
+#define swig_arginfo_Ridge_has_intercept swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_Ridge_intercept swig_arginfo_ABLine_slope_get
+#define swig_arginfo_Ridge_lambda swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Ridge_lambda_path swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_Ridge_lambda_was_selected swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_Ridge_lambda_was_selected swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_Ridge_observations swig_arginfo_ARIMA_n_used
 #define swig_arginfo_Ridge_plot_coefficient_path swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
 #define swig_arginfo_Ridge_plot_cv_curve swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
@@ -49966,9 +61041,9 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_Ridge_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_Ridge_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_Ridge_print_summary swig_arginfo_hello
-#define swig_arginfo_Ridge_r_squared swig_arginfo_ARIMA_aic
+#define swig_arginfo_Ridge_r_squared swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Ridge_residuals swig_arginfo_ARIMA_ar_coefficients
-#define swig_arginfo_Ridge_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_Ridge_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Ridge_summary swig_arginfo_AgglomerativeClustering_summary
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_SVM, 0, 0, 2)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DataFrame,0,NULL)
@@ -49989,7 +61064,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_SVM_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_SVM_print_summary swig_arginfo_hello
 #define swig_arginfo_SVM_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_SVM_training_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_SVM_training_accuracy swig_arginfo_ABLine_slope_get
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_SVector, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SVector,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
@@ -49998,7 +61073,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_SVector_get, 0, 1, MAY_BE_STRING)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_SVector_is_empty swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_SVector_is_empty swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_SVector_pop swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_SVector_push swig_arginfo_DataSeries_label_set
 #define swig_arginfo_SVector_reserve swig_arginfo_ARIMAOptions_d_set
@@ -50007,29 +61082,19 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_SVector_set, 0, 2, MAY_BE_V
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_SVector_size swig_arginfo_ARIMA_n_used
-#define swig_arginfo_new_ScatterPlot swig_arginfo_new_ARIMAOptions
-#define swig_arginfo_ScatterPlot_create swig_arginfo_DecisionTreeRegressor_plot_predicted_vs_actual
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_ScatterPlot_line, 0, 2, ScatterPlot, 0)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg2,DVector,0,NULL)
- ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_STRING,NULL)
- ZEND_ARG_OBJ_TYPE_MASK(0,arg4,RGB,0,NULL)
- ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_DOUBLE,NULL)
-ZEND_END_ARG_INFO()
-#define swig_arginfo_ScatterPlot_points swig_arginfo_ScatterPlot_line
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_SizeVector, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SizeVector,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_SizeVector_capacity swig_arginfo_ARIMA_n_used
 #define swig_arginfo_SizeVector_clear swig_arginfo_hello
 #define swig_arginfo_SizeVector_get swig_arginfo_AgglomerativeClustering_merge_cluster_a
-#define swig_arginfo_SizeVector_is_empty swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_SizeVector_is_empty swig_arginfo_ABLine_vertical_get
 #define swig_arginfo_SizeVector_pop swig_arginfo_ARIMA_n_used
 #define swig_arginfo_SizeVector_push swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_SizeVector_reserve swig_arginfo_ARIMAOptions_d_set
 #define swig_arginfo_SizeVector_set swig_arginfo_IVector_set
 #define swig_arginfo_SizeVector_size swig_arginfo_ARIMA_n_used
-#define swig_arginfo_new_Tape swig_arginfo_new_ARIMAOptions
+#define swig_arginfo_new_Tape swig_arginfo_new_ABLine
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tape_backward, 0, 1, DVector, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,c_Var,0,NULL)
 ZEND_END_ARG_INFO()
@@ -50047,8 +61112,8 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_add_scalar, 0, 1, Tensor, MAY_BE_NULL)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
-#define swig_arginfo_Tensor_all swig_arginfo_ARIMAOptions_include_mean_get
-#define swig_arginfo_Tensor_any swig_arginfo_ARIMAOptions_include_mean_get
+#define swig_arginfo_Tensor_all swig_arginfo_ABLine_vertical_get
+#define swig_arginfo_Tensor_any swig_arginfo_ABLine_vertical_get
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_apply, 0, 1, Tensor, MAY_BE_NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,Callback,MAY_BE_NULL,NULL)
 ZEND_END_ARG_INFO()
@@ -50068,10 +61133,21 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_Tensor_at, 0, 1, MAY_BE_DOU
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SizeVector,0,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_Tensor_at_flat swig_arginfo_AgglomerativeClustering_merge_distance
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_avg_pool2d, 0, 1, Tensor, MAY_BE_NULL)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_concatenate2, 0, 3, Tensor, MAY_BE_NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,Tensor,0,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,Tensor,0,NULL)
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_LONG,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_conv2d, 0, 3, Tensor, MAY_BE_NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,Tensor,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,Tensor,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg3,Tensor,0,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg5,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_Tensor_divide swig_arginfo_Tensor_add
 #define swig_arginfo_Tensor_divide_scalar swig_arginfo_Tensor_add_scalar
@@ -50089,6 +61165,9 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_from_bool_values, 0, 2, Tensor, MAY_BE_NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SizeVector,0,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,IVector,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_from_image, 0, 1, Tensor, MAY_BE_NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_datamunge__image__Image,0,NULL)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_from_string_values, 0, 2, Tensor, MAY_BE_NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SizeVector,0,NULL)
@@ -50112,11 +61191,12 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_Tensor_less_equal swig_arginfo_Tensor_add
 #define swig_arginfo_Tensor_log swig_arginfo_Tensor_abs
 #define swig_arginfo_Tensor_matmul swig_arginfo_Tensor_add
-#define swig_arginfo_Tensor_max swig_arginfo_ARIMA_aic
+#define swig_arginfo_Tensor_max swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Tensor_max_axis swig_arginfo_Tensor_argmax_axis
-#define swig_arginfo_Tensor_mean swig_arginfo_ARIMA_aic
+#define swig_arginfo_Tensor_max_pool2d swig_arginfo_Tensor_avg_pool2d
+#define swig_arginfo_Tensor_mean swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Tensor_mean_axis swig_arginfo_Tensor_argmax_axis
-#define swig_arginfo_Tensor_min swig_arginfo_ARIMA_aic
+#define swig_arginfo_Tensor_min swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Tensor_min_axis swig_arginfo_Tensor_argmax_axis
 #define swig_arginfo_Tensor_multiply swig_arginfo_Tensor_add
 #define swig_arginfo_Tensor_multiply_scalar swig_arginfo_Tensor_add_scalar
@@ -50129,8 +61209,9 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_Tensor_outer swig_arginfo_Tensor_add
 #define swig_arginfo_Tensor_power swig_arginfo_Tensor_add
 #define swig_arginfo_Tensor_power_scalar swig_arginfo_Tensor_add_scalar
-#define swig_arginfo_Tensor_prod swig_arginfo_ARIMA_aic
+#define swig_arginfo_Tensor_prod swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Tensor_prod_axis swig_arginfo_Tensor_argmax_axis
+#define swig_arginfo_Tensor_relu swig_arginfo_Tensor_abs
 #define swig_arginfo_Tensor_reshape swig_arginfo_Tensor_ones
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_Tensor_set, 0, 2, MAY_BE_VOID)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SizeVector,0,NULL)
@@ -50143,6 +61224,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_Tensor_set_string, 0, 2, MA
 ZEND_END_ARG_INFO()
 #define swig_arginfo_Tensor_set_string_flat swig_arginfo_SVector_set
 #define swig_arginfo_Tensor_shape swig_arginfo_AgglomerativeClustering_labels
+#define swig_arginfo_Tensor_sigmoid swig_arginfo_Tensor_abs
 #define swig_arginfo_Tensor_size swig_arginfo_ARIMA_n_used
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_slice, 0, 3, Tensor, MAY_BE_NULL)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
@@ -50150,6 +61232,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_slice, 0, 3, Ten
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_LONG,NULL)
  ZEND_ARG_TYPE_MASK(0,arg4,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
+#define swig_arginfo_Tensor_softmax swig_arginfo_Tensor_abs
 #define swig_arginfo_Tensor_sqrt swig_arginfo_Tensor_abs
 #define swig_arginfo_Tensor_squeeze swig_arginfo_Tensor_abs
 #define swig_arginfo_Tensor_squeeze_axis swig_arginfo_Tensor_expand_dims
@@ -50160,7 +61243,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_Tensor_string_at_flat swig_arginfo_SVector_get
 #define swig_arginfo_Tensor_subtract swig_arginfo_Tensor_add
 #define swig_arginfo_Tensor_subtract_scalar swig_arginfo_Tensor_add_scalar
-#define swig_arginfo_Tensor_sum swig_arginfo_ARIMA_aic
+#define swig_arginfo_Tensor_sum swig_arginfo_ABLine_slope_get
 #define swig_arginfo_Tensor_sum_axis swig_arginfo_Tensor_argmax_axis
 #define swig_arginfo_Tensor_to_string swig_arginfo_DataFrame_to_string
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_Tensor_transpose, 0, 0, Tensor, MAY_BE_NULL)
@@ -50195,7 +61278,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_XGBoostClassifier_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_XGBoostClassifier_print_summary swig_arginfo_hello
 #define swig_arginfo_XGBoostClassifier_summary swig_arginfo_AgglomerativeClustering_summary
-#define swig_arginfo_XGBoostClassifier_training_accuracy swig_arginfo_ARIMA_aic
+#define swig_arginfo_XGBoostClassifier_training_accuracy swig_arginfo_ABLine_slope_get
 #define swig_arginfo_XGBoostClassifier_training_deviance swig_arginfo_ARIMA_ar_coefficients
 #define swig_arginfo_new_XGBoostRegressor swig_arginfo_new_XGBoostClassifier
 #define swig_arginfo_XGBoostRegressor_feature_importance swig_arginfo_ARIMA_ar_coefficients
@@ -50208,8 +61291,8 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_XGBoostRegressor_predict swig_arginfo_DecisionTreeRegressor_predict
 #define swig_arginfo_XGBoostRegressor_predictor_names swig_arginfo_AgglomerativeClustering_feature_names
 #define swig_arginfo_XGBoostRegressor_print_summary swig_arginfo_hello
-#define swig_arginfo_XGBoostRegressor_r_squared swig_arginfo_ARIMA_aic
-#define swig_arginfo_XGBoostRegressor_rmse swig_arginfo_ARIMA_aic
+#define swig_arginfo_XGBoostRegressor_r_squared swig_arginfo_ABLine_slope_get
+#define swig_arginfo_XGBoostRegressor_rmse swig_arginfo_ABLine_slope_get
 #define swig_arginfo_XGBoostRegressor_summary swig_arginfo_AgglomerativeClustering_summary
 #define swig_arginfo_XGBoostRegressor_training_deviance swig_arginfo_ARIMA_ar_coefficients
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_c_Var, 0, 0, 2)
@@ -50240,7 +61323,7 @@ ZEND_END_ARG_INFO()
 #define swig_arginfo_c_Var_subtract_scalar swig_arginfo_c_Var_add_scalar
 #define swig_arginfo_c_Var_tan swig_arginfo_c_Var_abs
 #define swig_arginfo_c_Var_tanh swig_arginfo_c_Var_abs
-#define swig_arginfo_c_Var_value swig_arginfo_ARIMA_aic
+#define swig_arginfo_c_Var_value swig_arginfo_ABLine_slope_get
 
 
 /* class entry subsection */
@@ -50413,6 +61496,32 @@ static const zend_function_entry class_DataFrame_functions[] = {
  ZEND_FE_END
 };
 
+static const zend_function_entry class_GGPlot_functions[] = {
+ PHP_ME(GGPlot,__construct,swig_arginfo_new_GGPlot,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(GGPlot,geom_point,swig_arginfo_GGPlot_geom_point,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_line,swig_arginfo_GGPlot_geom_line,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_bar,swig_arginfo_GGPlot_geom_bar,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_col,swig_arginfo_GGPlot_geom_col,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_histogram,swig_arginfo_GGPlot_geom_histogram,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_boxplot,swig_arginfo_GGPlot_geom_boxplot,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_smooth,swig_arginfo_GGPlot_geom_smooth,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_area,swig_arginfo_GGPlot_geom_area,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_ribbon,swig_arginfo_GGPlot_geom_ribbon,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,geom_density,swig_arginfo_GGPlot_geom_density,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,facet_wrap,swig_arginfo_GGPlot_facet_wrap,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,theme_minimal,swig_arginfo_GGPlot_theme_minimal,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,theme_bw,swig_arginfo_GGPlot_theme_bw,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,theme_classic,swig_arginfo_GGPlot_theme_classic,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,scale_color_manual,swig_arginfo_GGPlot_scale_color_manual,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,labs,swig_arginfo_GGPlot_labs,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,save,swig_arginfo_GGPlot_save,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,save_svg,swig_arginfo_GGPlot_save_svg,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GGPlot,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
 static const zend_function_entry class_LM_functions[] = {
  PHP_ME(LM,__construct,swig_arginfo_new_LM,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
  PHP_ME(LM,formula_text,swig_arginfo_LM_formula_text,ZEND_ACC_PUBLIC)
@@ -50520,6 +61629,32 @@ static const zend_function_entry class_GLMM_functions[] = {
  PHP_ME(GLMM,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
  PHP_ME(GLMM,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
  PHP_ME(GLMM,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_INLAMixedModel_functions[] = {
+ PHP_ME(INLAMixedModel,__construct,swig_arginfo_new_INLAMixedModel,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(INLAMixedModel,formula_text,swig_arginfo_INLAMixedModel_formula_text,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,family,swig_arginfo_INLAMixedModel_family,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,group_variable,swig_arginfo_INLAMixedModel_group_variable,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,random_effect_names,swig_arginfo_INLAMixedModel_random_effect_names,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,observations,swig_arginfo_INLAMixedModel_observations,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,num_groups,swig_arginfo_INLAMixedModel_num_groups,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,fixed_effects_mean,swig_arginfo_INLAMixedModel_fixed_effects_mean,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,fixed_effects_sd,swig_arginfo_INLAMixedModel_fixed_effects_sd,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,coefficient_names,swig_arginfo_INLAMixedModel_coefficient_names,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,random_effect_std_devs,swig_arginfo_INLAMixedModel_random_effect_std_devs,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,residual_std_dev,swig_arginfo_INLAMixedModel_residual_std_dev,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,group_labels,swig_arginfo_INLAMixedModel_group_labels,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,random_effects_mean_for_group,swig_arginfo_INLAMixedModel_random_effects_mean_for_group,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,random_effects_sd_for_group,swig_arginfo_INLAMixedModel_random_effects_sd_for_group,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,log_marginal_likelihood,swig_arginfo_INLAMixedModel_log_marginal_likelihood,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,summary,swig_arginfo_INLAMixedModel_summary,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,print_summary,swig_arginfo_INLAMixedModel_print_summary,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,predict,swig_arginfo_INLAMixedModel_predict,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(INLAMixedModel,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
  ZEND_FE_END
 };
 
@@ -51113,6 +62248,13 @@ static const zend_function_entry class_Tensor_functions[] = {
  PHP_ME(Tensor,matmul,swig_arginfo_Tensor_matmul,ZEND_ACC_PUBLIC)
  PHP_ME(Tensor,dot,swig_arginfo_Tensor_dot,ZEND_ACC_PUBLIC)
  PHP_ME(Tensor,outer,swig_arginfo_Tensor_outer,ZEND_ACC_PUBLIC)
+ PHP_ME(Tensor,from_image,swig_arginfo_Tensor_from_image,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(Tensor,conv2d,swig_arginfo_Tensor_conv2d,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(Tensor,max_pool2d,swig_arginfo_Tensor_max_pool2d,ZEND_ACC_PUBLIC)
+ PHP_ME(Tensor,avg_pool2d,swig_arginfo_Tensor_avg_pool2d,ZEND_ACC_PUBLIC)
+ PHP_ME(Tensor,relu,swig_arginfo_Tensor_relu,ZEND_ACC_PUBLIC)
+ PHP_ME(Tensor,sigmoid,swig_arginfo_Tensor_sigmoid,ZEND_ACC_PUBLIC)
+ PHP_ME(Tensor,softmax,swig_arginfo_Tensor_softmax,ZEND_ACC_PUBLIC)
  PHP_ME(Tensor,to_string,swig_arginfo_Tensor_to_string,ZEND_ACC_PUBLIC)
  PHP_ME(Tensor,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
  PHP_ME(Tensor,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
@@ -51247,10 +62389,42 @@ static const zend_function_entry class_DataSeries_functions[] = {
  PHP_ME(DataSeries,marker_size_get,swig_arginfo_DataSeries_marker_size_get,ZEND_ACC_PUBLIC)
  PHP_ME(DataSeries,bar_width_set,swig_arginfo_DataSeries_bar_width_set,ZEND_ACC_PUBLIC)
  PHP_ME(DataSeries,bar_width_get,swig_arginfo_DataSeries_bar_width_get,ZEND_ACC_PUBLIC)
+ PHP_ME(DataSeries,filled_set,swig_arginfo_DataSeries_filled_set,ZEND_ACC_PUBLIC)
+ PHP_ME(DataSeries,filled_get,swig_arginfo_DataSeries_filled_get,ZEND_ACC_PUBLIC)
  PHP_ME(DataSeries,__construct,swig_arginfo_new_DataSeries,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
  PHP_ME(DataSeries,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
  PHP_ME(DataSeries,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
  PHP_ME(DataSeries,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_ABLine_functions[] = {
+ PHP_ME(ABLine,vertical_set,swig_arginfo_ABLine_vertical_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,vertical_get,swig_arginfo_ABLine_vertical_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,value_set,swig_arginfo_ABLine_value_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,value_get,swig_arginfo_ABLine_value_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,slope_set,swig_arginfo_ABLine_slope_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,slope_get,swig_arginfo_ABLine_slope_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,color_set,swig_arginfo_ABLine_color_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,color_get,swig_arginfo_ABLine_color_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,stroke_width_set,swig_arginfo_ABLine_stroke_width_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,stroke_width_get,swig_arginfo_ABLine_stroke_width_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,__construct,swig_arginfo_new_ABLine,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(ABLine,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ABLine,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_LegendEntry_functions[] = {
+ PHP_ME(LegendEntry,label_set,swig_arginfo_LegendEntry_label_set,ZEND_ACC_PUBLIC)
+ PHP_ME(LegendEntry,label_get,swig_arginfo_LegendEntry_label_get,ZEND_ACC_PUBLIC)
+ PHP_ME(LegendEntry,color_set,swig_arginfo_LegendEntry_color_set,ZEND_ACC_PUBLIC)
+ PHP_ME(LegendEntry,color_get,swig_arginfo_LegendEntry_color_get,ZEND_ACC_PUBLIC)
+ PHP_ME(LegendEntry,__construct,swig_arginfo_new_LegendEntry,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(LegendEntry,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(LegendEntry,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(LegendEntry,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
  ZEND_FE_END
 };
 
@@ -51265,6 +62439,8 @@ static const zend_function_entry class_Plot_functions[] = {
  PHP_ME(Plot,show_grid,swig_arginfo_Plot_show_grid,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,x_limits,swig_arginfo_Plot_x_limits,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,y_limits,swig_arginfo_Plot_y_limits,ZEND_ACC_PUBLIC)
+ PHP_ME(Plot,hide_axes,swig_arginfo_Plot_hide_axes,ZEND_ACC_PUBLIC)
+ PHP_ME(Plot,x_tick_labels,swig_arginfo_Plot_x_tick_labels,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,width,swig_arginfo_Plot_width,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,height,swig_arginfo_Plot_height,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,title_text,swig_arginfo_Plot_title_text,ZEND_ACC_PUBLIC)
@@ -51281,6 +62457,10 @@ static const zend_function_entry class_Plot_functions[] = {
  PHP_ME(Plot,x_max,swig_arginfo_Plot_x_max,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,y_min,swig_arginfo_Plot_y_min,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,y_max,swig_arginfo_Plot_y_max,ZEND_ACC_PUBLIC)
+ PHP_ME(Plot,axes_hidden,swig_arginfo_Plot_axes_hidden,ZEND_ACC_PUBLIC)
+ PHP_ME(Plot,x_tick_label_list,swig_arginfo_Plot_x_tick_label_list,ZEND_ACC_PUBLIC)
+ PHP_ME(Plot,reference_lines,swig_arginfo_Plot_reference_lines,ZEND_ACC_PUBLIC)
+ PHP_ME(Plot,legend_entries,swig_arginfo_Plot_legend_entries,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,save,swig_arginfo_Plot_save,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,save_svg,swig_arginfo_Plot_save_svg,ZEND_ACC_PUBLIC)
  PHP_ME(Plot,view,swig_arginfo_Plot_view,ZEND_ACC_PUBLIC)
@@ -51292,34 +62472,45 @@ static const zend_function_entry class_Plot_functions[] = {
  ZEND_FE_END
 };
 
-static const zend_function_entry class_ScatterPlot_functions[] = {
- PHP_ME(ScatterPlot,create,swig_arginfo_ScatterPlot_create,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
- PHP_ME(ScatterPlot,points,swig_arginfo_ScatterPlot_points,ZEND_ACC_PUBLIC)
- PHP_ME(ScatterPlot,line,swig_arginfo_ScatterPlot_line,ZEND_ACC_PUBLIC)
- PHP_ME(ScatterPlot,__construct,swig_arginfo_new_ScatterPlot,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
- PHP_ME(ScatterPlot,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
- PHP_ME(ScatterPlot,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
- PHP_ME(ScatterPlot,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+static const zend_function_entry class_RPlot_functions[] = {
+ PHP_ME(RPlot,create,swig_arginfo_RPlot_create,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,plot,swig_arginfo_RPlot_plot,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,hist,swig_arginfo_RPlot_hist,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,barplot,swig_arginfo_RPlot_barplot,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,boxplot,swig_arginfo_RPlot_boxplot,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,pie,swig_arginfo_RPlot_pie,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,curve,swig_arginfo_RPlot_curve,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,qqnorm,swig_arginfo_RPlot_qqnorm,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RPlot,points,swig_arginfo_RPlot_points,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,line,swig_arginfo_RPlot_line,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,lines,swig_arginfo_RPlot_lines,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,bars,swig_arginfo_RPlot_bars,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,box,swig_arginfo_RPlot_box,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,abline,swig_arginfo_RPlot_abline,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,abline_h,swig_arginfo_RPlot_abline_h,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,abline_v,swig_arginfo_RPlot_abline_v,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,qqline,swig_arginfo_RPlot_qqline,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,legend,swig_arginfo_RPlot_legend,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,text,swig_arginfo_RPlot_text,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,polygon,swig_arginfo_RPlot_polygon,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,segments,swig_arginfo_RPlot_segments,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,__construct,swig_arginfo_new_RPlot,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(RPlot,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RPlot,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
  ZEND_FE_END
 };
 
-static const zend_function_entry class_LinePlot_functions[] = {
- PHP_ME(LinePlot,create,swig_arginfo_LinePlot_create,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
- PHP_ME(LinePlot,line,swig_arginfo_LinePlot_line,ZEND_ACC_PUBLIC)
- PHP_ME(LinePlot,__construct,swig_arginfo_new_LinePlot,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
- PHP_ME(LinePlot,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
- PHP_ME(LinePlot,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
- PHP_ME(LinePlot,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
- ZEND_FE_END
-};
-
-static const zend_function_entry class_BarChart_functions[] = {
- PHP_ME(BarChart,create,swig_arginfo_BarChart_create,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
- PHP_ME(BarChart,bars,swig_arginfo_BarChart_bars,ZEND_ACC_PUBLIC)
- PHP_ME(BarChart,__construct,swig_arginfo_new_BarChart,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
- PHP_ME(BarChart,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
- PHP_ME(BarChart,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
- PHP_ME(BarChart,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+static const zend_function_entry class_RLayout_functions[] = {
+ PHP_ME(RLayout,create,swig_arginfo_RLayout_create,ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+ PHP_ME(RLayout,add,swig_arginfo_RLayout_add,ZEND_ACC_PUBLIC)
+ PHP_ME(RLayout,size,swig_arginfo_RLayout_size,ZEND_ACC_PUBLIC)
+ PHP_ME(RLayout,save,swig_arginfo_RLayout_save,ZEND_ACC_PUBLIC)
+ PHP_ME(RLayout,save_svg,swig_arginfo_RLayout_save_svg,ZEND_ACC_PUBLIC)
+ PHP_ME(RLayout,__construct,swig_arginfo_new_RLayout,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(RLayout,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RLayout,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RLayout,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
  ZEND_FE_END
 };
 
@@ -51459,6 +62650,125 @@ static const zend_function_entry class_HypothesisTestResult_functions[] = {
  ZEND_FE_END
 };
 
+static const zend_function_entry class_RWMOptions_functions[] = {
+ PHP_ME(RWMOptions,num_samples_set,swig_arginfo_RWMOptions_num_samples_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,num_samples_get,swig_arginfo_RWMOptions_num_samples_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,num_warmup_set,swig_arginfo_RWMOptions_num_warmup_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,num_warmup_get,swig_arginfo_RWMOptions_num_warmup_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,initial_step_size_set,swig_arginfo_RWMOptions_initial_step_size_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,initial_step_size_get,swig_arginfo_RWMOptions_initial_step_size_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,target_accept_rate_set,swig_arginfo_RWMOptions_target_accept_rate_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,target_accept_rate_get,swig_arginfo_RWMOptions_target_accept_rate_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,seed_set,swig_arginfo_RWMOptions_seed_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,seed_get,swig_arginfo_RWMOptions_seed_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,__construct,swig_arginfo_new_RWMOptions,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(RWMOptions,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMOptions,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_RWMResult_functions[] = {
+ PHP_ME(RWMResult,samples_set,swig_arginfo_RWMResult_samples_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,samples_get,swig_arginfo_RWMResult_samples_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,accept_rate_set,swig_arginfo_RWMResult_accept_rate_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,accept_rate_get,swig_arginfo_RWMResult_accept_rate_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,final_step_size_set,swig_arginfo_RWMResult_final_step_size_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,final_step_size_get,swig_arginfo_RWMResult_final_step_size_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,__construct,swig_arginfo_new_RWMResult,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(RWMResult,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RWMResult,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_RandomWalkMetropolis_functions[] = {
+ PHP_ME(RandomWalkMetropolis,__construct,swig_arginfo_new_RandomWalkMetropolis,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(RandomWalkMetropolis,sample,swig_arginfo_RandomWalkMetropolis_sample,ZEND_ACC_PUBLIC)
+ PHP_ME(RandomWalkMetropolis,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(RandomWalkMetropolis,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(RandomWalkMetropolis,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_GibbsOptions_functions[] = {
+ PHP_ME(GibbsOptions,num_samples_set,swig_arginfo_GibbsOptions_num_samples_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,num_samples_get,swig_arginfo_GibbsOptions_num_samples_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,num_warmup_set,swig_arginfo_GibbsOptions_num_warmup_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,num_warmup_get,swig_arginfo_GibbsOptions_num_warmup_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,initial_step_sizes_set,swig_arginfo_GibbsOptions_initial_step_sizes_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,initial_step_sizes_get,swig_arginfo_GibbsOptions_initial_step_sizes_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,target_accept_rate_set,swig_arginfo_GibbsOptions_target_accept_rate_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,target_accept_rate_get,swig_arginfo_GibbsOptions_target_accept_rate_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,seed_set,swig_arginfo_GibbsOptions_seed_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,seed_get,swig_arginfo_GibbsOptions_seed_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,__construct,swig_arginfo_new_GibbsOptions,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(GibbsOptions,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsOptions,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_GibbsResult_functions[] = {
+ PHP_ME(GibbsResult,samples_set,swig_arginfo_GibbsResult_samples_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,samples_get,swig_arginfo_GibbsResult_samples_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,accept_rates_set,swig_arginfo_GibbsResult_accept_rates_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,accept_rates_get,swig_arginfo_GibbsResult_accept_rates_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,final_step_sizes_set,swig_arginfo_GibbsResult_final_step_sizes_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,final_step_sizes_get,swig_arginfo_GibbsResult_final_step_sizes_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,__construct,swig_arginfo_new_GibbsResult,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(GibbsResult,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsResult,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_GibbsSampler_functions[] = {
+ PHP_ME(GibbsSampler,__construct,swig_arginfo_new_GibbsSampler,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(GibbsSampler,sample,swig_arginfo_GibbsSampler_sample,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsSampler,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsSampler,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(GibbsSampler,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_ImportanceSamplingOptions_functions[] = {
+ PHP_ME(ImportanceSamplingOptions,num_samples_set,swig_arginfo_ImportanceSamplingOptions_num_samples_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingOptions,num_samples_get,swig_arginfo_ImportanceSamplingOptions_num_samples_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingOptions,seed_set,swig_arginfo_ImportanceSamplingOptions_seed_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingOptions,seed_get,swig_arginfo_ImportanceSamplingOptions_seed_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingOptions,__construct,swig_arginfo_new_ImportanceSamplingOptions,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(ImportanceSamplingOptions,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingOptions,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingOptions,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_ImportanceSamplingResult_functions[] = {
+ PHP_ME(ImportanceSamplingResult,samples_set,swig_arginfo_ImportanceSamplingResult_samples_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,samples_get,swig_arginfo_ImportanceSamplingResult_samples_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,normalized_weights_set,swig_arginfo_ImportanceSamplingResult_normalized_weights_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,normalized_weights_get,swig_arginfo_ImportanceSamplingResult_normalized_weights_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,effective_sample_size_set,swig_arginfo_ImportanceSamplingResult_effective_sample_size_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,effective_sample_size_get,swig_arginfo_ImportanceSamplingResult_effective_sample_size_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,log_evidence_set,swig_arginfo_ImportanceSamplingResult_log_evidence_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,log_evidence_get,swig_arginfo_ImportanceSamplingResult_log_evidence_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,__construct,swig_arginfo_new_ImportanceSamplingResult,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(ImportanceSamplingResult,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSamplingResult,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
+static const zend_function_entry class_ImportanceSampling_functions[] = {
+ PHP_ME(ImportanceSampling,__construct,swig_arginfo_new_ImportanceSampling,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(ImportanceSampling,sample,swig_arginfo_ImportanceSampling_sample,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSampling,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSampling,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(ImportanceSampling,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
 
 
 /* entry subsection */
@@ -51490,6 +62800,9 @@ static const zend_function_entry module_datamunge_functions[] = {
  ZEND_NAMED_FE(binomial_test,_wrap_binomial_test,swig_arginfo_binomial_test)
  ZEND_NAMED_FE(fisher_exact_test_2x2,_wrap_fisher_exact_test_2x2,swig_arginfo_fisher_exact_test_2x2)
  PHP_FE(shapiro_francia_test,swig_arginfo_shapiro_francia_test)
+ ZEND_NAMED_FE(p_adjust,_wrap_p_adjust,swig_arginfo_p_adjust)
+ PHP_FE(westfall_young_adjust,swig_arginfo_westfall_young_adjust)
+ PHP_FE(romano_wolf_adjust,swig_arginfo_romano_wolf_adjust)
  ZEND_FE_END
 };
 
@@ -51520,6 +62833,9 @@ static const zend_function_entry class_datamunge_functions[] = {
  ZEND_NAMED_ME(binomial_test,_wrap_binomial_test,swig_arginfo_binomial_test,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  ZEND_NAMED_ME(fisher_exact_test_2x2,_wrap_fisher_exact_test_2x2,swig_arginfo_fisher_exact_test_2x2,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  PHP_ME(datamunge,shapiro_francia_test,swig_arginfo_shapiro_francia_test,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ ZEND_NAMED_ME(p_adjust,_wrap_p_adjust,swig_arginfo_p_adjust,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(datamunge,westfall_young_adjust,swig_arginfo_westfall_young_adjust,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(datamunge,romano_wolf_adjust,swig_arginfo_romano_wolf_adjust,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  ZEND_FE_END
 };
 
@@ -52094,6 +63410,19 @@ SWIG_php_minit {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__DataFrame,SWIG_Php_ce_DataFrame);
 #endif
 
+  INIT_CLASS_ENTRY(internal_ce, "GGPlot", class_GGPlot_functions);
+  SWIG_Php_ce_GGPlot = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_GGPlot->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_GGPlot, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_GGPlot->create_object = SWIG_Php_create_object_GGPlot;
+  GGPlot_object_handlers = Swig_Php_base_object_handlers;
+  GGPlot_object_handlers.free_obj = SWIG_Php_free_obj_GGPlot;
+#ifdef SWIGTYPE_p_datamunge__GGPlot
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__GGPlot,SWIG_Php_ce_GGPlot);
+#endif
+
   INIT_CLASS_ENTRY(internal_ce, "LM", class_LM_functions);
   SWIG_Php_ce_LM = zend_register_internal_class(&internal_ce);
 #ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
@@ -52131,6 +63460,19 @@ SWIG_php_minit {
   GLMM_object_handlers.free_obj = SWIG_Php_free_obj_GLMM;
 #ifdef SWIGTYPE_p_datamunge__GLMM
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__GLMM,SWIG_Php_ce_GLMM);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "INLAMixedModel", class_INLAMixedModel_functions);
+  SWIG_Php_ce_INLAMixedModel = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_INLAMixedModel->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_INLAMixedModel, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_INLAMixedModel->create_object = SWIG_Php_create_object_INLAMixedModel;
+  INLAMixedModel_object_handlers = Swig_Php_base_object_handlers;
+  INLAMixedModel_object_handlers.free_obj = SWIG_Php_free_obj_INLAMixedModel;
+#ifdef SWIGTYPE_p_datamunge__INLAMixedModel
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__INLAMixedModel,SWIG_Php_ce_INLAMixedModel);
 #endif
 
   INIT_CLASS_ENTRY(internal_ce, "LDA", class_LDA_functions);
@@ -52510,6 +63852,32 @@ SWIG_php_minit {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__DataSeries,SWIG_Php_ce_DataSeries);
 #endif
 
+  INIT_CLASS_ENTRY(internal_ce, "ABLine", class_ABLine_functions);
+  SWIG_Php_ce_ABLine = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_ABLine->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_ABLine, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_ABLine->create_object = SWIG_Php_create_object_ABLine;
+  ABLine_object_handlers = Swig_Php_base_object_handlers;
+  ABLine_object_handlers.free_obj = SWIG_Php_free_obj_ABLine;
+#ifdef SWIGTYPE_p_datamunge__plot__ABLine
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__ABLine,SWIG_Php_ce_ABLine);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "LegendEntry", class_LegendEntry_functions);
+  SWIG_Php_ce_LegendEntry = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_LegendEntry->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_LegendEntry, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_LegendEntry->create_object = SWIG_Php_create_object_LegendEntry;
+  LegendEntry_object_handlers = Swig_Php_base_object_handlers;
+  LegendEntry_object_handlers.free_obj = SWIG_Php_free_obj_LegendEntry;
+#ifdef SWIGTYPE_p_datamunge__plot__LegendEntry
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__LegendEntry,SWIG_Php_ce_LegendEntry);
+#endif
+
   INIT_CLASS_ENTRY(internal_ce, "Plot", class_Plot_functions);
   SWIG_Php_ce_Plot = zend_register_internal_class(&internal_ce);
 #ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
@@ -52523,43 +63891,30 @@ SWIG_php_minit {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__Plot,SWIG_Php_ce_Plot);
 #endif
 
-  INIT_CLASS_ENTRY(internal_ce, "ScatterPlot", class_ScatterPlot_functions);
-  SWIG_Php_ce_ScatterPlot = zend_register_internal_class_ex(&internal_ce, SWIG_Php_ce_Plot);
+  INIT_CLASS_ENTRY(internal_ce, "RPlot", class_RPlot_functions);
+  SWIG_Php_ce_RPlot = zend_register_internal_class_ex(&internal_ce, SWIG_Php_ce_Plot);
 #ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
-  SWIG_Php_ce_ScatterPlot->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+  SWIG_Php_ce_RPlot->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
 #endif
-  zend_do_implement_interface(SWIG_Php_ce_ScatterPlot, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_Php_ce_ScatterPlot->create_object = SWIG_Php_create_object_ScatterPlot;
-  ScatterPlot_object_handlers = Swig_Php_base_object_handlers;
-  ScatterPlot_object_handlers.free_obj = SWIG_Php_free_obj_ScatterPlot;
-#ifdef SWIGTYPE_p_datamunge__plot__ScatterPlot
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__ScatterPlot,SWIG_Php_ce_ScatterPlot);
+  zend_do_implement_interface(SWIG_Php_ce_RPlot, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_RPlot->create_object = SWIG_Php_create_object_RPlot;
+  RPlot_object_handlers = Swig_Php_base_object_handlers;
+  RPlot_object_handlers.free_obj = SWIG_Php_free_obj_RPlot;
+#ifdef SWIGTYPE_p_datamunge__plot__RPlot
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RPlot,SWIG_Php_ce_RPlot);
 #endif
 
-  INIT_CLASS_ENTRY(internal_ce, "LinePlot", class_LinePlot_functions);
-  SWIG_Php_ce_LinePlot = zend_register_internal_class_ex(&internal_ce, SWIG_Php_ce_Plot);
+  INIT_CLASS_ENTRY(internal_ce, "RLayout", class_RLayout_functions);
+  SWIG_Php_ce_RLayout = zend_register_internal_class(&internal_ce);
 #ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
-  SWIG_Php_ce_LinePlot->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+  SWIG_Php_ce_RLayout->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
 #endif
-  zend_do_implement_interface(SWIG_Php_ce_LinePlot, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_Php_ce_LinePlot->create_object = SWIG_Php_create_object_LinePlot;
-  LinePlot_object_handlers = Swig_Php_base_object_handlers;
-  LinePlot_object_handlers.free_obj = SWIG_Php_free_obj_LinePlot;
-#ifdef SWIGTYPE_p_datamunge__plot__LinePlot
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__LinePlot,SWIG_Php_ce_LinePlot);
-#endif
-
-  INIT_CLASS_ENTRY(internal_ce, "BarChart", class_BarChart_functions);
-  SWIG_Php_ce_BarChart = zend_register_internal_class_ex(&internal_ce, SWIG_Php_ce_Plot);
-#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
-  SWIG_Php_ce_BarChart->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
-#endif
-  zend_do_implement_interface(SWIG_Php_ce_BarChart, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_Php_ce_BarChart->create_object = SWIG_Php_create_object_BarChart;
-  BarChart_object_handlers = Swig_Php_base_object_handlers;
-  BarChart_object_handlers.free_obj = SWIG_Php_free_obj_BarChart;
-#ifdef SWIGTYPE_p_datamunge__plot__BarChart
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__BarChart,SWIG_Php_ce_BarChart);
+  zend_do_implement_interface(SWIG_Php_ce_RLayout, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_RLayout->create_object = SWIG_Php_create_object_RLayout;
+  RLayout_object_handlers = Swig_Php_base_object_handlers;
+  RLayout_object_handlers.free_obj = SWIG_Php_free_obj_RLayout;
+#ifdef SWIGTYPE_p_datamunge__plot__RLayout
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RLayout,SWIG_Php_ce_RLayout);
 #endif
 
   INIT_CLASS_ENTRY(internal_ce, "ARIMAOptions", class_ARIMAOptions_functions);
@@ -52627,6 +63982,123 @@ SWIG_php_minit {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__HypothesisTestResult,SWIG_Php_ce_HypothesisTestResult);
 #endif
 
+  INIT_CLASS_ENTRY(internal_ce, "RWMOptions", class_RWMOptions_functions);
+  SWIG_Php_ce_RWMOptions = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_RWMOptions->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_RWMOptions, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_RWMOptions->create_object = SWIG_Php_create_object_RWMOptions;
+  RWMOptions_object_handlers = Swig_Php_base_object_handlers;
+  RWMOptions_object_handlers.free_obj = SWIG_Php_free_obj_RWMOptions;
+#ifdef SWIGTYPE_p_datamunge__bayes__RWMOptions
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__RWMOptions,SWIG_Php_ce_RWMOptions);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "RWMResult", class_RWMResult_functions);
+  SWIG_Php_ce_RWMResult = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_RWMResult->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_RWMResult, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_RWMResult->create_object = SWIG_Php_create_object_RWMResult;
+  RWMResult_object_handlers = Swig_Php_base_object_handlers;
+  RWMResult_object_handlers.free_obj = SWIG_Php_free_obj_RWMResult;
+#ifdef SWIGTYPE_p_datamunge__bayes__RWMResult
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__RWMResult,SWIG_Php_ce_RWMResult);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "RandomWalkMetropolis", class_RandomWalkMetropolis_functions);
+  SWIG_Php_ce_RandomWalkMetropolis = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_RandomWalkMetropolis->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_RandomWalkMetropolis, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_RandomWalkMetropolis->create_object = SWIG_Php_create_object_RandomWalkMetropolis;
+  RandomWalkMetropolis_object_handlers = Swig_Php_base_object_handlers;
+  RandomWalkMetropolis_object_handlers.free_obj = SWIG_Php_free_obj_RandomWalkMetropolis;
+#ifdef SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis,SWIG_Php_ce_RandomWalkMetropolis);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "GibbsOptions", class_GibbsOptions_functions);
+  SWIG_Php_ce_GibbsOptions = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_GibbsOptions->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_GibbsOptions, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_GibbsOptions->create_object = SWIG_Php_create_object_GibbsOptions;
+  GibbsOptions_object_handlers = Swig_Php_base_object_handlers;
+  GibbsOptions_object_handlers.free_obj = SWIG_Php_free_obj_GibbsOptions;
+#ifdef SWIGTYPE_p_datamunge__bayes__GibbsOptions
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__GibbsOptions,SWIG_Php_ce_GibbsOptions);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "GibbsResult", class_GibbsResult_functions);
+  SWIG_Php_ce_GibbsResult = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_GibbsResult->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_GibbsResult, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_GibbsResult->create_object = SWIG_Php_create_object_GibbsResult;
+  GibbsResult_object_handlers = Swig_Php_base_object_handlers;
+  GibbsResult_object_handlers.free_obj = SWIG_Php_free_obj_GibbsResult;
+#ifdef SWIGTYPE_p_datamunge__bayes__GibbsResult
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__GibbsResult,SWIG_Php_ce_GibbsResult);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "GibbsSampler", class_GibbsSampler_functions);
+  SWIG_Php_ce_GibbsSampler = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_GibbsSampler->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_GibbsSampler, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_GibbsSampler->create_object = SWIG_Php_create_object_GibbsSampler;
+  GibbsSampler_object_handlers = Swig_Php_base_object_handlers;
+  GibbsSampler_object_handlers.free_obj = SWIG_Php_free_obj_GibbsSampler;
+#ifdef SWIGTYPE_p_datamunge__bayes__GibbsSampler
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__GibbsSampler,SWIG_Php_ce_GibbsSampler);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "ImportanceSamplingOptions", class_ImportanceSamplingOptions_functions);
+  SWIG_Php_ce_ImportanceSamplingOptions = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_ImportanceSamplingOptions->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_ImportanceSamplingOptions, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_ImportanceSamplingOptions->create_object = SWIG_Php_create_object_ImportanceSamplingOptions;
+  ImportanceSamplingOptions_object_handlers = Swig_Php_base_object_handlers;
+  ImportanceSamplingOptions_object_handlers.free_obj = SWIG_Php_free_obj_ImportanceSamplingOptions;
+#ifdef SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions,SWIG_Php_ce_ImportanceSamplingOptions);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "ImportanceSamplingResult", class_ImportanceSamplingResult_functions);
+  SWIG_Php_ce_ImportanceSamplingResult = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_ImportanceSamplingResult->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_ImportanceSamplingResult, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_ImportanceSamplingResult->create_object = SWIG_Php_create_object_ImportanceSamplingResult;
+  ImportanceSamplingResult_object_handlers = Swig_Php_base_object_handlers;
+  ImportanceSamplingResult_object_handlers.free_obj = SWIG_Php_free_obj_ImportanceSamplingResult;
+#ifdef SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult,SWIG_Php_ce_ImportanceSamplingResult);
+#endif
+
+  INIT_CLASS_ENTRY(internal_ce, "ImportanceSampling", class_ImportanceSampling_functions);
+  SWIG_Php_ce_ImportanceSampling = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_ImportanceSampling->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_ImportanceSampling, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_ImportanceSampling->create_object = SWIG_Php_create_object_ImportanceSampling;
+  ImportanceSampling_object_handlers = Swig_Php_base_object_handlers;
+  ImportanceSampling_object_handlers.free_obj = SWIG_Php_free_obj_ImportanceSampling;
+#ifdef SWIGTYPE_p_datamunge__bayes__ImportanceSampling
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSampling,SWIG_Php_ce_ImportanceSampling);
+#endif
+
 
   /* Register classes to represent non-class pointer types */
   swig_ptr_object_handlers = *zend_get_std_object_handlers();
@@ -52637,6 +64109,12 @@ SWIG_php_minit {
   SWIG_Php_ce__p_datamunge__optim__DifferentiableFunction->create_object = swig_ptr_object_new;
   zend_do_implement_interface(SWIG_Php_ce__p_datamunge__optim__DifferentiableFunction, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__DifferentiableFunction,SWIG_Php_ce__p_datamunge__optim__DifferentiableFunction);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_datamunge__image__Image", NULL);
+  SWIG_Php_ce__p_datamunge__image__Image = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_datamunge__image__Image->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_datamunge__image__Image, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__image__Image,SWIG_Php_ce__p_datamunge__image__Image);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_char", NULL);
   SWIG_Php_ce__p_unsigned_char = zend_register_internal_class(&internal_ce);
@@ -52662,6 +64140,18 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_std__size_t, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_std__size_t,SWIG_Php_ce__p_std__size_t);
 
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_std__vectorT_datamunge__plot__RGB_t", NULL);
+  SWIG_Php_ce__p_std__vectorT_datamunge__plot__RGB_t = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_std__vectorT_datamunge__plot__RGB_t->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_std__vectorT_datamunge__plot__RGB_t, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,SWIG_Php_ce__p_std__vectorT_datamunge__plot__RGB_t);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_std__vectorT_datamunge__plot__LegendEntry_t", NULL);
+  SWIG_Php_ce__p_std__vectorT_datamunge__plot__LegendEntry_t = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_std__vectorT_datamunge__plot__LegendEntry_t->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_std__vectorT_datamunge__plot__LegendEntry_t, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t,SWIG_Php_ce__p_std__vectorT_datamunge__plot__LegendEntry_t);
+
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_size_type", NULL);
   SWIG_Php_ce__p_size_type = zend_register_internal_class(&internal_ce);
   SWIG_Php_ce__p_size_type->create_object = swig_ptr_object_new;
@@ -52679,6 +64169,12 @@ SWIG_php_minit {
   SWIG_Php_ce__p_int->create_object = swig_ptr_object_new;
   zend_do_implement_interface(SWIG_Php_ce__p_int, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_int,SWIG_Php_ce__p_int);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_std__vectorT_datamunge__plot__ABLine_t", NULL);
+  SWIG_Php_ce__p_std__vectorT_datamunge__plot__ABLine_t = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_std__vectorT_datamunge__plot__ABLine_t->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_std__vectorT_datamunge__plot__ABLine_t, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t,SWIG_Php_ce__p_std__vectorT_datamunge__plot__ABLine_t);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_std__vectorT_datamunge__plot__DataSeries_t", NULL);
   SWIG_Php_ce__p_std__vectorT_datamunge__plot__DataSeries_t = zend_register_internal_class(&internal_ce);
@@ -52752,6 +64248,18 @@ SWIG_php_minit {
 
   zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Bar", sizeof("Kind_Bar") - 1, (int)(datamunge::plot::DataSeries::Kind::Bar));
 
+
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Box", sizeof("Kind_Box") - 1, (int)(datamunge::plot::DataSeries::Kind::Box));
+
+
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Polygon", sizeof("Kind_Polygon") - 1, (int)(datamunge::plot::DataSeries::Kind::Polygon));
+
+
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Text", sizeof("Kind_Text") - 1, (int)(datamunge::plot::DataSeries::Kind::Text));
+
+
+  zend_declare_class_constant_long(SWIG_Php_ce_DataSeries, "Kind_Segment", sizeof("Kind_Segment") - 1, (int)(datamunge::plot::DataSeries::Kind::Segment));
+
 SWIG_LONG_CONSTANT(TrendType_None, (int)(datamunge::stats::TrendType::None));
 
   zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "TrendType_None", sizeof("TrendType_None") - 1, (int)(datamunge::stats::TrendType::None));
@@ -52787,6 +64295,34 @@ SWIG_LONG_CONSTANT(Alternative_Less, (int)(datamunge::stats::Alternative::Less))
 SWIG_LONG_CONSTANT(Alternative_Greater, (int)(datamunge::stats::Alternative::Greater));
 
   zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "Alternative_Greater", sizeof("Alternative_Greater") - 1, (int)(datamunge::stats::Alternative::Greater));
+
+SWIG_LONG_CONSTANT(PAdjustMethod_Bonferroni, (int)(datamunge::stats::PAdjustMethod::Bonferroni));
+
+  zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "PAdjustMethod_Bonferroni", sizeof("PAdjustMethod_Bonferroni") - 1, (int)(datamunge::stats::PAdjustMethod::Bonferroni));
+
+SWIG_LONG_CONSTANT(PAdjustMethod_Holm, (int)(datamunge::stats::PAdjustMethod::Holm));
+
+  zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "PAdjustMethod_Holm", sizeof("PAdjustMethod_Holm") - 1, (int)(datamunge::stats::PAdjustMethod::Holm));
+
+SWIG_LONG_CONSTANT(PAdjustMethod_Hochberg, (int)(datamunge::stats::PAdjustMethod::Hochberg));
+
+  zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "PAdjustMethod_Hochberg", sizeof("PAdjustMethod_Hochberg") - 1, (int)(datamunge::stats::PAdjustMethod::Hochberg));
+
+SWIG_LONG_CONSTANT(PAdjustMethod_Hommel, (int)(datamunge::stats::PAdjustMethod::Hommel));
+
+  zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "PAdjustMethod_Hommel", sizeof("PAdjustMethod_Hommel") - 1, (int)(datamunge::stats::PAdjustMethod::Hommel));
+
+SWIG_LONG_CONSTANT(PAdjustMethod_BH, (int)(datamunge::stats::PAdjustMethod::BH));
+
+  zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "PAdjustMethod_BH", sizeof("PAdjustMethod_BH") - 1, (int)(datamunge::stats::PAdjustMethod::BH));
+
+SWIG_LONG_CONSTANT(PAdjustMethod_BY, (int)(datamunge::stats::PAdjustMethod::BY));
+
+  zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "PAdjustMethod_BY", sizeof("PAdjustMethod_BY") - 1, (int)(datamunge::stats::PAdjustMethod::BY));
+
+SWIG_LONG_CONSTANT(PAdjustMethod_None, (int)(datamunge::stats::PAdjustMethod::None));
+
+  zend_declare_class_constant_long(SWIG_Php_ce_datamunge, "PAdjustMethod_None", sizeof("PAdjustMethod_None") - 1, (int)(datamunge::stats::PAdjustMethod::None));
 
   /* end cinit subsection */
 

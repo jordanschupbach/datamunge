@@ -286,12 +286,12 @@ GBMClassifierPrediction GBMClassifier::predict_detail(const dstruct::DataFrame& 
     return result;
 }
 
-plot::ScatterPlot GBMClassifier::plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
+plot::RPlot GBMClassifier::plot_classification(const dstruct::DataFrame& data, const std::string& x_feature,
                                                       const std::string& y_feature) const {
     const auto  predictions = predict(data);
     const auto& response    = design_.response_name;
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -322,7 +322,7 @@ plot::ScatterPlot GBMClassifier::plot_classification(const dstruct::DataFrame& d
     return plot;
 }
 
-plot::ScatterPlot GBMClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
+plot::RPlot GBMClassifier::plot_decision_regions(const std::string& x_feature, const std::string& y_feature,
                                                         std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
         throw std::invalid_argument("GBMClassifier::plot_decision_regions: model must have exactly 2 predictors");
@@ -371,7 +371,7 @@ plot::ScatterPlot GBMClassifier::plot_decision_regions(const std::string& x_feat
         grid_y[c].push_back(predictor_names_[0] == y_feature ? col0[i] : col1[i]);
     }
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         auto color = kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))];
         color.r    = static_cast<std::uint8_t>(std::min(255, color.r + (255 - color.r) * 3 / 4));
@@ -384,11 +384,11 @@ plot::ScatterPlot GBMClassifier::plot_decision_regions(const std::string& x_feat
     return plot;
 }
 
-plot::ScatterPlot GBMClassifier::plot_training_deviance() const {
+plot::RPlot GBMClassifier::plot_training_deviance() const {
     std::vector<double> iteration(training_deviance_.size());
     for (std::size_t i = 0; i < training_deviance_.size(); ++i) iteration[i] = static_cast<double>(i + 1);
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     plot.line(iteration, training_deviance_, "training deviance");
     plot.title("Training Deviance").x_label("Boosting iteration").y_label("Multinomial deviance");
     return plot;

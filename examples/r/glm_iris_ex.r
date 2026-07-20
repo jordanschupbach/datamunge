@@ -1,6 +1,6 @@
 # See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 # Note: simplified relative to the C++ example -- this skips manually building the
-# predicted-probability sigmoid-curve ScatterPlot (a long sequence of chained Plot/ScatterPlot
+# predicted-probability sigmoid-curve RPlot (a long sequence of chained Plot/RPlot
 # calls that doesn't translate cleanly to R's non-chaining flat call style) and instead just
 # saves the standard GLM diagnostic plots, same as lm_ex.r does for LM.
 library(datamunger)

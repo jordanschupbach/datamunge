@@ -325,13 +325,13 @@ NaiveBayesClassifierPrediction NaiveBayesClassifier::predict_detail(const dstruc
     return result;
 }
 
-plot::ScatterPlot NaiveBayesClassifier::plot_classification(const dstruct::DataFrame& data,
+plot::RPlot NaiveBayesClassifier::plot_classification(const dstruct::DataFrame& data,
                                                              const std::string& x_feature,
                                                              const std::string& y_feature) const {
     const auto  predictions = predict(data);
     const auto& response    = design_.response_name;
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -362,7 +362,7 @@ plot::ScatterPlot NaiveBayesClassifier::plot_classification(const dstruct::DataF
     return plot;
 }
 
-plot::ScatterPlot NaiveBayesClassifier::plot_decision_regions(const std::string& x_feature,
+plot::RPlot NaiveBayesClassifier::plot_decision_regions(const std::string& x_feature,
                                                                const std::string& y_feature,
                                                                std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
@@ -413,7 +413,7 @@ plot::ScatterPlot NaiveBayesClassifier::plot_decision_regions(const std::string&
         grid_y[c].push_back(col_y[i]);
     }
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         auto color = kSeriesColors[c % (sizeof(kSeriesColors) / sizeof(kSeriesColors[0]))];
         color.r    = static_cast<std::uint8_t>(std::min(255, color.r + (255 - color.r) * 3 / 4));

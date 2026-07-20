@@ -322,13 +322,13 @@ DecisionTreeClassifierPrediction DecisionTreeClassifier::predict_detail(const ds
     return result;
 }
 
-plot::ScatterPlot DecisionTreeClassifier::plot_classification(const dstruct::DataFrame& data,
+plot::RPlot DecisionTreeClassifier::plot_classification(const dstruct::DataFrame& data,
                                                                const std::string& x_feature,
                                                                const std::string& y_feature) const {
     const auto predictions = predict(data);
     const auto& response   = design_.response_name;
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     for (std::size_t c = 0; c < classes_.size(); ++c) {
         std::vector<double> xs, ys;
         for (std::size_t i = 0; i < data.nrows(); ++i) {
@@ -359,7 +359,7 @@ plot::ScatterPlot DecisionTreeClassifier::plot_classification(const dstruct::Dat
     return plot;
 }
 
-plot::ScatterPlot DecisionTreeClassifier::plot_decision_regions(const std::string& x_feature,
+plot::RPlot DecisionTreeClassifier::plot_decision_regions(const std::string& x_feature,
                                                                  const std::string& y_feature,
                                                                  std::size_t grid_resolution) const {
     if (predictor_names_.size() != 2)
@@ -384,7 +384,7 @@ plot::ScatterPlot DecisionTreeClassifier::plot_decision_regions(const std::strin
     y_min -= y_pad;
     y_max += y_pad;
 
-    auto plot = plot::ScatterPlot::create();
+    auto plot = plot::RPlot::create();
     std::vector<std::vector<double>> grid_x(classes_.size()), grid_y(classes_.size());
     for (std::size_t gx = 0; gx < grid_resolution; ++gx) {
         for (std::size_t gy = 0; gy < grid_resolution; ++gy) {
