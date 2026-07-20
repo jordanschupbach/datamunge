@@ -607,6 +607,19 @@ stats::GLMMFamily parse_glmm_family(const std::string& family) {
   throw std::invalid_argument("GLMM: unknown family '" + family + "' (expected binomial or poisson)");
 }
 
+stats::INLAMixedModelFamily parse_inla_family(const std::string& family) {
+  if (family == "gaussian") return stats::INLAMixedModelFamily::Gaussian;
+  if (family == "binomial") return stats::INLAMixedModelFamily::Binomial;
+  if (family == "poisson") return stats::INLAMixedModelFamily::Poisson;
+  throw std::invalid_argument("INLAMixedModel: unknown family '" + family + "' (expected gaussian, binomial, or poisson)");
+}
+
+bayes::INLAIntegrationStrategy parse_inla_strategy(const std::string& strategy) {
+  if (strategy == "grid") return bayes::INLAIntegrationStrategy::Grid;
+  if (strategy == "eb") return bayes::INLAIntegrationStrategy::EmpiricalBayes;
+  throw std::invalid_argument("INLAMixedModel: unknown strategy '" + strategy + "' (expected grid or eb)");
+}
+
 linalg::TensorDType parse_tensor_dtype(const std::string& dtype) {
   if (dtype == "float64") return linalg::TensorDType::Float64;
   if (dtype == "bool") return linalg::TensorDType::Bool;
@@ -2008,6 +2021,22 @@ Tensor* Tensor::exp() const { return new Tensor(tensor_.exp()); }
 
 Tensor* Tensor::log() const { return new Tensor(tensor_.log()); }
 
+Tensor* Tensor::from_image(const datamunge::image::Image& img) { return new Tensor(cv::image_to_tensor(img)); }
+
+Tensor* Tensor::conv2d(const Tensor& input, const Tensor& kernel, const Tensor& bias, int stride, int padding) {
+  return new Tensor(cv::conv2d(input.tensor_, kernel.tensor_, bias.tensor_, stride, padding));
+}
+
+Tensor* Tensor::max_pool2d(int pool_size, int stride) const { return new Tensor(cv::max_pool2d(tensor_, pool_size, stride)); }
+
+Tensor* Tensor::avg_pool2d(int pool_size, int stride) const { return new Tensor(cv::avg_pool2d(tensor_, pool_size, stride)); }
+
+Tensor* Tensor::relu() const { return new Tensor(cv::relu(tensor_)); }
+
+Tensor* Tensor::sigmoid() const { return new Tensor(cv::sigmoid(tensor_)); }
+
+Tensor* Tensor::softmax() const { return new Tensor(cv::softmax(tensor_)); }
+
 Tensor* Tensor::apply(Callback* callback) const {
   if (!callback) throw std::invalid_argument("Tensor::apply: callback must not be null");
   return new Tensor(tensor_.apply([callback](const double x) { return callback->call(x); }));
@@ -2290,5 +2319,68 @@ std::string GLMM::summary() const { return glmm_.summary(); }
 void GLMM::print_summary() const { glmm_.print_summary(); }
 
 std::vector<double> GLMM::predict(const DataFrame& newdata) const { return glmm_.predict(newdata.frame_); }
+
+INLAMixedModel::INLAMixedModel(const DataFrame& data, const std::string& formula, const std::string& family,
+          const std::string& strategy, const double fixed_effect_prior_sd, const std::size_t grid_points_per_dim,
+          const double grid_span, const std::size_t mode_population_size, const std::size_t mode_max_generations,
+          const std::size_t seed)
+    : model_(data.frame_, formula, [&] {
+        stats::INLAMixedModelOptions options;
+        options.family                 = parse_inla_family(family);
+        options.strategy               = parse_inla_strategy(strategy);
+        options.fixed_effect_prior_sd  = fixed_effect_prior_sd;
+        options.grid_points_per_dim    = grid_points_per_dim;
+        options.grid_span              = grid_span;
+        options.mode_population_size   = mode_population_size;
+        options.mode_max_generations   = mode_max_generations;
+        options.seed                   = seed;
+        return options;
+      }()) {}
+
+std::string INLAMixedModel::formula_text() const { return model_.formula_text(); }
+
+std::string INLAMixedModel::family() const { return model_.family(); }
+
+std::string INLAMixedModel::group_variable() const { return model_.group_variable(); }
+
+std::vector<std::string> INLAMixedModel::random_effect_names() const { return model_.random_effect_names(); }
+
+std::size_t INLAMixedModel::observations() const { return model_.observations(); }
+
+std::size_t INLAMixedModel::num_groups() const { return model_.num_groups(); }
+
+std::vector<double> INLAMixedModel::fixed_effects_mean() const { return model_.fixed_effects_mean(); }
+
+std::vector<double> INLAMixedModel::fixed_effects_sd() const { return model_.fixed_effects_sd(); }
+
+std::vector<std::string> INLAMixedModel::coefficient_names() const { return model_.coefficient_names(); }
+
+std::vector<double> INLAMixedModel::random_effect_std_devs() const { return model_.random_effect_std_devs(); }
+
+double INLAMixedModel::residual_std_dev() const { return model_.residual_std_dev(); }
+
+std::vector<std::string> INLAMixedModel::group_labels() const { return model_.group_labels(); }
+
+std::vector<double> INLAMixedModel::random_effects_mean_for_group(const std::size_t group_index) const {
+  const auto& effects = model_.random_effects_mean();
+  if (group_index >= effects.size())
+    throw std::invalid_argument("INLAMixedModel::random_effects_mean_for_group: group_index out of range");
+  return effects[group_index];
+}
+
+std::vector<double> INLAMixedModel::random_effects_sd_for_group(const std::size_t group_index) const {
+  const auto& effects = model_.random_effects_sd();
+  if (group_index >= effects.size())
+    throw std::invalid_argument("INLAMixedModel::random_effects_sd_for_group: group_index out of range");
+  return effects[group_index];
+}
+
+double INLAMixedModel::log_marginal_likelihood() const { return model_.log_marginal_likelihood(); }
+
+std::string INLAMixedModel::summary() const { return model_.summary(); }
+
+void INLAMixedModel::print_summary() const { model_.print_summary(); }
+
+std::vector<double> INLAMixedModel::predict(const DataFrame& newdata) const { return model_.predict(newdata.frame_); }
 
 } // namespace datamunge

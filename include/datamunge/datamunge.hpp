@@ -1,6 +1,10 @@
 #include <datamunge/autodiff/autodiff.hpp>
 #include <datamunge/bayes/bayes.hpp>
+#include <datamunge/cv/cv.hpp>
 #include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/filter/filter.hpp>
+#include <datamunge/geometry/geometry.hpp>
+#include <datamunge/image/imaging.hpp>
 #include <datamunge/linalg/tensor.hpp>
 #include <datamunge/optim/optim.hpp>
 #include <datamunge/plot/plot.hpp>
@@ -153,6 +157,7 @@ class DataFrame {
   friend class GLM;
   friend class LMM;
   friend class GLMM;
+  friend class INLAMixedModel;
 
   explicit DataFrame(dstruct::DataFrame frame);
 
@@ -321,6 +326,55 @@ class GLMM {
 
  private:
   stats::GLMM glmm_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::stats::INLAMixedModel — a mixed model (same
+///        formula grammar as GLMM/LMM) fit by Integrated Nested Laplace Approximation instead
+///        of penalized quasi-likelihood/REML: a genuinely Bayesian alternative returning real
+///        posterior means/sds (including for the variance components) rather than point
+///        estimates + asymptotic standard errors. See datamunge::bayes::INLA (C++-only, not
+///        exposed to bindings -- same reasoning as AutodiffModel) for the underlying algorithm.
+class INLAMixedModel {
+ public:
+  /// @param family One of "gaussian" (identity link), "binomial" (logit link), or "poisson" (log link).
+  /// @param strategy One of "grid" (integrate over hyperparameter uncertainty) or "eb"
+  ///                 (empirical Bayes: fix hyperparameters at their posterior mode).
+  INLAMixedModel(const DataFrame& data, const std::string& formula, const std::string& family = "gaussian",
+      const std::string& strategy = "grid", double fixed_effect_prior_sd = 1000.0, std::size_t grid_points_per_dim = 7,
+      double grid_span = 4.0, std::size_t mode_population_size = 40, std::size_t mode_max_generations = 200,
+      std::size_t seed = 42);
+
+  [[nodiscard]] std::string formula_text() const;
+  [[nodiscard]] std::string family() const;
+  [[nodiscard]] std::string group_variable() const;
+  [[nodiscard]] std::vector<std::string> random_effect_names() const;
+  [[nodiscard]] std::size_t  observations() const;
+  [[nodiscard]] std::size_t  num_groups() const;
+
+  [[nodiscard]] std::vector<double>      fixed_effects_mean() const;
+  [[nodiscard]] std::vector<double>      fixed_effects_sd() const;
+  [[nodiscard]] std::vector<std::string> coefficient_names() const;
+
+  [[nodiscard]] std::vector<double> random_effect_std_devs() const;
+  /// @brief Gaussian family only; throws for binomial/poisson (dispersion fixed at 1).
+  [[nodiscard]] double residual_std_dev() const;
+
+  [[nodiscard]] std::vector<std::string> group_labels() const;
+  /// @brief The posterior-mean/sd BLUP-like random-effect vector for the group at
+  ///        @p group_index (see group_labels()), in random_effect_names() order.
+  [[nodiscard]] std::vector<double> random_effects_mean_for_group(std::size_t group_index) const;
+  [[nodiscard]] std::vector<double> random_effects_sd_for_group(std::size_t group_index) const;
+
+  /// @brief log p(y), approximated by the same INLA machinery used to fit the model.
+  [[nodiscard]] double log_marginal_likelihood() const;
+
+  [[nodiscard]] std::string summary() const;
+  void                      print_summary() const;
+
+  [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
+
+ private:
+  stats::INLAMixedModel model_;
 };
 
 /// @brief SWIG-friendly facade for datamunge::stats::LDA — R-`MASS::lda()`-style linear discriminant analysis.
@@ -1251,6 +1305,21 @@ class Tensor {
   [[nodiscard]] Tensor* matmul(const Tensor& other) const;
   [[nodiscard]] double  dot(const Tensor& other) const;
   [[nodiscard]] Tensor* outer(const Tensor& other) const;
+
+  /// @brief The Tensor's own image_to_tensor() bridge: @p img (already directly SWIG-bindable,
+  ///        no facade needed) as a [channels, height, width] tensor normalized to [0, 1].
+  [[nodiscard]] static Tensor* from_image(const datamunge::image::Image& img);
+
+  /// @brief Basic (inference-only) neural-network building blocks -- see
+  ///        datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying
+  ///        implementation and full documentation of shapes/semantics.
+  [[nodiscard]] static Tensor* conv2d(const Tensor& input, const Tensor& kernel, const Tensor& bias, int stride = 1,
+                                       int padding = 0);
+  [[nodiscard]] Tensor* max_pool2d(int pool_size, int stride = -1) const;
+  [[nodiscard]] Tensor* avg_pool2d(int pool_size, int stride = -1) const;
+  [[nodiscard]] Tensor* relu() const;
+  [[nodiscard]] Tensor* sigmoid() const;
+  [[nodiscard]] Tensor* softmax() const;
 
   [[nodiscard]] std::string to_string(std::size_t max_elements = 100) const;
 

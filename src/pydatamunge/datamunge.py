@@ -1310,6 +1310,92 @@ class GLMM(object):
 
 # Register GLMM in _datamunge:
 _datamunge.GLMM_swigregister(GLMM)
+class INLAMixedModel(object):
+    r"""
+    SWIG-friendly facade for datamunge::stats::INLAMixedModel — a mixed model (same
+           formula grammar as GLMM/LMM) fit by Integrated Nested Laplace Approximation instead
+           of penalized quasi-likelihood/REML: a genuinely Bayesian alternative returning real
+           posterior means/sds (including for the variance components) rather than point
+           estimates + asymptotic standard errors. See datamunge::bayes::INLA (C++-only, not
+           exposed to bindings -- same reasoning as AutodiffModel) for the underlying algorithm.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        r"""
+        :type family: string, optional
+        :param family: One of "gaussian" (identity link), "binomial" (logit link), or "poisson" (log link).
+        :type strategy: string, optional
+        :param strategy: One of "grid" (integrate over hyperparameter uncertainty) or "eb"
+                            (empirical Bayes: fix hyperparameters at their posterior mode).
+        """
+        _datamunge.INLAMixedModel_swiginit(self, _datamunge.new_INLAMixedModel(*args))
+
+    def formula_text(self):
+        return _datamunge.INLAMixedModel_formula_text(self)
+
+    def family(self):
+        return _datamunge.INLAMixedModel_family(self)
+
+    def group_variable(self):
+        return _datamunge.INLAMixedModel_group_variable(self)
+
+    def random_effect_names(self):
+        return _datamunge.INLAMixedModel_random_effect_names(self)
+
+    def observations(self):
+        return _datamunge.INLAMixedModel_observations(self)
+
+    def num_groups(self):
+        return _datamunge.INLAMixedModel_num_groups(self)
+
+    def fixed_effects_mean(self):
+        return _datamunge.INLAMixedModel_fixed_effects_mean(self)
+
+    def fixed_effects_sd(self):
+        return _datamunge.INLAMixedModel_fixed_effects_sd(self)
+
+    def coefficient_names(self):
+        return _datamunge.INLAMixedModel_coefficient_names(self)
+
+    def random_effect_std_devs(self):
+        return _datamunge.INLAMixedModel_random_effect_std_devs(self)
+
+    def residual_std_dev(self):
+        r"""Gaussian family only; throws for binomial/poisson (dispersion fixed at 1)."""
+        return _datamunge.INLAMixedModel_residual_std_dev(self)
+
+    def group_labels(self):
+        return _datamunge.INLAMixedModel_group_labels(self)
+
+    def random_effects_mean_for_group(self, group_index):
+        r"""
+        The posterior-mean/sd BLUP-like random-effect vector for the group at
+               ``group_index`` (see group_labels()), in random_effect_names() order.
+        """
+        return _datamunge.INLAMixedModel_random_effects_mean_for_group(self, group_index)
+
+    def random_effects_sd_for_group(self, group_index):
+        return _datamunge.INLAMixedModel_random_effects_sd_for_group(self, group_index)
+
+    def log_marginal_likelihood(self):
+        r"""log p(y), approximated by the same INLA machinery used to fit the model."""
+        return _datamunge.INLAMixedModel_log_marginal_likelihood(self)
+
+    def summary(self):
+        return _datamunge.INLAMixedModel_summary(self)
+
+    def print_summary(self):
+        return _datamunge.INLAMixedModel_print_summary(self)
+
+    def predict(self, newdata):
+        return _datamunge.INLAMixedModel_predict(self, newdata)
+    __swig_destroy__ = _datamunge.delete_INLAMixedModel
+
+# Register INLAMixedModel in _datamunge:
+_datamunge.INLAMixedModel_swigregister(INLAMixedModel)
 class LDA(object):
     r"""SWIG-friendly facade for datamunge::stats::LDA — R-`MASS::lda()`-style linear discriminant analysis."""
 
@@ -3141,6 +3227,38 @@ class Tensor(object):
     def outer(self, other):
         return _datamunge.Tensor_outer(self, other)
 
+    @staticmethod
+    def from_image(img):
+        r"""
+        The Tensor's own image_to_tensor() bridge: ``img`` (already directly SWIG-bindable,
+               no facade needed) as a [channels, height, width] tensor normalized to [0, 1].
+        """
+        return _datamunge.Tensor_from_image(img)
+
+    @staticmethod
+    def conv2d(input, kernel, bias, stride=1, padding=0):
+        r"""
+        Basic (inference-only) neural-network building blocks -- see
+               datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying
+               implementation and full documentation of shapes/semantics.
+        """
+        return _datamunge.Tensor_conv2d(input, kernel, bias, stride, padding)
+
+    def max_pool2d(self, pool_size, stride=-1):
+        return _datamunge.Tensor_max_pool2d(self, pool_size, stride)
+
+    def avg_pool2d(self, pool_size, stride=-1):
+        return _datamunge.Tensor_avg_pool2d(self, pool_size, stride)
+
+    def relu(self):
+        return _datamunge.Tensor_relu(self)
+
+    def sigmoid(self):
+        return _datamunge.Tensor_sigmoid(self)
+
+    def softmax(self):
+        return _datamunge.Tensor_softmax(self)
+
     def to_string(self, max_elements=100):
         return _datamunge.Tensor_to_string(self, max_elements)
     __swig_destroy__ = _datamunge.delete_Tensor
@@ -4688,4 +4806,3804 @@ class NUTS(object):
 
 # Register NUTS in _datamunge:
 _datamunge.NUTS_swigregister(NUTS)
+class RWMOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    num_samples = property(_datamunge.RWMOptions_num_samples_get, _datamunge.RWMOptions_num_samples_set)
+    num_warmup = property(_datamunge.RWMOptions_num_warmup_get, _datamunge.RWMOptions_num_warmup_set)
+    initial_step_size = property(_datamunge.RWMOptions_initial_step_size_get, _datamunge.RWMOptions_initial_step_size_set, doc=r"""
+    Initial isotropic proposal std dev, adapted via dual averaging during warmup
+           (the same scheme HMC/NUTS use for their step size).
+    """)
+    target_accept_rate = property(_datamunge.RWMOptions_target_accept_rate_get, _datamunge.RWMOptions_target_accept_rate_set, doc=r"""
+    Target Metropolis acceptance rate for warmup adaptation -- 0.234 is the
+           asymptotically optimal rate for a multivariate random-walk proposal in high
+           dimensions (Roberts, Gelman & Gilks 1997), a different theoretical optimum than
+           HMC/NUTS's 0.8 (trajectory-based proposals) or GibbsSampler's 0.44 (a scalar
+           per-coordinate proposal).
+    """)
+    seed = property(_datamunge.RWMOptions_seed_get, _datamunge.RWMOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.RWMOptions_swiginit(self, _datamunge.new_RWMOptions())
+    __swig_destroy__ = _datamunge.delete_RWMOptions
+
+# Register RWMOptions in _datamunge:
+_datamunge.RWMOptions_swigregister(RWMOptions)
+class RWMResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    samples = property(_datamunge.RWMResult_samples_get, _datamunge.RWMResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
+    accept_rate = property(_datamunge.RWMResult_accept_rate_get, _datamunge.RWMResult_accept_rate_set, doc=r"""
+    Mean Metropolis acceptance statistic across all iterations (the same quantity
+           the step-size adaptation targets).
+    """)
+    final_step_size = property(_datamunge.RWMResult_final_step_size_get, _datamunge.RWMResult_final_step_size_set)
+
+    def __init__(self):
+        _datamunge.RWMResult_swiginit(self, _datamunge.new_RWMResult())
+    __swig_destroy__ = _datamunge.delete_RWMResult
+
+# Register RWMResult in _datamunge:
+_datamunge.RWMResult_swigregister(RWMResult)
+class RandomWalkMetropolis(object):
+    r"""
+    Random-walk Metropolis-Hastings: the classic gradient-free MCMC baseline, proposing
+           x' = x + step_size * N(0, I) and accepting with probability
+           min(1, exp(log_posterior(x') - log_posterior(x))). Complements HMC/NUTS (which need
+           a gradient via optim::DifferentiableFunction) for targets where only a log-density
+           evaluation is available -- a black-box model, a discontinuous/non-differentiable
+           posterior, or a director-subclassed optim::ArbitraryFunction in a language without
+           access to this library's autodiff.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.RandomWalkMetropolis_swiginit(self, _datamunge.new_RandomWalkMetropolis(*args))
+
+    def sample(self, log_posterior, initial_params):
+        return _datamunge.RandomWalkMetropolis_sample(self, log_posterior, initial_params)
+    __swig_destroy__ = _datamunge.delete_RandomWalkMetropolis
+
+# Register RandomWalkMetropolis in _datamunge:
+_datamunge.RandomWalkMetropolis_swigregister(RandomWalkMetropolis)
+class GibbsOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    num_samples = property(_datamunge.GibbsOptions_num_samples_get, _datamunge.GibbsOptions_num_samples_set)
+    num_warmup = property(_datamunge.GibbsOptions_num_warmup_get, _datamunge.GibbsOptions_num_warmup_set)
+    initial_step_sizes = property(_datamunge.GibbsOptions_initial_step_sizes_get, _datamunge.GibbsOptions_initial_step_sizes_set, doc=r"""
+    Initial per-coordinate proposal std dev. A single entry is broadcast to every
+           coordinate; otherwise its length must match the parameter vector, and each
+           coordinate is adapted independently via dual averaging during warmup.
+    """)
+    target_accept_rate = property(_datamunge.GibbsOptions_target_accept_rate_get, _datamunge.GibbsOptions_target_accept_rate_set, doc=r"""
+    Target per-coordinate acceptance rate -- 0.44 is the asymptotically optimal
+           rate for a SCALAR random-walk proposal (Roberts & Rosenthal 2001), unlike
+           RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
+    """)
+    seed = property(_datamunge.GibbsOptions_seed_get, _datamunge.GibbsOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.GibbsOptions_swiginit(self, _datamunge.new_GibbsOptions())
+    __swig_destroy__ = _datamunge.delete_GibbsOptions
+
+# Register GibbsOptions in _datamunge:
+_datamunge.GibbsOptions_swigregister(GibbsOptions)
+class GibbsResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    samples = property(_datamunge.GibbsResult_samples_get, _datamunge.GibbsResult_samples_set, doc=r"""Post-warmup draws, one vector<double> per sample.""")
+    accept_rates = property(_datamunge.GibbsResult_accept_rates_get, _datamunge.GibbsResult_accept_rates_set, doc=r"""Mean acceptance rate per coordinate (across all iterations), in parameter order.""")
+    final_step_sizes = property(_datamunge.GibbsResult_final_step_sizes_get, _datamunge.GibbsResult_final_step_sizes_set)
+
+    def __init__(self):
+        _datamunge.GibbsResult_swiginit(self, _datamunge.new_GibbsResult())
+    __swig_destroy__ = _datamunge.delete_GibbsResult
+
+# Register GibbsResult in _datamunge:
+_datamunge.GibbsResult_swigregister(GibbsResult)
+class GibbsSampler(object):
+    r"""
+    Metropolis-within-Gibbs: updates one coordinate at a time, each via a scalar
+           random-walk Metropolis step evaluated against the SAME joint log-density with every
+           other coordinate held fixed -- mathematically equivalent to a Metropolis step
+           targeting the exact full conditional p(x_i | x_-i), since the joint-density ratio
+           with everything else held fixed IS the full-conditional-density ratio. This is the
+           standard fallback used whenever a full conditional isn't conjugate/directly
+           sampleable (what BUGS/JAGS call "Metropolis-within-Gibbs"), not exact Gibbs sampling
+           via closed-form conditional samplers -- those are necessarily model-specific (they
+           need to know each conditional's actual distributional family) and aren't something
+           a generic engine driven only by a joint log-density can provide. Updating one
+           coordinate at a time (rather than proposing the whole vector jointly, as
+           RandomWalkMetropolis does) can mix substantially better when parameters live on very
+           different scales or are only weakly correlated.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.GibbsSampler_swiginit(self, _datamunge.new_GibbsSampler(*args))
+
+    def sample(self, log_posterior, initial_params):
+        return _datamunge.GibbsSampler_sample(self, log_posterior, initial_params)
+    __swig_destroy__ = _datamunge.delete_GibbsSampler
+
+# Register GibbsSampler in _datamunge:
+_datamunge.GibbsSampler_swigregister(GibbsSampler)
+class ImportanceSamplingOptions(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    num_samples = property(_datamunge.ImportanceSamplingOptions_num_samples_get, _datamunge.ImportanceSamplingOptions_num_samples_set)
+    seed = property(_datamunge.ImportanceSamplingOptions_seed_get, _datamunge.ImportanceSamplingOptions_seed_set)
+
+    def __init__(self):
+        _datamunge.ImportanceSamplingOptions_swiginit(self, _datamunge.new_ImportanceSamplingOptions())
+    __swig_destroy__ = _datamunge.delete_ImportanceSamplingOptions
+
+# Register ImportanceSamplingOptions in _datamunge:
+_datamunge.ImportanceSamplingOptions_swigregister(ImportanceSamplingOptions)
+class ImportanceSamplingResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    samples = property(_datamunge.ImportanceSamplingResult_samples_get, _datamunge.ImportanceSamplingResult_samples_set, doc=r"""Draws from the N(proposal_mean, proposal_covariance) proposal (not the target).""")
+    normalized_weights = property(_datamunge.ImportanceSamplingResult_normalized_weights_get, _datamunge.ImportanceSamplingResult_normalized_weights_set, doc=r"""Self-normalized importance weights (sum to 1), in samples order.""")
+    effective_sample_size = property(_datamunge.ImportanceSamplingResult_effective_sample_size_get, _datamunge.ImportanceSamplingResult_effective_sample_size_set, doc=r"""
+    1 / sum(normalized_weight_i^2) -- how many "effective" independent draws the
+           weighted sample is worth. Low relative to num_samples signals a poor proposal
+           (too narrow, wrong location, or lighter-tailed than the target).
+    """)
+    log_evidence = property(_datamunge.ImportanceSamplingResult_log_evidence_get, _datamunge.ImportanceSamplingResult_log_evidence_set, doc=r"""
+    log-mean-exp(log_target(x_i) - log_proposal(x_i)) -- the standard importance-
+           sampling estimator of log p(y) (the target's normalizing constant), directly
+           comparable to e.g. INLAMixedModel::log_marginal_likelihood().
+    """)
+
+    def __init__(self):
+        _datamunge.ImportanceSamplingResult_swiginit(self, _datamunge.new_ImportanceSamplingResult())
+    __swig_destroy__ = _datamunge.delete_ImportanceSamplingResult
+
+# Register ImportanceSamplingResult in _datamunge:
+_datamunge.ImportanceSamplingResult_swigregister(ImportanceSamplingResult)
+class ImportanceSampling(object):
+    r"""
+    Importance sampling against a multivariate Gaussian proposal N(mean, covariance) --
+           a natural choice when a Laplace approximation is available and reasonably close to
+           the target's shape (e.g. bayes::MAP's mode paired with a numerically estimated
+           Hessian there). Produces a weighted i.i.d. sample in one shot rather than a Markov
+           chain -- no warmup, nothing to check for mixing -- but accuracy depends entirely on
+           how well the Gaussian proposal covers the target's mass; effective_sample_size is
+           the diagnostic to check before trusting the result.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.ImportanceSampling_swiginit(self, _datamunge.new_ImportanceSampling(*args))
+
+    def sample(self, log_target, proposal_mean, proposal_covariance):
+        r"""
+        ``log_target`` need only be evaluable (optim::ArbitraryFunction), not
+               differentiable. ``proposal_covariance`` (a plain d x d nested vector, not
+               linalg::DenseMatrix -- matrices never cross the SWIG boundary as DenseMatrix
+               anywhere in this library, only as nested vectors) must be symmetric positive
+               definite.
+        """
+        return _datamunge.ImportanceSampling_sample(self, log_target, proposal_mean, proposal_covariance)
+    __swig_destroy__ = _datamunge.delete_ImportanceSampling
+
+# Register ImportanceSampling in _datamunge:
+_datamunge.ImportanceSampling_swigregister(ImportanceSampling)
+class Point2D(object):
+    r"""A point (or free vector) in the plane."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    x = property(_datamunge.Point2D_x_get, _datamunge.Point2D_x_set)
+    y = property(_datamunge.Point2D_y_get, _datamunge.Point2D_y_set)
+
+    def __eq__(self, other):
+        return _datamunge.Point2D___eq__(self, other)
+
+    def __ne__(self, other):
+        return _datamunge.Point2D___ne__(self, other)
+
+    def __init__(self):
+        _datamunge.Point2D_swiginit(self, _datamunge.new_Point2D())
+    __swig_destroy__ = _datamunge.delete_Point2D
+
+# Register Point2D in _datamunge:
+_datamunge.Point2D_swigregister(Point2D)
+
+def squared_distance(a, b):
+    return _datamunge.squared_distance(a, b)
+
+def distance(a, b):
+    return _datamunge.distance(a, b)
+
+def cross(a, b, c):
+    r"""
+    The z-component of (b - a) x (c - a): positive when a->b->c turns counterclockwise,
+           negative when clockwise, zero when the three points are collinear. The basic
+           orientation primitive every other algorithm in this module (convex hull, segment
+           intersection, point-in-polygon) is built from.
+    """
+    return _datamunge.cross(a, b, c)
+class Point2DVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.Point2DVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.Point2DVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.Point2DVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.Point2DVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.Point2DVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.Point2DVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.Point2DVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.Point2DVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.Point2DVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.Point2DVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.Point2DVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.Point2DVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.Point2DVector_empty(self)
+
+    def size(self):
+        return _datamunge.Point2DVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.Point2DVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.Point2DVector_begin(self)
+
+    def end(self):
+        return _datamunge.Point2DVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.Point2DVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.Point2DVector_rend(self)
+
+    def clear(self):
+        return _datamunge.Point2DVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.Point2DVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.Point2DVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.Point2DVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.Point2DVector_swiginit(self, _datamunge.new_Point2DVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.Point2DVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.Point2DVector_front(self)
+
+    def back(self):
+        return _datamunge.Point2DVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.Point2DVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.Point2DVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.Point2DVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.Point2DVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.Point2DVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_Point2DVector
+
+# Register Point2DVector in _datamunge:
+_datamunge.Point2DVector_swigregister(Point2DVector)
+
+def convex_hull(points):
+    r"""
+    The 2D convex hull of ``points`` (Andrew's monotone chain, O(n log n)), returned as
+           hull vertices in counterclockwise order with no repeated first/last point. Points
+           exactly on a hull edge (collinear with two hull vertices) are excluded, matching
+           the "strict" convex hull convention. Fewer than 3 distinct input points are
+           returned as-is (there's no well-defined polygon to build).
+    """
+    return _datamunge.convex_hull(points)
+class ClosestPairResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    a = property(_datamunge.ClosestPairResult_a_get, _datamunge.ClosestPairResult_a_set)
+    b = property(_datamunge.ClosestPairResult_b_get, _datamunge.ClosestPairResult_b_set)
+    distance = property(_datamunge.ClosestPairResult_distance_get, _datamunge.ClosestPairResult_distance_set)
+
+    def __init__(self):
+        _datamunge.ClosestPairResult_swiginit(self, _datamunge.new_ClosestPairResult())
+    __swig_destroy__ = _datamunge.delete_ClosestPairResult
+
+# Register ClosestPairResult in _datamunge:
+_datamunge.ClosestPairResult_swigregister(ClosestPairResult)
+
+def closest_pair(points):
+    r"""
+    The closest pair of points by brute-force all-pairs comparison, O(n^2). The classic
+           divide-and-conquer algorithm for this problem is O(n log n); this simpler version
+           is the deliberate choice for a "basic" library component (easy to verify correct,
+           no merge-step edge cases to get subtly wrong) -- fine for the modest point counts
+           this module targets, not a competitive replacement for CGAL at scale.
+    """
+    return _datamunge.closest_pair(points)
+
+def point_in_polygon(point, vertices):
+    r"""
+    True if ``point`` lies strictly inside the simple polygon ``vertices`` (given in
+           either winding order), via the standard even-odd ray-casting rule (Franklin's
+           PNPOLY). Behavior for a point exactly on an edge is unspecified (as it is for every
+           ray-casting implementation) -- it may be reported as inside or outside depending on
+           which edge and floating-point rounding.
+    """
+    return _datamunge.point_in_polygon(point, vertices)
+
+def signed_polygon_area(vertices):
+    r"""
+    The polygon's signed area via the shoelace formula: positive for
+           counterclockwise-ordered vertices, negative for clockwise.
+    """
+    return _datamunge.signed_polygon_area(vertices)
+
+def polygon_area(vertices):
+    r"""The polygon's (unsigned) area, regardless of vertex winding order."""
+    return _datamunge.polygon_area(vertices)
+
+def polygon_centroid(vertices):
+    r"""
+    The centroid (center of mass, assuming uniform density) of the polygon's ENCLOSED
+           AREA -- not the average of its vertex coordinates, which is a different point for
+           any non-regular polygon. Throws std::invalid_argument for a degenerate
+           (zero-area, e.g. collinear or fewer-than-3-vertex) polygon, since the formula
+           divides by the signed area.
+    """
+    return _datamunge.polygon_centroid(vertices)
+
+def is_convex_polygon(vertices):
+    r"""
+    True if ``vertices`` form a convex polygon: every triple of consecutive vertices
+           turns the same way (all left turns or all right turns), with no reflex vertices.
+           Fewer than 3 vertices is never convex.
+    """
+    return _datamunge.is_convex_polygon(vertices)
+Orientation_Collinear = _datamunge.Orientation_Collinear
+Orientation_Clockwise = _datamunge.Orientation_Clockwise
+Orientation_CounterClockwise = _datamunge.Orientation_CounterClockwise
+
+def orientation(a, b, c):
+    return _datamunge.orientation(a, b, c)
+
+def on_segment(p, q, r):
+    return _datamunge.on_segment(p, q, r)
+
+def segments_intersect(p1, q1, p2, q2):
+    r"""
+    True if segments p1-q1 and p2-q2 intersect (including touching at an endpoint, or
+           overlapping collinear segments) -- the standard CLRS-style orientation-based test.
+    """
+    return _datamunge.segments_intersect(p1, q1, p2, q2)
+
+def line_intersection_point(p1, p2, p3, p4, out):
+    r"""
+    The intersection point of INFINITE lines through (p1, p2) and through (p3, p4), if
+           one exists (writes it to ``out`` and returns true) -- false for parallel or
+           (exactly) coincident lines. Unlike segments_intersect(), this treats both inputs as
+           unbounded lines, not segments.
+    """
+    return _datamunge.line_intersection_point(p1, p2, p3, p4, out)
+
+def segment_intersection_point(p1, q1, p2, q2, out):
+    r"""
+    The (single) intersection point of segments p1-q1 and p2-q2, if one exists (writes
+           it to ``out`` and returns true). Returns false whenever segments_intersect() would
+           (non-intersecting segments) AND for the collinear-overlapping case that
+           segments_intersect() reports as true -- there, infinitely many points satisfy the
+           intersection, so no single Point2D can represent it.
+    """
+    return _datamunge.segment_intersection_point(p1, q1, p2, q2, out)
+class KDTree2D(object):
+    r"""
+    A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built
+           once (via a median-splitting, alternating-axis partition) at construction --
+           doesn't support incremental insertion/removal after that.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, points):
+        _datamunge.KDTree2D_swiginit(self, _datamunge.new_KDTree2D(points))
+
+    def empty(self):
+        return _datamunge.KDTree2D_empty(self)
+
+    def size(self):
+        return _datamunge.KDTree2D_size(self)
+
+    def nearest(self, query):
+        r"""The closest point to ``query``. Throws std::logic_error if the tree is empty."""
+        return _datamunge.KDTree2D_nearest(self, query)
+
+    def k_nearest(self, query, k):
+        r"""
+        The ``k`` closest points to ``query``, nearest first. Returns fewer than ``k``
+               points if the tree itself has fewer than ``k``.
+        """
+        return _datamunge.KDTree2D_k_nearest(self, query, k)
+
+    def points_in_radius(self, query, radius):
+        r"""All points within ``radius`` (inclusive) of ``query``, in no particular order."""
+        return _datamunge.KDTree2D_points_in_radius(self, query, radius)
+    __swig_destroy__ = _datamunge.delete_KDTree2D
+
+# Register KDTree2D in _datamunge:
+_datamunge.KDTree2D_swigregister(KDTree2D)
+class TriangleVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.TriangleVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.TriangleVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.TriangleVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.TriangleVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.TriangleVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.TriangleVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.TriangleVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.TriangleVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.TriangleVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.TriangleVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.TriangleVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.TriangleVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.TriangleVector_empty(self)
+
+    def size(self):
+        return _datamunge.TriangleVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.TriangleVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.TriangleVector_begin(self)
+
+    def end(self):
+        return _datamunge.TriangleVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.TriangleVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.TriangleVector_rend(self)
+
+    def clear(self):
+        return _datamunge.TriangleVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.TriangleVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.TriangleVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.TriangleVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.TriangleVector_swiginit(self, _datamunge.new_TriangleVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.TriangleVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.TriangleVector_front(self)
+
+    def back(self):
+        return _datamunge.TriangleVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.TriangleVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.TriangleVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.TriangleVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.TriangleVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.TriangleVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_TriangleVector
+
+# Register TriangleVector in _datamunge:
+_datamunge.TriangleVector_swigregister(TriangleVector)
+class Triangle(object):
+    r"""
+    A Delaunay triangle, referenced by index into the point array passed to
+           delaunay_triangulation(). Vertices are always counterclockwise.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    a = property(_datamunge.Triangle_a_get, _datamunge.Triangle_a_set)
+    b = property(_datamunge.Triangle_b_get, _datamunge.Triangle_b_set)
+    c = property(_datamunge.Triangle_c_get, _datamunge.Triangle_c_set)
+
+    def __init__(self):
+        _datamunge.Triangle_swiginit(self, _datamunge.new_Triangle())
+    __swig_destroy__ = _datamunge.delete_Triangle
+
+# Register Triangle in _datamunge:
+_datamunge.Triangle_swigregister(Triangle)
+
+def make_ccw_triangle(a, b, c, pts):
+    return _datamunge.make_ccw_triangle(a, b, c, pts)
+
+def in_circumcircle(a, b, c, d):
+    return _datamunge.in_circumcircle(a, b, c, d)
+class CanonicalEdge(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    u = property(_datamunge.CanonicalEdge_u_get, _datamunge.CanonicalEdge_u_set)
+    v = property(_datamunge.CanonicalEdge_v_get, _datamunge.CanonicalEdge_v_set)
+
+    def __init__(self, a, b):
+        _datamunge.CanonicalEdge_swiginit(self, _datamunge.new_CanonicalEdge(a, b))
+
+    def __eq__(self, other):
+        return _datamunge.CanonicalEdge___eq__(self, other)
+    __swig_destroy__ = _datamunge.delete_CanonicalEdge
+
+# Register CanonicalEdge in _datamunge:
+_datamunge.CanonicalEdge_swigregister(CanonicalEdge)
+class CanonicalEdgeHash(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __call__(self, e):
+        return _datamunge.CanonicalEdgeHash___call__(self, e)
+
+    def __init__(self):
+        _datamunge.CanonicalEdgeHash_swiginit(self, _datamunge.new_CanonicalEdgeHash())
+    __swig_destroy__ = _datamunge.delete_CanonicalEdgeHash
+
+# Register CanonicalEdgeHash in _datamunge:
+_datamunge.CanonicalEdgeHash_swigregister(CanonicalEdgeHash)
+
+def delaunay_triangulation(points):
+    r"""
+    The Delaunay triangulation of ``points`` (Bowyer-Watson incremental algorithm,
+           O(n^2) worst case -- a deliberately simple, easy-to-verify-correct choice over the
+           faster O(n log n) sweep/divide-and-conquer algorithms, matching this module's
+           "basic" scope). Uses plain double-precision arithmetic for the in-circumcircle
+           predicate (not CGAL's exact/adaptive-precision arithmetic), so nearly-degenerate
+           inputs (many points exactly or near-exactly cocircular) may be triangulated
+           inconsistently at the boundary between two valid choices -- fine for typical inputs.
+           Returns fewer than 3 points unchanged as an empty triangle list (nothing to
+           triangulate); duplicate points are not deduplicated (the caller should do so if
+           that matters for their use case, e.g. via the same convex_hull() dedup logic).
+    """
+    return _datamunge.delaunay_triangulation(points)
+class Point2DVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.Point2DVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.Point2DVectorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.Point2DVectorVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.Point2DVectorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.Point2DVectorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.Point2DVectorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.Point2DVectorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.Point2DVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.Point2DVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.Point2DVectorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.Point2DVectorVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.Point2DVectorVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.Point2DVectorVector_empty(self)
+
+    def size(self):
+        return _datamunge.Point2DVectorVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.Point2DVectorVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.Point2DVectorVector_begin(self)
+
+    def end(self):
+        return _datamunge.Point2DVectorVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.Point2DVectorVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.Point2DVectorVector_rend(self)
+
+    def clear(self):
+        return _datamunge.Point2DVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.Point2DVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.Point2DVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.Point2DVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.Point2DVectorVector_swiginit(self, _datamunge.new_Point2DVectorVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.Point2DVectorVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.Point2DVectorVector_front(self)
+
+    def back(self):
+        return _datamunge.Point2DVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.Point2DVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.Point2DVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.Point2DVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.Point2DVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.Point2DVectorVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_Point2DVectorVector
+
+# Register Point2DVectorVector in _datamunge:
+_datamunge.Point2DVectorVector_swigregister(Point2DVectorVector)
+
+def circumcenter(a, b, c):
+    return _datamunge.circumcenter(a, b, c)
+class VoronoiDiagram(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    vertices = property(_datamunge.VoronoiDiagram_vertices_get, _datamunge.VoronoiDiagram_vertices_set, doc=r"""
+    The circumcenter of each Delaunay triangle -- the Voronoi diagram's vertices
+           (may repeat a coordinate if it's shared by multiple cells; kept as plain
+           resolved points rather than a shared, index-referenced pool for a simpler,
+           binding-friendly shape).
+    """)
+    cells = property(_datamunge.VoronoiDiagram_cells_get, _datamunge.VoronoiDiagram_cells_set, doc=r"""
+    cells[i] is points[i]'s Voronoi cell boundary, as circumcenters in angular
+           order around points[i]. For an INTERIOR point this is a closed polygon (as with
+           any polygon in this module, the closing edge back to cells[i].front() is
+           implicit). For a point on the convex hull, the true Voronoi cell is unbounded --
+           this only returns its FINITE portion (an open polyline, missing the two rays to
+           infinity), since robustly constructing those rays is out of scope here. Empty
+           for a point that ended up in no Delaunay triangle (possible for an
+           exactly-duplicated input point).
+    """)
+
+    def __init__(self):
+        _datamunge.VoronoiDiagram_swiginit(self, _datamunge.new_VoronoiDiagram())
+    __swig_destroy__ = _datamunge.delete_VoronoiDiagram
+
+# Register VoronoiDiagram in _datamunge:
+_datamunge.VoronoiDiagram_swigregister(VoronoiDiagram)
+
+def voronoi_diagram(points):
+    r"""
+    The Voronoi diagram of ``points``, computed as the dual of their Delaunay
+           triangulation (delaunay_triangulation()) -- see VoronoiDiagram's cells field for
+           the important caveat about unbounded cells at the convex hull boundary. Fewer than
+           3 points produce an empty diagram (matching delaunay_triangulation()).
+    """
+    return _datamunge.voronoi_diagram(points)
+class DTWResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    distance = property(_datamunge.DTWResult_distance_get, _datamunge.DTWResult_distance_set, doc=r"""
+    The cumulative warping cost -- sum of |a[i] - b[j]| along the optimal
+           alignment path.
+    """)
+    path_a = property(_datamunge.DTWResult_path_a_get, _datamunge.DTWResult_path_a_set, doc=r"""
+    The optimal alignment: path_a[k]/path_b[k] give the index into a/b at step k of
+           the path, from (0, 0) to (a.size()-1, b.size()-1), monotonically non-decreasing
+           in both. Two parallel int vectors rather than a vector<pair<size_t,size_t>> (or
+           even vector<size_t>) -- a deliberately binding-friendly shape reusing the
+           already-proven plain vector<int> machinery. vector<size_t> as either a struct
+           field or nested inside another template has repeatedly hit real SWIG codegen
+           conflicts in this codebase (duplicate scalar-traits definitions); plain `int`
+           sidesteps that category of bug entirely, and is more than large enough for any
+           realistic sequence length here.
+    """)
+    path_b = property(_datamunge.DTWResult_path_b_get, _datamunge.DTWResult_path_b_set)
+
+    def __init__(self):
+        _datamunge.DTWResult_swiginit(self, _datamunge.new_DTWResult())
+    __swig_destroy__ = _datamunge.delete_DTWResult
+
+# Register DTWResult in _datamunge:
+_datamunge.DTWResult_swigregister(DTWResult)
+
+def dynamic_time_warping(a, b):
+    r"""
+    Dynamic Time Warping distance between two (possibly different-length) scalar
+           sequences: the minimum-cost monotone alignment between them under absolute
+           difference as the per-step cost, found via the classic O(n*m) dynamic program. This
+           is the unrestricted (no Sakoe-Chiba band or other windowing) version -- fine for the
+           modest sequence lengths this module targets; a banded variant would be needed to
+           scale to long sequences.
+    """
+    return _datamunge.dynamic_time_warping(a, b)
+
+def discrete_frechet_distance(p, q):
+    r"""
+    The discrete Fréchet distance between two point sequences ("curves") p and q
+           (Eiter & Mannila, 1994): the minimum, over every monotone coupling between the two
+           curves, of the MAXIMUM pairwise distance along that coupling -- informally, the
+           shortest leash length needed for a person walking along p and a dog walking along q
+           (both only moving forward, never backward) to stay connected the whole way.
+           Computed via the standard O(n*m) dynamic program (bottom-up, not the naive
+           exponential recursion). Differs from DTW in exactly one respect: DTW sums
+           (cumulative cost) where Fréchet takes a max (bottleneck cost) -- Fréchet cares about
+           the worst single moment of divergence, DTW about total accumulated divergence.
+    """
+    return _datamunge.discrete_frechet_distance(p, q)
+class BoundingBox(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    min = property(_datamunge.BoundingBox_min_get, _datamunge.BoundingBox_min_set)
+    max = property(_datamunge.BoundingBox_max_get, _datamunge.BoundingBox_max_set)
+
+    def __init__(self):
+        _datamunge.BoundingBox_swiginit(self, _datamunge.new_BoundingBox())
+    __swig_destroy__ = _datamunge.delete_BoundingBox
+
+# Register BoundingBox in _datamunge:
+_datamunge.BoundingBox_swigregister(BoundingBox)
+
+def bounding_box(points):
+    r"""
+    The axis-aligned bounding box of ``points``. Throws std::invalid_argument for an
+           empty point set.
+    """
+    return _datamunge.bounding_box(points)
+class DiameterResult(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    a = property(_datamunge.DiameterResult_a_get, _datamunge.DiameterResult_a_set)
+    b = property(_datamunge.DiameterResult_b_get, _datamunge.DiameterResult_b_set)
+    distance = property(_datamunge.DiameterResult_distance_get, _datamunge.DiameterResult_distance_set)
+
+    def __init__(self):
+        _datamunge.DiameterResult_swiginit(self, _datamunge.new_DiameterResult())
+    __swig_destroy__ = _datamunge.delete_DiameterResult
+
+# Register DiameterResult in _datamunge:
+_datamunge.DiameterResult_swigregister(DiameterResult)
+
+def polygon_diameter(points):
+    r"""
+    The diameter of a point set: the farthest pair of points, by Euclidean distance.
+           The farthest pair is always a pair of convex hull vertices, so this computes the
+           hull first (convex_hull()) and then searches only among its (typically far fewer)
+           vertices -- brute-force O(h^2) over the hull rather than the classical O(h)
+           two-pointer rotating-calipers walk, the same "correct and simple over asymptotically
+           optimal" tradeoff this module already makes for closest_pair(). Throws
+           std::invalid_argument for fewer than 2 distinct points.
+    """
+    return _datamunge.polygon_diameter(points)
+class MinimumBoundingRectangle(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    corners = property(_datamunge.MinimumBoundingRectangle_corners_get, _datamunge.MinimumBoundingRectangle_corners_set, doc=r"""
+    The four corners, in order (so consecutive corners are adjacent, matching this
+           module's polygon convention elsewhere).
+    """)
+    width = property(_datamunge.MinimumBoundingRectangle_width_get, _datamunge.MinimumBoundingRectangle_width_set)
+    height = property(_datamunge.MinimumBoundingRectangle_height_get, _datamunge.MinimumBoundingRectangle_height_set)
+    area = property(_datamunge.MinimumBoundingRectangle_area_get, _datamunge.MinimumBoundingRectangle_area_set)
+
+    def __init__(self):
+        _datamunge.MinimumBoundingRectangle_swiginit(self, _datamunge.new_MinimumBoundingRectangle())
+    __swig_destroy__ = _datamunge.delete_MinimumBoundingRectangle
+
+# Register MinimumBoundingRectangle in _datamunge:
+_datamunge.MinimumBoundingRectangle_swigregister(MinimumBoundingRectangle)
+
+def minimum_bounding_rectangle(points):
+    r"""
+    The minimum-AREA bounding rectangle of a point set (not necessarily axis-aligned).
+           By a classical theorem, the optimal rectangle always has one side collinear with a
+           convex hull edge -- so this computes the hull, then for each hull edge, measures the
+           bounding rectangle aligned with that edge's direction (projecting every hull point
+           onto the edge direction and its perpendicular), keeping the smallest-area result.
+           O(h^2) (h = hull size): the classical rotating-calipers formulation does this in
+           O(h) via incrementally-advanced support points, but re-projecting from scratch for
+           every edge is far simpler to get right and, again, this module's established
+           complexity/simplicity tradeoff. Throws std::invalid_argument if the hull has fewer
+           than 3 vertices (no well-defined minimum-area rectangle for a degenerate point set).
+    """
+    return _datamunge.minimum_bounding_rectangle(points)
+class Circle(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    center = property(_datamunge.Circle_center_get, _datamunge.Circle_center_set)
+    radius = property(_datamunge.Circle_radius_get, _datamunge.Circle_radius_set)
+
+    def __init__(self):
+        _datamunge.Circle_swiginit(self, _datamunge.new_Circle())
+    __swig_destroy__ = _datamunge.delete_Circle
+
+# Register Circle in _datamunge:
+_datamunge.Circle_swigregister(Circle)
+
+def circle_from_one_point(p):
+    return _datamunge.circle_from_one_point(p)
+
+def circle_from_two_points(a, b):
+    return _datamunge.circle_from_two_points(a, b)
+
+def circle_from_three_points(a, b, c):
+    return _datamunge.circle_from_three_points(a, b, c)
+
+def circle_contains(circle, p):
+    return _datamunge.circle_contains(circle, p)
+
+def min_enclosing_circle(points):
+    r"""
+    The smallest circle enclosing every point in ``points`` (Welzl's algorithm, the
+           classical "incremental with boundary point sets" formulation: a point violating the
+           current circle must lie on the boundary of the true minimal circle, so it's fixed
+           in place and the problem re-solved for the remaining points). Points are shuffled
+           first (fixed seed, for determinism) since the algorithm's expected running time
+           depends on processing order; this implementation skips the further "move-to-front"
+           optimization real Welzl uses for guaranteed expected-linear time; O(n^3) worst case
+           here is still polynomial and far simpler to get right, matching this module's usual
+           complexity/simplicity tradeoff. Throws std::invalid_argument for an empty input.
+    """
+    return _datamunge.min_enclosing_circle(points)
+
+def point_to_line_distance(p, a, b):
+    return _datamunge.point_to_line_distance(p, a, b)
+
+def simplify_polyline(points, epsilon):
+    r"""
+    Simplifies a polyline (Douglas-Peucker): recursively keeps only the point(s)
+           farthest from the current baseline segment whenever that distance exceeds
+           ``epsilon``, discarding everything closer. Fewer than 3 points are returned
+           unchanged (nothing to simplify).
+    """
+    return _datamunge.simplify_polyline(points, epsilon)
+
+def inside_clip_edge(p, edge_a, edge_b):
+    return _datamunge.inside_clip_edge(p, edge_a, edge_b)
+
+def clip_polygon(subject, clip):
+    r"""
+    Clips ``subject`` (any simple polygon, convex or not) against ``clip`` (Sutherland-
+           Hodgman) and returns their intersection as a new polygon. ``clip`` MUST be convex
+           AND counterclockwise-ordered (exactly what convex_hull() produces) -- the algorithm
+           processes it one directed edge at a time, keeping only the subject-polygon portion
+           to the left of every edge, so a clockwise or non-convex clip polygon silently
+           produces a wrong (or empty) result rather than an error. Returns an empty polygon
+           if the two don't overlap at all.
+    """
+    return _datamunge.clip_polygon(subject, clip)
+
+def point_in_triangle(p, a, b, c):
+    return _datamunge.point_in_triangle(p, a, b, c)
+
+def triangulate_polygon(polygon):
+    r"""
+    Triangulates a SIMPLE polygon (convex or not, but not self-intersecting) by ear
+           clipping: repeatedly finds a "ear" -- a convex vertex whose neighbor-triangle
+           contains no other polygon vertex -- clips it off as one output triangle, and
+           repeats on the remaining (n-1)-vertex polygon. O(n^3) worst case (each of the O(n)
+           clipped ears requires an O(n) scan to verify, each vertex check O(1)) -- unlike
+           delaunay_triangulation() (which only sees an unordered point SET), this respects
+           the polygon's actual boundary, so it correctly handles concave (non-convex) shapes.
+           Every triangle's vertices are indices into ``polygon``. Works for any winding order
+           (detects and internally corrects clockwise input). Returns empty for fewer than 3
+           vertices; a triangle input returns itself unchanged.
+    """
+    return _datamunge.triangulate_polygon(polygon)
+class StringVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.StringVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.StringVectorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.StringVectorVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.StringVectorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.StringVectorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.StringVectorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.StringVectorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.StringVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.StringVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.StringVectorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.StringVectorVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.StringVectorVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.StringVectorVector_empty(self)
+
+    def size(self):
+        return _datamunge.StringVectorVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.StringVectorVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.StringVectorVector_begin(self)
+
+    def end(self):
+        return _datamunge.StringVectorVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.StringVectorVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.StringVectorVector_rend(self)
+
+    def clear(self):
+        return _datamunge.StringVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.StringVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.StringVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.StringVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.StringVectorVector_swiginit(self, _datamunge.new_StringVectorVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.StringVectorVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.StringVectorVector_front(self)
+
+    def back(self):
+        return _datamunge.StringVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.StringVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.StringVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.StringVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.StringVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.StringVectorVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_StringVectorVector
+
+# Register StringVectorVector in _datamunge:
+_datamunge.StringVectorVector_swigregister(StringVectorVector)
+class DirectedGraph(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.DirectedGraph_swiginit(self, _datamunge.new_DirectedGraph(*args))
+
+    def empty(self):
+        return _datamunge.DirectedGraph_empty(self)
+
+    def vertex_count(self):
+        return _datamunge.DirectedGraph_vertex_count(self)
+
+    def edge_count(self):
+        return _datamunge.DirectedGraph_edge_count(self)
+
+    def clear(self):
+        return _datamunge.DirectedGraph_clear(self)
+
+    def add_vertex(self, *args):
+        return _datamunge.DirectedGraph_add_vertex(self, *args)
+
+    def remove_vertex(self, vertex):
+        return _datamunge.DirectedGraph_remove_vertex(self, vertex)
+
+    def has_vertex(self, vertex):
+        return _datamunge.DirectedGraph_has_vertex(self, vertex)
+
+    def add_edge(self, src, dst):
+        return _datamunge.DirectedGraph_add_edge(self, src, dst)
+
+    def remove_edge(self, src, dst):
+        return _datamunge.DirectedGraph_remove_edge(self, src, dst)
+
+    def has_edge(self, src, dst):
+        return _datamunge.DirectedGraph_has_edge(self, src, dst)
+
+    def vertices(self):
+        return _datamunge.DirectedGraph_vertices(self)
+
+    def outgoing_neighbors(self, vertex):
+        return _datamunge.DirectedGraph_outgoing_neighbors(self, vertex)
+
+    def incoming_neighbors(self, vertex):
+        return _datamunge.DirectedGraph_incoming_neighbors(self, vertex)
+
+    def out_degree(self, vertex):
+        return _datamunge.DirectedGraph_out_degree(self, vertex)
+
+    def in_degree(self, vertex):
+        return _datamunge.DirectedGraph_in_degree(self, vertex)
+
+    def bfs(self, start):
+        return _datamunge.DirectedGraph_bfs(self, start)
+
+    def dfs(self, start):
+        return _datamunge.DirectedGraph_dfs(self, start)
+
+    def contains_path(self, src, dst):
+        return _datamunge.DirectedGraph_contains_path(self, src, dst)
+
+    def transpose(self):
+        return _datamunge.DirectedGraph_transpose(self)
+
+    def topological_sort(self):
+        return _datamunge.DirectedGraph_topological_sort(self)
+    __swig_destroy__ = _datamunge.delete_DirectedGraph
+
+# Register DirectedGraph in _datamunge:
+_datamunge.DirectedGraph_swigregister(DirectedGraph)
+class UndirectedGraph(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.UndirectedGraph_swiginit(self, _datamunge.new_UndirectedGraph(*args))
+
+    def empty(self):
+        return _datamunge.UndirectedGraph_empty(self)
+
+    def vertex_count(self):
+        return _datamunge.UndirectedGraph_vertex_count(self)
+
+    def edge_count(self):
+        return _datamunge.UndirectedGraph_edge_count(self)
+
+    def clear(self):
+        return _datamunge.UndirectedGraph_clear(self)
+
+    def add_vertex(self, *args):
+        return _datamunge.UndirectedGraph_add_vertex(self, *args)
+
+    def remove_vertex(self, vertex):
+        return _datamunge.UndirectedGraph_remove_vertex(self, vertex)
+
+    def has_vertex(self, vertex):
+        return _datamunge.UndirectedGraph_has_vertex(self, vertex)
+
+    def add_edge(self, a, b):
+        return _datamunge.UndirectedGraph_add_edge(self, a, b)
+
+    def remove_edge(self, a, b):
+        return _datamunge.UndirectedGraph_remove_edge(self, a, b)
+
+    def has_edge(self, a, b):
+        return _datamunge.UndirectedGraph_has_edge(self, a, b)
+
+    def vertices(self):
+        return _datamunge.UndirectedGraph_vertices(self)
+
+    def neighbors(self, vertex):
+        return _datamunge.UndirectedGraph_neighbors(self, vertex)
+
+    def degree(self, vertex):
+        return _datamunge.UndirectedGraph_degree(self, vertex)
+
+    def bfs(self, start):
+        return _datamunge.UndirectedGraph_bfs(self, start)
+
+    def dfs(self, start):
+        return _datamunge.UndirectedGraph_dfs(self, start)
+
+    def contains_path(self, src, dst):
+        return _datamunge.UndirectedGraph_contains_path(self, src, dst)
+
+    def connected_components(self):
+        r"""
+        The graph's connected components, each as a vector of vertices in BFS-visit
+               order; components themselves appear in vertices() order.
+        """
+        return _datamunge.UndirectedGraph_connected_components(self)
+
+    def has_cycle(self):
+        r"""
+        True if the graph contains a cycle (a self-loop, or two distinct paths between
+               some pair of vertices) in any component.
+        """
+        return _datamunge.UndirectedGraph_has_cycle(self)
+    __swig_destroy__ = _datamunge.delete_UndirectedGraph
+
+# Register UndirectedGraph in _datamunge:
+_datamunge.UndirectedGraph_swigregister(UndirectedGraph)
+class WeightedGraph(object):
+    r"""
+    A graph with weighted edges, usable as either directed or undirected (chosen once
+           at construction). Separate from DirectedGraph/UndirectedGraph (which are simpler,
+           unweighted, and don't carry this class's algorithmic machinery) rather than adding
+           weights to those -- keeps both simpler classes' tested behavior untouched.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.WeightedGraph_swiginit(self, _datamunge.new_WeightedGraph(*args))
+
+    def directed(self):
+        return _datamunge.WeightedGraph_directed(self)
+
+    def empty(self):
+        return _datamunge.WeightedGraph_empty(self)
+
+    def vertex_count(self):
+        return _datamunge.WeightedGraph_vertex_count(self)
+
+    def edge_count(self):
+        return _datamunge.WeightedGraph_edge_count(self)
+
+    def clear(self):
+        return _datamunge.WeightedGraph_clear(self)
+
+    def add_vertex(self, vertex):
+        return _datamunge.WeightedGraph_add_vertex(self, vertex)
+
+    def remove_vertex(self, vertex):
+        return _datamunge.WeightedGraph_remove_vertex(self, vertex)
+
+    def has_vertex(self, vertex):
+        return _datamunge.WeightedGraph_has_vertex(self, vertex)
+
+    def add_edge(self, src, dst, weight):
+        r"""
+        Replaces the weight if the edge already exists (rather than rejecting the call,
+               unlike DirectedGraph/UndirectedGraph's add_edge -- weights are the whole point
+               of this class, so re-adding with a new weight is the natural way to update one).
+        """
+        return _datamunge.WeightedGraph_add_edge(self, src, dst, weight)
+
+    def remove_edge(self, src, dst):
+        return _datamunge.WeightedGraph_remove_edge(self, src, dst)
+
+    def has_edge(self, src, dst):
+        return _datamunge.WeightedGraph_has_edge(self, src, dst)
+
+    def edge_weight(self, src, dst):
+        return _datamunge.WeightedGraph_edge_weight(self, src, dst)
+
+    def vertices(self):
+        return _datamunge.WeightedGraph_vertices(self)
+
+    def neighbors(self, vertex):
+        r"""Outgoing neighbors if directed(); all incident neighbors if !directed()."""
+        return _datamunge.WeightedGraph_neighbors(self, vertex)
+
+    def dijkstra_distances(self, source):
+        r"""
+        Same computation as dijkstra(), but returned as (vertex, distance) pairs in
+               vertices() order rather than an unordered_map -- a binding-friendly shape (plain
+               vector<pair<>>, using the same std_pair/std_vector machinery already relied on
+               elsewhere) for language bindings where std::unordered_map isn't cleanly exposed.
+        """
+        return _datamunge.WeightedGraph_dijkstra_distances(self, source)
+
+    def bellman_ford_distances(self, source):
+        r"""
+        Same computation as bellman_ford(), but returned as (vertex, distance) pairs in
+               vertices() order rather than an unordered_map -- see dijkstra_distances() for why.
+               Empty (with has_negative_cycle() separately reporting the reason) when a negative
+               cycle makes the distances themselves meaningless.
+        """
+        return _datamunge.WeightedGraph_bellman_ford_distances(self, source)
+
+    def bellman_ford_has_negative_cycle(self, source):
+        return _datamunge.WeightedGraph_bellman_ford_has_negative_cycle(self, source)
+
+    def minimum_spanning_tree(self):
+        r"""
+        Kruskal's minimum spanning tree/forest, as a new undirected WeightedGraph
+               containing every vertex and the selected edges. Throws std::logic_error if
+               directed() (MST is only defined for undirected graphs).
+        """
+        return _datamunge.WeightedGraph_minimum_spanning_tree(self)
+
+    def connected_components(self):
+        r"""
+        Connected components (ignoring weights). Throws std::logic_error if directed()
+               (use strongly_connected_components() instead).
+        """
+        return _datamunge.WeightedGraph_connected_components(self)
+
+    def strongly_connected_components(self):
+        r"""
+        Strongly connected components (Tarjan's algorithm), each as a vector of
+               vertices; components are returned in reverse-topological order (a component with
+               no edges leaving it to another component comes first). Throws std::logic_error
+               if !directed() (use connected_components() instead).
+        """
+        return _datamunge.WeightedGraph_strongly_connected_components(self)
+
+    def has_cycle(self):
+        r"""
+        True if the graph contains a cycle: a self-loop (either kind), or -- for a
+               directed graph, a directed cycle (found via 3-color DFS); for an undirected
+               graph, two distinct paths between some pair of vertices.
+        """
+        return _datamunge.WeightedGraph_has_cycle(self)
+    __swig_destroy__ = _datamunge.delete_WeightedGraph
+
+# Register WeightedGraph in _datamunge:
+_datamunge.WeightedGraph_swigregister(WeightedGraph)
+class VertexWeightPair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.VertexWeightPair_swiginit(self, _datamunge.new_VertexWeightPair(*args))
+    first = property(_datamunge.VertexWeightPair_first_get, _datamunge.VertexWeightPair_first_set)
+    second = property(_datamunge.VertexWeightPair_second_get, _datamunge.VertexWeightPair_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index): 
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _datamunge.delete_VertexWeightPair
+
+# Register VertexWeightPair in _datamunge:
+_datamunge.VertexWeightPair_swigregister(VertexWeightPair)
+class VertexWeightPairVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.VertexWeightPairVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.VertexWeightPairVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.VertexWeightPairVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.VertexWeightPairVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.VertexWeightPairVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.VertexWeightPairVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.VertexWeightPairVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.VertexWeightPairVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.VertexWeightPairVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.VertexWeightPairVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.VertexWeightPairVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.VertexWeightPairVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.VertexWeightPairVector_empty(self)
+
+    def size(self):
+        return _datamunge.VertexWeightPairVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.VertexWeightPairVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.VertexWeightPairVector_begin(self)
+
+    def end(self):
+        return _datamunge.VertexWeightPairVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.VertexWeightPairVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.VertexWeightPairVector_rend(self)
+
+    def clear(self):
+        return _datamunge.VertexWeightPairVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.VertexWeightPairVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.VertexWeightPairVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.VertexWeightPairVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.VertexWeightPairVector_swiginit(self, _datamunge.new_VertexWeightPairVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.VertexWeightPairVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.VertexWeightPairVector_front(self)
+
+    def back(self):
+        return _datamunge.VertexWeightPairVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.VertexWeightPairVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.VertexWeightPairVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.VertexWeightPairVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.VertexWeightPairVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.VertexWeightPairVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_VertexWeightPairVector
+
+# Register VertexWeightPairVector in _datamunge:
+_datamunge.VertexWeightPairVector_swigregister(VertexWeightPairVector)
+class ByteVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.ByteVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.ByteVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.ByteVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.ByteVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.ByteVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.ByteVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.ByteVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.ByteVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.ByteVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.ByteVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.ByteVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.ByteVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.ByteVector_empty(self)
+
+    def size(self):
+        return _datamunge.ByteVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.ByteVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.ByteVector_begin(self)
+
+    def end(self):
+        return _datamunge.ByteVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.ByteVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.ByteVector_rend(self)
+
+    def clear(self):
+        return _datamunge.ByteVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.ByteVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.ByteVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.ByteVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.ByteVector_swiginit(self, _datamunge.new_ByteVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.ByteVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.ByteVector_front(self)
+
+    def back(self):
+        return _datamunge.ByteVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.ByteVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.ByteVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.ByteVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.ByteVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.ByteVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_ByteVector
+
+# Register ByteVector in _datamunge:
+_datamunge.ByteVector_swigregister(ByteVector)
+ImageMode_Grayscale = _datamunge.ImageMode_Grayscale
+ImageMode_GrayscaleAlpha = _datamunge.ImageMode_GrayscaleAlpha
+ImageMode_RGB = _datamunge.ImageMode_RGB
+ImageMode_RGBA = _datamunge.ImageMode_RGBA
+class Pixel(object):
+    r"""
+    A pixel value in fully-expanded RGBA form, regardless of the owning Image's actual
+           mode -- always 4 plain uint8 fields (rather than a variable-length per-mode vector)
+           so this stays trivially bindable across languages, matching this codebase's
+           established preference for fixed-shape structs. get_pixel()/set_pixel() handle the
+           expansion/truncation to and from the Image's real stored channel count.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    r = property(_datamunge.Pixel_r_get, _datamunge.Pixel_r_set)
+    g = property(_datamunge.Pixel_g_get, _datamunge.Pixel_g_set)
+    b = property(_datamunge.Pixel_b_get, _datamunge.Pixel_b_set)
+    a = property(_datamunge.Pixel_a_get, _datamunge.Pixel_a_set)
+
+    def __init__(self):
+        _datamunge.Pixel_swiginit(self, _datamunge.new_Pixel())
+    __swig_destroy__ = _datamunge.delete_Pixel
+
+# Register Pixel in _datamunge:
+_datamunge.Pixel_swigregister(Pixel)
+
+def __eq__(lhs, rhs):
+    return _datamunge.__eq__(lhs, rhs)
+class Image(object):
+    r"""
+    A 2D raster image: row-major, top-left origin, interleaved channel bytes (matching
+           the layout every common image codec uses on disk, so I/O needs no reshuffling).
+           Pixel data is always stored as the mode's exact channel count (1/2/3/4 bytes per
+           pixel) -- get_pixel()/set_pixel() are the only place mode-specific expansion happens.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _datamunge.Image_swiginit(self, _datamunge.new_Image(*args))
+
+    def width(self):
+        return _datamunge.Image_width(self)
+
+    def height(self):
+        return _datamunge.Image_height(self)
+
+    def mode(self):
+        return _datamunge.Image_mode(self)
+
+    def channels(self):
+        return _datamunge.Image_channels(self)
+
+    def data(self, *args):
+        return _datamunge.Image_data(self, *args)
+
+    def get_pixel(self, x, y):
+        return _datamunge.Image_get_pixel(self, x, y)
+
+    def set_pixel(self, x, y, p):
+        return _datamunge.Image_set_pixel(self, x, y, p)
+
+    def fill(self, p):
+        return _datamunge.Image_fill(self, p)
+
+    @staticmethod
+    def channel_count(mode):
+        return _datamunge.Image_channel_count(mode)
+    __swig_destroy__ = _datamunge.delete_Image
+
+# Register Image in _datamunge:
+_datamunge.Image_swigregister(Image)
+class ImageVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.ImageVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.ImageVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.ImageVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.ImageVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.ImageVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.ImageVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.ImageVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.ImageVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.ImageVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.ImageVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.ImageVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.ImageVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.ImageVector_empty(self)
+
+    def size(self):
+        return _datamunge.ImageVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.ImageVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.ImageVector_begin(self)
+
+    def end(self):
+        return _datamunge.ImageVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.ImageVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.ImageVector_rend(self)
+
+    def clear(self):
+        return _datamunge.ImageVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.ImageVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.ImageVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.ImageVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.ImageVector_swiginit(self, _datamunge.new_ImageVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.ImageVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.ImageVector_front(self)
+
+    def back(self):
+        return _datamunge.ImageVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.ImageVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.ImageVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.ImageVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.ImageVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.ImageVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_ImageVector
+
+# Register ImageVector in _datamunge:
+_datamunge.ImageVector_swigregister(ImageVector)
+class HSV(object):
+    r"""A pixel color in HSV space: h in [0, 360), s and v in [0, 1]."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    h = property(_datamunge.HSV_h_get, _datamunge.HSV_h_set)
+    s = property(_datamunge.HSV_s_get, _datamunge.HSV_s_set)
+    v = property(_datamunge.HSV_v_get, _datamunge.HSV_v_set)
+
+    def __init__(self):
+        _datamunge.HSV_swiginit(self, _datamunge.new_HSV())
+    __swig_destroy__ = _datamunge.delete_HSV
+
+# Register HSV in _datamunge:
+_datamunge.HSV_swigregister(HSV)
+
+def rgb_to_gray(r, g, b):
+    r"""
+    The standard luma-weighted RGB -> grayscale conversion (ITU-R BT.601 coefficients,
+           the same weights Pillow's "L" conversion and most other libraries use).
+    """
+    return _datamunge.rgb_to_gray(r, g, b)
+
+def rgb_to_hsv(r8, g8, b8):
+    return _datamunge.rgb_to_hsv(r8, g8, b8)
+
+def hsv_to_rgb(hsv):
+    return _datamunge.hsv_to_rgb(hsv)
+
+def to_grayscale(src):
+    r"""A new image converted to Grayscale mode. Any existing alpha channel is dropped."""
+    return _datamunge.to_grayscale(src)
+
+def to_rgb(src):
+    r"""
+    A new image converted to RGB mode. Grayscale sources are expanded (r=g=b); any
+           existing alpha channel is dropped.
+    """
+    return _datamunge.to_rgb(src)
+
+def to_rgba(src):
+    r"""
+    A new RGBA image with the same colors as ``src`` and every pixel's alpha set to
+           ``src's`` existing alpha (255 for modes with no alpha channel).
+    """
+    return _datamunge.to_rgba(src)
+
+def split_channels(src):
+    r"""
+    Splits ``src`` into one Grayscale-mode Image per channel, in the source's own
+           channel order (so RGB -> {R, G, B}, RGBA -> {R, G, B, A}, etc.).
+    """
+    return _datamunge.split_channels(src)
+
+def merge_channels(planes):
+    r"""
+    The inverse of split_channels(): combines Grayscale-mode ``planes`` (same width and
+           height, one plane per output channel, in channel order) into a single image of the
+           matching mode. Throws std::invalid_argument if the plane count isn't 1-4 or the
+           planes' dimensions disagree.
+    """
+    return _datamunge.merge_channels(planes)
+ResampleFilter_Nearest = _datamunge.ResampleFilter_Nearest
+ResampleFilter_Bilinear = _datamunge.ResampleFilter_Bilinear
+
+def lerp_byte(a, b, t):
+    return _datamunge.lerp_byte(a, b, t)
+
+def bilinear_sample(src, x, y):
+    return _datamunge.bilinear_sample(src, x, y)
+
+def resize(*args):
+    r"""
+    A new image of size ``new_width`` x ``new_height``, resampled from ``src``. Nearest
+           maps each destination pixel to its closest source pixel (blocky, but exact for
+           integer scale factors); Bilinear interpolates the four surrounding source pixels
+           (smoother, the usual default for photographic content).
+    """
+    return _datamunge.resize(*args)
+
+def crop(src, x, y, width, height):
+    r"""
+    The sub-image [x, x+width) x [y, y+height) of ``src``. Throws std::out_of_range if
+           the requested rectangle isn't fully contained in ``src``.
+    """
+    return _datamunge.crop(src, x, y, width, height)
+
+def flip_horizontal(src):
+    r"""A new image with every row reversed left-to-right (mirror image)."""
+    return _datamunge.flip_horizontal(src)
+
+def flip_vertical(src):
+    r"""A new image with every column reversed top-to-bottom (upside down)."""
+    return _datamunge.flip_vertical(src)
+
+def rotate90(src, degrees):
+    r"""
+    A new image rotated clockwise by exactly 90, 180, or 270 degrees (any other value
+           throws std::invalid_argument -- use rotate() for arbitrary angles). 90/270 swap
+           width and height; 180 keeps them.
+    """
+    return _datamunge.rotate90(src, degrees)
+
+def rotate(*args):
+    r"""
+    A new image rotated clockwise by an arbitrary angle (in degrees) about its center,
+           via inverse-mapping + bilinear resampling. The output canvas is exactly large enough
+           to contain the fully-rotated source (like Pillow's expand=True), and pixels sourced
+           from outside the original image are filled with ``fill_color``.
+    """
+    return _datamunge.rotate(*args)
+
+def box_kernel(size):
+    r"""A normalized (sums to 1) box blur kernel of the given odd size."""
+    return _datamunge.box_kernel(size)
+
+def gaussian_kernel(sigma):
+    r"""
+    A normalized 2D Gaussian kernel with standard deviation ``sigma;`` the kernel radius
+           is chosen as ceil(3*sigma) (covers >99.7% of the distribution's mass), size = 2*radius+1.
+    """
+    return _datamunge.gaussian_kernel(sigma)
+
+def convolve(src, kernel):
+    r"""
+    Applies a square convolution ``kernel`` to every channel of ``src`` (alpha included),
+           clamping accesses at the border (edge-replicate padding, avoiding any darkening
+           artifact a zero-padded border would introduce). ``kernel's`` side length must be odd.
+    """
+    return _datamunge.convolve(src, kernel)
+
+def box_blur(src, radius):
+    return _datamunge.box_blur(src, radius)
+
+def gaussian_blur(src, sigma):
+    return _datamunge.gaussian_blur(src, sigma)
+
+def sharpen(src, amount=1.0):
+    r"""
+    Sharpens ``src`` via an unsharp-mask kernel: the center weight grows (and the
+           neighbor weights, already negative, grow more negative) as ``amount`` increases past
+           its neutral value of 0 (0 = no change).
+    """
+    return _datamunge.sharpen(src, amount)
+
+def sobel_edges(src):
+    r"""
+    Sobel gradient-magnitude edge detection: converts to grayscale first, then computes
+           the horizontal and vertical Sobel gradients at every pixel and returns their
+           Euclidean magnitude (clamped to [0, 255]) as a new Grayscale image.
+    """
+    return _datamunge.sobel_edges(src)
+
+def adjust_brightness(src, delta):
+    r"""
+    Adds ``delta`` to every color channel (alpha untouched), clamped to [0, 255].
+           Negative ``delta`` darkens, positive brightens.
+    """
+    return _datamunge.adjust_brightness(src, delta)
+
+def adjust_contrast(src, factor):
+    r"""
+    Scales every color channel's distance from mid-gray (128) by ``factor`` (alpha
+           untouched), clamped to [0, 255]. factor=1 is a no-op; factor=0 collapses to solid
+           gray; factor>1 increases contrast.
+    """
+    return _datamunge.adjust_contrast(src, factor)
+
+def threshold(src, level):
+    r"""
+    A binary (black/white) Grayscale image: pixels whose luma (rgb_to_gray) is >=
+           ``level`` become 255 (white), everything else becomes 0 (black).
+    """
+    return _datamunge.threshold(src, level)
+class IPairVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.IPairVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.IPairVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.IPairVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.IPairVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.IPairVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.IPairVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.IPairVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.IPairVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.IPairVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.IPairVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.IPairVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.IPairVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.IPairVector_empty(self)
+
+    def size(self):
+        return _datamunge.IPairVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.IPairVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.IPairVector_begin(self)
+
+    def end(self):
+        return _datamunge.IPairVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.IPairVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.IPairVector_rend(self)
+
+    def clear(self):
+        return _datamunge.IPairVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.IPairVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.IPairVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.IPairVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.IPairVector_swiginit(self, _datamunge.new_IPairVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.IPairVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.IPairVector_front(self)
+
+    def back(self):
+        return _datamunge.IPairVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.IPairVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.IPairVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.IPairVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.IPairVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.IPairVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_IPairVector
+
+# Register IPairVector in _datamunge:
+_datamunge.IPairVector_swigregister(IPairVector)
+
+def set_pixel_clipped(img, x, y, color):
+    return _datamunge.set_pixel_clipped(img, x, y, color)
+
+def stamp(img, cx, cy, color, thickness):
+    return _datamunge.stamp(img, cx, cy, color, thickness)
+
+def draw_line(img, x0, y0, x1, y1, color, thickness=1):
+    r"""
+    Draws a straight line from (x0,y0) to (x1,y1) directly onto ``img`` (Bresenham's
+           integer algorithm). ``thickness`` > 1 stamps a (thickness x thickness) square at
+           every line pixel -- simple, not a true round/mitered stroke, but sufficient for this
+           module's scope. Points (and any square stamps) outside ``img's`` bounds are silently
+           clipped rather than throwing, matching typical drawing-library behavior for
+           partially-offscreen shapes.
+    """
+    return _datamunge.draw_line(img, x0, y0, x1, y1, color, thickness)
+
+def draw_rectangle(img, x0, y0, x1, y1, color, filled=False):
+    r"""
+    Draws the rectangle with corners (x0,y0) and (x1,y1) (either diagonal order works)
+           onto ``img``, either as a one-pixel-wide outline or filled solid.
+    """
+    return _datamunge.draw_rectangle(img, x0, y0, x1, y1, color, filled)
+
+def draw_circle(img, cx, cy, radius, color, filled=False):
+    r"""
+    Draws a circle of the given ``radius`` centered at (cx,cy) onto ``img``, either as a
+           one-pixel-wide outline (the midpoint circle algorithm) or filled solid (bounding-box
+           scan with a squared-distance test).
+    """
+    return _datamunge.draw_circle(img, cx, cy, radius, color, filled)
+
+def draw_polygon(img, points, color, filled=False):
+    r"""
+    Draws the polygon defined by ``points`` (in order, implicitly closed back to the
+           first point) onto ``img``. Outline mode connects consecutive vertices with
+           draw_line(); filled mode uses a standard even-odd scanline fill. Fewer than 3 points
+           draws nothing.
+    """
+    return _datamunge.draw_polygon(img, points, color, filled)
+
+def read_ppm(path):
+    r"""
+    Reads a binary (P6) Netpbm color image. Only 8-bit-per-channel (maxval <= 255)
+           files are supported. Throws std::runtime_error on a malformed file or I/O failure.
+    """
+    return _datamunge.read_ppm(path)
+
+def write_ppm(img, path):
+    r"""
+    Writes ``img`` as a binary (P6) Netpbm color image, converting to RGB first if it
+           isn't already (see to_rgb()).
+    """
+    return _datamunge.write_ppm(img, path)
+
+def read_pgm(path):
+    r"""
+    Reads a binary (P5) Netpbm grayscale image. Only 8-bit (maxval <= 255) files are
+           supported. Throws std::runtime_error on a malformed file or I/O failure.
+    """
+    return _datamunge.read_pgm(path)
+
+def write_pgm(img, path):
+    r"""
+    Writes ``img`` as a binary (P5) Netpbm grayscale image, converting to Grayscale first
+           if it isn't already (see to_grayscale()).
+    """
+    return _datamunge.write_pgm(img, path)
+
+def read_pbm(path):
+    r"""
+    Reads a binary (P4) Netpbm bitmap image (1 bit per pixel: set bits are black) as a
+           Grayscale image (0 = black, 255 = white). Throws std::runtime_error on a malformed
+           file or I/O failure.
+    """
+    return _datamunge.read_pbm(path)
+
+def write_pbm(img, path, threshold=128):
+    r"""
+    Writes ``img`` as a binary (P4) Netpbm bitmap, converting to grayscale first and then
+           thresholding: pixels with luma strictly below ``threshold`` become set (black) bits.
+    """
+    return _datamunge.write_pbm(img, path, threshold)
+
+def read_bmp(path):
+    r"""
+    Reads an uncompressed (BI_RGB) Windows BMP file as an RGB image. Accepts 24-bit
+           (BGR), 32-bit (BGRx -- the 4th byte is ignored, never treated as alpha, since plain
+           BITMAPINFOHEADER 32-bit files don't reliably agree on what that byte means), and
+           8-bit palette (indexed-color) files; any other bit depth or a compressed
+           (non-BI_RGB) file throws std::runtime_error.
+    """
+    return _datamunge.read_bmp(path)
+
+def write_bmp(img, path):
+    r"""
+    Writes ``img`` as an uncompressed 24-bit BGR Windows BMP (BITMAPINFOHEADER, BI_RGB),
+           converting to RGB first if it isn't already (see to_rgb()) -- any alpha channel is
+           dropped, matching write_ppm()'s same RGB-only-on-disk tradeoff.
+    """
+    return _datamunge.write_bmp(img, path)
+
+def read_png(path):
+    r"""
+    Reads a PNG file as an Image (mode matches the file's color type: Grayscale,
+           GrayscaleAlpha, RGB, or RGBA). Only 8-bit-depth, non-interlaced, non-palette PNGs
+           are supported (the overwhelming majority of real-world PNGs); indexed-color
+           (palette), 16-bit-depth, and Adam7-interlaced files throw std::runtime_error, as
+           does a corrupt file (bad signature, chunk CRC mismatch, or truncated/invalid zlib
+           stream).
+    """
+    return _datamunge.read_png(path)
+
+def write_png(img, path):
+    r"""
+    Writes ``img`` as an 8-bit-depth, non-interlaced PNG, using its ImageMode directly as
+           the PNG color type (Grayscale/GrayscaleAlpha/RGB/RGBA all have a direct PNG
+           equivalent, so no conversion is ever needed). Every scanline is written with filter
+           type 0 (None) -- simpler and always correct, at the cost of a somewhat larger file
+           than a filter-optimizing encoder would produce; any standard PNG decoder still reads
+           the result correctly.
+    """
+    return _datamunge.write_png(img, path)
+class CornerVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.CornerVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.CornerVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.CornerVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.CornerVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.CornerVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.CornerVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.CornerVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.CornerVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.CornerVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.CornerVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.CornerVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.CornerVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.CornerVector_empty(self)
+
+    def size(self):
+        return _datamunge.CornerVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.CornerVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.CornerVector_begin(self)
+
+    def end(self):
+        return _datamunge.CornerVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.CornerVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.CornerVector_rend(self)
+
+    def clear(self):
+        return _datamunge.CornerVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.CornerVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.CornerVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.CornerVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.CornerVector_swiginit(self, _datamunge.new_CornerVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.CornerVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.CornerVector_front(self)
+
+    def back(self):
+        return _datamunge.CornerVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.CornerVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.CornerVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.CornerVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.CornerVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.CornerVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_CornerVector
+
+# Register CornerVector in _datamunge:
+_datamunge.CornerVector_swigregister(CornerVector)
+class Corner(object):
+    r"""
+    A detected corner: its pixel location and a detector-specific response score (higher
+           is a stronger corner). Meant to be independently sortable/filterable by the caller.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    x = property(_datamunge.Corner_x_get, _datamunge.Corner_x_set)
+    y = property(_datamunge.Corner_y_get, _datamunge.Corner_y_set)
+    response = property(_datamunge.Corner_response_get, _datamunge.Corner_response_set)
+
+    def __init__(self):
+        _datamunge.Corner_swiginit(self, _datamunge.new_Corner())
+    __swig_destroy__ = _datamunge.delete_Corner
+
+# Register Corner in _datamunge:
+_datamunge.Corner_swigregister(Corner)
+class StructureTensorField(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    sxx = property(_datamunge.StructureTensorField_sxx_get, _datamunge.StructureTensorField_sxx_set)
+    syy = property(_datamunge.StructureTensorField_syy_get, _datamunge.StructureTensorField_syy_set)
+    sxy = property(_datamunge.StructureTensorField_sxy_get, _datamunge.StructureTensorField_sxy_set)
+
+    def __init__(self):
+        _datamunge.StructureTensorField_swiginit(self, _datamunge.new_StructureTensorField())
+    __swig_destroy__ = _datamunge.delete_StructureTensorField
+
+# Register StructureTensorField in _datamunge:
+_datamunge.StructureTensorField_swigregister(StructureTensorField)
+
+def structure_tensor(img, sigma):
+    r"""
+    The Gaussian-smoothed second-moment (structure) tensor at every pixel: Sobel
+           gradients Ix/Iy, their per-pixel outer product Ix^2/Iy^2/IxIy, then smoothed with a
+           Gaussian window of the given ``sigma`` -- the shared computation behind both Harris
+           and Shi-Tomasi corner response, which differ only in how they combine these three
+           fields into a single scalar score.
+    """
+    return _datamunge.structure_tensor(img, sigma)
+
+def extract_local_maxima(response, width, height, threshold, nms_radius):
+    r"""
+    Keeps only the response-field entries that are a strict local maximum within a
+           (2*radius+1)^2 window AND exceed ``threshold``, as a sorted-by-descending-response
+           Corner list -- the standard non-max-suppression + thresholding pass shared by every
+           response-map-based corner detector.
+    """
+    return _datamunge.extract_local_maxima(response, width, height, threshold, nms_radius)
+
+def harris_corners(img, k=0.04, sigma=1.0, threshold_ratio=0.01, nms_radius=3):
+    r"""
+    Harris corner detection: response = det(M) - k*trace(M)^2 of the structure tensor M
+           at every pixel, thresholded at ``threshold_ratio`` * (the response map's own max, so
+           callers don't have to guess an absolute scale) and non-max-suppressed within a
+           (2*nms_radius+1)^2 window. ``k`` is the classical Harris free parameter (0.04-0.06).
+    """
+    return _datamunge.harris_corners(img, k, sigma, threshold_ratio, nms_radius)
+
+def shi_tomasi_corners(img, sigma=1.0, threshold_ratio=0.01, nms_radius=3):
+    r"""
+    Shi-Tomasi ("good features to track") corner detection: response = the structure
+           tensor's SMALLER eigenvalue at every pixel (a corner needs strong gradient variation
+           in BOTH directions, so the weaker direction is the limiting factor) -- otherwise
+           identical thresholding/NMS pipeline to harris_corners().
+    """
+    return _datamunge.shi_tomasi_corners(img, sigma, threshold_ratio, nms_radius)
+
+def fast_corners(img, threshold=20, min_contiguous=9):
+    r"""
+    FAST corner detection: a pixel is a corner if ``min_contiguous`` (out of 16) pixels on
+           the Bresenham circle of radius 3 around it are ALL brighter than center+``threshold``
+           or ALL darker than center-``threshold``. This is the direct O(16) full-circle test
+           (no accelerated high-speed pre-rejection on pixels 1/5/9/13) -- simpler to verify
+           correct, at the cost of the constant-factor speed FAST is normally chosen for.
+           Response is the found arc's mean absolute deviation from the center intensity.
+    """
+    return _datamunge.fast_corners(img, threshold, min_contiguous)
+class KeyPointVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.KeyPointVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.KeyPointVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.KeyPointVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.KeyPointVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.KeyPointVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.KeyPointVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.KeyPointVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.KeyPointVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.KeyPointVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.KeyPointVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.KeyPointVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.KeyPointVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.KeyPointVector_empty(self)
+
+    def size(self):
+        return _datamunge.KeyPointVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.KeyPointVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.KeyPointVector_begin(self)
+
+    def end(self):
+        return _datamunge.KeyPointVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.KeyPointVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.KeyPointVector_rend(self)
+
+    def clear(self):
+        return _datamunge.KeyPointVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.KeyPointVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.KeyPointVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.KeyPointVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.KeyPointVector_swiginit(self, _datamunge.new_KeyPointVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.KeyPointVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.KeyPointVector_front(self)
+
+    def back(self):
+        return _datamunge.KeyPointVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.KeyPointVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.KeyPointVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.KeyPointVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.KeyPointVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.KeyPointVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_KeyPointVector
+
+# Register KeyPointVector in _datamunge:
+_datamunge.KeyPointVector_swigregister(KeyPointVector)
+class KeyPoint(object):
+    r"""
+    A detected blob keypoint: its pixel location, the Gaussian scale (sigma) at which it
+           was found, and the Difference-of-Gaussians response at that scale (higher magnitude
+           is a stronger blob).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    x = property(_datamunge.KeyPoint_x_get, _datamunge.KeyPoint_x_set)
+    y = property(_datamunge.KeyPoint_y_get, _datamunge.KeyPoint_y_set)
+    scale = property(_datamunge.KeyPoint_scale_get, _datamunge.KeyPoint_scale_set)
+    response = property(_datamunge.KeyPoint_response_get, _datamunge.KeyPoint_response_set)
+
+    def __init__(self):
+        _datamunge.KeyPoint_swiginit(self, _datamunge.new_KeyPoint())
+    __swig_destroy__ = _datamunge.delete_KeyPoint
+
+# Register KeyPoint in _datamunge:
+_datamunge.KeyPoint_swigregister(KeyPoint)
+
+def dog_blobs(img, num_scales=4, sigma0=1.6, threshold=3.0):
+    r"""
+    Difference-of-Gaussians blob detection (the detector SIFT keypoints are built on,
+           without the orientation/descriptor stages): builds ``num_scales`` + 1 Gaussian-
+           blurred copies of ``img`` at geometrically-spaced sigma_i = ``sigma0`` * 2^(i /
+           num_scales), subtracts consecutive pairs to get ``num_scales`` DoG images, then keeps
+           every point that is a strict extremum (min or max) among its 26 neighbors in the
+           resulting (x, y, scale) volume -- 8 in its own DoG layer plus 9 in each adjacent
+           layer -- and whose |response| exceeds ``threshold``. A single octave only (no
+           image-halving between octaves like full SIFT) -- simpler, and sufficient for
+           detecting blobs across a single order-of-magnitude size range.
+    """
+    return _datamunge.dog_blobs(img, num_scales, sigma0, threshold)
+class HoughLineVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.HoughLineVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.HoughLineVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.HoughLineVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.HoughLineVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.HoughLineVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.HoughLineVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.HoughLineVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.HoughLineVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.HoughLineVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.HoughLineVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.HoughLineVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.HoughLineVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.HoughLineVector_empty(self)
+
+    def size(self):
+        return _datamunge.HoughLineVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.HoughLineVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.HoughLineVector_begin(self)
+
+    def end(self):
+        return _datamunge.HoughLineVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.HoughLineVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.HoughLineVector_rend(self)
+
+    def clear(self):
+        return _datamunge.HoughLineVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.HoughLineVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.HoughLineVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.HoughLineVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.HoughLineVector_swiginit(self, _datamunge.new_HoughLineVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.HoughLineVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.HoughLineVector_front(self)
+
+    def back(self):
+        return _datamunge.HoughLineVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.HoughLineVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.HoughLineVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.HoughLineVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.HoughLineVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.HoughLineVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_HoughLineVector
+
+# Register HoughLineVector in _datamunge:
+_datamunge.HoughLineVector_swigregister(HoughLineVector)
+class HoughCircleVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.HoughCircleVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.HoughCircleVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.HoughCircleVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.HoughCircleVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.HoughCircleVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.HoughCircleVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.HoughCircleVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.HoughCircleVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.HoughCircleVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.HoughCircleVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.HoughCircleVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.HoughCircleVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.HoughCircleVector_empty(self)
+
+    def size(self):
+        return _datamunge.HoughCircleVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.HoughCircleVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.HoughCircleVector_begin(self)
+
+    def end(self):
+        return _datamunge.HoughCircleVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.HoughCircleVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.HoughCircleVector_rend(self)
+
+    def clear(self):
+        return _datamunge.HoughCircleVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.HoughCircleVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.HoughCircleVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.HoughCircleVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.HoughCircleVector_swiginit(self, _datamunge.new_HoughCircleVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.HoughCircleVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.HoughCircleVector_front(self)
+
+    def back(self):
+        return _datamunge.HoughCircleVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.HoughCircleVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.HoughCircleVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.HoughCircleVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.HoughCircleVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.HoughCircleVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_HoughCircleVector
+
+# Register HoughCircleVector in _datamunge:
+_datamunge.HoughCircleVector_swigregister(HoughCircleVector)
+class HoughLine(object):
+    r"""
+    A detected line in the classical (rho, theta) normal-form parameterization: every
+           point (x, y) on the line satisfies x*cos(theta) + y*sin(theta) = rho. Represents an
+           INFINITE line, not a segment -- see line_endpoints() to clip it to an image.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    rho = property(_datamunge.HoughLine_rho_get, _datamunge.HoughLine_rho_set)
+    theta = property(_datamunge.HoughLine_theta_get, _datamunge.HoughLine_theta_set)
+    votes = property(_datamunge.HoughLine_votes_get, _datamunge.HoughLine_votes_set)
+
+    def __init__(self):
+        _datamunge.HoughLine_swiginit(self, _datamunge.new_HoughLine())
+    __swig_destroy__ = _datamunge.delete_HoughLine
+
+# Register HoughLine in _datamunge:
+_datamunge.HoughLine_swigregister(HoughLine)
+
+def line_endpoints(line, image_width, image_height, p1, p2):
+    r"""
+     The two points where the infinite line ``line`` crosses the border of a
+    ``image_width`` x ``image_height`` image, for drawing/visualization. Returns false (and
+            leaves the output points unchanged) if the line doesn't intersect the image
+            rectangle at all (only possible for a line entirely outside it).
+    """
+    return _datamunge.line_endpoints(line, image_width, image_height, p1, p2)
+
+def hough_lines(img, edge_threshold=128, min_votes=50, nms_radius=5):
+    r"""
+     Standard Hough line transform: every pixel of ``img`` whose grayscale luma is >=
+    ``edge_threshold`` votes, in a rho-theta accumulator (theta stepped every degree over
+            [0, pi), rho stepped every pixel over the image's diagonal range), for every line
+            that could pass through it. Returns every accumulator cell with at least
+    ``min_votes``, non-max-suppressed within a (2*nms_radius+1) rho-theta cell window so a
+            single real line doesn't produce a cluster of near-duplicate near-identical results.
+            Intended input is an edge map (e.g. image::sobel_edges()'s output), not a raw photo.
+    """
+    return _datamunge.hough_lines(img, edge_threshold, min_votes, nms_radius)
+class HoughCircle(object):
+    r"""A detected circle: center, radius, and the raw vote count that found it."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    cx = property(_datamunge.HoughCircle_cx_get, _datamunge.HoughCircle_cx_set)
+    cy = property(_datamunge.HoughCircle_cy_get, _datamunge.HoughCircle_cy_set)
+    radius = property(_datamunge.HoughCircle_radius_get, _datamunge.HoughCircle_radius_set)
+    votes = property(_datamunge.HoughCircle_votes_get, _datamunge.HoughCircle_votes_set)
+
+    def __init__(self):
+        _datamunge.HoughCircle_swiginit(self, _datamunge.new_HoughCircle())
+    __swig_destroy__ = _datamunge.delete_HoughCircle
+
+# Register HoughCircle in _datamunge:
+_datamunge.HoughCircle_swigregister(HoughCircle)
+
+def hough_circles(img, min_radius, max_radius, gradient_threshold=50.0, min_votes=20, nms_radius=10):
+    r"""
+    Gradient-direction-guided Hough circle transform: for every edge pixel (Sobel
+           gradient magnitude >= ``gradient_threshold`` on ``img's`` grayscale conversion), and
+           for every candidate radius in [``min_radius``, ``max_radius]``, votes for the two
+           candidate centers at that distance along the pixel's gradient line (handles both
+           bright-disk-on-dark and dark-disk-on-bright edge polarity). Each radius gets an
+           independent 2D (cx, cy) accumulator and non-max suppression pass -- simpler to
+           reason about than a combined 3D (cx, cy, r) accumulator, at the cost of not
+           suppressing near-duplicate detections across adjacent radii.
+    """
+    return _datamunge.hough_circles(img, min_radius, max_radius, gradient_threshold, min_votes, nms_radius)
+StructuringElement_Square = _datamunge.StructuringElement_Square
+StructuringElement_Cross = _datamunge.StructuringElement_Cross
+
+def in_structuring_element(se, dx, dy, radius):
+    return _datamunge.in_structuring_element(se, dx, dy, radius)
+
+def is_foreground(img, x, y):
+    return _datamunge.is_foreground(img, x, y)
+
+def erode(*args):
+    r"""
+    Binary erosion: a pixel stays foreground (luma >= 128, matching image::threshold()'s
+           convention) only if EVERY pixel within the structuring element centered on it is
+           also foreground -- shrinks foreground regions and removes thin protrusions. Returns
+           a Grayscale image with 0/255 values. Pixels outside the image count as background.
+    """
+    return _datamunge.erode(*args)
+
+def dilate(*args):
+    r"""
+    Binary dilation: a pixel becomes foreground if ANY pixel within the structuring
+           element centered on it is foreground -- grows foreground regions and fills small
+           gaps. Returns a Grayscale image with 0/255 values.
+    """
+    return _datamunge.dilate(*args)
+
+def morphological_open(*args):
+    r"""
+    Morphological opening (erode then dilate): removes small foreground specks and thin
+           protrusions while leaving the size of larger regions roughly unchanged.
+    """
+    return _datamunge.morphological_open(*args)
+
+def morphological_close(*args):
+    r"""
+    Morphological closing (dilate then erode): fills small holes and gaps in foreground
+           regions while leaving their overall size roughly unchanged.
+    """
+    return _datamunge.morphological_close(*args)
+class LabelMap(object):
+    r"""
+    The result of connected_components(): a per-pixel label image (row-major, same
+           layout as image::Image::data() but one int per pixel rather than per channel byte).
+           Label 0 is always background; foreground components are numbered 1..count.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    labels = property(_datamunge.LabelMap_labels_get, _datamunge.LabelMap_labels_set)
+    width = property(_datamunge.LabelMap_width_get, _datamunge.LabelMap_width_set)
+    height = property(_datamunge.LabelMap_height_get, _datamunge.LabelMap_height_set)
+    count = property(_datamunge.LabelMap_count_get, _datamunge.LabelMap_count_set)
+
+    def __init__(self):
+        _datamunge.LabelMap_swiginit(self, _datamunge.new_LabelMap())
+    __swig_destroy__ = _datamunge.delete_LabelMap
+
+# Register LabelMap in _datamunge:
+_datamunge.LabelMap_swigregister(LabelMap)
+
+def connected_components(img, eight_connected=True):
+    r"""
+    Labels every foreground (luma >= 128) connected region of ``img`` with a distinct
+           positive integer via flood fill (simple breadth-first flood fill per unvisited
+           foreground pixel, rather than the classical two-pass union-find labeling algorithm
+           -- same asymptotic complexity, much easier to verify correct, matching this module's
+           established simplicity-over-cleverness bias). ``eight_connected`` selects 8-
+           neighborhood (diagonals count) vs. 4-neighborhood (orthogonal only) connectivity.
+    """
+    return _datamunge.connected_components(img, eight_connected)
+
+def otsu_threshold(img):
+    r"""
+    Otsu's method: the grayscale threshold (0-255) that maximizes the between-class
+           variance of the pixels it would split into "below" and "at-or-above" groups --
+           the standard automatic threshold selection when a fixed threshold isn't known in
+           advance. Pairs directly with image::threshold(img, otsu_threshold(img)).
+    """
+    return _datamunge.otsu_threshold(img)
+
+def kmeans_segment(img, k, max_iterations=20, seed=42):
+    r"""
+     K-means color segmentation: clusters every pixel of ``img`` by its RGB value into
+    ``k`` clusters (Lloyd's algorithm, deterministic fixed-seed initialization by sampling k
+            distinct pixels) and returns a new RGB image where every pixel is replaced by its
+            assigned cluster's mean color. Throws std::invalid_argument if ``k`` exceeds the
+            number of distinct pixels available to seed from.
+    """
+    return _datamunge.kmeans_segment(img, k, max_iterations, seed)
+
+def gaussian_pyramid(img, levels, sigma=1.0):
+    r"""
+    The classical Gaussian pyramid: level 0 is ``img`` itself; each subsequent level is
+           the previous level Gaussian-blurred (sigma = ``sigma)`` then downsampled by 2x
+           (bilinear resize) -- a coarse-to-fine multi-resolution representation used
+           throughout this module (e.g. as the natural foundation for a pyramidal optical-flow
+           extension, though lucas_kanade_optical_flow() itself stays single-level). Stops
+           early (producing fewer than ``levels`` images) if a level's dimensions would shrink
+           below 1x1. Throws std::invalid_argument for levels < 1.
+    """
+    return _datamunge.gaussian_pyramid(img, levels, sigma)
+
+def signed_difference_image(cur, upsampled):
+    r"""
+    Per-channel signed difference (cur - upsampled), re-centered at 128 and clamped to
+           [0, 255] so it stores in an ordinary Image -- the standard way to make a Laplacian
+           pyramid level (which is naturally signed) visualizable/storable without introducing
+           a separate signed-pixel image type just for this.
+    """
+    return _datamunge.signed_difference_image(cur, upsampled)
+
+def laplacian_pyramid(img, levels, sigma=1.0):
+    r"""
+    The Laplacian pyramid: for every level except the last, level_i = (Gaussian level i)
+           minus (Gaussian level i+1 upsampled back to level i's size) -- the detail lost by
+           blurring+downsampling at that scale, re-centered at 128 (see
+           detail::signed_difference_image()) so it stores as an ordinary image; the final
+           level is the smallest Gaussian level kept as-is (the residual low-frequency image
+           the whole pyramid was built from). Reconstructing the original from a Laplacian
+           pyramid is the classical use (progressively add each un-recentered level back onto
+           the upsampled reconstruction-so-far) but isn't implemented here -- this module only
+           needed the decomposition direction.
+    """
+    return _datamunge.laplacian_pyramid(img, levels, sigma)
+class FlowVectorVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.FlowVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.FlowVectorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.FlowVectorVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.FlowVectorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.FlowVectorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.FlowVectorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.FlowVectorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.FlowVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.FlowVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.FlowVectorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.FlowVectorVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.FlowVectorVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.FlowVectorVector_empty(self)
+
+    def size(self):
+        return _datamunge.FlowVectorVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.FlowVectorVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.FlowVectorVector_begin(self)
+
+    def end(self):
+        return _datamunge.FlowVectorVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.FlowVectorVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.FlowVectorVector_rend(self)
+
+    def clear(self):
+        return _datamunge.FlowVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.FlowVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.FlowVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.FlowVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.FlowVectorVector_swiginit(self, _datamunge.new_FlowVectorVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.FlowVectorVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.FlowVectorVector_front(self)
+
+    def back(self):
+        return _datamunge.FlowVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.FlowVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.FlowVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.FlowVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.FlowVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.FlowVectorVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_FlowVectorVector
+
+# Register FlowVectorVector in _datamunge:
+_datamunge.FlowVectorVector_swigregister(FlowVectorVector)
+class FlowVector(object):
+    r"""
+    The estimated motion of one tracked point between two frames. ``valid`` is false when
+           the point's window was too close to the image border, or too textureless/aperture-
+           ambiguous (the same "does the structure tensor have two strong eigenvalues"
+           criterion shi_tomasi_corners() uses to pick good points to track in the first place
+           -- Lucas-Kanade windows should generally be centered on such points).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    dx = property(_datamunge.FlowVector_dx_get, _datamunge.FlowVector_dx_set)
+    dy = property(_datamunge.FlowVector_dy_get, _datamunge.FlowVector_dy_set)
+    valid = property(_datamunge.FlowVector_valid_get, _datamunge.FlowVector_valid_set)
+
+    def __init__(self):
+        _datamunge.FlowVector_swiginit(self, _datamunge.new_FlowVector())
+    __swig_destroy__ = _datamunge.delete_FlowVector
+
+# Register FlowVector in _datamunge:
+_datamunge.FlowVector_swigregister(FlowVector)
+
+def lucas_kanade_optical_flow(prev, next, points, window_radius=7):
+    r"""
+    Sparse Lucas-Kanade optical flow: for each of ``points``, solves the classical 2x2
+           windowed least-squares system (built from Sobel spatial gradients Ix/Iy on ``prev``
+           and the temporal gradient It = next - prev, both accumulated over a
+           (2*window_radius+1)^2 window) for the local translation (dx, dy) that best explains
+           the window's brightness change under the standard optical-flow brightness-constancy
+           assumption. Single-level (not the pyramidal coarse-to-fine extension real
+           implementations use for large motions) -- correctly handles motions up to roughly
+           ``window_radius`` pixels, which is this module's documented scope tradeoff; use
+           gaussian_pyramid() externally and call this once per level if larger motions matter.
+    """
+    return _datamunge.lucas_kanade_optical_flow(prev, next, points, window_radius)
+class VectorFunction(object):
+    r"""
+    A vector-valued function R^n -> R^m: the state-transition or observation model
+           supplied to this module's nonlinear filters (ExtendedKalmanFilter,
+           UnscentedKalmanFilter, EnsembleKalmanFilter, ParticleFilter). Director-enabled
+           (subclass directly in C++, or via SWIG directors in any bound language) so this
+           module never needs to know the concrete form of the caller's dynamics.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _datamunge.delete_VectorFunction
+
+    def evaluate(self, x):
+        r"""Evaluates the function at ``x``."""
+        return _datamunge.VectorFunction_evaluate(self, x)
+
+    def __init__(self):
+        if self.__class__ == VectorFunction:
+            _self = None
+        else:
+            _self = self
+        _datamunge.VectorFunction_swiginit(self, _datamunge.new_VectorFunction(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _datamunge.disown_VectorFunction(self)
+        return weakref.proxy(self)
+
+# Register VectorFunction in _datamunge:
+_datamunge.VectorFunction_swigregister(VectorFunction)
+class KalmanStateVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.KalmanStateVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.KalmanStateVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.KalmanStateVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.KalmanStateVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.KalmanStateVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.KalmanStateVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.KalmanStateVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.KalmanStateVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.KalmanStateVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.KalmanStateVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.KalmanStateVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.KalmanStateVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.KalmanStateVector_empty(self)
+
+    def size(self):
+        return _datamunge.KalmanStateVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.KalmanStateVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.KalmanStateVector_begin(self)
+
+    def end(self):
+        return _datamunge.KalmanStateVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.KalmanStateVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.KalmanStateVector_rend(self)
+
+    def clear(self):
+        return _datamunge.KalmanStateVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.KalmanStateVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.KalmanStateVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.KalmanStateVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.KalmanStateVector_swiginit(self, _datamunge.new_KalmanStateVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.KalmanStateVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.KalmanStateVector_front(self)
+
+    def back(self):
+        return _datamunge.KalmanStateVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.KalmanStateVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.KalmanStateVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.KalmanStateVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.KalmanStateVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.KalmanStateVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_KalmanStateVector
+
+# Register KalmanStateVector in _datamunge:
+_datamunge.KalmanStateVector_swigregister(KalmanStateVector)
+class KalmanState(object):
+    r"""
+    One state estimate + its covariance -- the common return shape for every "give me
+           the state at every timestep" result in this module (filtered sequences, smoothed
+           sequences, ensemble-filter output, ...).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    x = property(_datamunge.KalmanState_x_get, _datamunge.KalmanState_x_set)
+    P = property(_datamunge.KalmanState_P_get, _datamunge.KalmanState_P_set)
+
+    def __init__(self):
+        _datamunge.KalmanState_swiginit(self, _datamunge.new_KalmanState())
+    __swig_destroy__ = _datamunge.delete_KalmanState
+
+# Register KalmanState in _datamunge:
+_datamunge.KalmanState_swigregister(KalmanState)
+class SmoothResult(object):
+    r"""
+    The result of KalmanFilter::smooth(): the forward-pass (filtered, causal) estimates
+           alongside the RTS backward-pass (smoothed, uses the whole sequence) estimates.
+           smoothed.back() always exactly equals filtered.back() (the smoother has no future
+           data at the final step); every earlier smoothed covariance is <= the corresponding
+           filtered covariance (in the positive-semidefinite order) since it incorporates more
+           information.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    filtered = property(_datamunge.SmoothResult_filtered_get, _datamunge.SmoothResult_filtered_set)
+    smoothed = property(_datamunge.SmoothResult_smoothed_get, _datamunge.SmoothResult_smoothed_set)
+
+    def __init__(self):
+        _datamunge.SmoothResult_swiginit(self, _datamunge.new_SmoothResult())
+    __swig_destroy__ = _datamunge.delete_SmoothResult
+
+# Register SmoothResult in _datamunge:
+_datamunge.SmoothResult_swigregister(SmoothResult)
+class KalmanFilter(object):
+    r"""
+    The standard discrete-time linear Kalman filter: x_k = F x_{k-1} + w_k, z_k = H x_k
+           + v_k, w_k ~ N(0, Q), v_k ~ N(0, R) -- the minimum-mean-squared-error linear
+           estimator for exactly this model. Stateful: holds the current (x, P) estimate,
+           mutated in place by predict()/update(); F, H, Q, R are fixed for the filter's
+           lifetime (construct a new filter if they change over time).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, F, H, Q, R, x0, P0):
+        _datamunge.KalmanFilter_swiginit(self, _datamunge.new_KalmanFilter(F, H, Q, R, x0, P0))
+
+    def predict(self):
+        r"""The time-update (prediction) step: x = F x, P = F P F^T + Q."""
+        return _datamunge.KalmanFilter_predict(self)
+
+    def update(self, z):
+        r"""
+        The measurement-update (correction) step given observation ``z``: the standard
+               innovation-covariance / Kalman-gain form (S = H P H^T + R, K = P H^T S^-1, x +=
+               K(z - Hx), P = (I - KH) P) -- not the numerically-hardened Joseph form, matching
+               this codebase's general preference for the textbook formula over a more robust
+               but more complex alternative.
+        """
+        return _datamunge.KalmanFilter_update(self, z)
+
+    def state(self):
+        return _datamunge.KalmanFilter_state(self)
+
+    def covariance(self):
+        return _datamunge.KalmanFilter_covariance(self)
+
+    def filter(self, measurements):
+        r"""
+        Runs predict() then update(z) for every z in ``measurements``, in order, mutating
+               this filter's running state -- the ordinary causal (online) filtered estimate at
+               every timestep.
+        """
+        return _datamunge.KalmanFilter_filter(self, measurements)
+
+    def smooth(self, measurements):
+        r"""
+        filter() followed by an RTS (Rauch-Tung-Striebel) backward smoothing pass, which
+               uses the ENTIRE sequence (not just data up to each point) to refine every
+               estimate -- always at least as accurate as the filtered estimate, at the cost of
+               needing the full sequence in advance (not usable online). Leaves this filter's
+               running (x, P) at its post-filter state, same as filter() would.
+        """
+        return _datamunge.KalmanFilter_smooth(self, measurements)
+    __swig_destroy__ = _datamunge.delete_KalmanFilter
+
+# Register KalmanFilter in _datamunge:
+_datamunge.KalmanFilter_swigregister(KalmanFilter)
+class ExtendedKalmanFilter(object):
+    r"""
+    The Extended Kalman Filter: the standard first-order generalization of KalmanFilter
+           to a nonlinear model x_k = f(x_{k-1}) + w_k, z_k = h(x_k) + v_k -- linearizes f and h
+           (via numerical Jacobians, see detail::numerical_jacobian()) about the current state
+           estimate at every step and otherwise runs the exact same predict/update algebra as
+           the linear filter. Exactly reproduces KalmanFilter's result when ``f`` and ``h``
+           happen to be linear (their Jacobian is then the same constant matrix everywhere).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, f, h, Q, R, x0, P0, jacobian_step=1e-5):
+        _datamunge.ExtendedKalmanFilter_swiginit(self, _datamunge.new_ExtendedKalmanFilter(f, h, Q, R, x0, P0, jacobian_step))
+
+    def predict(self):
+        return _datamunge.ExtendedKalmanFilter_predict(self)
+
+    def update(self, z):
+        return _datamunge.ExtendedKalmanFilter_update(self, z)
+
+    def state(self):
+        return _datamunge.ExtendedKalmanFilter_state(self)
+
+    def covariance(self):
+        return _datamunge.ExtendedKalmanFilter_covariance(self)
+
+    def filter(self, measurements):
+        return _datamunge.ExtendedKalmanFilter_filter(self, measurements)
+    __swig_destroy__ = _datamunge.delete_ExtendedKalmanFilter
+
+# Register ExtendedKalmanFilter in _datamunge:
+_datamunge.ExtendedKalmanFilter_swigregister(ExtendedKalmanFilter)
+class UnscentedKalmanFilter(object):
+    r"""
+    The Unscented Kalman Filter: propagates a small deterministic set of "sigma points"
+           through the true nonlinear f/h (rather than linearizing f/h itself, as
+           ExtendedKalmanFilter does), then reconstructs the predicted mean/covariance from the
+           propagated points' weighted statistics. Captures nonlinearity to (at least) second
+           order without ever needing a Jacobian -- generally more accurate than EKF for
+           strongly nonlinear models, at the cost of 2n+1 function evaluations per step instead
+           of one. Exactly reproduces KalmanFilter's result when ``f`` and ``h`` are linear.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, f, h, Q, R, x0, P0, alpha=1e-3, beta=2.0, kappa=0.0):
+        _datamunge.UnscentedKalmanFilter_swiginit(self, _datamunge.new_UnscentedKalmanFilter(f, h, Q, R, x0, P0, alpha, beta, kappa))
+
+    def predict(self):
+        return _datamunge.UnscentedKalmanFilter_predict(self)
+
+    def update(self, z):
+        return _datamunge.UnscentedKalmanFilter_update(self, z)
+
+    def state(self):
+        return _datamunge.UnscentedKalmanFilter_state(self)
+
+    def covariance(self):
+        return _datamunge.UnscentedKalmanFilter_covariance(self)
+
+    def filter(self, measurements):
+        return _datamunge.UnscentedKalmanFilter_filter(self, measurements)
+    __swig_destroy__ = _datamunge.delete_UnscentedKalmanFilter
+
+# Register UnscentedKalmanFilter in _datamunge:
+_datamunge.UnscentedKalmanFilter_swigregister(UnscentedKalmanFilter)
+class InformationFilter(object):
+    r"""
+    The Information Filter: the algebraic dual of KalmanFilter, tracking the information
+           matrix Y = P^-1 and information vector y = Y x instead of (x, P) directly. Its
+           measurement update is purely ADDITIVE (Y += H^T R^-1 H, y += H^T R^-1 z) -- the
+           classical advantage of this form is that fusing several independent sensors, or
+           distributing a filter across nodes that each see part of the measurement stream, is
+           just summing information contributions, with no matrix inversion per sensor. The
+           time-update (predict) step has no equally simple additive form for general F, so
+           this implementation converts to covariance form, applies the ordinary
+           KalmanFilter-style predict, and converts back -- mathematically exact, and produces
+           IDENTICAL results to KalmanFilter given the same model (the two are the same
+           estimator in a different parameterization, not an approximation of each other).
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, F, H, Q, R, x0, P0):
+        _datamunge.InformationFilter_swiginit(self, _datamunge.new_InformationFilter(F, H, Q, R, x0, P0))
+
+    def predict(self):
+        return _datamunge.InformationFilter_predict(self)
+
+    def update(self, z):
+        r"""The additive information-form update: Y += H^T R^-1 H, y += H^T R^-1 z."""
+        return _datamunge.InformationFilter_update(self, z)
+
+    def state(self):
+        return _datamunge.InformationFilter_state(self)
+
+    def covariance(self):
+        return _datamunge.InformationFilter_covariance(self)
+
+    def filter(self, measurements):
+        return _datamunge.InformationFilter_filter(self, measurements)
+    __swig_destroy__ = _datamunge.delete_InformationFilter
+
+# Register InformationFilter in _datamunge:
+_datamunge.InformationFilter_swigregister(InformationFilter)
+class EnsembleKalmanFilter(object):
+    r"""
+    The (stochastic, "perturbed observations") Ensemble Kalman Filter: represents the
+           state distribution as a finite ensemble of sample state vectors rather than an
+           explicit mean/covariance, propagating each member through the true nonlinear f
+           (plus sampled process noise) and estimating the covariances the Kalman update needs
+           from the ensemble's own sample statistics. Like UnscentedKalmanFilter, needs no
+           Jacobian; unlike it, scales to very high-dimensional states (the classical use case
+           this filter was designed for -- e.g. geophysical data assimilation with millions of
+           state variables) since its cost scales with ensemble size, not state dimension
+           squared/cubed. Statistical, not exact: converges toward the optimal (linear-Gaussian
+           case: KalmanFilter's) estimate as ``ensemble_size`` grows, with Monte Carlo sampling
+           noise at any finite size.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, f, h, Q, R, x0, P0, ensemble_size=100, seed=42):
+        _datamunge.EnsembleKalmanFilter_swiginit(self, _datamunge.new_EnsembleKalmanFilter(f, h, Q, R, x0, P0, ensemble_size, seed))
+
+    def predict(self):
+        r"""
+        Propagates every ensemble member through the nonlinear f, each perturbed by an
+               independently-sampled draw from N(0, Q).
+        """
+        return _datamunge.EnsembleKalmanFilter_predict(self)
+
+    def update(self, z):
+        r"""
+         The stochastic EnKF update (Evensen/Burgers): estimates the state-observation
+                cross-covariance and innovation covariance from the ensemble's own sample
+                statistics, then updates each member with an INDEPENDENTLY perturbed copy of
+        ``z`` (adding a fresh N(0, R) draw to each member's correction) -- perturbing the
+                observation per member, rather than applying one shared correction to all of
+                them, is what keeps the ensemble's spread statistically consistent after the
+                update instead of collapsing it.
+        """
+        return _datamunge.EnsembleKalmanFilter_update(self, z)
+
+    def state(self):
+        return _datamunge.EnsembleKalmanFilter_state(self)
+
+    def covariance(self):
+        return _datamunge.EnsembleKalmanFilter_covariance(self)
+
+    def filter(self, measurements):
+        return _datamunge.EnsembleKalmanFilter_filter(self, measurements)
+    __swig_destroy__ = _datamunge.delete_EnsembleKalmanFilter
+
+# Register EnsembleKalmanFilter in _datamunge:
+_datamunge.EnsembleKalmanFilter_swigregister(EnsembleKalmanFilter)
+class ParticleFilter(object):
+    r"""
+    A bootstrap particle filter (Sequential Importance Resampling): the fully general,
+           non-Gaussian generalization of the Kalman family -- represents the state's entire
+           posterior distribution as a weighted swarm of sample points rather than assuming any
+           particular family of distribution (Gaussian, etc.), so it remains correct even for
+           strongly non-Gaussian or multimodal posteriors where every other filter in this
+           module (which all assume approximately-Gaussian beliefs) can fail. Costs scale with
+           particle count and can need many particles in high dimensions ("the curse of
+           dimensionality" for particle filters) -- EnsembleKalmanFilter is usually preferred
+           for high-dimensional problems where the Gaussian assumption is acceptable.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, f, h, Q, R, x0, P0, num_particles=200, seed=42):
+        _datamunge.ParticleFilter_swiginit(self, _datamunge.new_ParticleFilter(f, h, Q, R, x0, P0, num_particles, seed))
+
+    def predict(self):
+        r"""
+        Propagates every particle through the nonlinear f, each perturbed by an
+               independently-sampled draw from N(0, Q). Weights are untouched (the transition
+               density cancels out of the importance weight for this proposal, the standard
+               bootstrap-filter simplification).
+        """
+        return _datamunge.ParticleFilter_predict(self)
+
+    def update(self, z):
+        r"""
+        Reweights every particle by its Gaussian (N(h(x), R)) observation likelihood
+               given ``z``, normalizes the weights, then resamples the whole swarm from the
+               resulting weighted distribution (multinomial resampling, done unconditionally
+               every step -- simpler than the adaptive "resample only when the effective sample
+               size drops" scheme real-time systems often use, at the cost of extra Monte Carlo
+               noise from resampling more often than strictly necessary).
+        """
+        return _datamunge.ParticleFilter_update(self, z)
+
+    def state(self):
+        return _datamunge.ParticleFilter_state(self)
+
+    def covariance(self):
+        return _datamunge.ParticleFilter_covariance(self)
+
+    def filter(self, measurements):
+        return _datamunge.ParticleFilter_filter(self, measurements)
+    __swig_destroy__ = _datamunge.delete_ParticleFilter
+
+# Register ParticleFilter in _datamunge:
+_datamunge.ParticleFilter_swigregister(ParticleFilter)
+class AlphaBetaStateVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.AlphaBetaStateVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.AlphaBetaStateVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.AlphaBetaStateVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.AlphaBetaStateVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.AlphaBetaStateVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.AlphaBetaStateVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.AlphaBetaStateVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.AlphaBetaStateVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.AlphaBetaStateVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.AlphaBetaStateVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.AlphaBetaStateVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.AlphaBetaStateVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.AlphaBetaStateVector_empty(self)
+
+    def size(self):
+        return _datamunge.AlphaBetaStateVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.AlphaBetaStateVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.AlphaBetaStateVector_begin(self)
+
+    def end(self):
+        return _datamunge.AlphaBetaStateVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.AlphaBetaStateVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.AlphaBetaStateVector_rend(self)
+
+    def clear(self):
+        return _datamunge.AlphaBetaStateVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.AlphaBetaStateVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.AlphaBetaStateVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.AlphaBetaStateVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.AlphaBetaStateVector_swiginit(self, _datamunge.new_AlphaBetaStateVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.AlphaBetaStateVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.AlphaBetaStateVector_front(self)
+
+    def back(self):
+        return _datamunge.AlphaBetaStateVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.AlphaBetaStateVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.AlphaBetaStateVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.AlphaBetaStateVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.AlphaBetaStateVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.AlphaBetaStateVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_AlphaBetaStateVector
+
+# Register AlphaBetaStateVector in _datamunge:
+_datamunge.AlphaBetaStateVector_swigregister(AlphaBetaStateVector)
+class AlphaBetaGammaStateVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _datamunge.AlphaBetaGammaStateVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _datamunge.AlphaBetaGammaStateVector___nonzero__(self)
+
+    def __bool__(self):
+        return _datamunge.AlphaBetaGammaStateVector___bool__(self)
+
+    def __len__(self):
+        return _datamunge.AlphaBetaGammaStateVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _datamunge.AlphaBetaGammaStateVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _datamunge.AlphaBetaGammaStateVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _datamunge.AlphaBetaGammaStateVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _datamunge.AlphaBetaGammaStateVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _datamunge.AlphaBetaGammaStateVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _datamunge.AlphaBetaGammaStateVector___setitem__(self, *args)
+
+    def pop(self):
+        return _datamunge.AlphaBetaGammaStateVector_pop(self)
+
+    def append(self, x):
+        return _datamunge.AlphaBetaGammaStateVector_append(self, x)
+
+    def empty(self):
+        return _datamunge.AlphaBetaGammaStateVector_empty(self)
+
+    def size(self):
+        return _datamunge.AlphaBetaGammaStateVector_size(self)
+
+    def swap(self, v):
+        return _datamunge.AlphaBetaGammaStateVector_swap(self, v)
+
+    def begin(self):
+        return _datamunge.AlphaBetaGammaStateVector_begin(self)
+
+    def end(self):
+        return _datamunge.AlphaBetaGammaStateVector_end(self)
+
+    def rbegin(self):
+        return _datamunge.AlphaBetaGammaStateVector_rbegin(self)
+
+    def rend(self):
+        return _datamunge.AlphaBetaGammaStateVector_rend(self)
+
+    def clear(self):
+        return _datamunge.AlphaBetaGammaStateVector_clear(self)
+
+    def get_allocator(self):
+        return _datamunge.AlphaBetaGammaStateVector_get_allocator(self)
+
+    def pop_back(self):
+        return _datamunge.AlphaBetaGammaStateVector_pop_back(self)
+
+    def erase(self, *args):
+        return _datamunge.AlphaBetaGammaStateVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _datamunge.AlphaBetaGammaStateVector_swiginit(self, _datamunge.new_AlphaBetaGammaStateVector(*args))
+
+    def push_back(self, x):
+        return _datamunge.AlphaBetaGammaStateVector_push_back(self, x)
+
+    def front(self):
+        return _datamunge.AlphaBetaGammaStateVector_front(self)
+
+    def back(self):
+        return _datamunge.AlphaBetaGammaStateVector_back(self)
+
+    def assign(self, n, x):
+        return _datamunge.AlphaBetaGammaStateVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _datamunge.AlphaBetaGammaStateVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _datamunge.AlphaBetaGammaStateVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _datamunge.AlphaBetaGammaStateVector_reserve(self, n)
+
+    def capacity(self):
+        return _datamunge.AlphaBetaGammaStateVector_capacity(self)
+    __swig_destroy__ = _datamunge.delete_AlphaBetaGammaStateVector
+
+# Register AlphaBetaGammaStateVector in _datamunge:
+_datamunge.AlphaBetaGammaStateVector_swigregister(AlphaBetaGammaStateVector)
+class AlphaBetaState(object):
+    r"""The position/velocity estimate returned by AlphaBetaFilter at each step."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    position = property(_datamunge.AlphaBetaState_position_get, _datamunge.AlphaBetaState_position_set)
+    velocity = property(_datamunge.AlphaBetaState_velocity_get, _datamunge.AlphaBetaState_velocity_set)
+
+    def __init__(self):
+        _datamunge.AlphaBetaState_swiginit(self, _datamunge.new_AlphaBetaState())
+    __swig_destroy__ = _datamunge.delete_AlphaBetaState
+
+# Register AlphaBetaState in _datamunge:
+_datamunge.AlphaBetaState_swigregister(AlphaBetaState)
+class AlphaBetaFilter(object):
+    r"""
+    The constant-gain alpha-beta ("g-h") filter: a constant-velocity tracker that uses
+           the SAME predict/correct structure as KalmanFilter, but with fixed gains alpha
+           (position correction) and beta (velocity correction) instead of a covariance-driven
+           Kalman gain -- it is exactly the steady-state behavior a 1D constant-velocity
+           KalmanFilter converges to once its covariance stops changing, with the covariance
+           bookkeeping stripped out entirely. Far cheaper per step (no matrices at all) at the
+           cost of not adapting its gain to changing noise conditions the way a real Kalman
+           filter does.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, alpha, beta, dt, x0=0.0, v0=0.0):
+        _datamunge.AlphaBetaFilter_swiginit(self, _datamunge.new_AlphaBetaFilter(alpha, beta, dt, x0, v0))
+
+    def update(self, z):
+        r"""
+        Predicts one step ahead, then corrects toward measurement ``z``: x_pred = x +
+               v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residual.
+        """
+        return _datamunge.AlphaBetaFilter_update(self, z)
+
+    def position(self):
+        return _datamunge.AlphaBetaFilter_position(self)
+
+    def velocity(self):
+        return _datamunge.AlphaBetaFilter_velocity(self)
+
+    def filter(self, measurements):
+        return _datamunge.AlphaBetaFilter_filter(self, measurements)
+    __swig_destroy__ = _datamunge.delete_AlphaBetaFilter
+
+# Register AlphaBetaFilter in _datamunge:
+_datamunge.AlphaBetaFilter_swigregister(AlphaBetaFilter)
+class AlphaBetaGammaState(object):
+    r"""The position/velocity/acceleration estimate returned by AlphaBetaGammaFilter."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    position = property(_datamunge.AlphaBetaGammaState_position_get, _datamunge.AlphaBetaGammaState_position_set)
+    velocity = property(_datamunge.AlphaBetaGammaState_velocity_get, _datamunge.AlphaBetaGammaState_velocity_set)
+    acceleration = property(_datamunge.AlphaBetaGammaState_acceleration_get, _datamunge.AlphaBetaGammaState_acceleration_set)
+
+    def __init__(self):
+        _datamunge.AlphaBetaGammaState_swiginit(self, _datamunge.new_AlphaBetaGammaState())
+    __swig_destroy__ = _datamunge.delete_AlphaBetaGammaState
+
+# Register AlphaBetaGammaState in _datamunge:
+_datamunge.AlphaBetaGammaState_swigregister(AlphaBetaGammaState)
+class AlphaBetaGammaFilter(object):
+    r"""
+    The constant-gain alpha-beta-gamma filter: AlphaBetaFilter's constant-ACCELERATION
+           generalization (a 3-state g-h-k filter), adding a third fixed gain gamma for the
+           acceleration correction. Same fixed-gain-vs-adaptive-Kalman-gain tradeoff as
+           AlphaBetaFilter, one derivative order higher.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, alpha, beta, gamma, dt, x0=0.0, v0=0.0, a0=0.0):
+        _datamunge.AlphaBetaGammaFilter_swiginit(self, _datamunge.new_AlphaBetaGammaFilter(alpha, beta, gamma, dt, x0, v0, a0))
+
+    def update(self, z):
+        return _datamunge.AlphaBetaGammaFilter_update(self, z)
+
+    def position(self):
+        return _datamunge.AlphaBetaGammaFilter_position(self)
+
+    def velocity(self):
+        return _datamunge.AlphaBetaGammaFilter_velocity(self)
+
+    def acceleration(self):
+        return _datamunge.AlphaBetaGammaFilter_acceleration(self)
+
+    def filter(self, measurements):
+        return _datamunge.AlphaBetaGammaFilter_filter(self, measurements)
+    __swig_destroy__ = _datamunge.delete_AlphaBetaGammaFilter
+
+# Register AlphaBetaGammaFilter in _datamunge:
+_datamunge.AlphaBetaGammaFilter_swigregister(AlphaBetaGammaFilter)
 

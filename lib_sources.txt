@@ -15,6 +15,7 @@ datamunge/stats/gbm_classifier
 datamunge/stats/gbm_regressor
 datamunge/stats/glm
 datamunge/stats/glmm
+datamunge/stats/inla_mixed_model
 datamunge/stats/kernel_regression
 datamunge/stats/knn_classifier
 datamunge/stats/knn_regressor
@@ -37,6 +38,10 @@ datamunge/bayes/autodiff_model
 datamunge/bayes/map
 datamunge/bayes/hmc
 datamunge/bayes/nuts
+datamunge/bayes/inla
+datamunge/bayes/rwm
+datamunge/bayes/gibbs
+datamunge/bayes/importance_sampling
 datamunge/stats/naive_bayes_classifier
 datamunge/stats/random_forest_classifier
 datamunge/stats/random_forest_regressor
@@ -59,3 +64,6 @@ datamunge/stats/proportion_test
 datamunge/stats/fisher_exact_test
 datamunge/stats/normality_test
 datamunge/stats/p_adjust
+datamunge/image/netpbm
+datamunge/image/bmp
+datamunge/image/png

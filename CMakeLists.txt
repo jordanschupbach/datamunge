@@ -81,6 +81,10 @@ if(X11_FOUND)
   target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_X11=1)
 endif()
 
+# datamunge::image's PNG codec wraps zlib's deflate/inflate for IDAT chunk compression.
+find_package(ZLIB REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC ZLIB::ZLIB)
+
 string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
 # Package the C library
 packageProject(
