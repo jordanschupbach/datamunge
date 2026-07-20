@@ -202,6 +202,7 @@ setClass('_p_datamunge__DataFrame', contains = 'C++Reference')
 setClass('_p_datamunge__LM', contains = 'C++Reference')
 setClass('_p_datamunge__LMM', contains = 'C++Reference')
 setClass('_p_datamunge__GLMM', contains = 'C++Reference')
+setClass('_p_datamunge__INLAMixedModel', contains = 'C++Reference')
 setClass('_p_datamunge__LDA', contains = 'C++Reference')
 setClass('_p_datamunge__SVM', contains = 'C++Reference')
 setClass('_p_datamunge__DecisionTreeClassifier', contains = 'C++Reference')
@@ -519,6 +520,79 @@ setClass("datamunge::bayes::NUTSResult",
 # End class datamunge::bayes::NUTSResult
 
 setClass('_p_datamunge__bayes__NUTS', contains = 'C++Reference')
+setClass('_p_datamunge__bayes__RWMOptions', contains = 'C++Reference')
+setClass("datamunge::bayes::RWMOptions",
+    representation(
+        num_samples = "integer",
+        num_warmup = "integer",
+        initial_step_size = "numeric",
+        target_accept_rate = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::bayes::RWMOptions
+
+setClass('_p_datamunge__bayes__RWMResult', contains = 'C++Reference')
+setClass("datamunge::bayes::RWMResult",
+    representation(
+        samples = "list",
+        accept_rate = "numeric",
+        final_step_size = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::bayes::RWMResult
+
+setClass('_p_datamunge__bayes__RandomWalkMetropolis', contains = 'C++Reference')
+setClass('_p_datamunge__bayes__GibbsOptions', contains = 'C++Reference')
+setClass("datamunge::bayes::GibbsOptions",
+    representation(
+        num_samples = "integer",
+        num_warmup = "integer",
+        initial_step_sizes = "numeric",
+        target_accept_rate = "numeric",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::bayes::GibbsOptions
+
+setClass('_p_datamunge__bayes__GibbsResult', contains = 'C++Reference')
+setClass("datamunge::bayes::GibbsResult",
+    representation(
+        samples = "list",
+        accept_rates = "numeric",
+        final_step_sizes = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::bayes::GibbsResult
+
+setClass('_p_datamunge__bayes__GibbsSampler', contains = 'C++Reference')
+setClass('_p_datamunge__bayes__ImportanceSamplingOptions', contains = 'C++Reference')
+setClass("datamunge::bayes::ImportanceSamplingOptions",
+    representation(
+        num_samples = "integer",
+        seed = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::bayes::ImportanceSamplingOptions
+
+setClass('_p_datamunge__bayes__ImportanceSamplingResult', contains = 'C++Reference')
+setClass("datamunge::bayes::ImportanceSamplingResult",
+    representation(
+        samples = "list",
+        normalized_weights = "numeric",
+        effective_sample_size = "numeric",
+        log_evidence = "numeric"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::bayes::ImportanceSamplingResult
+
+setClass('_p_datamunge__bayes__ImportanceSampling', contains = 'C++Reference')
 
 
 
@@ -6928,6 +7002,596 @@ setMethod('$', '_p_datamunge__GLMM', function(x, name)
 );
 # end of accessor method for datamunge::GLMM
 setMethod('delete', '_p_datamunge__GLMM', function(obj) {delete_datamunge__GLMM(obj)})
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_0` = function(data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span, mode_population_size, mode_max_generations, seed)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  strategy = as(strategy, "character"); 
+  
+  grid_points_per_dim = as.integer(grid_points_per_dim);
+  
+  if(length(grid_points_per_dim) > 1) {
+    warning("using only the first element of grid_points_per_dim");
+  };
+  
+  
+  mode_population_size = as.integer(mode_population_size);
+  
+  if(length(mode_population_size) > 1) {
+    warning("using only the first element of mode_population_size");
+  };
+  
+  mode_max_generations = as.integer(mode_max_generations);
+  
+  if(length(mode_max_generations) > 1) {
+    warning("using only the first element of mode_max_generations");
+  };
+  
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_0', data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span, mode_population_size, mode_max_generations, seed, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_0`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_0`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', 'character', 'numeric', 'integer', 'numeric', 'integer', 'integer', 'integer')
+class(`INLAMixedModel__SWIG_0`) = c("SWIGFunction", class('INLAMixedModel__SWIG_0'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_1` = function(data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span, mode_population_size, mode_max_generations)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  strategy = as(strategy, "character"); 
+  
+  grid_points_per_dim = as.integer(grid_points_per_dim);
+  
+  if(length(grid_points_per_dim) > 1) {
+    warning("using only the first element of grid_points_per_dim");
+  };
+  
+  
+  mode_population_size = as.integer(mode_population_size);
+  
+  if(length(mode_population_size) > 1) {
+    warning("using only the first element of mode_population_size");
+  };
+  
+  mode_max_generations = as.integer(mode_max_generations);
+  
+  if(length(mode_max_generations) > 1) {
+    warning("using only the first element of mode_max_generations");
+  };
+  
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_1', data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span, mode_population_size, mode_max_generations, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_1`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_1`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', 'character', 'numeric', 'integer', 'numeric', 'integer', 'integer')
+class(`INLAMixedModel__SWIG_1`) = c("SWIGFunction", class('INLAMixedModel__SWIG_1'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_2` = function(data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span, mode_population_size)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  strategy = as(strategy, "character"); 
+  
+  grid_points_per_dim = as.integer(grid_points_per_dim);
+  
+  if(length(grid_points_per_dim) > 1) {
+    warning("using only the first element of grid_points_per_dim");
+  };
+  
+  
+  mode_population_size = as.integer(mode_population_size);
+  
+  if(length(mode_population_size) > 1) {
+    warning("using only the first element of mode_population_size");
+  };
+  
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_2', data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span, mode_population_size, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_2`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_2`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', 'character', 'numeric', 'integer', 'numeric', 'integer')
+class(`INLAMixedModel__SWIG_2`) = c("SWIGFunction", class('INLAMixedModel__SWIG_2'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_3` = function(data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  strategy = as(strategy, "character"); 
+  
+  grid_points_per_dim = as.integer(grid_points_per_dim);
+  
+  if(length(grid_points_per_dim) > 1) {
+    warning("using only the first element of grid_points_per_dim");
+  };
+  
+  
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_3', data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, grid_span, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_3`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_3`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', 'character', 'numeric', 'integer', 'numeric')
+class(`INLAMixedModel__SWIG_3`) = c("SWIGFunction", class('INLAMixedModel__SWIG_3'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_4` = function(data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  strategy = as(strategy, "character"); 
+  
+  grid_points_per_dim = as.integer(grid_points_per_dim);
+  
+  if(length(grid_points_per_dim) > 1) {
+    warning("using only the first element of grid_points_per_dim");
+  };
+  
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_4', data, formula, family, strategy, fixed_effect_prior_sd, grid_points_per_dim, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_4`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_4`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', 'character', 'numeric', 'integer')
+class(`INLAMixedModel__SWIG_4`) = c("SWIGFunction", class('INLAMixedModel__SWIG_4'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_5` = function(data, formula, family, strategy, fixed_effect_prior_sd)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  strategy = as(strategy, "character"); 
+  
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_5', data, formula, family, strategy, fixed_effect_prior_sd, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_5`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_5`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', 'character', 'numeric')
+class(`INLAMixedModel__SWIG_5`) = c("SWIGFunction", class('INLAMixedModel__SWIG_5'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_6` = function(data, formula, family, strategy)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  strategy = as(strategy, "character"); 
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_6', data, formula, family, strategy, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_6`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_6`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character', 'character')
+class(`INLAMixedModel__SWIG_6`) = c("SWIGFunction", class('INLAMixedModel__SWIG_6'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_7` = function(data, formula, family)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  family = as(family, "character"); 
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_7', data, formula, family, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_7`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_7`, "inputTypes") = c('_p_datamunge__DataFrame', 'character', 'character')
+class(`INLAMixedModel__SWIG_7`) = c("SWIGFunction", class('INLAMixedModel__SWIG_7'))
+
+# Start of new_INLAMixedModel
+
+`INLAMixedModel__SWIG_8` = function(data, formula)
+{
+  if (inherits(data, "ExternalReference")) data = slot(data,"ref"); 
+  formula = as(formula, "character"); 
+  ;ans = .Call('R_swig_new_INLAMixedModel__SWIG_8', data, formula, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__INLAMixedModel", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_INLAMixedModel);
+  ans
+  
+}
+
+attr(`INLAMixedModel__SWIG_8`, 'returnType') = '_p_datamunge__INLAMixedModel'
+attr(`INLAMixedModel__SWIG_8`, "inputTypes") = c('_p_datamunge__DataFrame', 'character')
+class(`INLAMixedModel__SWIG_8`) = c("SWIGFunction", class('INLAMixedModel__SWIG_8'))
+
+`INLAMixedModel` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 9
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_8; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_7; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_6; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_5; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_4; 
+    }
+  } else if (argc == 7) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_3; 
+    }
+  } else if (argc == 8) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( (is.integer(argv[[8]]) || is.numeric(argv[[8]])) && length(argv[[8]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_2; 
+    }
+  } else if (argc == 9) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( (is.integer(argv[[8]]) || is.numeric(argv[[8]])) && length(argv[[8]]) == 1 ) && ( (is.integer(argv[[9]]) || is.numeric(argv[[9]])) && length(argv[[9]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_1; 
+    }
+  } else if (argc == 10) {
+    if (( extends(argtypes[1], '_p_datamunge__DataFrame') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 ) && ( is.numeric(argv[[7]]) && length(argv[[7]]) == 1 ) && ( (is.integer(argv[[8]]) || is.numeric(argv[[8]])) && length(argv[[8]]) == 1 ) && ( (is.integer(argv[[9]]) || is.numeric(argv[[9]])) && length(argv[[9]]) == 1 ) && ( (is.integer(argv[[10]]) || is.numeric(argv[[10]])) && length(argv[[10]]) == 1 )) {
+      f <- INLAMixedModel__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for INLAMixedModel with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of INLAMixedModel_formula_text
+
+`INLAMixedModel_formula_text` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_formula_text', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_formula_text`, 'returnType') = 'character'
+attr(`INLAMixedModel_formula_text`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_formula_text`) = c("SWIGFunction", class('INLAMixedModel_formula_text'))
+
+# Start of INLAMixedModel_family
+
+`INLAMixedModel_family` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_family', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_family`, 'returnType') = 'character'
+attr(`INLAMixedModel_family`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_family`) = c("SWIGFunction", class('INLAMixedModel_family'))
+
+# Start of INLAMixedModel_group_variable
+
+`INLAMixedModel_group_variable` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_group_variable', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_group_variable`, 'returnType') = 'character'
+attr(`INLAMixedModel_group_variable`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_group_variable`) = c("SWIGFunction", class('INLAMixedModel_group_variable'))
+
+# Start of INLAMixedModel_random_effect_names
+
+`INLAMixedModel_random_effect_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_random_effect_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_random_effect_names`, 'returnType') = 'character'
+attr(`INLAMixedModel_random_effect_names`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_random_effect_names`) = c("SWIGFunction", class('INLAMixedModel_random_effect_names'))
+
+# Start of INLAMixedModel_observations
+
+`INLAMixedModel_observations` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_observations', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_observations`, 'returnType') = 'integer'
+attr(`INLAMixedModel_observations`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_observations`) = c("SWIGFunction", class('INLAMixedModel_observations'))
+
+# Start of INLAMixedModel_num_groups
+
+`INLAMixedModel_num_groups` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_num_groups', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_num_groups`, 'returnType') = 'integer'
+attr(`INLAMixedModel_num_groups`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_num_groups`) = c("SWIGFunction", class('INLAMixedModel_num_groups'))
+
+# Start of INLAMixedModel_fixed_effects_mean
+
+`INLAMixedModel_fixed_effects_mean` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_fixed_effects_mean', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_fixed_effects_mean`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_fixed_effects_mean`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_fixed_effects_mean`) = c("SWIGFunction", class('INLAMixedModel_fixed_effects_mean'))
+
+# Start of INLAMixedModel_fixed_effects_sd
+
+`INLAMixedModel_fixed_effects_sd` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_fixed_effects_sd', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_fixed_effects_sd`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_fixed_effects_sd`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_fixed_effects_sd`) = c("SWIGFunction", class('INLAMixedModel_fixed_effects_sd'))
+
+# Start of INLAMixedModel_coefficient_names
+
+`INLAMixedModel_coefficient_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_coefficient_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_coefficient_names`, 'returnType') = 'character'
+attr(`INLAMixedModel_coefficient_names`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_coefficient_names`) = c("SWIGFunction", class('INLAMixedModel_coefficient_names'))
+
+# Start of INLAMixedModel_random_effect_std_devs
+
+`INLAMixedModel_random_effect_std_devs` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_random_effect_std_devs', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_random_effect_std_devs`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_random_effect_std_devs`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_random_effect_std_devs`) = c("SWIGFunction", class('INLAMixedModel_random_effect_std_devs'))
+
+# Start of INLAMixedModel_residual_std_dev
+
+`INLAMixedModel_residual_std_dev` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_residual_std_dev', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_residual_std_dev`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_residual_std_dev`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_residual_std_dev`) = c("SWIGFunction", class('INLAMixedModel_residual_std_dev'))
+
+# Start of INLAMixedModel_group_labels
+
+`INLAMixedModel_group_labels` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_group_labels', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_group_labels`, 'returnType') = 'character'
+attr(`INLAMixedModel_group_labels`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_group_labels`) = c("SWIGFunction", class('INLAMixedModel_group_labels'))
+
+# Start of INLAMixedModel_random_effects_mean_for_group
+
+`INLAMixedModel_random_effects_mean_for_group` = function(self, group_index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  group_index = as.integer(group_index);
+  
+  if(length(group_index) > 1) {
+    warning("using only the first element of group_index");
+  };
+  
+  ;.Call('R_swig_INLAMixedModel_random_effects_mean_for_group', self, group_index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_random_effects_mean_for_group`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_random_effects_mean_for_group`, "inputTypes") = c('_p_datamunge__INLAMixedModel', 'integer')
+class(`INLAMixedModel_random_effects_mean_for_group`) = c("SWIGFunction", class('INLAMixedModel_random_effects_mean_for_group'))
+
+# Start of INLAMixedModel_random_effects_sd_for_group
+
+`INLAMixedModel_random_effects_sd_for_group` = function(self, group_index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  group_index = as.integer(group_index);
+  
+  if(length(group_index) > 1) {
+    warning("using only the first element of group_index");
+  };
+  
+  ;.Call('R_swig_INLAMixedModel_random_effects_sd_for_group', self, group_index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_random_effects_sd_for_group`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_random_effects_sd_for_group`, "inputTypes") = c('_p_datamunge__INLAMixedModel', 'integer')
+class(`INLAMixedModel_random_effects_sd_for_group`) = c("SWIGFunction", class('INLAMixedModel_random_effects_sd_for_group'))
+
+# Start of INLAMixedModel_log_marginal_likelihood
+
+`INLAMixedModel_log_marginal_likelihood` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_log_marginal_likelihood', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_log_marginal_likelihood`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_log_marginal_likelihood`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_log_marginal_likelihood`) = c("SWIGFunction", class('INLAMixedModel_log_marginal_likelihood'))
+
+# Start of INLAMixedModel_summary
+
+`INLAMixedModel_summary` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_summary', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_summary`, 'returnType') = 'character'
+attr(`INLAMixedModel_summary`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_summary`) = c("SWIGFunction", class('INLAMixedModel_summary'))
+
+# Start of INLAMixedModel_print_summary
+
+`INLAMixedModel_print_summary` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_print_summary', self, PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_print_summary`, 'returnType') = 'void'
+attr(`INLAMixedModel_print_summary`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`INLAMixedModel_print_summary`) = c("SWIGFunction", class('INLAMixedModel_print_summary'))
+
+# Start of INLAMixedModel_predict
+
+`INLAMixedModel_predict` = function(self, newdata, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(newdata, "ExternalReference")) newdata = slot(newdata,"ref"); 
+  ;.Call('R_swig_INLAMixedModel_predict', self, newdata, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`INLAMixedModel_predict`, 'returnType') = 'numeric'
+attr(`INLAMixedModel_predict`, "inputTypes") = c('_p_datamunge__INLAMixedModel', '_p_datamunge__DataFrame')
+class(`INLAMixedModel_predict`) = c("SWIGFunction", class('INLAMixedModel_predict'))
+
+# Start of delete_INLAMixedModel
+
+`delete_INLAMixedModel` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_INLAMixedModel', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_INLAMixedModel`, 'returnType') = 'void'
+attr(`delete_INLAMixedModel`, "inputTypes") = c('_p_datamunge__INLAMixedModel')
+class(`delete_INLAMixedModel`) = c("SWIGFunction", class('delete_INLAMixedModel'))
+
+# Start of accessor method for datamunge::INLAMixedModel
+setMethod('$', '_p_datamunge__INLAMixedModel', function(x, name)
+
+{
+  accessorFuns = list('formula_text' = INLAMixedModel_formula_text, 'family' = INLAMixedModel_family, 'group_variable' = INLAMixedModel_group_variable, 'random_effect_names' = INLAMixedModel_random_effect_names, 'observations' = INLAMixedModel_observations, 'num_groups' = INLAMixedModel_num_groups, 'fixed_effects_mean' = INLAMixedModel_fixed_effects_mean, 'fixed_effects_sd' = INLAMixedModel_fixed_effects_sd, 'coefficient_names' = INLAMixedModel_coefficient_names, 'random_effect_std_devs' = INLAMixedModel_random_effect_std_devs, 'residual_std_dev' = INLAMixedModel_residual_std_dev, 'group_labels' = INLAMixedModel_group_labels, 'random_effects_mean_for_group' = INLAMixedModel_random_effects_mean_for_group, 'random_effects_sd_for_group' = INLAMixedModel_random_effects_sd_for_group, 'log_marginal_likelihood' = INLAMixedModel_log_marginal_likelihood, 'summary' = INLAMixedModel_summary, 'print_summary' = INLAMixedModel_print_summary, 'predict' = INLAMixedModel_predict);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::INLAMixedModel
+setMethod('delete', '_p_datamunge__INLAMixedModel', function(obj) {delete_datamunge__INLAMixedModel(obj)})
 # Start of new_LDA
 
 `LDA__SWIG_0` = function(data, formula, priors)
@@ -20365,6 +21029,323 @@ attr(`Tensor_outer`, 'returnType') = '_p_datamunge__Tensor'
 attr(`Tensor_outer`, "inputTypes") = c('_p_datamunge__Tensor', '_p_datamunge__Tensor')
 class(`Tensor_outer`) = c("SWIGFunction", class('Tensor_outer'))
 
+# Start of Tensor_from_image
+
+`Tensor_from_image` = function(img)
+{
+  if (inherits(img, "ExternalReference")) img = slot(img,"ref"); 
+  ;ans = .Call('R_swig_Tensor_from_image', img, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_from_image`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_from_image`, "inputTypes") = c('_p_datamunge__image__Image')
+class(`Tensor_from_image`) = c("SWIGFunction", class('Tensor_from_image'))
+
+# Start of Tensor_conv2d
+
+`Tensor_conv2d__SWIG_0` = function(input, kernel, bias, stride, padding)
+{
+  if (inherits(input, "ExternalReference")) input = slot(input,"ref"); 
+  if (inherits(kernel, "ExternalReference")) kernel = slot(kernel,"ref"); 
+  if (inherits(bias, "ExternalReference")) bias = slot(bias,"ref"); 
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  padding = as.integer(padding);
+  
+  if(length(padding) > 1) {
+    warning("using only the first element of padding");
+  };
+  
+  ;ans = .Call('R_swig_Tensor_conv2d__SWIG_0', input, kernel, bias, stride, padding, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_conv2d__SWIG_0`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_conv2d__SWIG_0`, "inputTypes") = c('_p_datamunge__Tensor', '_p_datamunge__Tensor', '_p_datamunge__Tensor', 'integer', 'integer')
+class(`Tensor_conv2d__SWIG_0`) = c("SWIGFunction", class('Tensor_conv2d__SWIG_0'))
+
+# Start of Tensor_conv2d
+
+`Tensor_conv2d__SWIG_1` = function(input, kernel, bias, stride)
+{
+  if (inherits(input, "ExternalReference")) input = slot(input,"ref"); 
+  if (inherits(kernel, "ExternalReference")) kernel = slot(kernel,"ref"); 
+  if (inherits(bias, "ExternalReference")) bias = slot(bias,"ref"); 
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  ;ans = .Call('R_swig_Tensor_conv2d__SWIG_1', input, kernel, bias, stride, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_conv2d__SWIG_1`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_conv2d__SWIG_1`, "inputTypes") = c('_p_datamunge__Tensor', '_p_datamunge__Tensor', '_p_datamunge__Tensor', 'integer')
+class(`Tensor_conv2d__SWIG_1`) = c("SWIGFunction", class('Tensor_conv2d__SWIG_1'))
+
+# Start of Tensor_conv2d
+
+`Tensor_conv2d__SWIG_2` = function(input, kernel, bias)
+{
+  if (inherits(input, "ExternalReference")) input = slot(input,"ref"); 
+  if (inherits(kernel, "ExternalReference")) kernel = slot(kernel,"ref"); 
+  if (inherits(bias, "ExternalReference")) bias = slot(bias,"ref"); 
+  ;ans = .Call('R_swig_Tensor_conv2d__SWIG_2', input, kernel, bias, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_conv2d__SWIG_2`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_conv2d__SWIG_2`, "inputTypes") = c('_p_datamunge__Tensor', '_p_datamunge__Tensor', '_p_datamunge__Tensor')
+class(`Tensor_conv2d__SWIG_2`) = c("SWIGFunction", class('Tensor_conv2d__SWIG_2'))
+
+`Tensor_conv2d` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__Tensor') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_datamunge__Tensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__Tensor') && length(argv[[3]]) == 1 )) {
+      f <- Tensor_conv2d__SWIG_2; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__Tensor') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_datamunge__Tensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__Tensor') && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 )) {
+      f <- Tensor_conv2d__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__Tensor') && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_datamunge__Tensor') && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__Tensor') && length(argv[[3]]) == 1 ) && ( (is.integer(argv[[4]]) || is.numeric(argv[[4]])) && length(argv[[4]]) == 1 ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 )) {
+      f <- Tensor_conv2d__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Tensor_conv2d with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Tensor_max_pool2d
+
+`Tensor_max_pool2d__SWIG_0` = function(self, pool_size, stride)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  pool_size = as.integer(pool_size);
+  
+  if(length(pool_size) > 1) {
+    warning("using only the first element of pool_size");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  ;ans = .Call('R_swig_Tensor_max_pool2d__SWIG_0', self, pool_size, stride, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_max_pool2d__SWIG_0`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_max_pool2d__SWIG_0`, "inputTypes") = c('_p_datamunge__Tensor', 'integer', 'integer')
+class(`Tensor_max_pool2d__SWIG_0`) = c("SWIGFunction", class('Tensor_max_pool2d__SWIG_0'))
+
+# Start of Tensor_max_pool2d
+
+`Tensor_max_pool2d__SWIG_1` = function(self, pool_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  pool_size = as.integer(pool_size);
+  
+  if(length(pool_size) > 1) {
+    warning("using only the first element of pool_size");
+  };
+  
+  ;ans = .Call('R_swig_Tensor_max_pool2d__SWIG_1', self, pool_size, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_max_pool2d__SWIG_1`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_max_pool2d__SWIG_1`, "inputTypes") = c('_p_datamunge__Tensor', 'integer')
+class(`Tensor_max_pool2d__SWIG_1`) = c("SWIGFunction", class('Tensor_max_pool2d__SWIG_1'))
+
+`Tensor_max_pool2d` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__Tensor') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- Tensor_max_pool2d__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__Tensor') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- Tensor_max_pool2d__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Tensor_max_pool2d with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Tensor_avg_pool2d
+
+`Tensor_avg_pool2d__SWIG_0` = function(self, pool_size, stride)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  pool_size = as.integer(pool_size);
+  
+  if(length(pool_size) > 1) {
+    warning("using only the first element of pool_size");
+  };
+  
+  stride = as.integer(stride);
+  
+  if(length(stride) > 1) {
+    warning("using only the first element of stride");
+  };
+  
+  ;ans = .Call('R_swig_Tensor_avg_pool2d__SWIG_0', self, pool_size, stride, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_avg_pool2d__SWIG_0`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_avg_pool2d__SWIG_0`, "inputTypes") = c('_p_datamunge__Tensor', 'integer', 'integer')
+class(`Tensor_avg_pool2d__SWIG_0`) = c("SWIGFunction", class('Tensor_avg_pool2d__SWIG_0'))
+
+# Start of Tensor_avg_pool2d
+
+`Tensor_avg_pool2d__SWIG_1` = function(self, pool_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  pool_size = as.integer(pool_size);
+  
+  if(length(pool_size) > 1) {
+    warning("using only the first element of pool_size");
+  };
+  
+  ;ans = .Call('R_swig_Tensor_avg_pool2d__SWIG_1', self, pool_size, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_avg_pool2d__SWIG_1`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_avg_pool2d__SWIG_1`, "inputTypes") = c('_p_datamunge__Tensor', 'integer')
+class(`Tensor_avg_pool2d__SWIG_1`) = c("SWIGFunction", class('Tensor_avg_pool2d__SWIG_1'))
+
+`Tensor_avg_pool2d` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__Tensor') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- Tensor_avg_pool2d__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__Tensor') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- Tensor_avg_pool2d__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Tensor_avg_pool2d with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of Tensor_relu
+
+`Tensor_relu` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Tensor_relu', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_relu`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_relu`, "inputTypes") = c('_p_datamunge__Tensor')
+class(`Tensor_relu`) = c("SWIGFunction", class('Tensor_relu'))
+
+# Start of Tensor_sigmoid
+
+`Tensor_sigmoid` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Tensor_sigmoid', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_sigmoid`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_sigmoid`, "inputTypes") = c('_p_datamunge__Tensor')
+class(`Tensor_sigmoid`) = c("SWIGFunction", class('Tensor_sigmoid'))
+
+# Start of Tensor_softmax
+
+`Tensor_softmax` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_Tensor_softmax', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__Tensor", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Tensor_softmax`, 'returnType') = '_p_datamunge__Tensor'
+attr(`Tensor_softmax`, "inputTypes") = c('_p_datamunge__Tensor')
+class(`Tensor_softmax`) = c("SWIGFunction", class('Tensor_softmax'))
+
 # Start of Tensor_to_string
 
 `Tensor_to_string__SWIG_0` = function(self, max_elements, .copy = FALSE)
@@ -20436,7 +21417,7 @@ class(`delete_Tensor`) = c("SWIGFunction", class('delete_Tensor'))
 setMethod('$', '_p_datamunge__Tensor', function(x, name)
 
 {
-  accessorFuns = list('ndim' = Tensor_ndim, 'shape' = Tensor_shape, 'size' = Tensor_size, 'dtype_name' = Tensor_dtype_name, 'at' = Tensor_at, 'set' = Tensor_set, 'string_at' = Tensor_string_at, 'set_string' = Tensor_set_string, 'at_flat' = Tensor_at_flat, 'set_flat' = Tensor_set_flat, 'string_at_flat' = Tensor_string_at_flat, 'set_string_flat' = Tensor_set_string_flat, 'reshape' = Tensor_reshape, 'flatten' = Tensor_flatten, 'transpose' = Tensor_transpose, 'squeeze' = Tensor_squeeze, 'squeeze_axis' = Tensor_squeeze_axis, 'expand_dims' = Tensor_expand_dims, 'slice' = Tensor_slice, 'index_select' = Tensor_index_select, 'add' = Tensor_add, 'subtract' = Tensor_subtract, 'multiply' = Tensor_multiply, 'divide' = Tensor_divide, 'power' = Tensor_power, 'add_scalar' = Tensor_add_scalar, 'subtract_scalar' = Tensor_subtract_scalar, 'multiply_scalar' = Tensor_multiply_scalar, 'divide_scalar' = Tensor_divide_scalar, 'power_scalar' = Tensor_power_scalar, 'negate' = Tensor_negate, 'abs' = Tensor_abs, 'sqrt' = Tensor_sqrt, 'exp' = Tensor_exp, 'log' = Tensor_log, 'apply' = Tensor_apply, 'equal' = Tensor_equal, 'not_equal' = Tensor_not_equal, 'less' = Tensor_less, 'less_equal' = Tensor_less_equal, 'greater' = Tensor_greater, 'greater_equal' = Tensor_greater_equal, 'sum' = Tensor_sum, 'mean' = Tensor_mean, 'max' = Tensor_max, 'min' = Tensor_min, 'prod' = Tensor_prod, 'argmax' = Tensor_argmax, 'argmin' = Tensor_argmin, 'all' = Tensor_all, 'any' = Tensor_any, 'sum_axis' = Tensor_sum_axis, 'mean_axis' = Tensor_mean_axis, 'max_axis' = Tensor_max_axis, 'min_axis' = Tensor_min_axis, 'prod_axis' = Tensor_prod_axis, 'argmax_axis' = Tensor_argmax_axis, 'argmin_axis' = Tensor_argmin_axis, 'matmul' = Tensor_matmul, 'dot' = Tensor_dot, 'outer' = Tensor_outer, 'to_string' = Tensor_to_string);
+  accessorFuns = list('ndim' = Tensor_ndim, 'shape' = Tensor_shape, 'size' = Tensor_size, 'dtype_name' = Tensor_dtype_name, 'at' = Tensor_at, 'set' = Tensor_set, 'string_at' = Tensor_string_at, 'set_string' = Tensor_set_string, 'at_flat' = Tensor_at_flat, 'set_flat' = Tensor_set_flat, 'string_at_flat' = Tensor_string_at_flat, 'set_string_flat' = Tensor_set_string_flat, 'reshape' = Tensor_reshape, 'flatten' = Tensor_flatten, 'transpose' = Tensor_transpose, 'squeeze' = Tensor_squeeze, 'squeeze_axis' = Tensor_squeeze_axis, 'expand_dims' = Tensor_expand_dims, 'slice' = Tensor_slice, 'index_select' = Tensor_index_select, 'add' = Tensor_add, 'subtract' = Tensor_subtract, 'multiply' = Tensor_multiply, 'divide' = Tensor_divide, 'power' = Tensor_power, 'add_scalar' = Tensor_add_scalar, 'subtract_scalar' = Tensor_subtract_scalar, 'multiply_scalar' = Tensor_multiply_scalar, 'divide_scalar' = Tensor_divide_scalar, 'power_scalar' = Tensor_power_scalar, 'negate' = Tensor_negate, 'abs' = Tensor_abs, 'sqrt' = Tensor_sqrt, 'exp' = Tensor_exp, 'log' = Tensor_log, 'apply' = Tensor_apply, 'equal' = Tensor_equal, 'not_equal' = Tensor_not_equal, 'less' = Tensor_less, 'less_equal' = Tensor_less_equal, 'greater' = Tensor_greater, 'greater_equal' = Tensor_greater_equal, 'sum' = Tensor_sum, 'mean' = Tensor_mean, 'max' = Tensor_max, 'min' = Tensor_min, 'prod' = Tensor_prod, 'argmax' = Tensor_argmax, 'argmin' = Tensor_argmin, 'all' = Tensor_all, 'any' = Tensor_any, 'sum_axis' = Tensor_sum_axis, 'mean_axis' = Tensor_mean_axis, 'max_axis' = Tensor_max_axis, 'min_axis' = Tensor_min_axis, 'prod_axis' = Tensor_prod_axis, 'argmax_axis' = Tensor_argmax_axis, 'argmin_axis' = Tensor_argmin_axis, 'matmul' = Tensor_matmul, 'dot' = Tensor_dot, 'outer' = Tensor_outer, 'max_pool2d' = Tensor_max_pool2d, 'avg_pool2d' = Tensor_avg_pool2d, 'relu' = Tensor_relu, 'sigmoid' = Tensor_sigmoid, 'softmax' = Tensor_softmax, 'to_string' = Tensor_to_string);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -32948,6 +33929,1597 @@ setMethod('$', '_p_datamunge__bayes__NUTS', function(x, name)
 );
 # end of accessor method for datamunge::bayes::NUTS
 setMethod('delete', '_p_datamunge__bayes__NUTS', function(obj) {delete_datamunge__bayes__NUTS(obj)})
+# Start of RWMOptions_num_samples_set
+
+`RWMOptions_num_samples_set` = function(self, s_num_samples)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_num_samples = as.integer(s_num_samples);
+  
+  if(length(s_num_samples) > 1) {
+    warning("using only the first element of s_num_samples");
+  };
+  
+  ;.Call('R_swig_RWMOptions_num_samples_set', self, s_num_samples, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_num_samples_set`, 'returnType') = 'void'
+attr(`RWMOptions_num_samples_set`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions', 'integer')
+class(`RWMOptions_num_samples_set`) = c("SWIGFunction", class('RWMOptions_num_samples_set'))
+
+# Start of RWMOptions_num_samples_get
+
+`RWMOptions_num_samples_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMOptions_num_samples_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_num_samples_get`, 'returnType') = 'integer'
+attr(`RWMOptions_num_samples_get`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`RWMOptions_num_samples_get`) = c("SWIGFunction", class('RWMOptions_num_samples_get'))
+
+# Start of RWMOptions_num_warmup_set
+
+`RWMOptions_num_warmup_set` = function(self, s_num_warmup)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_num_warmup = as.integer(s_num_warmup);
+  
+  if(length(s_num_warmup) > 1) {
+    warning("using only the first element of s_num_warmup");
+  };
+  
+  ;.Call('R_swig_RWMOptions_num_warmup_set', self, s_num_warmup, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_num_warmup_set`, 'returnType') = 'void'
+attr(`RWMOptions_num_warmup_set`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions', 'integer')
+class(`RWMOptions_num_warmup_set`) = c("SWIGFunction", class('RWMOptions_num_warmup_set'))
+
+# Start of RWMOptions_num_warmup_get
+
+`RWMOptions_num_warmup_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMOptions_num_warmup_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_num_warmup_get`, 'returnType') = 'integer'
+attr(`RWMOptions_num_warmup_get`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`RWMOptions_num_warmup_get`) = c("SWIGFunction", class('RWMOptions_num_warmup_get'))
+
+# Start of RWMOptions_initial_step_size_set
+
+`RWMOptions_initial_step_size_set` = function(self, s_initial_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RWMOptions_initial_step_size_set', self, s_initial_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_initial_step_size_set`, 'returnType') = 'void'
+attr(`RWMOptions_initial_step_size_set`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions', 'numeric')
+class(`RWMOptions_initial_step_size_set`) = c("SWIGFunction", class('RWMOptions_initial_step_size_set'))
+
+# Start of RWMOptions_initial_step_size_get
+
+`RWMOptions_initial_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMOptions_initial_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_initial_step_size_get`, 'returnType') = 'numeric'
+attr(`RWMOptions_initial_step_size_get`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`RWMOptions_initial_step_size_get`) = c("SWIGFunction", class('RWMOptions_initial_step_size_get'))
+
+# Start of RWMOptions_target_accept_rate_set
+
+`RWMOptions_target_accept_rate_set` = function(self, s_target_accept_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RWMOptions_target_accept_rate_set', self, s_target_accept_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_target_accept_rate_set`, 'returnType') = 'void'
+attr(`RWMOptions_target_accept_rate_set`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions', 'numeric')
+class(`RWMOptions_target_accept_rate_set`) = c("SWIGFunction", class('RWMOptions_target_accept_rate_set'))
+
+# Start of RWMOptions_target_accept_rate_get
+
+`RWMOptions_target_accept_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMOptions_target_accept_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_target_accept_rate_get`, 'returnType') = 'numeric'
+attr(`RWMOptions_target_accept_rate_get`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`RWMOptions_target_accept_rate_get`) = c("SWIGFunction", class('RWMOptions_target_accept_rate_get'))
+
+# Start of RWMOptions_seed_set
+
+`RWMOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_RWMOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_seed_set`, 'returnType') = 'void'
+attr(`RWMOptions_seed_set`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions', 'integer')
+class(`RWMOptions_seed_set`) = c("SWIGFunction", class('RWMOptions_seed_set'))
+
+# Start of RWMOptions_seed_get
+
+`RWMOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMOptions_seed_get`, 'returnType') = 'integer'
+attr(`RWMOptions_seed_get`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`RWMOptions_seed_get`) = c("SWIGFunction", class('RWMOptions_seed_get'))
+
+# Start of new_RWMOptions
+
+`RWMOptions` = function()
+{
+  ;ans = .Call('R_swig_new_RWMOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__RWMOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RWMOptions);
+  ans
+  
+}
+
+attr(`RWMOptions`, 'returnType') = '_p_datamunge__bayes__RWMOptions'
+class(`RWMOptions`) = c("SWIGFunction", class('RWMOptions'))
+
+# Start of delete_RWMOptions
+
+`delete_RWMOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RWMOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RWMOptions`, 'returnType') = 'void'
+attr(`delete_RWMOptions`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`delete_RWMOptions`) = c("SWIGFunction", class('delete_RWMOptions'))
+
+# Start of accessor method for datamunge::bayes::RWMOptions
+setMethod('$', '_p_datamunge__bayes__RWMOptions', function(x, name)
+
+{
+  accessorFuns = list('num_samples' = RWMOptions_num_samples_get, 'num_warmup' = RWMOptions_num_warmup_get, 'initial_step_size' = RWMOptions_initial_step_size_get, 'target_accept_rate' = RWMOptions_target_accept_rate_get, 'seed' = RWMOptions_seed_get);
+  vaccessors = c('num_samples', 'num_warmup', 'initial_step_size', 'target_accept_rate', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::bayes::RWMOptions
+# Start of accessor method for datamunge::bayes::RWMOptions
+setMethod('$<-', '_p_datamunge__bayes__RWMOptions', function(x, name, value)
+
+{
+  accessorFuns = list('num_samples' = RWMOptions_num_samples_set, 'num_warmup' = RWMOptions_num_warmup_set, 'initial_step_size' = RWMOptions_initial_step_size_set, 'target_accept_rate' = RWMOptions_target_accept_rate_set, 'seed' = RWMOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__bayes__RWMOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('num_samples' = RWMOptions_num_samples_set, 'num_warmup' = RWMOptions_num_warmup_set, 'initial_step_size' = RWMOptions_initial_step_size_set, 'target_accept_rate' = RWMOptions_target_accept_rate_set, 'seed' = RWMOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::bayes::RWMOptions
+setMethod('delete', '_p_datamunge__bayes__RWMOptions', function(obj) {delete_datamunge__bayes__RWMOptions(obj)})
+# Start definition of copy functions & methods for datamunge::bayes::RWMOptions
+CopyToR_datamunge__bayes__RWMOptions = function(value, obj = new("datamunge::bayes::RWMOptions"))
+{
+  obj@num_samples = value$num_samples;
+  obj@num_warmup = value$num_warmup;
+  obj@initial_step_size = value$initial_step_size;
+  obj@target_accept_rate = value$target_accept_rate;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__bayes__RWMOptions = function(value, obj)
+{
+  obj$num_samples = value@num_samples;
+  obj$num_warmup = value@num_warmup;
+  obj$initial_step_size = value@initial_step_size;
+  obj$target_accept_rate = value@target_accept_rate;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::bayes::RWMOptions
+setMethod('copyToR', '_p_datamunge__bayes__RWMOptions', CopyToR_datamunge__bayes__RWMOptions);
+setMethod('copyToC', 'datamunge::bayes::RWMOptions', CopyToC_datamunge__bayes__RWMOptions);
+
+# End definition of copy methods for datamunge::bayes::RWMOptions
+# End definition of copy functions & methods for datamunge::bayes::RWMOptions
+# Start of RWMResult_samples_set
+
+`RWMResult_samples_set` = function(self, s_samples)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_samples = lapply(s_samples, as.numeric);
+  ;.Call('R_swig_RWMResult_samples_set', self, s_samples, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_samples_set`, 'returnType') = 'void'
+attr(`RWMResult_samples_set`, "inputTypes") = c('_p_datamunge__bayes__RWMResult', 'list')
+class(`RWMResult_samples_set`) = c("SWIGFunction", class('RWMResult_samples_set'))
+
+# Start of RWMResult_samples_get
+
+`RWMResult_samples_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMResult_samples_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_samples_get`, 'returnType') = 'list'
+attr(`RWMResult_samples_get`, "inputTypes") = c('_p_datamunge__bayes__RWMResult')
+class(`RWMResult_samples_get`) = c("SWIGFunction", class('RWMResult_samples_get'))
+
+# Start of RWMResult_accept_rate_set
+
+`RWMResult_accept_rate_set` = function(self, s_accept_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RWMResult_accept_rate_set', self, s_accept_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_accept_rate_set`, 'returnType') = 'void'
+attr(`RWMResult_accept_rate_set`, "inputTypes") = c('_p_datamunge__bayes__RWMResult', 'numeric')
+class(`RWMResult_accept_rate_set`) = c("SWIGFunction", class('RWMResult_accept_rate_set'))
+
+# Start of RWMResult_accept_rate_get
+
+`RWMResult_accept_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMResult_accept_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_accept_rate_get`, 'returnType') = 'numeric'
+attr(`RWMResult_accept_rate_get`, "inputTypes") = c('_p_datamunge__bayes__RWMResult')
+class(`RWMResult_accept_rate_get`) = c("SWIGFunction", class('RWMResult_accept_rate_get'))
+
+# Start of RWMResult_final_step_size_set
+
+`RWMResult_final_step_size_set` = function(self, s_final_step_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_RWMResult_final_step_size_set', self, s_final_step_size, PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_final_step_size_set`, 'returnType') = 'void'
+attr(`RWMResult_final_step_size_set`, "inputTypes") = c('_p_datamunge__bayes__RWMResult', 'numeric')
+class(`RWMResult_final_step_size_set`) = c("SWIGFunction", class('RWMResult_final_step_size_set'))
+
+# Start of RWMResult_final_step_size_get
+
+`RWMResult_final_step_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RWMResult_final_step_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RWMResult_final_step_size_get`, 'returnType') = 'numeric'
+attr(`RWMResult_final_step_size_get`, "inputTypes") = c('_p_datamunge__bayes__RWMResult')
+class(`RWMResult_final_step_size_get`) = c("SWIGFunction", class('RWMResult_final_step_size_get'))
+
+# Start of new_RWMResult
+
+`RWMResult` = function()
+{
+  ;ans = .Call('R_swig_new_RWMResult', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__RWMResult", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RWMResult);
+  ans
+  
+}
+
+attr(`RWMResult`, 'returnType') = '_p_datamunge__bayes__RWMResult'
+class(`RWMResult`) = c("SWIGFunction", class('RWMResult'))
+
+# Start of delete_RWMResult
+
+`delete_RWMResult` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RWMResult', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RWMResult`, 'returnType') = 'void'
+attr(`delete_RWMResult`, "inputTypes") = c('_p_datamunge__bayes__RWMResult')
+class(`delete_RWMResult`) = c("SWIGFunction", class('delete_RWMResult'))
+
+# Start of accessor method for datamunge::bayes::RWMResult
+setMethod('$', '_p_datamunge__bayes__RWMResult', function(x, name)
+
+{
+  accessorFuns = list('samples' = RWMResult_samples_get, 'accept_rate' = RWMResult_accept_rate_get, 'final_step_size' = RWMResult_final_step_size_get);
+  vaccessors = c('samples', 'accept_rate', 'final_step_size');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::bayes::RWMResult
+# Start of accessor method for datamunge::bayes::RWMResult
+setMethod('$<-', '_p_datamunge__bayes__RWMResult', function(x, name, value)
+
+{
+  accessorFuns = list('samples' = RWMResult_samples_set, 'accept_rate' = RWMResult_accept_rate_set, 'final_step_size' = RWMResult_final_step_size_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__bayes__RWMResult', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('samples' = RWMResult_samples_set, 'accept_rate' = RWMResult_accept_rate_set, 'final_step_size' = RWMResult_final_step_size_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::bayes::RWMResult
+setMethod('delete', '_p_datamunge__bayes__RWMResult', function(obj) {delete_datamunge__bayes__RWMResult(obj)})
+# Start definition of copy functions & methods for datamunge::bayes::RWMResult
+CopyToR_datamunge__bayes__RWMResult = function(value, obj = new("datamunge::bayes::RWMResult"))
+{
+  obj@samples = value$samples;
+  obj@accept_rate = value$accept_rate;
+  obj@final_step_size = value$final_step_size;
+  obj;
+}
+
+
+
+CopyToC_datamunge__bayes__RWMResult = function(value, obj)
+{
+  obj$samples = value@samples;
+  obj$accept_rate = value@accept_rate;
+  obj$final_step_size = value@final_step_size;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::bayes::RWMResult
+setMethod('copyToR', '_p_datamunge__bayes__RWMResult', CopyToR_datamunge__bayes__RWMResult);
+setMethod('copyToC', 'datamunge::bayes::RWMResult', CopyToC_datamunge__bayes__RWMResult);
+
+# End definition of copy methods for datamunge::bayes::RWMResult
+# End definition of copy functions & methods for datamunge::bayes::RWMResult
+# Start of new_RandomWalkMetropolis
+
+`RandomWalkMetropolis__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_RandomWalkMetropolis__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__RandomWalkMetropolis", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RandomWalkMetropolis);
+  ans
+  
+}
+
+attr(`RandomWalkMetropolis__SWIG_0`, 'returnType') = '_p_datamunge__bayes__RandomWalkMetropolis'
+attr(`RandomWalkMetropolis__SWIG_0`, "inputTypes") = c('_p_datamunge__bayes__RWMOptions')
+class(`RandomWalkMetropolis__SWIG_0`) = c("SWIGFunction", class('RandomWalkMetropolis__SWIG_0'))
+
+# Start of new_RandomWalkMetropolis
+
+`RandomWalkMetropolis__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_RandomWalkMetropolis__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__RandomWalkMetropolis", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RandomWalkMetropolis);
+  ans
+  
+}
+
+attr(`RandomWalkMetropolis__SWIG_1`, 'returnType') = '_p_datamunge__bayes__RandomWalkMetropolis'
+class(`RandomWalkMetropolis__SWIG_1`) = c("SWIGFunction", class('RandomWalkMetropolis__SWIG_1'))
+
+`RandomWalkMetropolis` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- RandomWalkMetropolis__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__bayes__RWMOptions') && length(argv[[1]]) == 1 ) {
+      f <- RandomWalkMetropolis__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RandomWalkMetropolis with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of RandomWalkMetropolis_sample
+
+`RandomWalkMetropolis_sample` = function(self, log_posterior, initial_params, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(log_posterior, "ExternalReference")) log_posterior = slot(log_posterior,"ref"); 
+  initial_params = as.numeric(initial_params);
+  ;ans = .Call('R_swig_RandomWalkMetropolis_sample', self, log_posterior, initial_params, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__RWMResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RandomWalkMetropolis_sample`, 'returnType') = '_p_datamunge__bayes__RWMResult'
+attr(`RandomWalkMetropolis_sample`, "inputTypes") = c('_p_datamunge__bayes__RandomWalkMetropolis', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
+class(`RandomWalkMetropolis_sample`) = c("SWIGFunction", class('RandomWalkMetropolis_sample'))
+
+# Start of delete_RandomWalkMetropolis
+
+`delete_RandomWalkMetropolis` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_RandomWalkMetropolis', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_RandomWalkMetropolis`, 'returnType') = 'void'
+attr(`delete_RandomWalkMetropolis`, "inputTypes") = c('_p_datamunge__bayes__RandomWalkMetropolis')
+class(`delete_RandomWalkMetropolis`) = c("SWIGFunction", class('delete_RandomWalkMetropolis'))
+
+# Start of accessor method for datamunge::bayes::RandomWalkMetropolis
+setMethod('$', '_p_datamunge__bayes__RandomWalkMetropolis', function(x, name)
+
+{
+  accessorFuns = list('sample' = RandomWalkMetropolis_sample);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::bayes::RandomWalkMetropolis
+setMethod('delete', '_p_datamunge__bayes__RandomWalkMetropolis', function(obj) {delete_datamunge__bayes__RandomWalkMetropolis(obj)})
+# Start of GibbsOptions_num_samples_set
+
+`GibbsOptions_num_samples_set` = function(self, s_num_samples)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_num_samples = as.integer(s_num_samples);
+  
+  if(length(s_num_samples) > 1) {
+    warning("using only the first element of s_num_samples");
+  };
+  
+  ;.Call('R_swig_GibbsOptions_num_samples_set', self, s_num_samples, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_num_samples_set`, 'returnType') = 'void'
+attr(`GibbsOptions_num_samples_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions', 'integer')
+class(`GibbsOptions_num_samples_set`) = c("SWIGFunction", class('GibbsOptions_num_samples_set'))
+
+# Start of GibbsOptions_num_samples_get
+
+`GibbsOptions_num_samples_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsOptions_num_samples_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_num_samples_get`, 'returnType') = 'integer'
+attr(`GibbsOptions_num_samples_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions')
+class(`GibbsOptions_num_samples_get`) = c("SWIGFunction", class('GibbsOptions_num_samples_get'))
+
+# Start of GibbsOptions_num_warmup_set
+
+`GibbsOptions_num_warmup_set` = function(self, s_num_warmup)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_num_warmup = as.integer(s_num_warmup);
+  
+  if(length(s_num_warmup) > 1) {
+    warning("using only the first element of s_num_warmup");
+  };
+  
+  ;.Call('R_swig_GibbsOptions_num_warmup_set', self, s_num_warmup, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_num_warmup_set`, 'returnType') = 'void'
+attr(`GibbsOptions_num_warmup_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions', 'integer')
+class(`GibbsOptions_num_warmup_set`) = c("SWIGFunction", class('GibbsOptions_num_warmup_set'))
+
+# Start of GibbsOptions_num_warmup_get
+
+`GibbsOptions_num_warmup_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsOptions_num_warmup_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_num_warmup_get`, 'returnType') = 'integer'
+attr(`GibbsOptions_num_warmup_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions')
+class(`GibbsOptions_num_warmup_get`) = c("SWIGFunction", class('GibbsOptions_num_warmup_get'))
+
+# Start of GibbsOptions_initial_step_sizes_set
+
+`GibbsOptions_initial_step_sizes_set` = function(self, s_initial_step_sizes)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_initial_step_sizes = as.numeric(s_initial_step_sizes);
+  ;.Call('R_swig_GibbsOptions_initial_step_sizes_set', self, s_initial_step_sizes, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_initial_step_sizes_set`, 'returnType') = 'void'
+attr(`GibbsOptions_initial_step_sizes_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions', '_p_std__vectorT_double_t')
+class(`GibbsOptions_initial_step_sizes_set`) = c("SWIGFunction", class('GibbsOptions_initial_step_sizes_set'))
+
+# Start of GibbsOptions_initial_step_sizes_get
+
+`GibbsOptions_initial_step_sizes_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsOptions_initial_step_sizes_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_initial_step_sizes_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`GibbsOptions_initial_step_sizes_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions')
+class(`GibbsOptions_initial_step_sizes_get`) = c("SWIGFunction", class('GibbsOptions_initial_step_sizes_get'))
+
+# Start of GibbsOptions_target_accept_rate_set
+
+`GibbsOptions_target_accept_rate_set` = function(self, s_target_accept_rate)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_GibbsOptions_target_accept_rate_set', self, s_target_accept_rate, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_target_accept_rate_set`, 'returnType') = 'void'
+attr(`GibbsOptions_target_accept_rate_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions', 'numeric')
+class(`GibbsOptions_target_accept_rate_set`) = c("SWIGFunction", class('GibbsOptions_target_accept_rate_set'))
+
+# Start of GibbsOptions_target_accept_rate_get
+
+`GibbsOptions_target_accept_rate_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsOptions_target_accept_rate_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_target_accept_rate_get`, 'returnType') = 'numeric'
+attr(`GibbsOptions_target_accept_rate_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions')
+class(`GibbsOptions_target_accept_rate_get`) = c("SWIGFunction", class('GibbsOptions_target_accept_rate_get'))
+
+# Start of GibbsOptions_seed_set
+
+`GibbsOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_GibbsOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_seed_set`, 'returnType') = 'void'
+attr(`GibbsOptions_seed_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions', 'integer')
+class(`GibbsOptions_seed_set`) = c("SWIGFunction", class('GibbsOptions_seed_set'))
+
+# Start of GibbsOptions_seed_get
+
+`GibbsOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsOptions_seed_get`, 'returnType') = 'integer'
+attr(`GibbsOptions_seed_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions')
+class(`GibbsOptions_seed_get`) = c("SWIGFunction", class('GibbsOptions_seed_get'))
+
+# Start of new_GibbsOptions
+
+`GibbsOptions` = function()
+{
+  ;ans = .Call('R_swig_new_GibbsOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__GibbsOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GibbsOptions);
+  ans
+  
+}
+
+attr(`GibbsOptions`, 'returnType') = '_p_datamunge__bayes__GibbsOptions'
+class(`GibbsOptions`) = c("SWIGFunction", class('GibbsOptions'))
+
+# Start of delete_GibbsOptions
+
+`delete_GibbsOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_GibbsOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_GibbsOptions`, 'returnType') = 'void'
+attr(`delete_GibbsOptions`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions')
+class(`delete_GibbsOptions`) = c("SWIGFunction", class('delete_GibbsOptions'))
+
+# Start of accessor method for datamunge::bayes::GibbsOptions
+setMethod('$', '_p_datamunge__bayes__GibbsOptions', function(x, name)
+
+{
+  accessorFuns = list('num_samples' = GibbsOptions_num_samples_get, 'num_warmup' = GibbsOptions_num_warmup_get, 'initial_step_sizes' = GibbsOptions_initial_step_sizes_get, 'target_accept_rate' = GibbsOptions_target_accept_rate_get, 'seed' = GibbsOptions_seed_get);
+  vaccessors = c('num_samples', 'num_warmup', 'initial_step_sizes', 'target_accept_rate', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::bayes::GibbsOptions
+# Start of accessor method for datamunge::bayes::GibbsOptions
+setMethod('$<-', '_p_datamunge__bayes__GibbsOptions', function(x, name, value)
+
+{
+  accessorFuns = list('num_samples' = GibbsOptions_num_samples_set, 'num_warmup' = GibbsOptions_num_warmup_set, 'initial_step_sizes' = GibbsOptions_initial_step_sizes_set, 'target_accept_rate' = GibbsOptions_target_accept_rate_set, 'seed' = GibbsOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__bayes__GibbsOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('num_samples' = GibbsOptions_num_samples_set, 'num_warmup' = GibbsOptions_num_warmup_set, 'initial_step_sizes' = GibbsOptions_initial_step_sizes_set, 'target_accept_rate' = GibbsOptions_target_accept_rate_set, 'seed' = GibbsOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::bayes::GibbsOptions
+setMethod('delete', '_p_datamunge__bayes__GibbsOptions', function(obj) {delete_datamunge__bayes__GibbsOptions(obj)})
+# Start definition of copy functions & methods for datamunge::bayes::GibbsOptions
+CopyToR_datamunge__bayes__GibbsOptions = function(value, obj = new("datamunge::bayes::GibbsOptions"))
+{
+  obj@num_samples = value$num_samples;
+  obj@num_warmup = value$num_warmup;
+  obj@initial_step_sizes = value$initial_step_sizes;
+  obj@target_accept_rate = value$target_accept_rate;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__bayes__GibbsOptions = function(value, obj)
+{
+  obj$num_samples = value@num_samples;
+  obj$num_warmup = value@num_warmup;
+  obj$initial_step_sizes = value@initial_step_sizes;
+  obj$target_accept_rate = value@target_accept_rate;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::bayes::GibbsOptions
+setMethod('copyToR', '_p_datamunge__bayes__GibbsOptions', CopyToR_datamunge__bayes__GibbsOptions);
+setMethod('copyToC', 'datamunge::bayes::GibbsOptions', CopyToC_datamunge__bayes__GibbsOptions);
+
+# End definition of copy methods for datamunge::bayes::GibbsOptions
+# End definition of copy functions & methods for datamunge::bayes::GibbsOptions
+# Start of GibbsResult_samples_set
+
+`GibbsResult_samples_set` = function(self, s_samples)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_samples = lapply(s_samples, as.numeric);
+  ;.Call('R_swig_GibbsResult_samples_set', self, s_samples, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsResult_samples_set`, 'returnType') = 'void'
+attr(`GibbsResult_samples_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsResult', 'list')
+class(`GibbsResult_samples_set`) = c("SWIGFunction", class('GibbsResult_samples_set'))
+
+# Start of GibbsResult_samples_get
+
+`GibbsResult_samples_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsResult_samples_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsResult_samples_get`, 'returnType') = 'list'
+attr(`GibbsResult_samples_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsResult')
+class(`GibbsResult_samples_get`) = c("SWIGFunction", class('GibbsResult_samples_get'))
+
+# Start of GibbsResult_accept_rates_set
+
+`GibbsResult_accept_rates_set` = function(self, s_accept_rates)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_accept_rates = as.numeric(s_accept_rates);
+  ;.Call('R_swig_GibbsResult_accept_rates_set', self, s_accept_rates, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsResult_accept_rates_set`, 'returnType') = 'void'
+attr(`GibbsResult_accept_rates_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsResult', '_p_std__vectorT_double_t')
+class(`GibbsResult_accept_rates_set`) = c("SWIGFunction", class('GibbsResult_accept_rates_set'))
+
+# Start of GibbsResult_accept_rates_get
+
+`GibbsResult_accept_rates_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsResult_accept_rates_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsResult_accept_rates_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`GibbsResult_accept_rates_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsResult')
+class(`GibbsResult_accept_rates_get`) = c("SWIGFunction", class('GibbsResult_accept_rates_get'))
+
+# Start of GibbsResult_final_step_sizes_set
+
+`GibbsResult_final_step_sizes_set` = function(self, s_final_step_sizes)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_final_step_sizes = as.numeric(s_final_step_sizes);
+  ;.Call('R_swig_GibbsResult_final_step_sizes_set', self, s_final_step_sizes, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsResult_final_step_sizes_set`, 'returnType') = 'void'
+attr(`GibbsResult_final_step_sizes_set`, "inputTypes") = c('_p_datamunge__bayes__GibbsResult', '_p_std__vectorT_double_t')
+class(`GibbsResult_final_step_sizes_set`) = c("SWIGFunction", class('GibbsResult_final_step_sizes_set'))
+
+# Start of GibbsResult_final_step_sizes_get
+
+`GibbsResult_final_step_sizes_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_GibbsResult_final_step_sizes_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`GibbsResult_final_step_sizes_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`GibbsResult_final_step_sizes_get`, "inputTypes") = c('_p_datamunge__bayes__GibbsResult')
+class(`GibbsResult_final_step_sizes_get`) = c("SWIGFunction", class('GibbsResult_final_step_sizes_get'))
+
+# Start of new_GibbsResult
+
+`GibbsResult` = function()
+{
+  ;ans = .Call('R_swig_new_GibbsResult', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__GibbsResult", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GibbsResult);
+  ans
+  
+}
+
+attr(`GibbsResult`, 'returnType') = '_p_datamunge__bayes__GibbsResult'
+class(`GibbsResult`) = c("SWIGFunction", class('GibbsResult'))
+
+# Start of delete_GibbsResult
+
+`delete_GibbsResult` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_GibbsResult', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_GibbsResult`, 'returnType') = 'void'
+attr(`delete_GibbsResult`, "inputTypes") = c('_p_datamunge__bayes__GibbsResult')
+class(`delete_GibbsResult`) = c("SWIGFunction", class('delete_GibbsResult'))
+
+# Start of accessor method for datamunge::bayes::GibbsResult
+setMethod('$', '_p_datamunge__bayes__GibbsResult', function(x, name)
+
+{
+  accessorFuns = list('samples' = GibbsResult_samples_get, 'accept_rates' = GibbsResult_accept_rates_get, 'final_step_sizes' = GibbsResult_final_step_sizes_get);
+  vaccessors = c('samples', 'accept_rates', 'final_step_sizes');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::bayes::GibbsResult
+# Start of accessor method for datamunge::bayes::GibbsResult
+setMethod('$<-', '_p_datamunge__bayes__GibbsResult', function(x, name, value)
+
+{
+  accessorFuns = list('samples' = GibbsResult_samples_set, 'accept_rates' = GibbsResult_accept_rates_set, 'final_step_sizes' = GibbsResult_final_step_sizes_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__bayes__GibbsResult', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('samples' = GibbsResult_samples_set, 'accept_rates' = GibbsResult_accept_rates_set, 'final_step_sizes' = GibbsResult_final_step_sizes_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::bayes::GibbsResult
+setMethod('delete', '_p_datamunge__bayes__GibbsResult', function(obj) {delete_datamunge__bayes__GibbsResult(obj)})
+# Start definition of copy functions & methods for datamunge::bayes::GibbsResult
+CopyToR_datamunge__bayes__GibbsResult = function(value, obj = new("datamunge::bayes::GibbsResult"))
+{
+  obj@samples = value$samples;
+  obj@accept_rates = value$accept_rates;
+  obj@final_step_sizes = value$final_step_sizes;
+  obj;
+}
+
+
+
+CopyToC_datamunge__bayes__GibbsResult = function(value, obj)
+{
+  obj$samples = value@samples;
+  obj$accept_rates = value@accept_rates;
+  obj$final_step_sizes = value@final_step_sizes;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::bayes::GibbsResult
+setMethod('copyToR', '_p_datamunge__bayes__GibbsResult', CopyToR_datamunge__bayes__GibbsResult);
+setMethod('copyToC', 'datamunge::bayes::GibbsResult', CopyToC_datamunge__bayes__GibbsResult);
+
+# End definition of copy methods for datamunge::bayes::GibbsResult
+# End definition of copy functions & methods for datamunge::bayes::GibbsResult
+# Start of new_GibbsSampler
+
+`GibbsSampler__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_GibbsSampler__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__GibbsSampler", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GibbsSampler);
+  ans
+  
+}
+
+attr(`GibbsSampler__SWIG_0`, 'returnType') = '_p_datamunge__bayes__GibbsSampler'
+attr(`GibbsSampler__SWIG_0`, "inputTypes") = c('_p_datamunge__bayes__GibbsOptions')
+class(`GibbsSampler__SWIG_0`) = c("SWIGFunction", class('GibbsSampler__SWIG_0'))
+
+# Start of new_GibbsSampler
+
+`GibbsSampler__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_GibbsSampler__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__GibbsSampler", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_GibbsSampler);
+  ans
+  
+}
+
+attr(`GibbsSampler__SWIG_1`, 'returnType') = '_p_datamunge__bayes__GibbsSampler'
+class(`GibbsSampler__SWIG_1`) = c("SWIGFunction", class('GibbsSampler__SWIG_1'))
+
+`GibbsSampler` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- GibbsSampler__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__bayes__GibbsOptions') && length(argv[[1]]) == 1 ) {
+      f <- GibbsSampler__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for GibbsSampler with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of GibbsSampler_sample
+
+`GibbsSampler_sample` = function(self, log_posterior, initial_params, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(log_posterior, "ExternalReference")) log_posterior = slot(log_posterior,"ref"); 
+  initial_params = as.numeric(initial_params);
+  ;ans = .Call('R_swig_GibbsSampler_sample', self, log_posterior, initial_params, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__GibbsResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`GibbsSampler_sample`, 'returnType') = '_p_datamunge__bayes__GibbsResult'
+attr(`GibbsSampler_sample`, "inputTypes") = c('_p_datamunge__bayes__GibbsSampler', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t')
+class(`GibbsSampler_sample`) = c("SWIGFunction", class('GibbsSampler_sample'))
+
+# Start of delete_GibbsSampler
+
+`delete_GibbsSampler` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_GibbsSampler', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_GibbsSampler`, 'returnType') = 'void'
+attr(`delete_GibbsSampler`, "inputTypes") = c('_p_datamunge__bayes__GibbsSampler')
+class(`delete_GibbsSampler`) = c("SWIGFunction", class('delete_GibbsSampler'))
+
+# Start of accessor method for datamunge::bayes::GibbsSampler
+setMethod('$', '_p_datamunge__bayes__GibbsSampler', function(x, name)
+
+{
+  accessorFuns = list('sample' = GibbsSampler_sample);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::bayes::GibbsSampler
+setMethod('delete', '_p_datamunge__bayes__GibbsSampler', function(obj) {delete_datamunge__bayes__GibbsSampler(obj)})
+# Start of ImportanceSamplingOptions_num_samples_set
+
+`ImportanceSamplingOptions_num_samples_set` = function(self, s_num_samples)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_num_samples = as.integer(s_num_samples);
+  
+  if(length(s_num_samples) > 1) {
+    warning("using only the first element of s_num_samples");
+  };
+  
+  ;.Call('R_swig_ImportanceSamplingOptions_num_samples_set', self, s_num_samples, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingOptions_num_samples_set`, 'returnType') = 'void'
+attr(`ImportanceSamplingOptions_num_samples_set`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingOptions', 'integer')
+class(`ImportanceSamplingOptions_num_samples_set`) = c("SWIGFunction", class('ImportanceSamplingOptions_num_samples_set'))
+
+# Start of ImportanceSamplingOptions_num_samples_get
+
+`ImportanceSamplingOptions_num_samples_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImportanceSamplingOptions_num_samples_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingOptions_num_samples_get`, 'returnType') = 'integer'
+attr(`ImportanceSamplingOptions_num_samples_get`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingOptions')
+class(`ImportanceSamplingOptions_num_samples_get`) = c("SWIGFunction", class('ImportanceSamplingOptions_num_samples_get'))
+
+# Start of ImportanceSamplingOptions_seed_set
+
+`ImportanceSamplingOptions_seed_set` = function(self, s_seed)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_seed = as.integer(s_seed);
+  
+  if(length(s_seed) > 1) {
+    warning("using only the first element of s_seed");
+  };
+  
+  ;.Call('R_swig_ImportanceSamplingOptions_seed_set', self, s_seed, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingOptions_seed_set`, 'returnType') = 'void'
+attr(`ImportanceSamplingOptions_seed_set`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingOptions', 'integer')
+class(`ImportanceSamplingOptions_seed_set`) = c("SWIGFunction", class('ImportanceSamplingOptions_seed_set'))
+
+# Start of ImportanceSamplingOptions_seed_get
+
+`ImportanceSamplingOptions_seed_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImportanceSamplingOptions_seed_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingOptions_seed_get`, 'returnType') = 'integer'
+attr(`ImportanceSamplingOptions_seed_get`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingOptions')
+class(`ImportanceSamplingOptions_seed_get`) = c("SWIGFunction", class('ImportanceSamplingOptions_seed_get'))
+
+# Start of new_ImportanceSamplingOptions
+
+`ImportanceSamplingOptions` = function()
+{
+  ;ans = .Call('R_swig_new_ImportanceSamplingOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__ImportanceSamplingOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImportanceSamplingOptions);
+  ans
+  
+}
+
+attr(`ImportanceSamplingOptions`, 'returnType') = '_p_datamunge__bayes__ImportanceSamplingOptions'
+class(`ImportanceSamplingOptions`) = c("SWIGFunction", class('ImportanceSamplingOptions'))
+
+# Start of delete_ImportanceSamplingOptions
+
+`delete_ImportanceSamplingOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ImportanceSamplingOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ImportanceSamplingOptions`, 'returnType') = 'void'
+attr(`delete_ImportanceSamplingOptions`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingOptions')
+class(`delete_ImportanceSamplingOptions`) = c("SWIGFunction", class('delete_ImportanceSamplingOptions'))
+
+# Start of accessor method for datamunge::bayes::ImportanceSamplingOptions
+setMethod('$', '_p_datamunge__bayes__ImportanceSamplingOptions', function(x, name)
+
+{
+  accessorFuns = list('num_samples' = ImportanceSamplingOptions_num_samples_get, 'seed' = ImportanceSamplingOptions_seed_get);
+  vaccessors = c('num_samples', 'seed');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::bayes::ImportanceSamplingOptions
+# Start of accessor method for datamunge::bayes::ImportanceSamplingOptions
+setMethod('$<-', '_p_datamunge__bayes__ImportanceSamplingOptions', function(x, name, value)
+
+{
+  accessorFuns = list('num_samples' = ImportanceSamplingOptions_num_samples_set, 'seed' = ImportanceSamplingOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__bayes__ImportanceSamplingOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('num_samples' = ImportanceSamplingOptions_num_samples_set, 'seed' = ImportanceSamplingOptions_seed_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::bayes::ImportanceSamplingOptions
+setMethod('delete', '_p_datamunge__bayes__ImportanceSamplingOptions', function(obj) {delete_datamunge__bayes__ImportanceSamplingOptions(obj)})
+# Start definition of copy functions & methods for datamunge::bayes::ImportanceSamplingOptions
+CopyToR_datamunge__bayes__ImportanceSamplingOptions = function(value, obj = new("datamunge::bayes::ImportanceSamplingOptions"))
+{
+  obj@num_samples = value$num_samples;
+  obj@seed = value$seed;
+  obj;
+}
+
+
+
+CopyToC_datamunge__bayes__ImportanceSamplingOptions = function(value, obj)
+{
+  obj$num_samples = value@num_samples;
+  obj$seed = value@seed;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::bayes::ImportanceSamplingOptions
+setMethod('copyToR', '_p_datamunge__bayes__ImportanceSamplingOptions', CopyToR_datamunge__bayes__ImportanceSamplingOptions);
+setMethod('copyToC', 'datamunge::bayes::ImportanceSamplingOptions', CopyToC_datamunge__bayes__ImportanceSamplingOptions);
+
+# End definition of copy methods for datamunge::bayes::ImportanceSamplingOptions
+# End definition of copy functions & methods for datamunge::bayes::ImportanceSamplingOptions
+# Start of ImportanceSamplingResult_samples_set
+
+`ImportanceSamplingResult_samples_set` = function(self, s_samples)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_samples = lapply(s_samples, as.numeric);
+  ;.Call('R_swig_ImportanceSamplingResult_samples_set', self, s_samples, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_samples_set`, 'returnType') = 'void'
+attr(`ImportanceSamplingResult_samples_set`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult', 'list')
+class(`ImportanceSamplingResult_samples_set`) = c("SWIGFunction", class('ImportanceSamplingResult_samples_set'))
+
+# Start of ImportanceSamplingResult_samples_get
+
+`ImportanceSamplingResult_samples_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImportanceSamplingResult_samples_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_samples_get`, 'returnType') = 'list'
+attr(`ImportanceSamplingResult_samples_get`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult')
+class(`ImportanceSamplingResult_samples_get`) = c("SWIGFunction", class('ImportanceSamplingResult_samples_get'))
+
+# Start of ImportanceSamplingResult_normalized_weights_set
+
+`ImportanceSamplingResult_normalized_weights_set` = function(self, s_normalized_weights)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_normalized_weights = as.numeric(s_normalized_weights);
+  ;.Call('R_swig_ImportanceSamplingResult_normalized_weights_set', self, s_normalized_weights, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_normalized_weights_set`, 'returnType') = 'void'
+attr(`ImportanceSamplingResult_normalized_weights_set`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult', '_p_std__vectorT_double_t')
+class(`ImportanceSamplingResult_normalized_weights_set`) = c("SWIGFunction", class('ImportanceSamplingResult_normalized_weights_set'))
+
+# Start of ImportanceSamplingResult_normalized_weights_get
+
+`ImportanceSamplingResult_normalized_weights_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImportanceSamplingResult_normalized_weights_get', self, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_normalized_weights_get`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`ImportanceSamplingResult_normalized_weights_get`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult')
+class(`ImportanceSamplingResult_normalized_weights_get`) = c("SWIGFunction", class('ImportanceSamplingResult_normalized_weights_get'))
+
+# Start of ImportanceSamplingResult_effective_sample_size_set
+
+`ImportanceSamplingResult_effective_sample_size_set` = function(self, s_effective_sample_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ImportanceSamplingResult_effective_sample_size_set', self, s_effective_sample_size, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_effective_sample_size_set`, 'returnType') = 'void'
+attr(`ImportanceSamplingResult_effective_sample_size_set`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult', 'numeric')
+class(`ImportanceSamplingResult_effective_sample_size_set`) = c("SWIGFunction", class('ImportanceSamplingResult_effective_sample_size_set'))
+
+# Start of ImportanceSamplingResult_effective_sample_size_get
+
+`ImportanceSamplingResult_effective_sample_size_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImportanceSamplingResult_effective_sample_size_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_effective_sample_size_get`, 'returnType') = 'numeric'
+attr(`ImportanceSamplingResult_effective_sample_size_get`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult')
+class(`ImportanceSamplingResult_effective_sample_size_get`) = c("SWIGFunction", class('ImportanceSamplingResult_effective_sample_size_get'))
+
+# Start of ImportanceSamplingResult_log_evidence_set
+
+`ImportanceSamplingResult_log_evidence_set` = function(self, s_log_evidence)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_ImportanceSamplingResult_log_evidence_set', self, s_log_evidence, PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_log_evidence_set`, 'returnType') = 'void'
+attr(`ImportanceSamplingResult_log_evidence_set`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult', 'numeric')
+class(`ImportanceSamplingResult_log_evidence_set`) = c("SWIGFunction", class('ImportanceSamplingResult_log_evidence_set'))
+
+# Start of ImportanceSamplingResult_log_evidence_get
+
+`ImportanceSamplingResult_log_evidence_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_ImportanceSamplingResult_log_evidence_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`ImportanceSamplingResult_log_evidence_get`, 'returnType') = 'numeric'
+attr(`ImportanceSamplingResult_log_evidence_get`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult')
+class(`ImportanceSamplingResult_log_evidence_get`) = c("SWIGFunction", class('ImportanceSamplingResult_log_evidence_get'))
+
+# Start of new_ImportanceSamplingResult
+
+`ImportanceSamplingResult` = function()
+{
+  ;ans = .Call('R_swig_new_ImportanceSamplingResult', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__ImportanceSamplingResult", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImportanceSamplingResult);
+  ans
+  
+}
+
+attr(`ImportanceSamplingResult`, 'returnType') = '_p_datamunge__bayes__ImportanceSamplingResult'
+class(`ImportanceSamplingResult`) = c("SWIGFunction", class('ImportanceSamplingResult'))
+
+# Start of delete_ImportanceSamplingResult
+
+`delete_ImportanceSamplingResult` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ImportanceSamplingResult', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ImportanceSamplingResult`, 'returnType') = 'void'
+attr(`delete_ImportanceSamplingResult`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingResult')
+class(`delete_ImportanceSamplingResult`) = c("SWIGFunction", class('delete_ImportanceSamplingResult'))
+
+# Start of accessor method for datamunge::bayes::ImportanceSamplingResult
+setMethod('$', '_p_datamunge__bayes__ImportanceSamplingResult', function(x, name)
+
+{
+  accessorFuns = list('samples' = ImportanceSamplingResult_samples_get, 'normalized_weights' = ImportanceSamplingResult_normalized_weights_get, 'effective_sample_size' = ImportanceSamplingResult_effective_sample_size_get, 'log_evidence' = ImportanceSamplingResult_log_evidence_get);
+  vaccessors = c('samples', 'normalized_weights', 'effective_sample_size', 'log_evidence');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::bayes::ImportanceSamplingResult
+# Start of accessor method for datamunge::bayes::ImportanceSamplingResult
+setMethod('$<-', '_p_datamunge__bayes__ImportanceSamplingResult', function(x, name, value)
+
+{
+  accessorFuns = list('samples' = ImportanceSamplingResult_samples_set, 'normalized_weights' = ImportanceSamplingResult_normalized_weights_set, 'effective_sample_size' = ImportanceSamplingResult_effective_sample_size_set, 'log_evidence' = ImportanceSamplingResult_log_evidence_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__bayes__ImportanceSamplingResult', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('samples' = ImportanceSamplingResult_samples_set, 'normalized_weights' = ImportanceSamplingResult_normalized_weights_set, 'effective_sample_size' = ImportanceSamplingResult_effective_sample_size_set, 'log_evidence' = ImportanceSamplingResult_log_evidence_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::bayes::ImportanceSamplingResult
+setMethod('delete', '_p_datamunge__bayes__ImportanceSamplingResult', function(obj) {delete_datamunge__bayes__ImportanceSamplingResult(obj)})
+# Start definition of copy functions & methods for datamunge::bayes::ImportanceSamplingResult
+CopyToR_datamunge__bayes__ImportanceSamplingResult = function(value, obj = new("datamunge::bayes::ImportanceSamplingResult"))
+{
+  obj@samples = value$samples;
+  obj@normalized_weights = value$normalized_weights;
+  obj@effective_sample_size = value$effective_sample_size;
+  obj@log_evidence = value$log_evidence;
+  obj;
+}
+
+
+
+CopyToC_datamunge__bayes__ImportanceSamplingResult = function(value, obj)
+{
+  obj$samples = value@samples;
+  obj$normalized_weights = value@normalized_weights;
+  obj$effective_sample_size = value@effective_sample_size;
+  obj$log_evidence = value@log_evidence;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::bayes::ImportanceSamplingResult
+setMethod('copyToR', '_p_datamunge__bayes__ImportanceSamplingResult', CopyToR_datamunge__bayes__ImportanceSamplingResult);
+setMethod('copyToC', 'datamunge::bayes::ImportanceSamplingResult', CopyToC_datamunge__bayes__ImportanceSamplingResult);
+
+# End definition of copy methods for datamunge::bayes::ImportanceSamplingResult
+# End definition of copy functions & methods for datamunge::bayes::ImportanceSamplingResult
+# Start of new_ImportanceSampling
+
+`ImportanceSampling__SWIG_0` = function(options)
+{
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_new_ImportanceSampling__SWIG_0', options, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__ImportanceSampling", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImportanceSampling);
+  ans
+  
+}
+
+attr(`ImportanceSampling__SWIG_0`, 'returnType') = '_p_datamunge__bayes__ImportanceSampling'
+attr(`ImportanceSampling__SWIG_0`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSamplingOptions')
+class(`ImportanceSampling__SWIG_0`) = c("SWIGFunction", class('ImportanceSampling__SWIG_0'))
+
+# Start of new_ImportanceSampling
+
+`ImportanceSampling__SWIG_1` = function()
+{
+  ;ans = .Call('R_swig_new_ImportanceSampling__SWIG_1', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__ImportanceSampling", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_ImportanceSampling);
+  ans
+  
+}
+
+attr(`ImportanceSampling__SWIG_1`, 'returnType') = '_p_datamunge__bayes__ImportanceSampling'
+class(`ImportanceSampling__SWIG_1`) = c("SWIGFunction", class('ImportanceSampling__SWIG_1'))
+
+`ImportanceSampling` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- ImportanceSampling__SWIG_1; 
+  } else if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__bayes__ImportanceSamplingOptions') && length(argv[[1]]) == 1 ) {
+      f <- ImportanceSampling__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for ImportanceSampling with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of ImportanceSampling_sample
+
+`ImportanceSampling_sample` = function(self, log_target, proposal_mean, proposal_covariance, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(log_target, "ExternalReference")) log_target = slot(log_target,"ref"); 
+  proposal_mean = as.numeric(proposal_mean);
+  proposal_covariance = lapply(proposal_covariance, as.numeric);
+  ;ans = .Call('R_swig_ImportanceSampling_sample', self, log_target, proposal_mean, proposal_covariance, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__bayes__ImportanceSamplingResult", ref=ans);
+  
+  ans
+  
+}
+
+attr(`ImportanceSampling_sample`, 'returnType') = '_p_datamunge__bayes__ImportanceSamplingResult'
+attr(`ImportanceSampling_sample`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSampling', '_p_datamunge__optim__ArbitraryFunction', '_p_std__vectorT_double_t', 'list')
+class(`ImportanceSampling_sample`) = c("SWIGFunction", class('ImportanceSampling_sample'))
+
+# Start of delete_ImportanceSampling
+
+`delete_ImportanceSampling` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_ImportanceSampling', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_ImportanceSampling`, 'returnType') = 'void'
+attr(`delete_ImportanceSampling`, "inputTypes") = c('_p_datamunge__bayes__ImportanceSampling')
+class(`delete_ImportanceSampling`) = c("SWIGFunction", class('delete_ImportanceSampling'))
+
+# Start of accessor method for datamunge::bayes::ImportanceSampling
+setMethod('$', '_p_datamunge__bayes__ImportanceSampling', function(x, name)
+
+{
+  accessorFuns = list('sample' = ImportanceSampling_sample);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::bayes::ImportanceSampling
+setMethod('delete', '_p_datamunge__bayes__ImportanceSampling', function(obj) {delete_datamunge__bayes__ImportanceSampling(obj)})
 
 defineEnumeration("_datamunge__plot__DataSeries__Kind",
  .values=c("Scatter" = .Call('R_swig_DataSeries_Kind_Scatter_get',FALSE, PACKAGE='datamunger'),

@@ -1480,96 +1480,107 @@ SWIGINTERN void SWIG_R_Raise(SEXP obj, const char *msg) {
 #define SWIGTYPE_p_datamunge__GLMM swig_types[13]
 #define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[14]
 #define SWIGTYPE_p_datamunge__HyperDual swig_types[15]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[16]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[17]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[18]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[19]
-#define SWIGTYPE_p_datamunge__LDA swig_types[20]
-#define SWIGTYPE_p_datamunge__LM swig_types[21]
-#define SWIGTYPE_p_datamunge__LMM swig_types[22]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[23]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[24]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[25]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[26]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[27]
-#define SWIGTYPE_p_datamunge__SVM swig_types[28]
-#define SWIGTYPE_p_datamunge__Tape swig_types[29]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[30]
-#define SWIGTYPE_p_datamunge__Var swig_types[31]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[32]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[33]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[34]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[35]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[36]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[37]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[38]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[39]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[40]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[41]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[42]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[43]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[44]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[45]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[46]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[47]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[48]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[49]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[50]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[51]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[52]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[53]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[54]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[55]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[56]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[57]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[58]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[59]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[60]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[61]
-#define SWIGTYPE_p_datamunge__plot__BarChart swig_types[62]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[63]
-#define SWIGTYPE_p_datamunge__plot__LinePlot swig_types[64]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[65]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[66]
-#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[67]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[68]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[69]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[70]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[71]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[72]
-#define SWIGTYPE_p_difference_type swig_types[73]
-#define SWIGTYPE_p_first_type swig_types[74]
-#define SWIGTYPE_p_int swig_types[75]
-#define SWIGTYPE_p_long_long swig_types[76]
-#define SWIGTYPE_p_second_type swig_types[77]
-#define SWIGTYPE_p_short swig_types[78]
-#define SWIGTYPE_p_signed_char swig_types[79]
-#define SWIGTYPE_p_size_type swig_types[80]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[81]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[82]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[83]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[84]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[85]
-#define SWIGTYPE_p_std__invalid_argument swig_types[86]
-#define SWIGTYPE_p_std__out_of_range swig_types[87]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[88]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[89]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[90]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[91]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[92]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[93]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[94]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[95]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[96]
-#define SWIGTYPE_p_unsigned_char swig_types[97]
-#define SWIGTYPE_p_unsigned_int swig_types[98]
-#define SWIGTYPE_p_unsigned_long_long swig_types[99]
-#define SWIGTYPE_p_unsigned_short swig_types[100]
-#define SWIGTYPE_p_value_type swig_types[101]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[16]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[17]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[18]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[19]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[20]
+#define SWIGTYPE_p_datamunge__LDA swig_types[21]
+#define SWIGTYPE_p_datamunge__LM swig_types[22]
+#define SWIGTYPE_p_datamunge__LMM swig_types[23]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[24]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[25]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[26]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[27]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[28]
+#define SWIGTYPE_p_datamunge__SVM swig_types[29]
+#define SWIGTYPE_p_datamunge__Tape swig_types[30]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[31]
+#define SWIGTYPE_p_datamunge__Var swig_types[32]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[33]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[34]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[35]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[36]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[37]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[38]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[39]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[40]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[41]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[42]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[43]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[44]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[45]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[46]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[47]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[48]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[51]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[52]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[53]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[54]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[55]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[56]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[57]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[58]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[59]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[60]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[61]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[62]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[63]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[64]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[65]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[66]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[67]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[68]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[69]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[70]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[71]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[72]
+#define SWIGTYPE_p_datamunge__plot__BarChart swig_types[73]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[74]
+#define SWIGTYPE_p_datamunge__plot__LinePlot swig_types[75]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[76]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[77]
+#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[78]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[79]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[80]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[81]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[82]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[83]
+#define SWIGTYPE_p_difference_type swig_types[84]
+#define SWIGTYPE_p_first_type swig_types[85]
+#define SWIGTYPE_p_int swig_types[86]
+#define SWIGTYPE_p_long_long swig_types[87]
+#define SWIGTYPE_p_second_type swig_types[88]
+#define SWIGTYPE_p_short swig_types[89]
+#define SWIGTYPE_p_signed_char swig_types[90]
+#define SWIGTYPE_p_size_type swig_types[91]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[92]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[93]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[94]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[95]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[96]
+#define SWIGTYPE_p_std__invalid_argument swig_types[97]
+#define SWIGTYPE_p_std__out_of_range swig_types[98]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[99]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[100]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[101]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[102]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[103]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[104]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[105]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[106]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[107]
+#define SWIGTYPE_p_unsigned_char swig_types[108]
+#define SWIGTYPE_p_unsigned_int swig_types[109]
+#define SWIGTYPE_p_unsigned_long_long swig_types[110]
+#define SWIGTYPE_p_unsigned_short swig_types[111]
+#define SWIGTYPE_p_value_type swig_types[112]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[103];
-SWIGINTERN swig_module_info swig_module = {swig_types, 102, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[114];
+SWIGINTERN swig_module_info swig_module = {swig_types, 113, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -15969,6 +15980,1367 @@ R_swig_delete_GLMM ( SEXP self)
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GLMM" "', argument " "1"" of type '" "datamunge::GLMM *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::GLMM * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_0 ( SEXP data, SEXP formula, SEXP family, SEXP strategy, SEXP fixed_effect_prior_sd, SEXP grid_points_per_dim, SEXP grid_span, SEXP mode_population_size, SEXP mode_max_generations, SEXP seed)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    std::size_t arg8 ;
+    std::size_t arg9 ;
+    std::size_t arg10 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int val6 ;
+    int ecode6 = 0 ;
+    int val8 ;
+    int ecode8 = 0 ;
+    int val9 ;
+    int ecode9 = 0 ;
+    int val10 ;
+    int ecode10 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(strategy, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    arg5 = static_cast< double >(REAL(fixed_effect_prior_sd)[0]);
+    ecode6 = SWIG_AsVal_int(grid_points_per_dim, &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    arg7 = static_cast< double >(REAL(grid_span)[0]);
+    ecode8 = SWIG_AsVal_int(mode_population_size, &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_INLAMixedModel" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    ecode9 = SWIG_AsVal_int(mode_max_generations, &val9);
+    if (!SWIG_IsOK(ecode9)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "new_INLAMixedModel" "', argument " "9"" of type '" "std::size_t""'");
+    } 
+    arg9 = static_cast< std::size_t >(val9);
+    ecode10 = SWIG_AsVal_int(seed, &val10);
+    if (!SWIG_IsOK(ecode10)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "new_INLAMixedModel" "', argument " "10"" of type '" "std::size_t""'");
+    } 
+    arg10 = static_cast< std::size_t >(val10);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),SWIG_STD_MOVE(arg10));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_1 ( SEXP data, SEXP formula, SEXP family, SEXP strategy, SEXP fixed_effect_prior_sd, SEXP grid_points_per_dim, SEXP grid_span, SEXP mode_population_size, SEXP mode_max_generations)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    std::size_t arg8 ;
+    std::size_t arg9 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int val6 ;
+    int ecode6 = 0 ;
+    int val8 ;
+    int ecode8 = 0 ;
+    int val9 ;
+    int ecode9 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(strategy, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    arg5 = static_cast< double >(REAL(fixed_effect_prior_sd)[0]);
+    ecode6 = SWIG_AsVal_int(grid_points_per_dim, &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    arg7 = static_cast< double >(REAL(grid_span)[0]);
+    ecode8 = SWIG_AsVal_int(mode_population_size, &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_INLAMixedModel" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    ecode9 = SWIG_AsVal_int(mode_max_generations, &val9);
+    if (!SWIG_IsOK(ecode9)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "new_INLAMixedModel" "', argument " "9"" of type '" "std::size_t""'");
+    } 
+    arg9 = static_cast< std::size_t >(val9);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_2 ( SEXP data, SEXP formula, SEXP family, SEXP strategy, SEXP fixed_effect_prior_sd, SEXP grid_points_per_dim, SEXP grid_span, SEXP mode_population_size)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    std::size_t arg8 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int val6 ;
+    int ecode6 = 0 ;
+    int val8 ;
+    int ecode8 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(strategy, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    arg5 = static_cast< double >(REAL(fixed_effect_prior_sd)[0]);
+    ecode6 = SWIG_AsVal_int(grid_points_per_dim, &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    arg7 = static_cast< double >(REAL(grid_span)[0]);
+    ecode8 = SWIG_AsVal_int(mode_population_size, &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_INLAMixedModel" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_3 ( SEXP data, SEXP formula, SEXP family, SEXP strategy, SEXP fixed_effect_prior_sd, SEXP grid_points_per_dim, SEXP grid_span)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int val6 ;
+    int ecode6 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(strategy, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    arg5 = static_cast< double >(REAL(fixed_effect_prior_sd)[0]);
+    ecode6 = SWIG_AsVal_int(grid_points_per_dim, &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    arg7 = static_cast< double >(REAL(grid_span)[0]);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_4 ( SEXP data, SEXP formula, SEXP family, SEXP strategy, SEXP fixed_effect_prior_sd, SEXP grid_points_per_dim)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int val6 ;
+    int ecode6 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(strategy, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    arg5 = static_cast< double >(REAL(fixed_effect_prior_sd)[0]);
+    ecode6 = SWIG_AsVal_int(grid_points_per_dim, &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_5 ( SEXP data, SEXP formula, SEXP family, SEXP strategy, SEXP fixed_effect_prior_sd)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(strategy, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    arg5 = static_cast< double >(REAL(fixed_effect_prior_sd)[0]);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_6 ( SEXP data, SEXP formula, SEXP family, SEXP strategy)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(strategy, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_7 ( SEXP data, SEXP formula, SEXP family)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(family, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_INLAMixedModel__SWIG_8 ( SEXP data, SEXP formula)
+{
+  {
+    datamunge::INLAMixedModel *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(data, &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(formula, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_formula_text ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_formula_text" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->formula_text();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_family ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_family" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->family();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_group_variable ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_group_variable" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->group_variable();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_random_effect_names ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::string,std::allocator< std::string > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effect_names" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_names();
+    r_ans = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_observations ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_observations" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->observations();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_num_groups ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_num_groups" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->num_groups();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_fixed_effects_mean ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_fixed_effects_mean" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_mean();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_fixed_effects_sd ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_fixed_effects_sd" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_sd();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_coefficient_names ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::string,std::allocator< std::string > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_coefficient_names" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->coefficient_names();
+    r_ans = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_random_effect_std_devs ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effect_std_devs" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_std_devs();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_residual_std_dev ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_residual_std_dev" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = (double)((datamunge::INLAMixedModel const *)arg1)->residual_std_dev();
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_group_labels ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::string,std::allocator< std::string > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_group_labels" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->group_labels();
+    r_ans = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_random_effects_mean_for_group ( SEXP self, SEXP group_index, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effects_mean_for_group" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    ecode2 = SWIG_AsVal_int(group_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "INLAMixedModel_random_effects_mean_for_group" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_mean_for_group(SWIG_STD_MOVE(arg2));
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_random_effects_sd_for_group ( SEXP self, SEXP group_index, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effects_sd_for_group" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    ecode2 = SWIG_AsVal_int(group_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "INLAMixedModel_random_effects_sd_for_group" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_sd_for_group(SWIG_STD_MOVE(arg2));
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_log_marginal_likelihood ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_log_marginal_likelihood" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = (double)((datamunge::INLAMixedModel const *)arg1)->log_marginal_likelihood();
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_summary ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_summary" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->summary();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_print_summary ( SEXP self)
+{
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_print_summary" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    ((datamunge::INLAMixedModel const *)arg1)->print_summary();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_INLAMixedModel_predict ( SEXP self, SEXP newdata, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_predict" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    res2 = SWIG_R_ConvertPtr(newdata, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "INLAMixedModel_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "INLAMixedModel_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    result = ((datamunge::INLAMixedModel const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_INLAMixedModel ( SEXP self)
+{
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_INLAMixedModel" "', argument " "1"" of type '" "datamunge::INLAMixedModel *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
     delete arg1;
     r_ans = R_NilValue;
     vmaxset(r_vmax);
@@ -42005,6 +43377,432 @@ R_swig_Tensor_outer ( SEXP self, SEXP other)
 
 
 SWIGEXPORT SEXP
+R_swig_Tensor_from_image ( SEXP img)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::image::Image *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(img, &argp1, SWIGTYPE_p_datamunge__image__Image,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_from_image" "', argument " "1"" of type '" "datamunge::image::Image const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_from_image" "', argument " "1"" of type '" "datamunge::image::Image const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::image::Image * >(argp1);
+    result = (datamunge::Tensor *)datamunge::Tensor::from_image((datamunge::image::Image const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_conv2d__SWIG_0 ( SEXP input, SEXP kernel, SEXP bias, SEXP stride, SEXP padding)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    datamunge::Tensor *arg2 = 0 ;
+    datamunge::Tensor *arg3 = 0 ;
+    int arg4 ;
+    int arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(input, &argp1, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    res2 = SWIG_R_ConvertPtr(kernel, &argp2, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::Tensor * >(argp2);
+    res3 = SWIG_R_ConvertPtr(bias, &argp3, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg3 = reinterpret_cast< datamunge::Tensor * >(argp3);
+    arg4 = static_cast< int >(INTEGER(stride)[0]);
+    arg5 = static_cast< int >(INTEGER(padding)[0]);
+    result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4,arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_conv2d__SWIG_1 ( SEXP input, SEXP kernel, SEXP bias, SEXP stride)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    datamunge::Tensor *arg2 = 0 ;
+    datamunge::Tensor *arg3 = 0 ;
+    int arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(input, &argp1, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    res2 = SWIG_R_ConvertPtr(kernel, &argp2, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::Tensor * >(argp2);
+    res3 = SWIG_R_ConvertPtr(bias, &argp3, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg3 = reinterpret_cast< datamunge::Tensor * >(argp3);
+    arg4 = static_cast< int >(INTEGER(stride)[0]);
+    result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_conv2d__SWIG_2 ( SEXP input, SEXP kernel, SEXP bias)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    datamunge::Tensor *arg2 = 0 ;
+    datamunge::Tensor *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(input, &argp1, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    res2 = SWIG_R_ConvertPtr(kernel, &argp2, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::Tensor * >(argp2);
+    res3 = SWIG_R_ConvertPtr(bias, &argp3, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg3 = reinterpret_cast< datamunge::Tensor * >(argp3);
+    result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_max_pool2d__SWIG_0 ( SEXP self, SEXP pool_size, SEXP stride)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    int arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_max_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    arg2 = static_cast< int >(INTEGER(pool_size)[0]);
+    arg3 = static_cast< int >(INTEGER(stride)[0]);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_max_pool2d__SWIG_1 ( SEXP self, SEXP pool_size)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_max_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    arg2 = static_cast< int >(INTEGER(pool_size)[0]);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_avg_pool2d__SWIG_0 ( SEXP self, SEXP pool_size, SEXP stride)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    int arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_avg_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    arg2 = static_cast< int >(INTEGER(pool_size)[0]);
+    arg3 = static_cast< int >(INTEGER(stride)[0]);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2,arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_avg_pool2d__SWIG_1 ( SEXP self, SEXP pool_size)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_avg_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    arg2 = static_cast< int >(INTEGER(pool_size)[0]);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_relu ( SEXP self)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_relu" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->relu();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_sigmoid ( SEXP self)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sigmoid" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sigmoid();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Tensor_softmax ( SEXP self)
+{
+  {
+    datamunge::Tensor *result = 0 ;
+    datamunge::Tensor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_softmax" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->softmax();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_Tensor_to_string__SWIG_0 ( SEXP self, SEXP max_elements, SEXP s_swig_copy)
 {
   {
@@ -62677,6 +64475,2197 @@ R_swig_delete_NUTS ( SEXP self)
 }
 
 
+SWIGEXPORT SEXP
+R_swig_RWMOptions_num_samples_set ( SEXP self, SEXP s_num_samples)
+{
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_samples_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_int(s_num_samples, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_num_samples_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_samples = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_num_samples_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_samples_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result =  ((arg1)->num_samples);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_num_warmup_set ( SEXP self, SEXP s_num_warmup)
+{
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_warmup_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_int(s_num_warmup, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_num_warmup_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_warmup = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_num_warmup_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_warmup_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result =  ((arg1)->num_warmup);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_initial_step_size_set ( SEXP self, SEXP s_initial_step_size)
+{
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_initial_step_size_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    arg2 = static_cast< double >(REAL(s_initial_step_size)[0]);
+    if (arg1) (arg1)->initial_step_size = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_initial_step_size_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_initial_step_size_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result = (double) ((arg1)->initial_step_size);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_target_accept_rate_set ( SEXP self, SEXP s_target_accept_rate)
+{
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_target_accept_rate_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    arg2 = static_cast< double >(REAL(s_target_accept_rate)[0]);
+    if (arg1) (arg1)->target_accept_rate = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_target_accept_rate_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_target_accept_rate_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result = (double) ((arg1)->target_accept_rate);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_seed_set ( SEXP self, SEXP s_seed)
+{
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    std::uint64_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_seed_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_long(s_seed, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_seed_set" "', argument " "2"" of type '" "std::uint64_t""'");
+    } 
+    arg2 = static_cast< std::uint64_t >(val2);
+    if (arg1) (arg1)->seed = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMOptions_seed_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::uint64_t result;
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_seed_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result = (std::uint64_t) ((arg1)->seed);
+    r_ans = SWIG_From_long(static_cast< long >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RWMOptions ( )
+{
+  {
+    datamunge::bayes::RWMOptions *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::RWMOptions *)new datamunge::bayes::RWMOptions();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RWMOptions, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_RWMOptions ( SEXP self)
+{
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RWMOptions" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMResult_samples_set ( SEXP self, SEXP s_samples)
+{
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_samples_set" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_samples, &argp2, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RWMResult_samples_set" "', argument " "2"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > * >(argp2);
+    if (arg1) (arg1)->samples = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMResult_samples_get ( SEXP self)
+{
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *result = 0 ;
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_samples_get" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    result = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)& ((arg1)->samples);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMResult_accept_rate_set ( SEXP self, SEXP s_accept_rate)
+{
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_accept_rate_set" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    arg2 = static_cast< double >(REAL(s_accept_rate)[0]);
+    if (arg1) (arg1)->accept_rate = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMResult_accept_rate_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_accept_rate_get" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    result = (double) ((arg1)->accept_rate);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMResult_final_step_size_set ( SEXP self, SEXP s_final_step_size)
+{
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_final_step_size_set" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    arg2 = static_cast< double >(REAL(s_final_step_size)[0]);
+    if (arg1) (arg1)->final_step_size = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RWMResult_final_step_size_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_final_step_size_get" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    result = (double) ((arg1)->final_step_size);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RWMResult ( )
+{
+  {
+    datamunge::bayes::RWMResult *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::RWMResult *)new datamunge::bayes::RWMResult();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RWMResult, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_RWMResult ( SEXP self)
+{
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RWMResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RWMResult" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RandomWalkMetropolis__SWIG_0 ( SEXP options)
+{
+  {
+    datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+    datamunge::bayes::RWMOptions arg1 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      res1 = SWIG_R_ConvertPtr(options, &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_RandomWalkMetropolis" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_RandomWalkMetropolis" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1));
+      }
+    }
+    result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_RandomWalkMetropolis__SWIG_1 ( )
+{
+  {
+    datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_RandomWalkMetropolis_sample ( SEXP self, SEXP log_posterior, SEXP initial_params, SEXP s_swig_copy)
+{
+  {
+    datamunge::bayes::RWMResult result;
+    datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+    datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+    std::vector< double,std::allocator< double > > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomWalkMetropolis_sample" "', argument " "1"" of type '" "datamunge::bayes::RandomWalkMetropolis const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RandomWalkMetropolis * >(argp1);
+    res2 = SWIG_R_ConvertPtr(log_posterior, &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RandomWalkMetropolis_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RandomWalkMetropolis_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res3 = swig::asptr(initial_params, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RandomWalkMetropolis_sample" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RandomWalkMetropolis_sample" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = ((datamunge::bayes::RandomWalkMetropolis const *)arg1)->sample(*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::bayes::RWMResult(result)), SWIGTYPE_p_datamunge__bayes__RWMResult, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_RandomWalkMetropolis ( SEXP self)
+{
+  {
+    datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RandomWalkMetropolis" "', argument " "1"" of type '" "datamunge::bayes::RandomWalkMetropolis *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RandomWalkMetropolis * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_num_samples_set ( SEXP self, SEXP s_num_samples)
+{
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_samples_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    ecode2 = SWIG_AsVal_int(s_num_samples, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsOptions_num_samples_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_samples = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_num_samples_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_samples_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result =  ((arg1)->num_samples);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_num_warmup_set ( SEXP self, SEXP s_num_warmup)
+{
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_warmup_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    ecode2 = SWIG_AsVal_int(s_num_warmup, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsOptions_num_warmup_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_warmup = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_num_warmup_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_warmup_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result =  ((arg1)->num_warmup);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_initial_step_sizes_set ( SEXP self, SEXP s_initial_step_sizes)
+{
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_initial_step_sizes_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_initial_step_sizes, &argp2, SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsOptions_initial_step_sizes_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+    if (arg1) (arg1)->initial_step_sizes = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_initial_step_sizes_get ( SEXP self)
+{
+  {
+    std::vector< double,std::allocator< double > > *result = 0 ;
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_initial_step_sizes_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result = (std::vector< double,std::allocator< double > > *)& ((arg1)->initial_step_sizes);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_target_accept_rate_set ( SEXP self, SEXP s_target_accept_rate)
+{
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_target_accept_rate_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    arg2 = static_cast< double >(REAL(s_target_accept_rate)[0]);
+    if (arg1) (arg1)->target_accept_rate = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_target_accept_rate_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_target_accept_rate_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result = (double) ((arg1)->target_accept_rate);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_seed_set ( SEXP self, SEXP s_seed)
+{
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::uint64_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_seed_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    ecode2 = SWIG_AsVal_long(s_seed, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsOptions_seed_set" "', argument " "2"" of type '" "std::uint64_t""'");
+    } 
+    arg2 = static_cast< std::uint64_t >(val2);
+    if (arg1) (arg1)->seed = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsOptions_seed_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::uint64_t result;
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_seed_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result = (std::uint64_t) ((arg1)->seed);
+    r_ans = SWIG_From_long(static_cast< long >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GibbsOptions ( )
+{
+  {
+    datamunge::bayes::GibbsOptions *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::GibbsOptions *)new datamunge::bayes::GibbsOptions();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsOptions, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_GibbsOptions ( SEXP self)
+{
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsOptions" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsResult_samples_set ( SEXP self, SEXP s_samples)
+{
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_samples_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_samples, &argp2, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsResult_samples_set" "', argument " "2"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > * >(argp2);
+    if (arg1) (arg1)->samples = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsResult_samples_get ( SEXP self)
+{
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *result = 0 ;
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_samples_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    result = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)& ((arg1)->samples);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsResult_accept_rates_set ( SEXP self, SEXP s_accept_rates)
+{
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_accept_rates_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_accept_rates, &argp2, SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsResult_accept_rates_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+    if (arg1) (arg1)->accept_rates = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsResult_accept_rates_get ( SEXP self)
+{
+  {
+    std::vector< double,std::allocator< double > > *result = 0 ;
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_accept_rates_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    result = (std::vector< double,std::allocator< double > > *)& ((arg1)->accept_rates);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsResult_final_step_sizes_set ( SEXP self, SEXP s_final_step_sizes)
+{
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_final_step_sizes_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_final_step_sizes, &argp2, SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsResult_final_step_sizes_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+    if (arg1) (arg1)->final_step_sizes = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsResult_final_step_sizes_get ( SEXP self)
+{
+  {
+    std::vector< double,std::allocator< double > > *result = 0 ;
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_final_step_sizes_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    result = (std::vector< double,std::allocator< double > > *)& ((arg1)->final_step_sizes);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GibbsResult ( )
+{
+  {
+    datamunge::bayes::GibbsResult *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::GibbsResult *)new datamunge::bayes::GibbsResult();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsResult, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_GibbsResult ( SEXP self)
+{
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsResult" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GibbsSampler__SWIG_0 ( SEXP options)
+{
+  {
+    datamunge::bayes::GibbsSampler *result = 0 ;
+    datamunge::bayes::GibbsOptions arg1 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      res1 = SWIG_R_ConvertPtr(options, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GibbsSampler" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GibbsSampler" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1));
+      }
+    }
+    result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsSampler, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_GibbsSampler__SWIG_1 ( )
+{
+  {
+    datamunge::bayes::GibbsSampler *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsSampler, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GibbsSampler_sample ( SEXP self, SEXP log_posterior, SEXP initial_params, SEXP s_swig_copy)
+{
+  {
+    datamunge::bayes::GibbsResult result;
+    datamunge::bayes::GibbsSampler *arg1 = 0 ;
+    datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+    std::vector< double,std::allocator< double > > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsSampler, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampler_sample" "', argument " "1"" of type '" "datamunge::bayes::GibbsSampler const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsSampler * >(argp1);
+    res2 = SWIG_R_ConvertPtr(log_posterior, &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampler_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GibbsSampler_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res3 = swig::asptr(initial_params, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampler_sample" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GibbsSampler_sample" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = ((datamunge::bayes::GibbsSampler const *)arg1)->sample(*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::bayes::GibbsResult(result)), SWIGTYPE_p_datamunge__bayes__GibbsResult, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_GibbsSampler ( SEXP self)
+{
+  {
+    datamunge::bayes::GibbsSampler *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__GibbsSampler, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsSampler" "', argument " "1"" of type '" "datamunge::bayes::GibbsSampler *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsSampler * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingOptions_num_samples_set ( SEXP self, SEXP s_num_samples)
+{
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_num_samples_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    ecode2 = SWIG_AsVal_int(s_num_samples, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSamplingOptions_num_samples_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_samples = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingOptions_num_samples_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_num_samples_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    result =  ((arg1)->num_samples);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingOptions_seed_set ( SEXP self, SEXP s_seed)
+{
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    std::uint64_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    long val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_seed_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    ecode2 = SWIG_AsVal_long(s_seed, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSamplingOptions_seed_set" "', argument " "2"" of type '" "std::uint64_t""'");
+    } 
+    arg2 = static_cast< std::uint64_t >(val2);
+    if (arg1) (arg1)->seed = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingOptions_seed_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::uint64_t result;
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_seed_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    result = (std::uint64_t) ((arg1)->seed);
+    r_ans = SWIG_From_long(static_cast< long >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_ImportanceSamplingOptions ( )
+{
+  {
+    datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::ImportanceSamplingOptions *)new datamunge::bayes::ImportanceSamplingOptions();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_ImportanceSamplingOptions ( SEXP self)
+{
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ImportanceSamplingOptions" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_samples_set ( SEXP self, SEXP s_samples)
+{
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_samples_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_samples, &argp2, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSamplingResult_samples_set" "', argument " "2"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > * >(argp2);
+    if (arg1) (arg1)->samples = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_samples_get ( SEXP self)
+{
+  {
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *result = 0 ;
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_samples_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)& ((arg1)->samples);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_normalized_weights_set ( SEXP self, SEXP s_normalized_weights)
+{
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    std::vector< double,std::allocator< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_normalized_weights_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    res2 = SWIG_R_ConvertPtr(s_normalized_weights, &argp2, SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSamplingResult_normalized_weights_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+    if (arg1) (arg1)->normalized_weights = *arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_normalized_weights_get ( SEXP self)
+{
+  {
+    std::vector< double,std::allocator< double > > *result = 0 ;
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_normalized_weights_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (std::vector< double,std::allocator< double > > *)& ((arg1)->normalized_weights);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_effective_sample_size_set ( SEXP self, SEXP s_effective_sample_size)
+{
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_effective_sample_size_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    arg2 = static_cast< double >(REAL(s_effective_sample_size)[0]);
+    if (arg1) (arg1)->effective_sample_size = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_effective_sample_size_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_effective_sample_size_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (double) ((arg1)->effective_sample_size);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_log_evidence_set ( SEXP self, SEXP s_log_evidence)
+{
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_log_evidence_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    arg2 = static_cast< double >(REAL(s_log_evidence)[0]);
+    if (arg1) (arg1)->log_evidence = arg2;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSamplingResult_log_evidence_get ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    double result;
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_log_evidence_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (double) ((arg1)->log_evidence);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_ImportanceSamplingResult ( )
+{
+  {
+    datamunge::bayes::ImportanceSamplingResult *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::ImportanceSamplingResult *)new datamunge::bayes::ImportanceSamplingResult();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_ImportanceSamplingResult ( SEXP self)
+{
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ImportanceSamplingResult" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_ImportanceSampling__SWIG_0 ( SEXP options)
+{
+  {
+    datamunge::bayes::ImportanceSampling *result = 0 ;
+    datamunge::bayes::ImportanceSamplingOptions arg1 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      res1 = SWIG_R_ConvertPtr(options, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_ImportanceSampling" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_ImportanceSampling" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1));
+      }
+    }
+    result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling(SWIG_STD_MOVE(arg1));
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSampling, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_ImportanceSampling__SWIG_1 ( )
+{
+  {
+    datamunge::bayes::ImportanceSampling *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSampling, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ImportanceSampling_sample ( SEXP self, SEXP log_target, SEXP proposal_mean, SEXP proposal_covariance, SEXP s_swig_copy)
+{
+  {
+    datamunge::bayes::ImportanceSamplingResult result;
+    datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+    datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+    std::vector< double,std::allocator< double > > *arg3 = 0 ;
+    std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSampling, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_sample" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSampling const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSampling * >(argp1);
+    res2 = SWIG_R_ConvertPtr(log_target, &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ImportanceSampling_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res3 = swig::asptr(proposal_mean, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_sample" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ImportanceSampling_sample" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *ptr = (std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *)0;
+      res4 = swig::asptr(proposal_covariance, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "ImportanceSampling_sample" "', argument " "4"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ImportanceSampling_sample" "', argument " "4"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = ((datamunge::bayes::ImportanceSampling const *)arg1)->sample(*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj((new datamunge::bayes::ImportanceSamplingResult(result)), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, SWIG_POINTER_OWN |  0 );
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_ImportanceSampling ( SEXP self)
+{
+  {
+    datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSampling, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ImportanceSampling" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSampling *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSampling * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
 #ifdef __cplusplus
 }
 #endif
@@ -62720,6 +66709,7 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__GLM = {"_p_datamunge__GLM", "data
 SWIGINTERN swig_type_info _swigt__p_datamunge__GLMM = {"_p_datamunge__GLMM", "datamunge::GLMM *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GaussianProcessRegression = {"_p_datamunge__GaussianProcessRegression", "datamunge::GaussianProcessRegression *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__HyperDual = {"_p_datamunge__HyperDual", "datamunge::HyperDual *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__INLAMixedModel = {"_p_datamunge__INLAMixedModel", "datamunge::INLAMixedModel *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KMeans = {"_p_datamunge__KMeans", "datamunge::KMeans *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KNNClassifier = {"_p_datamunge__KNNClassifier", "datamunge::KNNClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KNNRegressor = {"_p_datamunge__KNNRegressor", "datamunge::KNNRegressor *", 0, 0, (void*)0, 0};
@@ -62738,14 +66728,24 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor",
 SWIGINTERN swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostClassifier = {"_p_datamunge__XGBoostClassifier", "datamunge::XGBoostClassifier *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostRegressor = {"_p_datamunge__XGBoostRegressor", "datamunge::XGBoostRegressor *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsOptions = {"_p_datamunge__bayes__GibbsOptions", "datamunge::bayes::GibbsOptions *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsResult = {"_p_datamunge__bayes__GibbsResult", "datamunge::bayes::GibbsResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsSampler = {"_p_datamunge__bayes__GibbsSampler", "datamunge::bayes::GibbsSampler *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__HMC = {"_p_datamunge__bayes__HMC", "datamunge::bayes::HMC *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__HMCOptions = {"_p_datamunge__bayes__HMCOptions", "datamunge::bayes::HMCOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__HMCResult = {"_p_datamunge__bayes__HMCResult", "datamunge::bayes::HMCResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSampling = {"_p_datamunge__bayes__ImportanceSampling", "datamunge::bayes::ImportanceSampling *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingOptions = {"_p_datamunge__bayes__ImportanceSamplingOptions", "datamunge::bayes::ImportanceSamplingOptions *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingResult = {"_p_datamunge__bayes__ImportanceSamplingResult", "datamunge::bayes::ImportanceSamplingResult *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__MAP = {"_p_datamunge__bayes__MAP", "datamunge::bayes::MAP *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__MAPOptions = {"_p_datamunge__bayes__MAPOptions", "datamunge::bayes::MAPOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__NUTS = {"_p_datamunge__bayes__NUTS", "datamunge::bayes::NUTS *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__NUTSOptions = {"_p_datamunge__bayes__NUTSOptions", "datamunge::bayes::NUTSOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__NUTSResult = {"_p_datamunge__bayes__NUTSResult", "datamunge::bayes::NUTSResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__bayes__RWMOptions", "datamunge::bayes::RWMOptions *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "datamunge::image::Image *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__Adam = {"_p_datamunge__optim__Adam", "datamunge::optim::Adam *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__AdamOptions = {"_p_datamunge__optim__AdamOptions", "datamunge::optim::AdamOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__ArbitraryFunction = {"_p_datamunge__optim__ArbitraryFunction", "datamunge::optim::ArbitraryFunction *", 0, 0, (void*)0, 0};
@@ -62827,6 +66827,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__GLMM,
   &_swigt__p_datamunge__GaussianProcessRegression,
   &_swigt__p_datamunge__HyperDual,
+  &_swigt__p_datamunge__INLAMixedModel,
   &_swigt__p_datamunge__KMeans,
   &_swigt__p_datamunge__KNNClassifier,
   &_swigt__p_datamunge__KNNRegressor,
@@ -62845,14 +66846,24 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__Var,
   &_swigt__p_datamunge__XGBoostClassifier,
   &_swigt__p_datamunge__XGBoostRegressor,
+  &_swigt__p_datamunge__bayes__GibbsOptions,
+  &_swigt__p_datamunge__bayes__GibbsResult,
+  &_swigt__p_datamunge__bayes__GibbsSampler,
   &_swigt__p_datamunge__bayes__HMC,
   &_swigt__p_datamunge__bayes__HMCOptions,
   &_swigt__p_datamunge__bayes__HMCResult,
+  &_swigt__p_datamunge__bayes__ImportanceSampling,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingOptions,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingResult,
   &_swigt__p_datamunge__bayes__MAP,
   &_swigt__p_datamunge__bayes__MAPOptions,
   &_swigt__p_datamunge__bayes__NUTS,
   &_swigt__p_datamunge__bayes__NUTSOptions,
   &_swigt__p_datamunge__bayes__NUTSResult,
+  &_swigt__p_datamunge__bayes__RWMOptions,
+  &_swigt__p_datamunge__bayes__RWMResult,
+  &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
+  &_swigt__p_datamunge__image__Image,
   &_swigt__p_datamunge__optim__Adam,
   &_swigt__p_datamunge__optim__AdamOptions,
   &_swigt__p_datamunge__optim__ArbitraryFunction,
@@ -62931,6 +66942,7 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__GLM[] = {  {&_swigt__p_datamunge_
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GLMM[] = {  {&_swigt__p_datamunge__GLMM, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GaussianProcessRegression[] = {  {&_swigt__p_datamunge__GaussianProcessRegression, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__HyperDual[] = {  {&_swigt__p_datamunge__HyperDual, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__INLAMixedModel[] = {  {&_swigt__p_datamunge__INLAMixedModel, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KMeans[] = {  {&_swigt__p_datamunge__KMeans, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KNNClassifier[] = {  {&_swigt__p_datamunge__KNNClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KNNRegressor[] = {  {&_swigt__p_datamunge__KNNRegressor, 0, 0, 0},{0, 0, 0, 0}};
@@ -62949,14 +66961,24 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamun
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostClassifier[] = {  {&_swigt__p_datamunge__XGBoostClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostRegressor[] = {  {&_swigt__p_datamunge__XGBoostRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsOptions[] = {  {&_swigt__p_datamunge__bayes__GibbsOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsResult[] = {  {&_swigt__p_datamunge__bayes__GibbsResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsSampler[] = {  {&_swigt__p_datamunge__bayes__GibbsSampler, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__HMC[] = {  {&_swigt__p_datamunge__bayes__HMC, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__HMCOptions[] = {  {&_swigt__p_datamunge__bayes__HMCOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__HMCResult[] = {  {&_swigt__p_datamunge__bayes__HMCResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSampling[] = {  {&_swigt__p_datamunge__bayes__ImportanceSampling, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingOptions[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingResult[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingResult, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__MAP[] = {  {&_swigt__p_datamunge__bayes__MAP, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__MAPOptions[] = {  {&_swigt__p_datamunge__bayes__MAPOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__NUTS[] = {  {&_swigt__p_datamunge__bayes__NUTS, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__NUTSOptions[] = {  {&_swigt__p_datamunge__bayes__NUTSOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__NUTSResult[] = {  {&_swigt__p_datamunge__bayes__NUTSResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_datamunge__bayes__RWMOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__Adam[] = {  {&_swigt__p_datamunge__optim__Adam, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__AdamOptions[] = {  {&_swigt__p_datamunge__optim__AdamOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__ArbitraryFunction[] = {  {&_swigt__p_datamunge__optim__ArbitraryFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableFunction, _p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__SeparableFunction, _p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},{0, 0, 0, 0}};
@@ -63035,6 +67057,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__GLMM,
   _swigc__p_datamunge__GaussianProcessRegression,
   _swigc__p_datamunge__HyperDual,
+  _swigc__p_datamunge__INLAMixedModel,
   _swigc__p_datamunge__KMeans,
   _swigc__p_datamunge__KNNClassifier,
   _swigc__p_datamunge__KNNRegressor,
@@ -63053,14 +67076,24 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__Var,
   _swigc__p_datamunge__XGBoostClassifier,
   _swigc__p_datamunge__XGBoostRegressor,
+  _swigc__p_datamunge__bayes__GibbsOptions,
+  _swigc__p_datamunge__bayes__GibbsResult,
+  _swigc__p_datamunge__bayes__GibbsSampler,
   _swigc__p_datamunge__bayes__HMC,
   _swigc__p_datamunge__bayes__HMCOptions,
   _swigc__p_datamunge__bayes__HMCResult,
+  _swigc__p_datamunge__bayes__ImportanceSampling,
+  _swigc__p_datamunge__bayes__ImportanceSamplingOptions,
+  _swigc__p_datamunge__bayes__ImportanceSamplingResult,
   _swigc__p_datamunge__bayes__MAP,
   _swigc__p_datamunge__bayes__MAPOptions,
   _swigc__p_datamunge__bayes__NUTS,
   _swigc__p_datamunge__bayes__NUTSOptions,
   _swigc__p_datamunge__bayes__NUTSResult,
+  _swigc__p_datamunge__bayes__RWMOptions,
+  _swigc__p_datamunge__bayes__RWMResult,
+  _swigc__p_datamunge__bayes__RandomWalkMetropolis,
+  _swigc__p_datamunge__image__Image,
   _swigc__p_datamunge__optim__Adam,
   _swigc__p_datamunge__optim__AdamOptions,
   _swigc__p_datamunge__optim__ArbitraryFunction,
@@ -63549,8 +67582,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_NaiveBayesClassifier_print_summary", (DL_FUNC) &R_swig_NaiveBayesClassifier_print_summary, 1},
    {"R_swig_new_XGBoostClassifier__SWIG_2", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_2, 11},
    {"R_swig_new_XGBoostClassifier__SWIG_3", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_3, 10},
-   {"R_swig_delete_GradientDescentOptions", (DL_FUNC) &R_swig_delete_GradientDescentOptions, 1},
    {"R_swig_new_XGBoostClassifier__SWIG_4", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_4, 9},
+   {"R_swig_delete_GradientDescentOptions", (DL_FUNC) &R_swig_delete_GradientDescentOptions, 1},
    {"R_swig_new_XGBoostClassifier__SWIG_5", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_5, 8},
    {"R_swig_new_XGBoostClassifier__SWIG_6", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_6, 7},
    {"R_swig_SVector_pop_back", (DL_FUNC) &R_swig_SVector_pop_back, 1},
@@ -63571,14 +67604,24 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataSeries_label_set", (DL_FUNC) &R_swig_DataSeries_label_set, 2},
    {"R_swig_DecisionTreeRegressor_rmse", (DL_FUNC) &R_swig_DecisionTreeRegressor_rmse, 2},
    {"R_swig_DVector_size", (DL_FUNC) &R_swig_DVector_size, 2},
+   {"R_swig_new_INLAMixedModel__SWIG_0", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_0, 10},
+   {"R_swig_new_INLAMixedModel__SWIG_1", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_1, 9},
    {"R_swig_LM_t_values", (DL_FUNC) &R_swig_LM_t_values, 2},
    {"R_swig_DataFrame_add_numeric_column__SWIG_0", (DL_FUNC) &R_swig_DataFrame_add_numeric_column__SWIG_0, 4},
+   {"R_swig_new_INLAMixedModel__SWIG_2", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_2, 8},
    {"R_swig_DataFrame_add_numeric_column__SWIG_1", (DL_FUNC) &R_swig_DataFrame_add_numeric_column__SWIG_1, 3},
+   {"R_swig_new_INLAMixedModel__SWIG_3", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_3, 7},
+   {"R_swig_new_INLAMixedModel__SWIG_4", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_4, 6},
+   {"R_swig_ImportanceSamplingResult_log_evidence_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_log_evidence_set, 2},
+   {"R_swig_new_INLAMixedModel__SWIG_5", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_5, 5},
    {"R_swig_LM_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_LM_plot_residuals_vs_fitted, 2},
    {"R_swig_delete_Callback", (DL_FUNC) &R_swig_delete_Callback, 1},
+   {"R_swig_new_INLAMixedModel__SWIG_6", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_6, 4},
    {"R_swig_PAdjustMethod_PAdjustMethod_None_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_None_get, 1},
+   {"R_swig_new_INLAMixedModel__SWIG_7", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_7, 3},
    {"R_swig_ElasticNet_plot_predicted_vs_actual", (DL_FUNC) &R_swig_ElasticNet_plot_predicted_vs_actual, 2},
    {"R_swig_LM_save_diagnostic_plots", (DL_FUNC) &R_swig_LM_save_diagnostic_plots, 2},
+   {"R_swig_new_INLAMixedModel__SWIG_8", (DL_FUNC) &R_swig_new_INLAMixedModel__SWIG_8, 2},
    {"R_swig_AgglomerativeClustering_num_merges", (DL_FUNC) &R_swig_AgglomerativeClustering_num_merges, 2},
    {"R_swig_MAP_optimize", (DL_FUNC) &R_swig_MAP_optimize, 4},
    {"R_swig_Tape_size", (DL_FUNC) &R_swig_Tape_size, 2},
@@ -63607,18 +67650,22 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_XGBoostClassifier_feature_importance", (DL_FUNC) &R_swig_XGBoostClassifier_feature_importance, 2},
    {"R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_1", (DL_FUNC) &R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_1, 4},
    {"R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_NaiveBayesClassifier_plot_decision_regions__SWIG_0, 5},
+   {"R_swig_RWMOptions_seed_set", (DL_FUNC) &R_swig_RWMOptions_seed_set, 2},
    {"R_swig_Tensor_set_string", (DL_FUNC) &R_swig_Tensor_set_string, 3},
    {"R_swig_delete_HMCOptions", (DL_FUNC) &R_swig_delete_HMCOptions, 1},
    {"R_swig_Dual_tanh", (DL_FUNC) &R_swig_Dual_tanh, 2},
+   {"R_swig_GibbsOptions_num_warmup_get", (DL_FUNC) &R_swig_GibbsOptions_num_warmup_get, 2},
    {"R_swig_make_dvector", (DL_FUNC) &R_swig_make_dvector, 4},
    {"R_swig_LM_adjusted_r_squared", (DL_FUNC) &R_swig_LM_adjusted_r_squared, 2},
    {"R_swig_LDA_predict_frame", (DL_FUNC) &R_swig_LDA_predict_frame, 2},
    {"R_swig_ARIMAOptions_q_get", (DL_FUNC) &R_swig_ARIMAOptions_q_get, 2},
+   {"R_swig_delete_RWMOptions", (DL_FUNC) &R_swig_delete_RWMOptions, 1},
    {"R_swig_HyperDual_subtract_scalar", (DL_FUNC) &R_swig_HyperDual_subtract_scalar, 3},
    {"R_swig_SVector_assign", (DL_FUNC) &R_swig_SVector_assign, 3},
    {"R_swig_ARIMA_bic", (DL_FUNC) &R_swig_ARIMA_bic, 2},
-   {"R_swig_new_GradientDescentOptions", (DL_FUNC) &R_swig_new_GradientDescentOptions, 0},
    {"R_swig_LMM_log_likelihood", (DL_FUNC) &R_swig_LMM_log_likelihood, 2},
+   {"R_swig_new_GradientDescentOptions", (DL_FUNC) &R_swig_new_GradientDescentOptions, 0},
+   {"R_swig_ImportanceSamplingResult_samples_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_samples_set, 2},
    {"R_swig_GLM_confidence_interval_upper__SWIG_0", (DL_FUNC) &R_swig_GLM_confidence_interval_upper__SWIG_0, 3},
    {"R_swig_GLM_confidence_interval_upper__SWIG_1", (DL_FUNC) &R_swig_GLM_confidence_interval_upper__SWIG_1, 2},
    {"R_swig_DVectorVector_append", (DL_FUNC) &R_swig_DVectorVector_append, 2},
@@ -63664,12 +67711,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Dual_exp", (DL_FUNC) &R_swig_Dual_exp, 2},
    {"R_swig_RandomForestRegressor_fitted_values", (DL_FUNC) &R_swig_RandomForestRegressor_fitted_values, 2},
    {"R_swig_DVectorVector_swap", (DL_FUNC) &R_swig_DVectorVector_swap, 2},
+   {"R_swig_GibbsResult_samples_get", (DL_FUNC) &R_swig_GibbsResult_samples_get, 1},
    {"R_swig_AgglomerativeClustering_feature_names", (DL_FUNC) &R_swig_AgglomerativeClustering_feature_names, 2},
    {"R_swig_NaiveBayesClassifier_classes", (DL_FUNC) &R_swig_NaiveBayesClassifier_classes, 2},
    {"R_swig_Tensor_subtract_scalar", (DL_FUNC) &R_swig_Tensor_subtract_scalar, 2},
    {"R_swig_XGBoostRegressor_training_deviance", (DL_FUNC) &R_swig_XGBoostRegressor_training_deviance, 2},
    {"R_swig_ExponentialSmoothingOptions_gamma_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_gamma_set, 2},
    {"R_swig_delete_NaiveBayesClassifier", (DL_FUNC) &R_swig_delete_NaiveBayesClassifier, 1},
+   {"R_swig_RWMOptions_target_accept_rate_set", (DL_FUNC) &R_swig_RWMOptions_target_accept_rate_set, 2},
    {"R_swig_DataSeries_stroke_width_set", (DL_FUNC) &R_swig_DataSeries_stroke_width_set, 2},
    {"R_swig_DataSeries_bar_width_set", (DL_FUNC) &R_swig_DataSeries_bar_width_set, 2},
    {"R_swig_GLMM_observations", (DL_FUNC) &R_swig_GLMM_observations, 2},
@@ -63695,6 +67744,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_HyperDual_eps1eps2", (DL_FUNC) &R_swig_HyperDual_eps1eps2, 2},
    {"R_swig_ElasticNet_fitted_values", (DL_FUNC) &R_swig_ElasticNet_fitted_values, 2},
    {"R_swig_PSOOptions_inertia_strategy_get", (DL_FUNC) &R_swig_PSOOptions_inertia_strategy_get, 2},
+   {"R_swig_INLAMixedModel_fixed_effects_mean", (DL_FUNC) &R_swig_INLAMixedModel_fixed_effects_mean, 2},
    {"R_swig_Var_subtract", (DL_FUNC) &R_swig_Var_subtract, 3},
    {"R_swig_Ridge_predict", (DL_FUNC) &R_swig_Ridge_predict, 3},
    {"R_swig_GAOptions_blend_alpha_set", (DL_FUNC) &R_swig_GAOptions_blend_alpha_set, 2},
@@ -63705,6 +67755,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVectorVector___nonzero__", (DL_FUNC) &R_swig_DVectorVector___nonzero__, 2},
    {"R_swig_HyperDual_eps2", (DL_FUNC) &R_swig_HyperDual_eps2, 2},
    {"R_swig_Var_subtract_scalar", (DL_FUNC) &R_swig_Var_subtract_scalar, 3},
+   {"R_swig_INLAMixedModel_group_variable", (DL_FUNC) &R_swig_INLAMixedModel_group_variable, 2},
    {"R_swig_LMM_standard_errors", (DL_FUNC) &R_swig_LMM_standard_errors, 2},
    {"R_swig_DPair_second_get", (DL_FUNC) &R_swig_DPair_second_get, 2},
    {"R_swig_DataFrame_select_encoded", (DL_FUNC) &R_swig_DataFrame_select_encoded, 2},
@@ -63723,6 +67774,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ScatterPlot_line__SWIG_0", (DL_FUNC) &R_swig_ScatterPlot_line__SWIG_0, 7},
    {"R_swig_ScatterPlot_line__SWIG_1", (DL_FUNC) &R_swig_ScatterPlot_line__SWIG_1, 6},
    {"R_swig_new_GeneticAlgorithm__SWIG_0", (DL_FUNC) &R_swig_new_GeneticAlgorithm__SWIG_0, 1},
+   {"R_swig_new_ImportanceSamplingOptions", (DL_FUNC) &R_swig_new_ImportanceSamplingOptions, 0},
    {"R_swig_ScatterPlot_line__SWIG_2", (DL_FUNC) &R_swig_ScatterPlot_line__SWIG_2, 5},
    {"R_swig_new_GeneticAlgorithm__SWIG_1", (DL_FUNC) &R_swig_new_GeneticAlgorithm__SWIG_1, 0},
    {"R_swig_HMCOptions_num_warmup_get", (DL_FUNC) &R_swig_HMCOptions_num_warmup_get, 2},
@@ -63733,11 +67785,13 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector___getslice__", (DL_FUNC) &R_swig_IVector___getslice__, 3},
    {"R_swig_ElasticNet_coefficients", (DL_FUNC) &R_swig_ElasticNet_coefficients, 2},
    {"R_swig_new_SimulatedAnnealing__SWIG_0", (DL_FUNC) &R_swig_new_SimulatedAnnealing__SWIG_0, 1},
+   {"R_swig_delete_GibbsResult", (DL_FUNC) &R_swig_delete_GibbsResult, 1},
    {"R_swig_new_SimulatedAnnealing__SWIG_1", (DL_FUNC) &R_swig_new_SimulatedAnnealing__SWIG_1, 0},
    {"R_swig_SGDOptions_tolerance_set", (DL_FUNC) &R_swig_SGDOptions_tolerance_set, 2},
+   {"R_swig_GibbsOptions_seed_get", (DL_FUNC) &R_swig_GibbsOptions_seed_get, 2},
    {"R_swig_RGB_b_set", (DL_FUNC) &R_swig_RGB_b_set, 2},
-   {"R_swig_LBFGSOptions_history_size_set", (DL_FUNC) &R_swig_LBFGSOptions_history_size_set, 2},
    {"R_swig_Tensor_sqrt", (DL_FUNC) &R_swig_Tensor_sqrt, 1},
+   {"R_swig_LBFGSOptions_history_size_set", (DL_FUNC) &R_swig_LBFGSOptions_history_size_set, 2},
    {"R_swig_new_MAP__SWIG_0", (DL_FUNC) &R_swig_new_MAP__SWIG_0, 1},
    {"R_swig_DecisionTreeRegressor_observations", (DL_FUNC) &R_swig_DecisionTreeRegressor_observations, 2},
    {"R_swig_IVector_swap", (DL_FUNC) &R_swig_IVector_swap, 2},
@@ -63759,13 +67813,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DifferentiableSeparableFunction_gradient_term", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_gradient_term, 4},
    {"R_swig_DifferentiableFunction_gradient", (DL_FUNC) &R_swig_DifferentiableFunction_gradient, 3},
    {"R_swig_DataFrame_group_by_sum", (DL_FUNC) &R_swig_DataFrame_group_by_sum, 3},
-   {"R_swig_AdamOptions_beta1_set", (DL_FUNC) &R_swig_AdamOptions_beta1_set, 2},
    {"R_swig_GLM_fitted_values", (DL_FUNC) &R_swig_GLM_fitted_values, 2},
+   {"R_swig_AdamOptions_beta1_set", (DL_FUNC) &R_swig_AdamOptions_beta1_set, 2},
    {"R_swig_ARIMA_residuals", (DL_FUNC) &R_swig_ARIMA_residuals, 2},
    {"R_swig_DataFrame_sort_by__SWIG_0", (DL_FUNC) &R_swig_DataFrame_sort_by__SWIG_0, 3},
    {"R_swig_IVector_assign", (DL_FUNC) &R_swig_IVector_assign, 3},
    {"R_swig_LM_p_values", (DL_FUNC) &R_swig_LM_p_values, 2},
    {"R_swig_DataFrame_sort_by__SWIG_1", (DL_FUNC) &R_swig_DataFrame_sort_by__SWIG_1, 2},
+   {"R_swig_new_RWMResult", (DL_FUNC) &R_swig_new_RWMResult, 0},
    {"R_swig_HMCResult_accept_rate_get", (DL_FUNC) &R_swig_HMCResult_accept_rate_get, 2},
    {"R_swig_SVector_push_back", (DL_FUNC) &R_swig_SVector_push_back, 2},
    {"R_swig_Plot_x_min", (DL_FUNC) &R_swig_Plot_x_min, 2},
@@ -63801,10 +67856,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GBMRegressor_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_GBMRegressor_plot_residuals_vs_fitted, 2},
    {"R_swig_DVector_back", (DL_FUNC) &R_swig_DVector_back, 2},
    {"R_swig_SVector___delslice__", (DL_FUNC) &R_swig_SVector___delslice__, 3},
+   {"R_swig_GibbsResult_accept_rates_set", (DL_FUNC) &R_swig_GibbsResult_accept_rates_set, 2},
    {"R_swig_delete_DecisionTreeRegressor", (DL_FUNC) &R_swig_delete_DecisionTreeRegressor, 1},
    {"R_swig_new_DVectorVector__SWIG_0", (DL_FUNC) &R_swig_new_DVectorVector__SWIG_0, 0},
-   {"R_swig_AdamOptions_step_size_set", (DL_FUNC) &R_swig_AdamOptions_step_size_set, 2},
    {"R_swig_RandomForestRegressor_plot_predicted_vs_actual", (DL_FUNC) &R_swig_RandomForestRegressor_plot_predicted_vs_actual, 2},
+   {"R_swig_AdamOptions_step_size_set", (DL_FUNC) &R_swig_AdamOptions_step_size_set, 2},
    {"R_swig_new_DVectorVector__SWIG_1", (DL_FUNC) &R_swig_new_DVectorVector__SWIG_1, 1},
    {"R_swig_LMM_print_summary", (DL_FUNC) &R_swig_LMM_print_summary, 1},
    {"R_swig_new_DVectorVector__SWIG_2", (DL_FUNC) &R_swig_new_DVectorVector__SWIG_2, 1},
@@ -63830,6 +67886,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_KMeans_cluster_center", (DL_FUNC) &R_swig_KMeans_cluster_center, 3},
    {"R_swig_GAOptions_elite_count_set", (DL_FUNC) &R_swig_GAOptions_elite_count_set, 2},
    {"R_swig_AdamOptions_epsilon_set", (DL_FUNC) &R_swig_AdamOptions_epsilon_set, 2},
+   {"R_swig_GibbsResult_final_step_sizes_get", (DL_FUNC) &R_swig_GibbsResult_final_step_sizes_get, 1},
    {"R_swig_SVM_print_summary", (DL_FUNC) &R_swig_SVM_print_summary, 1},
    {"R_swig_DVector___setslice__", (DL_FUNC) &R_swig_DVector___setslice__, 4},
    {"R_swig_SVector_front", (DL_FUNC) &R_swig_SVector_front, 2},
@@ -63875,6 +67932,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LDA_print_summary", (DL_FUNC) &R_swig_LDA_print_summary, 1},
    {"R_swig_ARIMA_observations", (DL_FUNC) &R_swig_ARIMA_observations, 2},
    {"R_swig_delete_Tape", (DL_FUNC) &R_swig_delete_Tape, 1},
+   {"R_swig_delete_RandomWalkMetropolis", (DL_FUNC) &R_swig_delete_RandomWalkMetropolis, 1},
    {"R_swig_GaussianProcessRegression_plot_fit__SWIG_0", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_fit__SWIG_0, 5},
    {"R_swig_DataFrame_penguins", (DL_FUNC) &R_swig_DataFrame_penguins, 0},
    {"R_swig_DBSCAN_feature_names", (DL_FUNC) &R_swig_DBSCAN_feature_names, 2},
@@ -63895,6 +67953,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Plot_title_text", (DL_FUNC) &R_swig_Plot_title_text, 2},
    {"R_swig_GLM_coefficients", (DL_FUNC) &R_swig_GLM_coefficients, 2},
    {"R_swig_Ridge_plot_coefficient_path", (DL_FUNC) &R_swig_Ridge_plot_coefficient_path, 2},
+   {"R_swig_INLAMixedModel_predict", (DL_FUNC) &R_swig_INLAMixedModel_predict, 3},
    {"R_swig_AgglomerativeClustering_merge_cluster_a", (DL_FUNC) &R_swig_AgglomerativeClustering_merge_cluster_a, 3},
    {"R_swig_AgglomerativeClustering_merge_cluster_b", (DL_FUNC) &R_swig_AgglomerativeClustering_merge_cluster_b, 3},
    {"R_swig_delete_DVector", (DL_FUNC) &R_swig_delete_DVector, 1},
@@ -63939,12 +67998,15 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_wilcoxon_signed_rank_test__SWIG_1", (DL_FUNC) &R_swig_wilcoxon_signed_rank_test__SWIG_1, 3},
    {"R_swig_DEOptions_seed_set", (DL_FUNC) &R_swig_DEOptions_seed_set, 2},
    {"R_swig_wilcoxon_signed_rank_test__SWIG_2", (DL_FUNC) &R_swig_wilcoxon_signed_rank_test__SWIG_2, 2},
+   {"R_swig_ImportanceSampling_sample", (DL_FUNC) &R_swig_ImportanceSampling_sample, 5},
    {"R_swig_ARIMAOptions_de_max_generations_set", (DL_FUNC) &R_swig_ARIMAOptions_de_max_generations_set, 2},
+   {"R_swig_INLAMixedModel_random_effect_std_devs", (DL_FUNC) &R_swig_INLAMixedModel_random_effect_std_devs, 2},
    {"R_swig_LM_coefficients", (DL_FUNC) &R_swig_LM_coefficients, 2},
    {"R_swig_new_ARIMA__SWIG_0", (DL_FUNC) &R_swig_new_ARIMA__SWIG_0, 2},
    {"R_swig_f_test_variance__SWIG_0", (DL_FUNC) &R_swig_f_test_variance__SWIG_0, 5},
    {"R_swig_new_ARIMA__SWIG_1", (DL_FUNC) &R_swig_new_ARIMA__SWIG_1, 1},
    {"R_swig_ARIMAOptions_seed_get", (DL_FUNC) &R_swig_ARIMAOptions_seed_get, 2},
+   {"R_swig_INLAMixedModel_num_groups", (DL_FUNC) &R_swig_INLAMixedModel_num_groups, 2},
    {"R_swig_f_test_variance__SWIG_1", (DL_FUNC) &R_swig_f_test_variance__SWIG_1, 4},
    {"R_swig_DVector_get_allocator", (DL_FUNC) &R_swig_DVector_get_allocator, 2},
    {"R_swig_f_test_variance__SWIG_2", (DL_FUNC) &R_swig_f_test_variance__SWIG_2, 3},
@@ -63973,6 +68035,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_KernelRegression_plot_fit__SWIG_0", (DL_FUNC) &R_swig_KernelRegression_plot_fit__SWIG_0, 4},
    {"R_swig_SeparableFunction_evaluate", (DL_FUNC) &R_swig_SeparableFunction_evaluate, 3},
    {"R_swig_KernelRegression_plot_fit__SWIG_1", (DL_FUNC) &R_swig_KernelRegression_plot_fit__SWIG_1, 3},
+   {"R_swig_GibbsOptions_target_accept_rate_set", (DL_FUNC) &R_swig_GibbsOptions_target_accept_rate_set, 2},
    {"R_swig_DVectorVector___setitem__", (DL_FUNC) &R_swig_DVectorVector___setitem__, 3},
    {"R_swig_DEOptions_tolerance_get", (DL_FUNC) &R_swig_DEOptions_tolerance_get, 2},
    {"R_swig_LMM_deviance", (DL_FUNC) &R_swig_LMM_deviance, 2},
@@ -63982,6 +68045,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_NaiveBayesClassifier_observations", (DL_FUNC) &R_swig_NaiveBayesClassifier_observations, 2},
    {"R_swig_GLMM_bic", (DL_FUNC) &R_swig_GLMM_bic, 2},
    {"R_swig_RGB_r_get", (DL_FUNC) &R_swig_RGB_r_get, 2},
+   {"R_swig_RWMOptions_num_samples_set", (DL_FUNC) &R_swig_RWMOptions_num_samples_set, 2},
+   {"R_swig_new_GibbsSampler__SWIG_0", (DL_FUNC) &R_swig_new_GibbsSampler__SWIG_0, 1},
+   {"R_swig_new_GibbsSampler__SWIG_1", (DL_FUNC) &R_swig_new_GibbsSampler__SWIG_1, 0},
    {"R_swig_ElasticNet_observations", (DL_FUNC) &R_swig_ElasticNet_observations, 2},
    {"R_swig_RandomForestClassifier_predict_frame", (DL_FUNC) &R_swig_RandomForestClassifier_predict_frame, 2},
    {"R_swig_DVector_push_back", (DL_FUNC) &R_swig_DVector_push_back, 2},
@@ -63992,12 +68058,15 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_string_at", (DL_FUNC) &R_swig_Tensor_string_at, 3},
    {"R_swig_SVector_pop", (DL_FUNC) &R_swig_SVector_pop, 2},
    {"R_swig_ExponentialSmoothingOptions_trend_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_trend_set, 2},
+   {"R_swig_ImportanceSamplingResult_normalized_weights_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_normalized_weights_set, 2},
+   {"R_swig_ImportanceSamplingResult_normalized_weights_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_normalized_weights_get, 1},
    {"R_swig_AdamOptions_tolerance_get", (DL_FUNC) &R_swig_AdamOptions_tolerance_get, 2},
    {"R_swig_DEOptions_max_generations_set", (DL_FUNC) &R_swig_DEOptions_max_generations_set, 2},
    {"R_swig_AdamOptions_max_iterations_get", (DL_FUNC) &R_swig_AdamOptions_max_iterations_get, 2},
    {"R_swig_LBFGSOptions_tolerance_set", (DL_FUNC) &R_swig_LBFGSOptions_tolerance_set, 2},
    {"R_swig_PSOOptions_cognitive_coefficient_get", (DL_FUNC) &R_swig_PSOOptions_cognitive_coefficient_get, 2},
    {"R_swig_PSOOptions_final_inertia_weight_get", (DL_FUNC) &R_swig_PSOOptions_final_inertia_weight_get, 2},
+   {"R_swig_RWMResult_final_step_size_get", (DL_FUNC) &R_swig_RWMResult_final_step_size_get, 2},
    {"R_swig_RandomForestRegressor_r_squared", (DL_FUNC) &R_swig_RandomForestRegressor_r_squared, 2},
    {"R_swig_delete_SGD", (DL_FUNC) &R_swig_delete_SGD, 1},
    {"R_swig_PSOOptions_max_iterations_set", (DL_FUNC) &R_swig_PSOOptions_max_iterations_set, 2},
@@ -64026,6 +68095,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector___len__", (DL_FUNC) &R_swig_DVector___len__, 2},
    {"R_swig_Lasso_has_intercept", (DL_FUNC) &R_swig_Lasso_has_intercept, 2},
    {"R_swig_HyperDual_add", (DL_FUNC) &R_swig_HyperDual_add, 3},
+   {"R_swig_GibbsOptions_initial_step_sizes_get", (DL_FUNC) &R_swig_GibbsOptions_initial_step_sizes_get, 1},
    {"R_swig_call_with_callback", (DL_FUNC) &R_swig_call_with_callback, 3},
    {"R_swig_LM_observations", (DL_FUNC) &R_swig_LM_observations, 2},
    {"R_swig_XGBoostClassifier_training_deviance", (DL_FUNC) &R_swig_XGBoostClassifier_training_deviance, 2},
@@ -64037,6 +68107,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SimulatedAnnealingOptions_initial_temperature_get", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_initial_temperature_get, 2},
    {"R_swig_Tensor_power_scalar", (DL_FUNC) &R_swig_Tensor_power_scalar, 2},
    {"R_swig_HMCOptions_initial_step_size_set", (DL_FUNC) &R_swig_HMCOptions_initial_step_size_set, 2},
+   {"R_swig_new_GibbsOptions", (DL_FUNC) &R_swig_new_GibbsOptions, 0},
    {"R_swig_HypothesisTestResult_conf_int_lower_set", (DL_FUNC) &R_swig_HypothesisTestResult_conf_int_lower_set, 2},
    {"R_swig_NUTSResult_samples_set", (DL_FUNC) &R_swig_NUTSResult_samples_set, 2},
    {"R_swig_Tensor_from_bool_values", (DL_FUNC) &R_swig_Tensor_from_bool_values, 2},
@@ -64060,6 +68131,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ScatterPlot_points__SWIG_3", (DL_FUNC) &R_swig_ScatterPlot_points__SWIG_3, 4},
    {"R_swig_new_PSOOptions", (DL_FUNC) &R_swig_new_PSOOptions, 0},
    {"R_swig_DEOptions_crossover_strategy_set", (DL_FUNC) &R_swig_DEOptions_crossover_strategy_set, 2},
+   {"R_swig_GibbsOptions_num_samples_set", (DL_FUNC) &R_swig_GibbsOptions_num_samples_set, 2},
    {"R_swig_new_KNNRegressor__SWIG_2", (DL_FUNC) &R_swig_new_KNNRegressor__SWIG_2, 4},
    {"R_swig_new_KNNRegressor__SWIG_3", (DL_FUNC) &R_swig_new_KNNRegressor__SWIG_3, 3},
    {"R_swig_SimulatedAnnealingOptions_step_std_dev_set", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_step_std_dev_set, 2},
@@ -64071,6 +68143,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LMM_residual_variance", (DL_FUNC) &R_swig_LMM_residual_variance, 2},
    {"R_swig_delete_MAPOptions", (DL_FUNC) &R_swig_delete_MAPOptions, 1},
    {"R_swig_Tensor_string_at_flat", (DL_FUNC) &R_swig_Tensor_string_at_flat, 3},
+   {"R_swig_RWMResult_accept_rate_set", (DL_FUNC) &R_swig_RWMResult_accept_rate_set, 2},
    {"R_swig_ExponentialSmoothing_bic", (DL_FUNC) &R_swig_ExponentialSmoothing_bic, 2},
    {"R_swig_NUTSOptions_num_samples_set", (DL_FUNC) &R_swig_NUTSOptions_num_samples_set, 2},
    {"R_swig_NUTSResult_accept_rate_get", (DL_FUNC) &R_swig_NUTSResult_accept_rate_get, 2},
@@ -64088,9 +68161,13 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_NUTSResult_num_divergences_get", (DL_FUNC) &R_swig_NUTSResult_num_divergences_get, 2},
    {"R_swig_NaiveBayesClassifier_predictor_names", (DL_FUNC) &R_swig_NaiveBayesClassifier_predictor_names, 2},
    {"R_swig_BarChart_bars__SWIG_2", (DL_FUNC) &R_swig_BarChart_bars__SWIG_2, 5},
+   {"R_swig_Tensor_conv2d__SWIG_0", (DL_FUNC) &R_swig_Tensor_conv2d__SWIG_0, 5},
    {"R_swig_BarChart_bars__SWIG_3", (DL_FUNC) &R_swig_BarChart_bars__SWIG_3, 4},
    {"R_swig_LMM_coefficient_names", (DL_FUNC) &R_swig_LMM_coefficient_names, 2},
+   {"R_swig_Tensor_conv2d__SWIG_1", (DL_FUNC) &R_swig_Tensor_conv2d__SWIG_1, 4},
    {"R_swig_DEOptions_crossover_rate_get", (DL_FUNC) &R_swig_DEOptions_crossover_rate_get, 2},
+   {"R_swig_Tensor_from_image", (DL_FUNC) &R_swig_Tensor_from_image, 1},
+   {"R_swig_Tensor_conv2d__SWIG_2", (DL_FUNC) &R_swig_Tensor_conv2d__SWIG_2, 3},
    {"R_swig_proportion_test_one_sample__SWIG_0", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_0, 7},
    {"R_swig_proportion_test_one_sample__SWIG_1", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_1, 6},
    {"R_swig_proportion_test_one_sample__SWIG_2", (DL_FUNC) &R_swig_proportion_test_one_sample__SWIG_2, 5},
@@ -64116,6 +68193,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Dual_add", (DL_FUNC) &R_swig_Dual_add, 3},
    {"R_swig_LDA_scaling", (DL_FUNC) &R_swig_LDA_scaling, 1},
    {"R_swig_GLM_linear_predictors", (DL_FUNC) &R_swig_GLM_linear_predictors, 2},
+   {"R_swig_RWMOptions_initial_step_size_get", (DL_FUNC) &R_swig_RWMOptions_initial_step_size_get, 2},
    {"R_swig_Tensor_argmin", (DL_FUNC) &R_swig_Tensor_argmin, 2},
    {"R_swig_LM_predict", (DL_FUNC) &R_swig_LM_predict, 3},
    {"R_swig_DVectorVector_get_allocator", (DL_FUNC) &R_swig_DVectorVector_get_allocator, 2},
@@ -64137,6 +68215,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVectorVector___len__", (DL_FUNC) &R_swig_DVectorVector___len__, 2},
    {"R_swig_ARIMA_seasonal_ar_coefficients", (DL_FUNC) &R_swig_ARIMA_seasonal_ar_coefficients, 2},
    {"R_swig_DEOptions_mutation_strategy_set", (DL_FUNC) &R_swig_DEOptions_mutation_strategy_set, 2},
+   {"R_swig_RWMResult_samples_set", (DL_FUNC) &R_swig_RWMResult_samples_set, 2},
    {"R_swig_KNNRegressor_observations", (DL_FUNC) &R_swig_KNNRegressor_observations, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_0", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_0, 11},
    {"R_swig_SeasonalType_SeasonalType_None_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_None_get, 1},
@@ -64145,6 +68224,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SizeVector_assign", (DL_FUNC) &R_swig_SizeVector_assign, 3},
    {"R_swig_GLM_observations", (DL_FUNC) &R_swig_GLM_observations, 2},
    {"R_swig_HyperDual_log", (DL_FUNC) &R_swig_HyperDual_log, 2},
+   {"R_swig_delete_INLAMixedModel", (DL_FUNC) &R_swig_delete_INLAMixedModel, 1},
    {"R_swig_new_RandomForestClassifier__SWIG_3", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_3, 8},
    {"R_swig_SGDOptions_step_size_set", (DL_FUNC) &R_swig_SGDOptions_step_size_set, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_4", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_4, 7},
@@ -64155,6 +68235,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LBFGSOptions_max_line_search_trials_set", (DL_FUNC) &R_swig_LBFGSOptions_max_line_search_trials_set, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_6", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_6, 5},
    {"R_swig_new_RandomForestClassifier__SWIG_7", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_7, 4},
+   {"R_swig_INLAMixedModel_group_labels", (DL_FUNC) &R_swig_INLAMixedModel_group_labels, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_8", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_8, 3},
    {"R_swig_Dual_value", (DL_FUNC) &R_swig_Dual_value, 2},
    {"R_swig_SizeVector_clear", (DL_FUNC) &R_swig_SizeVector_clear, 1},
@@ -64165,6 +68246,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SeasonalType_SeasonalType_Additive_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_Additive_get, 1},
    {"R_swig_DifferentiableSeparableFunction_gradient", (DL_FUNC) &R_swig_DifferentiableSeparableFunction_gradient, 3},
    {"R_swig_KernelRegression_rmse", (DL_FUNC) &R_swig_KernelRegression_rmse, 2},
+   {"R_swig_ImportanceSamplingResult_log_evidence_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_log_evidence_get, 2},
    {"R_swig_DVectorVector___setslice__", (DL_FUNC) &R_swig_DVectorVector___setslice__, 4},
    {"R_swig_SizeVector___len__", (DL_FUNC) &R_swig_SizeVector___len__, 2},
    {"R_swig_DataFrame_numeric_at", (DL_FUNC) &R_swig_DataFrame_numeric_at, 4},
@@ -64183,6 +68265,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GLM_predict_frame__SWIG_2", (DL_FUNC) &R_swig_GLM_predict_frame__SWIG_2, 2},
    {"R_swig_ARIMA_forecast_with_intervals", (DL_FUNC) &R_swig_ARIMA_forecast_with_intervals, 3},
    {"R_swig_Plot_title", (DL_FUNC) &R_swig_Plot_title, 3},
+   {"R_swig_RWMOptions_num_warmup_set", (DL_FUNC) &R_swig_RWMOptions_num_warmup_set, 2},
    {"R_swig_DVector_reserve", (DL_FUNC) &R_swig_DVector_reserve, 2},
    {"R_swig_IVector___delslice__", (DL_FUNC) &R_swig_IVector___delslice__, 3},
    {"R_swig_Lasso_lambda", (DL_FUNC) &R_swig_Lasso_lambda, 2},
@@ -64192,9 +68275,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_chi_squared_goodness_of_fit__SWIG_0", (DL_FUNC) &R_swig_chi_squared_goodness_of_fit__SWIG_0, 3},
    {"R_swig_GLMM_formula_text", (DL_FUNC) &R_swig_GLMM_formula_text, 2},
    {"R_swig_chi_squared_goodness_of_fit__SWIG_1", (DL_FUNC) &R_swig_chi_squared_goodness_of_fit__SWIG_1, 2},
+   {"R_swig_RWMOptions_seed_get", (DL_FUNC) &R_swig_RWMOptions_seed_get, 2},
    {"R_swig_Tensor_any", (DL_FUNC) &R_swig_Tensor_any, 2},
    {"R_swig_ARIMA_forecast", (DL_FUNC) &R_swig_ARIMA_forecast, 3},
    {"R_swig_GBMClassifier_plot_classification", (DL_FUNC) &R_swig_GBMClassifier_plot_classification, 5},
+   {"R_swig_ImportanceSamplingResult_samples_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_samples_get, 1},
    {"R_swig_new_XGBoostClassifier__SWIG_10", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_10, 3},
    {"R_swig_new_XGBoostClassifier__SWIG_11", (DL_FUNC) &R_swig_new_XGBoostClassifier__SWIG_11, 2},
    {"R_swig_new_BarChart", (DL_FUNC) &R_swig_new_BarChart, 0},
@@ -64215,23 +68300,25 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_GBMRegressor__SWIG_7", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_7, 2},
    {"R_swig_Dual_log", (DL_FUNC) &R_swig_Dual_log, 2},
    {"R_swig_Tensor_zeros", (DL_FUNC) &R_swig_Tensor_zeros, 1},
+   {"R_swig_INLAMixedModel_fixed_effects_sd", (DL_FUNC) &R_swig_INLAMixedModel_fixed_effects_sd, 2},
    {"R_swig_ExponentialSmoothingOptions_seasonal_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_set, 2},
    {"R_swig_HMCOptions_num_leapfrog_steps_get", (DL_FUNC) &R_swig_HMCOptions_num_leapfrog_steps_get, 2},
    {"R_swig_Lasso_intercept", (DL_FUNC) &R_swig_Lasso_intercept, 2},
    {"R_swig_new_DifferentialEvolution__SWIG_0", (DL_FUNC) &R_swig_new_DifferentialEvolution__SWIG_0, 1},
-   {"R_swig_new_GradientDescent__SWIG_0", (DL_FUNC) &R_swig_new_GradientDescent__SWIG_0, 1},
    {"R_swig_Lasso_predictor_names", (DL_FUNC) &R_swig_Lasso_predictor_names, 2},
+   {"R_swig_new_GradientDescent__SWIG_0", (DL_FUNC) &R_swig_new_GradientDescent__SWIG_0, 1},
    {"R_swig_new_DifferentialEvolution__SWIG_1", (DL_FUNC) &R_swig_new_DifferentialEvolution__SWIG_1, 0},
-   {"R_swig_new_GradientDescent__SWIG_1", (DL_FUNC) &R_swig_new_GradientDescent__SWIG_1, 0},
    {"R_swig_PAdjustMethod_PAdjustMethod_BH_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_BH_get, 1},
+   {"R_swig_new_GradientDescent__SWIG_1", (DL_FUNC) &R_swig_new_GradientDescent__SWIG_1, 0},
    {"R_swig_RandomForestClassifier_max_features_used", (DL_FUNC) &R_swig_RandomForestClassifier_max_features_used, 2},
+   {"R_swig_ImportanceSamplingOptions_num_samples_set", (DL_FUNC) &R_swig_ImportanceSamplingOptions_num_samples_set, 2},
    {"R_swig_DataFrame_drop_duplicates__SWIG_0", (DL_FUNC) &R_swig_DataFrame_drop_duplicates__SWIG_0, 2},
    {"R_swig_hello", (DL_FUNC) &R_swig_hello, 0},
    {"R_swig_HypothesisTestResult_has_conf_int_get", (DL_FUNC) &R_swig_HypothesisTestResult_has_conf_int_get, 2},
    {"R_swig_DataFrame_drop_duplicates__SWIG_1", (DL_FUNC) &R_swig_DataFrame_drop_duplicates__SWIG_1, 1},
    {"R_swig_DBSCAN_observations", (DL_FUNC) &R_swig_DBSCAN_observations, 2},
-   {"R_swig_delete_AdamOptions", (DL_FUNC) &R_swig_delete_AdamOptions, 1},
    {"R_swig_ARIMAOptions_seasonal_p_get", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_p_get, 2},
+   {"R_swig_delete_AdamOptions", (DL_FUNC) &R_swig_delete_AdamOptions, 1},
    {"R_swig_HyperDual_add_scalar", (DL_FUNC) &R_swig_HyperDual_add_scalar, 3},
    {"R_swig_SizeVector_swap", (DL_FUNC) &R_swig_SizeVector_swap, 2},
    {"R_swig_GAOptions_tolerance_set", (DL_FUNC) &R_swig_GAOptions_tolerance_set, 2},
@@ -64250,12 +68337,15 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GaussianProcessRegression_r_squared", (DL_FUNC) &R_swig_GaussianProcessRegression_r_squared, 2},
    {"R_swig_delete_KNNClassifier", (DL_FUNC) &R_swig_delete_KNNClassifier, 1},
    {"R_swig_new_RGB", (DL_FUNC) &R_swig_new_RGB, 0},
+   {"R_swig_Tensor_avg_pool2d__SWIG_0", (DL_FUNC) &R_swig_Tensor_avg_pool2d__SWIG_0, 3},
+   {"R_swig_Tensor_avg_pool2d__SWIG_1", (DL_FUNC) &R_swig_Tensor_avg_pool2d__SWIG_1, 2},
    {"R_swig_KNNRegressor_rmse", (DL_FUNC) &R_swig_KNNRegressor_rmse, 2},
    {"R_swig_DVector___setitem__", (DL_FUNC) &R_swig_DVector___setitem__, 3},
    {"R_swig_AgglomerativeClustering_observations", (DL_FUNC) &R_swig_AgglomerativeClustering_observations, 2},
    {"R_swig_GLM_pearson_residuals", (DL_FUNC) &R_swig_GLM_pearson_residuals, 2},
    {"R_swig_ExponentialSmoothingOptions_gamma_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_gamma_get, 2},
    {"R_swig_XGBoostRegressor_n_trees", (DL_FUNC) &R_swig_XGBoostRegressor_n_trees, 2},
+   {"R_swig_RWMOptions_target_accept_rate_get", (DL_FUNC) &R_swig_RWMOptions_target_accept_rate_get, 2},
    {"R_swig_DataSeries_stroke_width_get", (DL_FUNC) &R_swig_DataSeries_stroke_width_get, 2},
    {"R_swig_new_LBFGS__SWIG_0", (DL_FUNC) &R_swig_new_LBFGS__SWIG_0, 1},
    {"R_swig_LM_plot_normal_qq", (DL_FUNC) &R_swig_LM_plot_normal_qq, 2},
@@ -64271,6 +68361,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Ridge_predictor_names", (DL_FUNC) &R_swig_Ridge_predictor_names, 2},
    {"R_swig_GLMM_aic", (DL_FUNC) &R_swig_GLMM_aic, 2},
    {"R_swig_SGDOptions_batch_size_set", (DL_FUNC) &R_swig_SGDOptions_batch_size_set, 2},
+   {"R_swig_ImportanceSamplingResult_effective_sample_size_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_effective_sample_size_set, 2},
+   {"R_swig_ImportanceSamplingResult_effective_sample_size_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_effective_sample_size_get, 2},
    {"R_swig_delete_DifferentiableSeparableFunction", (DL_FUNC) &R_swig_delete_DifferentiableSeparableFunction, 1},
    {"R_swig_DifferentialEvolution_optimize", (DL_FUNC) &R_swig_DifferentialEvolution_optimize, 6},
    {"R_swig_Var_index", (DL_FUNC) &R_swig_Var_index, 2},
@@ -64294,6 +68386,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Ridge_coefficients", (DL_FUNC) &R_swig_Ridge_coefficients, 2},
    {"R_swig_Lasso_print_summary", (DL_FUNC) &R_swig_Lasso_print_summary, 1},
    {"R_swig_DVector___delslice__", (DL_FUNC) &R_swig_DVector___delslice__, 3},
+   {"R_swig_RandomWalkMetropolis_sample", (DL_FUNC) &R_swig_RandomWalkMetropolis_sample, 4},
+   {"R_swig_ImportanceSamplingOptions_seed_set", (DL_FUNC) &R_swig_ImportanceSamplingOptions_seed_set, 2},
    {"R_swig_LM_sigma", (DL_FUNC) &R_swig_LM_sigma, 2},
    {"R_swig_KernelRegression_cv_mean_squared_error", (DL_FUNC) &R_swig_KernelRegression_cv_mean_squared_error, 2},
    {"R_swig_ARIMA_ar_coefficients", (DL_FUNC) &R_swig_ARIMA_ar_coefficients, 2},
@@ -64339,6 +68433,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_ExponentialSmoothing", (DL_FUNC) &R_swig_delete_ExponentialSmoothing, 1},
    {"R_swig_new_ExponentialSmoothingOptions", (DL_FUNC) &R_swig_new_ExponentialSmoothingOptions, 0},
    {"R_swig_DataFrame_iris", (DL_FUNC) &R_swig_DataFrame_iris, 0},
+   {"R_swig_delete_ImportanceSamplingOptions", (DL_FUNC) &R_swig_delete_ImportanceSamplingOptions, 1},
    {"R_swig_Tensor_dtype_name", (DL_FUNC) &R_swig_Tensor_dtype_name, 2},
    {"R_swig_HypothesisTestResult_method_set", (DL_FUNC) &R_swig_HypothesisTestResult_method_set, 2},
    {"R_swig_GaussianProcessRegression_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_residuals_vs_fitted, 2},
@@ -64354,8 +68449,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_SVM__SWIG_6", (DL_FUNC) &R_swig_new_SVM__SWIG_6, 2},
    {"R_swig_IVector_size", (DL_FUNC) &R_swig_IVector_size, 2},
    {"R_swig_Tensor_divide", (DL_FUNC) &R_swig_Tensor_divide, 2},
-   {"R_swig_LBFGSOptions_history_size_get", (DL_FUNC) &R_swig_LBFGSOptions_history_size_get, 2},
+   {"R_swig_INLAMixedModel_log_marginal_likelihood", (DL_FUNC) &R_swig_INLAMixedModel_log_marginal_likelihood, 2},
    {"R_swig_RGB_b_get", (DL_FUNC) &R_swig_RGB_b_get, 2},
+   {"R_swig_LBFGSOptions_history_size_get", (DL_FUNC) &R_swig_LBFGSOptions_history_size_get, 2},
    {"R_swig_delete_GradientDescent", (DL_FUNC) &R_swig_delete_GradientDescent, 1},
    {"R_swig_DVectorVector___getslice__", (DL_FUNC) &R_swig_DVectorVector___getslice__, 3},
    {"R_swig_ExponentialSmoothing_phi", (DL_FUNC) &R_swig_ExponentialSmoothing_phi, 2},
@@ -64370,9 +68466,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_transpose__SWIG_1", (DL_FUNC) &R_swig_Tensor_transpose__SWIG_1, 1},
    {"R_swig_Dual_sqrt", (DL_FUNC) &R_swig_Dual_sqrt, 2},
    {"R_swig_DVectorVector___delitem__", (DL_FUNC) &R_swig_DVectorVector___delitem__, 2},
-   {"R_swig_AdamOptions_beta1_get", (DL_FUNC) &R_swig_AdamOptions_beta1_get, 2},
    {"R_swig_GLMM_random_effect_std_devs", (DL_FUNC) &R_swig_GLMM_random_effect_std_devs, 2},
    {"R_swig_IVector_capacity", (DL_FUNC) &R_swig_IVector_capacity, 2},
+   {"R_swig_AdamOptions_beta1_get", (DL_FUNC) &R_swig_AdamOptions_beta1_get, 2},
    {"R_swig_Plot_y_label_text", (DL_FUNC) &R_swig_Plot_y_label_text, 2},
    {"R_swig_LDA_predictor_names", (DL_FUNC) &R_swig_LDA_predictor_names, 2},
    {"R_swig_ExponentialSmoothing_forecast", (DL_FUNC) &R_swig_ExponentialSmoothing_forecast, 3},
@@ -64381,6 +68477,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_HMCResult", (DL_FUNC) &R_swig_delete_HMCResult, 1},
    {"R_swig_Tensor_arange__SWIG_0", (DL_FUNC) &R_swig_Tensor_arange__SWIG_0, 3},
    {"R_swig_Tensor_arange__SWIG_1", (DL_FUNC) &R_swig_Tensor_arange__SWIG_1, 2},
+   {"R_swig_GibbsSampler_sample", (DL_FUNC) &R_swig_GibbsSampler_sample, 4},
    {"R_swig_delete_GBMClassifier", (DL_FUNC) &R_swig_delete_GBMClassifier, 1},
    {"R_swig_KNNClassifier_plot_classification", (DL_FUNC) &R_swig_KNNClassifier_plot_classification, 5},
    {"R_swig_ExponentialSmoothing_aic", (DL_FUNC) &R_swig_ExponentialSmoothing_aic, 2},
@@ -64418,6 +68515,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Var_add", (DL_FUNC) &R_swig_Var_add, 3},
    {"R_swig_LMM_residuals", (DL_FUNC) &R_swig_LMM_residuals, 2},
    {"R_swig_HypothesisTestResult_estimate1_get", (DL_FUNC) &R_swig_HypothesisTestResult_estimate1_get, 2},
+   {"R_swig_GibbsResult_accept_rates_get", (DL_FUNC) &R_swig_GibbsResult_accept_rates_get, 1},
    {"R_swig_RandomForestClassifier_predictor_names", (DL_FUNC) &R_swig_RandomForestClassifier_predictor_names, 2},
    {"R_swig_ARIMAOptions_seasonal_period_set", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_period_set, 2},
    {"R_swig_delete_DataFrame", (DL_FUNC) &R_swig_delete_DataFrame, 1},
@@ -64496,6 +68594,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_XGBoostClassifier_n_trees", (DL_FUNC) &R_swig_XGBoostClassifier_n_trees, 2},
    {"R_swig_new_Callback", (DL_FUNC) &R_swig_new_Callback, 0},
    {"R_swig_ElasticNet_rmse", (DL_FUNC) &R_swig_ElasticNet_rmse, 2},
+   {"R_swig_INLAMixedModel_observations", (DL_FUNC) &R_swig_INLAMixedModel_observations, 2},
    {"R_swig_HyperDual_pow", (DL_FUNC) &R_swig_HyperDual_pow, 3},
    {"R_swig_DVector_swap", (DL_FUNC) &R_swig_DVector_swap, 2},
    {"R_swig_RandomForestRegressor_summary", (DL_FUNC) &R_swig_RandomForestRegressor_summary, 2},
@@ -64539,6 +68638,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1", (DL_FUNC) &R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1, 4},
    {"R_swig_XGBoostClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_XGBoostClassifier_plot_decision_regions__SWIG_0, 5},
    {"R_swig_HypothesisTestResult_conf_int_upper_get", (DL_FUNC) &R_swig_HypothesisTestResult_conf_int_upper_get, 2},
+   {"R_swig_GibbsOptions_num_warmup_set", (DL_FUNC) &R_swig_GibbsOptions_num_warmup_set, 2},
    {"R_swig_GLMM_predict", (DL_FUNC) &R_swig_GLMM_predict, 3},
    {"R_swig_LMM_residual_std_dev", (DL_FUNC) &R_swig_LMM_residual_std_dev, 2},
    {"R_swig_IVector___len__", (DL_FUNC) &R_swig_IVector___len__, 2},
@@ -64569,6 +68669,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Plot_show__SWIG_1", (DL_FUNC) &R_swig_Plot_show__SWIG_1, 1},
    {"R_swig_delete_HMC", (DL_FUNC) &R_swig_delete_HMC, 1},
    {"R_swig_new_GBMClassifier__SWIG_3", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_3, 6},
+   {"R_swig_INLAMixedModel_random_effects_sd_for_group", (DL_FUNC) &R_swig_INLAMixedModel_random_effects_sd_for_group, 3},
    {"R_swig_new_GBMClassifier__SWIG_4", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_4, 5},
    {"R_swig_new_GBMClassifier__SWIG_5", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_5, 4},
    {"R_swig_new_GBMClassifier__SWIG_6", (DL_FUNC) &R_swig_new_GBMClassifier__SWIG_6, 3},
@@ -64580,6 +68681,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_NaiveBayesClassifier__SWIG_0", (DL_FUNC) &R_swig_new_NaiveBayesClassifier__SWIG_0, 4},
    {"R_swig_new_NaiveBayesClassifier__SWIG_1", (DL_FUNC) &R_swig_new_NaiveBayesClassifier__SWIG_1, 3},
    {"R_swig_SGDOptions_shuffle_set", (DL_FUNC) &R_swig_SGDOptions_shuffle_set, 2},
+   {"R_swig_INLAMixedModel_print_summary", (DL_FUNC) &R_swig_INLAMixedModel_print_summary, 1},
    {"R_swig_new_NaiveBayesClassifier__SWIG_2", (DL_FUNC) &R_swig_new_NaiveBayesClassifier__SWIG_2, 2},
    {"R_swig_ExponentialSmoothingOptions_seed_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seed_set, 2},
    {"R_swig_HMCOptions_num_samples_set", (DL_FUNC) &R_swig_HMCOptions_num_samples_set, 2},
@@ -64619,6 +68721,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_SVM", (DL_FUNC) &R_swig_delete_SVM, 1},
    {"R_swig_LM_predict_frame__SWIG_0", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_0, 4},
    {"R_swig_LM_predict_frame__SWIG_1", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_1, 3},
+   {"R_swig_GibbsResult_samples_set", (DL_FUNC) &R_swig_GibbsResult_samples_set, 2},
    {"R_swig_ARIMAOptions_p_get", (DL_FUNC) &R_swig_ARIMAOptions_p_get, 2},
    {"R_swig_LM_predict_frame__SWIG_2", (DL_FUNC) &R_swig_LM_predict_frame__SWIG_2, 2},
    {"R_swig_XGBoostClassifier_training_accuracy", (DL_FUNC) &R_swig_XGBoostClassifier_training_accuracy, 2},
@@ -64626,21 +68729,24 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LDA_plot_discriminants", (DL_FUNC) &R_swig_LDA_plot_discriminants, 2},
    {"R_swig_DecisionTreeRegressor_r_squared", (DL_FUNC) &R_swig_DecisionTreeRegressor_r_squared, 2},
    {"R_swig_DVector_pop", (DL_FUNC) &R_swig_DVector_pop, 2},
+   {"R_swig_GibbsOptions_target_accept_rate_get", (DL_FUNC) &R_swig_GibbsOptions_target_accept_rate_get, 2},
    {"R_swig_Var_value", (DL_FUNC) &R_swig_Var_value, 2},
    {"R_swig_Tensor_mean", (DL_FUNC) &R_swig_Tensor_mean, 2},
-   {"R_swig_GradientDescentOptions_tolerance_set", (DL_FUNC) &R_swig_GradientDescentOptions_tolerance_set, 2},
-   {"R_swig_LBFGSOptions_armijo_c1_get", (DL_FUNC) &R_swig_LBFGSOptions_armijo_c1_get, 2},
    {"R_swig_Ridge_lambda_was_selected", (DL_FUNC) &R_swig_Ridge_lambda_was_selected, 2},
    {"R_swig_new_LDA__SWIG_0", (DL_FUNC) &R_swig_new_LDA__SWIG_0, 3},
+   {"R_swig_GradientDescentOptions_tolerance_set", (DL_FUNC) &R_swig_GradientDescentOptions_tolerance_set, 2},
+   {"R_swig_LBFGSOptions_armijo_c1_get", (DL_FUNC) &R_swig_LBFGSOptions_armijo_c1_get, 2},
    {"R_swig_GBMRegressor_print_summary", (DL_FUNC) &R_swig_GBMRegressor_print_summary, 1},
    {"R_swig_GaussianProcessRegression_noise_variance", (DL_FUNC) &R_swig_GaussianProcessRegression_noise_variance, 2},
    {"R_swig_new_LDA__SWIG_1", (DL_FUNC) &R_swig_new_LDA__SWIG_1, 2},
    {"R_swig_Plot_y_limits", (DL_FUNC) &R_swig_Plot_y_limits, 4},
+   {"R_swig_RWMOptions_num_samples_get", (DL_FUNC) &R_swig_RWMOptions_num_samples_get, 2},
    {"R_swig_LM_rank", (DL_FUNC) &R_swig_LM_rank, 2},
    {"R_swig_IVector_back", (DL_FUNC) &R_swig_IVector_back, 2},
    {"R_swig_delete_DEOptions", (DL_FUNC) &R_swig_delete_DEOptions, 1},
    {"R_swig_Ridge_intercept", (DL_FUNC) &R_swig_Ridge_intercept, 2},
    {"R_swig_GaussianProcessRegression_plot_length_scale_profile", (DL_FUNC) &R_swig_GaussianProcessRegression_plot_length_scale_profile, 2},
+   {"R_swig_INLAMixedModel_random_effect_names", (DL_FUNC) &R_swig_INLAMixedModel_random_effect_names, 2},
    {"R_swig_ExponentialSmoothingOptions_trend_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_trend_get, 2},
    {"R_swig_DEOptions_max_generations_get", (DL_FUNC) &R_swig_DEOptions_max_generations_get, 2},
    {"R_swig_PSOOptions_inertia_strategy_set", (DL_FUNC) &R_swig_PSOOptions_inertia_strategy_set, 2},
@@ -64685,6 +68791,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LinePlot_line__SWIG_2", (DL_FUNC) &R_swig_LinePlot_line__SWIG_2, 5},
    {"R_swig_Ridge_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_Ridge_plot_residuals_vs_fitted, 2},
    {"R_swig_LinePlot_line__SWIG_3", (DL_FUNC) &R_swig_LinePlot_line__SWIG_3, 4},
+   {"R_swig_new_GibbsResult", (DL_FUNC) &R_swig_new_GibbsResult, 0},
    {"R_swig_Tensor_set_flat", (DL_FUNC) &R_swig_Tensor_set_flat, 3},
    {"R_swig_new_DVectorPair__SWIG_0", (DL_FUNC) &R_swig_new_DVectorPair__SWIG_0, 0},
    {"R_swig_DVectorVector___delslice__", (DL_FUNC) &R_swig_DVectorVector___delslice__, 3},
@@ -64697,6 +68804,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector___delitem__", (DL_FUNC) &R_swig_DVector___delitem__, 2},
    {"R_swig_AgglomerativeClustering_summary", (DL_FUNC) &R_swig_AgglomerativeClustering_summary, 2},
    {"R_swig_RandomForestRegressor_oob_rmse", (DL_FUNC) &R_swig_RandomForestRegressor_oob_rmse, 2},
+   {"R_swig_GibbsOptions_seed_set", (DL_FUNC) &R_swig_GibbsOptions_seed_set, 2},
    {"R_swig_KNNClassifier_predict_frame", (DL_FUNC) &R_swig_KNNClassifier_predict_frame, 2},
    {"R_swig_RandomForestRegressor_print_summary", (DL_FUNC) &R_swig_RandomForestRegressor_print_summary, 1},
    {"R_swig_SVector_back", (DL_FUNC) &R_swig_SVector_back, 2},
@@ -64710,6 +68818,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Callback_call", (DL_FUNC) &R_swig_Callback_call, 3},
    {"R_swig_ARIMAOptions_seasonal_d_set", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_d_set, 2},
    {"R_swig_DEOptions_crossover_strategy_get", (DL_FUNC) &R_swig_DEOptions_crossover_strategy_get, 2},
+   {"R_swig_GibbsOptions_num_samples_get", (DL_FUNC) &R_swig_GibbsOptions_num_samples_get, 2},
    {"R_swig_IVector_pop_back", (DL_FUNC) &R_swig_IVector_pop_back, 1},
    {"R_swig_SizeVector___getitem__", (DL_FUNC) &R_swig_SizeVector___getitem__, 3},
    {"R_swig_KernelRegression_plot_cv_curve", (DL_FUNC) &R_swig_KernelRegression_plot_cv_curve, 2},
@@ -64728,9 +68837,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_GaussianProcessRegression__SWIG_5", (DL_FUNC) &R_swig_new_GaussianProcessRegression__SWIG_5, 2},
    {"R_swig_HyperDual_divide", (DL_FUNC) &R_swig_HyperDual_divide, 3},
    {"R_swig_XGBoostRegressor_rmse", (DL_FUNC) &R_swig_XGBoostRegressor_rmse, 2},
+   {"R_swig_RWMResult_accept_rate_get", (DL_FUNC) &R_swig_RWMResult_accept_rate_get, 2},
    {"R_swig_NUTSOptions_num_samples_get", (DL_FUNC) &R_swig_NUTSOptions_num_samples_get, 2},
-   {"R_swig_LBFGSOptions_wolfe_c2_get", (DL_FUNC) &R_swig_LBFGSOptions_wolfe_c2_get, 2},
    {"R_swig_IVector___getitem__", (DL_FUNC) &R_swig_IVector___getitem__, 3},
+   {"R_swig_LBFGSOptions_wolfe_c2_get", (DL_FUNC) &R_swig_LBFGSOptions_wolfe_c2_get, 2},
    {"R_swig_HMCResult_accept_rate_set", (DL_FUNC) &R_swig_HMCResult_accept_rate_set, 2},
    {"R_swig_GLMM_fitted_values", (DL_FUNC) &R_swig_GLMM_fitted_values, 2},
    {"R_swig_PSOOptions_topology_get", (DL_FUNC) &R_swig_PSOOptions_topology_get, 2},
@@ -64753,9 +68863,12 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_LM_coefficient_names", (DL_FUNC) &R_swig_LM_coefficient_names, 2},
    {"R_swig_new_HMCOptions", (DL_FUNC) &R_swig_new_HMCOptions, 0},
    {"R_swig_GLM_coefficient_names", (DL_FUNC) &R_swig_GLM_coefficient_names, 2},
+   {"R_swig_INLAMixedModel_coefficient_names", (DL_FUNC) &R_swig_INLAMixedModel_coefficient_names, 2},
    {"R_swig_KMeans_feature_names", (DL_FUNC) &R_swig_KMeans_feature_names, 2},
    {"R_swig_DataSeries_marker_size_get", (DL_FUNC) &R_swig_DataSeries_marker_size_get, 2},
    {"R_swig_XGBoostClassifier_predict_frame", (DL_FUNC) &R_swig_XGBoostClassifier_predict_frame, 2},
+   {"R_swig_Tensor_max_pool2d__SWIG_0", (DL_FUNC) &R_swig_Tensor_max_pool2d__SWIG_0, 3},
+   {"R_swig_Tensor_max_pool2d__SWIG_1", (DL_FUNC) &R_swig_Tensor_max_pool2d__SWIG_1, 2},
    {"R_swig_DEOptions_population_size_set", (DL_FUNC) &R_swig_DEOptions_population_size_set, 2},
    {"R_swig_Dual_subtract", (DL_FUNC) &R_swig_Dual_subtract, 3},
    {"R_swig_new_DBSCAN__SWIG_0", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_0, 5},
@@ -64767,24 +68880,29 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_DBSCAN__SWIG_4", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_4, 5},
    {"R_swig_Ridge_print_summary", (DL_FUNC) &R_swig_Ridge_print_summary, 1},
    {"R_swig_new_DBSCAN__SWIG_5", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_5, 4},
+   {"R_swig_delete_RWMResult", (DL_FUNC) &R_swig_delete_RWMResult, 1},
    {"R_swig_new_DBSCAN__SWIG_6", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_6, 3},
    {"R_swig_new_DBSCAN__SWIG_7", (DL_FUNC) &R_swig_new_DBSCAN__SWIG_7, 2},
    {"R_swig_DBSCAN_labels", (DL_FUNC) &R_swig_DBSCAN_labels, 2},
    {"R_swig_GBMRegressor_plot_predicted_vs_actual", (DL_FUNC) &R_swig_GBMRegressor_plot_predicted_vs_actual, 2},
    {"R_swig_HypothesisTestResult_p_value_set", (DL_FUNC) &R_swig_HypothesisTestResult_p_value_set, 2},
    {"R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted, 2},
+   {"R_swig_INLAMixedModel_family", (DL_FUNC) &R_swig_INLAMixedModel_family, 2},
    {"R_swig_XGBoostClassifier_predict", (DL_FUNC) &R_swig_XGBoostClassifier_predict, 3},
    {"R_swig_delete_SGDOptions", (DL_FUNC) &R_swig_delete_SGDOptions, 1},
    {"R_swig_XGBoostClassifier_observations", (DL_FUNC) &R_swig_XGBoostClassifier_observations, 2},
    {"R_swig_delete_HyperDual", (DL_FUNC) &R_swig_delete_HyperDual, 1},
    {"R_swig_GLM_standardized_residuals", (DL_FUNC) &R_swig_GLM_standardized_residuals, 2},
    {"R_swig_IPair_second_get", (DL_FUNC) &R_swig_IPair_second_get, 2},
+   {"R_swig_GibbsResult_final_step_sizes_set", (DL_FUNC) &R_swig_GibbsResult_final_step_sizes_set, 2},
    {"R_swig_new_HyperDual__SWIG_0", (DL_FUNC) &R_swig_new_HyperDual__SWIG_0, 4},
    {"R_swig_new_HyperDual__SWIG_1", (DL_FUNC) &R_swig_new_HyperDual__SWIG_1, 3},
    {"R_swig_GLM_rank", (DL_FUNC) &R_swig_GLM_rank, 2},
    {"R_swig_new_HyperDual__SWIG_2", (DL_FUNC) &R_swig_new_HyperDual__SWIG_2, 2},
    {"R_swig_new_HyperDual__SWIG_3", (DL_FUNC) &R_swig_new_HyperDual__SWIG_3, 1},
    {"R_swig_DEOptions_mutation_strategy_get", (DL_FUNC) &R_swig_DEOptions_mutation_strategy_get, 2},
+   {"R_swig_delete_ImportanceSamplingResult", (DL_FUNC) &R_swig_delete_ImportanceSamplingResult, 1},
+   {"R_swig_RWMResult_samples_get", (DL_FUNC) &R_swig_RWMResult_samples_get, 1},
    {"R_swig_GBMClassifier_classes", (DL_FUNC) &R_swig_GBMClassifier_classes, 2},
    {"R_swig_SimulatedAnnealingOptions_cooling_rate_set", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_cooling_rate_set, 2},
    {"R_swig_SizeVector_empty", (DL_FUNC) &R_swig_SizeVector_empty, 2},
@@ -64792,6 +68910,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_XGBoostClassifier_predictor_names", (DL_FUNC) &R_swig_XGBoostClassifier_predictor_names, 2},
    {"R_swig_SVM_num_support_vectors", (DL_FUNC) &R_swig_SVM_num_support_vectors, 2},
    {"R_swig_Tensor_ones", (DL_FUNC) &R_swig_Tensor_ones, 1},
+   {"R_swig_INLAMixedModel_summary", (DL_FUNC) &R_swig_INLAMixedModel_summary, 2},
    {"R_swig_SVector_capacity", (DL_FUNC) &R_swig_SVector_capacity, 2},
    {"R_swig_GLM_standard_errors", (DL_FUNC) &R_swig_GLM_standard_errors, 2},
    {"R_swig_SGDOptions_step_size_get", (DL_FUNC) &R_swig_SGDOptions_step_size_get, 2},
@@ -64822,8 +68941,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ks_test_one_sample_normal__SWIG_2", (DL_FUNC) &R_swig_ks_test_one_sample_normal__SWIG_2, 3},
    {"R_swig_SeparableFunction_evaluate_term", (DL_FUNC) &R_swig_SeparableFunction_evaluate_term, 4},
    {"R_swig_ks_test_one_sample_normal__SWIG_3", (DL_FUNC) &R_swig_ks_test_one_sample_normal__SWIG_3, 2},
-   {"R_swig_Adam_optimize", (DL_FUNC) &R_swig_Adam_optimize, 4},
    {"R_swig_ARIMAOptions_seasonal_q_get", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_q_get, 2},
+   {"R_swig_Adam_optimize", (DL_FUNC) &R_swig_Adam_optimize, 4},
    {"R_swig_new_KNNClassifier__SWIG_0", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_0, 6},
    {"R_swig_ARIMA_sigma2", (DL_FUNC) &R_swig_ARIMA_sigma2, 2},
    {"R_swig_new_KNNClassifier__SWIG_1", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_1, 5},
@@ -64831,6 +68950,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_KNNClassifier__SWIG_3", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_3, 3},
    {"R_swig_new_KNNClassifier__SWIG_4", (DL_FUNC) &R_swig_new_KNNClassifier__SWIG_4, 2},
    {"R_swig_LDA_save_discriminant_plot", (DL_FUNC) &R_swig_LDA_save_discriminant_plot, 2},
+   {"R_swig_RWMOptions_num_warmup_get", (DL_FUNC) &R_swig_RWMOptions_num_warmup_get, 2},
    {"R_swig_new_IPair__SWIG_0", (DL_FUNC) &R_swig_new_IPair__SWIG_0, 0},
    {"R_swig_delete_DifferentiableFunction", (DL_FUNC) &R_swig_delete_DifferentiableFunction, 1},
    {"R_swig_new_IPair__SWIG_1", (DL_FUNC) &R_swig_new_IPair__SWIG_1, 2},
@@ -64856,11 +68976,13 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GLMM_p_values", (DL_FUNC) &R_swig_GLMM_p_values, 2},
    {"R_swig_IVector_push_back", (DL_FUNC) &R_swig_IVector_push_back, 2},
    {"R_swig_Lasso_fitted_values", (DL_FUNC) &R_swig_Lasso_fitted_values, 2},
+   {"R_swig_delete_GibbsSampler", (DL_FUNC) &R_swig_delete_GibbsSampler, 1},
    {"R_swig_delete_BarChart", (DL_FUNC) &R_swig_delete_BarChart, 1},
    {"R_swig_XGBoostClassifier_print_summary", (DL_FUNC) &R_swig_XGBoostClassifier_print_summary, 1},
    {"R_swig_IVector_reserve", (DL_FUNC) &R_swig_IVector_reserve, 2},
    {"R_swig_PSOOptions_tolerance_set", (DL_FUNC) &R_swig_PSOOptions_tolerance_set, 2},
    {"R_swig_ExponentialSmoothingOptions_seasonal_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_get, 2},
+   {"R_swig_INLAMixedModel_residual_std_dev", (DL_FUNC) &R_swig_INLAMixedModel_residual_std_dev, 2},
    {"R_swig_PAdjustMethod_PAdjustMethod_Bonferroni_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_Bonferroni_get, 1},
    {"R_swig_KNNClassifier_training_accuracy", (DL_FUNC) &R_swig_KNNClassifier_training_accuracy, 2},
    {"R_swig_RandomForestClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_RandomForestClassifier_plot_decision_regions__SWIG_0, 5},
@@ -64873,10 +68995,12 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVectorVector_push_back", (DL_FUNC) &R_swig_DVectorVector_push_back, 2},
    {"R_swig_NaiveBayesClassifier_confusion_matrix", (DL_FUNC) &R_swig_NaiveBayesClassifier_confusion_matrix, 1},
    {"R_swig_delete_LBFGS", (DL_FUNC) &R_swig_delete_LBFGS, 1},
+   {"R_swig_ImportanceSamplingOptions_num_samples_get", (DL_FUNC) &R_swig_ImportanceSamplingOptions_num_samples_get, 2},
    {"R_swig_Tensor_dot", (DL_FUNC) &R_swig_Tensor_dot, 3},
    {"R_swig_Tensor_less_equal", (DL_FUNC) &R_swig_Tensor_less_equal, 2},
    {"R_swig_delete_LMM", (DL_FUNC) &R_swig_delete_LMM, 1},
    {"R_swig_DecisionTreeClassifier_print_summary", (DL_FUNC) &R_swig_DecisionTreeClassifier_print_summary, 1},
+   {"R_swig_INLAMixedModel_random_effects_mean_for_group", (DL_FUNC) &R_swig_INLAMixedModel_random_effects_mean_for_group, 3},
    {"R_swig_SizeVector_size", (DL_FUNC) &R_swig_SizeVector_size, 2},
    {"R_swig_RandomForestRegressor_rmse", (DL_FUNC) &R_swig_RandomForestRegressor_rmse, 2},
    {"R_swig_ARIMA_seasonal_ma_coefficients", (DL_FUNC) &R_swig_ARIMA_seasonal_ma_coefficients, 2},
@@ -64887,10 +69011,12 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_KNNClassifier_classes", (DL_FUNC) &R_swig_KNNClassifier_classes, 2},
    {"R_swig_ExponentialSmoothing_gamma", (DL_FUNC) &R_swig_ExponentialSmoothing_gamma, 2},
    {"R_swig_LBFGS_optimize", (DL_FUNC) &R_swig_LBFGS_optimize, 4},
+   {"R_swig_delete_GibbsOptions", (DL_FUNC) &R_swig_delete_GibbsOptions, 1},
    {"R_swig_KernelRegression_predictor_names", (DL_FUNC) &R_swig_KernelRegression_predictor_names, 2},
    {"R_swig_delete_GaussianProcessRegression", (DL_FUNC) &R_swig_delete_GaussianProcessRegression, 1},
    {"R_swig_ElasticNet_print_summary", (DL_FUNC) &R_swig_ElasticNet_print_summary, 1},
    {"R_swig_Lasso_residuals", (DL_FUNC) &R_swig_Lasso_residuals, 2},
+   {"R_swig_new_RWMOptions", (DL_FUNC) &R_swig_new_RWMOptions, 0},
    {"R_swig_Tensor_exp", (DL_FUNC) &R_swig_Tensor_exp, 1},
    {"R_swig_ARIMAOptions_seed_set", (DL_FUNC) &R_swig_ARIMAOptions_seed_set, 2},
    {"R_swig_DecisionTreeRegressor_fitted_values", (DL_FUNC) &R_swig_DecisionTreeRegressor_fitted_values, 2},
@@ -64912,6 +69038,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_westfall_young_adjust", (DL_FUNC) &R_swig_westfall_young_adjust, 3},
    {"R_swig_DVectorVector_clear", (DL_FUNC) &R_swig_DVectorVector_clear, 1},
    {"R_swig_PSOOptions_inertia_weight_set", (DL_FUNC) &R_swig_PSOOptions_inertia_weight_set, 2},
+   {"R_swig_Tensor_softmax", (DL_FUNC) &R_swig_Tensor_softmax, 1},
    {"R_swig_ExponentialSmoothingOptions_seasonal_period_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_period_get, 2},
    {"R_swig_ExponentialSmoothingOptions_seasonal_period_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_period_set, 2},
    {"R_swig_spearman_correlation_test__SWIG_0", (DL_FUNC) &R_swig_spearman_correlation_test__SWIG_0, 4},
@@ -64949,25 +69076,31 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GaussianProcessRegression_signal_variance", (DL_FUNC) &R_swig_GaussianProcessRegression_signal_variance, 2},
    {"R_swig_MAPOptions_max_iterations_get", (DL_FUNC) &R_swig_MAPOptions_max_iterations_get, 2},
    {"R_swig_Plot_width", (DL_FUNC) &R_swig_Plot_width, 2},
-   {"R_swig_AdamOptions_beta2_get", (DL_FUNC) &R_swig_AdamOptions_beta2_get, 2},
    {"R_swig_SizeVector___setslice__", (DL_FUNC) &R_swig_SizeVector___setslice__, 4},
+   {"R_swig_AdamOptions_beta2_get", (DL_FUNC) &R_swig_AdamOptions_beta2_get, 2},
    {"R_swig_delete_ARIMA", (DL_FUNC) &R_swig_delete_ARIMA, 1},
    {"R_swig_KMeans_inertia", (DL_FUNC) &R_swig_KMeans_inertia, 2},
-   {"R_swig_AdamOptions_tolerance_set", (DL_FUNC) &R_swig_AdamOptions_tolerance_set, 2},
    {"R_swig_Tensor_squeeze_axis", (DL_FUNC) &R_swig_Tensor_squeeze_axis, 2},
+   {"R_swig_AdamOptions_tolerance_set", (DL_FUNC) &R_swig_AdamOptions_tolerance_set, 2},
+   {"R_swig_Tensor_sigmoid", (DL_FUNC) &R_swig_Tensor_sigmoid, 1},
    {"R_swig_AdamOptions_max_iterations_set", (DL_FUNC) &R_swig_AdamOptions_max_iterations_set, 2},
+   {"R_swig_ImportanceSamplingOptions_seed_get", (DL_FUNC) &R_swig_ImportanceSamplingOptions_seed_get, 2},
    {"R_swig_GBMClassifier_observations", (DL_FUNC) &R_swig_GBMClassifier_observations, 2},
    {"R_swig_PSOOptions_cognitive_coefficient_set", (DL_FUNC) &R_swig_PSOOptions_cognitive_coefficient_set, 2},
    {"R_swig_PSOOptions_final_inertia_weight_set", (DL_FUNC) &R_swig_PSOOptions_final_inertia_weight_set, 2},
+   {"R_swig_RWMResult_final_step_size_set", (DL_FUNC) &R_swig_RWMResult_final_step_size_set, 2},
    {"R_swig_Tensor_min", (DL_FUNC) &R_swig_Tensor_min, 2},
    {"R_swig_DataFrame_numeric_null_count", (DL_FUNC) &R_swig_DataFrame_numeric_null_count, 3},
    {"R_swig_XGBoostRegressor_fitted_values", (DL_FUNC) &R_swig_XGBoostRegressor_fitted_values, 2},
    {"R_swig_chi_squared_test_independence__SWIG_0", (DL_FUNC) &R_swig_chi_squared_test_independence__SWIG_0, 5},
    {"R_swig_Dual_sin", (DL_FUNC) &R_swig_Dual_sin, 2},
    {"R_swig_GAOptions_mutation_rate_get", (DL_FUNC) &R_swig_GAOptions_mutation_rate_get, 2},
+   {"R_swig_new_ImportanceSamplingResult", (DL_FUNC) &R_swig_new_ImportanceSamplingResult, 0},
    {"R_swig_chi_squared_test_independence__SWIG_1", (DL_FUNC) &R_swig_chi_squared_test_independence__SWIG_1, 4},
    {"R_swig_GLM_print_summary", (DL_FUNC) &R_swig_GLM_print_summary, 1},
+   {"R_swig_new_RandomWalkMetropolis__SWIG_0", (DL_FUNC) &R_swig_new_RandomWalkMetropolis__SWIG_0, 1},
    {"R_swig_pearson_correlation_test__SWIG_0", (DL_FUNC) &R_swig_pearson_correlation_test__SWIG_0, 5},
+   {"R_swig_new_RandomWalkMetropolis__SWIG_1", (DL_FUNC) &R_swig_new_RandomWalkMetropolis__SWIG_1, 0},
    {"R_swig_pearson_correlation_test__SWIG_1", (DL_FUNC) &R_swig_pearson_correlation_test__SWIG_1, 4},
    {"R_swig_pearson_correlation_test__SWIG_2", (DL_FUNC) &R_swig_pearson_correlation_test__SWIG_2, 3},
    {"R_swig_Tensor_size", (DL_FUNC) &R_swig_Tensor_size, 2},
@@ -64999,6 +69132,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataFrame_add_string_column__SWIG_1", (DL_FUNC) &R_swig_DataFrame_add_string_column__SWIG_1, 3},
    {"R_swig_new_DPair__SWIG_0", (DL_FUNC) &R_swig_new_DPair__SWIG_0, 0},
    {"R_swig_new_DPair__SWIG_1", (DL_FUNC) &R_swig_new_DPair__SWIG_1, 2},
+   {"R_swig_GibbsOptions_initial_step_sizes_set", (DL_FUNC) &R_swig_GibbsOptions_initial_step_sizes_set, 2},
    {"R_swig_new_Tensor__SWIG_0", (DL_FUNC) &R_swig_new_Tensor__SWIG_0, 2},
    {"R_swig_new_DPair__SWIG_2", (DL_FUNC) &R_swig_new_DPair__SWIG_2, 1},
    {"R_swig_new_Tensor__SWIG_1", (DL_FUNC) &R_swig_new_Tensor__SWIG_1, 1},
@@ -65022,10 +69156,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataSeries_Kind_Line_get", (DL_FUNC) &R_swig_DataSeries_Kind_Line_get, 1},
    {"R_swig_new_XGBoostRegressor__SWIG_0", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_0, 13},
    {"R_swig_one_way_anova", (DL_FUNC) &R_swig_one_way_anova, 3},
-   {"R_swig_new_Adam__SWIG_0", (DL_FUNC) &R_swig_new_Adam__SWIG_0, 1},
    {"R_swig_new_XGBoostRegressor__SWIG_1", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_1, 12},
-   {"R_swig_new_Adam__SWIG_1", (DL_FUNC) &R_swig_new_Adam__SWIG_1, 0},
+   {"R_swig_new_Adam__SWIG_0", (DL_FUNC) &R_swig_new_Adam__SWIG_0, 1},
    {"R_swig_new_XGBoostRegressor__SWIG_2", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_2, 11},
+   {"R_swig_new_Adam__SWIG_1", (DL_FUNC) &R_swig_new_Adam__SWIG_1, 0},
    {"R_swig_HMCResult_final_step_size_set", (DL_FUNC) &R_swig_HMCResult_final_step_size_set, 2},
    {"R_swig_new_XGBoostRegressor__SWIG_3", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_3, 10},
    {"R_swig_new_XGBoostRegressor__SWIG_4", (DL_FUNC) &R_swig_new_XGBoostRegressor__SWIG_4, 9},
@@ -65042,6 +69176,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DEOptions_differential_weight_get", (DL_FUNC) &R_swig_DEOptions_differential_weight_get, 2},
    {"R_swig_ElasticNet_predictor_names", (DL_FUNC) &R_swig_ElasticNet_predictor_names, 2},
    {"R_swig_RandomForestClassifier_observations", (DL_FUNC) &R_swig_RandomForestClassifier_observations, 2},
+   {"R_swig_delete_ImportanceSampling", (DL_FUNC) &R_swig_delete_ImportanceSampling, 1},
    {"R_swig_NUTSResult_accept_rate_set", (DL_FUNC) &R_swig_NUTSResult_accept_rate_set, 2},
    {"R_swig_delete_SimulatedAnnealingOptions", (DL_FUNC) &R_swig_delete_SimulatedAnnealingOptions, 1},
    {"R_swig_new_NUTSResult", (DL_FUNC) &R_swig_new_NUTSResult, 0},
@@ -65051,6 +69186,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SVector___setslice__", (DL_FUNC) &R_swig_SVector___setslice__, 4},
    {"R_swig_ARIMAOptions_d_set", (DL_FUNC) &R_swig_ARIMAOptions_d_set, 2},
    {"R_swig_GLM_leverage", (DL_FUNC) &R_swig_GLM_leverage, 2},
+   {"R_swig_INLAMixedModel_formula_text", (DL_FUNC) &R_swig_INLAMixedModel_formula_text, 2},
    {"R_swig_DVectorVector_capacity", (DL_FUNC) &R_swig_DVectorVector_capacity, 2},
    {"R_swig_delete_ExponentialSmoothingOptions", (DL_FUNC) &R_swig_delete_ExponentialSmoothingOptions, 1},
    {"R_swig_NUTSResult_num_divergences_set", (DL_FUNC) &R_swig_NUTSResult_num_divergences_set, 2},
@@ -65058,7 +69194,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_KMeans_labels", (DL_FUNC) &R_swig_KMeans_labels, 2},
    {"R_swig_Plot_x_max", (DL_FUNC) &R_swig_Plot_x_max, 2},
    {"R_swig_SGD_optimize", (DL_FUNC) &R_swig_SGD_optimize, 4},
+   {"R_swig_new_ImportanceSampling__SWIG_0", (DL_FUNC) &R_swig_new_ImportanceSampling__SWIG_0, 1},
    {"R_swig_GLM_dispersion", (DL_FUNC) &R_swig_GLM_dispersion, 2},
+   {"R_swig_new_ImportanceSampling__SWIG_1", (DL_FUNC) &R_swig_new_ImportanceSampling__SWIG_1, 0},
    {"R_swig_DVector_capacity", (DL_FUNC) &R_swig_DVector_capacity, 2},
    {"R_swig_MAPOptions_tolerance_set", (DL_FUNC) &R_swig_MAPOptions_tolerance_set, 2},
    {"R_swig_ARIMAOptions_seasonal_period_get", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_period_get, 2},
@@ -65074,7 +69212,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tape_value_at", (DL_FUNC) &R_swig_Tape_value_at, 3},
    {"R_swig_SizeVector_push_back", (DL_FUNC) &R_swig_SizeVector_push_back, 2},
    {"R_swig_GLM_summary", (DL_FUNC) &R_swig_GLM_summary, 2},
+   {"R_swig_Tensor_relu", (DL_FUNC) &R_swig_Tensor_relu, 1},
    {"R_swig_KNNRegressor_r_squared", (DL_FUNC) &R_swig_KNNRegressor_r_squared, 2},
+   {"R_swig_RWMOptions_initial_step_size_set", (DL_FUNC) &R_swig_RWMOptions_initial_step_size_set, 2},
    {"R_swig_KernelRegression_summary", (DL_FUNC) &R_swig_KernelRegression_summary, 2},
    {"R_swig_DVector___getitem__", (DL_FUNC) &R_swig_DVector___getitem__, 3},
    {"R_swig_new_LinePlot", (DL_FUNC) &R_swig_new_LinePlot, 0},

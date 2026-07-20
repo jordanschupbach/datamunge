@@ -72,6 +72,7 @@
             python
             libxml2
             pkg-config
+            zlib
             ;
           inherit (pythonPkgs) buildPythonPackage setuptools;
         };
@@ -92,6 +93,7 @@
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.R
+            pkgs.zlib
           ];
         };
 
@@ -805,6 +807,7 @@
             pkgs.doctest
             pkgs.cmake
             pkgs.xorg.libX11
+            pkgs.zlib
 
             # pkgs.nodejs
             # pkgs.prefetch-npm-deps
@@ -832,6 +835,7 @@
             # pkgs.cmake
             pkgs.pkg-config
             pkgs.libxml2
+            pkgs.zlib
             pkgs.just
             (pkgs.python3.withPackages (
               python-pkgs: with python-pkgs; [
@@ -880,6 +884,7 @@
             pkgs.pkg-config
             pkgs.libxml2
             pkgs.just
+            pkgs.zlib
           ];
         };
 

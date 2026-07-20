@@ -153,3 +153,118 @@
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
 %include "datamunge/bayes/nuts.hpp"
+%include "datamunge/bayes/rwm.hpp"
+%include "datamunge/bayes/gibbs.hpp"
+%include "datamunge/bayes/importance_sampling.hpp"
+
+%include "datamunge/geometry/point2d.hpp"
+%template(Point2DVector) std::vector<datamunge::geometry::Point2D>;
+%include "datamunge/geometry/convex_hull.hpp"
+%include "datamunge/geometry/closest_pair.hpp"
+%include "datamunge/geometry/polygon.hpp"
+%include "datamunge/geometry/segment_intersection.hpp"
+%include "datamunge/geometry/kdtree.hpp"
+
+%template(TriangleVector) std::vector<datamunge::geometry::Triangle>;
+%include "datamunge/geometry/delaunay.hpp"
+
+%template(Point2DVectorVector) std::vector<std::vector<datamunge::geometry::Point2D> >;
+%include "datamunge/geometry/voronoi.hpp"
+
+%include "datamunge/geometry/dtw.hpp"
+
+%include "datamunge/geometry/frechet.hpp"
+
+%include "datamunge/geometry/bounding_box.hpp"
+%include "datamunge/geometry/rotating_calipers.hpp"
+%include "datamunge/geometry/min_enclosing_circle.hpp"
+%include "datamunge/geometry/simplify_polyline.hpp"
+%include "datamunge/geometry/polygon_clip.hpp"
+%include "datamunge/geometry/polygon_triangulation.hpp"
+
+%template(StringVectorVector) std::vector<std::vector<std::string> >;
+
+%include "datamunge/dstruct/directed_graph.hpp"
+%template(DirectedGraph) datamunge::dstruct::DirectedGraph<std::string>;
+%include "datamunge/dstruct/undirected_graph.hpp"
+%template(UndirectedGraph) datamunge::dstruct::UndirectedGraph<std::string>;
+
+// The map-based dijkstra()/bellman_ford()/floyd_warshall() (and their nested
+// ShortestPaths/BellmanFordResult result types) return std::unordered_map, which isn't
+// cleanly bindable everywhere -- ignored here in favor of the vector<pair<>>-based
+// dijkstra_distances()/bellman_ford_distances()/bellman_ford_has_negative_cycle()
+// convenience methods, which use the same already-proven std_pair/std_vector machinery.
+%ignore datamunge::dstruct::WeightedGraph::dijkstra;
+%ignore datamunge::dstruct::WeightedGraph::bellman_ford;
+%ignore datamunge::dstruct::WeightedGraph::floyd_warshall;
+%ignore datamunge::dstruct::WeightedGraph::ShortestPaths;
+%ignore datamunge::dstruct::WeightedGraph::BellmanFordResult;
+%include "datamunge/dstruct/weighted_graph.hpp"
+%template(WeightedGraph) datamunge::dstruct::WeightedGraph<std::string, double>;
+%template(VertexWeightPair) std::pair<std::string, double>;
+%template(VertexWeightPairVector) std::vector<std::pair<std::string, double> >;
+
+%template(ByteVector) std::vector<std::uint8_t>;
+%include "datamunge/image/image.hpp"
+%template(ImageVector) std::vector<datamunge::image::Image>;
+%include "datamunge/image/color.hpp"
+%include "datamunge/image/transform.hpp"
+%include "datamunge/image/filters.hpp"
+%template(IPairVector) std::vector<std::pair<int, int> >;
+%include "datamunge/image/draw.hpp"
+%include "datamunge/image/netpbm.hpp"
+%include "datamunge/image/bmp.hpp"
+%include "datamunge/image/png.hpp"
+
+%template(CornerVector) std::vector<datamunge::cv::Corner>;
+%include "datamunge/cv/corners.hpp"
+
+%template(KeyPointVector) std::vector<datamunge::cv::KeyPoint>;
+%include "datamunge/cv/blob.hpp"
+
+%template(HoughLineVector) std::vector<datamunge::cv::HoughLine>;
+%template(HoughCircleVector) std::vector<datamunge::cv::HoughCircle>;
+%include "datamunge/cv/hough.hpp"
+
+%include "datamunge/cv/morphology.hpp"
+%include "datamunge/cv/segmentation.hpp"
+
+%include "datamunge/cv/pyramid.hpp"
+
+%template(FlowVectorVector) std::vector<datamunge::cv::FlowVector>;
+%include "datamunge/cv/optical_flow.hpp"
+
+// datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax operate directly on
+// datamunge::linalg::Tensor, which is deliberately %ignore'd for Python in favor of the
+// hand-written SWIG-friendly datamunge::Tensor facade (see datamunge.hpp) -- so cv/nn.hpp
+// itself is NOT %include'd here; its functionality is instead exposed via new facade methods
+// on datamunge::Tensor (Tensor::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax,
+// Tensor::from_image), declared and implemented alongside the rest of that facade.
+
+// Unlike datamunge::cv::detail (which only ever touches already-bound types), these
+// datamunge::filter::detail helpers take/return linalg::DenseMatrix -- a type that (per this
+// codebase's established rule) can NEVER be a SWIG-bound parameter or return type anywhere.
+// %include follows a header's own #include chain, so SWIG sees (and would otherwise try, and
+// fail, to wrap) these even though they're implementation details never meant to be called
+// from bound languages at all.
+%ignore datamunge::filter::detail::to_dense;
+%ignore datamunge::filter::detail::to_vector2d;
+%ignore datamunge::filter::detail::to_column;
+%ignore datamunge::filter::detail::to_vector;
+%ignore datamunge::filter::detail::numerical_jacobian;
+
+%feature("director") datamunge::filter::VectorFunction;
+%include "datamunge/filter/vector_function.hpp"
+
+%template(KalmanStateVector) std::vector<datamunge::filter::KalmanState>;
+%include "datamunge/filter/kalman_filter.hpp"
+
+%include "datamunge/filter/extended_kalman_filter.hpp"
+%include "datamunge/filter/unscented_kalman_filter.hpp"
+%include "datamunge/filter/information_filter.hpp"
+%include "datamunge/filter/ensemble_kalman_filter.hpp"
+%include "datamunge/filter/particle_filter.hpp"
+
+%template(AlphaBetaStateVector) std::vector<datamunge::filter::AlphaBetaState>;
+%template(AlphaBetaGammaStateVector) std::vector<datamunge::filter::AlphaBetaGammaState>;
+%include "datamunge/filter/alpha_beta_filter.hpp"

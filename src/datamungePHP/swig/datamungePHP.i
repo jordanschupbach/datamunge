@@ -207,3 +207,6 @@
 %include "datamunge/bayes/map.hpp"
 %include "datamunge/bayes/hmc.hpp"
 %include "datamunge/bayes/nuts.hpp"
+%include "datamunge/bayes/rwm.hpp"
+%include "datamunge/bayes/gibbs.hpp"
+%include "datamunge/bayes/importance_sampling.hpp"

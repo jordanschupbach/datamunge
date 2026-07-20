@@ -20,6 +20,7 @@
 #include <datamunge/stats/glm.hpp>
 #include <datamunge/stats/glmm.hpp>
 #include <datamunge/stats/hypothesis_test_result.hpp>
+#include <datamunge/stats/inla_mixed_model.hpp>
 #include <datamunge/stats/kernel_regression.hpp>
 #include <datamunge/stats/kmeans.hpp>
 #include <datamunge/stats/knn_classifier.hpp>
