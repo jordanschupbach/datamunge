@@ -58,9 +58,50 @@ print()
 targets = datamunge.DataFrame()
 targets.add_string_column_encoded("region", encode_strings(["west", "east", "south"]))
 targets.add_numeric_column("target", dvector([18, 12, 25]))
-joined = grouped.join(targets, "region", "region", True)
+joined = grouped.join(targets, "region", "region", "left")
 print("joined with targets")
 print(joined.to_string())
 print()
 
 print_summary(cleaned)
+
+# Tibble/dplyr-style piping: every transform below returns a new DataFrame, so method
+# chaining composes naturally, e.g. `df.mutate_numeric(...).arrange_encoded(...)`.
+piped = (
+    cleaned.mutate_numeric("tax", dvector([v * 0.1 for v in cleaned.pull_numeric("sales")]))
+    .rename("quarter", "period")
+    .arrange_encoded(encode_strings(["region", "sales"]), ivector([1, 0]))
+    .relocate_encoded(encode_strings(["region", "sales"]), "")
+    .select_encoded(encode_strings(["region", "sales", "tax", "period"]))
+)
+print("piped (mutate + arrange + rename + relocate + select)")
+print(piped.to_string())
+print()
+
+summarised = cleaned.summarise_encoded(
+    encode_strings(["region"]),
+    encode_strings(["sales", "sales", "product"]),
+    encode_strings(["sum", "mean", "n_distinct"]),
+    encode_strings(["total_sales", "avg_sales", "n_products"]),
+)
+print("group_by(region).summarise(sum, mean, n_distinct)")
+print(summarised.to_string())
+print()
+
+right_join = grouped.join(targets, "region", "region", "right")
+print("right join with targets")
+print(right_join.to_string())
+print()
+
+longer = cleaned.pivot_longer_encoded(encode_strings(["sales"]), "metric", "value")
+print("pivot_longer(sales)")
+print(longer.to_string())
+print()
+
+new_region = datamunge.DataFrame()
+new_region.add_string_column_encoded("region", encode_strings(["north"]))
+new_region.add_string_column_encoded("product", encode_strings(["widget"]))
+new_region.add_numeric_column("sales", dvector([6]))
+bound = cleaned.select_encoded(encode_strings(["region", "product", "sales"])).bind_rows(new_region)
+print("bind_rows with a new region")
+print(bound.to_string())

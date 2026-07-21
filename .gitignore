@@ -1,5 +1,16 @@
 *.svg
 *.dll
+# LaTeX intermediates that `org-latex-export-to-pdf` writes next to the .org
+# source it compiled (same directory as the input file).
+*.aux
+*.out
+*.toc
+examples/org/*.tex
+examples/org/*.log
+examples/org/*.pdf
+docs/org/pages/*.tex
+docs/org/pages/*.log
+docs/org/pages/*.pdf
 *.o
 *.a
 .direnv

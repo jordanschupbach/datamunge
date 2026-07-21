@@ -32,6 +32,48 @@
 
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-use-babel t)
+;; Batch exports never collide with an interactive editor session; skip Emacs's
+;; lock-file dance so a stale/concurrent lock can't abort a src-block execution.
+(setq create-lockfiles nil)
+
+;; hyperref's default link style draws a visible border box around every
+;; link; when a link's text happens to wrap across a page break, pdflatex
+;; can render that border as a large empty box spanning the page. Colored
+;; text links have no border to mis-render, so switch to those instead.
+(setq org-latex-hyperref-template
+      "\\hypersetup{\n colorlinks=true,\n linkcolor=blue,\n urlcolor=blue,\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L}}\n")
+
+(defun datamunge--convert-svg-link-for-latex (output backend _info)
+  "Rewrite an Org \\includesvg link in OUTPUT to a plain \\includegraphics
+pointing at a converted PDF.
+
+For a BACKEND derived from `latex', Org's default SVG handling emits
+\\includesvg{...}, which relies on the LaTeX `svg' package -- itself
+requiring pdflatex to run with --shell-escape plus Inkscape on PATH, neither
+of which this project's PDF export provides. Convert the referenced file to
+a same-directory .pdf via rsvg-convert instead -- skipping the conversion if
+an up-to-date .pdf already exists -- and emit a plain \\includegraphics."
+  (if (and (org-export-derived-backend-p backend 'latex)
+           (string-match "\\\\includesvg\\(\\[[^]]*\\]\\)?{\\([^}]+\\)}" output))
+      (let* ((opts (or (match-string 1 output) ""))
+             (raw (match-string 2 output))
+             (base (expand-file-name (if (string-suffix-p ".svg" raw)
+                                          (substring raw 0 -4)
+                                        raw)))
+             (svg (concat base ".svg"))
+             (pdf (concat base ".pdf"))
+             (rsvg (executable-find "rsvg-convert")))
+        (unless rsvg
+          (error "rsvg-convert not found on PATH; cannot embed %s in a PDF export" svg))
+        (unless (file-exists-p svg)
+          (error "Referenced image not found: %s" svg))
+        (when (or (not (file-exists-p pdf)) (file-newer-than-file-p svg pdf))
+          (unless (zerop (call-process rsvg nil nil nil "-f" "pdf" "-o" pdf svg))
+            (error "rsvg-convert failed to convert %s" svg)))
+        (concat "\\includegraphics" opts "{" pdf "}"))
+    output))
+
+(add-to-list 'org-export-filter-link-functions #'datamunge--convert-svg-link-for-latex)
 
 (defvar datamunge--babel-languages nil)
 
@@ -112,7 +154,10 @@
     (unless (and pdf (file-exists-p pdf))
       (error "Org did not produce a PDF"))
     (unless (file-equal-p pdf output)
-      (copy-file pdf output t))
+      (copy-file pdf output t)
+      ;; org-latex-export-to-pdf always writes next to the .org source; once
+      ;; copied to the requested OUTPUT, that copy is a redundant byproduct.
+      (delete-file pdf))
     output))
 
 (defun datamunge--export-current-buffer (output)

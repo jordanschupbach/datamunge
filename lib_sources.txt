@@ -65,7 +65,10 @@ datamunge/stats/proportion_test
 datamunge/stats/fisher_exact_test
 datamunge/stats/normality_test
 datamunge/stats/p_adjust
+datamunge/fda/bspline
 datamunge/image/netpbm
 datamunge/image/bmp
 datamunge/image/png
 datamunge/image/zlib_codec
+datamunge/gis/shapefile
+datamunge/gis/shape_layer

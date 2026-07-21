@@ -195,8 +195,10 @@ Bounds compute_bounds(const Plot& plot) {
     if (series.kind == DataSeries::Kind::Box) {
       // x = {position}; y = {whisker_lo, q1, median, q3, whisker_hi, outliers...}
       const double position = series.x.empty() ? 0.0 : series.x[0];
+      const double half     = series.bar_width / 2.0;
       for (double value : series.y) {
-        include(position, value);
+        include(position - half, value);
+        include(position + half, value);
       }
       continue;
     }
@@ -204,6 +206,9 @@ Bounds compute_bounds(const Plot& plot) {
       include(series.x[i], series.y[i]);
       if (series.kind == DataSeries::Kind::Bar) {
         b.y_min = std::min(b.y_min, 0.0);
+        const double half = series.bar_width / 2.0;
+        include(series.x[i] - half, series.y[i]);
+        include(series.x[i] + half, series.y[i]);
       }
     }
   }

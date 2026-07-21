@@ -369,13 +369,35 @@ plot::RPlot ElasticNet::plot_cv_curve() const {
     if (!lambda_was_selected_)
         throw std::invalid_argument("ElasticNet::plot_cv_curve: no cross-validation curve for a fixed-lambda fit");
 
-    std::vector<double> log_lambda(lambda_path_.size());
-    for (std::size_t k = 0; k < lambda_path_.size(); ++k) log_lambda[k] = std::log10(lambda_path_[k]);
+    // A handful of folds can occasionally diverge to a numerically infinite,
+    // or merely astronomically large but still technically finite, squared
+    // error at the smallest lambdas on the path (most often for lasso/
+    // elastic-net folds with near-collinear predictors). Either corrupts
+    // axis auto-ranging for the whole plot, so both are excluded: first the
+    // non-finite entries, then any finite entry many orders of magnitude
+    // above the best (minimum) achieved error, which is itself guaranteed
+    // finite and representative since it is what lambda selection is based
+    // on.
+    double min_finite_mse = std::numeric_limits<double>::infinity();
+    for (const double mse : cv_mse_path_)
+        if (std::isfinite(mse) && mse < min_finite_mse) min_finite_mse = mse;
+
+    std::vector<double> log_lambda;
+    std::vector<double> finite_mse;
+    log_lambda.reserve(lambda_path_.size());
+    finite_mse.reserve(lambda_path_.size());
+    for (std::size_t k = 0; k < lambda_path_.size(); ++k) {
+        if (!std::isfinite(cv_mse_path_[k])) continue;
+        if (cv_mse_path_[k] > 1000.0 * min_finite_mse) continue;
+        log_lambda.push_back(std::log10(lambda_path_[k]));
+        finite_mse.push_back(cv_mse_path_[k]);
+    }
 
     auto plot = plot::RPlot::create();
-    plot.line(log_lambda, cv_mse_path_, "CV mean squared error");
-    plot.points({log_lambda[best_lambda_index_]}, {cv_mse_path_[best_lambda_index_]}, "selected lambda",
-               {220, 38, 38}, 8.0);
+    plot.line(log_lambda, finite_mse, "CV mean squared error");
+    if (std::isfinite(cv_mse_path_[best_lambda_index_]))
+        plot.points({std::log10(lambda_path_[best_lambda_index_])}, {cv_mse_path_[best_lambda_index_]},
+                   "selected lambda", {220, 38, 38}, 8.0);
     plot.title("Cross-Validation Curve").x_label("log10(lambda)").y_label("CV mean squared error");
     return plot;
 }

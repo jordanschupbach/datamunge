@@ -50,6 +50,7 @@ class GGPlot final {
 
   void save(const std::string& path) const;
   void save_svg(const std::string& path) const;
+  void show(const std::string& title_hint = "") const;
 
  private:
   enum class GeomKind { Point, Line, Bar, Col, Histogram, Boxplot, Smooth, Area, Ribbon, Density };

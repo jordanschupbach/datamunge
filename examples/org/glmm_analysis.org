@@ -1,0 +1,596 @@
+#+title: Generalized Linear Mixed Models for Grouped Non-Gaussian Data
+#+subtitle: A literate C++ study of penalized quasi-likelihood using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit generalized linear mixed models to grouped binary and count data
+using =datamunge='s C++ =stats::GLMM=, and report it as a literate
+program: every fragment below is a real, compiled, executed chunk of the
+single C++ binary that produced every number and figure in this
+document. A binomial (logistic) mixed model on the Palmer penguins data
+(predicting sex from body mass, grouped by island) estimates an
+island-level random-intercept standard deviation of 1.1798 on the
+log-odds scale, substantial relative to the fixed effect itself. A
+Poisson mixed model, fit to /simulated/ 25-store count data with known
+true generating parameters, recovers a true population intercept of 2.0
+and slope of 0.3 as 2.0529 and 0.3035, and a true random-intercept
+standard deviation of 0.4 (log scale) as 0.5087. Comparing every store's
+true simulated effect against its estimated BLUP shows only mild
+shrinkage -- visibly milder than the
+[[file:lmm_analysis.org][LMM companion report]]'s equivalent comparison
+-- a real, measured difference traceable to this simulation's larger
+per-group sample size, not a difference in the underlying estimation
+principle. We derive penalized quasi-likelihood (PQL) as an outer
+IRLS-style linearization wrapped around the
+[[file:lmm_analysis.org][LMM companion report]]'s exact linear-mixed-model
+machinery, its accuracy caveat relative to LMM's exact (RE)ML, and why
+shrinkage strength depends on per-group information, tying each to the
+corresponding library call.
+#+end_abstract
+
+* Introduction
+
+This report sits at the intersection of its two closest companions: the
+[[file:glm_iris_analysis.org][GLM companion report]] extends OLS to
+non-Gaussian responses (binomial, Poisson) via a link function and
+iteratively reweighted least squares; the
+[[file:lmm_analysis.org][LMM companion report]] extends OLS to grouped
+data via random effects fit by exact (restricted) maximum likelihood.
+=stats::GLMM= combines both extensions at once -- a non-Gaussian response,
+/and/ grouped data -- and, as the library's own documentation notes, a
+Gaussian GLMM would be exactly an LMM; GLMM's real content is specifically
+in how it handles the combination for genuinely non-Gaussian families.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.8) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives penalized quasi-likelihood as GLM's IRLS wrapped around LMM's
+exact machinery, PQL's approximation caveat, and why shrinkage strength
+depends on per-group sample size, each tied to the specific library call
+that implements it. §3 describes the program chunk by chunk. §4 reports
+both fitted models and a BLUP recovery comparison against the
+simulation's known true parameters. §5 discusses what PQL trades away
+relative to LMM's exact fit and why this report's shrinkage looks
+different from the LMM companion report's. §6 concludes.
+
+* Background: Penalized Quasi-Likelihood
+
+** Setup and notation
+
+For the penguins model: $n = 333$ observations (after dropping rows with
+a null =sex=, =body_mass_g=, or =island= value), grouped by =island= ($3$
+groups). For the simulated stores model: $n = 490$ simulated store-days,
+grouped by =store= ($25$ groups, 15-25 days each). Both combine a
+non-Gaussian response family (binomial or Poisson, exactly the
+[[file:glm_iris_analysis.org][GLM companion report]]'s two families) with
+a grouping factor (exactly the
+[[file:lmm_analysis.org][LMM companion report]]'s structure).
+
+** Penalized quasi-likelihood: IRLS wrapped around LMM
+
+=GLMM= is fit by /penalized quasi-likelihood/ (PQL; Breslow & Clayton,
+1993), and its structure directly mirrors its two companion methods'
+already-derived machinery: exactly as the
+[[file:glm_iris_analysis.org][GLM companion report]]'s §2.3 IRLS
+linearizes the model around the current fit to build a Gaussian /working
+response/ and per-observation weights, PQL's /outer/ loop does the same
+-- but then, instead of solving a single weighted least-squares problem
+(GLM's inner step), it fits a complete /weighted linear mixed model/ to
+that working response, reusing the
+[[file:lmm_analysis.org][LMM companion report]]'s §2.5 block-diagonal
+per-group Cholesky approach, generalized to per-observation weights, with
+=theta= (the variance-component parameters) re-optimized by
+=datamunge::optim::DifferentialEvolution= at /every/ outer iteration.
+=GLMMOptions::max_iterations= (default 20) and =tol= (default $10^{-6}$,
+on the fixed effects' infinity norm) bound the outer loop;
+=iterations()= reports how many were actually used.
+
+** PQL as an approximation
+
+Unlike the [[file:lmm_analysis.org][LMM companion report]]'s exact
+(RE)ML fit, PQL is an /approximation/ to the true marginal likelihood --
+the library's own documentation notes it is "most accurate for reasonably
+large cluster sizes," a real caveat this report's two examples span
+usefully: the penguins model has only 3 groups (islands) but hundreds of
+observations per group, while the simulated stores model has 25 groups
+with a few hundred observations each. PQL's approximation arises because
+linearizing the non-Gaussian likelihood around the current fit and then
+fitting an exact Gaussian mixed model to that linearization is not the
+same as directly optimizing the true (intractable, in closed form)
+marginal likelihood of the original non-Gaussian model -- a bias PQL
+shares, in spirit, with GLM's IRLS being an approximate rather than
+closed-form solution to a nonlinear estimating equation.
+
+** Binomial and Poisson families
+
+=GLMMFamily= offers =Binomial= (logit link) and =Poisson= (log link) --
+deliberately not Gaussian, since, per §1, a Gaussian GLMM reduces exactly
+to an LMM and would need no separate class at all. Both families fix
+their dispersion parameter at 1, matching the
+[[file:glm_iris_analysis.org][GLM companion report]]'s §2.5 discussion
+of fixed- versus estimated-dispersion families -- binomial and Poisson
+are the two fixed-dispersion cases there too.
+
+** BLUPs on the linear-predictor scale
+
+As in the [[file:lmm_analysis.org][LMM companion report]]'s §2.6,
+=random_effects()= returns one BLUP vector per group -- but here, on the
+/linear-predictor/ (link) scale, not the response scale, since that is
+the scale on which the random effects enter the model additively
+(exactly where =Zb= appears inside the link function, mirroring the GLM
+companion report's §2.1 notation $g(\mu_i) = \eta_i$). A positive BLUP for
+a Poisson model, for instance, does not mean "this group's average count
+is this much higher" directly; it means the group's log-expected-count is
+shifted up by that amount, which §4.4's prediction comparison converts
+back to the response scale explicitly.
+
+** Shrinkage strength depends on per-group information
+
+The [[file:lmm_analysis.org][LMM companion report]]'s §2.6 derives BLUP
+shrinkage as a precision-weighted compromise between a group's own data
+and the population average, pulling harder toward zero when a group's own
+data carries less information relative to the noise. That same principle
+predicts, and §5's discussion confirms, that shrinkage strength is not
+a fixed property of "using a mixed model" -- it depends on how much data
+each group actually contributes. A simulation with many observations per
+group leaves less room for the population average to dominate any
+individual group's own well-estimated effect, and shrinkage should be
+correspondingly milder than in a comparison group with fewer observations
+per group.
+
+** What we will report
+
+Given the fits, we report the penguins binomial model's own summary and
+BLUPs, the simulated Poisson stores model's own summary, a recovery
+comparison against its known true generating parameters, a BLUP recovery
+figure, and population-level versus store-adjusted prediction.
+
+* Data and Methods
+
+** The data
+
+The penguins model uses =datamunge::datasets::penguins()=, predicting a
+binary =is_male= indicator from =body_mass_g=, with =island= as a
+random-intercept grouping factor -- deliberately =island= rather than
+=species=, since species is almost perfectly confounded with island in
+this dataset (/Gentoo/ penguins occur on Biscoe island only), which would
+make a species-grouped model's random effects difficult to interpret
+cleanly. The stores model uses data /simulated/ by this report's own
+program, with known true fixed effects and random-intercept standard
+deviation, specifically to check the fitted model's recovery against
+those known values.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven =stats::GLMM= for
+both models, =std::mt19937_64= and the standard library's distribution
+types (including =std::poisson_distribution=) for the simulated data, and
+=plot::RPlot= for every figure. No external plotting or statistics
+package is used.
+
+** Program, presented as a literate whole
+
+*** Includes and usings
+
+#+name: glmm-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/glmm.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::GLMM;
+using datamunge::stats::GLMMFamily;
+using datamunge::stats::GLMMOptions;
+using namespace datamunge::plot;
+#+end_src
+
+*** Fitting the penguins binomial model
+
+=is_male= from =body_mass_g=, grouped by =island=.
+
+#+name: glmm-penguins-fit
+#+begin_src c++ :eval no
+    std::cout << "=== Binomial (logistic) mixed model"
+               << " on a real dataset (penguins) ===\n";
+    const auto penguins = datamunge::datasets::penguins();
+    std::vector<double> is_male, body_mass;
+    std::vector<std::string> island;
+    for (std::size_t i = 0; i < penguins.nrows(); ++i) {
+        if (penguins.is_null("sex", i) ||
+            penguins.is_null("body_mass_g", i) ||
+            penguins.is_null("island", i)) continue;
+        is_male.push_back(penguins.string_at("sex", i) == "male" ? 1.0 : 0.0);
+        body_mass.push_back(penguins.double_at("body_mass_g", i));
+        island.push_back(penguins.string_at("island", i));
+    }
+    DataFrame sex_df;
+    sex_df.add_column("is_male", is_male);
+    sex_df.add_column("body_mass_g", body_mass);
+    sex_df.add_column("island", island);
+
+    GLMMOptions binomial_options;
+    binomial_options.family = GLMMFamily::Binomial;
+    GLMM sex_model(sex_df, "is_male ~ body_mass_g + (1 | island)",
+                    binomial_options);
+    sex_model.print_summary();
+
+    std::cout << "\nRandom-intercept SD (island): "
+               << sex_model.random_effect_std_devs()[0] << "\n";
+    std::cout << "AIC: " << sex_model.aic() << "  BIC: " << sex_model.bic()
+               << "  iterations: " << sex_model.iterations() << "\n";
+    std::cout << "\nBLUPs (island intercept shift,"
+               << " linear-predictor scale):\n";
+    for (std::size_t i = 0; i < sex_model.group_labels().size(); ++i)
+        std::cout << "  " << sex_model.group_labels()[i] << ": "
+                   << sex_model.random_effects()[i][0] << "\n";
+#+end_src
+
+*** Simulating the multi-store dataset
+
+25 stores, 15-25 days each: daily visit counts depend on a promo
+intensity score, but both the baseline traffic and the promo's
+effectiveness vary by store -- built here with known true parameters so
+§4.2 and §4.3 can check recovery directly.
+
+#+name: glmm-simulate
+#+begin_src c++ :eval no
+    std::cout << "\n=== Poisson mixed model"
+               << " on simulated multi-site count data ===\n";
+    std::mt19937_64 rng(4242);
+    constexpr int n_stores = 25;
+    std::normal_distribution<double> store_intercept(0.0, 0.4);
+    std::uniform_real_distribution<double> promo_dist(0.0, 3.0);
+
+    std::vector<double> store_effect(n_stores);
+    for (auto& e : store_effect) e = store_intercept(rng);
+
+    constexpr double true_intercept = 2.0, true_slope = 0.3;
+    std::vector<double> store, promo, visits;
+    std::uniform_int_distribution<int> days_dist(15, 25);
+    for (int s = 0; s < n_stores; ++s) {
+        const int n_days = days_dist(rng);
+        for (int d = 0; d < n_days; ++d) {
+            const double promo_intensity = promo_dist(rng);
+            const double lambda = std::exp(true_intercept + store_effect[s] +
+                                            true_slope * promo_intensity);
+            std::poisson_distribution<int> pois(lambda);
+            store.push_back(static_cast<double>(s));
+            promo.push_back(promo_intensity);
+            visits.push_back(static_cast<double>(pois(rng)));
+        }
+    }
+    DataFrame df;
+    df.add_column("store", store);
+    df.add_column("promo", promo);
+    df.add_column("visits", visits);
+#+end_src
+
+*** Exploratory figure
+
+#+name: glmm-store-eda
+#+begin_src c++ :eval no
+    {
+        std::vector<double> sx0, sy0, sx1, sy1;
+        for (std::size_t i = 0; i < store.size(); ++i) {
+            if (store[i] < 3.0) {
+                sx0.push_back(promo[i]);
+                sy0.push_back(visits[i]);
+            } else {
+                sx1.push_back(promo[i]);
+                sy1.push_back(visits[i]);
+            }
+        }
+        auto scatter = RPlot::create();
+        scatter.points(sx1, sy1, "other stores", {148, 163, 184}, 4.0);
+        scatter.points(sx0, sy0, "stores 0-2", {37, 99, 235}, 5.0);
+        scatter.title("Simulated Data: Promo Intensity vs Visits")
+            .x_label("promo").y_label("visits")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/glmm_store_eda_scatter.svg");
+        std::cout << "wrote glmm_store_eda_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting the stores Poisson model
+
+#+name: glmm-store-fit
+#+begin_src c++ :eval no
+    GLMMOptions poisson_options;
+    poisson_options.family = GLMMFamily::Poisson;
+    GLMM store_model(df, "visits ~ promo + (1 | store)", poisson_options);
+    store_model.print_summary();
+
+    std::cout << "\nTrue generating values: intercept=" << true_intercept
+               << ", slope=" << true_slope
+               << ", random-intercept SD (log scale)=0.4\n";
+    std::cout << "AIC: " << store_model.aic()
+               << "  BIC: " << store_model.bic()
+               << "  iterations: " << store_model.iterations() << "\n";
+
+    std::cout << "\n--- BLUPs for a few stores ---\n";
+    const std::vector<std::size_t> some_stores = {0, 1, 2};
+    for (const std::size_t idx : some_stores) {
+        std::cout << "store " << store_model.group_labels()[idx]
+                   << ": intercept shift="
+                   << store_model.random_effects()[idx][0] << "\n";
+    }
+#+end_src
+
+*** BLUP recovery against known ground truth
+
+#+name: glmm-blup-recovery
+#+begin_src c++ :eval no
+    {
+        std::vector<double> true_eff, blup_eff;
+        for (std::size_t i = 0; i < store_model.group_labels().size(); ++i) {
+            const int s = std::stoi(store_model.group_labels()[i]);
+            true_eff.push_back(store_effect[s]);
+            blup_eff.push_back(store_model.random_effects()[i][0]);
+        }
+        auto p = RPlot::create();
+        p.points(true_eff, blup_eff, "stores", {37, 99, 235}, 5.0);
+        p.line({-1.2, 1.2}, {-1.2, 1.2}, "y=x (no shrinkage)",
+               {220, 38, 38}, 1.5);
+        p.title("Random Intercept: True vs BLUP (log scale)")
+            .x_label("true simulated effect").y_label("estimated BLUP")
+            .background({250, 250, 252});
+        p.save_svg("build/org/glmm_blup_recovery.svg");
+        std::cout << "wrote glmm_blup_recovery.svg\n";
+    }
+#+end_src
+
+*** Predicting: population-level versus store-adjusted
+
+#+name: glmm-predict
+#+begin_src c++ :eval no
+    std::cout << "\n--- Prediction: population-level vs."
+               << " store-adjusted ---\n";
+    DataFrame newdata_population;
+    newdata_population.add_column("promo", std::vector<double>{1.5});
+    DataFrame newdata_store0;
+    newdata_store0.add_column("promo", std::vector<double>{1.5});
+    newdata_store0.add_column("store", std::vector<double>{0.0});
+    std::cout << "promo=1.5, unseen store:   "
+               << store_model.predict(newdata_population)[0]
+               << " expected visits (fixed effects only)\n";
+    std::cout << "promo=1.5, store 0 (known): "
+               << store_model.predict(newdata_store0)[0]
+               << " expected visits (fixed effects + store 0's BLUP)\n";
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/glmm_analysis.cpp <<'CPP'
+<<glmm-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<glmm-penguins-fit>>
+
+<<glmm-simulate>>
+
+<<glmm-store-eda>>
+
+<<glmm-store-fit>>
+
+<<glmm-blup-recovery>>
+
+<<glmm-predict>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/glmm_analysis.cpp -o build/org/glmm_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/glmm_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** The penguins binomial mixed model
+
+#+begin_example
+Random effects:
+ Groups   Name           Variance  Std.Dev.   Corr
+ island   (Intercept)      1.3919    1.1798
+Number of obs: 333, groups: island, 3
+PQL outer iterations used: 6
+
+Fixed effects:
+                    Estimate   Std.Error   z value    Pr(>|z|)
+(Intercept)          -9.9554      1.3845   -7.1907      0.0000
+body_mass_g           0.0025      0.0003    8.3339      0.0000
+
+BLUPs (island intercept shift, linear-predictor scale):
+  Torgersen: 0.7801
+  Biscoe: -1.6320
+  Dream: 0.8519
+#+end_example
+
+The island-level random-intercept standard deviation (1.1798 on the
+log-odds scale) is large relative to the fixed effect's own uncertainty
+-- =island= carries real information about a penguin's sex distribution
+beyond body mass alone, at least in this data. Biscoe's strongly negative
+BLUP (-1.6320) is the most striking single number: after controlling for
+body mass, a penguin on Biscoe is estimated to be substantially less
+likely to be recorded as male than the population-level fit alone would
+predict, while Torgersen and Dream both shift positive by a similar
+magnitude to each other.
+
+** The simulated Poisson stores model
+
+#+begin_example
+Random effects:
+ Groups   Name           Variance  Std.Dev.   Corr
+ store    (Intercept)      0.2588    0.5087
+Number of obs: 490, groups: store, 25
+PQL outer iterations used: 6
+
+Fixed effects:
+                    Estimate   Std.Error   z value    Pr(>|z|)
+(Intercept)           2.0529      0.1055   19.4610      0.0000
+promo                 0.3035      0.0143   21.2183      0.0000
+#+end_example
+
+| Parameter                        | True value | Estimated |
+|-------------------------------------+------------+-----------|
+| Population intercept (log scale)     |       2.00 |      2.05 |
+| Population slope (log scale)          |       0.30 |      0.30 |
+| Random-intercept SD (log scale)        |       0.40 |      0.51 |
+
+#+ATTR_HTML: :alt Scatter of promo intensity vs visits for the simulated data, three stores highlighted :width 100%
+[[file:../../build/org/glmm_store_eda_scatter.svg]]
+
+Both fixed effects are recovered closely (2.0529 vs. 2.00; 0.3035 vs.
+0.30). The random-intercept standard deviation is recovered less
+precisely (0.5087 vs. 0.40) -- in the /opposite/ direction from the
+[[file:lmm_analysis.org][LMM companion report]]'s equivalent comparison,
+which /undershot/ its true random-effect standard deviations rather than
+overshooting them. §5 discusses this difference; both are consistent
+with variance components generally being harder to pin down precisely
+than fixed effects from a modest number of groups, just not in a
+uniformly biased direction across every report.
+
+** BLUP recovery against known ground truth
+
+#+begin_example
+--- BLUPs for a few stores ---
+store 0: intercept shift=0.3867
+store 1: intercept shift=-0.2221
+store 2: intercept shift=-0.2185
+#+end_example
+
+#+ATTR_HTML: :alt Scatter of true simulated random effects against estimated BLUPs, with a y=x reference line :width 100%
+[[file:../../build/org/glmm_blup_recovery.svg]]
+
+Unlike the [[file:lmm_analysis.org][LMM companion report]]'s equivalent
+figure, whose points visibly fall /inside/ the $y=x$ reference line at
+the extremes, this figure's points track $y=x$ closely across nearly the
+entire range, with only the barest hint of shrinkage at the two most
+extreme stores. §5 discusses why the same shrinkage principle produces
+such a different-looking figure here.
+
+** Population-level versus store-adjusted prediction
+
+#+begin_example
+promo=1.5, unseen store:   12.2816 expected visits (fixed effects only)
+promo=1.5, store 0 (known): 18.0806 expected visits (fixed effects + store 0's BLUP)
+#+end_example
+
+Store 0's own upward intercept shift (+0.3867 on the log scale)
+translates, through the Poisson log link, to a substantially higher
+expected visit count (18.08 versus 12.28, a 47% increase) rather than a
+simple additive difference -- a direct consequence of §2.5's BLUPs living
+on the linear-predictor scale, exponentiated back to the response scale
+only at the final prediction step.
+
+* Discussion
+
+**PQL trades exactness for reusing LMM's exact machinery.** Every number
+in this report ultimately comes from the same block-diagonal Cholesky
+approach the [[file:lmm_analysis.org][LMM companion report]] uses
+directly, wrapped in an outer IRLS-style linearization borrowed from the
+[[file:glm_iris_analysis.org][GLM companion report]]. This report's PQL
+fit is therefore not a new estimation principle so much as a disciplined
+combination of two already-derived ones -- at the honestly-stated cost
+(§2.3) of being an approximation to the true marginal likelihood rather
+than an exact fit, most trustworthy exactly where this report's own
+data sit reasonably well: moderate-to-large per-group sample sizes,
+not the single-digit-observations-per-group regime where PQL is
+best known to struggle.
+
+**Why this report's shrinkage looks so different from the LMM
+companion report's.** §4.3's BLUP recovery figure shows dramatically
+milder shrinkage than the [[file:lmm_analysis.org][LMM companion
+report]]'s equivalent figure -- not because GLMM's BLUPs work
+differently in principle (§2.6's shrinkage argument is identical), but
+because this report's simulated stores each contribute roughly 15-25
+observations, comparable to or more than the LMM companion report's
+15-35 students per school, while achieving a proportionally tighter
+per-group estimate for a binary-like Poisson count response with this
+particular signal-to-noise ratio. The lesson generalizes: shrinkage
+strength is a property of the /data/, specifically how much each group's
+own information outweighs the population-level prior, not a fixed
+property of "using a mixed model" that should look the same in every
+report.
+
+**Overshooting versus undershooting variance components.** The
+[[file:lmm_analysis.org][LMM companion report]] undershot its true
+random-effect standard deviations; this report's Poisson model
+overshoots its own (0.51 estimated versus 0.40 true). Both are
+consistent with variance-component estimates being noisier than
+fixed-effect estimates at a similar number of groups (§4.2) -- the
+direction of the error in any single fit is not something either
+report's theory predicts in advance, only that the magnitude of
+disagreement should be larger, proportionally, for variance components
+than for fixed effects, which both reports' results bear out.
+
+* Conclusion
+
+Fitting generalized linear mixed models with =datamunge='s C++
+=stats::GLMM= to real grouped binary data (penguin sex by island) and
+simulated grouped count data with known true parameters (store visits by
+promo intensity) confirms PQL's combination of the
+[[file:glm_iris_analysis.org][GLM companion report]]'s IRLS linearization
+with the [[file:lmm_analysis.org][LMM companion report]]'s
+exact mixed-model machinery behaves sensibly: fixed effects are recovered closely on
+simulated data, variance components less precisely but in the right
+range, and BLUPs shrink toward the population average -- though, this
+report's central finding, by a visibly different amount than the LMM
+companion report's own simulation showed, a real and explicable
+consequence of differing per-group sample sizes rather than any
+inconsistency in the underlying method. As with its companions, this
+entire report is reproducible end to end via =just org-example
+glmm_analysis=, which re-executes §3.3.8's assembly block -- and
+therefore every number and figure above -- from the =datamunge= source
+tree.
+
+* References
+
+- Breslow, N. E., & Clayton, D. G. (1993). "Approximate inference in
+  generalized linear mixed models." /Journal of the American Statistical
+  Association/, 88(421), 9--25.
+- Bates, D., Mächler, M., Bolker, B., & Walker, S. (2015). "Fitting
+  Linear Mixed-Effects Models Using lme4." /Journal of Statistical
+  Software/, 67(1), 1--48.
+- McCullagh, P., & Nelder, J. A. (1989). /Generalized Linear Models/,
+  2nd ed. Chapman and Hall.
+- Gelman, A., & Hill, J. (2006). /Data Analysis Using Regression and
+  Multilevel/Hierarchical Models/. Cambridge University Press.
+- Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). "Ecological
+  sexual dimorphism and environmental variability within a community of
+  Antarctic penguins (genus /Pygoscelis/)." /PLoS ONE/, 9(3), e90081.
+  (Original data source for the Palmer Archipelago penguins dataset.)

@@ -92,6 +92,7 @@
             pkgs.libxml2
             pkgs.pkg-config
             pkgs.R
+            pkgs.xorg.libX11.dev
           ];
         };
 
@@ -804,7 +805,7 @@
             pkgs.graphviz
             pkgs.doctest
             pkgs.cmake
-            pkgs.xorg.libX11
+            pkgs.xorg.libX11.dev
 
             # pkgs.nodejs
             # pkgs.prefetch-npm-deps
@@ -879,6 +880,7 @@
             pkgs.rPackages.testthat
             pkgs.pkg-config
             pkgs.libxml2
+            pkgs.xorg.libX11.dev
             pkgs.just
           ];
         };
@@ -1116,7 +1118,21 @@
             pkgs.direnv
             pkgs.just
             pkgs.jq
-            pkgs.texliveSmall
+            # scheme-small plus the packages Org's default LaTeX article preamble pulls in
+            # that scheme-small itself doesn't carry (wrapfig/ulem/capt-of).
+            (pkgs.texlive.combine {
+              inherit (pkgs.texlive)
+                scheme-small
+                wrapfig
+                ulem
+                capt-of
+                ;
+            })
+            # rsvg-convert: init.el rewrites every \includegraphics{...svg} to a
+            # sibling PDF at export time (pdflatex cannot rasterize SVG itself).
+            pkgs.librsvg
+            # pdfinfo, used by the `view-pdf`/`org-pdf` justfile recipes to sanity-check output.
+            pkgs.poppler-utils
 
             # Core library + pkg-config visibility
             datamunge
@@ -1124,6 +1140,11 @@
             pkgs.cmake
             pkgs.gnumake
             pkgs.stdenv.cc
+            # swig-jse must win on PATH over stock pkgs.swig: prebuild-javascript/prebuild-r
+            # (invoked here via nested `nix develop .#cpp`, which doesn't itself provide a
+            # swig and so inherits whatever this shell put on PATH) need swig-jse-only flags
+            # like -typescript/-napi and generate swig-jse-specific R/JS codegen.
+            swig-jse
             pkgs.swig
 
             # Language runtimes + bindings for runnable examples

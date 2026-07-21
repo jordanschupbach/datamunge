@@ -59,7 +59,7 @@ console.log();
 const targets = new datamunge.DataFrame();
 targets.add_string_column_encoded("region", encodeStrings(["west", "east", "south"]));
 targets.add_numeric_column("target", dvector([18, 12, 25]));
-const joined = grouped.join(targets, "region", "region", true);
+const joined = grouped.join(targets, "region", "region", "left");
 console.log("joined with targets");
 console.log(joined.to_string());
 console.log();

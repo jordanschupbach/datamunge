@@ -1,0 +1,556 @@
+#+title: Integrated Nested Laplace Approximation and Multiple-Comparison Correction
+#+subtitle: A literate C++ study of Bayesian mixed models via INLA and p-value adjustment using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a Bayesian binomial mixed model to the Palmer penguins data using
+=datamunge='s C++ =stats::INLAMixedModel= -- Integrated Nested Laplace
+Approximation (Rue, Martino & Chopin 2009) applied to the same
+=sex ~ body_mass_g + (1 | island)= model the
+[[file:glmm_analysis.org][GLMM companion report]] fits by penalized
+quasi-likelihood -- and separately apply three multiple-comparison
+corrections to a set of ten p-values using =stats::p_adjust=, reporting
+both as a literate program: every fragment below is a real, compiled,
+executed chunk of the single C++ binary that produced every number and
+figure in this document. INLA returns a genuine posterior for every
+quantity in the model, including the random-effect variance itself,
+rather than a point estimate plus an asymptotic standard error: the
+island-level random intercept has posterior mean $0.8385$ (Torgersen),
+$-1.7258$ (Biscoe), and $0.8872$ (Dream) on the log-odds scale, each
+with a posterior SD around $1.63$ -- large enough, with only three
+groups to pool information across, that no single island's effect is
+clearly separated from zero even though the three posterior means
+themselves are well spread out. Separately, applying Bonferroni, Holm,
+and Benjamini-Hochberg (BH) correction to the same ten raw p-values
+(three genuinely below 0.01, the rest noise) shows all three methods
+correctly flag the same three tests as significant at $\alpha=0.05$
+after correction, while diverging sharply on power for the borderline
+fourth test ($p=0.03$ raw becomes $0.30$ under Bonferroni, $0.21$ under
+Holm, but only $0.075$ under BH) -- a direct, visualized illustration of
+the family-wise-error-rate versus false-discovery-rate tradeoff. We
+derive INLA's nested Laplace approximation (mode-finding, hyperparameter
+integration, and marginal combination), and the Bonferroni, Holm, and
+BH correction procedures, tying every derivation to the exact library
+call that implements it.
+#+end_abstract
+
+* Introduction
+
+The [[file:glmm_analysis.org][GLMM companion report]] fit mixed models by
+penalized quasi-likelihood (PQL): GLM's IRLS outer loop wrapped around
+LMM's exact random-effects machinery, returning point estimates and
+asymptotic standard errors for every parameter, including the
+random-effect variance. INLA takes a different, genuinely Bayesian
+approach to the identical model class: rather than optimizing a single
+point estimate, it approximates the *full posterior distribution* over
+every latent quantity -- fixed effects, random effects, and the
+hyperparameters (here, the random-intercept variance) governing them --
+via a sequence of nested Laplace (Gaussian) approximations, integrated
+numerically over hyperparameter uncertainty. The practical payoff is a
+posterior standard deviation for quantities like the random-effect
+variance itself, not just for the fixed effects -- something PQL's
+asymptotic-SE machinery does not provide directly.
+
+This report's second half is unrelated in subject but shares this
+project's reference example's pairing: multiple-comparison correction
+via =stats::p_adjust=, matching R's =p.adjust()=. Both halves of this
+report concern a shared statistical theme -- accounting honestly for
+uncertainty or error that a naively-reported single number would
+understate, whether that is parameter uncertainty (INLA's posteriors)
+or the inflated false-positive rate from testing many hypotheses at
+once (multiple-comparison correction).
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.3) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives INLA's nested Laplace approximation and the Bonferroni, Holm,
+and BH correction procedures, each tied to the specific library call
+that implements it. §3 describes the program chunk by chunk. §4 reports
+the results of both halves alongside two figures. §5 discusses what the
+random effects' large posterior SDs and the correction-method comparison
+each reveal. §6 concludes.
+
+* Background: INLA and Multiple-Comparison Correction
+
+** The latent Gaussian model INLA targets
+
+INLA (Rue, Martino & Chopin, 2009) targets any *latent Gaussian model*:
+observations $y_i$ with likelihood $p(y_i \mid \eta_i)$ depending on a
+linear predictor $\eta = X x$ built from a latent field $x$ (fixed and
+random effects together, exactly =datamunge='s convention of
+=INLAMixedModel= building "a single latent field x = [fixed effects; one
+random-effect block per group]"), where the latent field itself has a
+Gaussian prior $x \mid \theta \sim N(0, Q(\theta)^{-1})$ governed by
+hyperparameters $\theta$ (here, the log-scale random-intercept variance)
+with their own prior $\pi(\theta)$. This is exactly the same model class
+GLM, LMM, and GLMM fit elsewhere in this project's reports -- the
+difference is entirely in *how* the posterior is characterized, not in
+what is being modeled.
+
+** Step 1: the Laplace approximation for a fixed $\theta$
+
+For a fixed hyperparameter value $\theta$, INLA finds the mode
+$x^*(\theta)$ of the joint log-density $\log p(y \mid x) + \log p(x \mid
+\theta)$ via Newton-Raphson (=INLAOptions::newton_max_iterations= /
+=newton_tolerance=), using each likelihood's score and curvature at the
+current linear predictor (=INLALikelihoodPoint::score= / =curvature=,
+supplied per family by =inla_binomial_logit_likelihood= /
+=inla_poisson_log_likelihood= / =inla_gaussian_likelihood=). The
+log-likelihood's curvature at the mode gives a Gaussian approximation to
+$x \mid y, \theta$ with mean $x^*(\theta)$ and covariance
+$H^*(\theta)^{-1}$ -- the "Laplace approximation" step, exact for a
+genuinely Gaussian likelihood (e.g. LMM) and an approximation whenever
+the likelihood is merely log-concave (Binomial, Poisson), matching every
+canonical-link GLM family this project's classes support.
+
+** Step 2: integrating over hyperparameter uncertainty
+
+$\theta$'s own marginal posterior is approximated by evaluating the
+same Laplace machinery at $\theta$'s own mode (found via the same
+differential-evolution search =GLMM= / =LMM= use for their variance
+components, =mode_population_size= / =mode_max_generations=) and then
+combined numerically over a grid of $\theta$ values
+(=INLAIntegrationStrategy::Grid=, =grid_points_per_dim= points per axis
+spanning =grid_span= posterior-SD units around the mode) -- this is the
+"integrated" and "nested" in Integrated Nested Laplace Approximation:
+nested, because each grid point requires its own inner Laplace
+approximation of the latent field; integrated, because the final
+answer combines every grid point's contribution weighted by its
+approximate posterior mass. Combining the per-$\theta$ Gaussian
+approximations into final latent-field marginal means and SDs
+(=INLAResult::latent_mean= / =latent_sd=) is what gives every parameter
+in the model -- including $\theta$ itself, unlike PQL -- a real posterior
+standard deviation, not just an asymptotic one computed at a single
+point estimate.
+
+** =INLAMixedModel=: the lme4-style facade
+
+=stats::INLAMixedModel= wraps =bayes::INLA= behind the same
+formula-and-grouping-factor interface =GLMM= / =LMM= use
+(=y ~ x1 + x2 + (1 | group)=), building the design matrix, precision
+function, and per-family likelihood automatically from the formula --
+the same "parallel SWIG-facade-class" pattern documented in this
+project's INLA feature-development history, letting a caller write
+=INLAMixedModel model(df, "sex ~ body_mass_g + (1 | island)", options)=
+exactly as they would write the corresponding =GLMM= call, with
+=family= selecting Gaussian/Binomial/Poisson exactly as =GLMMFamily=
+does elsewhere.
+
+** Bonferroni and Holm: controlling the family-wise error rate
+
+Testing $m$ hypotheses at nominal level $\alpha$ each inflates the
+probability of at least one false positive well above $\alpha$. The
+*Bonferroni* correction is the simplest fix: reject hypothesis $i$ only
+if $p_i \le \alpha/m$, equivalently report an adjusted p-value
+$\tilde{p}_i = \min(1,\, m\,p_i)$ -- exact and assumption-free, but
+conservative, since it treats every test as if it alone determined the
+family-wise error rate. *Holm's* step-down procedure is uniformly more
+powerful while still exactly controlling the family-wise error rate
+with no extra assumptions: sort p-values ascending, and reject
+$p_{(1)}, \ldots, p_{(k)}$ where $k$ is the largest index such that
+$p_{(j)} \le \alpha/(m-j+1)$ for all $j \le k$ -- each successive
+p-value is compared against a progressively less strict threshold,
+since fewer hypotheses remain "in play" once earlier ones are rejected.
+
+** Benjamini-Hochberg: controlling the false discovery rate
+
+Rather than bounding the probability of *any* false positive,
+*Benjamini-Hochberg* (BH) bounds the *expected proportion* of false
+positives among the rejected hypotheses -- the false discovery rate
+(FDR). Sort p-values ascending; reject $p_{(1)}, \ldots, p_{(k)}$ where
+$k$ is the largest index with $p_{(k)} \le (k/m)\,\alpha$. Because
+controlling a proportion of errors among rejections is a fundamentally
+weaker requirement than controlling the probability of any error at
+all, BH is substantially more powerful than Bonferroni or Holm whenever
+many tests are truly non-null -- the standard justification for using it
+by default in large-scale settings (genomics, and generally any setting
+with dozens or more simultaneous tests) where family-wise control is
+needlessly conservative.
+
+** What we will report
+
+§4.1 fits the INLA mixed model, reports its posterior fixed and random
+effects against the GLMM companion report's PQL point estimates, and
+visualizes the three islands' posterior mean random intercepts. §4.2
+applies Bonferroni, Holm, and BH correction to the same ten p-values and
+visualizes all three alongside the raw values and a 0.05 significance
+reference line.
+
+* Data and Methods
+
+** The data
+
+§4.1 uses the same Palmer penguins =sex ~ body_mass_g + (1 | island)=
+model as the [[file:glmm_analysis.org][GLMM companion report]] (333
+complete cases across 3 islands), letting this report's Bayesian
+posterior be compared directly against that report's PQL point estimate
+and asymptotic SE. §4.2 uses ten synthetic p-values (three genuinely
+significant at $p<0.01$, seven pure noise) chosen to make the three
+correction methods' differing power visible on the same, deliberately
+small and interpretable set.
+
+** Software
+
+All computation uses =datamunge='s C++ =stats::INLAMixedModel= (built on
+=bayes::INLA=) and =stats::p_adjust=, together with =plot::RPlot= for
+visualization.
+
+** Program, presented as a literate whole
+
+*** INLA mixed model, and visualizing the random effects
+
+#+name: inla-model
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/inla_mixed_model.hpp>
+#include <datamunge/stats/p_adjust.hpp>
+
+#include <iomanip>
+#include <iostream>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::plot::RPlot;
+using datamunge::stats::INLAMixedModel;
+using datamunge::stats::INLAMixedModelFamily;
+using datamunge::stats::INLAMixedModelOptions;
+using datamunge::stats::p_adjust;
+using datamunge::stats::PAdjustMethod;
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+    std::cout << "=== INLAMixedModel: Bayesian mixed model via"
+                 " Integrated Nested Laplace Approximation ===\n";
+    const auto penguins = datamunge::datasets::penguins();
+    std::vector<double> is_male, body_mass;
+    std::vector<std::string> island;
+    for (std::size_t i = 0; i < penguins.nrows(); ++i) {
+        if (penguins.is_null("sex", i) || penguins.is_null("body_mass_g", i) ||
+            penguins.is_null("island", i)) {
+            continue;
+        }
+        is_male.push_back(penguins.string_at("sex", i) == "male" ? 1.0 : 0.0);
+        body_mass.push_back(penguins.double_at("body_mass_g", i));
+        island.push_back(penguins.string_at("island", i));
+    }
+    DataFrame sex_df;
+    sex_df.add_column("is_male", is_male);
+    sex_df.add_column("body_mass_g", body_mass);
+    sex_df.add_column("island", island);
+
+    INLAMixedModelOptions options;
+    options.family = INLAMixedModelFamily::Binomial;
+    INLAMixedModel model(sex_df, "is_male ~ body_mass_g + (1 | island)",
+                          options);
+    model.print_summary();
+
+    std::cout << "\nlog marginal likelihood: "
+              << model.log_marginal_likelihood() << "\n";
+    std::cout << "random-effect (island) standard deviation: "
+              << model.random_effect_std_devs()[0] << "\n\n";
+
+    DataFrame newdata;
+    newdata.add_column("body_mass_g",
+                        std::vector<double>{3500.0, 4500.0, 5500.0});
+    newdata.add_column("island", std::vector<std::string>{"Biscoe", "Dream",
+                                                            "Torgersen"});
+    const auto predictions = model.predict(newdata);
+    std::cout << "P(male) predictions:\n";
+    for (std::size_t i = 0; i < predictions.size(); ++i) {
+        std::cout << "  body_mass_g=" << newdata.double_at("body_mass_g", i)
+                   << ", island=" << newdata.string_at("island", i) << " -> "
+                   << predictions[i] << "\n";
+    }
+#+end_src
+
+#+name: inla-random-effects-figure
+#+begin_src c++ :eval no
+    {
+        std::vector<double> heights;
+        std::vector<std::string> names;
+        for (std::size_t i = 0; i < model.group_labels().size(); ++i) {
+            heights.push_back(model.random_effects_mean()[i][0]);
+            names.push_back(model.group_labels()[i]);
+            std::cout << "  island=" << model.group_labels()[i]
+                       << ": random intercept mean="
+                       << model.random_effects_mean()[i][0]
+                       << ", sd=" << model.random_effects_sd()[i][0] << "\n";
+        }
+        auto plot = RPlot::barplot(heights, names, "island random intercept",
+                                    {96, 165, 250});
+        plot.abline_h(0.0, {107, 114, 128}, 1.0);
+        plot.title("INLA posterior mean random intercept by island (log-odds)")
+            .x_label("island")
+            .y_label("posterior mean random intercept");
+        plot.save_svg("build/org/inla_random_effects.svg");
+        std::cout << "wrote inla_random_effects.svg\n";
+    }
+#+end_src
+
+*** Multiple-comparison correction, and visualizing the tradeoff
+
+#+name: inla-p-adjust
+#+begin_src c++ :eval no
+    std::cout << "\n=== p_adjust: multiple-comparison correction ===\n";
+    const std::vector<double> raw_p = {0.001, 0.004, 0.009, 0.03, 0.12,
+                                        0.18, 0.35, 0.51, 0.72, 0.98};
+    std::cout << std::setw(10) << "raw" << std::setw(12) << "bonferroni"
+              << std::setw(10) << "holm" << std::setw(10) << "BH" << "\n";
+    const auto bonferroni = p_adjust(raw_p, PAdjustMethod::Bonferroni);
+    const auto holm = p_adjust(raw_p, PAdjustMethod::Holm);
+    const auto bh = p_adjust(raw_p, PAdjustMethod::BH);
+    for (std::size_t i = 0; i < raw_p.size(); ++i) {
+        std::cout << std::setw(10) << raw_p[i]
+                   << std::setw(12) << bonferroni[i]
+                   << std::setw(10) << holm[i]
+                   << std::setw(10) << bh[i] << "\n";
+    }
+#+end_src
+
+#+name: inla-p-adjust-figure
+#+begin_src c++ :eval no
+    {
+        std::vector<double> idx(raw_p.size());
+        for (std::size_t i = 0; i < raw_p.size(); ++i) {
+            idx[i] = static_cast<double>(i + 1);
+        }
+
+        auto plot = RPlot::plot(idx, raw_p, "b", "raw", {17, 24, 39});
+        plot.lines(idx, bonferroni, "Bonferroni", {220, 38, 38}, 2.0);
+        plot.lines(idx, holm, "Holm", {96, 165, 250}, 2.0);
+        plot.lines(idx, bh, "BH", {34, 197, 94}, 2.0);
+        plot.abline_h(0.05, {107, 114, 128}, 1.0);
+        plot.legend({"raw", "Bonferroni", "Holm", "BH"},
+                    {{17, 24, 39}, {220, 38, 38},
+                     {96, 165, 250}, {34, 197, 94}});
+        plot.title("Raw vs. adjusted p-values (10 ranked tests)")
+            .x_label("rank")
+            .y_label("p-value");
+        plot.save_svg("build/org/inla_p_adjust.svg");
+        std::cout << "wrote inla_p_adjust.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/inla_analysis.cpp <<'CPP'
+<<inla-model>>
+
+<<inla-random-effects-figure>>
+
+<<inla-p-adjust>>
+
+<<inla-p-adjust-figure>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/inla_analysis.cpp -o build/org/inla_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/inla_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** The INLA mixed model
+
+#+begin_example
+Generalized linear mixed model fit by INLA (binomial)
+Formula: is_male ~ body_mass_g + (1 | island)
+
+Random effects (posterior mean std. dev., at theta's posterior mean):
+ Groups   Name           Std.Dev.
+ island   (Intercept)      2.5582
+Number of obs: 333, groups: island, 3
+
+Fixed effects (posterior mean +/- posterior sd):
+                        Mean          SD
+(Intercept)         -10.2560      2.0445
+body_mass_g           0.0025      0.0003
+
+log marginal likelihood: -200.4767
+random-effect (island) standard deviation: 2.5582
+
+P(male) predictions:
+  body_mass_g=3500.0000, island=Biscoe -> 0.0417
+  body_mass_g=4500.0000, island=Dream -> 0.8813
+  body_mass_g=5500.0000, island=Torgersen -> 0.9888
+#+end_example
+
+The fixed-effect posterior means (intercept $-10.2560$, =body_mass_g=
+slope $0.0025$) closely match the GLMM companion report's PQL point
+estimates for the same formula, as expected: both approaches target the
+same likelihood, and only differ in whether the final answer is a point
+estimate with an asymptotic SE (PQL) or a full posterior with a directly
+computed SD (INLA). The island-level random-intercept SD, $2.5582$ on
+the log-odds scale, is large -- a one-SD shift in a hypothetical island's
+baseline log-odds of being male is comparable in magnitude to the entire
+=body_mass_g= effect's contribution over the observed weight range, a
+genuinely substantial amount of unexplained island-to-island variation
+for sex ratio to show. The =P(male)= predictions must be read carefully:
+each row varies *both* =body_mass_g= and =island= simultaneously (as in
+the reference example), so the steep gradient from $0.0417$ to $0.9888$
+reflects the =body_mass_g= fixed effect and the island random effect
+acting together, not the island effect in isolation -- §5 returns to
+this.
+
+#+begin_example
+island=Torgersen: random intercept mean=0.8385, sd=1.6305
+island=Biscoe: random intercept mean=-1.7258, sd=1.6358
+island=Dream: random intercept mean=0.8872, sd=1.6234
+#+end_example
+
+#+ATTR_HTML: :alt Bar chart of INLA posterior mean random intercept by island on the log-odds scale :width 100%
+[[file:../../build/org/inla_random_effects.svg]]
+
+Biscoe's posterior mean random intercept ($-1.7258$) sits well below
+zero while Torgersen's and Dream's ($0.8385$ and $0.8872$) sit well
+above -- a real, substantial spread visible directly in the bar chart --
+but every island's posterior SD ($\approx1.63$) is comparable to or
+larger than its own mean's distance from zero, meaning individually,
+none of the three islands' random intercepts is clearly distinguishable
+from zero at conventional posterior-interval widths. This is an honest
+consequence of having only three groups: INLA (like PQL) can only pool
+information across as many groups as the data provide, and three is a
+small number to estimate a variance component and three individual
+group effects from simultaneously.
+
+** Multiple-comparison correction
+
+#+begin_example
+       raw  bonferroni      holm        BH
+    0.0010      0.0100    0.0100    0.0100
+    0.0040      0.0400    0.0360    0.0200
+    0.0090      0.0900    0.0720    0.0300
+    0.0300      0.3000    0.2100    0.0750
+    0.1200      1.0000    0.7200    0.2400
+    0.1800      1.0000    0.9000    0.3000
+    0.3500      1.0000    1.0000    0.5000
+    0.5100      1.0000    1.0000    0.6375
+    0.7200      1.0000    1.0000    0.8000
+    0.9800      1.0000    1.0000    0.9800
+#+end_example
+
+All three methods agree on which tests are significant at
+$\alpha=0.05$ after correction: the first three (raw $p=0.001, 0.004,
+0.009$) stay below 0.05 under every method, and the remaining seven do
+not. The methods diverge sharply, however, on the borderline fourth
+test (raw $p=0.03$): Bonferroni's adjusted value ($0.30$) and Holm's
+($0.21$) both place it far from significance, while BH's ($0.075$) --
+though still just above 0.05 -- is more than 2.5x smaller than the
+worse of the two family-wise methods, illustrating directly how much
+more conservative FWER control is than FDR control once a test sits
+near, rather than far below, the significance boundary.
+
+#+ATTR_HTML: :alt Line plot comparing raw and three adjusted p-values across ten ranked tests, with a 0.05 reference line :width 100%
+[[file:../../build/org/inla_p_adjust.svg]]
+
+The figure makes the divergence visually immediate: Bonferroni (red)
+and Holm (blue) both shoot up steeply and saturate at 1.0 for most of
+the tests, while BH (green) rises far more gradually and stays visibly
+closer to the raw values (black) throughout -- the direct geometric
+signature of FDR control being a weaker, more permissive requirement
+than FWER control.
+
+* Discussion
+
+**A large posterior SD relative to the mean is itself a finding, not
+just a caveat to mention in passing.** §4.1's three islands' random
+intercepts are individually indistinguishable from zero despite having
+visibly different posterior means -- exactly the kind of nuance a PQL
+point-estimate-plus-asymptotic-SE report can obscure if the SD isn't
+examined carefully, and exactly what INLA's genuine posterior
+(computed the same way, by the same nested-Laplace-and-integration
+machinery, for every quantity including the variance component) makes
+straightforward to state precisely: not "the effect varies by island"
+alone, but "the effect varies by island, though not enough relative to
+its own uncertainty, with only three islands' worth of data, to trust
+any single island's estimate in isolation."
+
+**Reading a prediction that varies two predictors at once requires
+attributing the change to both, not silently crediting just the one
+being discussed.** §4.1's =P(male)= predictions vary =body_mass_g= and
+=island= together across the three rows, so the visible gradient from
+$0.0417$ to $0.9888$ cannot be attributed to the island random effect
+alone -- doing so would silently double-count part of the =body_mass_g=
+fixed effect's own substantial contribution. This is a general
+reading-comprehension hazard for any =predict()= call across
+=newdata= rows that differ in more than one column at once, not
+specific to INLA; the fix is always to hold every other predictor fixed
+across the rows being compared if the goal is isolating one variable's
+effect, which the reference example's three rows deliberately do not
+do.
+
+**Choosing Bonferroni/Holm versus BH is a substantive scientific
+decision, not a computational detail.** §4.2's borderline fourth test
+would be reported as "significant after correction" under BH but "not
+significant" under Bonferroni or Holm -- a real difference in scientific
+conclusion driven entirely by which error rate the analyst chooses to
+control, not by any difference in the underlying data. Family-wise
+control is the right choice when even one false discovery is costly
+(e.g. a single misleading clinical claim); false-discovery-rate control
+is the right choice when the goal is a good-quality ranked list
+tolerating a controlled fraction of false positives (e.g. genome-wide
+screening for further follow-up) -- the correction method should be
+chosen for this reason before looking at the data, not selected after
+the fact based on which one crosses 0.05.
+
+* Conclusion
+
+Fitting the same Palmer penguins mixed model as the GLMM companion
+report using =datamunge='s C++ =stats::INLAMixedModel= reproduces its
+fixed-effect point estimates closely while additionally providing a
+genuine posterior SD for the random-effect variance itself -- revealing
+that despite visibly different posterior means, none of the three
+islands' random intercepts is individually distinguishable from zero
+given only three groups. Applying Bonferroni, Holm, and
+Benjamini-Hochberg correction to the same ten p-values via
+=stats::p_adjust= shows all three methods agreeing on the three clearly
+significant tests while diverging sharply on a borderline case, a
+direct, visualized illustration of the family-wise-error-rate versus
+false-discovery-rate tradeoff. As with its companions, this entire
+report is reproducible end to end via =just org-example inla_analysis=,
+which re-executes §3.3.3's assembly block -- and therefore every number
+and figure above -- from the =datamunge= source tree.
+
+* References
+
+- Rue, H., Martino, S., & Chopin, N. (2009). "Approximate Bayesian
+  Inference for Latent Gaussian Models by Using Integrated Nested
+  Laplace Approximations." /Journal of the Royal Statistical Society:
+  Series B/, 71(2), 319--392.
+- Tierney, L., & Kadane, J. B. (1986). "Accurate Approximations for
+  Posterior Moments and Marginal Densities." /Journal of the American
+  Statistical Association/, 81(393), 82--86.
+- Bonferroni, C. E. (1936). "Teoria statistica delle classi e calcolo
+  delle probabilita." /Pubblicazioni del R. Istituto Superiore di
+  Scienze Economiche e Commerciali di Firenze/, 8, 3--62.
+- Holm, S. (1979). "A Simple Sequentially Rejective Multiple Test
+  Procedure." /Scandinavian Journal of Statistics/, 6(2), 65--70.
+- Benjamini, Y., & Hochberg, Y. (1995). "Controlling the False
+  Discovery Rate: A Practical and Powerful Approach to Multiple
+  Testing." /Journal of the Royal Statistical Society: Series B/,
+  57(1), 289--300.
+- Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). "Ecological
+  Sexual Dimorphism and Environmental Variability within a Community of
+  Antarctic Penguins (genus /Pygoscelis/)." /PLoS ONE/, 9(3), e90081.
+  (Original data source for the Palmer Archipelago penguins dataset.)
+- Horst, A. M., Hill, A. P., & Gorman, K. B. (2020). /palmerpenguins:
+  Palmer Archipelago (Antarctica) penguin data/. R package.

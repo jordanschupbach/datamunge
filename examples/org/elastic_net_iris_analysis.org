@@ -1,0 +1,858 @@
+#+title: Regularized Regression for Iris Petal Length
+#+subtitle: A literate C++ study of Ridge, Lasso, and Elastic Net using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit Ridge, Lasso, and Elastic Net regression -- three penalized variants
+of ordinary least squares connected by a single mixing parameter $\alpha$ --
+to a continuous prediction of iris petal length from the other three
+measurements plus one interaction term, using =datamunge='s C++
+=stats::ElasticNet= (and its =Ridge= / =Lasso= convenience subclasses), and
+report it as a literate program: every fragment below is a real, compiled,
+executed chunk of the single C++ binary that produced every number and
+figure in this document. Ridge ($\alpha=0$) shrinks all four coefficients
+smoothly toward zero without eliminating any of them (R^2 = 0.9625); Lasso
+($\alpha=1$) drives the deliberately near-collinear
+=Sepal.Length:Petal.Width= interaction term to /exactly/ zero
+(R^2 = 0.9678); Elastic Net at $\alpha=0.5$ keeps all four predictors but
+shrinks the same interaction term to a small nonzero value (0.038,
+R^2 = 0.9672), the textbook "grouping effect" of blending L1 and L2
+penalties on correlated predictors. A five-point sweep over $\alpha$ shows
+non-zero coefficient count step down from four to three between
+$\alpha=0.5$ and $\alpha=0.75$, exactly where the interaction term's
+credited signal becomes too small for the L1 component to keep. Refitting
+the identical formula by unregularized OLS reaches a slightly /higher/
+in-sample R^2 (0.9688) than every regularized fit -- an expected, not
+paradoxical, result we use to make precise exactly what regularization does
+and does not buy a practitioner on a small, already well-behaved dataset.
+We derive the elastic net objective, its closed-form Ridge special case, the
+coordinate-descent algorithm and its soft-thresholding update, and the
+automatic cross-validated $\lambda$ selection from first principles, tying
+each to the corresponding library call, and along the way report two small
+numerical-robustness fixes this report's own verification process motivated
+in =ElasticNet::plot_cv_curve()=.
+#+end_abstract
+
+* Introduction
+
+Every other report in this project's growing series fits a /classifier/ to
+Fisher's (1936) iris species labels, or, in the case of
+[[file:lm_penguins_analysis.org][=lm_penguins_analysis.org=]], an
+unregularized /linear regression/ to a continuous penguin measurement. This
+report is the direct regularized-regression counterpart to that second
+report: same continuous-response OLS machinery underneath, but now with an
+explicit penalty on the coefficients themselves. We deliberately reuse the
+iris flowers rather than the penguins, predicting the continuous
+=Petal.Length= from the other three measurements plus one interaction term,
+=Sepal.Length:Petal.Width= -- chosen specifically because it is
+substantially correlated with the =Sepal.Length= main effect already in the
+model (Pearson correlation 0.826 in this data), the exact condition under
+which Ridge, Lasso, and Elastic Net are known to behave differently from
+each other and from OLS.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.10) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives the elastic net objective as a generalization of OLS, its Ridge
+and Lasso special cases, the coordinate-descent algorithm that fits it, and
+the automatic cross-validated $\lambda$ selection, each tied to the specific
+library call that implements it. §3 describes the program chunk by chunk,
+including a short account of a real numerical-robustness bug this report's
+own verification uncovered and fixed in the library. §4 reports exploratory
+data, all three models' fitted coefficients and predictive performance,
+their coefficient paths and cross-validation curves, a sweep over $\alpha$,
+and a comparison against unregularized OLS on the identical formula. §5
+discusses what the three penalties buy (and do not buy) a practitioner here.
+§6 concludes.
+
+* Background: Penalized Least Squares
+
+** Setup and notation
+
+As in the [[file:lm_penguins_analysis.org][linear regression companion
+report]]: $n = 150$ flowers, a continuous response
+$y_i = \text{Petal.Length}_i$, and here $p = 4$ predictor columns
+$x_i \in \mathbb{R}^4$ -- =Sepal.Length=, =Sepal.Width=, =Petal.Width=, and
+the product term =Sepal.Length:Petal.Width= -- built by the same formula
+engine (=stats::Formula=) every other report in this project uses.
+
+** Ordinary least squares and why it can misbehave
+
+OLS chooses $\hat\beta$ to minimize the residual sum of squares
+$\|y - X\beta\|_2^2$, with the closed-form solution
+$\hat\beta = (X^\top X)^{-1} X^\top y$ the
+[[file:lm_penguins_analysis.org][linear regression companion report]]
+derives and =stats::LM= implements directly. That closed form is exact and
+unbiased, but it is also unstable whenever columns of $X$ are strongly
+correlated: $X^\top X$ becomes nearly singular, so its inverse -- and
+therefore $\hat\beta$ itself -- becomes highly sensitive to small changes in
+the data. This dataset's =Sepal.Length:Petal.Width= interaction term is
+built from =Sepal.Length= itself and is consequently correlated with it by
+construction, making it a realistic, deliberately chosen stress case for
+this instability; §4.7 shows the effect directly on this exact formula.
+
+** The elastic net objective
+
+Elastic net (Zou & Hastie, 2005) replaces OLS's unconstrained minimization
+with a /penalized/ one,
+
+\[
+\hat\beta(\lambda,\alpha) = \arg\min_\beta \; \frac{1}{2n}
+\|y - X\beta\|_2^2 \; + \; \lambda \Big( \alpha \|\beta\|_1 +
+\frac{1-\alpha}{2} \|\beta\|_2^2 \Big) ,
+\]
+
+matching =ElasticNetOptions='s =alpha= and =lambda= fields directly: $\lambda
+\geq 0$ (=lambda=) controls the overall penalty strength, and
+$\alpha \in [0,1]$ (=alpha=) sets the mixture between an L1 penalty
+$\|\beta\|_1 = \sum_j |\beta_j|$ and an L2 penalty
+$\|\beta\|_2^2 = \sum_j \beta_j^2$. Two special cases matter enough to have
+their own library classes: $\alpha = 0$ is pure L2 (=Ridge=) and $\alpha = 1$
+is pure L1 (=Lasso=). The intercept, by convention and by
+=ElasticNet='s implementation, is never penalized.
+
+** Ridge's closed form and why it never zeros a coefficient
+
+At $\alpha = 0$ the penalty term is differentiable everywhere, so the whole
+objective has a closed-form minimizer, the direct penalized analogue of
+OLS's normal equations:
+
+\[
+\hat\beta_{\text{ridge}} = (X^\top X + n\lambda I)^{-1} X^\top y .
+\]
+
+Adding $n\lambda I$ to $X^\top X$ before inverting is precisely what fixes
+OLS's instability under correlated columns: the matrix being inverted is now
+guaranteed well-conditioned for any $\lambda > 0$, regardless of how close
+to singular $X^\top X$ itself is. But because the penalty is smooth (its
+gradient is $\lambda\beta$, finite everywhere including at $\beta_j = 0$),
+gradient-based shrinkage can move a coefficient arbitrarily close to zero
+without an optimality condition ever forcing it to land there /exactly/
+-- §4.4's ridge coefficient path shows all four predictors shrinking
+smoothly but staying visibly nonzero across the whole $\lambda$ path.
+
+** Lasso, soft-thresholding, and sparsity
+
+At $\alpha = 1$ the penalty $\|\beta\|_1$ is not differentiable at
+$\beta_j = 0$, and it is exactly that kink that gives Lasso its
+qualitatively different behavior. For a single coordinate $\beta_j$, holding
+every other coefficient fixed, the penalized objective's minimizer has the
+closed form
+
+\[
+\hat\beta_j = S(z_j, \lambda) = \mathrm{sign}(z_j)\max(|z_j| - \lambda, 0) ,
+\]
+
+where $z_j$ is the ordinary (unpenalized) least-squares coefficient update
+for coordinate $j$ given the current residual and $S(\cdot,\lambda)$ is the
+/soft-thresholding operator/. Unlike Ridge's smooth shrinkage,
+soft-thresholding can and does map $z_j$ to /exactly/ zero whenever
+$|z_j| \leq \lambda$ -- Lasso performs variable selection as a direct
+consequence of this operator, not as a separate post-processing step.
+§4.5's Lasso coefficient path shows exactly this: the interaction term's
+coefficient is driven to precisely 0.000000 (not merely small) at the
+selected $\lambda$.
+
+** Coordinate descent
+
+Because the general elastic net objective has no closed form for
+$\alpha \in (0,1)$, =ElasticNet= fits it by /cyclic coordinate descent/
+(Friedman, Hastie & Tibshirani, 2010): cycle through coordinates
+$j = 1, \dots, p$ one at a time, and at each step minimize the objective
+over $\beta_j$ alone, holding every other coefficient fixed, repeating until
+the coefficients stop changing by more than =tol= (default $10^{-7}$) or
+=max_iter= (default 10000) cycles elapse. Assuming standardized predictors
+(§2.7), the per-coordinate update generalizes Lasso's soft-thresholding
+operator with an extra denominator from the L2 term:
+
+\[
+\hat\beta_j \leftarrow \frac{S\big(\tfrac1n \sum_i x_{ij}
+r_i^{(j)}, \; \lambda\alpha\big)}{1 + \lambda(1-\alpha)} , \qquad
+r_i^{(j)} = y_i - \hat y_i + x_{ij}\hat\beta_j ,
+\]
+
+where $r_i^{(j)}$ is the /partial residual/ -- the residual with
+coordinate $j$'s own current contribution added back in, so that the update
+sees only what the /other/ coordinates fail to explain. At $\alpha = 1$ the
+denominator collapses to 1 and this is exactly §2.4's Lasso update; at
+$\alpha = 0$ the numerator's soft-threshold has no effect (its threshold is
+zero) and the update reduces to Ridge's smooth shrinkage, confirming both
+special cases are genuinely nested inside the same algorithm rather than
+handled by separate code paths.
+
+** Standardization
+
+Coordinate descent's update (§2.6) assumes every predictor column has been
+centered and scaled to unit variance -- otherwise a single $\lambda$
+would penalize large-scale and small-scale predictors unequally. With
+=ElasticNetOptions::standardize= at its default =true=, =ElasticNet=
+standardizes internally before fitting and transforms the fitted
+coefficients back to the original predictor scale before ever returning
+them, so every coefficient reported in §4 is directly interpretable in the
+original measurement units (cm, and cm^2 for the interaction term) exactly
+like the [[file:lm_penguins_analysis.org][linear regression companion
+report]]'s OLS coefficients.
+
+** The automatic $\lambda$ path and cross-validated selection
+
+Passing =lambda = -1= (the default) tells =ElasticNet= to select $\lambda$
+automatically rather than fit at a single fixed value: it builds a
+log-spaced path of =n_lambda= (default 100) candidate values from a
+data-derived $\lambda_{\max}$ (the smallest $\lambda$ at which every coefficient
+is exactly zero, for the given $\alpha$) down to a small fraction of it, and
+picks the value minimizing average mean squared error under =cv_folds=
+(default 5)-fold cross-validation, refitting on the full data at that
+$\lambda$ for the final model. =lambda()= reports the selected value,
+=lambda_path()= and =cv_mean_squared_error()= expose the full curve behind
+that choice, and =non_zero_coefficients()= counts how many of the $p$
+coefficients survived at it -- the three quantities §4.4-4.6's coefficient
+paths and cross-validation curves visualize directly.
+
+** What we will report
+
+Given the three fits, we report exploratory data, each model's own summary
+(coefficients, selected $\lambda$, R^2, RMSE), a side-by-side comparison
+table, each model's coefficient path and cross-validation curve,
+predicted-versus-actual for Ridge, a sweep over $\alpha$ itself, predictions for three
+new flowers, and a direct comparison against unregularized OLS on the
+identical formula.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. This report predicts =Petal.Length= from the
+other three measurements plus their engineered interaction term
+=Sepal.Length:Petal.Width=, in contrast to every classification companion
+report's use of all four measurements to predict =Species=.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven =stats::ElasticNet=
+(and its =Ridge= / =Lasso= convenience subclasses, which simply fix
+=alpha=) for every regularized model, =stats::LM= for the unregularized OLS
+comparison in §4.7, and =plot::RPlot= / =plot::RLayout= for every figure. No
+external plotting or statistics package is used.
+
+** A numerical-robustness note
+
+Producing this report's cross-validation-curve figures (§4.4-4.6) surfaced
+a genuine library bug rather than an authoring mistake: a handful of
+coordinate-descent CV folds can numerically diverge at the smallest
+$\lambda$ values on the Lasso/Elastic Net path (never observed for Ridge, an
+effect of the near-collinear interaction term this report deliberately
+includes), producing squared errors that are either infinite or merely
+astronomically large but still technically finite. Either corrupts a plot's
+automatic axis range -- the first renders every axis tick as "-nan", the
+second compresses the entire meaningful curve into a single pixel-wide
+sliver against an unreadable axis. =ElasticNet::plot_cv_curve()= now filters
+both classes of point before plotting, the second via a threshold of
+1000 times the minimum (best-achieved, and therefore guaranteed
+well-behaved) cross-validated error. This is itself a small demonstration of
+the literate-programming principle this whole project follows: every figure
+below, including this fix's own effect on §4.5-4.6's curves, was produced
+by code the reader can inspect, not asserted.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and shared constants
+
+#+name: en-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/elastic_net.hpp>
+#include <datamunge/stats/lm.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::ElasticNet;
+using datamunge::stats::ElasticNetOptions;
+using datamunge::stats::Lasso;
+using datamunge::stats::LM;
+using datamunge::stats::Ridge;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kSpecies =
+    {"setosa", "versicolor", "virginica"};
+static const std::vector<RGB> kSpeciesColor = {
+    {37, 99, 235}, {22, 163, 74}, {220, 38, 38},
+};
+static const std::string kFormula =
+    "Petal.Length ~ Sepal.Length + Sepal.Width"
+    " + Petal.Width + Sepal.Length:Petal.Width";
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+Sepal width against petal length, colored by species -- chosen because
+=Sepal.Width= is the one predictor whose relationship to the response is
+/not/ visually obvious, foreshadowing its small and sign-unstable
+coefficient in §4.3 and §4.7.
+
+#+name: en-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+    std::cout << "formula: " << kFormula << "\n";
+#+end_src
+
+#+name: en-eda-scatter
+#+begin_src c++ :eval no
+    {
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == kSpecies[k];
+            });
+            scatter.points(subset.numeric_column("Sepal.Width").values(),
+                            subset.numeric_column("Petal.Length").values(),
+                            kSpecies[k], kSpeciesColor[k], 6.0);
+        }
+        scatter.title("Iris: Sepal Width vs Petal Length")
+            .x_label("Sepal.Width (cm)").y_label("Petal.Length (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/en_iris_eda_scatter.svg");
+        std::cout << "wrote en_iris_eda_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting the three models
+
+Ridge, Lasso, and Elastic Net at =alpha = 0.5=, each with $\lambda$
+selected automatically by 5-fold cross-validation (§2.8).
+=print_summary= writes the selected $\lambda$, every coefficient, and
+R^2/RMSE for each.
+
+#+name: en-fit-models
+#+begin_src c++ :eval no
+    Ridge ridge(iris, kFormula);
+    std::cout << "\n=== Ridge (alpha=0) ===\n";
+    ridge.print_summary(std::cout);
+
+    Lasso lasso(iris, kFormula);
+    std::cout << "\n=== Lasso (alpha=1) ===\n";
+    lasso.print_summary(std::cout);
+
+    ElasticNetOptions en_opts;
+    en_opts.alpha = 0.5;
+    ElasticNet elastic(iris, kFormula, en_opts);
+    std::cout << "\n=== Elastic Net (alpha=0.5) ===\n";
+    elastic.print_summary(std::cout);
+#+end_src
+
+*** Comparison table
+
+#+name: en-comparison-table
+#+begin_src c++ :eval no
+    std::cout << "\nComparison:\n";
+    std::cout << std::setw(14) << "model" << std::setw(12) << "lambda"
+               << std::setw(10) << "nonzero" << std::setw(10) << "R^2"
+               << std::setw(10) << "RMSE\n";
+    auto report_row = [](const char* name, const ElasticNet& m) {
+        std::cout << std::setw(14) << name << std::setw(12) << std::fixed
+                   << std::setprecision(5) << m.lambda()
+                   << std::setw(10) << m.non_zero_coefficients()
+                   << std::setw(10) << std::setprecision(4) << m.r_squared()
+                   << std::setw(10) << m.rmse() << "\n";
+    };
+    report_row("ridge", ridge);
+    report_row("lasso", lasso);
+    report_row("elastic net", elastic);
+#+end_src
+
+*** Coefficient paths and cross-validation curves
+
+One pair of figures per model: the coefficient path shows every predictor's
+coefficient across the whole $\lambda$ path
+(§2.3-2.5's shrinkage-versus-sparsity distinction made visible), and the cross-validation curve shows
+the criterion §2.8's automatic selection actually minimizes.
+
+#+name: en-ridge-plots
+#+begin_src c++ :eval no
+    ridge.plot_coefficient_path()
+        .save_svg("build/org/en_iris_ridge_path.svg");
+    ridge.plot_cv_curve().save_svg("build/org/en_iris_ridge_cv.svg");
+    std::cout << "wrote en_iris_ridge_path.svg, en_iris_ridge_cv.svg\n";
+#+end_src
+
+#+name: en-lasso-plots
+#+begin_src c++ :eval no
+    lasso.plot_coefficient_path()
+        .save_svg("build/org/en_iris_lasso_path.svg");
+    lasso.plot_cv_curve().save_svg("build/org/en_iris_lasso_cv.svg");
+    std::cout << "wrote en_iris_lasso_path.svg, en_iris_lasso_cv.svg\n";
+#+end_src
+
+#+name: en-elasticnet-plots
+#+begin_src c++ :eval no
+    elastic.plot_coefficient_path()
+        .save_svg("build/org/en_iris_elasticnet_path.svg");
+    elastic.plot_cv_curve().save_svg("build/org/en_iris_elasticnet_cv.svg");
+    std::cout << "wrote en_iris_elasticnet_path.svg, "
+               << "en_iris_elasticnet_cv.svg\n";
+#+end_src
+
+*** Predicted versus actual
+
+#+name: en-predicted-vs-actual
+#+begin_src c++ :eval no
+    {
+        auto pv = ridge.plot_predicted_vs_actual();
+        pv.background({250, 250, 252});
+        pv.save_svg("build/org/en_iris_ridge_predicted_vs_actual.svg");
+        std::cout << "wrote en_iris_ridge_predicted_vs_actual.svg\n";
+    }
+#+end_src
+
+*** Alpha sensitivity
+
+Refit at five values of $\alpha$ spanning pure Ridge to pure Lasso, each
+selecting its own $\lambda$ by cross-validation, tracking non-zero
+coefficient count and R^2 -- the direct analogue of the XGBoost companion
+report's $\lambda$ sweep, but across the L1/L2 mixing parameter instead of a
+single penalty's strength.
+
+#+name: en-alpha-sensitivity
+#+begin_src c++ :eval no
+    {
+        const std::vector<double> alphas = {0.0, 0.25, 0.5, 0.75, 1.0};
+        std::vector<double> nonzero, r2;
+        std::cout << "\nAlpha sweep (auto-selected lambda via 5-fold CV):\n";
+        std::cout << std::setw(8) << "alpha" << std::setw(12) << "lambda"
+                   << std::setw(10) << "nonzero" << std::setw(10) << "R^2"
+                   << std::setw(10) << "RMSE\n";
+        for (const double a : alphas) {
+            ElasticNetOptions opts;
+            opts.alpha = a;
+            ElasticNet m(iris, kFormula, opts);
+            nonzero.push_back(static_cast<double>(m.non_zero_coefficients()));
+            r2.push_back(m.r_squared());
+            std::cout << std::setw(8) << std::fixed << std::setprecision(2)
+                       << a << std::setw(12) << std::setprecision(5)
+                       << m.lambda() << std::setw(10)
+                       << m.non_zero_coefficients() << std::setw(10)
+                       << std::setprecision(4) << m.r_squared()
+                       << std::setw(10) << m.rmse() << "\n";
+        }
+        auto nz_plot = RPlot::plot(alphas, nonzero, "b",
+                                    "nonzero coefficients", {37, 99, 235});
+        nz_plot.title("Nonzero Coefficients vs Alpha")
+            .x_label("alpha").y_label("nonzero coefficients")
+            .background({250, 250, 252});
+        auto r2_plot = RPlot::plot(alphas, r2, "b", "R-squared",
+                                    {220, 38, 38});
+        r2_plot.title("R-squared vs Alpha")
+            .x_label("alpha").y_label("R-squared")
+            .background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(nz_plot);
+        layout.add(r2_plot);
+        layout.save_svg("build/org/en_iris_alpha_sensitivity.svg");
+        std::cout << "wrote en_iris_alpha_sensitivity.svg\n";
+    }
+#+end_src
+
+*** Comparison against unregularized OLS
+
+The identical formula, fit with no penalty at all, via =stats::LM= (the
+[[file:lm_penguins_analysis.org][linear regression companion report]]'s
+model class), to make §5's discussion of what regularization does and does
+not buy here concrete rather than asserted.
+
+#+name: en-ols-comparison
+#+begin_src c++ :eval no
+    {
+        LM ols(iris, kFormula);
+        std::cout << "\nUnregularized OLS on the same formula:\n";
+        std::cout << "  R-squared: " << std::fixed << std::setprecision(4)
+                   << ols.r_squared() << "\n";
+        std::cout << "  sigma (residual std. error): "
+                   << std::setprecision(4) << ols.sigma() << "\n";
+        const auto& names = ols.coefficient_names();
+        const auto& coefs = ols.coefficients();
+        for (std::size_t i = 0; i < names.size(); ++i)
+            std::cout << "  " << names[i] << ": " << std::setprecision(6)
+                       << coefs[i] << "\n";
+    }
+#+end_src
+
+*** Predicting new flowers
+
+Three new flowers spanning the response's range, predicted by the Elastic
+Net model.
+
+#+name: en-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Sepal.Length", std::vector<double>{5.1, 6.0, 6.5});
+    newdata.add_column("Sepal.Width", std::vector<double>{3.5, 2.7, 3.0});
+    newdata.add_column("Petal.Width", std::vector<double>{0.2, 1.5, 2.0});
+
+    const auto preds = elastic.predict(newdata);
+    std::cout << "\nElastic net predictions for new flowers:\n";
+    for (const double p : preds)
+        std::cout << "  Petal.Length = " << std::fixed
+                   << std::setprecision(3) << p << "\n";
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/elastic_net_iris_analysis.cpp <<'CPP'
+<<en-includes>>
+
+int main() {
+<<en-load-data>>
+
+<<en-eda-scatter>>
+
+<<en-fit-models>>
+
+<<en-comparison-table>>
+
+<<en-ridge-plots>>
+
+<<en-lasso-plots>>
+
+<<en-elasticnet-plots>>
+
+<<en-predicted-vs-actual>>
+
+<<en-alpha-sensitivity>>
+
+<<en-ols-comparison>>
+
+<<en-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/elastic_net_iris_analysis.cpp \
+  -o build/org/elastic_net_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/elastic_net_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of sepal width vs petal length colored by species :width 100%
+[[file:../../build/org/en_iris_eda_scatter.svg]]
+
+/Setosa/ (blue) clusters at low petal length across a fairly wide range of
+sepal width; /versicolor/ (green) and /virginica/ (red) sit at higher petal
+length with substantial overlap in both variables. Unlike this project's
+petal-length-vs-petal-width classification views, sepal width alone gives
+almost no separation -- exactly the weak, noisy relationship that produces
+the small and, per §4.7, sign-unstable =Sepal.Width= coefficient below.
+
+** The fitted models
+
+#+begin_example
+=== Ridge (alpha=0) ===
+Lambda: 0.169521  (selected by 5-fold cross-validation over 100 values)
+Non-zero coefficients: 4 of 4
+  (Intercept): 0.669979
+  Sepal.Length: 0.580064
+  Sepal.Width: -0.645231
+  Petal.Width: 0.770373
+  Sepal.Length:Petal.Width: 0.099358
+R-squared: 0.9625   RMSE: 0.3407
+
+=== Lasso (alpha=1) ===
+Lambda: 0.019491  (selected by 5-fold cross-validation over 100 values)
+Non-zero coefficients: 3 of 4
+  (Intercept): -0.252687
+  Sepal.Length: 0.703711
+  Sepal.Width: -0.603022
+  Petal.Width: 1.452732
+  Sepal.Length:Petal.Width: 0.000000
+R-squared: 0.9678   RMSE: 0.3158
+
+=== Elastic Net (alpha=0.5) ===
+Lambda: 0.018519  (selected by 5-fold cross-validation over 100 values)
+Non-zero coefficients: 4 of 4
+  (Intercept): 0.054505
+  Sepal.Length: 0.671792
+  Sepal.Width: -0.642886
+  Petal.Width: 1.214828
+  Sepal.Length:Petal.Width: 0.038097
+R-squared: 0.9672   RMSE: 0.3187
+#+end_example
+
+Ridge keeps all four coefficients nonzero, as §2.3 predicts. Lasso drives
+the interaction term to precisely zero, as §2.4 predicts, and in doing so
+reallocates a substantial share of its signal onto =Petal.Width= (1.4527,
+nearly double Ridge's 0.7704). Elastic Net at =alpha=0.5= sits between the
+two exactly as expected: it keeps the interaction term nonzero, like Ridge,
+but shrinks it much harder than Ridge does (0.0381 versus 0.0994) while
+still redistributing some signal onto =Petal.Width= (1.2148), a value
+between Ridge's and Lasso's.
+
+| Model       |    lambda | nonzero |    R^2 |   RMSE |
+|-------------+-----------+---------+--------+--------|
+| Ridge       |   0.16952 |     4/4 | 0.9625 | 0.3407 |
+| Lasso       |   0.01949 |     3/4 | 0.9678 | 0.3158 |
+| Elastic Net |   0.01852 |     4/4 | 0.9672 | 0.3187 |
+
+Lasso reaches the lowest RMSE of the three, but by a narrow margin over
+Elastic Net -- and, per §4.7, still slightly worse than plain OLS's
+in-sample fit, a comparison this report returns to directly.
+
+** Coefficient paths and cross-validation curves
+
+#+ATTR_HTML: :alt Ridge coefficient path across the lambda sweep :width 100%
+[[file:../../build/org/en_iris_ridge_path.svg]]
+
+Every one of Ridge's four coefficients shrinks smoothly and continuously
+toward zero as $\lambda$ grows, exactly as §2.3's closed form predicts --
+none reaches exactly zero anywhere on the path, including at the far right
+edge where $\lambda$ is more than three orders of magnitude larger than the
+selected value.
+
+#+ATTR_HTML: :alt Ridge cross-validation curve with selected lambda marked :width 100%
+[[file:../../build/org/en_iris_ridge_cv.svg]]
+
+A clean, textbook cross-validation curve: monotonically increasing in
+$\lambda$, with the selected value sitting at the left edge of the tested
+range where CV error is lowest -- this dataset simply has little enough
+noise, and few enough predictors, that almost no shrinkage is preferred.
+
+#+ATTR_HTML: :alt Lasso coefficient path showing the interaction term reaching exactly zero :width 100%
+[[file:../../build/org/en_iris_lasso_path.svg]]
+
+Unlike Ridge's path, the interaction term (orange) here visibly flattens
+onto exactly zero well before the selected $\lambda$, and =Sepal.Width='s
+path (red) develops a visible kink as it crosses zero -- Lasso's
+soft-thresholding operator (§2.4) in direct visual form, not merely in the
+printed coefficient table above.
+
+#+ATTR_HTML: :alt Lasso cross-validation curve, filtered of numerically divergent folds :width 100%
+[[file:../../build/org/en_iris_lasso_cv.svg]]
+
+This curve required the numerical-robustness fix described in §3.2: a
+handful of coordinate-descent folds diverge at the smallest tested
+$\lambda$ values (visible as the flat plateau at the left, itself an
+average over folds that mostly did /not/ diverge -- the genuinely divergent
+folds and any point still touched by them were excluded), producing a sharp
+discontinuity rather than a smooth extension of the visible U-shape. The
+selected $\lambda$ sits cleanly in the well-behaved valley to its right.
+
+#+ATTR_HTML: :alt Elastic net coefficient path at alpha=0.5 :width 100%
+[[file:../../build/org/en_iris_elasticnet_path.svg]]
+
+At =alpha=0.5= the interaction term (orange) shrinks hard but, unlike
+Lasso's path, never visibly flattens onto exactly zero anywhere in the
+tested range -- Ridge's smooth-shrinkage character surviving alongside
+Lasso's aggressive shrinkage /magnitude/, precisely the "grouping effect"
+elastic net is designed to produce for correlated predictors (Zou & Hastie,
+2005).
+
+#+ATTR_HTML: :alt Elastic net cross-validation curve, filtered of numerically divergent folds :width 100%
+[[file:../../build/org/en_iris_elasticnet_cv.svg]]
+
+The same shape and the same fix as Lasso's curve above, consistent with
+both sharing a nonzero L1 component (§2.6) and therefore the same
+divergence-prone coordinate-descent update at small $\lambda$.
+
+** Predicted versus actual
+
+#+ATTR_HTML: :alt Ridge predicted versus actual petal length :width 100%
+[[file:../../build/org/en_iris_ridge_predicted_vs_actual.svg]]
+
+A tight diagonal band across the whole response range, including the
+visually distinct low-petal-length /setosa/ cluster in the lower left --
+Ridge's R^2 = 0.9625 made directly visible, with no obvious curvature or
+fan-shaped spread that would suggest a systematic misfit.
+
+** Alpha sensitivity
+
+#+ATTR_HTML: :alt Line plots of nonzero coefficient count and R-squared against alpha :width 100%
+[[file:../../build/org/en_iris_alpha_sensitivity.svg]]
+
+| Alpha | Lambda  | Nonzero |    R^2 |   RMSE |
+|-------+---------+---------+--------+--------|
+|  0.00 | 0.16952 |     4/4 | 0.9625 | 0.3407 |
+|  0.25 | 0.02326 |     4/4 | 0.9666 | 0.3217 |
+|  0.50 | 0.01852 |     4/4 | 0.9672 | 0.3187 |
+|  0.75 | 0.01632 |     3/4 | 0.9679 | 0.3152 |
+|  1.00 | 0.01949 |     3/4 | 0.9678 | 0.3158 |
+
+Non-zero coefficient count is flat at four from $\alpha=0$ through
+$\alpha=0.5$, then steps down to three between $\alpha=0.5$ and
+$\alpha=0.75$ and stays there through pure Lasso -- the interaction term
+survives a moderate L1 admixture but not a strong one. R^2 rises
+essentially monotonically with $\alpha$ over this sweep, from Ridge's 0.9625
+to a peak of 0.9679 at $\alpha=0.75$, very slightly higher than pure
+Lasso's 0.9678 -- consistent with elastic net's usual role as a compromise
+that can occasionally edge out either pure penalty rather than always
+sitting strictly between their endpoints on every metric.
+
+** Comparison against unregularized OLS
+
+#+begin_example
+Unregularized OLS on the same formula:
+  R-squared: 0.9688
+  sigma (residual std. error): 0.3160
+  (Intercept): -1.144767
+  Sepal.Length: 0.875300
+  Sepal.Width: -0.611537
+  Petal.Width: 2.035894
+  Sepal.Length:Petal.Width: -0.104235
+#+end_example
+
+#+ATTR_LATEX: :font \small
+| Coefficient               |     OLS |   Ridge |   Lasso | Elastic Net |
+|----------------------------+---------+---------+---------+-------------|
+| (Intercept)                | -1.1448 |  0.6700 | -0.2527 |      0.0545 |
+| Sepal.Length                |  0.8753 |  0.5801 |  0.7037 |      0.6718 |
+| Sepal.Width                 | -0.6115 | -0.6452 | -0.6030 |     -0.6429 |
+| Petal.Width                 |  2.0359 |  0.7704 |  1.4527 |      1.2148 |
+| Sepal.Length:Petal.Width     | -0.1042 |  0.0994 |  0.0000 |      0.0381 |
+
+OLS's R^2 (0.9688) is the /highest/ of all four fits, including every
+regularized one -- and this is expected, not a failure of regularization:
+OLS minimizes in-sample residual sum of squares exactly, by construction, so
+no penalized fit on the same predictors can beat its in-sample R^2. §5
+discusses why this makes in-sample R^2 the wrong yardstick for judging
+regularization's value. The far more consequential difference is the
+interaction term's /sign/: OLS estimates it at -0.1042, while every
+regularized fit that keeps it nonzero estimates it as /positive/ (+0.0994
+Ridge, +0.0381 Elastic Net). A coefficient whose sign flips depending on
+whether a correlated predictor is penalized is a textbook symptom of the
+instability §2.2 describes, made concrete on this report's own data rather
+than left as an abstract warning.
+
+** Predicting new flowers
+
+| Sepal.Length / Sepal.Width / Petal.Width | Predicted Petal.Length |
+|--------------------------------------------+-------------------------|
+| 5.1 / 3.5 / 0.2                            |                   1.512 |
+| 6.0 / 2.7 / 1.5                            |                   4.515 |
+| 6.5 / 3.0 / 2.0                            |                   5.417 |
+
+All three predictions (Elastic Net) fall inside the observed response range
+(1.0-6.9cm) and track the expected /setosa/-to-/virginica/ progression in
+petal length as the input measurements move from small to large.
+
+* Discussion
+
+**What does regularization actually buy here?** §4.7's headline number --
+OLS beating every regularized fit's in-sample R^2 -- can look like an
+argument against regularization, but it is exactly what §2.2's theory
+predicts and says nothing against these methods' real purpose. OLS is, by
+construction, the unique minimizer of in-sample residual sum of squares
+among /all/ linear fits on these predictors; regularization deliberately
+trades a small amount of that in-sample fit for coefficient stability and
+(on data where it matters) better out-of-sample generalization, neither of
+which a single in-sample R^2 comparison on one fixed dataset can measure.
+This report's evidence for that trade is the interaction term's sign
+flip (§4.7), not the R^2 column.
+
+**Ridge, Lasso, and Elastic Net, read against their derivations.** Every
+qualitative prediction §2 makes is visible in §4's real output: Ridge's
+path (§4.4) never touches zero; Lasso's path (§4.4) touches it exactly,
+at exactly one predictor, the one this report chose specifically because it
+is correlated with another; and Elastic Net's path (§4.4) shrinks that same
+predictor's magnitude nearly as hard as Lasso does while preserving Ridge's
+never-exactly-zero character -- the grouping effect Zou and Hastie's (2005)
+original elastic net paper introduces the method to solve, reproduced here
+on a real, if small and simple, regression problem.
+
+**Where this report's evidence is thin.** All three regularized models'
+$\lambda$ was selected by cross-validation, but the R^2 and RMSE figures
+reported for the /final/ model in §4.2-4.3 and §4.7 are computed by
+refitting on the full dataset at that selected $\lambda$ -- an in-sample
+number for the final model, same as OLS's, even though $\lambda$ itself was
+chosen by an out-of-sample criterion. A genuinely out-of-sample comparison
+between OLS and the three regularized fits, on a held-out test set never
+touched by either the coefficient fit or the $\lambda$ selection, would be
+needed to make §4.7's stability argument into a predictive-accuracy
+argument as well -- this report deliberately stops short of that stronger
+claim.
+
+**Connection to the wider project.** Every method in this project so far
+that reports resubstitution accuracy or in-sample R^2 -- LDA, SVM, the
+decision tree, GBM, XGBoost, and now every model in this report -- shares
+the same caveat: a number computed on the same data used to fit the model
+is, at best, an upper bound on real predictive performance. Only the random
+forest companion report's out-of-bag estimate and this report's
+cross-validation curves (§4.4-4.6, even though the /final/ headline numbers
+are still in-sample) actually incorporate any held-out signal at all.
+
+* Conclusion
+
+Fitting Ridge, Lasso, and Elastic Net to the same regression problem -- with
+=datamunge='s C++ =stats::ElasticNet= and its convenience subclasses --
+reproduces every qualitative distinction their derivations predict on real
+data: Ridge's smooth, never-exactly-zero shrinkage; Lasso's exact
+soft-thresholding of a deliberately correlated predictor to zero; and
+Elastic Net's intermediate grouping effect, confirmed further by a
+five-point $\alpha$ sweep whose non-zero coefficient count steps down
+precisely where theory says it should. Comparing all three against
+unregularized OLS on the identical formula shows OLS winning on in-sample
+R^2, exactly as expected, while its interaction-term coefficient flips sign
+relative to every regularized fit that keeps that term -- concrete evidence
+for regularization's real benefit (coefficient stability under
+collinearity) that a bare R^2 comparison would have missed entirely. Along
+the way, this report's own verification process found and fixed two real
+numerical-robustness gaps in the library's cross-validation-curve plotting,
+itself an instance of the literate-programming discipline this whole
+project follows: the figures above are what actually running this code
+produces, including the parts that required fixing the library first. As
+with its companions, this entire report is reproducible end to end via
+=just org-example elastic_net_iris_analysis=, which re-executes §3.3.10's
+assembly block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Zou, H., & Hastie, T. (2005). "Regularization and variable selection via
+  the elastic net." /Journal of the Royal Statistical Society: Series B/,
+  67(2), 301--320.
+- Tibshirani, R. (1996). "Regression shrinkage and selection via the
+  lasso." /Journal of the Royal Statistical Society: Series B/, 58(1),
+  267--288.
+- Hoerl, A. E., & Kennard, R. W. (1970). "Ridge regression: Biased
+  estimation for nonorthogonal problems." /Technometrics/, 12(1), 55--67.
+- Friedman, J., Hastie, T., & Tibshirani, R. (2010). "Regularization paths
+  for generalized linear models via coordinate descent." /Journal of
+  Statistical Software/, 33(1), 1--22.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 3 ("Linear Methods for Regression").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

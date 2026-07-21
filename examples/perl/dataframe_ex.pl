@@ -29,7 +29,7 @@ print $grouped->to_string(), "\n\n";
 my $targets = Datamunge::DataFrame->new();
 $targets->add_string_column("region", ["west", "east", "south"]);
 $targets->add_numeric_column("target", [18, 12, 25]);
-my $joined = $grouped->join($targets, "region", "region", 1);
+my $joined = $grouped->join($targets, "region", "region", "left");
 print "joined with targets\n";
 print $joined->to_string(), "\n\n";
 

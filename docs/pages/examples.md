@@ -220,27 +220,11 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     
     ?>
 
-    0
-    1.5
-    3
-    4.5
-    6
-    7.5
-    9
-    10.5
-    12
-    13.5
-    0
-    1
-    3
-    4
-    6
-    7
-    9
-    10
-    12
-    13
     Hello datamunge
+    sum_dvector: 6
+    sum_dpair: 4
+    call_with_callback(3.0): 3
+    sum_dvector(map_dvector_with_callback(1,2,3)): 6
 
 
 ## Lua

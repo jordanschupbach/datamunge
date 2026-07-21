@@ -1,0 +1,760 @@
+#+title: Support Vector Machines for Iris Species Classification
+#+subtitle: A literate C++ study using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a soft-margin, multi-class support vector machine to Fisher's (1936)
+iris data using =datamunge='s C++ =stats::SVM= class, and report it as a
+literate program: every code fragment below is a real, compiled, executed
+chunk of the single C++ binary that produced every number and figure in this
+document. The default radial-basis-function (RBF) model separates the three
+species with 97.33% training accuracy using 52 of 150 training points as
+support vectors. A four-way kernel comparison ranks radial best (97.33%),
+ahead of linear (96.67%), polynomial (95.33%), and sigmoid (89.33%); a
+cost-parameter sweep reproduces the classic underfit/overfit tradeoff
+directly, collapsing to 33.33% accuracy at $C=0.01$ before plateauing at
+98.67% for $C \geq 10$. We derive the maximal-margin classifier, its soft-margin
+relaxation, the dual problem, the kernel trick, and Sequential Minimal
+Optimization (SMO) from first principles, connect each to the corresponding
+library call, and close with a direct comparison to the companion LDA report
+on the same dataset.
+#+end_abstract
+
+* Introduction
+
+The support vector machine (SVM) answers the same three-species iris
+classification question as the companion report,
+[[file:lda_iris_analysis.org][=lda_iris_analysis.org=]], but from a completely different starting
+point. Where linear discriminant analysis begins with a probabilistic model
+of each class and derives a boundary from it, the SVM begins with a purely
+geometric question -- *which separating boundary leaves the largest possible
+margin between the classes?* -- and only later, through the kernel trick,
+gains the ability to draw boundaries that aren't straight lines at all. This
+report builds that idea up from scratch, in C++, against the same 150
+flowers and four measurements used throughout this project's other
+worked examples.
+
+As with the companion report, this document is a /literate program/ in
+Knuth's sense: prose and source are interleaved in reading order, and a
+single "assembling the program" step (§3.3.10) weaves every named chunk
+below into one =.cpp= file, compiles it, and runs it. Every number and
+figure from §4 onward is that program's literal output.
+
+§2 derives the maximal-margin classifier, its soft-margin relaxation, the
+dual problem and support vectors, the kernel trick, and the SMO algorithm
+this library uses to solve it, plus the one-vs-one scheme that extends a
+binary method to three species. §3 describes the program chunk by chunk.
+§4 reports the fitted model, a four-kernel comparison, a cost-parameter
+sweep, and a 2-D decision-boundary picture. §5 discusses what the results
+mean and compares them directly to the LDA report's findings on the same
+data. §6 concludes.
+
+* Background: Support Vector Machines
+
+** Setup and notation
+
+Consider first the binary case: $n$ labeled points $(x_i, y_i)$,
+$x_i \in \mathbb{R}^p$, $y_i \in \{-1, +1\}$. A linear classifier is a
+hyperplane $w^\top x + b = 0$; a new point is classified by the sign of
+$w^\top x + b$. Section 2.7 extends this to the three iris species.
+
+** The maximal margin classifier
+
+If the two classes are linearly separable, infinitely many hyperplanes
+separate them perfectly, and not all generalize equally well. The SVM picks
+the one furthest from both classes: the perpendicular distance from the
+hyperplane to the nearest point of either class -- the /margin/ -- is
+exactly $1/\lVert w \rVert$ once $w, b$ are scaled so that the nearest points
+satisfy $y_i(w^\top x_i + b) = 1$, so the full margin width is
+$2/\lVert w \rVert$. Maximizing that margin is therefore the same as
+/minimizing/ $\lVert w \rVert$, giving the hard-margin problem
+
+\[
+\min_{w,b} \ \tfrac12 \lVert w \rVert^2
+\quad \text{s.t.} \quad
+y_i (w^\top x_i + b) \geq 1, \ \ i = 1, \dots, n .
+\]
+
+** Soft margin and the cost parameter
+
+Real data is rarely perfectly separable -- §4.1's exploratory plot already
+shows /versicolor/ and /virginica/ overlapping -- so a hard constraint that
+every point sit on the correct side of the margin is too rigid to be
+useful. The soft-margin relaxation adds a per-point slack $\xi_i \geq 0$
+that lets a point violate its margin, at a cost:
+
+\[
+\min_{w,b,\xi} \ \tfrac12 \lVert w \rVert^2 + C \sum_{i=1}^n \xi_i
+\quad \text{s.t.} \quad
+y_i (w^\top x_i + b) \geq 1 - \xi_i, \ \ \xi_i \geq 0 .
+\]
+
+$C$ -- =SVMOptions::cost= -- is the knob that trades margin width against
+training fit: a small $C$ tolerates many violations in exchange for a wide,
+simple margin (risking underfitting), while a large $C$ punishes violations
+heavily, narrowing the margin to fit the training data more exactly (risking
+overfitting). §4.5 measures this tradeoff directly by refitting across seven
+values of $C$.
+
+** The dual problem and support vectors
+
+The soft-margin primal above is a constrained quadratic program; introducing
+Lagrange multipliers $\alpha_i$ for the margin constraints and eliminating
+$w$ and $\xi$ gives the /dual/ problem,
+
+\[
+\max_{\alpha} \ \sum_{i=1}^n \alpha_i - \tfrac12 \sum_{i=1}^n \sum_{j=1}^n
+\alpha_i \alpha_j y_i y_j \, x_i^\top x_j
+\quad \text{s.t.} \quad
+0 \leq \alpha_i \leq C, \ \ \sum_{i=1}^n \alpha_i y_i = 0 ,
+\]
+
+and the decision function becomes
+$f(x) = \sum_i \alpha_i y_i \, x_i^\top x + b$. At the optimum, the KKT
+conditions force $\alpha_i = 0$ for every point safely on the correct side
+of its margin -- only points sitting exactly on the margin or violating it
+have $\alpha_i > 0$, and only /those/ points -- the /support vectors/ --
+appear in $f(x)$ at all. This is exactly =SVM::num_support_vectors()= and
+the per-pair =PairModel::support_indices=/=support_alpha_y= cached in
+[[file:../../include/datamunge/stats/svm.hpp][=include/datamunge/stats/svm.hpp=]]: a fitted SVM only needs to remember its
+support vectors, not the full training set.
+
+** The kernel trick
+
+Both the dual objective and $f(x)$ above depend on the data only through
+inner products $x_i^\top x_j$. Replacing that inner product everywhere with
+a /kernel/ $K(x_i, x_j) = \phi(x_i)^\top \phi(x_j)$, for some (possibly very
+high-dimensional) feature map $\phi$, lets the same linear-margin machinery
+produce a nonlinear boundary in the original space -- without ever computing
+$\phi$ explicitly. =datamunge::stats::SVM= implements four kernels
+(=SVMKernel=), matching their definitions in
+[[file:../../src/datamunge/stats/svm.cpp][=src/datamunge/stats/svm.cpp=]] exactly:
+
+\begin{align*}
+\text{Linear:} \quad & K(x, x') = x^\top x' \\
+\text{Polynomial:} \quad & K(x, x') = (\gamma \, x^\top x' + r)^{d} \\
+\text{Radial (RBF):} \quad & K(x, x') = \exp(-\gamma \lVert x - x' \rVert^2) \\
+\text{Sigmoid:} \quad & K(x, x') = \tanh(\gamma \, x^\top x' + r)
+\end{align*}
+
+where $\gamma$ (=SVMOptions::gamma=, defaulting to $1/p$ when left
+$\leq 0$), $r$ (=coef0=), and $d$ (=degree=) are the kernel's own tunable
+parameters. §4.4 fits and compares all four.
+
+** Sequential Minimal Optimization
+
+The dual is a quadratic program with $n=150$ variables here, small enough
+for an off-the-shelf QP solver -- but the classic, highly influential
+approach (Platt, 1998) instead solves it with almost no linear algebra at
+all: /Sequential Minimal Optimization/ repeatedly picks the smallest
+possible subproblem that can move while preserving
+$\sum_i \alpha_i y_i = 0$ -- exactly /two/ $\alpha$'s at a time -- and
+updates that pair in closed form. Sweeping this update over the whole
+dataset repeatedly, until a full pass finds no update larger than a
+tolerance (=SVMOptions::tolerance=) or a fixed number of consecutive
+no-change passes is reached (=SVMOptions::max_passes=), converges to the
+dual optimum without ever forming the full $n \times n$ kernel matrix's
+inverse. This is exactly what =datamunge='s (simplified) SMO solver
+implements internally.
+
+** Multi-class extension: one-vs-one voting
+
+An SVM is inherently a two-class method, but the iris problem has three.
+=datamunge::stats::SVM= extends to $K$ classes the same way R's
+=e1071::svm= does: fit one binary SVM per /pair/ of classes -- $K(K-1)/2 = 3$
+pairwise classifiers here -- and classify a new point by running it through
+all three and taking a majority vote. This is exactly
+=SVMPrediction::votes=, used directly in §4.7. Unlike LDA's posterior
+probabilities, a one-vs-one vote is a small integer count (out of 3 here),
+not a graded confidence -- §5 returns to what that difference means in
+practice.
+
+** Feature scaling and what we will report
+
+Because every kernel above is a function of raw dot products or Euclidean
+distances, a predictor measured on a much larger numeric scale than the
+others would dominate the kernel regardless of its true discriminative
+value. =SVMOptions::scale= (default =true=, matching =e1071::svm=)
+standardizes every numeric predictor to zero mean and unit variance before
+fitting, and is left on throughout this report. With the model fit, we
+report: the group/kernel summary and training diagnostics =print_summary=
+already exposes; a training confusion matrix and accuracy; support vectors
+per class; a comparison across all four kernels; a sweep across the cost
+parameter $C$; and a 2-D decision-boundary picture -- fit on only two of the
+four predictors purely for visualization, since a decision surface in more
+than two dimensions can't be drawn directly (the same caveat the LDA report
+makes about its discriminant-space plot, though there the 2-D view is an
+/exact/ projection of the full model -- here it is a genuinely different,
+separately-fit model, and §4.6 is explicit about that).
+
+* Data and Methods
+
+** The data
+
+As in the companion report: =datamunge::datasets::iris()= returns Fisher's
+150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ -- measured on
+=Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width= (cm), with no
+missing values.
+
+** Software
+
+Once again, the entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven =stats::SVM= for every
+model in this report, and =plot::RPlot=/=plot::RLayout= for every figure.
+No external plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and shared constants
+
+Alongside the dataset, dataframe, plotting, and SVM headers, we fix a
+consistent color per species (matching the companion LDA report) and a
+second, lighter palette used only for the decision-region background in
+§3.3.8.
+
+#+name: svm-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/svm.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::SVM;
+using datamunge::stats::SVMKernel;
+using datamunge::stats::SVMOptions;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kSpecies =
+    {"setosa", "versicolor", "virginica"};
+static const std::vector<RGB> kSpeciesColor = {
+    {37, 99, 235},   // setosa     - blue
+    {22, 163, 74},   // versicolor - green
+    {220, 38, 38},   // virginica  - red
+};
+static const std::vector<RGB> kSpeciesRegionColor = {
+    {191, 219, 254}, // pale blue
+    {187, 247, 208}, // pale green
+    {254, 202, 202}, // pale red
+};
+static const std::string kFormula =
+    "Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width";
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The same petal-length/petal-width view used in the companion report sets up
+§4.6's decision-boundary figure, which uses exactly these two predictors.
+
+#+name: svm-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+#+end_src
+
+#+name: svm-eda-scatter
+#+begin_src c++ :eval no
+    auto scatter = RPlot::create();
+    for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+        const auto subset = iris.filter([&](const DataFrame::Row& r) {
+            return r.get_string("Species") == kSpecies[k];
+        });
+        scatter.points(subset.numeric_column("Petal.Length").values(),
+                        subset.numeric_column("Petal.Width").values(),
+                        kSpecies[k], kSpeciesColor[k], 6.0);
+    }
+    scatter.title("Iris: Petal Length vs Petal Width")
+        .x_label("Petal.Length (cm)")
+        .y_label("Petal.Width (cm)")
+        .background({250, 250, 252});
+    scatter.save_svg("build/org/svm_iris_petal_scatter.svg");
+    std::cout << "wrote svm_iris_petal_scatter.svg\n";
+#+end_src
+
+*** Fitting the primary model
+
+The primary model uses every default in =SVMOptions=: RBF kernel, cost
+$C=1$, auto gamma ($1/p$), and feature scaling on. =print_summary= writes an
+R =e1071::svm=-style report covering everything derived in §2.
+
+#+name: svm-fit
+#+begin_src c++ :eval no
+    SVM model(iris, kFormula);
+    std::cout << "\n";
+    model.print_summary(std::cout);
+#+end_src
+
+*** Training diagnostics
+
+#+name: svm-confusion
+#+begin_src c++ :eval no
+    std::cout << "\nConfusion matrix (rows = actual, cols = predicted):\n";
+    const auto cm = model.confusion_matrix();
+    std::cout << std::setw(14) << "";
+    for (const auto& c : model.classes()) std::cout << std::setw(12) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < cm.rows(); ++i) {
+        std::cout << std::setw(14) << model.classes()[i];
+        for (std::size_t j = 0; j < cm.cols(); ++j)
+            std::cout << std::setw(12) << cm(i, j);
+        std::cout << "\n";
+    }
+    std::cout << "\nTraining accuracy: " << std::fixed << std::setprecision(2)
+               << model.training_accuracy() * 100.0 << "%\n";
+    std::cout << "Support vectors: " << model.num_support_vectors()
+               << " / " << iris.nrows() << "\n";
+#+end_src
+
+*** Support vectors per class
+
+=support_vectors_per_class()= is aligned with =classes()=, so it plots
+directly as a bar per species.
+
+#+name: svm-sv-per-class
+#+begin_src c++ :eval no
+    {
+        const auto spc = model.support_vectors_per_class();
+        std::vector<double> heights(spc.begin(), spc.end());
+        auto bp = RPlot::barplot(heights, kSpecies, "support vectors",
+                                  {96, 165, 250});
+        bp.title("Support Vectors per Class (RBF, C=1)")
+            .x_label("species").y_label("count").background({250, 250, 252});
+        bp.save_svg("build/org/svm_iris_sv_per_class.svg");
+        std::cout << "wrote svm_iris_sv_per_class.svg\n";
+    }
+#+end_src
+
+*** Comparing kernels
+
+Refit with each of the four kernels from §2.5 in turn, at the default cost
+and gamma, and record training accuracy and support-vector count for each.
+
+#+name: svm-kernel-comparison
+#+begin_src c++ :eval no
+    {
+        struct KernelRun { std::string name; SVMKernel kernel; };
+        const std::vector<KernelRun> runs = {
+            {"linear", SVMKernel::Linear},
+            {"polynomial", SVMKernel::Polynomial},
+            {"radial", SVMKernel::Radial},
+            {"sigmoid", SVMKernel::Sigmoid},
+        };
+        std::vector<double> accs, svs;
+        std::vector<std::string> names;
+        std::cout << "\nKernel comparison (cost=1, default gamma):\n";
+        std::cout << std::setw(12) << "kernel" << std::setw(12) << "accuracy"
+                   << std::setw(10) << "SVs\n";
+        for (const auto& run : runs) {
+            SVMOptions opts;
+            opts.kernel = run.kernel;
+            SVM m(iris, kFormula, opts);
+            const double acc = m.training_accuracy() * 100.0;
+            const std::size_t sv = m.num_support_vectors();
+            accs.push_back(acc);
+            svs.push_back(static_cast<double>(sv));
+            names.push_back(run.name);
+            std::cout << std::setw(12) << run.name << std::setw(11)
+                       << std::fixed << std::setprecision(2) << acc << "%"
+                       << std::setw(10) << sv << "\n";
+        }
+        auto acc_plot = RPlot::barplot(accs, names, "accuracy",
+                                        {37, 99, 235});
+        acc_plot.title("Training Accuracy by Kernel")
+            .x_label("kernel").y_label("%").background({250, 250, 252});
+        auto sv_plot = RPlot::barplot(svs, names, "support vectors",
+                                       {220, 38, 38});
+        sv_plot.title("Support Vectors by Kernel")
+            .x_label("kernel").y_label("count").background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(acc_plot);
+        layout.add(sv_plot);
+        layout.save_svg("build/org/svm_iris_kernel_comparison.svg");
+        std::cout << "wrote svm_iris_kernel_comparison.svg\n";
+    }
+#+end_src
+
+*** Cost sensitivity
+
+Refit the RBF model across seven values of $C$ spanning four orders of
+magnitude, plotting against $\log_{10} C$ since =RPlot= has no log-scale
+axis option.
+
+#+name: svm-cost-sensitivity
+#+begin_src c++ :eval no
+    {
+        const std::vector<double> costs =
+            {0.01, 0.1, 1.0, 3.0, 10.0, 30.0, 100.0};
+        std::vector<double> log_costs, accs, svs;
+        std::cout << "\nCost sensitivity (RBF, default gamma):\n";
+        std::cout << std::setw(10) << "C" << std::setw(12) << "accuracy"
+                   << std::setw(10) << "SVs\n";
+        for (const double c : costs) {
+            SVMOptions opts;
+            opts.kernel = SVMKernel::Radial;
+            opts.cost = c;
+            SVM m(iris, kFormula, opts);
+            const double acc = m.training_accuracy() * 100.0;
+            const std::size_t sv = m.num_support_vectors();
+            log_costs.push_back(std::log10(c));
+            accs.push_back(acc);
+            svs.push_back(static_cast<double>(sv));
+            std::cout << std::setw(10) << std::fixed << std::setprecision(2)
+                       << c << std::setw(11) << acc << "%"
+                       << std::setw(10) << sv << "\n";
+        }
+        auto acc_plot = RPlot::plot(log_costs, accs, "b", "accuracy",
+                                     {37, 99, 235});
+        acc_plot.title("Accuracy vs Cost (RBF)").x_label("log10(C)")
+            .y_label("training accuracy (%)").background({250, 250, 252});
+        auto sv_plot = RPlot::plot(log_costs, svs, "b", "support vectors",
+                                    {220, 38, 38});
+        sv_plot.title("Support Vectors vs Cost (RBF)").x_label("log10(C)")
+            .y_label("support vectors").background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(acc_plot);
+        layout.add(sv_plot);
+        layout.save_svg("build/org/svm_iris_cost_sensitivity.svg");
+        std::cout << "wrote svm_iris_cost_sensitivity.svg\n";
+    }
+#+end_src
+
+*** Visualizing the decision boundary
+
+A decision surface over four predictors can't be drawn, so this section
+fits a /separate/ RBF model using only =Petal.Length= and =Petal.Width= --
+the two most discriminative measurements per §4.1 -- purely to draw it.
+Every point on a fine grid is classified with that 2-predictor model and
+plotted in a pale, class-colored background; the real training points are
+then layered on top in the same colors used throughout this report.
+
+#+name: svm-decision-boundary
+#+begin_src c++ :eval no
+    {
+        SVM boundary_model(iris, "Species ~ Petal.Length + Petal.Width");
+
+        const double x_lo = 0.5, x_hi = 7.5;
+        const double y_lo = 0.0, y_hi = 3.0;
+        constexpr int nx = 70, ny = 70;
+
+        auto region = RPlot::create();
+        for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+            std::vector<double> gx, gy;
+            for (int i = 0; i < nx; ++i) {
+                const double x = x_lo + (x_hi - x_lo) * i / (nx - 1);
+                for (int j = 0; j < ny; ++j) {
+                    const double y = y_lo + (y_hi - y_lo) * j / (ny - 1);
+                    DataFrame pt;
+                    pt.add_column("Petal.Length", std::vector<double>{x});
+                    pt.add_column("Petal.Width", std::vector<double>{y});
+                    const auto pred = boundary_model.predict(pt);
+                    if (pred[0] == kSpecies[k]) {
+                        gx.push_back(x);
+                        gy.push_back(y);
+                    }
+                }
+            }
+            region.points(gx, gy, kSpecies[k] + " region",
+                          kSpeciesRegionColor[k], 3.2);
+        }
+        for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == kSpecies[k];
+            });
+            region.points(subset.numeric_column("Petal.Length").values(),
+                          subset.numeric_column("Petal.Width").values(),
+                          kSpecies[k], kSpeciesColor[k], 5.5);
+        }
+        region.title("SVM Decision Regions (RBF, Petal.Length x Petal.Width)")
+            .x_label("Petal.Length (cm)")
+            .y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        region.save_svg("build/org/svm_iris_decision_boundary.svg");
+        std::cout << "wrote svm_iris_decision_boundary.svg\n";
+    }
+#+end_src
+
+*** Predicting new flowers
+
+The same four flowers used throughout this project's other worked examples:
+one unambiguous example of each species, plus one deliberately chosen near
+the versicolor/virginica boundary.
+
+#+name: svm-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Sepal.Length",
+                        std::vector<double>{5.1, 6.0, 6.5, 6.2});
+    newdata.add_column("Sepal.Width",
+                        std::vector<double>{3.5, 2.7, 3.0, 2.8});
+    newdata.add_column("Petal.Length",
+                        std::vector<double>{1.4, 4.5, 5.5, 4.8});
+    newdata.add_column("Petal.Width",
+                        std::vector<double>{0.2, 1.5, 2.0, 1.8});
+
+    const auto prediction = model.predict_detail(newdata);
+    std::cout << "\nPredictions for new flowers"
+               << " (votes out of 3 one-vs-one pairs):\n";
+    std::cout << std::setw(14) << "predicted";
+    for (const auto& c : model.classes())
+        std::cout << std::setw(16) << ("votes(" + c + ")");
+    std::cout << "\n";
+    for (std::size_t i = 0; i < prediction.class_label.size(); ++i) {
+        std::cout << std::setw(14) << prediction.class_label[i];
+        for (const double v : prediction.votes[i])
+            std::cout << std::setw(16) << v;
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion report, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/svm_iris_analysis.cpp <<'CPP'
+<<svm-includes>>
+
+int main() {
+<<svm-load-data>>
+
+<<svm-eda-scatter>>
+
+<<svm-fit>>
+
+<<svm-confusion>>
+
+<<svm-sv-per-class>>
+
+<<svm-kernel-comparison>>
+
+<<svm-cost-sensitivity>>
+
+<<svm-decision-boundary>>
+
+<<svm-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/svm_iris_analysis.cpp -o build/org/svm_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/svm_iris_analysis
+#+end_src
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by species :width 100%
+[[file:../../build/org/svm_iris_petal_scatter.svg]]
+
+/Setosa/ sits in a tight, fully separated corner of this space; /versicolor/
+and /virginica/ are each fairly compact and separated along a diagonal, with
+a thin band of overlap near petal length 4.7--5.0cm -- the same picture the
+companion LDA report opens with, since it's the same 150 flowers. That
+overlap is exactly where §4.6's decision boundary and §4.7's ambiguous
+prediction both land.
+
+** The fitted model
+
+The default RBF model reports:
+
+#+begin_example
+Number of Support Vectors: 52
+( 8 22 22 )
+
+Number of Classes: 3
+Levels: setosa versicolor virginica
+
+gamma: 0.2500
+#+end_example
+
+52 of the 150 training points -- barely a third -- are support vectors;
+gamma defaults to $1/p = 1/4 = 0.25$ since none was specified. Of those 52,
+only 8 come from the linearly-separable /setosa/ class, against 22 apiece
+from /versicolor/ and /virginica/ -- almost three times as many, matching
+§4.1's picture that only those two species overlap at all. A class that's
+trivially separable needs very few points to pin down its margin; the
+overlapping pair needs many.
+
+** Classification performance
+
+|            | pred. setosa | pred. versicolor | pred. virginica |
+|------------+--------------+-------------------+------------------|
+| setosa     |           50 |                 0 |                0 |
+| versicolor |            0 |                48 |                2 |
+| virginica  |            0 |                 2 |               48 |
+
+Training accuracy is 97.33% (146/150), with four errors, all -- again --
+between /versicolor/ and /virginica/, split evenly in both directions (2
+misclassified each way). This is very slightly worse than the LDA report's
+98.00% (147/150, 3 errors) on identical data; §5 discusses why that's
+unsurprising rather than a sign either method is "wrong."
+
+** Kernel comparison
+
+#+ATTR_HTML: :alt Bar charts comparing training accuracy and support-vector count across four kernels :width 100%
+[[file:../../build/org/svm_iris_kernel_comparison.svg]]
+
+| Kernel     | Accuracy | Support vectors |
+|------------+----------+------------------|
+| linear     |   96.67% |               30 |
+| polynomial |   95.33% |               54 |
+| radial     |   97.33% |               52 |
+| sigmoid    |   89.33% |               56 |
+
+Radial wins, but only narrowly over linear -- consistent with §4.1's
+observation that the data is nearly linearly separable to begin with, so a
+curved boundary buys little. Sigmoid is a clear outlier, both least accurate
+and needing the most support vectors: unlike the other three, $\tanh$ is not
+a valid Mercer kernel for every choice of $\gamma$ and $r$ (its kernel
+matrix isn't guaranteed positive semi-definite), and on this data it is
+visibly the weakest fit.
+
+** Cost sensitivity
+
+#+ATTR_HTML: :alt Line plots of training accuracy and support-vector count against log10(cost) :width 100%
+[[file:../../build/org/svm_iris_cost_sensitivity.svg]]
+
+| $C$   | Accuracy | Support vectors |
+|-------+----------+------------------|
+|  0.01 |   33.33% |              150 |
+|  0.10 |   94.67% |              115 |
+|  1.00 |   97.33% |               52 |
+|  3.00 |   97.33% |               40 |
+| 10.00 |   98.67% |               33 |
+| 30.00 |   98.67% |               30 |
+|100.00 |   98.67% |               29 |
+
+$C=0.01$ is a textbook underfit: accuracy collapses to 33.33% -- exactly
+chance performance for three balanced classes -- and every single training
+point becomes a support vector, meaning the margin is so wide and so
+heavily penalized for narrowing that the model effectively cannot separate
+the classes at all. Accuracy recovers almost immediately by $C=0.1$ and
+plateaus at 98.67% for $C \geq 10$, while the support-vector count keeps
+/falling/ as $C$ grows, from 150 down to 29: a larger cost tolerates fewer
+margin violations, so the solver needs progressively fewer boundary-defining
+points to satisfy the tighter constraint. Both curves match §2.3's
+prediction exactly.
+
+** Decision-boundary visualization
+
+#+ATTR_HTML: :alt SVM decision regions over petal length and petal width, with training points overlaid :width 100%
+[[file:../../build/org/svm_iris_decision_boundary.svg]]
+
+Even restricted to two predictors, the RBF kernel's boundary is visibly
+curved rather than three straight lines -- most noticeably the
+/versicolor//virginica/ boundary, which bows to follow the actual shape of
+the two point clouds instead of cutting a straight line between their
+centroids. The /setosa/ region is bounded by a wide, confident margin on
+every side, matching §4.2's finding that it needed only 8 support vectors
+to pin down.
+
+** Predicting new flowers
+
+| Sepal.L | Sepal.W | Petal.L | Petal.W | predicted  | votes(setosa) | votes(versicolor) | votes(virginica) |
+|---------+---------+---------+---------+------------+----------------+--------------------+-------------------|
+|     5.1 |     3.5 |     1.4 |     0.2 | setosa     |              2 |                  1 |                 0 |
+|     6.0 |     2.7 |     4.5 |     1.5 | versicolor |              0 |                  2 |                 1 |
+|     6.5 |     3.0 |     5.5 |     2.0 | virginica  |              0 |                  1 |                 2 |
+|     6.2 |     2.8 |     4.8 |     1.8 | virginica  |              0 |                  1 |                 2 |
+
+The three unambiguous flowers each win 2 of the 3 pairwise votes -- the
+maximum available margin of victory in a 3-class one-vs-one scheme. The
+fourth flower, chosen deliberately near the versicolor/virginica boundary,
+is classified /virginica/ with the identical 2-1 vote tally as the
+unambiguous third flower. §5 discusses why that similarity is itself the
+most informative result in this table.
+
+* Discussion
+
+**Comparing kernels and the cost sweep.** Both §4.4 and §4.5 tell the same
+underlying story from different angles: this dataset is close enough to
+linearly separable that a straight boundary (linear kernel, or a tightly
+constrained RBF at high $C$) already does most of the work, and the
+remaining errors are concentrated entirely in the small region where
+/versicolor/ and /virginica/ genuinely overlap in measurement space. No
+kernel or cost setting can do better than that overlap allows without
+overfitting to noise -- which is exactly what the flat accuracy plateau
+above $C = 10$ in §4.5 shows happening.
+
+**SVM versus LDA on identical data.** The companion LDA report gets 98.00%
+training accuracy (3 errors) on these same 150 flowers and this same
+formula; the default SVM here gets 97.33% (4 errors) -- a difference of one
+flower, well within noise for a 150-row resubstitution estimate, and not
+grounds to prefer one method over the other on accuracy alone. The more
+interesting difference is in what each model /says/ about its own
+uncertainty. LDA's Bayes posterior for the boundary-case flower in its
+report was 81.16% /virginica/ against 18.84% /versicolor/ -- a graded,
+directly interpretable confidence that the case was close. The identical
+flower here (§4.7's fourth row) gets exactly the same 2-1 vote split as an
+unambiguous /virginica/ example one row above it: one-vs-one voting is a
+discrete count out of $K(K-1)/2$ pairwise outcomes, and with only 3 pairs
+for 3 classes, there simply isn't enough resolution to distinguish "clearly
+virginica" from "barely virginica." A practitioner who needs calibrated
+confidence, not just a label, has a real reason here to prefer LDA's
+posterior probabilities -- or, if the geometric flexibility of a kernel
+method is what's needed, to look at each pairwise decision value directly
+rather than the collapsed vote count this report used.
+
+**Limitations.** As with the LDA report, every accuracy figure above is a
+resubstitution (training-set) estimate, optimistic by construction; unlike
+LDA, the SVM here has multiple hyperparameters ($C$, $\gamma$, and per-kernel
+$r$/$d$) that were swept or fixed by convention rather than tuned by
+cross-validation, so the "best" kernel and cost identified in §4.4-4.5
+should be read as illustrative of the tradeoffs involved, not as a properly
+validated model-selection result.
+
+* Conclusion
+
+A soft-margin, one-vs-one support vector machine, fit with =datamunge='s
+C++ =stats::SVM=, separates Fisher's three iris species with 97.33% training
+accuracy using an RBF kernel and 52 support vectors, essentially matching
+the companion LDA report's 98.00% on the same data. A four-kernel comparison
+and a cost-parameter sweep both trace directly back to the margin/violation
+tradeoff derived in §2.3, down to a textbook underfitting collapse at
+$C=0.01$. The one qualitative difference from the LDA report worth
+remembering: this SVM's one-vs-one votes are a coarse count, not a
+calibrated probability, and §4.7 shows a genuinely ambiguous flower getting
+exactly the same vote tally as an unambiguous one. As with its companion,
+this entire document is reproducible end to end via
+=just org-example svm_iris_analysis=, which re-executes §3.3.10's assembly
+block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Boser, B. E., Guyon, I. M., & Vapnik, V. N. (1992). "A training algorithm
+  for optimal margin classifiers." /Proceedings of the 5th Annual Workshop
+  on Computational Learning Theory/, 144--152.
+- Cortes, C., & Vapnik, V. (1995). "Support-vector networks." /Machine
+  Learning/, 20(3), 273--297.
+- Platt, J. C. (1998). "Sequential Minimal Optimization: A Fast Algorithm
+  for Training Support Vector Machines." Microsoft Research Technical
+  Report MSR-TR-98-14.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 12 ("Support Vector Machines and
+  Flexible Discriminants"). Springer.
+- Meyer, D., Dimitriadou, E., Hornik, K., Weingessel, A., & Leisch, F.
+  /e1071: Misc Functions of the Department of Statistics, Probability
+  Theory Group/. (Reference implementation: =e1071::svm=, which
+  =datamunge::stats::SVM='s summary output deliberately matches.)
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

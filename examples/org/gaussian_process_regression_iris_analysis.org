@@ -1,0 +1,513 @@
+#+title: Gaussian Process Regression for Iris Petal Length
+#+subtitle: A literate C++ study of Bayesian nonparametric regression using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit exact Gaussian process regression with an RBF kernel to predict iris
+petal length from petal width using =datamunge='s C++
+=stats::GaussianProcessRegression=, and report it as a literate program:
+every fragment below is a real, compiled, executed chunk of the single
+C++ binary that produced every number and figure in this document. Like
+the [[file:kernel_regression_iris_analysis.org][kernel regression
+companion report]]'s Nadaraya-Watson estimator, a Gaussian process (GP)
+has no honest resubstitution fit and reports leave-one-out performance
+instead -- here computed via a closed-form identity rather than by
+literally refitting 150 times -- reaching a leave-one-out $R^2$ of 0.9515,
+close to kernel regression's 0.9507 on the identical formula. Unlike
+kernel regression, whose bandwidth is selected by
+leave-one-out cross-validation, a GP's length scale (1.0249) and noise variance (0.0471) are
+selected by maximizing the exact log marginal likelihood -- a Bayesian
+evidence-based criterion requiring no held-out data at all. And unlike
+every other regressor in this project, a GP's prediction comes with a
+principled posterior confidence interval at every point: predicting
+=Petal.Width= = 2.5 (inside the training range) gives a standard error of
+0.145, while predicting =Petal.Width= = 10.0 (nearly four times the
+largest training value) gives a standard error of 1.423 -- a
+ten-fold widening the model reports about its own uncertainty, unprompted,
+simply by being asked to extrapolate. We derive the GP prior, the RBF
+kernel, the posterior predictive distribution, marginal-likelihood
+hyperparameter selection, the closed-form leave-one-out identity, and
+why posterior uncertainty widens away from the data, tying each to the
+corresponding library call.
+#+end_abstract
+
+* Introduction
+
+The [[file:kernel_regression_iris_analysis.org][kernel regression
+companion report]] and this report fit the same formula
+(=Petal.Length ~ Petal.Width=) to the same 150 flowers with what looks,
+at first glance, like the same idea: a smooth curve built from a kernel
+function of distance in predictor space. The resemblance is real but
+shallow. Kernel regression is a purely local averaging rule with no
+probabilistic model behind it, tuned by leave-one-out cross-validation, and
+producing a point estimate only. A Gaussian process is a full Bayesian
+model over /functions/, tuned by maximizing evidence for the data under
+that model, and producing not just a point estimate but a complete
+posterior distribution at every query point -- including, crucially, a
+principled answer to "how much should I trust this prediction," which
+neither kernel regression nor any other regressor in this project provides.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.5) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the GP prior, the RBF kernel, the posterior predictive
+distribution, marginal-likelihood hyperparameter selection, the closed-form
+leave-one-out identity, and posterior uncertainty, each tied to the
+specific library call that implements it. §3 describes the program chunk
+by chunk. §4 reports the fitted model, its length-scale profile,
+diagnostic plots, and predictions with confidence intervals both inside
+and far outside the training range. §5 discusses what a full probabilistic
+model buys over kernel regression's purely local averaging. §6 concludes.
+
+* Background: Gaussian Process Regression
+
+** Setup and notation
+
+$n = 150$ flowers, a single predictor $x_i = \text{Petal.Width}_i$ and a
+continuous response $y_i = \text{Petal.Length}_i$ -- the identical setup
+to the [[file:kernel_regression_iris_analysis.org][kernel regression
+companion report]], deliberately, so §5's comparison is apples-to-apples.
+
+** The Gaussian process prior
+
+A Gaussian process places a prior directly over /functions/: $f \sim
+\mathcal{GP}(0, k(x,x'))$, meaning that for any finite set of input points,
+the corresponding function values are jointly Gaussian, with covariance
+given entirely by a kernel function $k$ evaluated pairwise. This is a
+fundamentally different starting point from every other regression report
+in this project: OLS and its penalized variants
+([[file:elastic_net_iris_analysis.org][elastic net companion report]])
+place a prior (or, unregularized, no prior at all) over a fixed, finite set
+of /coefficients/; a GP places its prior over the infinite-dimensional
+space of possible functions directly, with the kernel encoding what "similar
+inputs should have similar outputs" means.
+
+** The RBF kernel
+
+=GaussianProcessRegression= uses the squared-exponential (RBF) kernel,
+
+\[
+k(x,x') = \sigma_f^2 \exp\!\left(-\frac{\lVert x-x'\rVert^2}
+{2\,\ell^2}\right) ,
+\]
+
+matching the library's own documented formula, with $\sigma_f^2$
+(=signal_variance()=) controlling the overall vertical scale of function
+variation and $\ell$ (=length_scale()=) controlling how quickly
+correlation between two points decays with distance -- a small $\ell$
+allows the function to wiggle rapidly, a large $\ell$ forces it to vary
+only slowly, playing structurally the same smoothness-control role the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]]'s bandwidth $h$ plays, but for a covariance function between
+function values rather than for a weighted average of observed responses.
+
+** The posterior predictive distribution
+
+Conditioning the joint Gaussian prior on the $n$ observed (noisy) training
+values and Gaussian observation noise $\sigma_n^2$ gives, for any query
+point $x_*$, a Gaussian posterior in closed form:
+
+\[
+\bar f_* = k_*^\top (K + \sigma_n^2 I)^{-1} y , \qquad
+\mathbb{V}[f_*] = k_{**} - k_*^\top (K + \sigma_n^2 I)^{-1} k_* ,
+\]
+
+where $K$ is the $n\times n$ matrix of $k(x_i,x_j)$ over training points,
+$k_*$ the vector of $k(x_i, x_*)$, and $k_{**} = k(x_*,x_*)$. =fit()=
+solves this via a Cholesky decomposition of $K + \sigma_n^2 I$ (=chol_=)
+rather than an explicit matrix inverse, both for numerical stability and
+because it is what =predict_detail()= reuses to evaluate the mean and
+variance formulas above at any new query point directly -- §4.5 uses this
+at points both inside and dramatically outside the training range.
+
+** Hyperparameter selection by marginal likelihood
+
+Where the [[file:kernel_regression_iris_analysis.org][kernel regression
+companion report]]'s bandwidth and the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]'s
+$\lambda$ are both selected by leave-one-out or $k$-fold cross-validation
+-- holding out data and checking predictive error -- a GP's length scale
+$\ell$ and noise ratio (=noise_variance()= $/$ =signal_variance()=) are
+instead selected by maximizing the /log marginal likelihood/,
+$\log p(y \mid X, \ell, \sigma_n^2)$: the exact probability the model
+assigns to the observed training responses, integrating out every possible
+function consistent with the GP prior, requiring no held-out data at all.
+=length_scale_profile_log_likelihood()= exposes this directly as a
+function of $\ell$ (§4.3's profile figure); the signal variance
+$\sigma_f^2$ is never swept on its own grid because it has a closed-form
+maximum-likelihood value given $\ell$ and the noise ratio (/profiled out/
+analytically), one fewer hyperparameter to search than a naive grid
+over all three would require.
+
+** Leave-one-out via a closed-form identity
+
+As with the [[file:kernel_regression_iris_analysis.org][kernel regression
+companion report]]'s Nadaraya-Watson estimator and the
+[[file:knn_iris_analysis.org][KNN companion report]]'s classifier, a GP
+with low enough noise interpolates its training data almost exactly, so
+=fitted_values()=, =r_squared()=, and =rmse()= all report leave-one-out
+performance rather than a trivial resubstitution fit. Unlike those two
+methods, however, a GP's leave-one-out predictions have an exact
+closed-form expression in terms of quantities already computed while
+fitting on the /full/ dataset (Rasmussen & Williams, 2006, eq. 5.12) --
+=datamunge= uses this "virtual LOO" identity rather than literally
+excluding and refitting each of the 150 rows in turn, an efficiency
+specific to GPs that neither KNN's nor kernel regression's leave-one-out
+evaluation has available to them.
+
+** Posterior uncertainty away from the data
+
+The posterior variance formula in §2.4 has a term, $k_{**}$, that does not
+depend on the training data at all, and a subtracted term,
+$k_*^\top(K+\sigma_n^2 I)^{-1}k_*$, that shrinks toward zero as the query
+point $x_*$ moves away from every training point (since $k_*$'s entries all
+decay per §2.3's kernel). The posterior variance therefore /grows/ back
+toward the prior variance $\sigma_f^2$ far from the data -- a GP reports
+its own increasing uncertainty automatically, unprompted, purely as a
+consequence of the model's structure, with no extra machinery required.
+§4.5 measures this directly rather than only asserting it.
+
+** What we will report
+
+Given the fit, we report exploratory data, the model's own summary
+(length scale, signal and noise variance, log marginal likelihood,
+leave-one-out $R^2$/RMSE), the fitted posterior mean and confidence band,
+the length-scale profile likelihood, predicted-versus-actual and
+residuals-versus-fitted diagnostics, and predictions with 95% confidence
+intervals at points both inside and far outside the training range.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. This report predicts =Petal.Length= from
+=Petal.Width= alone, matching the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]] exactly.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven
+=stats::GaussianProcessRegression= for the model, and =plot::RPlot= for
+every figure. No external plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and the exploratory figure
+
+#+name: gpr-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/gaussian_process_regression.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::GaussianProcessRegression;
+using namespace datamunge::plot;
+
+namespace {
+constexpr const char* kFormula = "Petal.Length ~ Petal.Width";
+}
+#+end_src
+
+#+name: gpr-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+    std::cout << "formula: " << kFormula << "\n\n";
+#+end_src
+
+#+name: gpr-eda-scatter
+#+begin_src c++ :eval no
+    {
+        auto scatter = RPlot::create();
+        scatter.points(iris.numeric_column("Petal.Width").values(),
+                        iris.numeric_column("Petal.Length").values(),
+                        "observed", {37, 99, 235}, 5.0);
+        scatter.title("Iris: Petal Width vs Petal Length")
+            .x_label("Petal.Width (cm)").y_label("Petal.Length (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/gpr_iris_eda_scatter.svg");
+        std::cout << "wrote gpr_iris_eda_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting the model
+
+Length scale, noise ratio (and, implicitly, signal variance) all selected
+automatically by maximizing the log marginal likelihood -- every library
+default.
+
+#+name: gpr-fit
+#+begin_src c++ :eval no
+    std::cout << "=== Gaussian process regression"
+               << " (RBF kernel, marginal-likelihood-selected"
+               << " hyperparameters) ===\n";
+    GaussianProcessRegression model(iris, kFormula);
+    model.print_summary(std::cout);
+
+    model.plot_fit(iris).save_svg("build/org/gpr_iris_fit.svg");
+    model.plot_length_scale_profile().save_svg(
+        "build/org/gpr_iris_length_scale_profile.svg");
+    std::cout << "wrote gpr_iris_fit.svg, "
+               << "gpr_iris_length_scale_profile.svg\n";
+#+end_src
+
+*** Diagnostic plots
+
+#+name: gpr-diagnostics
+#+begin_src c++ :eval no
+    {
+        auto pv = model.plot_predicted_vs_actual();
+        pv.background({250, 250, 252});
+        pv.save_svg("build/org/gpr_iris_predicted_vs_actual.svg");
+        auto rf = model.plot_residuals_vs_fitted();
+        rf.background({250, 250, 252});
+        rf.save_svg("build/org/gpr_iris_residuals_vs_fitted.svg");
+        std::cout << "wrote gpr_iris_predicted_vs_actual.svg, "
+                   << "gpr_iris_residuals_vs_fitted.svg\n";
+    }
+#+end_src
+
+*** Predicting inside and far outside the training range
+
+Petal widths of 0.2, 1.3, and 2.5 all fall inside the observed training
+range ($[0.1, 2.5]$); 10.0 is nearly four times the largest training
+value, deliberately chosen to demonstrate §2.7's posterior-widening
+behavior.
+
+#+name: gpr-predict-new
+#+begin_src c++ :eval no
+    DataFrame query;
+    query.add_column("Petal.Width",
+                      std::vector<double>{0.2, 1.3, 2.5, 10.0});
+    const auto detail = model.predict_detail(query);
+    std::cout << "\nPredictions with 95% confidence intervals:\n";
+    std::cout << std::setw(14) << "Petal.Width" << std::setw(10) << "fit"
+               << std::setw(10) << "se" << std::setw(10) << "lwr"
+               << std::setw(10) << "upr" << "\n";
+    for (std::size_t i = 0; i < detail.fit.size(); ++i) {
+        std::cout << std::setw(14) << std::fixed << std::setprecision(3)
+                   << query.double_at("Petal.Width", i) << std::setw(10)
+                   << detail.fit[i] << std::setw(10) << detail.se_fit[i]
+                   << std::setw(10) << detail.lower[i] << std::setw(10)
+                   << detail.upper[i] << "\n";
+    }
+    std::cout << "(Petal.Width=10.0 is far outside the training range"
+               << " [0.1, 2.5] -- note how much wider its\n"
+               << " interval is than the in-range predictions.)\n";
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/gpr_iris_analysis.cpp <<'CPP'
+<<gpr-includes>>
+
+int main() {
+<<gpr-load-data>>
+
+<<gpr-eda-scatter>>
+
+<<gpr-fit>>
+
+<<gpr-diagnostics>>
+
+<<gpr-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/gpr_iris_analysis.cpp -o build/org/gpr_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gpr_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal width vs petal length :width 100%
+[[file:../../build/org/gpr_iris_eda_scatter.svg]]
+
+Identical to the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]]'s exploratory figure, by construction: a flat cluster at small
+petal width, a rise through the transition region, and a gently curving
+increase through the higher end of the range.
+
+** The fitted model
+
+#+begin_example
+Length scale: 1.0249  (selected by log marginal likelihood over 20 values)
+Signal variance: 0.6545  (profiled maximum-likelihood value)
+Noise variance: 0.0471  (selected by log marginal likelihood over 15 values)
+Log marginal likelihood: 4.1835
+
+Leave-one-out R-squared: 0.9515
+Leave-one-out RMSE: 0.3877  (150 observations)
+#+end_example
+
+A leave-one-out $R^2$ of 0.9515 sits within 0.0008 of the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]]'s 0.9507 on the identical formula -- essentially the same
+predictive accuracy, reached by two structurally different fitting
+principles (§5 returns to this).
+
+#+ATTR_HTML: :alt Gaussian process posterior mean and confidence band overlaid on the scatter :width 100%
+[[file:../../build/org/gpr_iris_fit.svg]]
+
+The posterior mean curve tracks the data closely, and the shaded
+confidence band -- absent from every non-Bayesian regressor in this
+project -- is visibly narrowest where training data is densest and widens
+perceptibly toward both ends of the observed range, exactly as §2.7
+predicts, well before any extrapolation into genuinely new territory.
+
+** Length-scale profile
+
+#+ATTR_HTML: :alt Profile log marginal likelihood across the length-scale grid :width 100%
+[[file:../../build/org/gpr_iris_length_scale_profile.svg]]
+
+Unlike every cross-validation curve in this project's other reports (all
+of which are /minimized/ at the selected hyperparameter), this curve is
+/maximized/ at the selected length scale -- a direct visual reminder that
+marginal likelihood is being optimized, not a held-out error. The curve
+rises steeply for small length scales (an overly wiggly function is
+heavily penalized by the marginal likelihood, not just by
+cross-validation) and declines only gently for large ones, the same qualitative
+asymmetry the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]]'s CV curve shows for its bandwidth, here on evidence rather than
+prediction error.
+
+** Diagnostic plots
+
+#+ATTR_HTML: :alt Predicted vs actual, leave-one-out :width 100%
+[[file:../../build/org/gpr_iris_predicted_vs_actual.svg]]
+
+A tight diagonal band across the full response range, including the
+distinct low-petal-length /setosa/ cluster -- visually similar to every
+other regression companion report's equivalent figure, consistent with
+§4.2's $R^2$ landing in the same range as those reports.
+
+** Predictions inside and far outside the training range
+
+#+ATTR_LATEX: :font \small
+| Petal.Width | fit | se | lower (95%) | upper (95%) |
+|---------------+-------+-------+---------------+---------------|
+|         0.200 | 1.413 | 0.058 |         1.299 |         1.527 |
+|         1.300 | 4.289 | 0.058 |         4.174 |         4.403 |
+|         2.500 | 5.734 | 0.145 |         5.449 |         6.018 |
+|        10.000 | 3.758 | 1.423 |         0.968 |         6.548 |
+
+The three in-range predictions have standard errors of 0.058, 0.058, and
+0.145 -- already visibly larger at =Petal.Width= = 2.5, near the edge of
+the observed data (§4.2's confidence band shows exactly this widening).
+The extrapolated point at =Petal.Width= = 10.0 has a standard error of
+1.423, roughly ten times the two smallest in-range values -- and its
+point prediction (3.758) has also collapsed back toward the middle of the
+observed response range rather than continuing whatever trend the last
+few training points suggested, since with no nearby training data the RBF
+kernel's influence (§2.3) decays away and the posterior mean reverts
+toward the GP prior's mean of zero (recentered, since the response is
+standardized internally). Neither KNN nor kernel regression can produce
+an equivalent number: both would simply return /some/ point estimate for
+=Petal.Width= = 10.0 with no principled indication that it should be
+trusted far less than the in-range predictions.
+
+* Discussion
+
+**Same accuracy, different foundations.** §4.2's leave-one-out $R^2$
+(0.9515) is nearly identical to the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]]'s (0.9507) on the same data and formula, which could read as
+"the extra Bayesian machinery didn't buy anything." That is the wrong
+conclusion: both methods recover essentially the same underlying
+function because the data supports one clear answer here, but they differ
+sharply in what else they provide along the way -- principled uncertainty
+quantification (§4.5), a hyperparameter selection criterion that needs no
+held-out data (§2.5), and an efficient closed-form leave-one-out identity
+(§2.6) instead of literal refitting -- differences invisible to a bare
+$R^2$ comparison but real all the same.
+
+**Uncertainty that behaves correctly is the actual headline result.** The
+tenfold standard-error increase from the largest in-range prediction to
+the far-extrapolated one (§4.5) is not a curated best case; it is a direct
+mathematical consequence of §2.4's posterior variance formula, which this
+report measured rather than assumed. A practitioner using kernel
+regression or KNN for an out-of-range query would receive a
+confident-looking number with no signal that anything unusual happened; a GP's
+=predict_detail()= flags it automatically. This is the concrete, practical
+payoff of the extra structure §2.2's function-space prior provides.
+
+**Connection to the wider project.** This report's $R^2$ places it
+alongside every other regression companion report's 0.95-0.97 range on
+this project's iris and penguins data, reinforcing the now-familiar
+pattern that the underlying relationships in this project's datasets are
+strong enough that method choice mostly changes /what a model reports
+about itself/ -- point estimate only, a tuned smoothing parameter, or a
+full posterior -- more than it changes the headline accuracy number.
+
+* Conclusion
+
+Fitting an exact Gaussian process with =datamunge='s C++
+=stats::GaussianProcessRegression= reaches a leave-one-out $R^2$ of 0.9515
+on the same iris regression problem the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]] fits to 0.9507 -- essentially tied in accuracy, but reached
+through a genuinely different Bayesian foundation: a prior over functions,
+hyperparameters selected by marginal likelihood rather than
+cross-validation, and a closed-form leave-one-out identity rather than literal
+refitting. The report's central, measured result is that a GP's posterior
+standard error grows roughly tenfold between its most confident in-range
+prediction and a deliberately far-out-of-range query, a real and
+automatic consequence of the model's structure that neither kernel
+regression nor KNN can produce. As with its companions, this entire
+report is reproducible end to end via
+=just org-example gaussian_process_regression_iris_analysis=, which
+re-executes §3.3.5's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Rasmussen, C. E., & Williams, C. K. I. (2006). /Gaussian Processes for
+  Machine Learning/. MIT Press.
+- O'Hagan, A. (1978). "Curve fitting and optimal design for prediction."
+  /Journal of the Royal Statistical Society: Series B/, 40(1), 1--42.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 6 ("Kernel Smoothing Methods").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

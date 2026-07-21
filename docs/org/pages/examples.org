@@ -125,9 +125,15 @@ console.log("map_array_with_function([1,2,3]) =", out);
 
 #+begin_src shell :exports results
 if command -v node >/dev/null 2>&1; then
-  (cd examples/javascript && node - <<'JS') || { echo "SKIP: node binding not loadable"; exit 0; }
-<<datamunge_ex_javascript>>
-JS
+  if [ ! -f build/Release/datamungejs.node ]; then
+    if command -v just >/dev/null 2>&1; then
+      just build-javascript >/dev/null 2>&1 || { echo "SKIP: javascript binding build failed"; exit 0; }
+    else
+      echo "SKIP: just not available to build javascript binding"
+      exit 0
+    fi
+  fi
+  node examples/javascript/datamunge_ex.js || { echo "SKIP: node binding not loadable"; exit 0; }
 else
   echo "SKIP: node not available"
 fi
@@ -197,16 +203,17 @@ puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Datamunge.sum_dvector(v2
 
 #+begin_src shell :exports results
 if command -v ruby >/dev/null 2>&1; then
-  # Prefer in-repo Ruby extension if present.
-  if [ -d src/octruby/lib ]; then
-    RUBYLIB="$(pwd)/src/octruby/lib:${RUBYLIB:-}" ruby - <<'RB' || { echo "SKIP: ruby binding not loadable"; exit 0; }
-<<datamunge_ex_ruby>>
-RB
-  else
-    ruby - <<'RB' || { echo "SKIP: ruby binding not loadable"; exit 0; }
-<<datamunge_ex_ruby>>
-RB
+  if [ ! -f src/octruby/lib/octruby/octruby.so ]; then
+    if command -v just >/dev/null 2>&1; then
+      just build-ruby >/dev/null 2>&1 || { echo "SKIP: ruby binding build failed"; exit 0; }
+    else
+      echo "SKIP: just not available to build ruby binding"
+      exit 0
+    fi
   fi
+  export RUBYLIB="$(pwd)/src/octruby/lib${RUBYLIB:+:}${RUBYLIB:-}"
+  export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge 2>/dev/null)${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH:-}"
+  ruby examples/ruby/datamunge_ex.rb || { echo "SKIP: ruby binding not loadable"; exit 0; }
 else
   echo "SKIP: ruby not available"
 fi
@@ -328,9 +335,19 @@ print("sum_dvector(map_dvector_with_callback(1,2,3)):", datamunge.sum_dvector(v2
 
 #+begin_src shell :exports results
 if command -v lua >/dev/null 2>&1; then
-  lua - <<'LUA' || { echo "SKIP: lua binding not loadable"; exit 0; }
-<<datamunge_ex_lua>>
-LUA
+  if [ -z "$(find build/lua/prefix -iname 'datamunge.so' 2>/dev/null)" ]; then
+    if command -v just >/dev/null 2>&1; then
+      just build-lua >/dev/null 2>&1 || { echo "SKIP: lua binding build failed"; exit 0; }
+      cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null 2>&1 || { echo "SKIP: lua binding install failed"; exit 0; }
+    else
+      echo "SKIP: just not available to build lua binding"
+      exit 0
+    fi
+  fi
+  export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;"
+  export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;"
+  export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge 2>/dev/null)${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH:-}"
+  lua examples/lua/datamunge_ex.lua || { echo "SKIP: lua binding not loadable"; exit 0; }
 else
   echo "SKIP: lua not available"
 fi

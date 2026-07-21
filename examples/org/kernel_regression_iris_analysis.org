@@ -1,0 +1,591 @@
+#+title: Kernel Regression for Iris Petal Length
+#+subtitle: A literate C++ study of Nadaraya-Watson regression using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit Nadaraya-Watson kernel regression to predict iris petal length from
+petal width using =datamunge='s C++ =stats::KernelRegression=, and report
+it as a literate program: every fragment below is a real, compiled,
+executed chunk of the single C++ binary that produced every number and
+figure in this document. Like the KNN companion report's classifier, this
+method has no meaningful resubstitution fit -- a training point's own
+kernel weight dominates as the bandwidth shrinks -- so every accuracy
+figure is a genuine leave-one-out estimate. With a Gaussian kernel and a
+bandwidth of 0.1663 selected automatically by
+leave-one-out cross-validation, the model reaches a leave-one-out $R^2$ of 0.9507. A four-way
+kernel comparison, each with its own independently cross-validated
+bandwidth, shows all four kernels landing within 0.0012 $R^2$ of each
+other -- kernel /shape/ barely matters once bandwidth is tuned correctly.
+A bandwidth sensitivity sweep tells the opposite story in stark terms: an
+under-smoothed fit ($h=0.05$) still reaches $R^2=0.9450$, but an
+over-smoothed one ($h=5.0$) collapses to $R^2=0.0587$, a dramatically
+sharper bias-variance signature than the KNN companion report's $k$ sweep
+showed on its own classification problem. We derive the Nadaraya-Watson estimator,
+all four kernel functions, standardization, bandwidth as the method's
+single bias-variance dial, leave-one-out bandwidth selection, and a direct
+structural contrast against KNN, tying each to the corresponding library
+call.
+#+end_abstract
+
+* Introduction
+
+The [[file:knn_iris_analysis.org][KNN companion report]] fits a classifier
+that predicts a query point's class from a /fixed number/ of nearby
+training points, whatever radius that happens to require locally. Kernel
+regression, this report's subject, is KNN's structural mirror image: it
+predicts a continuous response from a /fixed radius/ (the bandwidth) of
+influence around the query point, whatever number of training points that
+happens to include locally. Both are nonparametric, local-averaging
+methods with a single smoothing hyperparameter and no honest
+resubstitution fit; §2.7 makes the fixed-count-versus-fixed-radius
+contrast precise.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.7) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the Nadaraya-Watson estimator, all four kernel functions,
+standardization, bandwidth's role as the sole bias-variance dial,
+leave-one-out bandwidth selection, and the KNN contrast, each tied to the
+specific library call that implements it. §3 describes the program chunk
+by chunk. §4 reports the fitted model, its cross-validation curve, a
+kernel comparison, a bandwidth sensitivity comparison, and predictions for
+three new petal widths. §5 discusses what tuning bandwidth versus choosing
+a kernel shape each buy a practitioner. §6 concludes.
+
+* Background: Nadaraya-Watson Kernel Regression
+
+** Setup and notation
+
+$n = 150$ flowers, a single predictor $x_i = \text{Petal.Width}_i$ and a
+continuous response $y_i = \text{Petal.Length}_i$ -- deliberately a single
+predictor, since =plot_fit= (§3.3.2) requires exactly one to draw a 2-D
+curve, and because the method's bias-variance behavior (§2.5, §4.6) is
+easiest to see in one dimension.
+
+** The Nadaraya-Watson estimator
+
+Rather than fitting global parameters the way every regression report in
+this project so far has (OLS's $\hat\beta$, Ridge/Lasso/Elastic Net's
+penalized $\hat\beta$), kernel regression predicts each point directly
+from a locally weighted average of the training responses:
+
+\[
+\hat f(x) = \frac{\sum_i K\!\left(\frac{x - x_i}{h}\right) y_i}
+{\sum_i K\!\left(\frac{x - x_i}{h}\right)} ,
+\]
+
+matching =KernelRegression='s own documented formula exactly. Every
+training point contributes to every prediction, weighted by a kernel
+function $K$ of its (standardized) distance from the query point, scaled
+by the bandwidth $h$ -- nearby points get large weight, distant points get
+small (or, for a compact-support kernel, zero) weight, and the prediction
+is simply their weighted average response.
+
+** Kernel functions
+
+=KernelRegressionKernel= offers four choices, all functions of
+$u = (x-x_i)/h$: =Gaussian= ($K(u) \propto e^{-u^2/2}$, unbounded support,
+smooth); =Epanechnikov= ($K(u) \propto 1-u^2$ for $|u|\leq 1$, zero
+otherwise), the kernel Epanechnikov (1969) showed minimizes asymptotic
+mean integrated squared error among all valid kernels; =Uniform=
+($K(u) = 1$ for $|u| \leq 1$, zero otherwise, a simple box -- every point
+within the window contributes equally, none beyond it contributes at all);
+and =Triangular= ($K(u) \propto 1 - |u|$ for $|u| \leq 1$), linearly
+tapering to zero at the window edge. §4.5 compares all four directly.
+
+** Standardization
+
+As in the [[file:knn_iris_analysis.org][KNN companion report]]'s §2.4,
+distance-based weighting is only meaningful if every predictor is on a
+comparable scale; =KernelRegressionOptions::standardize= (default =true=)
+centers and scales every predictor to unit variance before any kernel
+weight is computed, so the bandwidth $h$ has one consistent meaning across
+every predictor.
+
+** Bandwidth as the single bias-variance dial
+
+$h$ is the only hyperparameter that controls this method's smoothness. As
+$h \to 0$, the kernel weight collapses almost entirely onto each point's
+own nearest neighbors -- in the limit, a training point's own weight
+dominates and the fit approaches interpolating the training data exactly
+(low bias, high variance, chasing individual points' noise). As
+$h \to \infty$, every training point receives nearly equal weight
+regardless of distance, and the fit approaches the single global mean of
+$y$ (high bias, low variance, discarding essentially all of $x$'s
+information). §4.6 measures both extremes directly rather than only
+describing them.
+
+** Leave-one-out bandwidth selection
+
+Passing a negative =bandwidth= (the default) tells =KernelRegression= to
+select $h$ automatically: it builds a grid of =n_bandwidth= (default 50)
+candidate values and picks the one minimizing leave-one-out mean squared
+error -- =bandwidth_grid()= and =cv_mean_squared_error()= expose the full
+curve behind that choice, which §4.3's cross-validation figure visualizes
+directly. This mirrors the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]'s
+cross-validated $\lambda$ selection and the
+[[file:knn_iris_analysis.org][KNN companion report]]'s own leave-one-out
+evaluation, applied here to a single continuous smoothing parameter
+instead of a penalty strength or a neighbor count.
+
+** Fixed radius versus fixed count: the KNN contrast
+
+The [[file:knn_iris_analysis.org][KNN companion report]]'s §2.2 fixes the
+/number/ of neighbors $k$ and lets the radius needed to reach them vary by
+local data density; kernel regression fixes the /radius/ $h$ and lets the
+number of training points that fall within meaningful kernel weight of it
+vary by local data density instead. In a dense region of the predictor
+space, a fixed-radius kernel window captures many points (heavily
+smoothed, low variance there); in a sparse region, the same window
+captures few (less smoothed, higher variance there) -- the opposite
+trade-off pattern from KNN, whose fixed neighbor /count/ instead widens
+its radius automatically in sparse regions to keep exactly $k$ points
+in view. Both methods are, in this precise sense, doing the same kind of
+local averaging with the two possible choices of which quantity to hold
+fixed.
+
+** Prediction outside a compact kernel's support
+
+For =predict()= on genuinely new data (no leave-one-out exclusion, since
+new rows were never part of the training set), a query point falling
+outside /every/ training point's kernel window returns =NaN= for the
+three compact-support kernels (Epanechnikov, Uniform, Triangular) --
+there is no well-defined weighted average when every weight in the
+numerator and denominator of §2.2's formula is exactly zero. The unbounded
+Gaussian kernel never has this failure mode, since every training point
+retains some (possibly minuscule) nonzero weight everywhere.
+
+** What we will report
+
+Given the fits, we report exploratory data, the default model's own
+summary and fitted curve, its cross-validation curve,
+predicted-versus-actual and residuals-versus-fitted diagnostics, a four-kernel comparison,
+a bandwidth sensitivity comparison at both extremes, and predictions for
+three new petal widths.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. This report predicts =Petal.Length= from
+=Petal.Width= alone.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven
+=stats::KernelRegression= for every model in this report, and
+=plot::RPlot= for every figure. No external plotting or statistics package
+is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and the exploratory figure
+
+#+name: kreg-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/kernel_regression.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::KernelRegression;
+using datamunge::stats::KernelRegressionKernel;
+using datamunge::stats::KernelRegressionOptions;
+using namespace datamunge::plot;
+
+namespace {
+constexpr const char* kFormula = "Petal.Length ~ Petal.Width";
+}
+#+end_src
+
+#+name: kreg-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+    std::cout << "formula: " << kFormula << "\n\n";
+#+end_src
+
+#+name: kreg-eda-scatter
+#+begin_src c++ :eval no
+    {
+        auto scatter = RPlot::create();
+        scatter.points(iris.numeric_column("Petal.Width").values(),
+                        iris.numeric_column("Petal.Length").values(),
+                        "observed", {37, 99, 235}, 5.0);
+        scatter.title("Iris: Petal Width vs Petal Length")
+            .x_label("Petal.Width (cm)").y_label("Petal.Length (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/kreg_iris_eda_scatter.svg");
+        std::cout << "wrote kreg_iris_eda_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting the default model
+
+Gaussian kernel, bandwidth selected automatically by leave-one-out
+cross-validation -- every library default.
+
+#+name: kreg-fit
+#+begin_src c++ :eval no
+    std::cout << "=== Kernel regression"
+               << " (Gaussian kernel, CV-selected bandwidth) ===\n";
+    KernelRegression model(iris, kFormula);
+    model.print_summary(std::cout);
+
+    model.plot_fit(iris).save_svg("build/org/kreg_iris_fit.svg");
+    model.plot_cv_curve().save_svg("build/org/kreg_iris_cv.svg");
+    std::cout << "wrote kreg_iris_fit.svg, kreg_iris_cv.svg\n";
+#+end_src
+
+*** Diagnostic plots
+
+#+name: kreg-diagnostics
+#+begin_src c++ :eval no
+    {
+        auto pv = model.plot_predicted_vs_actual();
+        pv.background({250, 250, 252});
+        pv.save_svg("build/org/kreg_iris_predicted_vs_actual.svg");
+        auto rf = model.plot_residuals_vs_fitted();
+        rf.background({250, 250, 252});
+        rf.save_svg("build/org/kreg_iris_residuals_vs_fitted.svg");
+        std::cout << "wrote kreg_iris_predicted_vs_actual.svg, "
+                   << "kreg_iris_residuals_vs_fitted.svg\n";
+    }
+#+end_src
+
+*** Kernel comparison
+
+All four kernels, each with its own independently cross-validated
+bandwidth.
+
+#+name: kreg-kernel-comparison
+#+begin_src c++ :eval no
+    std::cout << "\n=== Kernel comparison"
+               << " (each with its own CV-selected bandwidth) ===\n";
+    {
+        const std::vector<std::pair<std::string, KernelRegressionKernel>>
+            kernels = {
+                {"Gaussian", KernelRegressionKernel::Gaussian},
+                {"Epanechnikov", KernelRegressionKernel::Epanechnikov},
+                {"Uniform", KernelRegressionKernel::Uniform},
+                {"Triangular", KernelRegressionKernel::Triangular},
+            };
+        std::cout << std::setw(14) << "kernel" << std::setw(14)
+                   << "bandwidth" << std::setw(10) << "R^2"
+                   << std::setw(10) << "RMSE\n";
+        for (const auto& [name, k] : kernels) {
+            KernelRegressionOptions opts;
+            opts.kernel = k;
+            KernelRegression m(iris, kFormula, opts);
+            std::cout << std::setw(14) << name << std::setw(14)
+                       << std::fixed << std::setprecision(4)
+                       << m.bandwidth() << std::setw(10)
+                       << std::setprecision(4) << m.r_squared()
+                       << std::setw(10) << m.rmse() << "\n";
+        }
+    }
+#+end_src
+
+*** Bandwidth sensitivity
+
+A deliberately too-small and too-large bandwidth, against the
+cross-validated one.
+
+#+name: kreg-bandwidth-sensitivity
+#+begin_src c++ :eval no
+    std::cout << "\n=== Bandwidth sensitivity ===\n";
+    KernelRegressionOptions small_h;
+    small_h.bandwidth = 0.05;
+    KernelRegression small(iris, kFormula, small_h);
+    std::cout << "bandwidth=0.05 (too small): LOO R^2=" << std::fixed
+               << std::setprecision(4) << small.r_squared()
+               << "  LOO RMSE=" << small.rmse() << "\n";
+    small.plot_fit(iris).save_svg(
+        "build/org/kreg_iris_fit_small_bandwidth.svg");
+
+    KernelRegressionOptions large_h;
+    large_h.bandwidth = 5.0;
+    KernelRegression large(iris, kFormula, large_h);
+    std::cout << "bandwidth=5.0 (too large):  LOO R^2="
+               << large.r_squared() << "  LOO RMSE=" << large.rmse()
+               << "\n";
+    large.plot_fit(iris).save_svg(
+        "build/org/kreg_iris_fit_large_bandwidth.svg");
+
+    std::cout << "bandwidth=" << model.bandwidth()
+               << " (CV-selected): LOO R^2=" << model.r_squared()
+               << "  LOO RMSE=" << model.rmse() << "\n";
+    std::cout << "wrote kreg_iris_fit_small_bandwidth.svg, "
+               << "kreg_iris_fit_large_bandwidth.svg\n";
+#+end_src
+
+*** Predicting new petal widths
+
+#+name: kreg-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Petal.Width", std::vector<double>{0.2, 1.3, 2.0});
+    const auto preds = model.predict(newdata);
+    std::cout << "\nPredictions for new petal widths:\n";
+    for (const double p : preds)
+        std::cout << "  Petal.Length = " << std::fixed
+                   << std::setprecision(3) << p << "\n";
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/kreg_iris_analysis.cpp <<'CPP'
+<<kreg-includes>>
+
+int main() {
+<<kreg-load-data>>
+
+<<kreg-eda-scatter>>
+
+<<kreg-fit>>
+
+<<kreg-diagnostics>>
+
+<<kreg-kernel-comparison>>
+
+<<kreg-bandwidth-sensitivity>>
+
+<<kreg-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/kreg_iris_analysis.cpp -o build/org/kreg_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/kreg_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal width vs petal length :width 100%
+[[file:../../build/org/kreg_iris_eda_scatter.svg]]
+
+A visibly nonlinear relationship: a flat, low-variance cluster at small
+petal width (the /setosa/ flowers), a sharp rise around
+=Petal.Width= $\approx 1.0$, then a continuous, gently curving increase
+through the /versicolor//virginica/ range -- exactly the kind of shape a
+single global linear fit would struggle with, and exactly what a local,
+nonparametric method like kernel regression is suited to.
+
+** The fitted model
+
+#+begin_example
+Bandwidth: 0.1663  (selected by leave-one-out cross-validation over 50 values)
+
+Leave-one-out R-squared: 0.9507
+Leave-one-out RMSE: 0.3906  (150 observations)
+#+end_example
+
+#+ATTR_HTML: :alt Kernel regression fit overlaid on the scatter of petal width vs petal length :width 100%
+[[file:../../build/org/kreg_iris_fit.svg]]
+
+The fitted curve tracks the data's real shape closely: flat through the
+/setosa/ cluster, a sharp rise through the transition region, and a
+gentle, slightly wavy increase through the higher end of the range where
+/versicolor/ and /virginica/ overlap -- local averaging following the
+data's actual contours rather than imposing a single global functional
+form.
+
+** Cross-validation curve
+
+#+ATTR_HTML: :alt Leave-one-out cross-validation curve across the bandwidth grid :width 100%
+[[file:../../build/org/kreg_iris_cv.svg]]
+
+A clean, monotonically increasing curve past the selected minimum --
+essentially flat for small bandwidths, then rising steeply once the
+bandwidth exceeds roughly 0.8, mirroring the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]'s
+Ridge cross-validation curve in shape, if not in the underlying
+hyperparameter.
+
+** Diagnostic plots
+
+#+ATTR_HTML: :alt Residuals vs fitted values, leave-one-out :width 100%
+[[file:../../build/org/kreg_iris_residuals_vs_fitted.svg]]
+
+Residuals scatter without obvious pattern across the fitted range, with
+mildly higher spread at the upper end where /versicolor/ and /virginica/
+genuinely overlap -- consistent with §4.1's observation that this is where
+the underlying relationship is least deterministic, not a sign the fitted
+curve itself is misbehaving there.
+
+** Kernel comparison
+
+#+begin_example
+        kernel     bandwidth       R^2     RMSE
+      Gaussian        0.1663    0.9507    0.3906
+  Epanechnikov        0.3545    0.9509    0.3897
+       Uniform        0.2856    0.9505    0.3916
+    Triangular        0.3950    0.9508    0.3902
+#+end_example
+
+Every kernel reaches essentially the same leave-one-out $R^2$ (0.9505 to
+0.9509, a spread of just 0.0004) once each is allowed to select its own
+optimal bandwidth -- direct, quantified confirmation of §2.3's kernel
+functions all serving the same qualitative role (local weighted
+averaging), differing mainly in exactly how weight tapers off with
+distance, a difference cross-validation compensates for almost entirely
+by adjusting $h$. Note the bandwidths themselves are /not/ on a directly
+comparable scale across kernels -- a compact-support kernel's $h$ is
+literally its window's radius, while the unbounded Gaussian's $h$ is a
+scale parameter with no hard cutoff, so Epanechnikov's larger numeric
+bandwidth (0.3545) does not mean it smooths more aggressively than
+Gaussian's smaller one (0.1663).
+
+** Bandwidth sensitivity
+
+#+begin_example
+bandwidth=0.05 (too small): LOO R^2=0.9450  LOO RMSE=0.4127
+bandwidth=5.0 (too large):  LOO R^2=0.0587  LOO RMSE=1.7069
+bandwidth=0.1663 (CV-selected): LOO R^2=0.9507  LOO RMSE=0.3906
+#+end_example
+
+The asymmetry here is striking: an under-smoothed fit ($h=0.05$, more
+than three times smaller than the selected 0.1663) barely costs any
+accuracy at all (0.9450 versus 0.9507), while an over-smoothed one
+($h=5.0$) is catastrophic, collapsing $R^2$ to 0.0587 -- essentially no
+better than predicting the global mean for every flower. This is a far
+sharper bias-variance signature than the
+[[file:knn_iris_analysis.org][KNN companion report]]'s $k$ sweep showed on
+its own three-species classification problem, where even $k=25$ (a sixth of the dataset)
+only cost a fraction of a percentage point.
+
+#+ATTR_HTML: :alt Kernel regression fit at a too-small bandwidth :width 100%
+[[file:../../build/org/kreg_iris_fit_small_bandwidth.svg]]
+
+Visibly wigglier than §4.2's CV-selected fit, with a sharper, more
+step-like jump through the transition region -- low bias, chasing local
+noise, exactly as §2.5 predicts, though not dramatically worse in
+resulting $R^2$ on this particular, fairly clean dataset.
+
+#+ATTR_HTML: :alt Kernel regression fit at a too-large bandwidth :width 100%
+[[file:../../build/org/kreg_iris_fit_large_bandwidth.svg]]
+
+A nearly flat line that misses the /setosa/ cluster's low petal length
+entirely -- high bias in its most visually obvious form, every prediction
+pulled toward the global average regardless of the query point's actual
+petal width.
+
+** Predicting new petal widths
+
+| Petal.Width | Predicted Petal.Length |
+|---------------+--------------------------|
+|           0.2 |                    1.444 |
+|           1.3 |                    4.324 |
+|           2.0 |                    5.540 |
+
+All three predictions fall inside the observed response range and track
+§4.2's fitted curve directly: a narrow petal predicts the short /setosa/
+petal length, a mid-range width predicts a value in the
+/versicolor//virginica/ transition, and the widest predicts a value near
+the top of the observed range.
+
+* Discussion
+
+**Bandwidth is the real hyperparameter; kernel shape is secondary.** §4.5
+and §4.6 together tell a clear, quantified story: swapping the kernel
+function while keeping bandwidth optimally tuned changes leave-one-out
+$R^2$ by at most 0.0004, while getting the bandwidth badly wrong (in the
+over-smoothed direction) costs 0.89 $R^2$ points. A practitioner choosing
+among these four kernels is making a comparatively low-stakes decision;
+correctly selecting or cross-validating the bandwidth is where this
+method's real performance is won or lost.
+
+**Fixed-radius versus fixed-count local averaging.** §2.7's structural
+contrast with the [[file:knn_iris_analysis.org][KNN companion report]] is
+visible in the two reports' bandwidth/$k$ sensitivity results: KNN's
+sweep on its own three-species classification problem showed only a
+mild bias-variance signature (96.00% to 96.67% across the whole tested
+range), while this report's bandwidth sweep on a regression problem shows
+a dramatic one. That difference is not necessarily about fixed-radius
+being inherently more fragile than fixed-count -- it more likely reflects
+that $h=5.0$ is a far more extreme over-smoothing choice, relative to this
+predictor's actual range (roughly 0.1 to 2.5), than $k=25$ (a sixth of the
+training set) was for KNN; both methods can be pushed to a similarly
+catastrophic high-bias regime given an extreme enough hyperparameter.
+
+**Connection to the wider project.** This report's leave-one-out $R^2$ of
+0.9507 sits close to the [[file:knn_iris_analysis.org][KNN companion
+report]]'s regressor figure (0.9634, also leave-one-out) and the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]'s
+in-sample figures (0.96-0.97), despite using only a single predictor where
+the other two use three or four -- further evidence, consistent with
+every classification report's shared 95-100% accuracy range, that this
+project's underlying relationships are strong and recoverable by
+essentially any reasonable method, parametric or not.
+
+* Conclusion
+
+Fitting Nadaraya-Watson kernel regression with =datamunge='s C++
+=stats::KernelRegression= reaches a leave-one-out $R^2$ of 0.9507 on a
+single-predictor iris regression problem, using a Gaussian kernel and a
+cross-validated bandwidth of 0.1663. A four-kernel comparison shows kernel
+shape barely matters once bandwidth is properly tuned (a 0.0004 $R^2$
+spread), while a bandwidth sensitivity sweep shows the opposite is
+emphatically not true for the smoothing parameter itself, with
+over-smoothing collapsing $R^2$ to 0.0587. Read against the
+[[file:knn_iris_analysis.org][KNN companion report]], this method is best
+understood as KNN's fixed-radius mirror image: both are local-averaging,
+leave-one-out-evaluated, single-hyperparameter nonparametric methods that
+differ only in which quantity -- neighbor count or neighborhood radius --
+they hold fixed. As with its companions, this entire report is
+reproducible end to end via
+=just org-example kernel_regression_iris_analysis=, which re-executes
+§3.3.7's assembly block -- and therefore every number and figure above --
+from the =datamunge= source tree.
+
+* References
+
+- Nadaraya, E. A. (1964). "On estimating regression." /Theory of
+  Probability and Its Applications/, 9(1), 141--142.
+- Watson, G. S. (1964). "Smooth regression analysis." /Sankhya: The
+  Indian Journal of Statistics, Series A/, 26(4), 359--372.
+- Epanechnikov, V. A. (1969). "Non-parametric estimation of a
+  multivariate probability density." /Theory of Probability and Its
+  Applications/, 14(1), 153--158.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 6 ("Kernel Smoothing Methods").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

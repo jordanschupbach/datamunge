@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
@@ -80,6 +81,25 @@ void DataFrame::fill_null_string(const std::string& column_name, const std::stri
   frame_.fill_null(column_name, value);
 }
 
+DataFrame* DataFrame::mutate_numeric(const std::string& column_name, const std::vector<double>& values,
+                                     const std::vector<int>& valid_mask) const {
+  return new DataFrame(frame_.mutate(column_name, apply_valid_mask(values, valid_mask)));
+}
+
+DataFrame* DataFrame::mutate_string(const std::string& column_name, const std::vector<std::string>& values,
+                                    const std::vector<int>& valid_mask) const {
+  return new DataFrame(frame_.mutate(column_name, apply_valid_mask(values, valid_mask)));
+}
+
+DataFrame* DataFrame::mutate_string_encoded(const std::string& column_name, const std::string& encoded_values,
+                                            const std::vector<int>& valid_mask) const {
+  return new DataFrame(frame_.mutate(column_name, apply_valid_mask(split_encoded_strings(encoded_values), valid_mask)));
+}
+
+DataFrame* DataFrame::rename(const std::string& old_name, const std::string& new_name) const {
+  return new DataFrame(frame_.rename(old_name, new_name));
+}
+
 DataFrame* DataFrame::select(const std::vector<std::string>& selected_columns) const {
   return new DataFrame(frame_.select(selected_columns));
 }
@@ -88,8 +108,35 @@ DataFrame* DataFrame::select_encoded(const std::string& encoded_columns) const {
   return new DataFrame(frame_.select(split_encoded_strings(encoded_columns)));
 }
 
+DataFrame* DataFrame::relocate(const std::vector<std::string>& columns, const std::string& after) const {
+  return new DataFrame(frame_.relocate(columns, after));
+}
+
+DataFrame* DataFrame::relocate_encoded(const std::string& encoded_columns, const std::string& after) const {
+  return new DataFrame(frame_.relocate(split_encoded_strings(encoded_columns), after));
+}
+
 DataFrame* DataFrame::sort_by(const std::string& column_name, const bool ascending) const {
   return new DataFrame(frame_.sort_by(column_name, ascending));
+}
+
+namespace {
+
+std::vector<bool> to_bool_flags(const std::vector<int>& flags) {
+  std::vector<bool> result;
+  result.reserve(flags.size());
+  for (const auto flag : flags) result.push_back(flag != 0);
+  return result;
+}
+
+} // namespace
+
+DataFrame* DataFrame::arrange(const std::vector<std::string>& columns, const std::vector<int>& ascending) const {
+  return new DataFrame(frame_.arrange(columns, to_bool_flags(ascending)));
+}
+
+DataFrame* DataFrame::arrange_encoded(const std::string& encoded_columns, const std::vector<int>& ascending) const {
+  return new DataFrame(frame_.arrange(split_encoded_strings(encoded_columns), to_bool_flags(ascending)));
 }
 
 DataFrame* DataFrame::drop_duplicates(const std::vector<std::string>& subset) const {
@@ -99,6 +146,48 @@ DataFrame* DataFrame::drop_duplicates(const std::vector<std::string>& subset) co
 DataFrame* DataFrame::drop_duplicates_encoded(const std::string& encoded_subset) const {
   return new DataFrame(frame_.drop_duplicates(split_encoded_strings(encoded_subset)));
 }
+
+DataFrame* DataFrame::distinct(const std::vector<std::string>& subset) const {
+  return new DataFrame(frame_.distinct(subset));
+}
+
+DataFrame* DataFrame::distinct_encoded(const std::string& encoded_subset) const {
+  return new DataFrame(frame_.distinct(split_encoded_strings(encoded_subset)));
+}
+
+std::vector<double> DataFrame::pull_numeric(const std::string& column_name) const {
+  const auto pulled = frame_.pull_numeric(column_name);
+  std::vector<double> values;
+  values.reserve(pulled.size());
+  for (const auto& value : pulled) values.push_back(value.value_or(std::numeric_limits<double>::quiet_NaN()));
+  return values;
+}
+
+std::vector<int> DataFrame::pull_numeric_valid(const std::string& column_name) const {
+  const auto pulled = frame_.pull_numeric(column_name);
+  std::vector<int> valid;
+  valid.reserve(pulled.size());
+  for (const auto& value : pulled) valid.push_back(value.has_value() ? 1 : 0);
+  return valid;
+}
+
+std::vector<std::string> DataFrame::pull_string(const std::string& column_name) const {
+  const auto pulled = frame_.pull_string(column_name);
+  std::vector<std::string> values;
+  values.reserve(pulled.size());
+  for (const auto& value : pulled) values.push_back(value.value_or(std::string()));
+  return values;
+}
+
+std::vector<int> DataFrame::pull_string_valid(const std::string& column_name) const {
+  const auto pulled = frame_.pull_string(column_name);
+  std::vector<int> valid;
+  valid.reserve(pulled.size());
+  for (const auto& value : pulled) valid.push_back(value.has_value() ? 1 : 0);
+  return valid;
+}
+
+std::size_t DataFrame::n_distinct(const std::string& column_name) const { return frame_.n_distinct(column_name); }
 
 DataFrame* DataFrame::group_by_sum(const std::vector<std::string>& key_columns,
                                    const std::vector<std::string>& value_columns) const {
@@ -111,10 +200,99 @@ DataFrame* DataFrame::group_by_sum_encoded(const std::string& encoded_key_column
       frame_.group_by_sum(split_encoded_strings(encoded_key_columns), split_encoded_strings(encoded_value_columns)));
 }
 
+DataFrame* DataFrame::count(const std::vector<std::string>& key_columns, const std::string& count_column_name) const {
+  return new DataFrame(frame_.count(key_columns, count_column_name));
+}
+
+DataFrame* DataFrame::count_encoded(const std::string& encoded_key_columns, const std::string& count_column_name) const {
+  return new DataFrame(frame_.count(split_encoded_strings(encoded_key_columns), count_column_name));
+}
+
+namespace {
+
+dstruct::DataFrame::AggFunc parse_agg_func(const std::string& func) {
+  if (func == "sum") return dstruct::DataFrame::AggFunc::Sum;
+  if (func == "mean") return dstruct::DataFrame::AggFunc::Mean;
+  if (func == "min") return dstruct::DataFrame::AggFunc::Min;
+  if (func == "max") return dstruct::DataFrame::AggFunc::Max;
+  if (func == "median") return dstruct::DataFrame::AggFunc::Median;
+  if (func == "stddev") return dstruct::DataFrame::AggFunc::StdDev;
+  if (func == "count") return dstruct::DataFrame::AggFunc::Count;
+  if (func == "n_distinct") return dstruct::DataFrame::AggFunc::NDistinct;
+  throw std::invalid_argument("DataFrame::summarise: unknown aggregation '" + func +
+                              "' (expected sum, mean, min, max, median, stddev, count, or n_distinct)");
+}
+
+std::vector<dstruct::DataFrame::AggSpec> build_agg_specs(const std::vector<std::string>& agg_columns,
+                                                         const std::vector<std::string>& agg_funcs,
+                                                         const std::vector<std::string>& result_names) {
+  if (agg_columns.size() != agg_funcs.size() || agg_columns.size() != result_names.size()) {
+    throw std::invalid_argument("DataFrame::summarise: agg_columns, agg_funcs, and result_names must have the same length");
+  }
+  std::vector<dstruct::DataFrame::AggSpec> specs;
+  specs.reserve(agg_columns.size());
+  for (std::size_t index = 0; index < agg_columns.size(); ++index) {
+    specs.push_back({agg_columns[index], parse_agg_func(agg_funcs[index]), result_names[index]});
+  }
+  return specs;
+}
+
+dstruct::DataFrame::JoinType parse_join_type(const std::string& join_type) {
+  if (join_type == "inner") return dstruct::DataFrame::JoinType::Inner;
+  if (join_type == "left") return dstruct::DataFrame::JoinType::Left;
+  if (join_type == "right") return dstruct::DataFrame::JoinType::Right;
+  if (join_type == "full") return dstruct::DataFrame::JoinType::Full;
+  if (join_type == "semi") return dstruct::DataFrame::JoinType::Semi;
+  if (join_type == "anti") return dstruct::DataFrame::JoinType::Anti;
+  throw std::invalid_argument("DataFrame::join: unknown join_type '" + join_type +
+                              "' (expected inner, left, right, full, semi, or anti)");
+}
+
+} // namespace
+
+DataFrame* DataFrame::summarise(const std::vector<std::string>& key_columns, const std::vector<std::string>& agg_columns,
+                                const std::vector<std::string>& agg_funcs,
+                                const std::vector<std::string>& result_names) const {
+  return new DataFrame(frame_.summarise(key_columns, build_agg_specs(agg_columns, agg_funcs, result_names)));
+}
+
+DataFrame* DataFrame::summarise_encoded(const std::string& encoded_key_columns, const std::string& encoded_agg_columns,
+                                        const std::string& encoded_agg_funcs,
+                                        const std::string& encoded_result_names) const {
+  return new DataFrame(frame_.summarise(split_encoded_strings(encoded_key_columns),
+                                        build_agg_specs(split_encoded_strings(encoded_agg_columns),
+                                                        split_encoded_strings(encoded_agg_funcs),
+                                                        split_encoded_strings(encoded_result_names))));
+}
+
+DataFrame* DataFrame::pivot_longer(const std::vector<std::string>& value_columns, const std::string& names_to,
+                                   const std::string& values_to) const {
+  return new DataFrame(frame_.pivot_longer(value_columns, names_to, values_to));
+}
+
+DataFrame* DataFrame::pivot_longer_encoded(const std::string& encoded_value_columns, const std::string& names_to,
+                                           const std::string& values_to) const {
+  return new DataFrame(frame_.pivot_longer(split_encoded_strings(encoded_value_columns), names_to, values_to));
+}
+
+DataFrame* DataFrame::pivot_wider(const std::string& names_from, const std::string& values_from,
+                                  const std::vector<std::string>& id_columns) const {
+  return new DataFrame(frame_.pivot_wider(names_from, values_from, id_columns));
+}
+
+DataFrame* DataFrame::pivot_wider_encoded(const std::string& names_from, const std::string& values_from,
+                                          const std::string& encoded_id_columns) const {
+  return new DataFrame(frame_.pivot_wider(names_from, values_from, split_encoded_strings(encoded_id_columns)));
+}
+
+DataFrame* DataFrame::bind_rows(const DataFrame& other) const { return new DataFrame(frame_.bind_rows(other.frame_)); }
+
+DataFrame* DataFrame::bind_cols(const DataFrame& other) const { return new DataFrame(frame_.bind_cols(other.frame_)); }
+
 DataFrame* DataFrame::join(const DataFrame& right, const std::string& left_key, const std::string& right_key,
-                           const bool left_join) const {
-  return new DataFrame(frame_.join(right.frame_, left_key, right_key,
-                                   left_join ? dstruct::DataFrame::JoinType::Left : dstruct::DataFrame::JoinType::Inner));
+                           const std::string& join_type, const std::string& left_suffix,
+                           const std::string& right_suffix) const {
+  return new DataFrame(frame_.join(right.frame_, left_key, right_key, parse_join_type(join_type), left_suffix, right_suffix));
 }
 
 std::size_t DataFrame::numeric_count(const std::string& column_name) const {
@@ -213,6 +391,72 @@ std::vector<std::string> DataFrame::split_encoded_strings(const std::string& enc
   return values;
 }
 
+ShapeLayer::ShapeLayer(gis::ShapeLayer layer) : layer_(std::move(layer)) {}
+
+ShapeLayer* ShapeLayer::read(const std::string& path) { return new ShapeLayer(gis::ShapeLayer::read(path)); }
+
+std::size_t ShapeLayer::size() const { return layer_.size(); }
+
+std::string ShapeLayer::shape_type() const { return gis::to_string(layer_.shape_type()); }
+
+std::vector<double> ShapeLayer::bounds() const {
+  const auto& box = layer_.bounds();
+  return {box.min.x, box.min.y, box.max.x, box.max.y};
+}
+
+DataFrame* ShapeLayer::attributes() const { return new DataFrame(layer_.attributes()); }
+
+std::string ShapeLayer::shape_kind(const std::size_t shape_index) const { return gis::to_string(layer_.shape(shape_index).type); }
+
+std::size_t ShapeLayer::num_parts(const std::size_t shape_index) const { return layer_.shape(shape_index).num_parts(); }
+
+namespace {
+
+std::vector<double> gis_xs_of(const std::vector<gis::Point2D>& points) {
+  std::vector<double> xs;
+  xs.reserve(points.size());
+  for (const auto& p : points) xs.push_back(p.x);
+  return xs;
+}
+
+std::vector<double> gis_ys_of(const std::vector<gis::Point2D>& points) {
+  std::vector<double> ys;
+  ys.reserve(points.size());
+  for (const auto& p : points) ys.push_back(p.y);
+  return ys;
+}
+
+} // namespace
+
+std::vector<double> ShapeLayer::part_x(const std::size_t shape_index, const std::size_t part_index) const {
+  const auto& shape = layer_.shape(shape_index);
+  if (part_index >= shape.parts.size()) {
+    throw std::out_of_range("ShapeLayer::part_x part index out of range");
+  }
+  return gis_xs_of(shape.parts[part_index]);
+}
+
+std::vector<double> ShapeLayer::part_y(const std::size_t shape_index, const std::size_t part_index) const {
+  const auto& shape = layer_.shape(shape_index);
+  if (part_index >= shape.parts.size()) {
+    throw std::out_of_range("ShapeLayer::part_y part index out of range");
+  }
+  return gis_ys_of(shape.parts[part_index]);
+}
+
+std::vector<double> ShapeLayer::point_x(const std::size_t shape_index) const {
+  return gis_xs_of(layer_.shape(shape_index).points);
+}
+
+std::vector<double> ShapeLayer::point_y(const std::size_t shape_index) const {
+  return gis_ys_of(layer_.shape(shape_index).points);
+}
+
+datamunge::plot::RPlot ShapeLayer::plot(const datamunge::plot::RGB fill_color, const datamunge::plot::RGB border_color,
+                                        const std::size_t width, const std::size_t height) const {
+  return layer_.plot(fill_color, border_color, width, height);
+}
+
 GGPlot::GGPlot(const DataFrame& data, const std::string& x_column, const std::string& y_column,
               const std::string& color_column, const std::string& fill_column, const std::string& group_column)
     : impl_(plot::GGPlot::create(data.frame_, plot::Aes{x_column, y_column, color_column, fill_column, group_column})) {}
@@ -300,6 +544,8 @@ GGPlot& GGPlot::labs(const std::string& title, const std::string& x, const std::
 void GGPlot::save(const std::string& path) const { impl_.save(path); }
 
 void GGPlot::save_svg(const std::string& path) const { impl_.save_svg(path); }
+
+void GGPlot::show(const std::string& title_hint) const { impl_.show(title_hint); }
 
 LM::LM(const DataFrame& data, const std::string& formula, const std::string& weights_column)
     : lm_(data.frame_, formula,

@@ -48,5 +48,35 @@ int main() {
   std::cout << "arrow rows = " << table->num_rows() << ", cols = " << table->num_columns() << "\n";
 #endif
 
+  // Tibble/dplyr-style piping: every transform below returns a new DataFrame by value, so
+  // mutate/arrange/rename/select/... chain directly, same as `df |> mutate(...) |> arrange(...)`.
+  const auto piped = cleaned.mutate_with("tax", [](const DataFrame::Row& row) { return row.get_double("sales") * 0.1; })
+                          .rename("quarter", "period")
+                          .arrange({"region", "sales"}, {true, false})
+                          .relocate({"region", "sales"})
+                          .select({"region", "sales", "tax", "period"});
+  std::cout << "piped (mutate + arrange + rename + relocate + select)\n" << piped.to_string() << "\n\n";
+
+  const DataFrame::AggSpec total_sales{"sales", DataFrame::AggFunc::Sum, "total_sales"};
+  const DataFrame::AggSpec avg_sales{"sales", DataFrame::AggFunc::Mean, "avg_sales"};
+  const DataFrame::AggSpec n_products{"product", DataFrame::AggFunc::NDistinct, "n_products"};
+  const auto summarised = cleaned.group_by({"region"}).summarise({total_sales, avg_sales, n_products});
+  std::cout << "group_by(region).summarise(sum, mean, n_distinct)\n" << summarised.to_string() << "\n\n";
+
+  const auto right_join = grouped.join(targets, "region", "region", DataFrame::JoinType::Right);
+  std::cout << "right join with targets\n" << right_join.to_string() << "\n\n";
+
+  const auto unmatched = grouped.join(targets, "region", "region", DataFrame::JoinType::Anti);
+  std::cout << "anti join (regions with no target)\n" << unmatched.to_string() << "\n\n";
+
+  const auto longer = cleaned.pivot_longer({"sales"}, "metric", "value");
+  std::cout << "pivot_longer(sales)\n" << longer.to_string() << "\n\n";
+
+  DataFrame new_region{{{"region", DataFrame::string_column_type(std::vector<std::string>{"north"})},
+                        {"product", DataFrame::string_column_type(std::vector<std::string>{"widget"})},
+                        {"sales", DataFrame::numeric_column_type(std::vector<double>{6.0})}}};
+  const auto bound = cleaned.select({"region", "product", "sales"}).bind_rows(new_region);
+  std::cout << "bind_rows with a new region\n" << bound.to_string() << "\n\n";
+
   return 0;
 }

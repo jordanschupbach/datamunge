@@ -40,6 +40,14 @@
 
 %ignore datamunge::dstruct::NullableColumn;
 %ignore datamunge::dstruct::DataFrame;
+%ignore datamunge::dstruct::GroupedDataFrame;
+%ignore datamunge::gis::ShapeType;
+%ignore datamunge::gis::Shape;
+%ignore datamunge::gis::ShapefileData;
+%ignore datamunge::gis::ShapeLayer;
+%ignore datamunge::gis::to_string;
+%ignore datamunge::gis::read_shp;
+%ignore datamunge::gis::read_dbf;
 %ignore datamunge::stats::LM;
 %ignore datamunge::stats::Formula;
 %ignore datamunge::stats::DesignInfo;

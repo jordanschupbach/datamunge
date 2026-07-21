@@ -26,7 +26,7 @@ puts "[datamunge::DataFrame_to_string $grouped]\n"
 set targets [datamunge::DataFrame_empty]
 datamunge::DataFrame_add_string_column $targets "region" {west east south}
 datamunge::DataFrame_add_numeric_column $targets "target" {18.0 12.0 25.0}
-set joined [datamunge::DataFrame_join $grouped $targets "region" "region" 1]
+set joined [datamunge::DataFrame_join $grouped $targets "region" "region" "left"]
 puts "joined with targets"
 puts "[datamunge::DataFrame_to_string $joined]\n"
 

@@ -1,6 +1,7 @@
 #include <datamunge/fda/bspline.hpp>
 
 #include <algorithm>
+#include <limits>
 #include <stdexcept>
 #include <string>
 
@@ -145,6 +146,90 @@ linalg::DenseMatrix<double> BSplineBasis::evaluate_dense(const std::vector<doubl
     }
 
     return values;
+}
+
+BSpline::BSpline(BSplineBasis basis) : BSpline(std::vector<BSplineBasis>{std::move(basis)}) {}
+
+BSpline::BSpline(std::vector<BSplineBasis> bases) : bases_(std::move(bases)) {
+    if (bases_.empty()) throw std::invalid_argument("BSpline: at least one basis is required");
+    strides_.resize(bases_.size());
+    basis_size_ = 1;
+    for (std::size_t i = bases_.size(); i-- > 0;) {
+        strides_[i] = basis_size_;
+        if (bases_[i].basis_size() > std::numeric_limits<std::size_t>::max() / basis_size_)
+            throw std::overflow_error("BSpline: tensor-product basis is too large");
+        basis_size_ *= bases_[i].basis_size();
+    }
+}
+
+BSpline BSpline::open_uniform(std::size_t degree, std::size_t basis_size, double min_x, double max_x) {
+    return BSpline(BSplineBasis::open_uniform(degree, basis_size, min_x, max_x));
+}
+
+BSpline BSpline::open_uniform(std::vector<std::size_t> degrees, std::vector<std::size_t> basis_sizes,
+                              std::vector<double> mins, std::vector<double> maxs) {
+    if (degrees.empty() || degrees.size() != basis_sizes.size() || degrees.size() != mins.size()
+        || degrees.size() != maxs.size())
+        throw std::invalid_argument("BSpline::open_uniform: all dimension vectors must be non-empty and equal-sized");
+    std::vector<BSplineBasis> bases;
+    bases.reserve(degrees.size());
+    for (std::size_t i = 0; i < degrees.size(); ++i)
+        bases.push_back(BSplineBasis::open_uniform(degrees[i], basis_sizes[i], mins[i], maxs[i]));
+    return BSpline(std::move(bases));
+}
+
+LocalBSplineEvaluation BSpline::evaluate_point(const std::vector<double>& point) const {
+    if (point.size() != bases_.size())
+        throw std::invalid_argument("BSpline::evaluate_point: point dimension does not match basis dimension");
+    LocalBSplineEvaluation out;
+    out.indices = {0};
+    out.values = {1.0};
+    for (std::size_t d = 0; d < bases_.size(); ++d) {
+        const auto local = bases_[d].evaluate_point(point[d]);
+        if (local.indices.empty()) return {};
+        LocalBSplineEvaluation next;
+        next.indices.reserve(out.indices.size() * local.indices.size());
+        next.values.reserve(out.values.size() * local.values.size());
+        for (std::size_t i = 0; i < out.indices.size(); ++i)
+            for (std::size_t j = 0; j < local.indices.size(); ++j) {
+                next.indices.push_back(out.indices[i] + local.indices[j] * strides_[d]);
+                next.values.push_back(out.values[i] * local.values[j]);
+            }
+        out = std::move(next);
+    }
+    return out;
+}
+
+linalg::SparseCOO<double> BSpline::evaluate(const std::vector<double>& points) const {
+    if (dimensions() != 1) throw std::invalid_argument("BSpline::evaluate: scalar points require a one-dimensional basis");
+    std::vector<std::vector<double>> rows;
+    rows.reserve(points.size());
+    for (double x : points) rows.push_back({x});
+    return evaluate(rows);
+}
+
+linalg::SparseCOO<double> BSpline::evaluate(const std::vector<std::vector<double>>& points) const {
+    linalg::SparseCOO<double> values(points.size(), basis_size_);
+    for (std::size_t row = 0; row < points.size(); ++row) {
+        const auto local = evaluate_point(points[row]);
+        for (std::size_t k = 0; k < local.indices.size(); ++k) values.set(row, local.indices[k], local.values[k]);
+    }
+    values.compress();
+    return values;
+}
+
+linalg::DenseMatrix<double> BSpline::evaluate_dense(const std::vector<double>& points) const {
+    const auto sparse = evaluate(points);
+    linalg::DenseMatrix<double> dense(sparse.rows(), sparse.cols(), 0.0);
+    for (std::size_t i = 0; i < sparse.nnz(); ++i) dense(sparse.row_indices()[i], sparse.col_indices()[i]) = sparse.values()[i];
+    return dense;
+}
+
+linalg::DenseMatrix<double> BSpline::evaluate_dense(const std::vector<std::vector<double>>& points) const {
+    const auto sparse = evaluate(points);
+    linalg::DenseMatrix<double> dense(sparse.rows(), sparse.cols(), 0.0);
+    for (std::size_t i = 0; i < sparse.nnz(); ++i) dense(sparse.row_indices()[i], sparse.col_indices()[i]) = sparse.values()[i];
+    return dense;
 }
 
 } // namespace datamunge::fda

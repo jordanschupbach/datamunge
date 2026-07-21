@@ -11,7 +11,17 @@ buildNpmPackage (finalAttrs: {
   name = "datamungejs";
   packageName = "datamungejs";
   version = "0.0.1";
-  src = lib.cleanSource ../.;
+  src = lib.cleanSourceWith {
+    src = ../.;
+    filter =
+      path: type:
+      let
+        base = builtins.baseNameOf path;
+      in
+      !(
+        base == ".git" || base == "build" || base == "dist" || base == "node_modules" || base == "result"
+      );
+  };
   # npmDepsHash = "sha256-xY8C8qEWDw+4HtFbLI2j4liIAZ6cP7JDS5dXT5N/te8=";
   npmDepsHash = "sha256-3AVJuVdQXXQ9oYoT0Zh9s0hwQMDTFsXyd90sCBTO4aw=";
   # Add native build inputs if needed

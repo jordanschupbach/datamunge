@@ -1,4 +1,4 @@
-TARGET := "glm_iris_ex"
+TARGET := "bspline_ex"
 BENCH_TARGET := "linalg_bench"
 JOBS := "20"
 
@@ -221,10 +221,11 @@ prebuild-ocaml:
   # correctly qualifying it with the enum class name (`datamunge::stats::TrendType::Additive`)
   # -- a hard C++ compile error, not a warning. Insert the missing enum-class qualifier for
   # every affected enumerator (see datamunge_ocaml_bindings.md memory for the full diagnosis).
-  perl -0777 -pi -e "s/= datamunge::plot::DataSeries::(Scatter|Line|Bar)\b/= static_cast<int>(datamunge::plot::DataSeries::Kind::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
+  perl -0777 -pi -e "s/= datamunge::plot::DataSeries::(Scatter|Line|Bar|Box|Polygon|Text|Segment)\b/= static_cast<int>(datamunge::plot::DataSeries::Kind::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
   perl -0777 -pi -e "s/= datamunge::stats::(None|Additive|AdditiveDamped)\b/= static_cast<int>(datamunge::stats::TrendType::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
   perl -0777 -pi -e "s/= datamunge::stats::Multiplicative\b/= static_cast<int>(datamunge::stats::SeasonalType::Multiplicative)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
   perl -0777 -pi -e "s/= datamunge::stats::(TwoSided|Less|Greater)\b/= static_cast<int>(datamunge::stats::Alternative::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
+  perl -0777 -pi -e "s/= datamunge::stats::(Bonferroni|Holm|Hochberg|Hommel|BH|BY)\b/= static_cast<int>(datamunge::stats::PAdjustMethod::\$1)/g" {{ BINDINGS_DIR }}/datamungeocaml/src/datamunge_ocaml_wrap.cxx
 
 # }}} prebuild commands
 
@@ -615,8 +616,8 @@ org-export INPUT OUTPUT:
         bash -lc "$export_cmd"; \
       fi'
 
-org-example FORMAT="html":
-    just org-export examples/org/dense_linear_algebra.org build/org/dense_linear_algebra.{{ FORMAT }}
+org-example NAME="dense_linear_algebra" FORMAT="html":
+    just org-export examples/org/{{ NAME }}.org build/org/{{ NAME }}.{{ FORMAT }}
 
 prebuild-docs-pages:
     @echo "Exporting Org pages -> Markdown"
@@ -628,6 +629,22 @@ prebuild-docs-pages:
         else \
           bash -lc "$export_cmd"; \
         fi; \
+      else \
+        bash -lc "$export_cmd"; \
+      fi'
+
+# Convenience alias: build every docs/org/pages/*.org page to Markdown (docs/pages/*.md).
+docs-md: prebuild-docs-pages
+    @echo "Org pages exported to Markdown under docs/pages/"
+
+# Export a single arbitrary Org file to Markdown, executing Babel blocks best-effort
+# (failures are captured into an "Export notes" section instead of aborting the export).
+docs-md-file INPUT OUTPUT:
+    @echo "Exporting {{ INPUT }} -> {{ OUTPUT }} (Markdown, best-effort Babel)"
+    @bash -lc 'set -euo pipefail; \
+      export_cmd='\''emacs --batch -Q -l docs/org-to-md.el -- "{{ INPUT }}" "{{ OUTPUT }}"'\''; \
+      if command -v nix >/dev/null 2>&1; then \
+        nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
       else \
         bash -lc "$export_cmd"; \
       fi'
@@ -645,6 +662,46 @@ docs-all: docs docs-bindings
     @echo "Core + binding docs are up to date."
 
 # }}} docs commands
+
+# {{{ pdf commands
+#
+# PDF export reuses org-export's generic init.el pipeline (backend inferred from the
+# .pdf extension). SVG figures can't be rasterized by pdflatex directly, so init.el
+# converts every \includegraphics{...svg} to a sibling PDF via rsvg-convert on export;
+# both pdflatex and rsvg-convert live in the .#docs-pages devShell.
+
+# Build one examples/org/*.org file to PDF, e.g. `just org-pdf lda_iris_analysis`.
+org-pdf NAME="dense_linear_algebra":
+    just org-export examples/org/{{ NAME }}.org build/org/{{ NAME }}.pdf
+
+# Build every docs/org/pages/*.org page to PDF under build/org/pages-pdf/.
+docs-pdf:
+    @echo "Exporting Org pages -> PDF"
+    @bash -lc 'set -euo pipefail; \
+      export_cmd='\''set -euo pipefail; shopt -s nullglob; mkdir -p build/org/pages-pdf; for f in docs/org/pages/*.org; do base="$(basename "$f" .org)"; out="build/org/pages-pdf/${base}.pdf"; emacs --batch -Q -l init.el -- "$f" "$out"; done'\''; \
+      if command -v nix >/dev/null 2>&1; then \
+        nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
+      else \
+        bash -lc "$export_cmd"; \
+      fi'
+
+# Open a PDF with the user's preferred viewer: $BROWSER, then the first common
+# viewer found on PATH.
+view-pdf PATH:
+    @bash -lc 'set -euo pipefail; \
+      f="{{ PATH }}"; \
+      if [ ! -f "$f" ]; then echo "No such file: $f" >&2; exit 1; fi; \
+      if [ -n "${BROWSER:-}" ]; then exec "$BROWSER" "$f"; fi; \
+      for viewer in xdg-open zathura evince okular mupdf open; do \
+        if command -v "$viewer" >/dev/null 2>&1; then exec "$viewer" "$f"; fi; \
+      done; \
+      echo "No PDF viewer found on PATH; open $f manually." >&2; exit 1'
+
+# Build then open a single example's PDF, e.g. `just view-org-pdf lda_iris_analysis`.
+view-org-pdf NAME="dense_linear_algebra": (org-pdf NAME)
+    just view-pdf build/org/{{ NAME }}.pdf
+
+# }}} pdf commands
 
 # {{{ example commands
 

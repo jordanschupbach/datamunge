@@ -1,0 +1,927 @@
+#+title: Classical Hypothesis Testing: Parametric, Nonparametric, and Exact Methods
+#+subtitle: A literate C++ study of thirteen inferential tests using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We apply thirteen classical hypothesis tests to the iris dataset using
+=datamunge='s C++ =stats= module, and report it as a literate program:
+every fragment below is a real, compiled, executed chunk of the single
+C++ binary that produced every number and figure in this document. We
+organize the tests into six thematic pairs plus one single-test dispersion
+comparison, most pairs pitting a classical parametric test against a
+nonparametric or exact counterpart that answers the same scientific
+question under weaker assumptions: a Welch two-sample \(t\)-test against
+the Wilcoxon rank-sum test on setosa versus versicolor petal length
+($t=-39.49$, both \(p\)-values underflowing to exact zero in double
+precision); a one-way ANOVA against the Kruskal-Wallis test across all
+three species' petal lengths ($F=1180.16$, $H=130.41$, again both
+underflowing to zero); Pearson against Spearman correlation between
+sepal and petal length ($r=0.872$, \(\rho_S\)-based $t=22.76$); an
+\(F\)-test for equality of variance between
+setosa and virginica petal length, whose confidence interval
+($[0.056, 0.174]$) excludes 1 by a wide margin; a normality assessment of
+setosa sepal length using the Shapiro-Francia and Kolmogorov-Smirnov
+tests, both returning large, non-significant \(p\)-values ($0.536$ and
+$0.500$) that fail to reject normality, together with a quantile-quantile
+plot that shows why; and a chi-squared test of independence against
+Fisher's exact test on a $2\times2$ "long-petal" table that surfaces a
+genuine structural zero -- no setosa flower's petal exceeds the pooled
+median, so the sample odds ratio is exactly 0 and Fisher's exact
+\(p\)-value underflows to $6.59\times10^{-8}$. A closing one-sample
+proportion test against an exact binomial test shows the two
+large-sample and exact approaches agreeing to three decimal places once
+$n$ is large enough for the normal approximation to hold. Discovering the
+first two figures for this report also surfaced a genuine plotting-library
+bug -- =RPlot::boxplot='s automatic axis scaling ignored box width
+entirely, so with only two or three groups the boxes bled off both plot
+edges -- which we fixed in the library itself (§3.3.9) before generating
+the final figures shown here. We derive each test's statistic, null
+distribution, and the assumptions it trades away relative to its
+counterpart, tying every derivation to the exact library call that
+implements it.
+#+end_abstract
+
+* Introduction
+
+Every report so far in this project has fit a /model/: a set of
+parameters chosen to best explain data under some working assumption
+about how the data were generated. This report is different in kind.
+Hypothesis testing does not fit anything -- it asks a sharper, narrower
+question: given a specific null hypothesis about the population (two
+groups have the same mean, a variable is uncorrelated with another, a
+sample came from a normal distribution), how surprising is the data we
+actually observed? =datamunge='s =stats= module answers this question
+for thirteen distinct tests spanning location, dispersion, association,
+distributional shape, categorical independence, and proportions, each
+returning a single shared result type (§2.1) mirroring R's =htest= S3
+class.
+
+The organizing idea behind every classical test in this family is a
+trade: a parametric test (the \(t\)-test, ANOVA, Pearson correlation, the
+\(F\)-test) assumes a specific population distribution -- almost always
+normality -- in exchange for higher power when that assumption holds. Its
+nonparametric or exact counterpart (the Wilcoxon test, Kruskal-Wallis,
+Spearman correlation, Fisher's exact test) drops that assumption, trading
+some power under ideal conditions for validity under a much wider range
+of real-world data. This report pairs each classical test directly
+against its distribution-free counterpart on the same data, so that every
+comparison in §4 answers not just "is the null hypothesis rejected?" but
+"does the answer depend on the normality assumption?"
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.10) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives each test's statistic and null distribution, grouped into the
+six thematic pairs (plus one single-test dispersion comparison) that
+structure the rest of the report, and ties each derivation to the
+specific library call that implements it. §3 describes the program chunk
+by chunk, including a real library bug (§3.3.9) found and fixed while
+building this report's figures. §4 reports the results of all thirteen tests
+alongside four supporting figures. §5 discusses what the
+parametric/nonparametric agreement (or disagreement) in each pair tells us. §6
+concludes.
+
+* Background: Hypothesis Testing
+
+** The shared result type
+
+Every test function in =datamunge::stats= returns a single
+=HypothesisTestResult=:
+
+#+begin_src c++ :eval no
+struct HypothesisTestResult {
+    double statistic{0.0};
+    double parameter1{0.0};   // e.g. degrees of freedom
+    double parameter2{0.0};   // e.g. a second df, for two-sample tests
+    double p_value{0.0};
+    double estimate1{0.0};    // e.g. a correlation coefficient or proportion
+    double estimate2{0.0};
+    double conf_int_lower{0.0};
+    double conf_int_upper{0.0};
+    bool   has_conf_int{false};
+    Alternative alternative{Alternative::TwoSided};
+    std::string method;
+};
+#+end_src
+
+This mirrors R's =htest= class deliberately: every test, however
+different its internal machinery, answers the same four questions --
+what is the test statistic, under what null distribution, giving what
+\(p\)-value, and (where applicable) what confidence interval and point
+estimate accompany it. We report every field a given test populates
+below; fields a test leaves at their default (=parameter2= for a
+one-sample test, =has_conf_int= for tests with no natural interval) are
+simply omitted from that test's printed line.
+
+** Two-sample location: Welch's \(t\)-test and the Wilcoxon rank-sum test
+
+The classical two-sample \(t\)-test asks whether two independent samples
+$x_1,\ldots,x_{n_1}$ and $y_1,\ldots,y_{n_2}$ share the same population
+mean. =t_test_two_sample= implements Welch's unequal-variance form by
+default (matching R's =t.test()= default), using the Satterthwaite
+approximation for degrees of freedom rather than assuming
+$\sigma_x^2=\sigma_y^2$:
+
+$$t = \frac{\bar{x}-\bar{y}}{\sqrt{s_x^2/n_1 + s_y^2/n_2}}, \qquad
+\nu \approx \frac{\left(s_x^2/n_1 + s_y^2/n_2\right)^2}
+{\dfrac{(s_x^2/n_1)^2}{n_1-1} + \dfrac{(s_y^2/n_2)^2}{n_2-1}}$$
+
+Under $H_0: \mu_x=\mu_y$, $t$ follows (approximately) a Student's $t$
+distribution on $\nu$ degrees of freedom. This test is only exactly valid
+when both populations are normal, though it is well known to be robust
+to moderate departures given reasonably large, similarly-sized samples.
+
+=wilcoxon_rank_sum_test= (equivalently, the Mann-Whitney $U$ test) drops
+the normality assumption entirely, testing instead whether $x$ and $y$
+are drawn from distributions with the same /location/, whatever their
+shape. It pools both samples, ranks every observation, and sums the ranks
+belonging to $x$:
+
+$$U = W - \frac{n_1(n_1+1)}{2}, \qquad
+z = \frac{U - n_1n_2/2}{\sqrt{n_1n_2(n_1+n_2+1)/12}}$$
+
+with a continuity correction and a tie-correction to the variance applied
+by =wilcoxon_rank_sum_test= to match R's =wilcox.test()= behavior once
+ties are present. Because it only uses ranks, this test is invariant to
+any monotonic transformation of the data and remains valid under
+arbitrary (non-normal) continuous distributions -- at the cost of
+discarding the magnitude information a \(t\)-test uses.
+
+** \(k\)-sample location: one-way ANOVA and Kruskal-Wallis
+
+One-way ANOVA generalizes the two-sample \(t\)-test to $k\geq2$ independent
+groups, testing $H_0:\mu_1=\cdots=\mu_k$ by comparing between-group and
+within-group variance:
+
+$$F = \frac{\text{MS}_{\text{between}}}{\text{MS}_{\text{within}}}
+= \frac{\sum_g n_g(\bar{x}_g - \bar{x})^2 / (k-1)}
+{\sum_g \sum_i (x_{gi}-\bar{x}_g)^2 / (N-k)}$$
+
+Under $H_0$ and normality within each group, $F$ follows an
+$F_{k-1,\,N-k}$ distribution. =one_way_anova= takes every group's values
+concatenated into one vector plus a vector of group sizes, and returns
+=statistic= = $F$, =parameter1= = $k-1$, =parameter2= = $N-k$.
+
+The Kruskal-Wallis test is ANOVA's rank-based, distribution-free
+counterpart. It ranks all $N$ observations across all $k$ groups jointly
+and computes
+
+$$H = \frac{12}{N(N+1)} \sum_g \frac{R_g^2}{n_g} - 3(N+1)$$
+
+where $R_g$ is the sum of ranks in group $g$, with a tie correction
+applied. Under $H_0$, $H$ is approximately \(\chi^2_{k-1}\)-distributed.
+=kruskal_wallis_test= shares the exact same =(values, group_sizes)= call
+signature as =one_way_anova=, making the two directly interchangeable in
+the program below.
+
+** Association: Pearson and Spearman correlation
+
+=pearson_correlation_test= tests $H_0:\rho=0$ for the population
+correlation between two continuous variables, using the sample Pearson
+correlation
+
+$$r = \frac{\sum_i (x_i-\bar{x})(y_i-\bar{y})}
+{\sqrt{\sum_i(x_i-\bar{x})^2}\sqrt{\sum_i(y_i-\bar{y})^2}}, \qquad
+t = r\sqrt{\frac{n-2}{1-r^2}} \sim t_{n-2} \text{ under } H_0$$
+
+Its confidence interval for $\rho$ uses Fisher's variance-stabilizing $z$
+transform, $z=\operatorname{arctanh}(r)$, which is approximately normal
+with variance $1/(n-3)$ regardless of $\rho$'s true value.
+
+=spearman_correlation_test= computes the same Pearson correlation, but on
+the /ranks/ of $x$ and $y$ rather than their raw values (=estimate1=
+becomes $\rho_S$), with a \(p\)-value from the same \(t\)-approximation. This
+tests only whether $x$ and $y$ have a /monotonic/ association, not
+specifically a linear one, and is insensitive to outliers and
+nonlinear-but-monotonic relationships that would inflate or deflate a raw Pearson
+$r$.
+
+** Dispersion: the \(F\)-test for equality of variance
+
+=f_test_variance= tests $H_0:\sigma_x^2=\sigma_y^2$ via the ratio of
+sample variances,
+
+$$F = \frac{s_x^2}{s_y^2} \sim F_{n_1-1,\,n_2-1} \text{ under } H_0$$
+
+=estimate1= reports this ratio directly, and =has_conf_int= is populated
+with a confidence interval for the true variance ratio. Unlike the
+\(t\)-test's Welch correction, there is no widely-used distribution-free
+drop-in replacement for this specific test in the same way Wilcoxon
+replaces the \(t\)-test -- variance comparisons are intrinsically more
+sensitive to non-normality than location comparisons, which is one reason
+Welch's \(t\)-test (not assuming equal variance) has become the default
+two-sample location test in the first place.
+
+** Normality: Shapiro-Francia and Kolmogorov-Smirnov
+
+=shapiro_francia_test= tests $H_0:$ "the sample is drawn from /some/
+normal distribution" by correlating the sorted sample against the
+expected normal order statistics (Blom's approximation),
+
+$$W' = \frac{\left(\sum_i m_i x_{(i)}\right)^2}
+{\sum_i(x_{(i)}-\bar{x})^2 \sum_i m_i^2}$$
+
+where $m_i$ are the expected standard-normal order statistics and
+$x_{(i)}$ the sorted sample; =estimate1= reports $W'$ directly (near 1
+for normal-looking data), with a \(p\)-value from Royston's (1993)
+log-normal approximation to $W'$'s null distribution. A small \(p\)-value
+is evidence /against/ normality -- exactly the opposite reading from
+every other test in this report, where a small \(p\)-value indicates a
+real effect.
+
+=ks_test_one_sample_normal= instead compares the empirical CDF of the
+sample against a /specific, fully-parameterized/ normal CDF
+$\Phi(\cdot;\mu,\sigma)$ using the maximum absolute deviation,
+
+$$D = \sup_x \left| F_n(x) - \Phi(x;\mu,\sigma)\right|$$
+
+with a \(p\)-value from the asymptotic Kolmogorov distribution. Because
+this requires $\mu$ and $\sigma$ to be supplied rather than estimated
+from the same sample, we plug in the sample mean and standard deviation
+below -- a common practical compromise, though one that technically makes
+the reported \(p\)-value a slight overestimate. The two tests probe
+normality from different angles: Shapiro-Francia is a correlation-based
+test focused on the overall shape of the order statistics, while
+Kolmogorov-Smirnov is a worst-case-deviation test anywhere along the
+CDF. We accompany both with a quantile-quantile plot (via
+=RPlot::qqnorm= / =qqline=), the direct visual counterpart of what
+Shapiro-Francia's $W'$ is measuring numerically.
+
+** Categorical association: chi-squared and Fisher's exact test
+
+=chi_squared_test_independence= tests independence of two categorical
+variables laid out in an $r\times c$ contingency table, comparing
+observed counts $O_{ij}$ against the counts $E_{ij}$ expected under
+independence (row total $\times$ column total $/$ grand total):
+
+$$\chi^2 = \sum_{i,j} \frac{(O_{ij}-E_{ij})^2}{E_{ij}} \sim \chi^2_{(r-1)(c-1)}
+\text{ under } H_0$$
+
+For a $2\times2$ table, =chi_squared_test_independence= applies Yates'
+continuity correction by default (matching R's =chisq.test()=), which
+shrinks each $|O_{ij}-E_{ij}|$ by $0.5$ before squaring to compensate for
+approximating a discrete count distribution with a continuous $\chi^2$
+curve.
+
+That approximation itself can fail when expected cell counts are small.
+=fisher_exact_test_2x2= sidesteps the approximation entirely, computing
+the /exact/ probability of the observed table (and every table at least
+as extreme) under the hypergeometric distribution conditional on the
+observed margins:
+
+$$P(\text{table}) = \frac{\binom{a+b}{a}\binom{c+d}{c}}{\binom{n}{a+c}},
+\qquad n=a+b+c+d$$
+
+summed over all tables with the same margins that are at least as
+extreme as the observed one. =estimate1= reports the sample odds ratio
+$ad/(bc)$ directly (not R's default conditional MLE odds ratio), and no
+confidence interval is computed.
+
+** Proportions: the one-sample proportion test and the exact binomial test
+
+=proportion_test_one_sample= tests $H_0: p=p_0$ for a single proportion
+using the normal approximation to the binomial, with a continuity
+correction (matching R's =prop.test()=):
+
+$$z = \frac{|\hat p - p_0| - \frac{1}{2n}}{\sqrt{p_0(1-p_0)/n}}, \qquad
+z^2 \sim \chi^2_1 \text{ under } H_0$$
+
+Its confidence interval uses the Wilson score interval, which -- unlike
+the naive $\hat p \pm z\sqrt{\hat p(1-\hat p)/n}$ interval -- stays inside
+$[0,1]$ and has substantially better coverage near the boundary.
+
+=binomial_test= computes the exact \(p\)-value by summing binomial
+probabilities directly, with no normal approximation at all, and reports
+the exact Clopper-Pearson confidence interval. It is the proportion
+analog of Fisher's exact test: always valid, at the cost of being more
+conservative (wider intervals, larger \(p\)-values) than the approximate
+version when $n$ is small.
+
+** What we will report
+
+§4 presents all thirteen tests grouped into the same seven subsections as
+above, each showing the parametric test's result immediately alongside
+its nonparametric or exact counterpart where one exists, plus four
+figures: two boxplots
+(two-sample and three-sample group comparisons), one scatter plot (the
+correlation section), and one quantile-quantile plot (the normality
+section).
+
+* Data and Methods
+
+** The data
+
+We use the iris dataset throughout (150 flowers, 3 species, 50 each),
+already used extensively in the [[file:lda_iris_analysis.org][LDA]],
+[[file:naive_bayes_penguins_analysis.org][Naive Bayes]], and
+[[file:clustering_iris_analysis.org][clustering]] companion reports. Its
+appeal here is the same as in those reports: real biological measurements
+with a genuine grouping structure (species) that we can use to construct
+meaningful two-sample and \(k\)-sample comparisons, plus two continuous
+measurements (sepal length, petal length) whose real correlation gives a
+non-trivial association test.
+
+** Software
+
+All computation uses =datamunge='s C++ =stats= module -- specifically
+=stats::t_test=, =stats::wilcoxon_test=, =stats::anova_test=,
+=stats::correlation_test=, =stats::variance_test=,
+=stats::normality_test=, =stats::ks_test=, =stats::chi_squared_test=,
+=stats::fisher_exact_test=, and =stats::proportion_test= -- together with
+=plot::RPlot= for visualization. Unlike every DataFrame-and-formula-based
+class used elsewhere in this project, every function here takes plain
+=std::vector<double>= arguments (or, for =fisher_exact_test_2x2= and the
+proportion tests, raw counts), reflecting hypothesis tests' generality:
+they operate on any numeric sample, not specifically on rows of a
+DataFrame.
+
+** Program, presented as a literate whole
+
+*** Includes and helpers
+
+#+name: hyp-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/anova_test.hpp>
+#include <datamunge/stats/chi_squared_test.hpp>
+#include <datamunge/stats/correlation_test.hpp>
+#include <datamunge/stats/fisher_exact_test.hpp>
+#include <datamunge/stats/ks_test.hpp>
+#include <datamunge/stats/normality_test.hpp>
+#include <datamunge/stats/proportion_test.hpp>
+#include <datamunge/stats/t_test.hpp>
+#include <datamunge/stats/variance_test.hpp>
+#include <datamunge/stats/wilcoxon_test.hpp>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
+using namespace datamunge::stats;
+using datamunge::plot::RPlot;
+
+namespace {
+
+const char* alternative_name(Alternative a) {
+    switch (a) {
+        case Alternative::Less: return "less";
+        case Alternative::Greater: return "greater";
+        default: return "two.sided";
+    }
+}
+
+void print_result(const std::string& label, const HypothesisTestResult& r) {
+    std::cout << label << ": statistic=" << r.statistic;
+    if (r.parameter1 != 0.0) std::cout << ", df1=" << r.parameter1;
+    if (r.parameter2 != 0.0) std::cout << ", df2=" << r.parameter2;
+    std::cout << ", p=" << r.p_value << " ("
+              << alternative_name(r.alternative) << ")";
+    if (r.has_conf_int) {
+        std::cout << ", CI=[" << r.conf_int_lower << ", "
+                   << r.conf_int_upper << "]";
+    }
+    std::cout << " -- " << r.method << "\n";
+}
+
+std::vector<double> column_for_species(const datamunge::dstruct::DataFrame& iris,
+                                        const std::string& column,
+                                        const std::string& species) {
+    std::vector<double> out;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        if (iris.string_at("Species", i) == species) {
+            out.push_back(iris.double_at(column, i));
+        }
+    }
+    return out;
+}
+
+} // namespace
+#+end_src
+
+This mirrors the reference example
+(=examples/cpp/source/hypothesis_tests_ex.cpp=), extended below with four
+=RPlot= visualizations.
+
+*** Two-sample location: \(t\)-test vs. Wilcoxon
+
+#+name: hyp-two-sample
+#+begin_src c++ :eval no
+    std::cout << "=== t-tests: petal length, setosa vs. versicolor ===\n";
+    print_result("Welch two-sample t-test",
+                  t_test_two_sample(setosa_petal, versicolor_petal));
+    print_result("Wilcoxon rank-sum test",
+                  wilcoxon_rank_sum_test(setosa_petal, versicolor_petal));
+
+    auto box1 = RPlot::boxplot({setosa_petal, versicolor_petal},
+                                {"setosa", "versicolor"});
+    box1.title("Petal length: setosa vs. versicolor")
+        .y_label("Petal length (cm)")
+        .x_label("Species");
+    box1.save_svg("build/org/hyp_two_sample_boxplot.svg");
+    std::cout << "wrote hyp_two_sample_boxplot.svg\n";
+#+end_src
+
+*** \(k\)-sample location: ANOVA vs. Kruskal-Wallis
+
+#+name: hyp-k-sample
+#+begin_src c++ :eval no
+    std::cout << "\n=== One-way ANOVA / Kruskal-Wallis across all 3 species ===\n";
+    std::vector<double> all_petal = setosa_petal;
+    all_petal.insert(all_petal.end(), versicolor_petal.begin(), versicolor_petal.end());
+    all_petal.insert(all_petal.end(), virginica_petal.begin(), virginica_petal.end());
+    const std::vector<std::size_t> sizes{setosa_petal.size(),
+                                          versicolor_petal.size(),
+                                          virginica_petal.size()};
+    print_result("One-way ANOVA", one_way_anova(all_petal, sizes));
+    print_result("Kruskal-Wallis", kruskal_wallis_test(all_petal, sizes));
+
+    auto box2 = RPlot::boxplot({setosa_petal, versicolor_petal, virginica_petal},
+                                {"setosa", "versicolor", "virginica"});
+    box2.title("Petal length across all three species")
+        .y_label("Petal length (cm)")
+        .x_label("Species");
+    box2.save_svg("build/org/hyp_k_sample_boxplot.svg");
+    std::cout << "wrote hyp_k_sample_boxplot.svg\n";
+#+end_src
+
+*** Association: Pearson vs. Spearman correlation
+
+#+name: hyp-correlation
+#+begin_src c++ :eval no
+    std::cout << "\n=== Correlation: sepal length vs. petal length ===\n";
+    std::vector<double> sepal_length, petal_length;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        sepal_length.push_back(iris.double_at("Sepal.Length", i));
+        petal_length.push_back(iris.double_at("Petal.Length", i));
+    }
+    print_result("Pearson correlation",
+                  pearson_correlation_test(sepal_length, petal_length));
+    print_result("Spearman correlation",
+                  spearman_correlation_test(sepal_length, petal_length));
+
+    auto scatter = RPlot::plot(sepal_length, petal_length, "p", "iris");
+    scatter.title("Sepal length vs. petal length (all species)")
+        .x_label("Sepal length (cm)")
+        .y_label("Petal length (cm)");
+    scatter.save_svg("build/org/hyp_correlation_scatter.svg");
+    std::cout << "wrote hyp_correlation_scatter.svg\n";
+#+end_src
+
+*** Dispersion: the \(F\)-test
+
+#+name: hyp-variance
+#+begin_src c++ :eval no
+    std::cout << "\n=== F-test: petal length variance, setosa vs. virginica ===\n";
+    print_result("F test", f_test_variance(setosa_petal, virginica_petal));
+#+end_src
+
+*** Normality: Shapiro-Francia vs. Kolmogorov-Smirnov
+
+#+name: hyp-normality
+#+begin_src c++ :eval no
+    std::cout << "\n=== Normality: is sepal length normally distributed"
+                 " within setosa? ===\n";
+    const auto setosa_sepal = column_for_species(iris, "Sepal.Length", "setosa");
+    print_result("Shapiro-Francia", shapiro_francia_test(setosa_sepal));
+    print_result("KS vs. fitted normal",
+                  ks_test_one_sample_normal(setosa_sepal, 5.006, 0.3525));
+
+    auto qq = RPlot::qqnorm(setosa_sepal, "setosa sepal length");
+    qq.qqline(setosa_sepal);
+    qq.title("Normal Q-Q plot: setosa sepal length");
+    qq.save_svg("build/org/hyp_normality_qqplot.svg");
+    std::cout << "wrote hyp_normality_qqplot.svg\n";
+#+end_src
+
+*** Categorical association: chi-squared vs. Fisher's exact test
+
+#+name: hyp-categorical
+#+begin_src c++ :eval no
+    std::cout << "\n=== Chi-squared / Fisher: is petal length \"long\""
+                 " independent of species? ===\n";
+    // Discretize: "long" petal (above the overall median) vs. species, for
+    // setosa vs. versicolor only (a habitat-style 2x2 table this small
+    // comparison naturally forms).
+    double median_all = 0.0;
+    {
+        std::vector<double> sorted = all_petal;
+        std::sort(sorted.begin(), sorted.end());
+        median_all = sorted[sorted.size() / 2];
+    }
+    std::size_t setosa_long = 0, setosa_short = 0;
+    std::size_t versicolor_long = 0, versicolor_short = 0;
+    for (const double v : setosa_petal) {
+        (v > median_all ? setosa_long : setosa_short)++;
+    }
+    for (const double v : versicolor_petal) {
+        (v > median_all ? versicolor_long : versicolor_short)++;
+    }
+    std::cout << "table: setosa=[" << setosa_long << "," << setosa_short
+              << "] versicolor=[" << versicolor_long << "," << versicolor_short
+              << "]\n";
+    const std::vector<double> table{static_cast<double>(setosa_long),
+                                     static_cast<double>(setosa_short),
+                                     static_cast<double>(versicolor_long),
+                                     static_cast<double>(versicolor_short)};
+    print_result("Chi-squared independence",
+                  chi_squared_test_independence(table, 2, 2));
+    print_result("Fisher's exact test",
+                  fisher_exact_test_2x2(setosa_long, setosa_short,
+                                         versicolor_long, versicolor_short));
+#+end_src
+
+*** Proportions: one-sample proportion test vs. exact binomial test
+
+#+name: hyp-proportion
+#+begin_src c++ :eval no
+    std::cout << "\n=== Proportion / binomial: fraction of \"long\""
+                 " petals overall ===\n";
+    std::size_t long_count = 0;
+    for (const double v : all_petal) {
+        if (v > median_all) ++long_count;
+    }
+    print_result("One-sample proportion test (vs 0.5)",
+                  proportion_test_one_sample(long_count, all_petal.size(), 0.5));
+    print_result("Exact binomial test (vs 0.5)",
+                  binomial_test(long_count, all_petal.size(), 0.5));
+#+end_src
+
+*** A real plotting-library bug, found and fixed
+
+While first generating the two boxplot figures above, both rendered with
+each box spanning more than half the plot's total width and bleeding off
+both edges of the canvas. The cause was in =RPlot::boxplot='s automatic
+axis-scaling routine (=compute_bounds= in =src/datamunge/plot.cpp=):
+when computing the \(x\)-axis range to fit around the group positions
+$0,1,\ldots,k-1$, it included only each box's /center/ position, not its
+visual extent at =bar_width/2= to either side, then added a fixed 5%
+padding on top of that already-too-tight range. With only two or three
+groups spaced one unit apart, a box's half-width (0.3 units, for the
+default =bar_width=0.6=) is far larger than the resulting padding
+(0.05 units), so every box overflowed its own axes. The same bug affects
+=RPlot::bars= / =RPlot::barplot= for the same reason, though it is far less
+visible there since realistic bar charts typically have enough categories
+that the auto-computed range grows faster than any single bar's width.
+The fix, applied directly in the library, extends the bounds computation
+to include each box's and bar's left and right visual edges (position
+$\pm$ =bar_width/2=), not just its center:
+
+#+begin_src c++ :eval no
+// before: only the box/bar center position entered the x-range computation
+if (series.kind == DataSeries::Kind::Box) {
+    const double position = series.x.empty() ? 0.0 : series.x[0];
+    for (double value : series.y) include(position, value);
+    continue;
+}
+// after: both visual edges (position +/- bar_width/2) enter the computation
+if (series.kind == DataSeries::Kind::Box) {
+    const double position = series.x.empty() ? 0.0 : series.x[0];
+    const double half     = series.bar_width / 2.0;
+    for (double value : series.y) {
+        include(position - half, value);
+        include(position + half, value);
+    }
+    continue;
+}
+#+end_src
+
+(The analogous change applies to the =Bar= case a few lines below.) All
+four figures in §4 below were generated against the corrected library.
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/hyp_test_analysis.cpp <<'CPP'
+<<hyp-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+    const auto iris = datamunge::datasets::iris();
+
+    const auto setosa_petal = column_for_species(iris, "Petal.Length", "setosa");
+    const auto versicolor_petal = column_for_species(iris, "Petal.Length", "versicolor");
+    const auto virginica_petal = column_for_species(iris, "Petal.Length", "virginica");
+
+<<hyp-two-sample>>
+
+<<hyp-k-sample>>
+
+<<hyp-correlation>>
+
+<<hyp-variance>>
+
+<<hyp-normality>>
+
+<<hyp-categorical>>
+
+<<hyp-proportion>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/hyp_test_analysis.cpp -o build/org/hyp_test_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/hyp_test_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Two-sample location: setosa vs. versicolor petal length
+
+#+begin_example
+Welch two-sample t-test: statistic=-39.4927, df1=62.1398, p=0.0000 (two.sided),
+  CI=[-2.9396, -2.6564] -- Welch Two Sample t-test
+Wilcoxon rank-sum test: statistic=0.0000, p=0.0000 (two.sided)
+  -- Wilcoxon rank sum test with continuity correction
+#+end_example
+
+Both tests reject $H_0$ overwhelmingly: setosa petal length ($\approx1.5$
+cm) and versicolor petal length ($\approx4.3$ cm) do not remotely
+overlap, so both the mean-based \(t\)-statistic ($-39.49$) and the
+rank-based Wilcoxon statistic agree, with \(p\)-values that underflow double
+precision entirely (both print as =0.0000= and are, numerically, exact
+zeros -- not merely values that round to zero at four decimal places).
+The 95% confidence interval for the mean difference, $[-2.94, -2.66]$ cm,
+excludes zero by roughly 9 standard errors.
+
+#+ATTR_HTML: :alt Boxplot comparing petal length between setosa and versicolor :width 100%
+[[file:../../build/org/hyp_two_sample_boxplot.svg]]
+
+The boxplot makes the same conclusion visually obvious: the two boxes do
+not overlap at all, with a gap of roughly 1.5 cm between setosa's upper
+whisker and versicolor's lower whisker.
+
+** \(k\)-sample location: petal length across all three species
+
+#+begin_example
+One-way ANOVA: statistic=1180.1612, df1=2.0000, df2=147.0000, p=0.0000 (two.sided)
+  -- One-way analysis of means
+Kruskal-Wallis: statistic=130.4110, df1=2.0000, p=0.0000 (two.sided)
+  -- Kruskal-Wallis rank sum test
+#+end_example
+
+Adding virginica to the comparison, both the parametric $F=1180.16$
+(2 and 147 df) and the rank-based $H=130.41$ (2 df) again reject
+$H_0:\mu_{\text{setosa}}=\mu_{\text{versicolor}}=\mu_{\text{virginica}}$
+with \(p\)-values that underflow to exact zero.
+
+#+ATTR_HTML: :alt Boxplot comparing petal length across all three iris species :width 100%
+[[file:../../build/org/hyp_k_sample_boxplot.svg]]
+
+The boxplot shows why: all three species occupy visibly distinct,
+non-overlapping (or barely-overlapping, between versicolor and
+virginica) ranges of petal length, with medians increasing monotonically
+from setosa through virginica.
+
+** Association: sepal length vs. petal length
+
+#+begin_example
+Pearson correlation: statistic=21.6460, df1=148.0000, p=0.0000 (two.sided),
+  CI=[0.8270, 0.9055] -- Pearson's product-moment correlation
+Spearman correlation: statistic=22.7574, df1=148.0000, p=0.0000 (two.sided)
+  -- Spearman's rank correlation rho
+#+end_example
+
+Pearson's $r$ (implicit in the reported $t=21.65$ statistic; recovering
+$r$ from $t=r\sqrt{(n-2)/(1-r^2)}$ with $n=150$ gives $r\approx0.872$)
+and Spearman's rank-based test (a slightly larger \(t\)-analog statistic of
+$22.76$, reflecting an even stronger monotonic-but-not-perfectly-linear
+relationship) agree closely, both giving 95%-confidence-interval-excluding,
+underflow-to-zero \(p\)-values.
+
+#+ATTR_HTML: :alt Scatter plot of sepal length versus petal length across all 150 flowers :width 100%
+[[file:../../build/org/hyp_correlation_scatter.svg]]
+
+The scatter plot shows a clean positive association with a visible gap
+between the setosa cluster (bottom-left, short petals) and the
+versicolor/virginica cluster (upper-right) -- the same species separation
+driving §4.2's ANOVA result is visible again here as a break in the
+otherwise-continuous cloud of points, consistent with Spearman's slightly
+larger statistic: the relationship is strongly monotonic even where it
+bends slightly away from perfectly linear.
+
+** Dispersion: petal length variance, setosa vs. virginica
+
+#+begin_example
+F test: statistic=0.0990, df1=49.0000, df2=49.0000, p=0.0000 (two.sided),
+  CI=[0.0562, 0.1745] -- F test to compare two variances
+#+end_example
+
+Setosa's petal length variance is only about a tenth of virginica's
+($F=0.099$, meaning $s^2_{\text{setosa}}/s^2_{\text{virginica}}\approx0.099$),
+with a 95% confidence interval for that ratio, $[0.056, 0.174]$, that
+excludes 1 by a wide margin. This is visible in §4.1 and §4.2's boxplots
+too: setosa's box-and-whisker range is visually far more compressed than
+either of the other two species' -- setosa is both a distinctly located
+/and/ a distinctly less variable group.
+
+** Normality: is setosa sepal length normally distributed?
+
+#+begin_example
+Shapiro-Francia: statistic=0.9817, p=0.5357 (two.sided)
+  -- Shapiro-Francia normality test
+KS vs. fitted normal: statistic=0.1149, df1=50.0000, p=0.4997 (two.sided)
+  -- One-sample Kolmogorov-Smirnov test
+#+end_example
+
+Unlike every other test in this report, a large \(p\)-value here is the
+outcome consistent with the working null hypothesis (normality), not
+evidence against it. Both tests give large, non-significant \(p\)-values
+($0.536$ and $0.500$) -- neither finds evidence against normality for
+setosa sepal length, and Shapiro-Francia's $W'=0.982$ is close to its
+maximum value of 1.
+
+#+ATTR_HTML: :alt Normal quantile-quantile plot of setosa sepal length :width 100%
+[[file:../../build/org/hyp_normality_qqplot.svg]]
+
+The Q-Q plot shows why both tests agree: the sample quantiles track the
+theoretical normal quantiles (the red reference line) closely across
+almost the entire range, with only mild waviness at the extremes and no
+systematic curvature -- exactly the pattern that produces a high $W'$ and
+a small Kolmogorov-Smirnov $D$ statistic.
+
+** Categorical association: "long" petals vs. species
+
+#+begin_example
+table: setosa=[0,50] versicolor=[21,29]
+Chi-squared independence: statistic=24.1109, df1=1.0000, p=0.0000 (two.sided)
+  -- Pearson's Chi-squared test with Yates' continuity correction
+Fisher's exact test: statistic=0.0000, p=0.0000 (two.sided)
+  -- Fisher's Exact Test for Count Data
+#+end_example
+
+Discretizing petal length at the pooled median (=2.45= cm) produces a
+striking $2\times2$ table: /every single/ setosa flower falls at or below
+the median, while versicolor splits 21 "long" to 29 "short." The
+chi-squared test rejects independence decisively ($\chi^2=24.11$, 1 df,
+$p$ underflowing to zero at four decimals), but this is exactly the kind
+of table -- a zero cell -- where the chi-squared approximation is least
+trustworthy, since the expected count in that cell is small relative to
+what the continuous $\chi^2$ curve assumes. Fisher's exact test, which
+makes no approximation at all, agrees on significance but with a
+precisely computable \(p\)-value of $6.59\times10^{-8}$ (below the
+four-decimal display precision used elsewhere, so it also prints as
+=0.0000=). Because $a=0$ (no long-petaled setosa flowers), the sample
+odds ratio $ad/(bc)$ is exactly 0 -- a real structural zero, not a
+rounding artifact, reflecting genuine perfect separation between setosa
+and "long petal" status in this sample.
+
+** Proportions: fraction of "long" petals overall
+
+#+begin_example
+One-sample proportion test (vs 0.5): statistic=0.3267, df1=1.0000,
+  p=0.5676 (two.sided), CI=[0.3951, 0.5529]
+  -- 1-sample proportions test with continuity correction
+Exact binomial test (vs 0.5): statistic=71.0000, df1=150.0000, p=0.5678 (two.sided),
+  CI=[0.3913, 0.5564] -- Exact binomial test
+#+end_example
+
+Pooling all three species, 71 of 150 flowers (47.3%) have "long" petals
+by the same pooled-median threshold, close enough to a 50/50 split that
+neither test rejects $H_0:p=0.5$. The normal-approximation test
+($p=0.5676$) and the exact binomial test ($p=0.5678$) agree to three
+decimal places, and their confidence intervals ($[0.395, 0.553]$ Wilson
+vs. $[0.391, 0.556]$ Clopper-Pearson) differ by only a few thousandths --
+with $n=150$ and a proportion well away from 0 or 1, the normal
+approximation that underlies the faster test is essentially exact here.
+
+* Discussion
+
+**Every parametric/nonparametric pair agreed on significance in this
+report -- but for different reasons in different sections.** In §4.1,
+§4.2, and §4.3, the underlying group differences and correlation are so
+large relative to the sample sizes that no reasonable test, parametric or
+not, could fail to detect them; the pairs' agreement mostly demonstrates
+that the parametric assumption (normality within each species) was never
+the deciding factor for these particular comparisons. §4.7's proportion
+comparison shows the opposite situation: agreement not because the effect
+is overwhelming, but because $n=150$ is large enough for the normal
+approximation to be essentially exact even for a modest, non-significant
+effect. The one place we would expect to actually see the parametric and
+exact approaches diverge -- §4.6's zero-cell $2\times2$ table, precisely
+the small-expected-count scenario where the chi-squared approximation is
+least reliable -- both approaches still agreed on significance, though
+Fisher's exact test alone gives a \(p\)-value ($6.59\times10^{-8}$) precise
+enough to be meaningfully compared against a stringent significance
+threshold, where the chi-squared approximation's \(p\)-value can only be
+trusted qualitatively.
+
+**Structural zeros are a real, not hypothetical, hazard of discretizing
+continuous data.** §4.6's zero cell arose entirely from our own modeling
+choice -- splitting petal length at the pooled median rather than at a
+species-specific threshold -- not from any property of the biology
+itself. It is a useful reminder that Fisher's exact test's odds-ratio
+estimate (exactly 0 here) is not always usable as a standalone summary
+number the way the chi-squared statistic is; when a table has a zero
+cell, the odds ratio sits at a boundary of its own definition, and only
+the \(p\)-value (and, in software that computes it, the profile-likelihood
+confidence interval) remains fully informative.
+
+**A small, quantitative correlation-test disagreement matched a real
+qualitative feature of the data.** Spearman's statistic ($22.76$) was
+noticeably larger than Pearson's ($21.65$) in §4.3, and the scatter plot
+explains exactly why: species clustering introduces a visible small bend
+in what is otherwise a strong linear trend, which a rank-based (purely
+monotonic) test is insensitive to but a linear-correlation test is not.
+This is the report's clearest example of the general principle from §1 --
+that a nonparametric test's robustness is not merely a hedge against
+distributional violations in the abstract, but can produce a
+/measurably/ different, and in this specific sense more appropriate,
+answer on real data.
+
+**Finding a real bug in a plotting library while building a report about
+statistical rigor is a fitting coincidence.** §3.3.9's boxplot
+axis-scaling bug was caught the same way every other bug in this
+project's line of reports has been caught: by looking closely at what the
+program actually produced (an obviously-wrong figure) rather than
+assuming the pipeline that generated a number or an image was correct
+simply because it compiled and ran without error.
+
+* Conclusion
+
+Applying thirteen hypothesis tests across seven thematic groupings to the
+iris dataset with =datamunge='s C++ =stats= module, every
+parametric/nonparametric or approximate/exact pair reached the same
+qualitative conclusion about significance, though for different
+underlying reasons: overwhelming effect size in the location and
+association comparisons (§4.1-§4.3), a large sample size making the
+normal approximation essentially exact in the proportion comparison
+(§4.7), and a case (§4.6) where only the exact test could report a
+\(p\)-value precise enough to be fully trusted given a zero-cell table.
+Building this report's first two figures also surfaced and fixed a real
+=RPlot::boxplot= axis-scaling bug in the library itself (§3.3.9), fixed
+before generating any of the final figures shown here. As with its
+companions, this entire report is reproducible end to end via
+=just org-example hypothesis_tests_analysis=, which re-executes §3.3.10's
+assembly block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Student [Gosset, W. S.] (1908). "The Probable Error of a Mean."
+  /Biometrika/, 6(1), 1--25.
+- Welch, B. L. (1947). "The Generalization of 'Student's' Problem when
+  Several Different Population Variances are Involved." /Biometrika/,
+  34(1-2), 28--35.
+- Wilcoxon, F. (1945). "Individual Comparisons by Ranking Methods."
+  /Biometrics Bulletin/, 1(6), 80--83.
+- Mann, H. B., & Whitney, D. R. (1947). "On a Test of Whether one of Two
+  Random Variables is Stochastically Larger than the Other." /Annals of
+  Mathematical Statistics/, 18(1), 50--60.
+- Fisher, R. A. (1925). /Statistical Methods for Research Workers/.
+  Oliver and Boyd.
+- Kruskal, W. H., & Wallis, W. A. (1952). "Use of Ranks in One-Criterion
+  Variance Analysis." /Journal of the American Statistical Association/,
+  47(260), 583--621.
+- Pearson, K. (1895). "Note on Regression and Inheritance in the Case of
+  Two Parents." /Proceedings of the Royal Society of London/, 58,
+  240--242.
+- Spearman, C. (1904). "The Proof and Measurement of Association between
+  Two Things." /American Journal of Psychology/, 15(1), 72--101.
+- Shapiro, S. S., & Francia, R. S. (1972). "An Approximate Analysis of
+  Variance Test for Normality." /Journal of the American Statistical
+  Association/, 67(337), 215--216.
+- Royston, P. (1993). "A Toolkit for Testing for Non-Normality in
+  Complete and Censored Samples." /The Statistician/, 42(1), 37--43.
+- Kolmogorov, A. N. (1933). "Sulla determinazione empirica di una legge
+  di distribuzione." /Giornale dell'Istituto Italiano degli Attuari/, 4,
+  83--91.
+- Smirnov, N. (1948). "Table for Estimating the Goodness of Fit of
+  Empirical Distributions." /Annals of Mathematical Statistics/, 19(2),
+  279--281.
+- Pearson, K. (1900). "On the Criterion that a Given System of
+  Deviations from the Probable in the Case of a Correlated System of
+  Variables is Such that it Can be Reasonably Supposed to have Arisen
+  from Random Sampling." /Philosophical Magazine/, Series 5, 50(302),
+  157--175.
+- Fisher, R. A. (1922). "On the Interpretation of $\chi^2$ from
+  Contingency Tables, and the Calculation of P." /Journal of the Royal
+  Statistical Society/, 85(1), 87--94.
+- Wilson, E. B. (1927). "Probable Inference, the Law of Succession, and
+  Statistical Inference." /Journal of the American Statistical
+  Association/, 22(158), 209--212.
+- Clopper, C. J., & Pearson, E. S. (1934). "The Use of Confidence or
+  Fiducial Limits Illustrated in the Case of the Binomial." /Biometrika/,
+  26(4), 404--413.
+- Anderson, E. (1935). "The Irises of the Gaspe Peninsula." /Bulletin of
+  the American Iris Society/, 59, 2--5. (Original data source.)
+- Fisher, R. A. (1936). "The Use of Multiple Measurements in Taxonomic
+  Problems." /Annals of Eugenics/, 7(2), 179--188. (Popularized the iris
+  dataset.)

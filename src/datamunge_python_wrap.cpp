@@ -4056,19 +4056,19 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[28]
 #define SWIGTYPE_p_datamunge__Ridge swig_types[29]
 #define SWIGTYPE_p_datamunge__SVM swig_types[30]
-#define SWIGTYPE_p_datamunge__Tape swig_types[31]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[32]
-#define SWIGTYPE_p_datamunge__Var swig_types[33]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[34]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[35]
-#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[36]
-#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[37]
-#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[38]
-#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[39]
-#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[40]
-#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[41]
-#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[42]
-#define SWIGTYPE_p_datamunge__algebra__detail__ExprNode swig_types[43]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[31]
+#define SWIGTYPE_p_datamunge__Tape swig_types[32]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[33]
+#define SWIGTYPE_p_datamunge__Var swig_types[34]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[35]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[36]
+#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[37]
+#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[38]
+#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[39]
+#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[40]
+#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[41]
+#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[42]
+#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[43]
 #define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[44]
 #define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[45]
 #define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[46]
@@ -38228,6 +38228,584 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_numeric__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_numeric" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_mutate_numeric" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_numeric((std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_numeric__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_numeric" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_numeric((std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_numeric(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_mutate_numeric", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_mutate_numeric__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< int,std::allocator< int > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_mutate_numeric__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_mutate_numeric'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::mutate_numeric(std::string const &,std::vector< double,std::allocator< double > > const &,std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::DataFrame::mutate_numeric(std::string const &,std::vector< double,std::allocator< double > > const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_string__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_mutate_string" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string((std::string const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_string__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string((std::string const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_string(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_mutate_string", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_mutate_string__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< int,std::allocator< int > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_mutate_string__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_mutate_string'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::mutate_string(std::string const &,std::vector< std::string,std::allocator< std::string > > const &,std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::DataFrame::mutate_string(std::string const &,std::vector< std::string,std::allocator< std::string > > const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_string_encoded__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_mutate_string_encoded" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_string_encoded__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_mutate_string_encoded(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_mutate_string_encoded", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_mutate_string_encoded__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< int,std::allocator< int > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_mutate_string_encoded__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_mutate_string_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::mutate_string_encoded(std::string const &,std::string const &,std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::DataFrame::mutate_string_encoded(std::string const &,std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_rename(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_rename", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_rename" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_rename" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_rename" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_rename" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_rename" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->rename((std::string const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_DataFrame_select(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::DataFrame *arg1 = 0 ;
@@ -38301,6 +38879,280 @@ SWIGINTERN PyObject *_wrap_DataFrame_select_encoded(PyObject *self, PyObject *ar
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_relocate__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_relocate" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_relocate__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_relocate(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_relocate", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_relocate__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_relocate__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_relocate'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::relocate(std::vector< std::string,std::allocator< std::string > > const &,std::string const &) const\n"
+    "    datamunge::DataFrame::relocate(std::vector< std::string,std::allocator< std::string > > const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_relocate_encoded__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_relocate_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_relocate_encoded__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate_encoded((std::string const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_relocate_encoded(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_relocate_encoded", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_relocate_encoded__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_relocate_encoded__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_relocate_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::relocate_encoded(std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::relocate_encoded(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -38432,6 +39284,280 @@ fail:
     "  Possible C/C++ prototypes are:\n"
     "    datamunge::DataFrame::sort_by(std::string const &,bool) const\n"
     "    datamunge::DataFrame::sort_by(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_arrange__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::vector< int,std::allocator< int > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_arrange" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< int,std::allocator< int > > const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_arrange__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_arrange(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_arrange", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_arrange__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< int,std::allocator< int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_arrange__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_arrange'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::arrange(std::vector< std::string,std::allocator< std::string > > const &,std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::DataFrame::arrange(std::vector< std::string,std::allocator< std::string > > const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_arrange_encoded__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< int,std::allocator< int > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_arrange_encoded" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange_encoded" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange_encoded((std::string const &)*arg2,(std::vector< int,std::allocator< int > > const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_arrange_encoded__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange_encoded((std::string const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_arrange_encoded(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_arrange_encoded", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_arrange_encoded__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< int,std::allocator< int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_arrange_encoded__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_arrange_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::arrange_encoded(std::string const &,std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::DataFrame::arrange_encoded(std::string const &) const\n");
   return 0;
 }
 
@@ -38573,6 +39699,333 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_DataFrame_distinct__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_distinct" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_distinct" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_distinct" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_distinct__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_distinct" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_distinct(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_distinct", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_DataFrame_distinct__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_distinct__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_distinct'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::distinct(std::vector< std::string,std::allocator< std::string > > const &) const\n"
+    "    datamunge::DataFrame::distinct() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_distinct_encoded(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_distinct_encoded", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_distinct_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_distinct_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_distinct_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct_encoded((std::string const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pull_numeric(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_pull_numeric", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_numeric" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_numeric((std::string const &)*arg2);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pull_numeric_valid(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  std::vector< int,std::allocator< int > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_pull_numeric_valid", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_numeric_valid" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_numeric_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_numeric_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_numeric_valid((std::string const &)*arg2);
+  resultobj = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pull_string(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_pull_string", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_string" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_string" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_string((std::string const &)*arg2);
+  resultobj = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pull_string_valid(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  std::vector< int,std::allocator< int > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_pull_string_valid", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_string_valid" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_string_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_string_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DataFrame const *)arg1)->pull_string_valid((std::string const &)*arg2);
+  resultobj = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_n_distinct(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_n_distinct", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_n_distinct" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_n_distinct" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_n_distinct" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = ((datamunge::DataFrame const *)arg1)->n_distinct((std::string const &)*arg2);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_DataFrame_group_by_sum(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::DataFrame *arg1 = 0 ;
@@ -38679,21 +40132,1424 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_DataFrame_count__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_count" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_count__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_count(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_count", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_count__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_count__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_count'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::count(std::vector< std::string,std::allocator< std::string > > const &,std::string const &) const\n"
+    "    datamunge::DataFrame::count(std::vector< std::string,std::allocator< std::string > > const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_count_encoded__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_count_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_count_encoded__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count_encoded((std::string const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_count_encoded(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_count_encoded", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_count_encoded__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_count_encoded__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_count_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::count_encoded(std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::count_encoded(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_summarise(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg4 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[5] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_summarise", 5, 5, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_summarise" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_summarise" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_summarise" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_summarise" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res5 = swig::asptr(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_summarise" "', argument " "5"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "5"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->summarise((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3,(std::vector< std::string,std::allocator< std::string > > const &)*arg4,(std::vector< std::string,std::allocator< std::string > > const &)*arg5);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_summarise_encoded(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[5] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_summarise_encoded", 5, 5, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_summarise_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_summarise_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_summarise_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_summarise_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_summarise_encoded" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->summarise_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_longer" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_pivot_longer", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_pivot_longer__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_pivot_longer__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_pivot_longer__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_pivot_longer'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::pivot_longer(std::vector< std::string,std::allocator< std::string > > const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer(std::vector< std::string,std::allocator< std::string > > const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer(std::vector< std::string,std::allocator< std::string > > const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer_encoded__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer_encoded__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer_encoded__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_longer_encoded(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_pivot_longer_encoded", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_DataFrame_pivot_longer_encoded__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_pivot_longer_encoded__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_pivot_longer_encoded__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_pivot_longer_encoded'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::pivot_longer_encoded(std::string const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer_encoded(std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::pivot_longer_encoded(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_wider__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_wider" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_wider" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< std::string,std::allocator< std::string > > const &)*arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_wider__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_wider" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider((std::string const &)*arg2,(std::string const &)*arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_wider(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_pivot_wider", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_DataFrame_pivot_wider__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = swig::asptr(argv[3], (std::vector< std::string,std::allocator< std::string > >**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_DataFrame_pivot_wider__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_pivot_wider'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::DataFrame::pivot_wider(std::string const &,std::string const &,std::vector< std::string,std::allocator< std::string > > const &) const\n"
+    "    datamunge::DataFrame::pivot_wider(std::string const &,std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_pivot_wider_encoded(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[4] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_pivot_wider_encoded", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_bind_rows(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_bind_rows", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_bind_rows" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_bind_rows" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_bind_rows" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->bind_rows((datamunge::DataFrame const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_bind_cols(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DataFrame_bind_cols", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_bind_cols" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_bind_cols" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_bind_cols" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->bind_cols((datamunge::DataFrame const &)*arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_DataFrame_join__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::DataFrame *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  bool arg5 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  std::string *arg7 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
   int res4 = SWIG_OLDOBJ ;
-  bool val5 ;
-  int ecode5 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  int res6 = SWIG_OLDOBJ ;
+  int res7 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_join" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res6 = SWIG_AsPtr_std_string(swig_obj[5], &ptr);
+    if (!SWIG_IsOK(res6)) {
+      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+    }
+    arg6 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res7 = SWIG_AsPtr_std_string(swig_obj[6], &ptr);
+    if (!SWIG_IsOK(res7)) {
+      SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "DataFrame_join" "', argument " "7"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "7"" of type '" "std::string const &""'"); 
+    }
+    arg7 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6,(std::string const &)*arg7);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  if (SWIG_IsNewObj(res7)) delete arg7;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_join__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  int res6 = SWIG_OLDOBJ ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_join" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__DataFrame,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res6 = SWIG_AsPtr_std_string(swig_obj[5], &ptr);
+    if (!SWIG_IsOK(res6)) {
+      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+    }
+    arg6 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res6)) delete arg6;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DataFrame_join__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::DataFrame *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
   datamunge::DataFrame *result = 0 ;
   
   (void)self;
@@ -38733,24 +41589,32 @@ SWIGINTERN PyObject *_wrap_DataFrame_join__SWIG_0(PyObject *self, Py_ssize_t nob
     }
     arg4 = ptr;
   }
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
-  if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "bool""'");
-  } 
-  arg5 = static_cast< bool >(val5);
-  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
   return resultobj;
 fail:
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_DataFrame_join__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DataFrame_join__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::DataFrame *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
@@ -38815,11 +41679,11 @@ fail:
 
 SWIGINTERN PyObject *_wrap_DataFrame_join(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[6] = {
+  PyObject *argv[8] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_join", 0, 5, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DataFrame_join", 0, 7, argv))) SWIG_fail;
   --argc;
   if (argc == 4) {
     int _v = 0;
@@ -38836,7 +41700,7 @@ SWIGINTERN PyObject *_wrap_DataFrame_join(PyObject *self, PyObject *args) {
           int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
           _v = SWIG_CheckState(res);
           if (_v) {
-            return _wrap_DataFrame_join__SWIG_1(self, argc, argv);
+            return _wrap_DataFrame_join__SWIG_3(self, argc, argv);
           }
         }
       }
@@ -38857,12 +41721,72 @@ SWIGINTERN PyObject *_wrap_DataFrame_join(PyObject *self, PyObject *args) {
           int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
           _v = SWIG_CheckState(res);
           if (_v) {
-            {
-              int res = SWIG_AsVal_bool(argv[4], NULL);
-              _v = SWIG_CheckState(res);
-            }
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
             if (_v) {
-              return _wrap_DataFrame_join__SWIG_0(self, argc, argv);
+              return _wrap_DataFrame_join__SWIG_2(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                return _wrap_DataFrame_join__SWIG_1(self, argc, argv);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__DataFrame, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  return _wrap_DataFrame_join__SWIG_0(self, argc, argv);
+                }
+              }
             }
           }
         }
@@ -38873,7 +41797,9 @@ SWIGINTERN PyObject *_wrap_DataFrame_join(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DataFrame_join'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,bool) const\n"
+    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,std::string const &) const\n"
+    "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &) const\n"
     "    datamunge::DataFrame::join(datamunge::DataFrame const &,std::string const &,std::string const &) const\n");
   return 0;
 }
@@ -39437,6 +42363,723 @@ SWIGINTERN PyObject *DataFrame_swigregister(PyObject *SWIGUNUSEDPARM(self), PyOb
 
 SWIGINTERN PyObject *DataFrame_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_read(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  datamunge::ShapeLayer *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_read" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_read" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = (datamunge::ShapeLayer *)datamunge::ShapeLayer::read((std::string const &)*arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_size(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_size" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  result = ((datamunge::ShapeLayer const *)arg1)->size();
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_shape_type(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_shape_type" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  result = ((datamunge::ShapeLayer const *)arg1)->shape_type();
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_bounds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_bounds" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  result = ((datamunge::ShapeLayer const *)arg1)->bounds();
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_attributes(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::DataFrame *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_attributes" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  result = (datamunge::DataFrame *)((datamunge::ShapeLayer const *)arg1)->attributes();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_shape_kind(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ShapeLayer_shape_kind", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_shape_kind" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_shape_kind" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::ShapeLayer const *)arg1)->shape_kind(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_num_parts(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ShapeLayer_num_parts", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_num_parts" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_num_parts" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::ShapeLayer const *)arg1)->num_parts(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_part_x(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ShapeLayer_part_x", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_part_x" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_part_x" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ShapeLayer_part_x" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::ShapeLayer const *)arg1)->part_x(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_part_y(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ShapeLayer_part_y", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_part_y" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_part_y" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ShapeLayer_part_y" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = ((datamunge::ShapeLayer const *)arg1)->part_y(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_point_x(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ShapeLayer_point_x", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_point_x" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_point_x" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::ShapeLayer const *)arg1)->point_x(SWIG_STD_MOVE(arg2));
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_point_y(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ShapeLayer_point_y", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_point_y" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_point_y" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = ((datamunge::ShapeLayer const *)arg1)->point_y(SWIG_STD_MOVE(arg2));
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::size_t arg4 ;
+  std::size_t arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  datamunge::plot::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+    } else {
+      datamunge::plot::RGB * temp = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+    } else {
+      datamunge::plot::RGB * temp = reinterpret_cast< datamunge::plot::RGB * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "ShapeLayer_plot" "', argument " "4"" of type '" "std::size_t""'");
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "ShapeLayer_plot" "', argument " "5"" of type '" "std::size_t""'");
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  resultobj = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::size_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::plot::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+    } else {
+      datamunge::plot::RGB * temp = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+    } else {
+      datamunge::plot::RGB * temp = reinterpret_cast< datamunge::plot::RGB * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "ShapeLayer_plot" "', argument " "4"" of type '" "std::size_t""'");
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  resultobj = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
+  datamunge::plot::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+    } else {
+      datamunge::plot::RGB * temp = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+    } else {
+      datamunge::plot::RGB * temp = reinterpret_cast< datamunge::plot::RGB * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  resultobj = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  datamunge::plot::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+    } else {
+      datamunge::plot::RGB * temp = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2));
+  resultobj = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  datamunge::plot::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  result = ((datamunge::ShapeLayer const *)arg1)->plot();
+  resultobj = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShapeLayer_plot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ShapeLayer_plot", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__ShapeLayer, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_ShapeLayer_plot__SWIG_4(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__ShapeLayer, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ShapeLayer_plot__SWIG_3(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__ShapeLayer, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ShapeLayer_plot__SWIG_2(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__ShapeLayer, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_ShapeLayer_plot__SWIG_1(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__ShapeLayer, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_ShapeLayer_plot__SWIG_0(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ShapeLayer_plot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB,std::size_t,std::size_t) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB,std::size_t) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB,datamunge::plot::RGB) const\n"
+    "    datamunge::ShapeLayer::plot(datamunge::plot::RGB) const\n"
+    "    datamunge::ShapeLayer::plot() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ShapeLayer(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::ShapeLayer *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__ShapeLayer, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ShapeLayer" "', argument " "1"" of type '" "datamunge::ShapeLayer *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ShapeLayer_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__ShapeLayer, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
 }
 
 SWIGINTERN PyObject *_wrap_new_GGPlot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
@@ -41749,6 +45392,103 @@ SWIGINTERN PyObject *_wrap_GGPlot_save_svg(PyObject *self, PyObject *args) {
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GGPlot_show__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ((datamunge::GGPlot const *)arg1)->show((std::string const &)*arg2);
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GGPlot_show__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+  ((datamunge::GGPlot const *)arg1)->show();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GGPlot_show(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "GGPlot_show", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_GGPlot_show__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_GGPlot_show__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'GGPlot_show'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::show(std::string const &) const\n"
+    "    datamunge::GGPlot::show() const\n");
+  return 0;
 }
 
 
@@ -157682,331 +161422,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ExprNode_op_set(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  datamunge::algebra::detail::ExprOp arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ExprNode_op_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_op_set" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ExprNode_op_set" "', argument " "2"" of type '" "datamunge::algebra::detail::ExprOp""'");
-  } 
-  arg2 = static_cast< datamunge::algebra::detail::ExprOp >(val2);
-  if (arg1) (arg1)->op = arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_op_get(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  datamunge::algebra::detail::ExprOp result;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_op_get" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  result = (datamunge::algebra::detail::ExprOp) ((arg1)->op);
-  resultobj = SWIG_From_int(static_cast< int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_value_set(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  double arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ExprNode_value_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_value_set" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ExprNode_value_set" "', argument " "2"" of type '" "double""'");
-  } 
-  arg2 = static_cast< double >(val2);
-  if (arg1) (arg1)->value = arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_value_get(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  double result;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_value_get" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  result = (double) ((arg1)->value);
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_name_set(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ExprNode_name_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_name_set" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  {
-    std::string *ptr = (std::string *)0;
-    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ExprNode_name_set" "', argument " "2"" of type '" "std::string const &""'"); 
-    }
-    if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ExprNode_name_set" "', argument " "2"" of type '" "std::string const &""'"); 
-    }
-    arg2 = ptr;
-  }
-  if (arg1) (arg1)->name = *arg2;
-  resultobj = SWIG_Py_Void();
-  if (SWIG_IsNewObj(res2)) delete arg2;
-  return resultobj;
-fail:
-  if (SWIG_IsNewObj(res2)) delete arg2;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_name_get(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  std::string *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_name_get" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  result = (std::string *) & ((arg1)->name);
-  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_left_set(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  std::shared_ptr< datamunge::algebra::detail::ExprNode > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ExprNode_left_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_left_set" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ExprNode_left_set" "', argument " "2"" of type '" "std::shared_ptr< datamunge::algebra::detail::ExprNode > *""'"); 
-  }
-  arg2 = reinterpret_cast< std::shared_ptr< datamunge::algebra::detail::ExprNode > * >(argp2);
-  if (arg1) (arg1)->left = *arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_left_get(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  std::shared_ptr< datamunge::algebra::detail::ExprNode > *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_left_get" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  result = (std::shared_ptr< datamunge::algebra::detail::ExprNode > *)& ((arg1)->left);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_right_set(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  std::shared_ptr< datamunge::algebra::detail::ExprNode > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ExprNode_right_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_right_set" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ExprNode_right_set" "', argument " "2"" of type '" "std::shared_ptr< datamunge::algebra::detail::ExprNode > *""'"); 
-  }
-  arg2 = reinterpret_cast< std::shared_ptr< datamunge::algebra::detail::ExprNode > * >(argp2);
-  if (arg1) (arg1)->right = *arg2;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ExprNode_right_get(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  std::shared_ptr< datamunge::algebra::detail::ExprNode > *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExprNode_right_get" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  result = (std::shared_ptr< datamunge::algebra::detail::ExprNode > *)& ((arg1)->right);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_ExprNode(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "new_ExprNode", 0, 0, 0)) SWIG_fail;
-  result = (datamunge::algebra::detail::ExprNode *)new datamunge::algebra::detail::ExprNode();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__algebra__detail__ExprNode, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_ExprNode(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::algebra::detail::ExprNode *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__detail__ExprNode, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ExprNode" "', argument " "1"" of type '" "datamunge::algebra::detail::ExprNode *""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::algebra::detail::ExprNode * >(argp1);
-  delete arg1;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *ExprNode_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj = NULL;
-  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__algebra__detail__ExprNode, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
-SWIGINTERN PyObject *ExprNode_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  return SWIG_Python_InitShadowInstance(args);
-}
-
 SWIGINTERN PyObject *_wrap_new_Expr(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::algebra::Expr *result = 0 ;
@@ -159120,14 +162535,80 @@ static PyMethodDef SwigMethods[] = {
 	 { "DataFrame_add_string_column_encoded", _wrap_DataFrame_add_string_column_encoded, METH_VARARGS, NULL},
 	 { "DataFrame_fill_null_numeric", _wrap_DataFrame_fill_null_numeric, METH_VARARGS, NULL},
 	 { "DataFrame_fill_null_string", _wrap_DataFrame_fill_null_string, METH_VARARGS, NULL},
+	 { "DataFrame_mutate_numeric", _wrap_DataFrame_mutate_numeric, METH_VARARGS, "\n"
+		"dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if\n"
+		"       present. Always returns a new DataFrame, so it composes into a pipe.\n"
+		""},
+	 { "DataFrame_mutate_string", _wrap_DataFrame_mutate_string, METH_VARARGS, NULL},
+	 { "DataFrame_mutate_string_encoded", _wrap_DataFrame_mutate_string_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_rename", _wrap_DataFrame_rename, METH_VARARGS, "Non-mutating, chainable single-pair rename."},
 	 { "DataFrame_select", _wrap_DataFrame_select, METH_VARARGS, NULL},
 	 { "DataFrame_select_encoded", _wrap_DataFrame_select_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_relocate", _wrap_DataFrame_relocate, METH_VARARGS, "\n"
+		"dplyr::relocate()-style column reorder: moves `columns` to the front (default) or\n"
+		"       immediately after the column named `after`.\n"
+		""},
+	 { "DataFrame_relocate_encoded", _wrap_DataFrame_relocate_encoded, METH_VARARGS, NULL},
 	 { "DataFrame_sort_by", _wrap_DataFrame_sort_by, METH_VARARGS, NULL},
+	 { "DataFrame_arrange", _wrap_DataFrame_arrange, METH_VARARGS, "\n"
+		"dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when\n"
+		"       provided it must have the same length as `columns`.\n"
+		""},
+	 { "DataFrame_arrange_encoded", _wrap_DataFrame_arrange_encoded, METH_VARARGS, NULL},
 	 { "DataFrame_drop_duplicates", _wrap_DataFrame_drop_duplicates, METH_VARARGS, NULL},
 	 { "DataFrame_drop_duplicates_encoded", _wrap_DataFrame_drop_duplicates_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_distinct", _wrap_DataFrame_distinct, METH_VARARGS, "dplyr::distinct() alias for drop_duplicates()."},
+	 { "DataFrame_distinct_encoded", _wrap_DataFrame_distinct_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_pull_numeric", _wrap_DataFrame_pull_numeric, METH_VARARGS, "\n"
+		"dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / \"\" (string)\n"
+		"       in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =\n"
+		"       null, same convention as add_numeric_column's valid_mask) if nulls matter.\n"
+		""},
+	 { "DataFrame_pull_numeric_valid", _wrap_DataFrame_pull_numeric_valid, METH_VARARGS, NULL},
+	 { "DataFrame_pull_string", _wrap_DataFrame_pull_string, METH_VARARGS, NULL},
+	 { "DataFrame_pull_string_valid", _wrap_DataFrame_pull_string_valid, METH_VARARGS, NULL},
+	 { "DataFrame_n_distinct", _wrap_DataFrame_n_distinct, METH_VARARGS, "\n"
+		"Number of distinct values in column_name; a null counts as one additional distinct\n"
+		"       value if present.\n"
+		""},
 	 { "DataFrame_group_by_sum", _wrap_DataFrame_group_by_sum, METH_VARARGS, NULL},
 	 { "DataFrame_group_by_sum_encoded", _wrap_DataFrame_group_by_sum_encoded, METH_VARARGS, NULL},
-	 { "DataFrame_join", _wrap_DataFrame_join, METH_VARARGS, NULL},
+	 { "DataFrame_count", _wrap_DataFrame_count, METH_VARARGS, "dplyr::count()-style grouped row counts, default result column name \"n\"."},
+	 { "DataFrame_count_encoded", _wrap_DataFrame_count_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_summarise", _wrap_DataFrame_summarise, METH_VARARGS, "\n"
+		"General dplyr::summarise()-style aggregation: one output row per distinct\n"
+		"       combination of `key_columns`, with one output column per (agg_columns[i],\n"
+		"       agg_funcs[i], result_names[i]) triple -- all three arrays must have the same length.\n"
+		"       agg_funcs entries are one of \"sum\", \"mean\", \"min\", \"max\", \"median\", \"stddev\",\n"
+		"       \"count\", \"n_distinct\" (\"count\" ignores the corresponding agg_columns entry, which may\n"
+		"       be \"\"); a \"\" result_names entry defaults to the agg_columns entry (or \"n\" for count).\n"
+		""},
+	 { "DataFrame_summarise_encoded", _wrap_DataFrame_summarise_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_pivot_longer", _wrap_DataFrame_pivot_longer, METH_VARARGS, "\n"
+		"dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns\n"
+		"       (`names_to` holding the source column name, `values_to` holding its value).\n"
+		""},
+	 { "DataFrame_pivot_longer_encoded", _wrap_DataFrame_pivot_longer_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_pivot_wider", _wrap_DataFrame_pivot_wider, METH_VARARGS, "\n"
+		"dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new\n"
+		"       column names, `values_from` supplies their values; `id_columns` defaults to every\n"
+		"       other column.\n"
+		""},
+	 { "DataFrame_pivot_wider_encoded", _wrap_DataFrame_pivot_wider_encoded, METH_VARARGS, NULL},
+	 { "DataFrame_bind_rows", _wrap_DataFrame_bind_rows, METH_VARARGS, "\n"
+		"dplyr::bind_rows()-style row union: aligns columns by name (unlike concat_rows,\n"
+		"       which isn't exposed here), null-filling any column present in only one frame.\n"
+		""},
+	 { "DataFrame_bind_cols", _wrap_DataFrame_bind_cols, METH_VARARGS, "\n"
+		"dplyr::bind_cols()-style column union: both frames must have the same row count and\n"
+		"       disjoint column names.\n"
+		""},
+	 { "DataFrame_join", _wrap_DataFrame_join, METH_VARARGS, "\n"
+		":type join_type: string, optional\n"
+		":param join_type: One of \"inner\" (default), \"left\", \"right\", \"full\", \"semi\", \"anti\". Any\n"
+		"           column name present in both frames (other than the key column when left_key ==\n"
+		"           right_key) is suffixed on both sides so the result never has duplicate names.\n"
+		""},
 	 { "DataFrame_numeric_count", _wrap_DataFrame_numeric_count, METH_VARARGS, NULL},
 	 { "DataFrame_numeric_null_count", _wrap_DataFrame_numeric_null_count, METH_VARARGS, NULL},
 	 { "DataFrame_numeric_sum", _wrap_DataFrame_numeric_sum, METH_VARARGS, NULL},
@@ -159144,6 +162625,26 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_DataFrame", _wrap_delete_DataFrame, METH_O, NULL},
 	 { "DataFrame_swigregister", DataFrame_swigregister, METH_O, NULL},
 	 { "DataFrame_swiginit", DataFrame_swiginit, METH_VARARGS, NULL},
+	 { "ShapeLayer_read", _wrap_ShapeLayer_read, METH_O, "\n"
+		"Reads \"<path>.shp\" and \"<path>.dbf\" (`path` may already end in one of those\n"
+		"       extensions, or in neither).\n"
+		""},
+	 { "ShapeLayer_size", _wrap_ShapeLayer_size, METH_O, NULL},
+	 { "ShapeLayer_shape_type", _wrap_ShapeLayer_shape_type, METH_O, "One of \"point\", \"polyline\", \"polygon\", \"multipoint\", or \"null\" (an empty layer)."},
+	 { "ShapeLayer_bounds", _wrap_ShapeLayer_bounds, METH_O, "{xmin, ymin, xmax, ymax}, from the shapefile's own declared bounding box."},
+	 { "ShapeLayer_attributes", _wrap_ShapeLayer_attributes, METH_O, NULL},
+	 { "ShapeLayer_shape_kind", _wrap_ShapeLayer_shape_kind, METH_VARARGS, NULL},
+	 { "ShapeLayer_num_parts", _wrap_ShapeLayer_num_parts, METH_VARARGS, "\n"
+		"Number of parts (rings for Polygon, lines for PolyLine; 0 for Point/MultiPoint,\n"
+		"       which use point_x()/point_y() instead).\n"
+		""},
+	 { "ShapeLayer_part_x", _wrap_ShapeLayer_part_x, METH_VARARGS, NULL},
+	 { "ShapeLayer_part_y", _wrap_ShapeLayer_part_y, METH_VARARGS, NULL},
+	 { "ShapeLayer_point_x", _wrap_ShapeLayer_point_x, METH_VARARGS, "Every point's x/y in a Point or MultiPoint shape (a single element for Point)."},
+	 { "ShapeLayer_point_y", _wrap_ShapeLayer_point_y, METH_VARARGS, NULL},
+	 { "ShapeLayer_plot", _wrap_ShapeLayer_plot, METH_VARARGS, NULL},
+	 { "delete_ShapeLayer", _wrap_delete_ShapeLayer, METH_O, NULL},
+	 { "ShapeLayer_swigregister", ShapeLayer_swigregister, METH_O, NULL},
 	 { "new_GGPlot", _wrap_new_GGPlot, METH_VARARGS, ":param color_column,fill_column,group_column: Optional discrete grouping columns; pass \"\" to omit."},
 	 { "GGPlot_geom_point", _wrap_GGPlot_geom_point, METH_VARARGS, NULL},
 	 { "GGPlot_geom_line", _wrap_GGPlot_geom_line, METH_VARARGS, NULL},
@@ -159163,6 +162664,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "GGPlot_labs", _wrap_GGPlot_labs, METH_VARARGS, NULL},
 	 { "GGPlot_save", _wrap_GGPlot_save, METH_VARARGS, NULL},
 	 { "GGPlot_save_svg", _wrap_GGPlot_save_svg, METH_VARARGS, NULL},
+	 { "GGPlot_show", _wrap_GGPlot_show, METH_VARARGS, NULL},
 	 { "delete_GGPlot", _wrap_delete_GGPlot, METH_O, NULL},
 	 { "GGPlot_swigregister", GGPlot_swigregister, METH_O, NULL},
 	 { "GGPlot_swiginit", GGPlot_swiginit, METH_VARARGS, NULL},
@@ -162910,20 +166412,6 @@ static PyMethodDef SwigMethods[] = {
 		"       elsewhere) -- reduces every S-polynomial against the CURRENT basis and appends any\n"
 		"       nonzero remainder until no pair produces one.\n"
 		""},
-	 { "ExprNode_op_set", _wrap_ExprNode_op_set, METH_VARARGS, NULL},
-	 { "ExprNode_op_get", _wrap_ExprNode_op_get, METH_O, NULL},
-	 { "ExprNode_value_set", _wrap_ExprNode_value_set, METH_VARARGS, NULL},
-	 { "ExprNode_value_get", _wrap_ExprNode_value_get, METH_O, NULL},
-	 { "ExprNode_name_set", _wrap_ExprNode_name_set, METH_VARARGS, NULL},
-	 { "ExprNode_name_get", _wrap_ExprNode_name_get, METH_O, NULL},
-	 { "ExprNode_left_set", _wrap_ExprNode_left_set, METH_VARARGS, NULL},
-	 { "ExprNode_left_get", _wrap_ExprNode_left_get, METH_O, NULL},
-	 { "ExprNode_right_set", _wrap_ExprNode_right_set, METH_VARARGS, NULL},
-	 { "ExprNode_right_get", _wrap_ExprNode_right_get, METH_O, NULL},
-	 { "new_ExprNode", _wrap_new_ExprNode, METH_NOARGS, NULL},
-	 { "delete_ExprNode", _wrap_delete_ExprNode, METH_O, NULL},
-	 { "ExprNode_swigregister", ExprNode_swigregister, METH_O, NULL},
-	 { "ExprNode_swiginit", ExprNode_swiginit, METH_VARARGS, NULL},
 	 { "new_Expr", _wrap_new_Expr, METH_NOARGS, NULL},
 	 { "Expr_constant", _wrap_Expr_constant, METH_O, NULL},
 	 { "Expr_variable", _wrap_Expr_variable, METH_O, NULL},
@@ -163017,6 +166505,7 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__RandomForestClassifier = {"_p_dat
 SWIGINTERN swig_type_info _swigt__p_datamunge__RandomForestRegressor = {"_p_datamunge__RandomForestRegressor", "datamunge::RandomForestRegressor *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Ridge = {"_p_datamunge__Ridge", "datamunge::Ridge *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__SVM = {"_p_datamunge__SVM", "datamunge::SVM *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__ShapeLayer = {"_p_datamunge__ShapeLayer", "datamunge::ShapeLayer *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Tape = {"_p_datamunge__Tape", "datamunge::Tape *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor", "datamunge::Tensor *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
@@ -163029,7 +166518,6 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__Polynomial = {"_p_datamu
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RationalFunction = {"_p_datamunge__algebra__RationalFunction", "datamunge::algebra::RationalFunction *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__RealRootIntervals = {"_p_datamunge__algebra__RealRootIntervals", "datamunge::algebra::RealRootIntervals *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__SquareFreeFactor = {"_p_datamunge__algebra__SquareFreeFactor", "std::vector< datamunge::algebra::SquareFreeFactor >::value_type *|datamunge::algebra::SquareFreeFactor *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__algebra__detail__ExprNode = {"_p_datamunge__algebra__detail__ExprNode", "datamunge::algebra::detail::ExprNode *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsOptions = {"_p_datamunge__bayes__GibbsOptions", "datamunge::bayes::GibbsOptions *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsResult = {"_p_datamunge__bayes__GibbsResult", "datamunge::bayes::GibbsResult *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsSampler = {"_p_datamunge__bayes__GibbsSampler", "datamunge::bayes::GibbsSampler *", 0, 0, (void*)0, 0};
@@ -163237,6 +166725,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__RandomForestRegressor,
   &_swigt__p_datamunge__Ridge,
   &_swigt__p_datamunge__SVM,
+  &_swigt__p_datamunge__ShapeLayer,
   &_swigt__p_datamunge__Tape,
   &_swigt__p_datamunge__Tensor,
   &_swigt__p_datamunge__Var,
@@ -163249,7 +166738,6 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__algebra__RationalFunction,
   &_swigt__p_datamunge__algebra__RealRootIntervals,
   &_swigt__p_datamunge__algebra__SquareFreeFactor,
-  &_swigt__p_datamunge__algebra__detail__ExprNode,
   &_swigt__p_datamunge__bayes__GibbsOptions,
   &_swigt__p_datamunge__bayes__GibbsResult,
   &_swigt__p_datamunge__bayes__GibbsSampler,
@@ -163454,6 +166942,7 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__RandomForestClassifier[] = {  {&_
 SWIGINTERN swig_cast_info _swigc__p_datamunge__RandomForestRegressor[] = {  {&_swigt__p_datamunge__RandomForestRegressor, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Ridge[] = {  {&_swigt__p_datamunge__Ridge, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__SVM[] = {  {&_swigt__p_datamunge__SVM, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__ShapeLayer[] = {  {&_swigt__p_datamunge__ShapeLayer, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Tape[] = {  {&_swigt__p_datamunge__Tape, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamunge__Tensor, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
@@ -163466,7 +166955,6 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__Polynomial[] = {  {&_swi
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RationalFunction[] = {  {&_swigt__p_datamunge__algebra__RationalFunction, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__RealRootIntervals[] = {  {&_swigt__p_datamunge__algebra__RealRootIntervals, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__SquareFreeFactor[] = {  {&_swigt__p_datamunge__algebra__SquareFreeFactor, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__algebra__detail__ExprNode[] = {  {&_swigt__p_datamunge__algebra__detail__ExprNode, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsOptions[] = {  {&_swigt__p_datamunge__bayes__GibbsOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsResult[] = {  {&_swigt__p_datamunge__bayes__GibbsResult, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsSampler[] = {  {&_swigt__p_datamunge__bayes__GibbsSampler, 0, 0, 0},{0, 0, 0, 0}};
@@ -163671,6 +167159,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__RandomForestRegressor,
   _swigc__p_datamunge__Ridge,
   _swigc__p_datamunge__SVM,
+  _swigc__p_datamunge__ShapeLayer,
   _swigc__p_datamunge__Tape,
   _swigc__p_datamunge__Tensor,
   _swigc__p_datamunge__Var,
@@ -163683,7 +167172,6 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__algebra__RationalFunction,
   _swigc__p_datamunge__algebra__RealRootIntervals,
   _swigc__p_datamunge__algebra__SquareFreeFactor,
-  _swigc__p_datamunge__algebra__detail__ExprNode,
   _swigc__p_datamunge__bayes__GibbsOptions,
   _swigc__p_datamunge__bayes__GibbsResult,
   _swigc__p_datamunge__bayes__GibbsSampler,
@@ -164525,18 +168013,6 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "MonomialOrder_Lex",SWIG_From_int(static_cast< int >(datamunge::algebra::MonomialOrder::Lex)));
   SWIG_Python_SetConstant(d, "MonomialOrder_Grlex",SWIG_From_int(static_cast< int >(datamunge::algebra::MonomialOrder::Grlex)));
   SWIG_Python_SetConstant(d, "MonomialOrder_Grevlex",SWIG_From_int(static_cast< int >(datamunge::algebra::MonomialOrder::Grevlex)));
-  SWIG_Python_SetConstant(d, "ExprOp_Const",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Const)));
-  SWIG_Python_SetConstant(d, "ExprOp_Var",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Var)));
-  SWIG_Python_SetConstant(d, "ExprOp_Add",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Add)));
-  SWIG_Python_SetConstant(d, "ExprOp_Sub",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Sub)));
-  SWIG_Python_SetConstant(d, "ExprOp_Mul",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Mul)));
-  SWIG_Python_SetConstant(d, "ExprOp_Div",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Div)));
-  SWIG_Python_SetConstant(d, "ExprOp_Pow",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Pow)));
-  SWIG_Python_SetConstant(d, "ExprOp_Neg",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Neg)));
-  SWIG_Python_SetConstant(d, "ExprOp_Sin",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Sin)));
-  SWIG_Python_SetConstant(d, "ExprOp_Cos",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Cos)));
-  SWIG_Python_SetConstant(d, "ExprOp_Exp",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Exp)));
-  SWIG_Python_SetConstant(d, "ExprOp_Log",SWIG_From_int(static_cast< int >(datamunge::algebra::detail::ExprOp::Log)));
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else

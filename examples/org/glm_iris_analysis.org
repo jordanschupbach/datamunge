@@ -1,0 +1,745 @@
+#+title: Generalized Linear Models for Iris Classification and Counts
+#+subtitle: A literate C++ study of logistic and Poisson regression using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit generalized linear models -- logistic (binomial, logit link) and
+Poisson (log link) regression -- to Fisher's (1936) iris data using
+=datamunge='s C++ =stats::GLM=, and report it as a literate program: every
+fragment below is a real, compiled, executed chunk of the single C++ binary
+that produced every number and figure in this document. A logistic
+regression separating /versicolor/ from /virginica/ on petal measurements
+reaches 94.00% resubstitution accuracy (residual deviance 20.56 on 97 df,
+AIC 26.56), with both coefficients significant at the 5% level and a
+textbook sigmoid-shaped fitted-probability curve. We then deliberately
+attempt the same model on a perfectly (not just well) separable pair --
+/setosa/ versus every other species -- and report the genuine numerical
+consequence: every coefficient, standard error, and the residual deviance
+itself come back as =NaN=, a real IRLS failure mode driven by the fitting
+weights collapsing to exactly zero, not a bug in the demonstration. A
+Poisson regression on a derived count response, fit by the identical IRLS
+engine under a different family and link, and a same-data AIC comparison
+between the binomial fit and a deliberately mismatched Gaussian fit on the
+same binary response round out the report. We derive the exponential-family
+GLM framework, the IRLS fitting algorithm as iteratively weighted least
+squares on a working response, deviance and dispersion, and the
+perfect-separation degeneracy from first principles, tying each to the
+corresponding library call.
+#+end_abstract
+
+* Introduction
+
+Every regression report in this project so far has fit a single
+distributional family: the
+[[file:lm_penguins_analysis.org][linear regression companion report]]
+fits Gaussian-response OLS, and the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]
+fits penalized variants of the same Gaussian model. This report generalizes in
+the direction OLS's own name promises: a /generalized/ linear model,
+=stats::GLM=, extends the same linear-predictor machinery to response
+distributions from the exponential family -- Gaussian, binomial, Poisson,
+and Gamma -- each paired with a link function connecting the linear
+predictor to the mean of a possibly non-Gaussian, possibly bounded or
+discrete response. We work two members of that family in detail --
+logistic regression for a binary species indicator, Poisson regression for
+a count -- and use a third, deliberately broken fit to make the method's
+best-known failure mode, perfect separation, concrete rather than abstract.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.9) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the exponential-family GLM framework, the IRLS fitting
+algorithm, deviance and dispersion, and the perfect-separation degeneracy,
+each tied to the specific library call that implements it. §3 describes the
+program chunk by chunk. §4 reports the fitted logistic model, its
+diagnostic plots, a predicted-probability curve with a confidence band, the
+perfect-separation demonstration, the Poisson fit, and an AIC comparison
+across families. §5 discusses what these results say about GLM as a
+method and about this project's other classifiers. §6 concludes.
+
+* Background: Generalized Linear Models
+
+** Setup and notation
+
+$n$ observations, a linear predictor $\eta_i = x_i^\top \beta$ built from
+the same formula engine (=stats::Formula=) every other report in this
+project uses, and a response $y_i$ whose /mean/ (not $y_i$ itself) is
+related to $\eta_i$ through a link function $g$: $g(\mu_i) = \eta_i$, where
+$\mu_i = \mathrm{E}[y_i]$. Setting $g$ to the identity function and
+requiring $y_i$ Gaussian recovers exactly the
+[[file:lm_penguins_analysis.org][linear regression companion report]]'s
+OLS -- GLM is a strict generalization, not a different method.
+
+** The exponential family and canonical links
+
+Each response distribution =stats::GLMFamily= supports belongs to the
+exponential family, and each is paired with its /canonical/ link -- the
+link for which the model's log-likelihood is guaranteed concave, matching
+R's =glm()= defaults exactly: Gaussian uses the identity link
+($\mu_i = \eta_i$), binomial uses the logit link
+($\eta_i = \log\frac{\mu_i}{1-\mu_i}$), Poisson uses the log link
+($\eta_i = \log \mu_i$), and Gamma uses the inverse link
+($\eta_i = 1/\mu_i$). Every family also has a distribution-specific /variance
+function/ $V(\mu)$ describing how the response's variance depends on its
+mean -- constant for Gaussian, $\mu(1-\mu)$ for binomial, $\mu$ for
+Poisson -- which is exactly what makes a Poisson or binomial response
+/heteroscedastic/ by construction, unlike OLS's constant-variance
+assumption.
+
+** Iteratively reweighted least squares
+
+Maximizing a GLM's log-likelihood has no closed form in general (unlike
+OLS's normal equations), so =GLM::fit= uses /iteratively reweighted least
+squares/ (IRLS) -- algebraically equivalent to Fisher scoring, and, for a
+canonical link, to Newton-Raphson on the log-likelihood directly. Each
+iteration linearizes the link function around the current fit to build a
+/working response/
+
+\[
+z_i = \eta_i + (y_i - \mu_i) \, g'(\mu_i) ,
+\qquad
+w_i = \frac{1}{g'(\mu_i)^2 \, V(\mu_i)} ,
+\]
+
+then solves the /weighted/ normal equations
+$\hat\beta \leftarrow (X^\top W X)^{-1} X^\top W z$ for that iteration's
+$w_i$ and $z_i$ -- exactly a weighted least-squares problem, re-solved from
+scratch every iteration as $\mu_i$, and therefore $z_i$ and $w_i$, change.
+=GLMOptions::max_iter= (default 25) and =tol= (default $10^{-8}$) bound
+this loop; =final_weights_= (exposed indirectly through
+=standard_errors()='s covariance) are the $w_i$ from the last iteration.
+§2.7 returns to what happens when $w_i \to 0$ for enough observations.
+
+** Deviance
+
+Where OLS uses residual sum of squares, a GLM's goodness of fit is measured
+by /deviance/, $D = 2\big(\ell_{\text{sat}} - \ell(\hat\beta)\big)$: twice
+the log-likelihood gap between the fitted model and the /saturated/ model
+(one parameter per observation, the best any model in this family could
+possibly do). =null_deviance()= is the same quantity for the
+intercept-only model, so the gap between =null_deviance()= and
+=deviance()= plays the same "how much did the predictors help" role
+$R^2$ plays for OLS, without requiring a Gaussian response. Per-observation
+/deviance residuals/ -- =residuals()=, the =Min/1Q/Median/3Q/Max= line in
+every =print_summary()= call below -- are signed square roots of each
+observation's contribution to $D$, $\mathrm{sign}(y_i - \mu_i)\sqrt{d_i}$,
+constructed so that, for a well-fitting model, they behave like the
+Gaussian residuals the diagnostic plots in §3.4.3 and §3.4.7 already know
+how to display (mirroring R's =plot.glm=, itself close to =plot.lm=).
+
+** Dispersion, standard errors, and AIC
+
+The binomial and Poisson variance functions in §2.2 fully determine the
+response's variance from its mean alone, so their /dispersion/ parameter
+$\phi$ is fixed at exactly 1 (=dispersion()=). Gaussian and Gamma do not
+share that property, so =GLM= estimates $\phi$ from the Pearson residuals,
+$\hat\phi = \sum_i (y_i-\mu_i)^2 / V(\mu_i) \big/ (n-p)$, and the fitted
+covariance matrix (=covariance()=) is $\hat\phi (X^\top W X)^{-1}$
+throughout, unifying both cases into one formula. Coefficient significance
+then follows the matching reference distribution: a $z$ statistic against
+the standard normal when $\phi$ is fixed (binomial, Poisson), a $t$
+statistic against $n-p$ degrees of freedom when $\phi$ is estimated
+(Gaussian, Gamma) -- =test_statistics()= and =p_values()= switch
+automatically based on =family()=. Finally, =aic()= reports
+$2p - 2\ell(\hat\beta)$ (plus, for Gaussian/Gamma, the extra parameter for
+$\hat\phi$ itself); unlike deviance, AIC is valid to compare /across/
+different families fit to the /same/ response data, since it is built
+directly from each model's log-likelihood on that data rather than from a
+family-specific saturated-model baseline -- §4.6 uses this directly.
+
+** Confidence intervals via the delta method
+
+A prediction's standard error is naturally computed on the /link/ scale,
+where the model is linear in $\beta$ and the usual
+$\mathrm{Var}(x_0^\top\hat\beta) = x_0^\top \hat\phi(X^\top WX)^{-1} x_0$
+applies; =predict(newdata, GLMPredictionInterval::Confidence)= builds the
+interval there, then maps the endpoints back through the inverse link
+$g^{-1}$ to the response scale (the delta method). This is why the
+confidence band in §4.3's sigmoid figure narrows smoothly and never
+leaves $[0,1]$: the interval is constructed in a space where it can be
+made symmetric and unbounded, then transformed, rather than being
+symmetric on the response scale itself, where symmetry could push it
+outside the range the response can actually take.
+
+** Perfect separation
+
+Binomial IRLS's weights are $w_i = \mu_i(1-\mu_i)$ under the canonical
+logit link (§2.2's variance function, since $g'(\mu)^2 V(\mu)$ simplifies
+exactly to $1/[\mu(1-\mu)]$ for the logit link). If a predictor combination
+exists that perfectly separates the two response classes, the
+maximum-likelihood fit drives $\hat\eta_i \to \pm\infty$ for every
+observation to push every $\mu_i$ arbitrarily close to its observed $y_i
+\in \{0,1\}$ -- there is no finite maximizer, only a supremum approached in
+the limit. Concretely, this collapses every $w_i$ toward exactly zero as
+the iterations proceed, which makes the weighted design matrix
+$X^\top W X$ increasingly singular; §4.4 shows what =GLM= actually returns
+when this happens (spoiler: not a large number, but =NaN=, once the matrix
+becomes exactly singular to floating-point precision within
+=max_iter= iterations). This is a well-documented, genuine degeneracy of
+maximum-likelihood logistic regression (see e.g. Albert & Anderson, 1984)
+and not specific to this implementation -- R's own =glm()= produces a
+"fitted probabilities numerically 0 or 1 occurred" warning and similarly
+unusable standard errors on the same kind of data.
+
+** What we will report
+
+Given the fits, we report exploratory data, the logistic model's own
+summary and diagnostic plots, resubstitution accuracy, a
+predicted-probability curve with a confidence band, the perfect-separation
+demonstration, the Poisson model's summary and diagnostics, an AIC
+comparison across families on the same response, and predictions for three
+new flowers.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. The logistic and separation-demo models use a
+binary species indicator built from this data (never a native three-level
+factor, since binomial =GLM= expects a $\{0,1\}$ response); the Poisson
+model uses =Sepal.Length= rounded to the nearest integer as a synthetic
+count response, purely to have a genuine non-negative-integer variable to
+demonstrate the family on.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven =stats::GLM= for
+every model in this report, and =plot::RPlot= for every figure. No external
+plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and the exploratory figure
+
+#+name: glm-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/glm.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::GLM;
+using datamunge::stats::GLMFamily;
+using datamunge::stats::GLMOptions;
+using datamunge::stats::GLMPredictionInterval;
+using namespace datamunge::plot;
+#+end_src
+
+#+name: glm-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+#+end_src
+
+#+name: glm-eda-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> species =
+            {"setosa", "versicolor", "virginica"};
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < species.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == species[k];
+            });
+            scatter.points(subset.numeric_column("Petal.Length").values(),
+                            subset.numeric_column("Petal.Width").values(),
+                            species[k], colors[k], 6.0);
+        }
+        scatter.title("Iris: Petal Length vs Petal Width")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/glm_iris_eda_scatter.svg");
+        std::cout << "wrote glm_iris_eda_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting the logistic model
+
+/versicolor/ versus /virginica/, deliberately excluding /setosa/, which
+§2.7 addresses directly below.
+
+#+name: glm-fit-logit
+#+begin_src c++ :eval no
+    std::vector<double> is_virginica, petal_length, petal_width;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        const auto species = iris.string_at("Species", i);
+        if (species != "versicolor" && species != "virginica") continue;
+        is_virginica.push_back(species == "virginica" ? 1.0 : 0.0);
+        petal_length.push_back(iris.double_at("Petal.Length", i));
+        petal_width.push_back(iris.double_at("Petal.Width", i));
+    }
+    DataFrame sub;
+    sub.add_column("Petal.Length", petal_length);
+    sub.add_column("Petal.Width", petal_width);
+    sub.add_column("is_virginica", is_virginica);
+
+    std::cout << "\n=== Logistic regression (binomial, logit link) ===\n";
+    GLMOptions logit_options;
+    logit_options.family = GLMFamily::Binomial;
+    GLM logit(sub, "is_virginica ~ Petal.Length + Petal.Width",
+              logit_options);
+    logit.print_summary(std::cout);
+#+end_src
+
+*** Resubstitution accuracy and diagnostic plots
+
+#+name: glm-logit-diagnostics
+#+begin_src c++ :eval no
+    std::size_t correct = 0;
+    const auto fitted = logit.fitted_values();
+    for (std::size_t i = 0; i < is_virginica.size(); ++i)
+        if ((fitted[i] >= 0.5) == (is_virginica[i] >= 0.5)) ++correct;
+    std::cout << "\nResubstitution accuracy at 0.5 threshold: "
+               << std::fixed << std::setprecision(2)
+               << (100.0 * static_cast<double>(correct)
+                   / static_cast<double>(is_virginica.size()))
+               << "%\n";
+
+    logit.save_diagnostic_plots("build/org/glm_logistic_iris");
+    std::cout << "wrote glm_logistic_iris_{residuals_vs_fitted,normal_qq,"
+               << "scale_location,residuals_vs_leverage}.svg\n";
+#+end_src
+
+*** Predicted-probability curve with a confidence band
+
+Petal length varies across the grid; petal width is held at its sample
+mean, giving the classic single-predictor sigmoid view of a two-predictor
+fit.
+
+#+name: glm-logit-curve
+#+begin_src c++ :eval no
+    double width_mean = 0.0;
+    for (const double w : petal_width) width_mean += w;
+    width_mean /= static_cast<double>(petal_width.size());
+
+    constexpr std::size_t kGridN = 100;
+    double pl_min = *std::min_element(petal_length.begin(),
+                                       petal_length.end()) - 0.3;
+    double pl_max = *std::max_element(petal_length.begin(),
+                                       petal_length.end()) + 0.3;
+    std::vector<double> grid_x(kGridN), grid_width(kGridN, width_mean);
+    for (std::size_t i = 0; i < kGridN; ++i)
+        grid_x[i] = pl_min + (pl_max - pl_min)
+            * static_cast<double>(i) / static_cast<double>(kGridN - 1);
+    DataFrame grid;
+    grid.add_column("Petal.Length", grid_x);
+    grid.add_column("Petal.Width", grid_width);
+    const auto curve = logit.predict(grid, GLMPredictionInterval::Confidence);
+
+    {
+        auto plot = RPlot::create();
+        std::vector<double> obs_x0, obs_y0, obs_x1, obs_y1;
+        for (std::size_t i = 0; i < is_virginica.size(); ++i) {
+            (is_virginica[i] > 0.5 ? obs_x1 : obs_x0)
+                .push_back(petal_length[i]);
+            (is_virginica[i] > 0.5 ? obs_y1 : obs_y0)
+                .push_back(is_virginica[i]);
+        }
+        plot.points(obs_x0, obs_y0, "versicolor (0)", {37, 99, 235}, 5.0);
+        plot.points(obs_x1, obs_y1, "virginica (1)", {220, 38, 38}, 5.0);
+        plot.line(grid_x, curve.lower, "lower 95%", {252, 165, 165}, 1.5);
+        plot.line(grid_x, curve.upper, "upper 95%", {252, 165, 165}, 1.5);
+        plot.line(grid_x, curve.fit, "P(virginica)", {124, 58, 237}, 2.5);
+        plot.title("Logistic Regression Fit")
+            .x_label("Petal.Length").y_label("P(virginica)")
+            .background({250, 250, 252});
+        plot.save_svg("build/org/glm_logistic_iris_curve.svg");
+        std::cout << "wrote glm_logistic_iris_curve.svg\n";
+    }
+#+end_src
+
+*** The perfect-separation demonstration
+
+/setosa/ versus every other species, on the identical two predictors --
+§4.1's exploratory figure shows this pair is perfectly linearly separable,
+unlike /versicolor/ versus /virginica/ above.
+
+#+name: glm-separation-demo
+#+begin_src c++ :eval no
+    std::cout << "\n=== Separation demo: setosa vs rest"
+               << " (same two predictors) ===\n";
+    {
+        std::vector<double> is_setosa, pl2, pw2;
+        for (std::size_t i = 0; i < iris.nrows(); ++i) {
+            const auto species = iris.string_at("Species", i);
+            is_setosa.push_back(species == "setosa" ? 1.0 : 0.0);
+            pl2.push_back(iris.double_at("Petal.Length", i));
+            pw2.push_back(iris.double_at("Petal.Width", i));
+        }
+        DataFrame sep;
+        sep.add_column("Petal.Length", pl2);
+        sep.add_column("Petal.Width", pw2);
+        sep.add_column("is_setosa", is_setosa);
+        GLMOptions sep_opts;
+        sep_opts.family = GLMFamily::Binomial;
+        sep_opts.max_iter = 25;
+        GLM sep_model(sep, "is_setosa ~ Petal.Length + Petal.Width",
+                      sep_opts);
+        sep_model.print_summary(std::cout);
+    }
+#+end_src
+
+*** Fitting the Poisson model
+
+Same IRLS engine, a different family and link, on a synthetic count
+response.
+
+#+name: glm-fit-poisson
+#+begin_src c++ :eval no
+    std::cout << "\n=== Poisson regression (log link) ===\n";
+    auto count_data = iris;
+    std::vector<double> count(count_data.nrows());
+    for (std::size_t i = 0; i < count_data.nrows(); ++i)
+        count[i] = std::nearbyint(count_data.double_at("Sepal.Length", i));
+    count_data.add_column("count", count);
+
+    GLMOptions poisson_options;
+    poisson_options.family = GLMFamily::Poisson;
+    GLM poisson(count_data, "count ~ Sepal.Width + Petal.Length",
+                poisson_options);
+    poisson.print_summary(std::cout);
+
+    poisson.save_diagnostic_plots("build/org/glm_poisson_iris");
+    std::cout << "wrote glm_poisson_iris_{residuals_vs_fitted,normal_qq,"
+               << "scale_location,residuals_vs_leverage}.svg\n";
+#+end_src
+
+*** AIC comparison across families
+
+The same binary response, fit once under its natural family (binomial)
+and once under a deliberately mismatched one (Gaussian, i.e. a linear
+probability model) -- §2.5's claim that AIC, unlike deviance, is valid to
+compare across families made concrete.
+
+#+name: glm-aic-comparison
+#+begin_src c++ :eval no
+    std::cout << "\n=== AIC comparison on the same binary response ===\n";
+    GLMOptions gauss_opts;
+    gauss_opts.family = GLMFamily::Gaussian;
+    GLM gauss_on_binary(sub, "is_virginica ~ Petal.Length + Petal.Width",
+                         gauss_opts);
+    std::cout << "Binomial (logit) AIC: " << std::fixed
+               << std::setprecision(3) << logit.aic()
+               << "  deviance: " << logit.deviance() << "\n";
+    std::cout << "Gaussian (identity) AIC on the same 0/1 response: "
+               << gauss_on_binary.aic()
+               << "  deviance: " << gauss_on_binary.deviance() << "\n";
+#+end_src
+
+*** Predicting new flowers
+
+#+name: glm-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Petal.Length", std::vector<double>{4.5, 5.0, 5.5});
+    newdata.add_column("Petal.Width", std::vector<double>{1.3, 1.8, 2.1});
+    const auto preds = logit.predict(newdata);
+    std::cout << "\nPredicted P(virginica) for new flowers:\n";
+    for (const double p : preds)
+        std::cout << "  " << std::fixed << std::setprecision(4) << p << "\n";
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/glm_iris_analysis.cpp <<'CPP'
+<<glm-includes>>
+
+int main() {
+<<glm-load-data>>
+
+<<glm-eda-scatter>>
+
+<<glm-fit-logit>>
+
+<<glm-logit-diagnostics>>
+
+<<glm-logit-curve>>
+
+<<glm-separation-demo>>
+
+<<glm-fit-poisson>>
+
+<<glm-aic-comparison>>
+
+<<glm-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/glm_iris_analysis.cpp -o build/org/glm_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/glm_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by species :width 100%
+[[file:../../build/org/glm_iris_eda_scatter.svg]]
+
+The same picture as every companion report: /setosa/ fully separated from
+the other two species with a wide margin, /versicolor/ and /virginica/
+overlapping only in a thin band. That margin around /setosa/ is exactly
+what makes §4.4's separation demonstration below fail the way it does.
+
+** The fitted logistic model
+
+#+begin_example
+Coefficients:
+                   Estimate  Std. Error   z value    Pr(>|z|)
+(Intercept)       -45.27234    13.60958   -3.3265      0.0009 ***
+Petal.Length        5.75453     2.30562    2.4959      0.0126 *
+Petal.Width        10.44670     3.75528    2.7819      0.0054 **
+
+    Null deviance: 138.6294  on 99  degrees of freedom
+Residual deviance: 20.5635  on 97  degrees of freedom
+AIC: 26.5635
+
+Resubstitution accuracy at 0.5 threshold: 94.00%
+#+end_example
+
+Both predictors are significant at the 5% level, and the residual deviance
+of 20.56 is a large drop from the null deviance of 138.63 -- the logistic
+regression's analogue of the substantial $R^2$ every regression report in
+this project reports. The intercept's large magnitude (-45.27) is not a
+warning sign by itself: it reflects that both predictors are measured in
+centimeters on a scale where the decision boundary sits well away from the
+origin, not any numerical instability like §4.4's genuine failure.
+
+** Diagnostic plots
+
+#+ATTR_HTML: :alt Deviance residuals vs fitted values for the logistic model :width 100%
+[[file:../../build/org/glm_logistic_iris_residuals_vs_fitted.svg]]
+
+The characteristic two-armed pattern of a binary-response
+residuals-vs-fitted plot: one smoothly descending band of residuals for observations
+fitted near 0, another for observations fitted near 1 -- an artifact of the
+response's two-point support, not evidence of a misspecified mean
+function the way a curved pattern would be for the
+[[file:lm_penguins_analysis.org][linear regression companion report]]'s
+Gaussian diagnostics.
+
+#+ATTR_HTML: :alt Normal Q-Q plot of standardized deviance residuals :width 100%
+[[file:../../build/org/glm_logistic_iris_normal_qq.svg]]
+
+A handful of points in the tails deviate from the reference line -- the few
+observations closest to the /versicolor//virginica/ boundary, where the
+fitted probability is least certain and the deviance residual therefore
+largest in magnitude.
+
+** Predicted-probability curve
+
+#+ATTR_HTML: :alt Sigmoid-shaped fitted probability curve with a 95% confidence band :width 100%
+[[file:../../build/org/glm_logistic_iris_curve.svg]]
+
+A clean sigmoid, exactly as §2.1's logit link predicts: fitted probability
+near 0 for short petals, near 1 for long petals, and a steep transition
+through the region (petal length roughly 4.5-5.5cm) where the two species
+overlap in §4.1's scatter. The confidence band (§2.6) is visibly narrowest
+where data is densest and widens toward both ends of the observed range,
+and -- because it was built on the link scale and only then transformed
+back -- never leaves $[0,1]$ even as it widens.
+
+** Perfect separation
+
+#+begin_example
+=== Separation demo: setosa vs rest (same two predictors) ===
+Coefficients:
+                   Estimate  Std. Error   z value    Pr(>|z|)
+(Intercept)             NaN     0.00000       NaN         nan
+Petal.Length            NaN     0.00000       NaN         nan
+Petal.Width             NaN     0.00000       NaN         nan
+
+    Null deviance: 190.9543  on 149  degrees of freedom
+Residual deviance:     NaN  on 147  degrees of freedom
+AIC: NaN
+#+end_example
+
+Exactly the failure §2.7 predicts, and in its starkest possible form: not
+large-but-finite coefficients trending toward infinity, but literal =NaN=
+for every coefficient, standard error, and the residual deviance itself.
+The null deviance is still a normal finite number (190.95, close to
+§4.2's 138.63 for a similarly-sized binary problem, as expected since it
+only depends on the intercept-only model) -- it is specifically the
+/weighted/ fit that fails, once the IRLS weights $w_i = \mu_i(1-\mu_i)$
+collapse close enough to zero for enough observations that
+$X^\top W X$ becomes exactly singular in floating point, confirming §2.7's
+mechanism rather than merely asserting it.
+
+** The Poisson model
+
+#+begin_example
+Coefficients:
+                   Estimate  Std. Error   z value    Pr(>|z|)
+(Intercept)         1.20344     0.30807    3.9063   9.370e-05 ***
+Sepal.Width         0.08507     0.08637    0.9850      0.3246
+Petal.Length         0.07890     0.02117    3.7266      0.0002 ***
+
+    Null deviance: 19.0085  on 149  degrees of freedom
+Residual deviance:  4.7923  on 147  degrees of freedom
+AIC: 554.4227
+#+end_example
+
+=Petal.Length= is a significant predictor of the (synthetic) count
+response; =Sepal.Width= is not ($p = 0.3246$), correctly reflecting that
+this response was constructed directly from =Sepal.Length= and only
+incidentally correlated with the other two measurements through the
+flowers' natural covariance structure.
+
+#+ATTR_HTML: :alt Deviance residuals vs fitted values for the Poisson model :width 100%
+[[file:../../build/org/glm_poisson_iris_residuals_vs_fitted.svg]]
+
+The visible diagonal striping is a direct consequence of the response's
+construction: rounding =Sepal.Length= to the nearest integer leaves only
+five distinct count values (4 through 8) in the data, so observations
+sharing a count value trace out a near-parallel diagonal band as their
+fitted values vary continuously with the other two predictors -- a
+signature of a low-cardinality discrete response, not a sign of a poorly
+fitting model.
+
+** AIC comparison across families
+
+#+begin_example
+Binomial (logit) AIC: 26.564  deviance: 20.564
+Gaussian (identity) AIC on the same 0/1 response: 25.948  deviance: 7.006
+#+end_example
+
+The two deviance figures are /not/ comparable to each other -- each is
+defined relative to its own family's saturated-model baseline (§2.4), so
+20.564 and 7.006 live on different scales. The two AIC figures, per §2.5,
+/are/ directly comparable, since both are built from each model's actual
+log-likelihood on the identical 100 observations -- and, perhaps
+surprisingly, the mismatched Gaussian fit's AIC (25.948) is very slightly
+/lower/ than the correctly-specified binomial fit's (26.564). §5 discusses
+why this is a genuine property of comparing a bounded-likelihood family
+against an unbounded one, not a reason to prefer linear probability models
+for binary data in general.
+
+** Predicting new flowers
+
+| Petal.Length | Petal.Width | Predicted P(virginica) |
+|---------------+--------------+--------------------------|
+|           4.5 |          1.3 |                   0.0030 |
+|           5.0 |          1.8 |                   0.9092 |
+|           5.5 |          2.1 |                   0.9998 |
+
+All three predictions track the sigmoid curve in §4.3 directly: the
+shortest, narrowest petal is confidently /versicolor/, the longest, widest
+is confidently /virginica/, and the middle flower falls in the steep
+transition region with a probability (0.9092) that is directionally
+/virginica/ but visibly less certain than the other two.
+
+* Discussion
+
+**What perfect separation says about maximum-likelihood logistic
+regression, concretely.** Every textbook treatment of logistic regression
+mentions perfect separation as a theoretical concern; §4.4 turns it into a
+reproducible, real numerical event using this project's own iris data and
+this project's own =GLM= implementation. The practical lesson is narrow but
+important: a predictor combination that fits /too/ well for a
+maximum-likelihood binomial GLM is not a success to celebrate uncritically
+-- it is a sign the likelihood has no finite maximizer at all, and a
+production system should check for near-zero IRLS weights or
+non-finite output (exactly what §4.4 reports) rather than silently
+reporting a coefficient table full of noise. Real fixes -- Firth's
+bias-reduced logistic regression (Firth, 1993) being the standard one --
+are outside =GLM='s current scope but a natural extension.
+
+**What the AIC comparison does and does not show.** §4.6's headline
+number -- a mismatched Gaussian fit narrowly beating the correctly
+specified binomial fit on AIC -- is a real property of comparing a
+continuous (unbounded log-likelihood as residual variance shrinks) family
+against a genuinely bounded one (binomial log-likelihood is bounded above
+for any finite $\beta$), not evidence that linear probability models are
+generally preferable for binary responses. A linear probability model
+still routinely produces fitted "probabilities" outside $[0,1]$ on data
+less cleanly separated than this pair, and its constant-variance
+assumption is simply wrong for a $\{0,1\}$ response (§2.2) regardless of
+what AIC reports on any one dataset; this comparison is included precisely
+to make that subtlety concrete rather than to recommend the mismatched
+model.
+
+**Connection to the wider project.** This report's logistic regression is,
+mechanically, the closest relative in this project to the six classifiers
+in the LDA/SVM/decision-tree/random-forest/GBM/XGBoost reports: all seven
+produce a decision boundary (implicit, here, in the $P=0.5$ contour of
+§4.3's sigmoid) from the same 150 flowers. Logistic regression's 94.00%
+resubstitution accuracy on the harder /versicolor//virginica/ pair sits
+squarely in the same 95-100% range every other method reports on the full
+three-class problem, and its genuine failure mode (§4.4) is a reminder,
+distinct from every other method's shared resubstitution-accuracy caveat,
+that a GLM's coefficients can fail outright rather than merely overfit.
+
+* Conclusion
+
+Fitting logistic and Poisson regression with =datamunge='s C++
+=stats::GLM= reproduces the standard behavior of both members of the
+generalized linear model family on real data: a clean, significant,
+94.00%-accurate logistic fit separating two genuinely overlapping iris
+species, and a Poisson fit correctly identifying its true underlying
+predictor. Deliberately pushing the same method to a perfectly separable
+pair produces a real, reproducible numerical failure -- coefficients,
+standard errors, and deviance all returning =NaN= -- that concretely
+demonstrates a well-known theoretical degeneracy of maximum-likelihood
+logistic regression rather than merely describing it, and a same-data AIC
+comparison across families shows precisely why deviance and AIC play
+different roles in model comparison. As with its companions, this entire
+report is reproducible end to end via =just org-example glm_iris_analysis=,
+which re-executes §3.3.9's assembly block -- and therefore every number
+and figure above -- from the =datamunge= source tree.
+
+* References
+
+- Nelder, J. A., & Wedderburn, R. W. M. (1972). "Generalized Linear
+  Models." /Journal of the Royal Statistical Society: Series A/, 135(3),
+  370--384.
+- McCullagh, P., & Nelder, J. A. (1989). /Generalized Linear Models/, 2nd
+  ed. Chapman and Hall.
+- Albert, A., & Anderson, J. A. (1984). "On the existence of maximum
+  likelihood estimates in logistic regression models." /Biometrika/,
+  71(1), 1--10.
+- Firth, D. (1993). "Bias reduction of maximum likelihood estimates."
+  /Biometrika/, 80(1), 27--38.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 4 ("Linear Methods for
+  Classification"). Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

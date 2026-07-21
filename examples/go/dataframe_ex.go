@@ -63,7 +63,7 @@ func main() {
 	targets := datamunge.NewDataFrame()
 	targets.Add_string_column_encoded("region", encodeStrings([]string{"west", "east", "south"}))
 	targets.Add_numeric_column("target", dvector([]float64{18, 12, 25}))
-	joined := grouped.Join(targets, "region", "region", true)
+	joined := grouped.Join(targets, "region", "region", "left")
 	fmt.Println("joined with targets")
 	fmt.Println(joined.To_string())
 	fmt.Println()

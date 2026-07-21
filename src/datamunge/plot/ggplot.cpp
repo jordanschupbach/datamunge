@@ -526,4 +526,19 @@ void GGPlot::save(const std::string& path) const {
   save_svg(path);
 }
 
+void GGPlot::show(const std::string& title_hint) const {
+  if (facet_column_.empty()) {
+    build_panel(data_, "").show(title_hint);
+    return;
+  }
+
+  auto facets = split_by_group(data_, facet_column_);
+  if (facets.empty()) {
+    throw std::runtime_error("GGPlot::show: facet_wrap column has no values");
+  }
+  for (const auto& [label, panel_data] : facets) {
+    build_panel(panel_data, label).show(title_hint.empty() ? label : title_hint + ": " + label);
+  }
+}
+
 } // namespace datamunge::plot

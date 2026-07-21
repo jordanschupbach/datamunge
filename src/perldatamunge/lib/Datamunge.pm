@@ -75,6 +75,9 @@ package Datamunge;
 *binomial_test = *Datamungec::binomial_test;
 *fisher_exact_test_2x2 = *Datamungec::fisher_exact_test_2x2;
 *shapiro_francia_test = *Datamungec::shapiro_francia_test;
+*p_adjust = *Datamungec::p_adjust;
+*westfall_young_adjust = *Datamungec::westfall_young_adjust;
+*romano_wolf_adjust = *Datamungec::romano_wolf_adjust;
 
 ############# Class : Datamunge::IPair ##############
 
@@ -586,6 +589,62 @@ sub ACQUIRE {
 }
 
 
+############# Class : Datamunge::GGPlot ##############
+
+package Datamunge::GGPlot;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_GGPlot(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*geom_point = *Datamungec::GGPlot_geom_point;
+*geom_line = *Datamungec::GGPlot_geom_line;
+*geom_bar = *Datamungec::GGPlot_geom_bar;
+*geom_col = *Datamungec::GGPlot_geom_col;
+*geom_histogram = *Datamungec::GGPlot_geom_histogram;
+*geom_boxplot = *Datamungec::GGPlot_geom_boxplot;
+*geom_smooth = *Datamungec::GGPlot_geom_smooth;
+*geom_area = *Datamungec::GGPlot_geom_area;
+*geom_ribbon = *Datamungec::GGPlot_geom_ribbon;
+*geom_density = *Datamungec::GGPlot_geom_density;
+*facet_wrap = *Datamungec::GGPlot_facet_wrap;
+*theme_minimal = *Datamungec::GGPlot_theme_minimal;
+*theme_bw = *Datamungec::GGPlot_theme_bw;
+*theme_classic = *Datamungec::GGPlot_theme_classic;
+*scale_color_manual = *Datamungec::GGPlot_scale_color_manual;
+*labs = *Datamungec::GGPlot_labs;
+*save = *Datamungec::GGPlot_save;
+*save_svg = *Datamungec::GGPlot_save_svg;
+*show = *Datamungec::GGPlot_show;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_GGPlot($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 ############# Class : Datamunge::LM ##############
 
 package Datamunge::LM;
@@ -766,6 +825,61 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_GLMM($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::INLAMixedModel ##############
+
+package Datamunge::INLAMixedModel;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_INLAMixedModel(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*formula_text = *Datamungec::INLAMixedModel_formula_text;
+*family = *Datamungec::INLAMixedModel_family;
+*group_variable = *Datamungec::INLAMixedModel_group_variable;
+*random_effect_names = *Datamungec::INLAMixedModel_random_effect_names;
+*observations = *Datamungec::INLAMixedModel_observations;
+*num_groups = *Datamungec::INLAMixedModel_num_groups;
+*fixed_effects_mean = *Datamungec::INLAMixedModel_fixed_effects_mean;
+*fixed_effects_sd = *Datamungec::INLAMixedModel_fixed_effects_sd;
+*coefficient_names = *Datamungec::INLAMixedModel_coefficient_names;
+*random_effect_std_devs = *Datamungec::INLAMixedModel_random_effect_std_devs;
+*residual_std_dev = *Datamungec::INLAMixedModel_residual_std_dev;
+*group_labels = *Datamungec::INLAMixedModel_group_labels;
+*random_effects_mean_for_group = *Datamungec::INLAMixedModel_random_effects_mean_for_group;
+*random_effects_sd_for_group = *Datamungec::INLAMixedModel_random_effects_sd_for_group;
+*log_marginal_likelihood = *Datamungec::INLAMixedModel_log_marginal_likelihood;
+*summary = *Datamungec::INLAMixedModel_summary;
+*print_summary = *Datamungec::INLAMixedModel_print_summary;
+*predict = *Datamungec::INLAMixedModel_predict;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_INLAMixedModel($self);
         delete $OWNER{$self};
     }
 }
@@ -2022,6 +2136,13 @@ sub new {
 *matmul = *Datamungec::Tensor_matmul;
 *dot = *Datamungec::Tensor_dot;
 *outer = *Datamungec::Tensor_outer;
+*from_image = *Datamungec::Tensor_from_image;
+*conv2d = *Datamungec::Tensor_conv2d;
+*max_pool2d = *Datamungec::Tensor_max_pool2d;
+*avg_pool2d = *Datamungec::Tensor_avg_pool2d;
+*relu = *Datamungec::Tensor_relu;
+*sigmoid = *Datamungec::Tensor_sigmoid;
+*softmax = *Datamungec::Tensor_softmax;
 *to_string = *Datamungec::Tensor_to_string;
 sub DESTROY {
     return unless $_[0]->isa('HASH');
@@ -2312,6 +2433,10 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *Kind_Scatter = *Datamungec::DataSeries_Kind_Scatter;
 *Kind_Line = *Datamungec::DataSeries_Kind_Line;
 *Kind_Bar = *Datamungec::DataSeries_Kind_Bar;
+*Kind_Box = *Datamungec::DataSeries_Kind_Box;
+*Kind_Polygon = *Datamungec::DataSeries_Kind_Polygon;
+*Kind_Text = *Datamungec::DataSeries_Kind_Text;
+*Kind_Segment = *Datamungec::DataSeries_Kind_Segment;
 *swig_kind_get = *Datamungec::DataSeries_kind_get;
 *swig_kind_set = *Datamungec::DataSeries_kind_set;
 *swig_x_get = *Datamungec::DataSeries_x_get;
@@ -2328,6 +2453,8 @@ use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 *swig_marker_size_set = *Datamungec::DataSeries_marker_size_set;
 *swig_bar_width_get = *Datamungec::DataSeries_bar_width_get;
 *swig_bar_width_set = *Datamungec::DataSeries_bar_width_set;
+*swig_filled_get = *Datamungec::DataSeries_filled_get;
+*swig_filled_set = *Datamungec::DataSeries_filled_set;
 sub new {
     my $pkg = shift;
     my $self = Datamungec::new_DataSeries(@_);
@@ -2341,6 +2468,94 @@ sub DESTROY {
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
         Datamungec::delete_DataSeries($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ABLine ##############
+
+package Datamunge::ABLine;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_vertical_get = *Datamungec::ABLine_vertical_get;
+*swig_vertical_set = *Datamungec::ABLine_vertical_set;
+*swig_value_get = *Datamungec::ABLine_value_get;
+*swig_value_set = *Datamungec::ABLine_value_set;
+*swig_slope_get = *Datamungec::ABLine_slope_get;
+*swig_slope_set = *Datamungec::ABLine_slope_set;
+*swig_color_get = *Datamungec::ABLine_color_get;
+*swig_color_set = *Datamungec::ABLine_color_set;
+*swig_stroke_width_get = *Datamungec::ABLine_stroke_width_get;
+*swig_stroke_width_set = *Datamungec::ABLine_stroke_width_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ABLine(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ABLine($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::LegendEntry ##############
+
+package Datamunge::LegendEntry;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_label_get = *Datamungec::LegendEntry_label_get;
+*swig_label_set = *Datamungec::LegendEntry_label_set;
+*swig_color_get = *Datamungec::LegendEntry_color_get;
+*swig_color_set = *Datamungec::LegendEntry_color_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_LegendEntry(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_LegendEntry($self);
         delete $OWNER{$self};
     }
 }
@@ -2386,6 +2601,8 @@ sub DESTROY {
 *show_grid = *Datamungec::Plot_show_grid;
 *x_limits = *Datamungec::Plot_x_limits;
 *y_limits = *Datamungec::Plot_y_limits;
+*hide_axes = *Datamungec::Plot_hide_axes;
+*x_tick_labels = *Datamungec::Plot_x_tick_labels;
 *width = *Datamungec::Plot_width;
 *height = *Datamungec::Plot_height;
 *title_text = *Datamungec::Plot_title_text;
@@ -2402,6 +2619,10 @@ sub DESTROY {
 *x_max = *Datamungec::Plot_x_max;
 *y_min = *Datamungec::Plot_y_min;
 *y_max = *Datamungec::Plot_y_max;
+*axes_hidden = *Datamungec::Plot_axes_hidden;
+*x_tick_label_list = *Datamungec::Plot_x_tick_label_list;
+*reference_lines = *Datamungec::Plot_reference_lines;
+*legend_entries = *Datamungec::Plot_legend_entries;
 *save = *Datamungec::Plot_save;
 *save_svg = *Datamungec::Plot_save_svg;
 *view = *Datamungec::Plot_view;
@@ -2425,19 +2646,37 @@ sub ACQUIRE {
 }
 
 
-############# Class : Datamunge::ScatterPlot ##############
+############# Class : Datamunge::RPlot ##############
 
-package Datamunge::ScatterPlot;
+package Datamunge::RPlot;
 use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
 @ISA = qw( Datamunge::Plot Datamunge );
 %OWNER = ();
 %ITERATORS = ();
-*create = *Datamungec::ScatterPlot_create;
-*points = *Datamungec::ScatterPlot_points;
-*line = *Datamungec::ScatterPlot_line;
+*create = *Datamungec::RPlot_create;
+*plot = *Datamungec::RPlot_plot;
+*hist = *Datamungec::RPlot_hist;
+*barplot = *Datamungec::RPlot_barplot;
+*boxplot = *Datamungec::RPlot_boxplot;
+*pie = *Datamungec::RPlot_pie;
+*curve = *Datamungec::RPlot_curve;
+*qqnorm = *Datamungec::RPlot_qqnorm;
+*points = *Datamungec::RPlot_points;
+*line = *Datamungec::RPlot_line;
+*lines = *Datamungec::RPlot_lines;
+*bars = *Datamungec::RPlot_bars;
+*box = *Datamungec::RPlot_box;
+*abline = *Datamungec::RPlot_abline;
+*abline_h = *Datamungec::RPlot_abline_h;
+*abline_v = *Datamungec::RPlot_abline_v;
+*qqline = *Datamungec::RPlot_qqline;
+*legend = *Datamungec::RPlot_legend;
+*text = *Datamungec::RPlot_text;
+*polygon = *Datamungec::RPlot_polygon;
+*segments = *Datamungec::RPlot_segments;
 sub new {
     my $pkg = shift;
-    my $self = Datamungec::new_ScatterPlot(@_);
+    my $self = Datamungec::new_RPlot(@_);
     bless $self, $pkg if defined($self);
 }
 
@@ -2447,7 +2686,7 @@ sub DESTROY {
     return unless defined $self;
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
-        Datamungec::delete_ScatterPlot($self);
+        Datamungec::delete_RPlot($self);
         delete $OWNER{$self};
     }
 }
@@ -2465,18 +2704,21 @@ sub ACQUIRE {
 }
 
 
-############# Class : Datamunge::LinePlot ##############
+############# Class : Datamunge::RLayout ##############
 
-package Datamunge::LinePlot;
+package Datamunge::RLayout;
 use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
-@ISA = qw( Datamunge::Plot Datamunge );
+@ISA = qw( Datamunge );
 %OWNER = ();
 %ITERATORS = ();
-*create = *Datamungec::LinePlot_create;
-*line = *Datamungec::LinePlot_line;
+*create = *Datamungec::RLayout_create;
+*add = *Datamungec::RLayout_add;
+*size = *Datamungec::RLayout_size;
+*save = *Datamungec::RLayout_save;
+*save_svg = *Datamungec::RLayout_save_svg;
 sub new {
     my $pkg = shift;
-    my $self = Datamungec::new_LinePlot(@_);
+    my $self = Datamungec::new_RLayout(@_);
     bless $self, $pkg if defined($self);
 }
 
@@ -2486,46 +2728,7 @@ sub DESTROY {
     return unless defined $self;
     delete $ITERATORS{$self};
     if (exists $OWNER{$self}) {
-        Datamungec::delete_LinePlot($self);
-        delete $OWNER{$self};
-    }
-}
-
-sub DISOWN {
-    my $self = shift;
-    my $ptr = tied(%$self);
-    delete $OWNER{$ptr};
-}
-
-sub ACQUIRE {
-    my $self = shift;
-    my $ptr = tied(%$self);
-    $OWNER{$ptr} = 1;
-}
-
-
-############# Class : Datamunge::BarChart ##############
-
-package Datamunge::BarChart;
-use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
-@ISA = qw( Datamunge::Plot Datamunge );
-%OWNER = ();
-%ITERATORS = ();
-*create = *Datamungec::BarChart_create;
-*bars = *Datamungec::BarChart_bars;
-sub new {
-    my $pkg = shift;
-    my $self = Datamungec::new_BarChart(@_);
-    bless $self, $pkg if defined($self);
-}
-
-sub DESTROY {
-    return unless $_[0]->isa('HASH');
-    my $self = tied(%{$_[0]});
-    return unless defined $self;
-    delete $ITERATORS{$self};
-    if (exists $OWNER{$self}) {
-        Datamungec::delete_BarChart($self);
+        Datamungec::delete_RLayout($self);
         delete $OWNER{$self};
     }
 }
@@ -4125,6 +4328,386 @@ sub ACQUIRE {
 }
 
 
+############# Class : Datamunge::RWMOptions ##############
+
+package Datamunge::RWMOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_num_samples_get = *Datamungec::RWMOptions_num_samples_get;
+*swig_num_samples_set = *Datamungec::RWMOptions_num_samples_set;
+*swig_num_warmup_get = *Datamungec::RWMOptions_num_warmup_get;
+*swig_num_warmup_set = *Datamungec::RWMOptions_num_warmup_set;
+*swig_initial_step_size_get = *Datamungec::RWMOptions_initial_step_size_get;
+*swig_initial_step_size_set = *Datamungec::RWMOptions_initial_step_size_set;
+*swig_target_accept_rate_get = *Datamungec::RWMOptions_target_accept_rate_get;
+*swig_target_accept_rate_set = *Datamungec::RWMOptions_target_accept_rate_set;
+*swig_seed_get = *Datamungec::RWMOptions_seed_get;
+*swig_seed_set = *Datamungec::RWMOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RWMOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RWMOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::RWMResult ##############
+
+package Datamunge::RWMResult;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_samples_get = *Datamungec::RWMResult_samples_get;
+*swig_samples_set = *Datamungec::RWMResult_samples_set;
+*swig_accept_rate_get = *Datamungec::RWMResult_accept_rate_get;
+*swig_accept_rate_set = *Datamungec::RWMResult_accept_rate_set;
+*swig_final_step_size_get = *Datamungec::RWMResult_final_step_size_get;
+*swig_final_step_size_set = *Datamungec::RWMResult_final_step_size_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RWMResult(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RWMResult($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::RandomWalkMetropolis ##############
+
+package Datamunge::RandomWalkMetropolis;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_RandomWalkMetropolis(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*sample = *Datamungec::RandomWalkMetropolis_sample;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_RandomWalkMetropolis($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::GibbsOptions ##############
+
+package Datamunge::GibbsOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_num_samples_get = *Datamungec::GibbsOptions_num_samples_get;
+*swig_num_samples_set = *Datamungec::GibbsOptions_num_samples_set;
+*swig_num_warmup_get = *Datamungec::GibbsOptions_num_warmup_get;
+*swig_num_warmup_set = *Datamungec::GibbsOptions_num_warmup_set;
+*swig_initial_step_sizes_get = *Datamungec::GibbsOptions_initial_step_sizes_get;
+*swig_initial_step_sizes_set = *Datamungec::GibbsOptions_initial_step_sizes_set;
+*swig_target_accept_rate_get = *Datamungec::GibbsOptions_target_accept_rate_get;
+*swig_target_accept_rate_set = *Datamungec::GibbsOptions_target_accept_rate_set;
+*swig_seed_get = *Datamungec::GibbsOptions_seed_get;
+*swig_seed_set = *Datamungec::GibbsOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_GibbsOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_GibbsOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::GibbsResult ##############
+
+package Datamunge::GibbsResult;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_samples_get = *Datamungec::GibbsResult_samples_get;
+*swig_samples_set = *Datamungec::GibbsResult_samples_set;
+*swig_accept_rates_get = *Datamungec::GibbsResult_accept_rates_get;
+*swig_accept_rates_set = *Datamungec::GibbsResult_accept_rates_set;
+*swig_final_step_sizes_get = *Datamungec::GibbsResult_final_step_sizes_get;
+*swig_final_step_sizes_set = *Datamungec::GibbsResult_final_step_sizes_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_GibbsResult(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_GibbsResult($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::GibbsSampler ##############
+
+package Datamunge::GibbsSampler;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_GibbsSampler(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*sample = *Datamungec::GibbsSampler_sample;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_GibbsSampler($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ImportanceSamplingOptions ##############
+
+package Datamunge::ImportanceSamplingOptions;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_num_samples_get = *Datamungec::ImportanceSamplingOptions_num_samples_get;
+*swig_num_samples_set = *Datamungec::ImportanceSamplingOptions_num_samples_set;
+*swig_seed_get = *Datamungec::ImportanceSamplingOptions_seed_get;
+*swig_seed_set = *Datamungec::ImportanceSamplingOptions_seed_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ImportanceSamplingOptions(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ImportanceSamplingOptions($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ImportanceSamplingResult ##############
+
+package Datamunge::ImportanceSamplingResult;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+*swig_samples_get = *Datamungec::ImportanceSamplingResult_samples_get;
+*swig_samples_set = *Datamungec::ImportanceSamplingResult_samples_set;
+*swig_normalized_weights_get = *Datamungec::ImportanceSamplingResult_normalized_weights_get;
+*swig_normalized_weights_set = *Datamungec::ImportanceSamplingResult_normalized_weights_set;
+*swig_effective_sample_size_get = *Datamungec::ImportanceSamplingResult_effective_sample_size_get;
+*swig_effective_sample_size_set = *Datamungec::ImportanceSamplingResult_effective_sample_size_set;
+*swig_log_evidence_get = *Datamungec::ImportanceSamplingResult_log_evidence_get;
+*swig_log_evidence_set = *Datamungec::ImportanceSamplingResult_log_evidence_set;
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ImportanceSamplingResult(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ImportanceSamplingResult($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
+############# Class : Datamunge::ImportanceSampling ##############
+
+package Datamunge::ImportanceSampling;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Datamunge );
+%OWNER = ();
+%ITERATORS = ();
+sub new {
+    my $pkg = shift;
+    my $self = Datamungec::new_ImportanceSampling(@_);
+    bless $self, $pkg if defined($self);
+}
+
+*sample = *Datamungec::ImportanceSampling_sample;
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Datamungec::delete_ImportanceSampling($self);
+        delete $OWNER{$self};
+    }
+}
+
+sub DISOWN {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+
 # ------- VARIABLE STUBS --------
 
 package Datamunge;
@@ -4139,4 +4722,11 @@ package Datamunge;
 *Alternative_TwoSided = *Datamungec::Alternative_TwoSided;
 *Alternative_Less = *Datamungec::Alternative_Less;
 *Alternative_Greater = *Datamungec::Alternative_Greater;
+*PAdjustMethod_Bonferroni = *Datamungec::PAdjustMethod_Bonferroni;
+*PAdjustMethod_Holm = *Datamungec::PAdjustMethod_Holm;
+*PAdjustMethod_Hochberg = *Datamungec::PAdjustMethod_Hochberg;
+*PAdjustMethod_Hommel = *Datamungec::PAdjustMethod_Hommel;
+*PAdjustMethod_BH = *Datamungec::PAdjustMethod_BH;
+*PAdjustMethod_BY = *Datamungec::PAdjustMethod_BY;
+*PAdjustMethod_None = *Datamungec::PAdjustMethod_None;
 1;

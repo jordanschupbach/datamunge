@@ -1613,83 +1613,99 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__ElasticNet swig_types[7]
 #define SWIGTYPE_p_datamunge__GBMClassifier swig_types[8]
 #define SWIGTYPE_p_datamunge__GBMRegressor swig_types[9]
-#define SWIGTYPE_p_datamunge__GLM swig_types[10]
-#define SWIGTYPE_p_datamunge__GLMM swig_types[11]
-#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[12]
-#define SWIGTYPE_p_datamunge__HyperDual swig_types[13]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[14]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[15]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[16]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[17]
-#define SWIGTYPE_p_datamunge__LDA swig_types[18]
-#define SWIGTYPE_p_datamunge__LM swig_types[19]
-#define SWIGTYPE_p_datamunge__LMM swig_types[20]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[21]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[22]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[23]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[24]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[25]
-#define SWIGTYPE_p_datamunge__SVM swig_types[26]
-#define SWIGTYPE_p_datamunge__Tape swig_types[27]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[28]
-#define SWIGTYPE_p_datamunge__Var swig_types[29]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[30]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[31]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[32]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[33]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[34]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[35]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[36]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[37]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[38]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[39]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[40]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[41]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[42]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[43]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[44]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[45]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[46]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[47]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[48]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[49]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[50]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[51]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[52]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[53]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[54]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[55]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[56]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[57]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[58]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[59]
-#define SWIGTYPE_p_datamunge__plot__BarChart swig_types[60]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[61]
-#define SWIGTYPE_p_datamunge__plot__LinePlot swig_types[62]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[63]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[64]
-#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[65]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[66]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[67]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[68]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[69]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[70]
-#define SWIGTYPE_p_double swig_types[71]
-#define SWIGTYPE_p_int swig_types[72]
-#define SWIGTYPE_p_p_std__vectorT_double_t swig_types[73]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[74]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[75]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[76]
-#define SWIGTYPE_p_std__size_t swig_types[77]
-#define SWIGTYPE_p_std__uint64_t swig_types[78]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[79]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[80]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[81]
-#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[82]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[83]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[84]
-static swig_type_info *swig_types[86];
-static swig_module_info swig_module = {swig_types, 85, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__GGPlot swig_types[10]
+#define SWIGTYPE_p_datamunge__GLM swig_types[11]
+#define SWIGTYPE_p_datamunge__GLMM swig_types[12]
+#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[13]
+#define SWIGTYPE_p_datamunge__HyperDual swig_types[14]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[15]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[16]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[17]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[18]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[19]
+#define SWIGTYPE_p_datamunge__LDA swig_types[20]
+#define SWIGTYPE_p_datamunge__LM swig_types[21]
+#define SWIGTYPE_p_datamunge__LMM swig_types[22]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[23]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[24]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[25]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[26]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[27]
+#define SWIGTYPE_p_datamunge__SVM swig_types[28]
+#define SWIGTYPE_p_datamunge__Tape swig_types[29]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[30]
+#define SWIGTYPE_p_datamunge__Var swig_types[31]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[32]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[33]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[34]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[35]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[36]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[37]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[38]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[39]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[40]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[41]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[42]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[43]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[44]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[45]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[46]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[47]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[48]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[50]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[51]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[52]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[53]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[54]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[55]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[56]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[57]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[58]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[59]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[60]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[61]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[62]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[63]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[64]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[65]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[66]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[67]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[68]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[69]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[70]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[71]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[72]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[73]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[74]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[75]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[76]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[77]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[78]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[79]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[80]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[81]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[82]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[83]
+#define SWIGTYPE_p_double swig_types[84]
+#define SWIGTYPE_p_int swig_types[85]
+#define SWIGTYPE_p_p_std__vectorT_double_t swig_types[86]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[87]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[88]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[89]
+#define SWIGTYPE_p_std__size_t swig_types[90]
+#define SWIGTYPE_p_std__uint64_t swig_types[91]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[92]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[93]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[94]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[95]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[96]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[97]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[98]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[99]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[100]
+static swig_type_info *swig_types[102];
+static swig_module_info swig_module = {swig_types, 101, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1874,6 +1890,10 @@ SWIGINTERN std::string *std_vector_Sl_std_string_Sg__to_array(std::vector< std::
 static int SWIG_ENUM__datamunge__plot__DataSeries__Scatter = static_cast<int>(datamunge::plot::DataSeries::Kind::Scatter);
 static int SWIG_ENUM__datamunge__plot__DataSeries__Line = static_cast<int>(datamunge::plot::DataSeries::Kind::Line);
 static int SWIG_ENUM__datamunge__plot__DataSeries__Bar = static_cast<int>(datamunge::plot::DataSeries::Kind::Bar);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Box = static_cast<int>(datamunge::plot::DataSeries::Kind::Box);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Polygon = static_cast<int>(datamunge::plot::DataSeries::Kind::Polygon);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Text = static_cast<int>(datamunge::plot::DataSeries::Kind::Text);
+static int SWIG_ENUM__datamunge__plot__DataSeries__Segment = static_cast<int>(datamunge::plot::DataSeries::Kind::Segment);
 static int SWIG_ENUM__datamunge__stats__None = static_cast<int>(datamunge::stats::TrendType::None);
 static int SWIG_ENUM__datamunge__stats__Additive = static_cast<int>(datamunge::stats::TrendType::Additive);
 static int SWIG_ENUM__datamunge__stats__AdditiveDamped = static_cast<int>(datamunge::stats::TrendType::AdditiveDamped);
@@ -1881,6 +1901,12 @@ static int SWIG_ENUM__datamunge__stats__Multiplicative = static_cast<int>(datamu
 static int SWIG_ENUM__datamunge__stats__TwoSided = static_cast<int>(datamunge::stats::Alternative::TwoSided);
 static int SWIG_ENUM__datamunge__stats__Less = static_cast<int>(datamunge::stats::Alternative::Less);
 static int SWIG_ENUM__datamunge__stats__Greater = static_cast<int>(datamunge::stats::Alternative::Greater);
+static int SWIG_ENUM__datamunge__stats__Bonferroni = static_cast<int>(datamunge::stats::PAdjustMethod::Bonferroni);
+static int SWIG_ENUM__datamunge__stats__Holm = static_cast<int>(datamunge::stats::PAdjustMethod::Holm);
+static int SWIG_ENUM__datamunge__stats__Hochberg = static_cast<int>(datamunge::stats::PAdjustMethod::Hochberg);
+static int SWIG_ENUM__datamunge__stats__Hommel = static_cast<int>(datamunge::stats::PAdjustMethod::Hommel);
+static int SWIG_ENUM__datamunge__stats__BH = static_cast<int>(datamunge::stats::PAdjustMethod::BH);
+static int SWIG_ENUM__datamunge__stats__BY = static_cast<int>(datamunge::stats::PAdjustMethod::BY);
 
 class SwigDirector_Callback : public datamunge::Callback, public Swig::Director {
 
@@ -6921,6 +6947,3007 @@ SWIGEXT value _wrap_delete_DataFramedatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_new_GGPlot__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  std::string temp5 ;
+  std::string temp6 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,4))) {
+      temp5.assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+      arg5 = &temp5;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,5))) {
+      temp6.assign((char *)caml_ptr_val(caml_list_nth(args,5),0), caml_string_len(caml_list_nth(args,5)));
+      arg6 = &temp6;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GGPlot__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  std::string temp5 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,4))) {
+      temp5.assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+      arg5 = &temp5;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GGPlot__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GGPlot__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GGPlot__SWIG_4datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GGPlotdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_new_GGPlot__SWIG_4datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_new_GGPlot__SWIG_3datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_new_GGPlot__SWIG_2datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_string: _v = 1; break;
+                  case C_ptr: {
+                    swig_type_info *typeinfo = 
+                    (swig_type_info *)(long)Int64_val(Field(argv[4],1));
+                    _v = SWIG_TypeCheck("char *",typeinfo) ||
+                    SWIG_TypeCheck("signed char *",typeinfo) ||
+                    SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("const char *",typeinfo) ||
+                    SWIG_TypeCheck("const signed char *",typeinfo) ||
+                    SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("std::string",typeinfo);
+                  } break;
+                  default: _v = 0; break;
+                }
+              }    
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_new_GGPlot__SWIG_1datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_string: _v = 1; break;
+                  case C_ptr: {
+                    swig_type_info *typeinfo = 
+                    (swig_type_info *)(long)Int64_val(Field(argv[4],1));
+                    _v = SWIG_TypeCheck("char *",typeinfo) ||
+                    SWIG_TypeCheck("signed char *",typeinfo) ||
+                    SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("const char *",typeinfo) ||
+                    SWIG_TypeCheck("const signed char *",typeinfo) ||
+                    SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("std::string",typeinfo);
+                  } break;
+                  default: _v = 0; break;
+                }
+              }    
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_string: _v = 1; break;
+                    case C_ptr: {
+                      swig_type_info *typeinfo = 
+                      (swig_type_info *)(long)Int64_val(Field(argv[5],1));
+                      _v = SWIG_TypeCheck("char *",typeinfo) ||
+                      SWIG_TypeCheck("signed char *",typeinfo) ||
+                      SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                      SWIG_TypeCheck("const char *",typeinfo) ||
+                      SWIG_TypeCheck("const signed char *",typeinfo) ||
+                      SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                      SWIG_TypeCheck("std::string",typeinfo);
+                    } break;
+                    default: _v = 0; break;
+                  }
+                }    
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_new_GGPlot__SWIG_0datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_GGPlot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::GGPlot(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,std::string const &,std::string const &)\n"
+    "    datamunge::GGPlot::GGPlot(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,std::string const &)\n"
+    "    datamunge::GGPlot::GGPlot(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &)\n"
+    "    datamunge::GGPlot::GGPlot(datamunge::DataFrame const &,std::string const &,std::string const &)\n"
+    "    datamunge::GGPlot::GGPlot(datamunge::DataFrame const &,std::string const &)\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_point__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  double arg3 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2),arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_point__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_point__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_point();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_pointdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_point__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_point__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_GGPlot_geom_point__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_point'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_point(datamunge::plot::RGB,double)\n"
+    "    datamunge::GGPlot::geom_point(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_point()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_line__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  double arg3 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2),arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_line__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_line__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_line();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_linedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_line__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_line__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_GGPlot_geom_line__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_line'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_line(datamunge::plot::RGB,double)\n"
+    "    datamunge::GGPlot::geom_line(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_line()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_bar__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_bar__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_bar();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_bardatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_bar__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_bar__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_bar'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_bar(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_bar()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_col__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_col__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_col();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_coldatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_col__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_col__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_col'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_col(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_col()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_histogram__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::size_t arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_histogram__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::size_t arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_histogram__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_histogramdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_histogram__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_histogram__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_GGPlot_geom_histogram__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_histogram'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_histogram(std::size_t,datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_histogram(std::size_t)\n"
+    "    datamunge::GGPlot::geom_histogram()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_boxplot__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_boxplot__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_boxplot();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_boxplotdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_boxplot__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_boxplot__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_boxplot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_boxplot(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_boxplot()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_smooth__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_smooth__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_smooth();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_smoothdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_smooth__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_smooth__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_smooth'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_smooth(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_smooth()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_area__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_area__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_area();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_areadatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_area__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_area__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_area'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_area(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_area()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_ribbon__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::RGB arg4 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_ribbon__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_ribbondatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_GGPlot_geom_ribbon__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_GGPlot_geom_ribbon__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_ribbon'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_ribbon(std::string const &,std::string const &,datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_ribbon(std::string const &,std::string const &)\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_density__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_density__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->geom_density();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_geom_densitydatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_geom_density__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_geom_density__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_geom_density'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::geom_density(datamunge::plot::RGB)\n"
+    "    datamunge::GGPlot::geom_density()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_facet_wrap__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  std::string temp2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_facet_wrap__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_facet_wrapdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_facet_wrap__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int64: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_GGPlot_facet_wrap__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_facet_wrap'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::facet_wrap(std::string const &,std::size_t)\n"
+    "    datamunge::GGPlot::facet_wrap(std::string const &)\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_theme_minimaldatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GGPlot_theme_minimal'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->theme_minimal();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_theme_bwdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GGPlot_theme_bw'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->theme_bw();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_theme_classicdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GGPlot_theme_classic'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->theme_classic();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_scale_color_manualdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GGPlot_scale_color_manual'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    arg2 = (std::vector< datamunge::plot::RGB > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_labs__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_labs__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_labs__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_labs__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  datamunge::GGPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  result = (datamunge::GGPlot *) &(arg1)->labs();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::GGPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__GGPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_labsdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_labs__SWIG_3datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_labs__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_GGPlot_labs__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_GGPlot_labs__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_labs'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::labs(std::string const &,std::string const &,std::string const &)\n"
+    "    datamunge::GGPlot::labs(std::string const &,std::string const &)\n"
+    "    datamunge::GGPlot::labs(std::string const &)\n"
+    "    datamunge::GGPlot::labs()\n");
+}
+
+
+SWIGEXT value _wrap_GGPlot_savedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GGPlot_save'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  ((datamunge::GGPlot const *)arg1)->save((std::string const &)*arg2);
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_save_svgdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GGPlot_save_svg'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  ((datamunge::GGPlot const *)arg1)->save_svg((std::string const &)*arg2);
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_show__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  ((datamunge::GGPlot const *)arg1)->show((std::string const &)*arg2);
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_show__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  ((datamunge::GGPlot const *)arg1)->show();
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GGPlot_showdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_GGPlot_show__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__GGPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_GGPlot_show__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'GGPlot_show'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::GGPlot::show(std::string const &) const\n"
+    "    datamunge::GGPlot::show() const\n");
+}
+
+
+SWIGEXT value _wrap_delete_GGPlotdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::GGPlot *arg1 = (datamunge::GGPlot *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_GGPlot'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::GGPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__GGPlot);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_new_LM__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
@@ -8161,7 +11188,7 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = (datamunge::LM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_residuals_vs_fitted'");
@@ -8172,8 +11199,8 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -8185,7 +11212,7 @@ SWIGEXT value _wrap_LM_plot_normal_qqdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = (datamunge::LM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_normal_qq'");
@@ -8196,8 +11223,8 @@ SWIGEXT value _wrap_LM_plot_normal_qqdatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -8209,7 +11236,7 @@ SWIGEXT value _wrap_LM_plot_scale_locationdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = (datamunge::LM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_scale_location'");
@@ -8220,8 +11247,8 @@ SWIGEXT value _wrap_LM_plot_scale_locationdatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -8233,7 +11260,7 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_leveragedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LM *arg1 = (datamunge::LM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LM_plot_residuals_vs_leverage'");
@@ -8244,8 +11271,8 @@ SWIGEXT value _wrap_LM_plot_residuals_vs_leveragedatamunge (value args)
   }
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -11362,6 +14389,1883 @@ SWIGEXT value _wrap_delete_GLMMdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  std::size_t arg10 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_long_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  {
+    arg8 = caml_long_val(caml_list_nth(args,7));
+  }
+  {
+    arg9 = caml_long_val(caml_list_nth(args,8));
+  }
+  {
+    arg10 = caml_long_val(caml_list_nth(args,9));
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),SWIG_STD_MOVE(arg10));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_long_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  {
+    arg8 = caml_long_val(caml_list_nth(args,7));
+  }
+  {
+    arg9 = caml_long_val(caml_list_nth(args,8));
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_long_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  {
+    arg8 = caml_long_val(caml_list_nth(args,7));
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_long_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_4datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_long_val(caml_list_nth(args,5));
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_5datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_6datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string temp4 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3))) {
+      temp4.assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+      arg4 = &temp4;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_7datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2))) {
+      temp3.assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+      arg3 = &temp3;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModel__SWIG_8datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::INLAMixedModel_from_ptr", (void *)result, SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_INLAMixedModeldatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_new_INLAMixedModel__SWIG_8datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_new_INLAMixedModel__SWIG_7datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_new_INLAMixedModel__SWIG_6datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_new_INLAMixedModel__SWIG_5datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_int64: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_new_INLAMixedModel__SWIG_4datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_int64: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  free(argv);
+                  CAMLreturn(_wrap_new_INLAMixedModel__SWIG_3datamunge(args));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_int64: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  {
+                    if( !Is_block(argv[7]) ) _v = 0;
+                    else {
+                      switch( Tag_val(argv[7]) ) {
+                        case C_int64: _v = 1; break;
+                        default: _v = 0; break;
+                      }
+                    }
+                  }
+                  if (_v) {
+                    free(argv);
+                    CAMLreturn(_wrap_new_INLAMixedModel__SWIG_2datamunge(args));
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_int64: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  {
+                    if( !Is_block(argv[7]) ) _v = 0;
+                    else {
+                      switch( Tag_val(argv[7]) ) {
+                        case C_int64: _v = 1; break;
+                        default: _v = 0; break;
+                      }
+                    }
+                  }
+                  if (_v) {
+                    {
+                      if( !Is_block(argv[8]) ) _v = 0;
+                      else {
+                        switch( Tag_val(argv[8]) ) {
+                          case C_int64: _v = 1; break;
+                          default: _v = 0; break;
+                        }
+                      }
+                    }
+                    if (_v) {
+                      free(argv);
+                      CAMLreturn(_wrap_new_INLAMixedModel__SWIG_1datamunge(args));
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__DataFrame);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_int64: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  {
+                    if( !Is_block(argv[7]) ) _v = 0;
+                    else {
+                      switch( Tag_val(argv[7]) ) {
+                        case C_int64: _v = 1; break;
+                        default: _v = 0; break;
+                      }
+                    }
+                  }
+                  if (_v) {
+                    {
+                      if( !Is_block(argv[8]) ) _v = 0;
+                      else {
+                        switch( Tag_val(argv[8]) ) {
+                          case C_int64: _v = 1; break;
+                          default: _v = 0; break;
+                        }
+                      }
+                    }
+                    if (_v) {
+                      {
+                        if( !Is_block(argv[9]) ) _v = 0;
+                        else {
+                          switch( Tag_val(argv[9]) ) {
+                            case C_int64: _v = 1; break;
+                            default: _v = 0; break;
+                          }
+                        }
+                      }
+                      if (_v) {
+                        free(argv);
+                        CAMLreturn(_wrap_new_INLAMixedModel__SWIG_0datamunge(args));
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_INLAMixedModel'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,double,std::size_t,double,std::size_t,std::size_t,std::size_t)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,double,std::size_t,double,std::size_t,std::size_t)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,double,std::size_t,double,std::size_t)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,double,std::size_t,double)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,double,std::size_t)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &,double)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &,std::string const &)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &,std::string const &)\n"
+    "    datamunge::INLAMixedModel::INLAMixedModel(datamunge::DataFrame const &,std::string const &)\n");
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_formula_textdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_formula_text'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->formula_text();
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_familydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_family'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->family();
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_group_variabledatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_group_variable'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_variable();
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_random_effect_namesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::vector< std::string > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_random_effect_names'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_names();
+  {
+    std::vector< std::string > * temp = new std::vector< std::string >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_observationsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_observations'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->observations();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_num_groupsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_num_groups'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->num_groups();
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_fixed_effects_meandatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_fixed_effects_mean'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_mean();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_fixed_effects_sddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_fixed_effects_sd'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_sd();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_coefficient_namesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::vector< std::string > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_coefficient_names'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->coefficient_names();
+  {
+    std::vector< std::string > * temp = new std::vector< std::string >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_random_effect_std_devsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_random_effect_std_devs'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_std_devs();
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_residual_std_devdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_residual_std_dev'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->residual_std_dev();
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_group_labelsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::vector< std::string > result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_group_labels'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_labels();
+  {
+    std::vector< std::string > * temp = new std::vector< std::string >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_random_effects_mean_for_groupdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_random_effects_mean_for_group'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_mean_for_group(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_random_effects_sd_for_groupdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_random_effects_sd_for_group'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_sd_for_group(SWIG_STD_MOVE(arg2));
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_log_marginal_likelihooddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_log_marginal_likelihood'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->log_marginal_likelihood();
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_summarydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  std::string result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_summary'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->summary();
+  {
+    rv = caml_val_string_len((&result)->data(),(&result)->size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_print_summarydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_print_summary'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  ((datamunge::INLAMixedModel const *)arg1)->print_summary();
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_INLAMixedModel_predictdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'INLAMixedModel_predict'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  {
+    arg2 = (datamunge::DataFrame *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__DataFrame);
+  }
+  result = ((datamunge::INLAMixedModel const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_INLAMixedModeldatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::INLAMixedModel *arg1 = (datamunge::INLAMixedModel *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_INLAMixedModel'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::INLAMixedModel *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__INLAMixedModel);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_new_LDA__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
@@ -11867,7 +16771,7 @@ SWIGEXT value _wrap_LDA_plot_discriminantsdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::LDA *arg1 = (datamunge::LDA *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'LDA_plot_discriminants'");
@@ -11878,8 +16782,8 @@ SWIGEXT value _wrap_LDA_plot_discriminantsdatamunge (value args)
   }
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -13948,7 +18852,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_classificationdatamunge (value a
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DecisionTreeClassifier_plot_classification'");
@@ -13978,8 +18882,8 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_classificationdatamunge (value a
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -13996,7 +18900,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0datamung
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -14023,8 +18927,8 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0datamung
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -14040,7 +18944,7 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1datamung
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -14064,8 +18968,8 @@ SWIGEXT value _wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1datamung
   }
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -14907,7 +19811,7 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_predicted_vs_actualdatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::DecisionTreeRegressor *arg1 = (datamunge::DecisionTreeRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DecisionTreeRegressor_plot_predicted_vs_actual'");
@@ -14918,8 +19822,8 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_predicted_vs_actualdatamunge (val
   }
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -14931,7 +19835,7 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_residuals_vs_fitteddatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::DecisionTreeRegressor *arg1 = (datamunge::DecisionTreeRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'DecisionTreeRegressor_plot_residuals_vs_fitted'");
@@ -14942,8 +19846,8 @@ SWIGEXT value _wrap_DecisionTreeRegressor_plot_residuals_vs_fitteddatamunge (val
   }
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -16740,7 +21644,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_classificationdatamunge (value a
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RandomForestClassifier_plot_classification'");
@@ -16770,8 +21674,8 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_classificationdatamunge (value a
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -16788,7 +21692,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0datamung
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -16815,8 +21719,8 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_0datamung
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -16832,7 +21736,7 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1datamung
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -16856,8 +21760,8 @@ SWIGEXT value _wrap_RandomForestClassifier_plot_decision_regions__SWIG_1datamung
   }
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -18523,7 +23427,7 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_predicted_vs_actualdatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::RandomForestRegressor *arg1 = (datamunge::RandomForestRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RandomForestRegressor_plot_predicted_vs_actual'");
@@ -18534,8 +23438,8 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_predicted_vs_actualdatamunge (val
   }
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -18547,7 +23451,7 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_residuals_vs_fitteddatamunge (val
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::RandomForestRegressor *arg1 = (datamunge::RandomForestRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'RandomForestRegressor_plot_residuals_vs_fitted'");
@@ -18558,8 +23462,8 @@ SWIGEXT value _wrap_RandomForestRegressor_plot_residuals_vs_fitteddatamunge (val
   }
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -19856,7 +24760,7 @@ SWIGEXT value _wrap_ElasticNet_plot_coefficient_pathdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = (datamunge::ElasticNet *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_coefficient_path'");
@@ -19867,8 +24771,8 @@ SWIGEXT value _wrap_ElasticNet_plot_coefficient_pathdatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -19880,7 +24784,7 @@ SWIGEXT value _wrap_ElasticNet_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = (datamunge::ElasticNet *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_cv_curve'");
@@ -19891,8 +24795,8 @@ SWIGEXT value _wrap_ElasticNet_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -19904,7 +24808,7 @@ SWIGEXT value _wrap_ElasticNet_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = (datamunge::ElasticNet *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_predicted_vs_actual'");
@@ -19915,8 +24819,8 @@ SWIGEXT value _wrap_ElasticNet_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -19928,7 +24832,7 @@ SWIGEXT value _wrap_ElasticNet_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::ElasticNet *arg1 = (datamunge::ElasticNet *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'ElasticNet_plot_residuals_vs_fitted'");
@@ -19939,8 +24843,8 @@ SWIGEXT value _wrap_ElasticNet_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -21033,7 +25937,7 @@ SWIGEXT value _wrap_Ridge_plot_coefficient_pathdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = (datamunge::Ridge *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_coefficient_path'");
@@ -21044,8 +25948,8 @@ SWIGEXT value _wrap_Ridge_plot_coefficient_pathdatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -21057,7 +25961,7 @@ SWIGEXT value _wrap_Ridge_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = (datamunge::Ridge *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_cv_curve'");
@@ -21068,8 +25972,8 @@ SWIGEXT value _wrap_Ridge_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -21081,7 +25985,7 @@ SWIGEXT value _wrap_Ridge_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = (datamunge::Ridge *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_predicted_vs_actual'");
@@ -21092,8 +25996,8 @@ SWIGEXT value _wrap_Ridge_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -21105,7 +26009,7 @@ SWIGEXT value _wrap_Ridge_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Ridge *arg1 = (datamunge::Ridge *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Ridge_plot_residuals_vs_fitted'");
@@ -21116,8 +26020,8 @@ SWIGEXT value _wrap_Ridge_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -22233,7 +27137,7 @@ SWIGEXT value _wrap_Lasso_plot_coefficient_pathdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = (datamunge::Lasso *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_coefficient_path'");
@@ -22244,8 +27148,8 @@ SWIGEXT value _wrap_Lasso_plot_coefficient_pathdatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -22257,7 +27161,7 @@ SWIGEXT value _wrap_Lasso_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = (datamunge::Lasso *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_cv_curve'");
@@ -22268,8 +27172,8 @@ SWIGEXT value _wrap_Lasso_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -22281,7 +27185,7 @@ SWIGEXT value _wrap_Lasso_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = (datamunge::Lasso *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_predicted_vs_actual'");
@@ -22292,8 +27196,8 @@ SWIGEXT value _wrap_Lasso_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -22305,7 +27209,7 @@ SWIGEXT value _wrap_Lasso_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::Lasso *arg1 = (datamunge::Lasso *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'Lasso_plot_residuals_vs_fitted'");
@@ -22316,8 +27220,8 @@ SWIGEXT value _wrap_Lasso_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -23151,7 +28055,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_classificationdatamunge (value args)
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KNNClassifier_plot_classification'");
@@ -23181,8 +28085,8 @@ SWIGEXT value _wrap_KNNClassifier_plot_classificationdatamunge (value args)
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -23199,7 +28103,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_0datamunge (value 
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -23226,8 +28130,8 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_0datamunge (value 
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -23243,7 +28147,7 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_1datamunge (value 
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -23267,8 +28171,8 @@ SWIGEXT value _wrap_KNNClassifier_plot_decision_regions__SWIG_1datamunge (value 
   }
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -24219,7 +29123,7 @@ SWIGEXT value _wrap_KNNRegressor_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KNNRegressor *arg1 = (datamunge::KNNRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KNNRegressor_plot_predicted_vs_actual'");
@@ -24230,8 +29134,8 @@ SWIGEXT value _wrap_KNNRegressor_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -24243,7 +29147,7 @@ SWIGEXT value _wrap_KNNRegressor_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KNNRegressor *arg1 = (datamunge::KNNRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KNNRegressor_plot_residuals_vs_fitted'");
@@ -24254,8 +29158,8 @@ SWIGEXT value _wrap_KNNRegressor_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -28955,7 +33859,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_classificationdatamunge (value args)
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMClassifier_plot_classification'");
@@ -28985,8 +33889,8 @@ SWIGEXT value _wrap_GBMClassifier_plot_classificationdatamunge (value args)
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -29003,7 +33907,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_0datamunge (value 
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -29030,8 +33934,8 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_0datamunge (value 
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -29047,7 +33951,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_1datamunge (value 
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -29071,8 +33975,8 @@ SWIGEXT value _wrap_GBMClassifier_plot_decision_regions__SWIG_1datamunge (value 
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -29233,7 +34137,7 @@ SWIGEXT value _wrap_GBMClassifier_plot_training_deviancedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMClassifier *arg1 = (datamunge::GBMClassifier *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMClassifier_plot_training_deviance'");
@@ -29244,8 +34148,8 @@ SWIGEXT value _wrap_GBMClassifier_plot_training_deviancedatamunge (value args)
   }
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -30529,7 +35433,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_predicted_vs_actualdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMRegressor *arg1 = (datamunge::GBMRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMRegressor_plot_predicted_vs_actual'");
@@ -30540,8 +35444,8 @@ SWIGEXT value _wrap_GBMRegressor_plot_predicted_vs_actualdatamunge (value args)
   }
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -30553,7 +35457,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMRegressor *arg1 = (datamunge::GBMRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMRegressor_plot_residuals_vs_fitted'");
@@ -30564,8 +35468,8 @@ SWIGEXT value _wrap_GBMRegressor_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -30577,7 +35481,7 @@ SWIGEXT value _wrap_GBMRegressor_plot_training_deviancedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GBMRegressor *arg1 = (datamunge::GBMRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GBMRegressor_plot_training_deviance'");
@@ -30588,8 +35492,8 @@ SWIGEXT value _wrap_GBMRegressor_plot_training_deviancedatamunge (value args)
   }
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -32747,7 +37651,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_classificationdatamunge (value args)
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostClassifier_plot_classification'");
@@ -32777,8 +37681,8 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_classificationdatamunge (value args)
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -32795,7 +37699,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0datamunge (va
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -32822,8 +37726,8 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_0datamunge (va
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -32839,7 +37743,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1datamunge (va
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -32863,8 +37767,8 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_decision_regions__SWIG_1datamunge (va
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -33025,7 +37929,7 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_training_deviancedatamunge (value arg
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostClassifier *arg1 = (datamunge::XGBoostClassifier *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostClassifier_plot_training_deviance'");
@@ -33036,8 +37940,8 @@ SWIGEXT value _wrap_XGBoostClassifier_plot_training_deviancedatamunge (value arg
   }
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -35163,7 +40067,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_predicted_vs_actualdatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostRegressor *arg1 = (datamunge::XGBoostRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostRegressor_plot_predicted_vs_actual'");
@@ -35174,8 +40078,8 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_predicted_vs_actualdatamunge (value ar
   }
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -35187,7 +40091,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_residuals_vs_fitteddatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostRegressor *arg1 = (datamunge::XGBoostRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostRegressor_plot_residuals_vs_fitted'");
@@ -35198,8 +40102,8 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_residuals_vs_fitteddatamunge (value ar
   }
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -35211,7 +40115,7 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_training_deviancedatamunge (value args
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::XGBoostRegressor *arg1 = (datamunge::XGBoostRegressor *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'XGBoostRegressor_plot_training_deviance'");
@@ -35222,8 +40126,8 @@ SWIGEXT value _wrap_XGBoostRegressor_plot_training_deviancedatamunge (value args
   }
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -36115,7 +41019,7 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_0datamunge (value args)
   datamunge::KernelRegression *arg1 = (datamunge::KernelRegression *) 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -36129,8 +41033,8 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_0datamunge (value args)
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -36143,7 +41047,7 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_1datamunge (value args)
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = (datamunge::KernelRegression *) 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -36154,8 +41058,8 @@ SWIGEXT value _wrap_KernelRegression_plot_fit__SWIG_1datamunge (value args)
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -36248,7 +41152,7 @@ SWIGEXT value _wrap_KernelRegression_plot_predicted_vs_actualdatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = (datamunge::KernelRegression *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KernelRegression_plot_predicted_vs_actual'");
@@ -36259,8 +41163,8 @@ SWIGEXT value _wrap_KernelRegression_plot_predicted_vs_actualdatamunge (value ar
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -36272,7 +41176,7 @@ SWIGEXT value _wrap_KernelRegression_plot_residuals_vs_fitteddatamunge (value ar
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = (datamunge::KernelRegression *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KernelRegression_plot_residuals_vs_fitted'");
@@ -36283,8 +41187,8 @@ SWIGEXT value _wrap_KernelRegression_plot_residuals_vs_fitteddatamunge (value ar
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -36296,7 +41200,7 @@ SWIGEXT value _wrap_KernelRegression_plot_cv_curvedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::KernelRegression *arg1 = (datamunge::KernelRegression *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'KernelRegression_plot_cv_curve'");
@@ -36307,8 +41211,8 @@ SWIGEXT value _wrap_KernelRegression_plot_cv_curvedatamunge (value args)
   }
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -37615,7 +42519,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_0datamunge (value a
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   double arg4 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37632,8 +42536,8 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_0datamunge (value a
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -37647,7 +42551,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_1datamunge (value a
   datamunge::GaussianProcessRegression *arg1 = (datamunge::GaussianProcessRegression *) 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37661,8 +42565,8 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_1datamunge (value a
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -37675,7 +42579,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_2datamunge (value a
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = (datamunge::GaussianProcessRegression *) 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -37686,8 +42590,8 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_fit__SWIG_2datamunge (value a
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -37828,7 +42732,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_predicted_vs_actualdatamunge 
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = (datamunge::GaussianProcessRegression *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GaussianProcessRegression_plot_predicted_vs_actual'");
@@ -37839,8 +42743,8 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_predicted_vs_actualdatamunge 
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -37852,7 +42756,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_residuals_vs_fitteddatamunge 
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = (datamunge::GaussianProcessRegression *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GaussianProcessRegression_plot_residuals_vs_fitted'");
@@ -37863,8 +42767,8 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_residuals_vs_fitteddatamunge 
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -37876,7 +42780,7 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_length_scale_profiledatamunge
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GaussianProcessRegression *arg1 = (datamunge::GaussianProcessRegression *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GaussianProcessRegression_plot_length_scale_profile'");
@@ -37887,8 +42791,8 @@ SWIGEXT value _wrap_GaussianProcessRegression_plot_length_scale_profiledatamunge
   }
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -38431,7 +43335,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_classificationdatamunge (value arg
   std::string *arg4 = 0 ;
   std::string temp3 ;
   std::string temp4 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
     caml_invalid_argument("Incorrect number of arguments passed to 'NaiveBayesClassifier_plot_classification'");
@@ -38461,8 +43365,8 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_classificationdatamunge (value arg
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -38479,7 +43383,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0datamunge 
   std::size_t arg4 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38506,8 +43410,8 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0datamunge 
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -38523,7 +43427,7 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1datamunge 
   std::string *arg3 = 0 ;
   std::string temp2 ;
   std::string temp3 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   swig_result = Val_unit;
   {
@@ -38547,8 +43451,8 @@ SWIGEXT value _wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1datamunge 
   }
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -40382,7 +45286,7 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_fitteddatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = (datamunge::GLM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_residuals_vs_fitted'");
@@ -40393,8 +45297,8 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_fitteddatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -40406,7 +45310,7 @@ SWIGEXT value _wrap_GLM_plot_normal_qqdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = (datamunge::GLM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_normal_qq'");
@@ -40417,8 +45321,8 @@ SWIGEXT value _wrap_GLM_plot_normal_qqdatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -40430,7 +45334,7 @@ SWIGEXT value _wrap_GLM_plot_scale_locationdatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = (datamunge::GLM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_scale_location'");
@@ -40441,8 +45345,8 @@ SWIGEXT value _wrap_GLM_plot_scale_locationdatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -40454,7 +45358,7 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_leveragedatamunge (value args)
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
   datamunge::GLM *arg1 = (datamunge::GLM *) 0 ;
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
     caml_invalid_argument("Incorrect number of arguments passed to 'GLM_plot_residuals_vs_leverage'");
@@ -40465,8 +45369,8 @@ SWIGEXT value _wrap_GLM_plot_residuals_vs_leveragedatamunge (value args)
   }
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -43610,6 +48514,623 @@ SWIGEXT value _wrap_Tensor_outerdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_Tensor_from_imagedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::image::Image *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Tensor_from_image'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::image::Image *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__image__Image);
+  }
+  result = (datamunge::Tensor *)datamunge::Tensor::from_image((datamunge::image::Image const &)*arg1);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_conv2d__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  int arg5 ;
+  datamunge::Tensor *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg2 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg3 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  {
+    arg5 = caml_long_val(caml_list_nth(args,4));
+  }
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4,arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_conv2d__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  datamunge::Tensor *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg2 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg3 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_conv2d__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg2 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg3 = (datamunge::Tensor *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__Tensor);
+  }
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_conv2ddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Tensor);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__Tensor);
+        }
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__Tensor);
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_Tensor_conv2d__SWIG_2datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Tensor);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__Tensor);
+        }
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__Tensor);
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_Tensor_conv2d__SWIG_1datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Tensor);
+      }
+    }
+    if (_v) {
+      {
+        if (!Is_block(argv[1]) || !(Tag_val(argv[1]) == C_obj || Tag_val(argv[1]) == C_ptr)) {
+          _v = 0;
+        } else {
+          void *ptr;
+          _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_datamunge__Tensor);
+        }
+      }
+      if (_v) {
+        {
+          if (!Is_block(argv[2]) || !(Tag_val(argv[2]) == C_obj || Tag_val(argv[2]) == C_ptr)) {
+            _v = 0;
+          } else {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__Tensor);
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_int: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_Tensor_conv2d__SWIG_0datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'Tensor_conv2d'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::Tensor::conv2d(datamunge::Tensor const &,datamunge::Tensor const &,datamunge::Tensor const &,int,int)\n"
+    "    datamunge::Tensor::conv2d(datamunge::Tensor const &,datamunge::Tensor const &,datamunge::Tensor const &,int)\n"
+    "    datamunge::Tensor::conv2d(datamunge::Tensor const &,datamunge::Tensor const &,datamunge::Tensor const &)\n");
+}
+
+
+SWIGEXT value _wrap_Tensor_max_pool2d__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = (datamunge::Tensor *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2,arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_max_pool2d__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = (datamunge::Tensor *) 0 ;
+  int arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_max_pool2ddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Tensor);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_Tensor_max_pool2d__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Tensor);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_Tensor_max_pool2d__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'Tensor_max_pool2d'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::Tensor::max_pool2d(int,int) const\n"
+    "    datamunge::Tensor::max_pool2d(int) const\n");
+}
+
+
+SWIGEXT value _wrap_Tensor_avg_pool2d__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = (datamunge::Tensor *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  datamunge::Tensor *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2,arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_avg_pool2d__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = (datamunge::Tensor *) 0 ;
+  int arg2 ;
+  datamunge::Tensor *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_avg_pool2ddatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Tensor);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_Tensor_avg_pool2d__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Tensor);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_int: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_Tensor_avg_pool2d__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'Tensor_avg_pool2d'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::Tensor::avg_pool2d(int,int) const\n"
+    "    datamunge::Tensor::avg_pool2d(int) const\n");
+}
+
+
+SWIGEXT value _wrap_Tensor_reludatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = (datamunge::Tensor *) 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Tensor_relu'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->relu();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_sigmoiddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = (datamunge::Tensor *) 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Tensor_sigmoid'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sigmoid();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Tensor_softmaxdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Tensor *arg1 = (datamunge::Tensor *) 0 ;
+  datamunge::Tensor *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Tensor_softmax'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Tensor *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Tensor);
+  }
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->softmax();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::Tensor_from_ptr", (void *)result, SWIGTYPE_p_datamunge__Tensor);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_Tensor_to_string__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
@@ -46081,6 +51602,58 @@ SWIGEXT value _wrap_Bar(value args) {
 }
 
 
+SWIGEXT value _wrap_Box(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__plot__DataSeries__Box);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Polygon(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__plot__DataSeries__Polygon);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Text(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__plot__DataSeries__Text);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Segment(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__plot__DataSeries__Segment);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_DataSeries_kind_setdatamunge (value args)
 {
   CAMLparam1(args);
@@ -46463,6 +52036,53 @@ SWIGEXT value _wrap_DataSeries_bar_width_getdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_DataSeries_filled_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::DataSeries *arg1 = (datamunge::plot::DataSeries *) 0 ;
+  bool arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataSeries_filled_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->filled = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_DataSeries_filled_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::DataSeries *arg1 = (datamunge::plot::DataSeries *) 0 ;
+  bool result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'DataSeries_filled_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+  }
+  result = (bool) ((arg1)->filled);
+  {
+    rv = caml_val_bool(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_new_DataSeriesdatamunge (value args)
 {
   CAMLparam1(args);
@@ -46492,6 +52112,415 @@ SWIGEXT value _wrap_delete_DataSeriesdatamunge (value args)
   swig_result = Val_unit;
   {
     arg1 = (datamunge::plot::DataSeries *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__DataSeries);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_vertical_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  bool arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_vertical_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->vertical = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_vertical_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  bool result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_vertical_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  result = (bool) ((arg1)->vertical);
+  {
+    rv = caml_val_bool(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_value_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_value_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->value = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_value_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_value_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  result = (double) ((arg1)->value);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_slope_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_slope_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->slope = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_slope_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_slope_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  result = (double) ((arg1)->slope);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_color_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  datamunge::plot::RGB *arg2 = (datamunge::plot::RGB *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_color_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  {
+    arg2 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
+  }
+  if (arg1) (arg1)->color = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_color_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_color_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_stroke_width_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_stroke_width_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->stroke_width = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ABLine_stroke_width_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ABLine_stroke_width_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  result = (double) ((arg1)->stroke_width);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ABLinedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ABLine' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ABLine_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ABLinedatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::ABLine *arg1 = (datamunge::plot::ABLine *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ABLine'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::ABLine *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ABLine);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LegendEntry_label_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::LegendEntry *arg1 = (datamunge::plot::LegendEntry *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LegendEntry_label_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  if (arg1) (arg1)->label = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LegendEntry_label_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::LegendEntry *arg1 = (datamunge::plot::LegendEntry *) 0 ;
+  std::string *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LegendEntry_label_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+  }
+  result = (std::string *) & ((arg1)->label);
+  {
+    rv = caml_val_string_len((*result).data(), (*result).size());
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LegendEntry_color_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::LegendEntry *arg1 = (datamunge::plot::LegendEntry *) 0 ;
+  datamunge::plot::RGB *arg2 = (datamunge::plot::RGB *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LegendEntry_color_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+  }
+  {
+    arg2 = (datamunge::plot::RGB *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__RGB);
+  }
+  if (arg1) (arg1)->color = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_LegendEntry_color_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::LegendEntry *arg1 = (datamunge::plot::LegendEntry *) 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'LegendEntry_color_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
+  }
+  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RGB_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RGB);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_LegendEntrydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::LegendEntry *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_LegendEntry' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LegendEntry_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__LegendEntry);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_LegendEntrydatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::LegendEntry *arg1 = (datamunge::plot::LegendEntry *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_LegendEntry'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::LegendEntry *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LegendEntry);
   }
   delete arg1;
   rv = Val_unit;
@@ -46889,6 +52918,138 @@ SWIGEXT value _wrap_Plot_y_limitsdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_Plot_hide_axes__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *) 0 ;
+  bool arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Plot_hide_axes__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *) 0 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Plot_hide_axesdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__Plot);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_Plot_hide_axes__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__Plot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_bool: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_Plot_hide_axes__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'Plot_hide_axes'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::Plot::hide_axes(bool)\n"
+    "    datamunge::plot::Plot::hide_axes()\n");
+}
+
+
+SWIGEXT value _wrap_Plot_x_tick_labelsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *) 0 ;
+  std::vector< std::string > arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Plot_x_tick_labels'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::Plot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_Plot_widthdatamunge (value args)
 {
   CAMLparam1(args);
@@ -47260,6 +53421,98 @@ SWIGEXT value _wrap_Plot_y_maxdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_Plot_axes_hiddendatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *) 0 ;
+  bool result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Plot_axes_hidden'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  {
+    rv = caml_val_bool(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Plot_x_tick_label_listdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *) 0 ;
+  std::vector< std::string > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Plot_x_tick_label_list'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::string > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_std__string_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Plot_reference_linesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *) 0 ;
+  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Plot_reference_lines'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::plot::ABLine > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Plot_legend_entriesdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::Plot *arg1 = (datamunge::plot::Plot *) 0 ;
+  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Plot_legend_entries'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::Plot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__Plot);
+  }
+  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< datamunge::plot::LegendEntry > const_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_Plot_savedatamunge (value args)
 {
   CAMLparam1(args);
@@ -47569,39 +53822,2397 @@ SWIGEXT value _wrap_new_Plotdatamunge (value args)
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_createdatamunge (value args)
+SWIGEXT value _wrap_RPlot_createdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot result;
+  datamunge::plot::RPlot result;
   
-  if (caml_list_length(args) > 0) caml_invalid_argument("'ScatterPlot_create' takes no arguments");
+  if (caml_list_length(args) > 0) caml_invalid_argument("'RPlot_create' takes no arguments");
   swig_result = Val_unit;
-  result = datamunge::plot::ScatterPlot::create();
+  result = datamunge::plot::RPlot::create();
   {
-    datamunge::plot::ScatterPlot * temp = new datamunge::plot::ScatterPlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_points__SWIG_0datamunge (value args)
+SWIGEXT value _wrap_RPlot_plot__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2)))
+    (&arg3)->assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_plot__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2)))
+    (&arg3)->assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_plot__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2)))
+    (&arg3)->assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_plot__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_plotdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_plot__SWIG_3datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_plot__SWIG_2datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_plot__SWIG_1datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_plot__SWIG_0datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_plot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >,std::string,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >,std::string,std::string)\n"
+    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::plot::RPlot::plot(std::vector< double >,std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_hist__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RGB arg4 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2)))
+    (&arg3)->assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_hist__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2)))
+    (&arg3)->assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_hist__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_hist__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_histdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_RPlot_hist__SWIG_3datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_hist__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_hist__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int64: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_hist__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_hist'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::hist(std::vector< double >,std::size_t,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::hist(std::vector< double >,std::size_t,std::string)\n"
+    "    datamunge::plot::RPlot::hist(std::vector< double >,std::size_t)\n"
+    "    datamunge::plot::RPlot::hist(std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_barplot__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RGB arg4 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2)))
+    (&arg3)->assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_barplot__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,2)))
+    (&arg3)->assign((char *)caml_ptr_val(caml_list_nth(args,2),0), caml_string_len(caml_list_nth(args,2)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_barplot__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_barplot__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_barplotdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_RPlot_barplot__SWIG_3datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< std::string >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_barplot__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< std::string >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_barplot__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< std::string >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_string: _v = 1; break;
+              case C_ptr: {
+                swig_type_info *typeinfo = 
+                (swig_type_info *)(long)Int64_val(Field(argv[2],1));
+                _v = SWIG_TypeCheck("char *",typeinfo) ||
+                SWIG_TypeCheck("signed char *",typeinfo) ||
+                SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("const char *",typeinfo) ||
+                SWIG_TypeCheck("const signed char *",typeinfo) ||
+                SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                SWIG_TypeCheck("std::string",typeinfo);
+              } break;
+              default: _v = 0; break;
+            }
+          }    
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_barplot__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_barplot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::barplot(std::vector< double >,std::vector< std::string >,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::barplot(std::vector< double >,std::vector< std::string >,std::string)\n"
+    "    datamunge::plot::RPlot::barplot(std::vector< double >,std::vector< std::string >)\n"
+    "    datamunge::plot::RPlot::barplot(std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_boxplot__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::string > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t)) ;
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_boxplot__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::string > arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t)) ;
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_boxplot__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< std::vector< double > > arg1 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t)) ;
+  }
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_boxplotdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< std::vector< double > >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_RPlot_boxplot__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< std::vector< double > >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< std::string >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_boxplot__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< std::vector< double > >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< std::string >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_boxplot__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_boxplot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::boxplot(std::vector< std::vector< double > >,std::vector< std::string >,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::boxplot(std::vector< std::vector< double > >,std::vector< std::string >)\n"
+    "    datamunge::plot::RPlot::boxplot(std::vector< std::vector< double > >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_pie__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  {
+    arg3 = *((std::vector< datamunge::plot::RGB > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t)) ;
+  }
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_pie__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_pie__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_piedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_RPlot_pie__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< std::string >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_pie__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_std__string_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< std::string >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< datamunge::plot::RGB >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_pie__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_pie'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::pie(std::vector< double >,std::vector< std::string >,std::vector< datamunge::plot::RGB >)\n"
+    "    datamunge::plot::RPlot::pie(std::vector< double >,std::vector< std::string >)\n"
+    "    datamunge::plot::RPlot::pie(std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_curve__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string arg5 ;
+  datamunge::plot::RGB arg6 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Callback *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Callback);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,4)))
+    (&arg5)->assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg6 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_curve__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string arg5 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Callback *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Callback);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,4)))
+    (&arg5)->assign((char *)caml_ptr_val(caml_list_nth(args,4),0), caml_string_len(caml_list_nth(args,4)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_curve__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Callback *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Callback);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_long_val(caml_list_nth(args,3));
+  }
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_curve__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::Callback *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__Callback);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_curvedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Callback);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_curve__SWIG_3datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Callback);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int64: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_curve__SWIG_2datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Callback);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int64: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_string: _v = 1; break;
+                  case C_ptr: {
+                    swig_type_info *typeinfo = 
+                    (swig_type_info *)(long)Int64_val(Field(argv[4],1));
+                    _v = SWIG_TypeCheck("char *",typeinfo) ||
+                    SWIG_TypeCheck("signed char *",typeinfo) ||
+                    SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("const char *",typeinfo) ||
+                    SWIG_TypeCheck("const signed char *",typeinfo) ||
+                    SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("std::string",typeinfo);
+                  } break;
+                  default: _v = 0; break;
+                }
+              }    
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_curve__SWIG_1datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__Callback);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_int64: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_string: _v = 1; break;
+                  case C_ptr: {
+                    swig_type_info *typeinfo = 
+                    (swig_type_info *)(long)Int64_val(Field(argv[4],1));
+                    _v = SWIG_TypeCheck("char *",typeinfo) ||
+                    SWIG_TypeCheck("signed char *",typeinfo) ||
+                    SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("const char *",typeinfo) ||
+                    SWIG_TypeCheck("const signed char *",typeinfo) ||
+                    SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                    SWIG_TypeCheck("std::string",typeinfo);
+                  } break;
+                  default: _v = 0; break;
+                }
+              }    
+            }
+            if (_v) {
+              {
+                swig_type_info *typeinfo;
+                if (!Is_block(argv[5])) {
+                  _v = 0;
+                } else {
+                  switch (Tag_val(argv[5])) {
+                    case C_obj: {
+                      void *ptr;
+                      _v = !caml_ptr_val_internal(argv[5], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                      break;
+                    }
+                    case C_ptr: {
+                      typeinfo = (swig_type_info *)Int64_val(Field(argv[5], 1));
+                      _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                      break;
+                    }
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_RPlot_curve__SWIG_0datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_curve'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string)\n"
+    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double,std::size_t)\n"
+    "    datamunge::plot::RPlot::curve(datamunge::Callback &,double,double)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_qqnorm__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::string arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1)))
+    (&arg2)->assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_qqnorm__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  std::string arg2 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1)))
+    (&arg2)->assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_qqnorm__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > arg1 ;
+  datamunge::plot::RPlot result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1));
+  {
+    datamunge::plot::RPlot * temp = new datamunge::plot::RPlot(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_qqnormdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_RPlot_qqnorm__SWIG_2datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_qqnorm__SWIG_1datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_string: _v = 1; break;
+            case C_ptr: {
+              swig_type_info *typeinfo = 
+              (swig_type_info *)(long)Int64_val(Field(argv[1],1));
+              _v = SWIG_TypeCheck("char *",typeinfo) ||
+              SWIG_TypeCheck("signed char *",typeinfo) ||
+              SWIG_TypeCheck("unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("const char *",typeinfo) ||
+              SWIG_TypeCheck("const signed char *",typeinfo) ||
+              SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+              SWIG_TypeCheck("std::string",typeinfo);
+            } break;
+            default: _v = 0; break;
+          }
+        }    
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_qqnorm__SWIG_0datamunge(args));
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_qqnorm'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::qqnorm(std::vector< double >,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::qqnorm(std::vector< double >,std::string)\n"
+    "    datamunge::plot::RPlot::qqnorm(std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_points__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   datamunge::plot::RGB arg5 ;
   double arg6 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -47621,29 +56232,29 @@ SWIGEXT value _wrap_ScatterPlot_points__SWIG_0datamunge (value args)
   {
     arg6 = caml_double_val(caml_list_nth(args,5));
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_points__SWIG_1datamunge (value args)
+SWIGEXT value _wrap_RPlot_points__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   datamunge::plot::RGB arg5 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -47660,28 +56271,28 @@ SWIGEXT value _wrap_ScatterPlot_points__SWIG_1datamunge (value args)
   {
     arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_points__SWIG_2datamunge (value args)
+SWIGEXT value _wrap_RPlot_points__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -47695,27 +56306,27 @@ SWIGEXT value _wrap_ScatterPlot_points__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_points__SWIG_3datamunge (value args)
+SWIGEXT value _wrap_RPlot_points__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -47723,16 +56334,16 @@ SWIGEXT value _wrap_ScatterPlot_points__SWIG_3datamunge (value args)
   {
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
+SWIGEXT value _wrap_RPlot_pointsdatamunge(value args) {
   CAMLparam1(args);
   int i;
   int argc = caml_list_length(args);
@@ -47750,7 +56361,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -47797,7 +56408,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
         }
         if (_v) {
           free(argv);
-          CAMLreturn(_wrap_ScatterPlot_points__SWIG_3datamunge(args));
+          CAMLreturn(_wrap_RPlot_points__SWIG_3datamunge(args));
         }
       }
     }
@@ -47809,7 +56420,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -47877,7 +56488,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
           }
           if (_v) {
             free(argv);
-            CAMLreturn(_wrap_ScatterPlot_points__SWIG_2datamunge(args));
+            CAMLreturn(_wrap_RPlot_points__SWIG_2datamunge(args));
           }
         }
       }
@@ -47890,7 +56501,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -47979,7 +56590,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
             }
             if (_v) {
               free(argv);
-              CAMLreturn(_wrap_ScatterPlot_points__SWIG_1datamunge(args));
+              CAMLreturn(_wrap_RPlot_points__SWIG_1datamunge(args));
             }
           }
         }
@@ -47993,7 +56604,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -48092,7 +56703,7 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
               }
               if (_v) {
                 free(argv);
-                CAMLreturn(_wrap_ScatterPlot_points__SWIG_0datamunge(args));
+                CAMLreturn(_wrap_RPlot_points__SWIG_0datamunge(args));
               }
             }
           }
@@ -48102,30 +56713,30 @@ SWIGEXT value _wrap_ScatterPlot_pointsdatamunge(value args) {
   }
   
   free(argv);
-  caml_failwith("Wrong number or type of arguments for overloaded function 'ScatterPlot_points'.\n"
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_points'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::ScatterPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::ScatterPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::ScatterPlot::points(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::ScatterPlot::points(std::vector< double >,std::vector< double >)\n");
+    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::plot::RPlot::points(std::vector< double >,std::vector< double >)\n");
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_line__SWIG_0datamunge (value args)
+SWIGEXT value _wrap_RPlot_line__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   datamunge::plot::RGB arg5 ;
   double arg6 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -48145,29 +56756,29 @@ SWIGEXT value _wrap_ScatterPlot_line__SWIG_0datamunge (value args)
   {
     arg6 = caml_double_val(caml_list_nth(args,5));
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_line__SWIG_1datamunge (value args)
+SWIGEXT value _wrap_RPlot_line__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   datamunge::plot::RGB arg5 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -48184,28 +56795,28 @@ SWIGEXT value _wrap_ScatterPlot_line__SWIG_1datamunge (value args)
   {
     arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_line__SWIG_2datamunge (value args)
+SWIGEXT value _wrap_RPlot_line__SWIG_2datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -48219,27 +56830,27 @@ SWIGEXT value _wrap_ScatterPlot_line__SWIG_2datamunge (value args)
     else
     SWIG_exception(SWIG_TypeError, "string expected");
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_line__SWIG_3datamunge (value args)
+SWIGEXT value _wrap_RPlot_line__SWIG_3datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *result = 0 ;
   
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   {
     arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
@@ -48247,16 +56858,16 @@ SWIGEXT value _wrap_ScatterPlot_line__SWIG_3datamunge (value args)
   {
     arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
   }
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
+SWIGEXT value _wrap_RPlot_linedatamunge(value args) {
   CAMLparam1(args);
   int i;
   int argc = caml_list_length(args);
@@ -48274,7 +56885,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -48321,7 +56932,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
         }
         if (_v) {
           free(argv);
-          CAMLreturn(_wrap_ScatterPlot_line__SWIG_3datamunge(args));
+          CAMLreturn(_wrap_RPlot_line__SWIG_3datamunge(args));
         }
       }
     }
@@ -48333,7 +56944,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -48401,7 +57012,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
           }
           if (_v) {
             free(argv);
-            CAMLreturn(_wrap_ScatterPlot_line__SWIG_2datamunge(args));
+            CAMLreturn(_wrap_RPlot_line__SWIG_2datamunge(args));
           }
         }
       }
@@ -48414,7 +57025,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -48503,7 +57114,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
             }
             if (_v) {
               free(argv);
-              CAMLreturn(_wrap_ScatterPlot_line__SWIG_1datamunge(args));
+              CAMLreturn(_wrap_RPlot_line__SWIG_1datamunge(args));
             }
           }
         }
@@ -48517,7 +57128,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
         _v = 0;
       } else {
         void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
       }
     }
     if (_v) {
@@ -48616,7 +57227,7 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
               }
               if (_v) {
                 free(argv);
-                CAMLreturn(_wrap_ScatterPlot_line__SWIG_0datamunge(args));
+                CAMLreturn(_wrap_RPlot_line__SWIG_0datamunge(args));
               }
             }
           }
@@ -48626,44 +57237,4044 @@ SWIGEXT value _wrap_ScatterPlot_linedatamunge(value args) {
   }
   
   free(argv);
-  caml_failwith("Wrong number or type of arguments for overloaded function 'ScatterPlot_line'.\n"
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_line'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::ScatterPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::ScatterPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::ScatterPlot::line(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::ScatterPlot::line(std::vector< double >,std::vector< double >)\n");
+    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::plot::RPlot::line(std::vector< double >,std::vector< double >)\n");
 }
 
 
-SWIGEXT value _wrap_new_ScatterPlotdatamunge (value args)
+SWIGEXT value _wrap_RPlot_lines__SWIG_0datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *result = 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  datamunge::plot::RPlot *result = 0 ;
   
-  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ScatterPlot' takes no arguments");
   swig_result = Val_unit;
-  result = (datamunge::plot::ScatterPlot *)new datamunge::plot::ScatterPlot();
   {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::ScatterPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_delete_ScatterPlotdatamunge (value args)
+SWIGEXT value _wrap_RPlot_lines__SWIG_1datamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::ScatterPlot *arg1 = (datamunge::plot::ScatterPlot *) 0 ;
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_lines__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_lines__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_linesdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_lines__SWIG_3datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_lines__SWIG_2datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_lines__SWIG_1datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_double: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }  
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_RPlot_lines__SWIG_0datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_lines'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::plot::RPlot::lines(std::vector< double >,std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_bars__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_bars__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_bars__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_bars__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_barsdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_bars__SWIG_3datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_bars__SWIG_2datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_bars__SWIG_1datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_double: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }  
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_RPlot_bars__SWIG_0datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_bars'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >,std::string)\n"
+    "    datamunge::plot::RPlot::bars(std::vector< double >,std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_box__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  datamunge::plot::RGB arg9 ;
+  double arg10 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  {
+    arg8 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,7),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg9 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,8),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg10 = caml_double_val(caml_list_nth(args,9));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),arg10);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_box__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  datamunge::plot::RGB arg9 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  {
+    arg8 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,7),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg9 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,8),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_box__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  {
+    arg8 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,7),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_box__SWIG_3datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_boxdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 7) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_double: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }  
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_double: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }  
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  free(argv);
+                  CAMLreturn(_wrap_RPlot_box__SWIG_3datamunge(args));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 8) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_double: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }  
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_double: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }  
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  {
+                    swig_type_info *typeinfo;
+                    if (!Is_block(argv[7])) {
+                      _v = 0;
+                    } else {
+                      switch (Tag_val(argv[7])) {
+                        case C_obj: {
+                          void *ptr;
+                          _v = !caml_ptr_val_internal(argv[7], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                          break;
+                        }
+                        case C_ptr: {
+                          typeinfo = (swig_type_info *)Int64_val(Field(argv[7], 1));
+                          _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                          break;
+                        }
+                        default: _v = 0; break;
+                      }
+                    }
+                  }
+                  if (_v) {
+                    free(argv);
+                    CAMLreturn(_wrap_RPlot_box__SWIG_2datamunge(args));
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 9) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_double: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }  
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_double: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }  
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  {
+                    swig_type_info *typeinfo;
+                    if (!Is_block(argv[7])) {
+                      _v = 0;
+                    } else {
+                      switch (Tag_val(argv[7])) {
+                        case C_obj: {
+                          void *ptr;
+                          _v = !caml_ptr_val_internal(argv[7], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                          break;
+                        }
+                        case C_ptr: {
+                          typeinfo = (swig_type_info *)Int64_val(Field(argv[7], 1));
+                          _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                          break;
+                        }
+                        default: _v = 0; break;
+                      }
+                    }
+                  }
+                  if (_v) {
+                    {
+                      swig_type_info *typeinfo;
+                      if (!Is_block(argv[8])) {
+                        _v = 0;
+                      } else {
+                        switch (Tag_val(argv[8])) {
+                          case C_obj: {
+                            void *ptr;
+                            _v = !caml_ptr_val_internal(argv[8], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                            break;
+                          }
+                          case C_ptr: {
+                            typeinfo = (swig_type_info *)Int64_val(Field(argv[8], 1));
+                            _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                            break;
+                          }
+                          default: _v = 0; break;
+                        }
+                      }
+                    }
+                    if (_v) {
+                      free(argv);
+                      CAMLreturn(_wrap_RPlot_box__SWIG_1datamunge(args));
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_double: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }  
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_double: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }  
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  {
+                    swig_type_info *typeinfo;
+                    if (!Is_block(argv[7])) {
+                      _v = 0;
+                    } else {
+                      switch (Tag_val(argv[7])) {
+                        case C_obj: {
+                          void *ptr;
+                          _v = !caml_ptr_val_internal(argv[7], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                          break;
+                        }
+                        case C_ptr: {
+                          typeinfo = (swig_type_info *)Int64_val(Field(argv[7], 1));
+                          _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                          break;
+                        }
+                        default: _v = 0; break;
+                      }
+                    }
+                  }
+                  if (_v) {
+                    {
+                      swig_type_info *typeinfo;
+                      if (!Is_block(argv[8])) {
+                        _v = 0;
+                      } else {
+                        switch (Tag_val(argv[8])) {
+                          case C_obj: {
+                            void *ptr;
+                            _v = !caml_ptr_val_internal(argv[8], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                            break;
+                          }
+                          case C_ptr: {
+                            typeinfo = (swig_type_info *)Int64_val(Field(argv[8], 1));
+                            _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                            break;
+                          }
+                          default: _v = 0; break;
+                        }
+                      }
+                    }
+                    if (_v) {
+                      {
+                        if( !Is_block(argv[9]) ) _v = 0;
+                        else {
+                          switch( Tag_val(argv[9]) ) {
+                            case C_double: _v = 1; break;
+                            default: _v = 0; break;
+                          }
+                        }  
+                      }
+                      if (_v) {
+                        free(argv);
+                        CAMLreturn(_wrap_RPlot_box__SWIG_0datamunge(args));
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_box'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::box(double,double,double,double,double,double,std::vector< double >,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::box(double,double,double,double,double,double,std::vector< double >,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::box(double,double,double,double,double,double,std::vector< double >)\n"
+    "    datamunge::plot::RPlot::box(double,double,double,double,double,double)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_abline__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB arg4 ;
+  double arg5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg5 = caml_double_val(caml_list_nth(args,4));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4),arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_ablinedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_abline__SWIG_2datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_abline__SWIG_1datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_double: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }  
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_abline__SWIG_0datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_abline'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::abline(double,double,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::abline(double,double,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::abline(double,double)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_h__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3),arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_h__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_h__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_hdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_abline_h__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_abline_h__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_double: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }  
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_abline_h__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_abline_h'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::abline_h(double,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::abline_h(double,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::abline_h(double)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_v__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3),arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_v__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_v__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_abline_vdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_abline_v__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_abline_v__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_double: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }  
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_abline_v__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_abline_v'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::abline_v(double,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::abline_v(double,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::abline_v(double)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_qqline__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg4 = caml_double_val(caml_list_nth(args,3));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),arg4);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_qqline__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_qqline__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_qqlinedatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_RPlot_qqline__SWIG_2datamunge(args));
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_qqline__SWIG_1datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_double: _v = 1; break;
+                default: _v = 0; break;
+              }
+            }  
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_qqline__SWIG_0datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_qqline'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::qqline(std::vector< double >,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::qqline(std::vector< double >,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::qqline(std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_legenddatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< std::string > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RPlot_legend'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< std::string > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__string_t)) ;
+  }
+  {
+    arg3 = *((std::vector< datamunge::plot::RGB > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_text__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg6 = caml_double_val(caml_list_nth(args,5));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_text__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  {
+    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_text__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_double_val(caml_list_nth(args,2));
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,3)))
+    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
+    else
+    SWIG_exception(SWIG_TypeError, "string expected");
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_textdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_text__SWIG_2datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_text__SWIG_1datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_double: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }  
+      }
+      if (_v) {
+        {
+          if( !Is_block(argv[2]) ) _v = 0;
+          else {
+            switch( Tag_val(argv[2]) ) {
+              case C_double: _v = 1; break;
+              default: _v = 0; break;
+            }
+          }  
+        }
+        if (_v) {
+          {
+            if( !Is_block(argv[3]) ) _v = 0;
+            else {
+              switch( Tag_val(argv[3]) ) {
+                case C_string: _v = 1; break;
+                case C_ptr: {
+                  swig_type_info *typeinfo = 
+                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
+                  _v = SWIG_TypeCheck("char *",typeinfo) ||
+                  SWIG_TypeCheck("signed char *",typeinfo) ||
+                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("const char *",typeinfo) ||
+                  SWIG_TypeCheck("const signed char *",typeinfo) ||
+                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
+                  SWIG_TypeCheck("std::string",typeinfo);
+                } break;
+                default: _v = 0; break;
+              }
+            }    
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              {
+                if( !Is_block(argv[5]) ) _v = 0;
+                else {
+                  switch( Tag_val(argv[5]) ) {
+                    case C_double: _v = 1; break;
+                    default: _v = 0; break;
+                  }
+                }  
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_RPlot_text__SWIG_0datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_text'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::text(double,double,std::string,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::text(double,double,std::string,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::text(double,double,std::string)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_polygon__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RGB arg4 ;
+  bool arg5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg5 = caml_long_val(caml_list_nth(args,4));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_polygon__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RGB arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg4 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_polygon__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_polygondatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          free(argv);
+          CAMLreturn(_wrap_RPlot_polygon__SWIG_2datamunge(args));
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            free(argv);
+            CAMLreturn(_wrap_RPlot_polygon__SWIG_1datamunge(args));
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              if( !Is_block(argv[4]) ) _v = 0;
+              else {
+                switch( Tag_val(argv[4]) ) {
+                  case C_bool: _v = 1; break;
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_polygon__SWIG_0datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_polygon'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::polygon(std::vector< double >,std::vector< double >,datamunge::plot::RGB,bool)\n"
+    "    datamunge::plot::RPlot::polygon(std::vector< double >,std::vector< double >,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::polygon(std::vector< double >,std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_RPlot_segments__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  datamunge::plot::RGB arg6 ;
+  double arg7 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg4 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg5 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg6 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  {
+    arg7 = caml_double_val(caml_list_nth(args,6));
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_segments__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  datamunge::plot::RGB arg6 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg4 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg5 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg6 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,5),SWIGTYPE_p_datamunge__plot__RGB)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_segments__SWIG_2datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  {
+    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg4 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  {
+    arg5 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_std__vectorT_double_t)) ;
+  }
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RPlot_segmentsdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 5) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              free(argv);
+              CAMLreturn(_wrap_RPlot_segments__SWIG_2datamunge(args));
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              {
+                swig_type_info *typeinfo;
+                if (!Is_block(argv[5])) {
+                  _v = 0;
+                } else {
+                  switch (Tag_val(argv[5])) {
+                    case C_obj: {
+                      void *ptr;
+                      _v = !caml_ptr_val_internal(argv[5], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                      break;
+                    }
+                    case C_ptr: {
+                      typeinfo = (swig_type_info *)Int64_val(Field(argv[5], 1));
+                      _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                      break;
+                    }
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                free(argv);
+                CAMLreturn(_wrap_RPlot_segments__SWIG_1datamunge(args));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 7) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__RPlot);
+      }
+    }
+    if (_v) {
+      {
+        swig_type_info *typeinfo;
+        if (!Is_block(argv[1])) {
+          _v = 0;
+        } else {
+          switch (Tag_val(argv[1])) {
+            case C_obj: {
+              void *ptr;
+              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+              break;
+            }
+            case C_ptr: {
+              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
+              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+              break;
+            }
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        {
+          swig_type_info *typeinfo;
+          if (!Is_block(argv[2])) {
+            _v = 0;
+          } else {
+            switch (Tag_val(argv[2])) {
+              case C_obj: {
+                void *ptr;
+                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                break;
+              }
+              case C_ptr: {
+                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
+                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                break;
+              }
+              default: _v = 0; break;
+            }
+          }
+        }
+        if (_v) {
+          {
+            swig_type_info *typeinfo;
+            if (!Is_block(argv[3])) {
+              _v = 0;
+            } else {
+              switch (Tag_val(argv[3])) {
+                case C_obj: {
+                  void *ptr;
+                  _v = !caml_ptr_val_internal(argv[3], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                  break;
+                }
+                case C_ptr: {
+                  typeinfo = (swig_type_info *)Int64_val(Field(argv[3], 1));
+                  _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                  break;
+                }
+                default: _v = 0; break;
+              }
+            }
+          }
+          if (_v) {
+            {
+              swig_type_info *typeinfo;
+              if (!Is_block(argv[4])) {
+                _v = 0;
+              } else {
+                switch (Tag_val(argv[4])) {
+                  case C_obj: {
+                    void *ptr;
+                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+                    break;
+                  }
+                  case C_ptr: {
+                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
+                    _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
+                    break;
+                  }
+                  default: _v = 0; break;
+                }
+              }
+            }
+            if (_v) {
+              {
+                swig_type_info *typeinfo;
+                if (!Is_block(argv[5])) {
+                  _v = 0;
+                } else {
+                  switch (Tag_val(argv[5])) {
+                    case C_obj: {
+                      void *ptr;
+                      _v = !caml_ptr_val_internal(argv[5], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
+                      break;
+                    }
+                    case C_ptr: {
+                      typeinfo = (swig_type_info *)Int64_val(Field(argv[5], 1));
+                      _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
+                      break;
+                    }
+                    default: _v = 0; break;
+                  }
+                }
+              }
+              if (_v) {
+                {
+                  if( !Is_block(argv[6]) ) _v = 0;
+                  else {
+                    switch( Tag_val(argv[6]) ) {
+                      case C_double: _v = 1; break;
+                      default: _v = 0; break;
+                    }
+                  }  
+                }
+                if (_v) {
+                  free(argv);
+                  CAMLreturn(_wrap_RPlot_segments__SWIG_0datamunge(args));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'RPlot_segments'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::plot::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >,datamunge::plot::RGB,double)\n"
+    "    datamunge::plot::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >,datamunge::plot::RGB)\n"
+    "    datamunge::plot::RPlot::segments(std::vector< double >,std::vector< double >,std::vector< double >,std::vector< double >)\n");
+}
+
+
+SWIGEXT value _wrap_new_RPlotdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_RPlot' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RPlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RPlot);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RPlotdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RPlot *arg1 = (datamunge::plot::RPlot *) 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
-    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ScatterPlot'");
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RPlot'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::ScatterPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__ScatterPlot);
+    arg1 = (datamunge::plot::RPlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RPlot);
   }
   delete arg1;
   rv = Val_unit;
@@ -48672,1156 +61283,181 @@ SWIGEXT value _wrap_delete_ScatterPlotdatamunge (value args)
 }
 
 
-SWIGEXT value _wrap_LinePlot_createdatamunge (value args)
+SWIGEXT value _wrap_RLayout_createdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LinePlot result;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  datamunge::plot::RLayout result;
   
-  if (caml_list_length(args) > 0) caml_invalid_argument("'LinePlot_create' takes no arguments");
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_create'");
+  }
   swig_result = Val_unit;
-  result = datamunge::plot::LinePlot::create();
   {
-    datamunge::plot::LinePlot * temp = new datamunge::plot::LinePlot(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LinePlot_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__LinePlot);
+    arg1 = caml_long_val(caml_list_nth(args,0));
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  {
+    datamunge::plot::RLayout * temp = new datamunge::plot::RLayout(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__RLayout);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_LinePlot_line__SWIG_0datamunge (value args)
+SWIGEXT value _wrap_RLayout_adddatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LinePlot *arg1 = (datamunge::plot::LinePlot *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  double arg6 ;
-  datamunge::plot::LinePlot *result = 0 ;
+  datamunge::plot::RLayout *arg1 = (datamunge::plot::RLayout *) 0 ;
+  datamunge::plot::Plot *arg2 = 0 ;
+  datamunge::plot::RLayout *result = 0 ;
   
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_add'");
+  }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LinePlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LinePlot);
+    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+    arg2 = (datamunge::plot::Plot *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__plot__Plot);
   }
+  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
   {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    if (caml_ptr_check(caml_list_nth(args,3)))
-    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
-    else
-    SWIG_exception(SWIG_TypeError, "string expected");
-  }
-  {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
-  }
-  {
-    arg6 = caml_double_val(caml_list_nth(args,5));
-  }
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LinePlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RLayout);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_LinePlot_line__SWIG_1datamunge (value args)
+SWIGEXT value _wrap_RLayout_sizedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LinePlot *arg1 = (datamunge::plot::LinePlot *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  datamunge::plot::LinePlot *result = 0 ;
+  datamunge::plot::RLayout *arg1 = (datamunge::plot::RLayout *) 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::plot::RLayout *result = 0 ;
   
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_size'");
+  }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LinePlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LinePlot);
+    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
+    arg2 = caml_long_val(caml_list_nth(args,1));
   }
   {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
+    arg3 = caml_long_val(caml_list_nth(args,2));
   }
+  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
   {
-    if (caml_ptr_check(caml_list_nth(args,3)))
-    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
-    else
-    SWIG_exception(SWIG_TypeError, "string expected");
-  }
-  {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
-  }
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LinePlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RLayout);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_LinePlot_line__SWIG_2datamunge (value args)
+SWIGEXT value _wrap_RLayout_savedatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::LinePlot *arg1 = (datamunge::plot::LinePlot *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::LinePlot *result = 0 ;
+  datamunge::plot::RLayout *arg1 = (datamunge::plot::RLayout *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
   
-  swig_result = Val_unit;
-  {
-    arg1 = (datamunge::plot::LinePlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LinePlot);
-  }
-  {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    if (caml_ptr_check(caml_list_nth(args,3)))
-    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
-    else
-    SWIG_exception(SWIG_TypeError, "string expected");
-  }
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LinePlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_LinePlot_line__SWIG_3datamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::LinePlot *arg1 = (datamunge::plot::LinePlot *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  datamunge::plot::LinePlot *result = 0 ;
-  
-  swig_result = Val_unit;
-  {
-    arg1 = (datamunge::plot::LinePlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LinePlot);
-  }
-  {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LinePlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_LinePlot_linedatamunge(value args) {
-  CAMLparam1(args);
-  int i;
-  int argc = caml_list_length(args);
-  
-  value *argv;
-  
-  argv = (value *)malloc( argc * sizeof( value ) );
-  for( i = 0; i < argc; i++ ) {
-    argv[i] = caml_list_nth(args,i);
-  }
-  if (argc == 3) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__LinePlot);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          free(argv);
-          CAMLreturn(_wrap_LinePlot_line__SWIG_3datamunge(args));
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__LinePlot);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          {
-            if( !Is_block(argv[3]) ) _v = 0;
-            else {
-              switch( Tag_val(argv[3]) ) {
-                case C_string: _v = 1; break;
-                case C_ptr: {
-                  swig_type_info *typeinfo = 
-                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
-                  _v = SWIG_TypeCheck("char *",typeinfo) ||
-                  SWIG_TypeCheck("signed char *",typeinfo) ||
-                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("const char *",typeinfo) ||
-                  SWIG_TypeCheck("const signed char *",typeinfo) ||
-                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("std::string",typeinfo);
-                } break;
-                default: _v = 0; break;
-              }
-            }    
-          }
-          if (_v) {
-            free(argv);
-            CAMLreturn(_wrap_LinePlot_line__SWIG_2datamunge(args));
-          }
-        }
-      }
-    }
-  }
-  if (argc == 5) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__LinePlot);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          {
-            if( !Is_block(argv[3]) ) _v = 0;
-            else {
-              switch( Tag_val(argv[3]) ) {
-                case C_string: _v = 1; break;
-                case C_ptr: {
-                  swig_type_info *typeinfo = 
-                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
-                  _v = SWIG_TypeCheck("char *",typeinfo) ||
-                  SWIG_TypeCheck("signed char *",typeinfo) ||
-                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("const char *",typeinfo) ||
-                  SWIG_TypeCheck("const signed char *",typeinfo) ||
-                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("std::string",typeinfo);
-                } break;
-                default: _v = 0; break;
-              }
-            }    
-          }
-          if (_v) {
-            {
-              swig_type_info *typeinfo;
-              if (!Is_block(argv[4])) {
-                _v = 0;
-              } else {
-                switch (Tag_val(argv[4])) {
-                  case C_obj: {
-                    void *ptr;
-                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
-                    break;
-                  }
-                  case C_ptr: {
-                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
-                    break;
-                  }
-                  default: _v = 0; break;
-                }
-              }
-            }
-            if (_v) {
-              free(argv);
-              CAMLreturn(_wrap_LinePlot_line__SWIG_1datamunge(args));
-            }
-          }
-        }
-      }
-    }
-  }
-  if (argc == 6) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__LinePlot);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          {
-            if( !Is_block(argv[3]) ) _v = 0;
-            else {
-              switch( Tag_val(argv[3]) ) {
-                case C_string: _v = 1; break;
-                case C_ptr: {
-                  swig_type_info *typeinfo = 
-                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
-                  _v = SWIG_TypeCheck("char *",typeinfo) ||
-                  SWIG_TypeCheck("signed char *",typeinfo) ||
-                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("const char *",typeinfo) ||
-                  SWIG_TypeCheck("const signed char *",typeinfo) ||
-                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("std::string",typeinfo);
-                } break;
-                default: _v = 0; break;
-              }
-            }    
-          }
-          if (_v) {
-            {
-              swig_type_info *typeinfo;
-              if (!Is_block(argv[4])) {
-                _v = 0;
-              } else {
-                switch (Tag_val(argv[4])) {
-                  case C_obj: {
-                    void *ptr;
-                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
-                    break;
-                  }
-                  case C_ptr: {
-                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
-                    break;
-                  }
-                  default: _v = 0; break;
-                }
-              }
-            }
-            if (_v) {
-              {
-                if( !Is_block(argv[5]) ) _v = 0;
-                else {
-                  switch( Tag_val(argv[5]) ) {
-                    case C_double: _v = 1; break;
-                    default: _v = 0; break;
-                  }
-                }  
-              }
-              if (_v) {
-                free(argv);
-                CAMLreturn(_wrap_LinePlot_line__SWIG_0datamunge(args));
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  free(argv);
-  caml_failwith("Wrong number or type of arguments for overloaded function 'LinePlot_line'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::LinePlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::LinePlot::line(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::LinePlot::line(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::LinePlot::line(std::vector< double >,std::vector< double >)\n");
-}
-
-
-SWIGEXT value _wrap_new_LinePlotdatamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::LinePlot *result = 0 ;
-  
-  if (caml_list_length(args) > 0) caml_invalid_argument("'new_LinePlot' takes no arguments");
-  swig_result = Val_unit;
-  result = (datamunge::plot::LinePlot *)new datamunge::plot::LinePlot();
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::LinePlot_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__LinePlot);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_delete_LinePlotdatamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::LinePlot *arg1 = (datamunge::plot::LinePlot *) 0 ;
-  
-  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
-    caml_invalid_argument("Incorrect number of arguments passed to 'delete_LinePlot'");
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_save'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::LinePlot *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__LinePlot);
+    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
-  delete arg1;
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
   rv = Val_unit;
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_BarChart_createdatamunge (value args)
+SWIGEXT value _wrap_RLayout_save_svgdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::BarChart result;
+  datamunge::plot::RLayout *arg1 = (datamunge::plot::RLayout *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
   
-  if (caml_list_length(args) > 0) caml_invalid_argument("'BarChart_create' takes no arguments");
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RLayout_save_svg'");
+  }
   swig_result = Val_unit;
-  result = datamunge::plot::BarChart::create();
   {
-    datamunge::plot::BarChart * temp = new datamunge::plot::BarChart(result);
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::BarChart_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__plot__BarChart);
+    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
+  }
+  {
+    if (caml_ptr_check(caml_list_nth(args,1))) {
+      temp2.assign((char *)caml_ptr_val(caml_list_nth(args,1),0), caml_string_len(caml_list_nth(args,1)));
+      arg2 = &temp2;
+    } else {
+      SWIG_exception(SWIG_TypeError, "string expected");
+    }
+  }
+  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RLayoutdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::plot::RLayout *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_RLayout' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::RLayout_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__RLayout);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
 }
 
 
-SWIGEXT value _wrap_BarChart_bars__SWIG_0datamunge (value args)
+SWIGEXT value _wrap_delete_RLayoutdatamunge (value args)
 {
   CAMLparam1(args);
   CAMLlocal2(swig_result,rv);
-  datamunge::plot::BarChart *arg1 = (datamunge::plot::BarChart *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  double arg6 ;
-  datamunge::plot::BarChart *result = 0 ;
-  
-  swig_result = Val_unit;
-  {
-    arg1 = (datamunge::plot::BarChart *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    if (caml_ptr_check(caml_list_nth(args,3)))
-    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
-    else
-    SWIG_exception(SWIG_TypeError, "string expected");
-  }
-  {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
-  }
-  {
-    arg6 = caml_double_val(caml_list_nth(args,5));
-  }
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::BarChart_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_BarChart_bars__SWIG_1datamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::BarChart *arg1 = (datamunge::plot::BarChart *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  datamunge::plot::BarChart *result = 0 ;
-  
-  swig_result = Val_unit;
-  {
-    arg1 = (datamunge::plot::BarChart *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    if (caml_ptr_check(caml_list_nth(args,3)))
-    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
-    else
-    SWIG_exception(SWIG_TypeError, "string expected");
-  }
-  {
-    arg5 = *((datamunge::plot::RGB *) caml_ptr_val(caml_list_nth(args,4),SWIGTYPE_p_datamunge__plot__RGB)) ;
-  }
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::BarChart_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_BarChart_bars__SWIG_2datamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::BarChart *arg1 = (datamunge::plot::BarChart *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::BarChart *result = 0 ;
-  
-  swig_result = Val_unit;
-  {
-    arg1 = (datamunge::plot::BarChart *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    if (caml_ptr_check(caml_list_nth(args,3)))
-    (&arg4)->assign((char *)caml_ptr_val(caml_list_nth(args,3),0), caml_string_len(caml_list_nth(args,3)));
-    else
-    SWIG_exception(SWIG_TypeError, "string expected");
-  }
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::BarChart_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_BarChart_bars__SWIG_3datamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::BarChart *arg1 = (datamunge::plot::BarChart *) 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  datamunge::plot::BarChart *result = 0 ;
-  
-  swig_result = Val_unit;
-  {
-    arg1 = (datamunge::plot::BarChart *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  {
-    arg2 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  {
-    arg3 = *((std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t)) ;
-  }
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::BarChart_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_BarChart_barsdatamunge(value args) {
-  CAMLparam1(args);
-  int i;
-  int argc = caml_list_length(args);
-  
-  value *argv;
-  
-  argv = (value *)malloc( argc * sizeof( value ) );
-  for( i = 0; i < argc; i++ ) {
-    argv[i] = caml_list_nth(args,i);
-  }
-  if (argc == 3) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__BarChart);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          free(argv);
-          CAMLreturn(_wrap_BarChart_bars__SWIG_3datamunge(args));
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__BarChart);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          {
-            if( !Is_block(argv[3]) ) _v = 0;
-            else {
-              switch( Tag_val(argv[3]) ) {
-                case C_string: _v = 1; break;
-                case C_ptr: {
-                  swig_type_info *typeinfo = 
-                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
-                  _v = SWIG_TypeCheck("char *",typeinfo) ||
-                  SWIG_TypeCheck("signed char *",typeinfo) ||
-                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("const char *",typeinfo) ||
-                  SWIG_TypeCheck("const signed char *",typeinfo) ||
-                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("std::string",typeinfo);
-                } break;
-                default: _v = 0; break;
-              }
-            }    
-          }
-          if (_v) {
-            free(argv);
-            CAMLreturn(_wrap_BarChart_bars__SWIG_2datamunge(args));
-          }
-        }
-      }
-    }
-  }
-  if (argc == 5) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__BarChart);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          {
-            if( !Is_block(argv[3]) ) _v = 0;
-            else {
-              switch( Tag_val(argv[3]) ) {
-                case C_string: _v = 1; break;
-                case C_ptr: {
-                  swig_type_info *typeinfo = 
-                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
-                  _v = SWIG_TypeCheck("char *",typeinfo) ||
-                  SWIG_TypeCheck("signed char *",typeinfo) ||
-                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("const char *",typeinfo) ||
-                  SWIG_TypeCheck("const signed char *",typeinfo) ||
-                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("std::string",typeinfo);
-                } break;
-                default: _v = 0; break;
-              }
-            }    
-          }
-          if (_v) {
-            {
-              swig_type_info *typeinfo;
-              if (!Is_block(argv[4])) {
-                _v = 0;
-              } else {
-                switch (Tag_val(argv[4])) {
-                  case C_obj: {
-                    void *ptr;
-                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
-                    break;
-                  }
-                  case C_ptr: {
-                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
-                    break;
-                  }
-                  default: _v = 0; break;
-                }
-              }
-            }
-            if (_v) {
-              free(argv);
-              CAMLreturn(_wrap_BarChart_bars__SWIG_1datamunge(args));
-            }
-          }
-        }
-      }
-    }
-  }
-  if (argc == 6) {
-    int _v = 0;
-    {
-      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
-        _v = 0;
-      } else {
-        void *ptr;
-        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__plot__BarChart);
-      }
-    }
-    if (_v) {
-      {
-        swig_type_info *typeinfo;
-        if (!Is_block(argv[1])) {
-          _v = 0;
-        } else {
-          switch (Tag_val(argv[1])) {
-            case C_obj: {
-              void *ptr;
-              _v = !caml_ptr_val_internal(argv[1], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-              break;
-            }
-            case C_ptr: {
-              typeinfo = (swig_type_info *)Int64_val(Field(argv[1], 1));
-              _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-              break;
-            }
-            default: _v = 0; break;
-          }
-        }
-      }
-      if (_v) {
-        {
-          swig_type_info *typeinfo;
-          if (!Is_block(argv[2])) {
-            _v = 0;
-          } else {
-            switch (Tag_val(argv[2])) {
-              case C_obj: {
-                void *ptr;
-                _v = !caml_ptr_val_internal(argv[2], &ptr, SWIGTYPE_p_std__vectorT_double_t);
-                break;
-              }
-              case C_ptr: {
-                typeinfo = (swig_type_info *)Int64_val(Field(argv[2], 1));
-                _v = SWIG_TypeCheck("std::vector< double >", typeinfo) != NULL;
-                break;
-              }
-              default: _v = 0; break;
-            }
-          }
-        }
-        if (_v) {
-          {
-            if( !Is_block(argv[3]) ) _v = 0;
-            else {
-              switch( Tag_val(argv[3]) ) {
-                case C_string: _v = 1; break;
-                case C_ptr: {
-                  swig_type_info *typeinfo = 
-                  (swig_type_info *)(long)Int64_val(Field(argv[3],1));
-                  _v = SWIG_TypeCheck("char *",typeinfo) ||
-                  SWIG_TypeCheck("signed char *",typeinfo) ||
-                  SWIG_TypeCheck("unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("const char *",typeinfo) ||
-                  SWIG_TypeCheck("const signed char *",typeinfo) ||
-                  SWIG_TypeCheck("const unsigned char *",typeinfo) ||
-                  SWIG_TypeCheck("std::string",typeinfo);
-                } break;
-                default: _v = 0; break;
-              }
-            }    
-          }
-          if (_v) {
-            {
-              swig_type_info *typeinfo;
-              if (!Is_block(argv[4])) {
-                _v = 0;
-              } else {
-                switch (Tag_val(argv[4])) {
-                  case C_obj: {
-                    void *ptr;
-                    _v = !caml_ptr_val_internal(argv[4], &ptr, SWIGTYPE_p_datamunge__plot__RGB);
-                    break;
-                  }
-                  case C_ptr: {
-                    typeinfo = (swig_type_info *)Int64_val(Field(argv[4], 1));
-                    _v = SWIG_TypeCheck("datamunge::plot::RGB", typeinfo) != NULL;
-                    break;
-                  }
-                  default: _v = 0; break;
-                }
-              }
-            }
-            if (_v) {
-              {
-                if( !Is_block(argv[5]) ) _v = 0;
-                else {
-                  switch( Tag_val(argv[5]) ) {
-                    case C_double: _v = 1; break;
-                    default: _v = 0; break;
-                  }
-                }  
-              }
-              if (_v) {
-                free(argv);
-                CAMLreturn(_wrap_BarChart_bars__SWIG_0datamunge(args));
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  free(argv);
-  caml_failwith("Wrong number or type of arguments for overloaded function 'BarChart_bars'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    datamunge::plot::BarChart::bars(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB,double)\n"
-    "    datamunge::plot::BarChart::bars(std::vector< double >,std::vector< double >,std::string,datamunge::plot::RGB)\n"
-    "    datamunge::plot::BarChart::bars(std::vector< double >,std::vector< double >,std::string)\n"
-    "    datamunge::plot::BarChart::bars(std::vector< double >,std::vector< double >)\n");
-}
-
-
-SWIGEXT value _wrap_new_BarChartdatamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::BarChart *result = 0 ;
-  
-  if (caml_list_length(args) > 0) caml_invalid_argument("'new_BarChart' takes no arguments");
-  swig_result = Val_unit;
-  result = (datamunge::plot::BarChart *)new datamunge::plot::BarChart();
-  {
-    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::plot::BarChart_from_ptr", (void *)result, SWIGTYPE_p_datamunge__plot__BarChart);
-  }
-  swig_result = caml_list_append(swig_result,rv);
-  CAMLreturn(swig_result);
-}
-
-
-SWIGEXT value _wrap_delete_BarChartdatamunge (value args)
-{
-  CAMLparam1(args);
-  CAMLlocal2(swig_result,rv);
-  datamunge::plot::BarChart *arg1 = (datamunge::plot::BarChart *) 0 ;
+  datamunge::plot::RLayout *arg1 = (datamunge::plot::RLayout *) 0 ;
   
   if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
-    caml_invalid_argument("Incorrect number of arguments passed to 'delete_BarChart'");
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RLayout'");
   }
   swig_result = Val_unit;
   {
-    arg1 = (datamunge::plot::BarChart *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__BarChart);
+    arg1 = (datamunge::plot::RLayout *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__plot__RLayout);
   }
   delete arg1;
   rv = Val_unit;
@@ -56358,6 +67994,247 @@ SWIGEXT value _wrap_shapiro_francia_testdatamunge (value args)
   {
     datamunge::stats::HypothesisTestResult * temp = new datamunge::stats::HypothesisTestResult(result);
     rv = SWIG_Ocaml_ptr_to_val("create_datamunge::stats::HypothesisTestResult_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__stats__HypothesisTestResult);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Bonferroni(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__stats__Bonferroni);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Holm(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__stats__Holm);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Hochberg(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__stats__Hochberg);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Hommel(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__stats__Hommel);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BH(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__stats__BH);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_BY(value args) {
+  CAMLparam1(args);
+  CAMLlocal1(swig_result);
+  
+  swig_result = Val_unit;
+  {
+    swig_result = caml_val_int(SWIG_ENUM__datamunge__stats__BY);
+  }
+  
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_p_adjust__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::PAdjustMethod arg2 ;
+  std::vector< double > result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg2 = (datamunge::stats::PAdjustMethod)caml_long_val_full(caml_list_nth(args,1),"datamunge::stats::PAdjustMethod_marker");
+  }
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1,arg2);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_p_adjust__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > result;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_p_adjustdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_p_adjust__SWIG_1datamunge(args));
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      if (!Is_block(argv[0]) || !(Tag_val(argv[0]) == C_obj || Tag_val(argv[0]) == C_ptr)) {
+        _v = 0;
+      } else {
+        void *ptr;
+        _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_std__vectorT_double_t);
+      }
+    }
+    if (_v) {
+      {
+        if( !Is_block(argv[1]) ) _v = 0;
+        else {
+          switch( Tag_val(argv[1]) ) {
+            case C_int: _v = 1; break;
+            default: _v = 0; break;
+          }
+        }
+      }
+      if (_v) {
+        free(argv);
+        CAMLreturn(_wrap_p_adjust__SWIG_0datamunge(args));
+      }
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'p_adjust'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::stats::p_adjust(std::vector< double > const &,datamunge::stats::PAdjustMethod)\n"
+    "    datamunge::stats::p_adjust(std::vector< double > const &)\n");
+}
+
+
+SWIGEXT value _wrap_westfall_young_adjustdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'westfall_young_adjust'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = datamunge::stats::westfall_young_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_romano_wolf_adjustdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'romano_wolf_adjust'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  {
+    arg2 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = datamunge::stats::romano_wolf_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
   }
   swig_result = caml_list_append(swig_result,rv);
   CAMLreturn(swig_result);
@@ -62927,6 +74804,1686 @@ SWIGEXT value _wrap_delete_NUTSdatamunge (value args)
 }
 
 
+SWIGEXT value _wrap_RWMOptions_num_samples_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_num_samples_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->num_samples = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_num_samples_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_num_samples_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  result =  ((arg1)->num_samples);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_num_warmup_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_num_warmup_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->num_warmup = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_num_warmup_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_num_warmup_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  result =  ((arg1)->num_warmup);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_initial_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_initial_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->initial_step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_initial_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_initial_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  result = (double) ((arg1)->initial_step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_target_accept_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_target_accept_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->target_accept_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_target_accept_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_target_accept_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  result = (double) ((arg1)->target_accept_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RWMOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_RWMOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::bayes::RWMOptions *)new datamunge::bayes::RWMOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::RWMOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RWMOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions *arg1 = (datamunge::bayes::RWMOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RWMOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMResult_samples_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *arg1 = (datamunge::bayes::RWMResult *) 0 ;
+  std::vector< std::vector< double > > *arg2 = (std::vector< std::vector< double > > *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMResult_samples_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  {
+    arg2 = (std::vector< std::vector< double > > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  if (arg1) (arg1)->samples = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMResult_samples_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *arg1 = (datamunge::bayes::RWMResult *) 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMResult_samples_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > >_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMResult_accept_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *arg1 = (datamunge::bayes::RWMResult *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMResult_accept_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->accept_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMResult_accept_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *arg1 = (datamunge::bayes::RWMResult *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMResult_accept_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  result = (double) ((arg1)->accept_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMResult_final_step_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *arg1 = (datamunge::bayes::RWMResult *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMResult_final_step_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->final_step_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_RWMResult_final_step_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *arg1 = (datamunge::bayes::RWMResult *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RWMResult_final_step_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  result = (double) ((arg1)->final_step_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RWMResultdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_RWMResult' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::bayes::RWMResult *)new datamunge::bayes::RWMResult();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::RWMResult_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RWMResultdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMResult *arg1 = (datamunge::bayes::RWMResult *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RWMResult'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RWMResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RandomWalkMetropolis__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RWMOptions arg1 ;
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::bayes::RWMOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RWMOptions)) ;
+  }
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::RandomWalkMetropolis_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RandomWalkMetropolis__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::RandomWalkMetropolis_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_RandomWalkMetropolisdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_RandomWalkMetropolis__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__bayes__RWMOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::bayes::RWMOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_RandomWalkMetropolis__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_RandomWalkMetropolis'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::bayes::RandomWalkMetropolis::RandomWalkMetropolis(datamunge::bayes::RWMOptions)\n"
+    "    datamunge::bayes::RandomWalkMetropolis::RandomWalkMetropolis()\n");
+}
+
+
+SWIGEXT value _wrap_RandomWalkMetropolis_sampledatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RandomWalkMetropolis *arg1 = (datamunge::bayes::RandomWalkMetropolis *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  datamunge::bayes::RWMResult result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'RandomWalkMetropolis_sample'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RandomWalkMetropolis *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = ((datamunge::bayes::RandomWalkMetropolis const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  {
+    datamunge::bayes::RWMResult * temp = new datamunge::bayes::RWMResult(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::RWMResult_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__bayes__RWMResult);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_RandomWalkMetropolisdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::RandomWalkMetropolis *arg1 = (datamunge::bayes::RandomWalkMetropolis *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_RandomWalkMetropolis'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::RandomWalkMetropolis *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_num_samples_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_num_samples_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->num_samples = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_num_samples_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_num_samples_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  result =  ((arg1)->num_samples);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_num_warmup_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_num_warmup_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->num_warmup = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_num_warmup_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_num_warmup_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  result =  ((arg1)->num_warmup);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_initial_step_sizes_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::vector< double > *arg2 = (std::vector< double > *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_initial_step_sizes_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  {
+    arg2 = (std::vector< double > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  if (arg1) (arg1)->initial_step_sizes = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_initial_step_sizes_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::vector< double > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_initial_step_sizes_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  result = (std::vector< double > *)& ((arg1)->initial_step_sizes);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_target_accept_rate_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_target_accept_rate_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->target_accept_rate = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_target_accept_rate_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_target_accept_rate_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  result = (double) ((arg1)->target_accept_rate);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GibbsOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_GibbsOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::bayes::GibbsOptions *)new datamunge::bayes::GibbsOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::GibbsOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_GibbsOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions *arg1 = (datamunge::bayes::GibbsOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_GibbsOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsResult_samples_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *arg1 = (datamunge::bayes::GibbsResult *) 0 ;
+  std::vector< std::vector< double > > *arg2 = (std::vector< std::vector< double > > *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsResult_samples_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  {
+    arg2 = (std::vector< std::vector< double > > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  if (arg1) (arg1)->samples = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsResult_samples_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *arg1 = (datamunge::bayes::GibbsResult *) 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsResult_samples_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > >_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsResult_accept_rates_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *arg1 = (datamunge::bayes::GibbsResult *) 0 ;
+  std::vector< double > *arg2 = (std::vector< double > *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsResult_accept_rates_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  {
+    arg2 = (std::vector< double > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  if (arg1) (arg1)->accept_rates = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsResult_accept_rates_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *arg1 = (datamunge::bayes::GibbsResult *) 0 ;
+  std::vector< double > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsResult_accept_rates_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  result = (std::vector< double > *)& ((arg1)->accept_rates);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsResult_final_step_sizes_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *arg1 = (datamunge::bayes::GibbsResult *) 0 ;
+  std::vector< double > *arg2 = (std::vector< double > *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsResult_final_step_sizes_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  {
+    arg2 = (std::vector< double > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  if (arg1) (arg1)->final_step_sizes = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_GibbsResult_final_step_sizes_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *arg1 = (datamunge::bayes::GibbsResult *) 0 ;
+  std::vector< double > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsResult_final_step_sizes_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  result = (std::vector< double > *)& ((arg1)->final_step_sizes);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GibbsResultdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_GibbsResult' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::bayes::GibbsResult *)new datamunge::bayes::GibbsResult();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::GibbsResult_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_GibbsResultdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsResult *arg1 = (datamunge::bayes::GibbsResult *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_GibbsResult'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GibbsSampler__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsOptions arg1 ;
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::bayes::GibbsOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsOptions)) ;
+  }
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::GibbsSampler_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsSampler);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GibbsSampler__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::GibbsSampler_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__GibbsSampler);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_GibbsSamplerdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_GibbsSampler__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__bayes__GibbsOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::bayes::GibbsOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_GibbsSampler__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_GibbsSampler'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::bayes::GibbsSampler::GibbsSampler(datamunge::bayes::GibbsOptions)\n"
+    "    datamunge::bayes::GibbsSampler::GibbsSampler()\n");
+}
+
+
+SWIGEXT value _wrap_GibbsSampler_sampledatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsSampler *arg1 = (datamunge::bayes::GibbsSampler *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  datamunge::bayes::GibbsResult result;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'GibbsSampler_sample'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsSampler *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsSampler);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  result = ((datamunge::bayes::GibbsSampler const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  {
+    datamunge::bayes::GibbsResult * temp = new datamunge::bayes::GibbsResult(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::GibbsResult_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__bayes__GibbsResult);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_GibbsSamplerdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::GibbsSampler *arg1 = (datamunge::bayes::GibbsSampler *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_GibbsSampler'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::GibbsSampler *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__GibbsSampler);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingOptions_num_samples_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = (datamunge::bayes::ImportanceSamplingOptions *) 0 ;
+  std::size_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingOptions_num_samples_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->num_samples = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingOptions_num_samples_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = (datamunge::bayes::ImportanceSamplingOptions *) 0 ;
+  std::size_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingOptions_num_samples_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions);
+  }
+  result =  ((arg1)->num_samples);
+  {
+    rv = caml_val_int(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingOptions_seed_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = (datamunge::bayes::ImportanceSamplingOptions *) 0 ;
+  std::uint64_t arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingOptions_seed_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions);
+  }
+  {
+    arg2 = *((std::uint64_t *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__uint64_t)) ;
+  }
+  if (arg1) (arg1)->seed = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingOptions_seed_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = (datamunge::bayes::ImportanceSamplingOptions *) 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingOptions_seed_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions);
+  }
+  result =  ((arg1)->seed);
+  {
+    std::uint64_t * temp = new std::uint64_t(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::uint64_t_from_ptr", (void *)temp, SWIGTYPE_p_std__uint64_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ImportanceSamplingOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ImportanceSamplingOptions' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::bayes::ImportanceSamplingOptions *)new datamunge::bayes::ImportanceSamplingOptions();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::ImportanceSamplingOptions_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ImportanceSamplingOptionsdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = (datamunge::bayes::ImportanceSamplingOptions *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ImportanceSamplingOptions'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingOptions *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_samples_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  std::vector< std::vector< double > > *arg2 = (std::vector< std::vector< double > > *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_samples_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  {
+    arg2 = (std::vector< std::vector< double > > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  if (arg1) (arg1)->samples = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_samples_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_samples_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< std::vector< double > >_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_normalized_weights_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  std::vector< double > *arg2 = (std::vector< double > *) 0 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_normalized_weights_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  {
+    arg2 = (std::vector< double > *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  if (arg1) (arg1)->normalized_weights = *arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_normalized_weights_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  std::vector< double > *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_normalized_weights_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  result = (std::vector< double > *)& ((arg1)->normalized_weights);
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)result, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_effective_sample_size_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_effective_sample_size_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->effective_sample_size = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_effective_sample_size_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_effective_sample_size_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  result = (double) ((arg1)->effective_sample_size);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_log_evidence_setdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  double arg2 ;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_log_evidence_set'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  if (arg1) (arg1)->log_evidence = arg2;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_ImportanceSamplingResult_log_evidence_getdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSamplingResult_log_evidence_get'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  result = (double) ((arg1)->log_evidence);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ImportanceSamplingResultdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *result = 0 ;
+  
+  if (caml_list_length(args) > 0) caml_invalid_argument("'new_ImportanceSamplingResult' takes no arguments");
+  swig_result = Val_unit;
+  result = (datamunge::bayes::ImportanceSamplingResult *)new datamunge::bayes::ImportanceSamplingResult();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::ImportanceSamplingResult_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ImportanceSamplingResultdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingResult *arg1 = (datamunge::bayes::ImportanceSamplingResult *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ImportanceSamplingResult'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSamplingResult *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ImportanceSampling__SWIG_0datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSamplingOptions arg1 ;
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  
+  swig_result = Val_unit;
+  {
+    arg1 = *((datamunge::bayes::ImportanceSamplingOptions *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions)) ;
+  }
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling(SWIG_STD_MOVE(arg1));
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::ImportanceSampling_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSampling);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ImportanceSampling__SWIG_1datamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  
+  swig_result = Val_unit;
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling();
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::ImportanceSampling_from_ptr", (void *)result, SWIGTYPE_p_datamunge__bayes__ImportanceSampling);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_ImportanceSamplingdatamunge(value args) {
+  CAMLparam1(args);
+  int i;
+  int argc = caml_list_length(args);
+  
+  value *argv;
+  
+  argv = (value *)malloc( argc * sizeof( value ) );
+  for( i = 0; i < argc; i++ ) {
+    argv[i] = caml_list_nth(args,i);
+  }
+  if (argc == 0) {
+    free(argv);
+    CAMLreturn(_wrap_new_ImportanceSampling__SWIG_1datamunge(args));
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      swig_type_info *typeinfo;
+      if (!Is_block(argv[0])) {
+        _v = 0;
+      } else {
+        switch (Tag_val(argv[0])) {
+          case C_obj: {
+            void *ptr;
+            _v = !caml_ptr_val_internal(argv[0], &ptr, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions);
+            break;
+          }
+          case C_ptr: {
+            typeinfo = (swig_type_info *)Int64_val(Field(argv[0], 1));
+            _v = SWIG_TypeCheck("datamunge::bayes::ImportanceSamplingOptions", typeinfo) != NULL;
+            break;
+          }
+          default: _v = 0; break;
+        }
+      }
+    }
+    if (_v) {
+      free(argv);
+      CAMLreturn(_wrap_new_ImportanceSampling__SWIG_0datamunge(args));
+    }
+  }
+  
+  free(argv);
+  caml_failwith("Wrong number or type of arguments for overloaded function 'new_ImportanceSampling'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::bayes::ImportanceSampling::ImportanceSampling(datamunge::bayes::ImportanceSamplingOptions)\n"
+    "    datamunge::bayes::ImportanceSampling::ImportanceSampling()\n");
+}
+
+
+SWIGEXT value _wrap_ImportanceSampling_sampledatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSampling *arg1 = (datamunge::bayes::ImportanceSampling *) 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  datamunge::bayes::ImportanceSamplingResult result;
+  
+  if (caml_list_length(args) < 4 || caml_list_length(args) > 4) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'ImportanceSampling_sample'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSampling *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSampling);
+  }
+  {
+    arg2 = (datamunge::optim::ArbitraryFunction *) caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_datamunge__optim__ArbitraryFunction);
+  }
+  {
+    arg3 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,2),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg4 = (std::vector< std::vector< double > > *) caml_ptr_val(caml_list_nth(args,3),SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t);
+  }
+  result = ((datamunge::bayes::ImportanceSampling const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4);
+  {
+    datamunge::bayes::ImportanceSamplingResult * temp = new datamunge::bayes::ImportanceSamplingResult(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_datamunge::bayes::ImportanceSamplingResult_from_ptr", (void *)temp, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_delete_ImportanceSamplingdatamunge (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  datamunge::bayes::ImportanceSampling *arg1 = (datamunge::bayes::ImportanceSampling *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_ImportanceSampling'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (datamunge::bayes::ImportanceSampling *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_datamunge__bayes__ImportanceSampling);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
@@ -62942,14 +76499,8 @@ static void *_p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__Arbitr
 static void *_p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::DifferentiableSeparableFunction *) x));
 }
-static void *_p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::BarChart *) x));
-}
-static void *_p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::LinePlot *) x));
-}
-static void *_p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::ScatterPlot *) x));
+static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
 }
 static swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "datamunge::AgglomerativeClustering *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Callback = {"_p_datamunge__Callback", "datamunge::Callback *", 0, 0, (void*)0, 0};
@@ -62961,10 +76512,12 @@ static swig_type_info _swigt__p_datamunge__Dual = {"_p_datamunge__Dual", "datamu
 static swig_type_info _swigt__p_datamunge__ElasticNet = {"_p_datamunge__ElasticNet", "datamunge::ElasticNet *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__GBMClassifier = {"_p_datamunge__GBMClassifier", "datamunge::GBMClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__GBMRegressor = {"_p_datamunge__GBMRegressor", "datamunge::GBMRegressor *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__GGPlot = {"_p_datamunge__GGPlot", "datamunge::GGPlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__GLM = {"_p_datamunge__GLM", "datamunge::GLM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__GLMM = {"_p_datamunge__GLMM", "datamunge::GLMM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__GaussianProcessRegression = {"_p_datamunge__GaussianProcessRegression", "datamunge::GaussianProcessRegression *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__HyperDual = {"_p_datamunge__HyperDual", "datamunge::HyperDual *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__INLAMixedModel = {"_p_datamunge__INLAMixedModel", "datamunge::INLAMixedModel *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__KMeans = {"_p_datamunge__KMeans", "datamunge::KMeans *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__KNNClassifier = {"_p_datamunge__KNNClassifier", "datamunge::KNNClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__KNNRegressor = {"_p_datamunge__KNNRegressor", "datamunge::KNNRegressor *", 0, 0, (void*)0, 0};
@@ -62983,14 +76536,24 @@ static swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor", "da
 static swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__XGBoostClassifier = {"_p_datamunge__XGBoostClassifier", "datamunge::XGBoostClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__XGBoostRegressor = {"_p_datamunge__XGBoostRegressor", "datamunge::XGBoostRegressor *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__GibbsOptions = {"_p_datamunge__bayes__GibbsOptions", "datamunge::bayes::GibbsOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__GibbsResult = {"_p_datamunge__bayes__GibbsResult", "datamunge::bayes::GibbsResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__GibbsSampler = {"_p_datamunge__bayes__GibbsSampler", "datamunge::bayes::GibbsSampler *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__HMC = {"_p_datamunge__bayes__HMC", "datamunge::bayes::HMC *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__HMCOptions = {"_p_datamunge__bayes__HMCOptions", "datamunge::bayes::HMCOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__HMCResult = {"_p_datamunge__bayes__HMCResult", "datamunge::bayes::HMCResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__ImportanceSampling = {"_p_datamunge__bayes__ImportanceSampling", "datamunge::bayes::ImportanceSampling *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingOptions = {"_p_datamunge__bayes__ImportanceSamplingOptions", "datamunge::bayes::ImportanceSamplingOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingResult = {"_p_datamunge__bayes__ImportanceSamplingResult", "datamunge::bayes::ImportanceSamplingResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__MAP = {"_p_datamunge__bayes__MAP", "datamunge::bayes::MAP *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__MAPOptions = {"_p_datamunge__bayes__MAPOptions", "datamunge::bayes::MAPOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__NUTS = {"_p_datamunge__bayes__NUTS", "datamunge::bayes::NUTS *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__NUTSOptions = {"_p_datamunge__bayes__NUTSOptions", "datamunge::bayes::NUTSOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__NUTSResult = {"_p_datamunge__bayes__NUTSResult", "datamunge::bayes::NUTSResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__bayes__RWMOptions", "datamunge::bayes::RWMOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "datamunge::image::Image *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__Adam = {"_p_datamunge__optim__Adam", "datamunge::optim::Adam *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__AdamOptions = {"_p_datamunge__optim__AdamOptions", "datamunge::optim::AdamOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__ArbitraryFunction = {"_p_datamunge__optim__ArbitraryFunction", "datamunge::optim::ArbitraryFunction *", 0, 0, (void*)0, 0};
@@ -63011,12 +76574,13 @@ static swig_type_info _swigt__p_datamunge__optim__SGDOptions = {"_p_datamunge__o
 static swig_type_info _swigt__p_datamunge__optim__SeparableFunction = {"_p_datamunge__optim__SeparableFunction", "datamunge::optim::SeparableFunction *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealing = {"_p_datamunge__optim__SimulatedAnnealing", "datamunge::optim::SimulatedAnnealing *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealingOptions = {"_p_datamunge__optim__SimulatedAnnealingOptions", "datamunge::optim::SimulatedAnnealingOptions *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__BarChart = {"_p_datamunge__plot__BarChart", "datamunge::plot::BarChart *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__LinePlot = {"_p_datamunge__plot__LinePlot", "datamunge::plot::LinePlot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::plot::Plot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGB *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__plot__ScatterPlot = {"_p_datamunge__plot__ScatterPlot", "datamunge::plot::ScatterPlot *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)0, 0};
@@ -63030,7 +76594,10 @@ static swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t
 static swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "std::size_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__uint64_t = {"_p_std__uint64_t", "std::uint64_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::plot::ABLine > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::plot::DataSeries > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::plot::LegendEntry > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::plot::RGB > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__size_t_t = {"_p_std__vectorT_std__size_t_t", "std::vector< std::size_t > *", 0, 0, (void*)0, 0};
@@ -63048,10 +76615,12 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__ElasticNet,
   &_swigt__p_datamunge__GBMClassifier,
   &_swigt__p_datamunge__GBMRegressor,
+  &_swigt__p_datamunge__GGPlot,
   &_swigt__p_datamunge__GLM,
   &_swigt__p_datamunge__GLMM,
   &_swigt__p_datamunge__GaussianProcessRegression,
   &_swigt__p_datamunge__HyperDual,
+  &_swigt__p_datamunge__INLAMixedModel,
   &_swigt__p_datamunge__KMeans,
   &_swigt__p_datamunge__KNNClassifier,
   &_swigt__p_datamunge__KNNRegressor,
@@ -63070,14 +76639,24 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__Var,
   &_swigt__p_datamunge__XGBoostClassifier,
   &_swigt__p_datamunge__XGBoostRegressor,
+  &_swigt__p_datamunge__bayes__GibbsOptions,
+  &_swigt__p_datamunge__bayes__GibbsResult,
+  &_swigt__p_datamunge__bayes__GibbsSampler,
   &_swigt__p_datamunge__bayes__HMC,
   &_swigt__p_datamunge__bayes__HMCOptions,
   &_swigt__p_datamunge__bayes__HMCResult,
+  &_swigt__p_datamunge__bayes__ImportanceSampling,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingOptions,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingResult,
   &_swigt__p_datamunge__bayes__MAP,
   &_swigt__p_datamunge__bayes__MAPOptions,
   &_swigt__p_datamunge__bayes__NUTS,
   &_swigt__p_datamunge__bayes__NUTSOptions,
   &_swigt__p_datamunge__bayes__NUTSResult,
+  &_swigt__p_datamunge__bayes__RWMOptions,
+  &_swigt__p_datamunge__bayes__RWMResult,
+  &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
+  &_swigt__p_datamunge__image__Image,
   &_swigt__p_datamunge__optim__Adam,
   &_swigt__p_datamunge__optim__AdamOptions,
   &_swigt__p_datamunge__optim__ArbitraryFunction,
@@ -63098,12 +76677,13 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__optim__SeparableFunction,
   &_swigt__p_datamunge__optim__SimulatedAnnealing,
   &_swigt__p_datamunge__optim__SimulatedAnnealingOptions,
-  &_swigt__p_datamunge__plot__BarChart,
+  &_swigt__p_datamunge__plot__ABLine,
   &_swigt__p_datamunge__plot__DataSeries,
-  &_swigt__p_datamunge__plot__LinePlot,
+  &_swigt__p_datamunge__plot__LegendEntry,
   &_swigt__p_datamunge__plot__Plot,
   &_swigt__p_datamunge__plot__RGB,
-  &_swigt__p_datamunge__plot__ScatterPlot,
+  &_swigt__p_datamunge__plot__RLayout,
+  &_swigt__p_datamunge__plot__RPlot,
   &_swigt__p_datamunge__stats__ARIMA,
   &_swigt__p_datamunge__stats__ARIMAOptions,
   &_swigt__p_datamunge__stats__ExponentialSmoothing,
@@ -63117,7 +76697,10 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
   &_swigt__p_std__size_t,
   &_swigt__p_std__uint64_t,
+  &_swigt__p_std__vectorT_datamunge__plot__ABLine_t,
   &_swigt__p_std__vectorT_datamunge__plot__DataSeries_t,
+  &_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t,
+  &_swigt__p_std__vectorT_datamunge__plot__RGB_t,
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_std__size_t_t,
@@ -63135,10 +76718,12 @@ static swig_cast_info _swigc__p_datamunge__Dual[] = {  {&_swigt__p_datamunge__Du
 static swig_cast_info _swigc__p_datamunge__ElasticNet[] = {  {&_swigt__p_datamunge__ElasticNet, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__GBMClassifier[] = {  {&_swigt__p_datamunge__GBMClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__GBMRegressor[] = {  {&_swigt__p_datamunge__GBMRegressor, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__GGPlot[] = {  {&_swigt__p_datamunge__GGPlot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__GLM[] = {  {&_swigt__p_datamunge__GLM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__GLMM[] = {  {&_swigt__p_datamunge__GLMM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__GaussianProcessRegression[] = {  {&_swigt__p_datamunge__GaussianProcessRegression, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__HyperDual[] = {  {&_swigt__p_datamunge__HyperDual, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__INLAMixedModel[] = {  {&_swigt__p_datamunge__INLAMixedModel, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__KMeans[] = {  {&_swigt__p_datamunge__KMeans, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__KNNClassifier[] = {  {&_swigt__p_datamunge__KNNClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__KNNRegressor[] = {  {&_swigt__p_datamunge__KNNRegressor, 0, 0, 0},{0, 0, 0, 0}};
@@ -63157,14 +76742,24 @@ static swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamunge__
 static swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__XGBoostClassifier[] = {  {&_swigt__p_datamunge__XGBoostClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__XGBoostRegressor[] = {  {&_swigt__p_datamunge__XGBoostRegressor, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__GibbsOptions[] = {  {&_swigt__p_datamunge__bayes__GibbsOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__GibbsResult[] = {  {&_swigt__p_datamunge__bayes__GibbsResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__GibbsSampler[] = {  {&_swigt__p_datamunge__bayes__GibbsSampler, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__HMC[] = {  {&_swigt__p_datamunge__bayes__HMC, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__HMCOptions[] = {  {&_swigt__p_datamunge__bayes__HMCOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__HMCResult[] = {  {&_swigt__p_datamunge__bayes__HMCResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__ImportanceSampling[] = {  {&_swigt__p_datamunge__bayes__ImportanceSampling, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingOptions[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingResult[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__MAP[] = {  {&_swigt__p_datamunge__bayes__MAP, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__MAPOptions[] = {  {&_swigt__p_datamunge__bayes__MAPOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__NUTS[] = {  {&_swigt__p_datamunge__bayes__NUTS, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__NUTSOptions[] = {  {&_swigt__p_datamunge__bayes__NUTSOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__NUTSResult[] = {  {&_swigt__p_datamunge__bayes__NUTSResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_datamunge__bayes__RWMOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__Adam[] = {  {&_swigt__p_datamunge__optim__Adam, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__AdamOptions[] = {  {&_swigt__p_datamunge__optim__AdamOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__ArbitraryFunction[] = {  {&_swigt__p_datamunge__optim__ArbitraryFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableFunction, _p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__SeparableFunction, _p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},{0, 0, 0, 0}};
@@ -63185,12 +76780,13 @@ static swig_cast_info _swigc__p_datamunge__optim__SGDOptions[] = {  {&_swigt__p_
 static swig_cast_info _swigc__p_datamunge__optim__SeparableFunction[] = {  {&_swigt__p_datamunge__optim__SeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealing[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealing, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealingOptions[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealingOptions, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__BarChart[] = {  {&_swigt__p_datamunge__plot__BarChart, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__plot__ABLine[] = {  {&_swigt__p_datamunge__plot__ABLine, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__plot__DataSeries[] = {  {&_swigt__p_datamunge__plot__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__LinePlot[] = {  {&_swigt__p_datamunge__plot__LinePlot, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__BarChart, _p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__LinePlot, _p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__ScatterPlot, _p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__plot__LegendEntry[] = {  {&_swigt__p_datamunge__plot__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__RPlot, _p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__plot__RGB[] = {  {&_swigt__p_datamunge__plot__RGB, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__plot__ScatterPlot[] = {  {&_swigt__p_datamunge__plot__ScatterPlot, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__plot__RLayout[] = {  {&_swigt__p_datamunge__plot__RLayout, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__plot__RPlot[] = {  {&_swigt__p_datamunge__plot__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ARIMA[] = {  {&_swigt__p_datamunge__stats__ARIMA, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ARIMAOptions[] = {  {&_swigt__p_datamunge__stats__ARIMAOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothing[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothing, 0, 0, 0},{0, 0, 0, 0}};
@@ -63204,7 +76800,10 @@ static swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std__pai
 static swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__size_t[] = {  {&_swigt__p_std__size_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__uint64_t[] = {  {&_swigt__p_std__uint64_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__ABLine_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__ABLine_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__DataSeries_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__DataSeries_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__plot__RGB_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__RGB_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__size_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -63222,10 +76821,12 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__ElasticNet,
   _swigc__p_datamunge__GBMClassifier,
   _swigc__p_datamunge__GBMRegressor,
+  _swigc__p_datamunge__GGPlot,
   _swigc__p_datamunge__GLM,
   _swigc__p_datamunge__GLMM,
   _swigc__p_datamunge__GaussianProcessRegression,
   _swigc__p_datamunge__HyperDual,
+  _swigc__p_datamunge__INLAMixedModel,
   _swigc__p_datamunge__KMeans,
   _swigc__p_datamunge__KNNClassifier,
   _swigc__p_datamunge__KNNRegressor,
@@ -63244,14 +76845,24 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__Var,
   _swigc__p_datamunge__XGBoostClassifier,
   _swigc__p_datamunge__XGBoostRegressor,
+  _swigc__p_datamunge__bayes__GibbsOptions,
+  _swigc__p_datamunge__bayes__GibbsResult,
+  _swigc__p_datamunge__bayes__GibbsSampler,
   _swigc__p_datamunge__bayes__HMC,
   _swigc__p_datamunge__bayes__HMCOptions,
   _swigc__p_datamunge__bayes__HMCResult,
+  _swigc__p_datamunge__bayes__ImportanceSampling,
+  _swigc__p_datamunge__bayes__ImportanceSamplingOptions,
+  _swigc__p_datamunge__bayes__ImportanceSamplingResult,
   _swigc__p_datamunge__bayes__MAP,
   _swigc__p_datamunge__bayes__MAPOptions,
   _swigc__p_datamunge__bayes__NUTS,
   _swigc__p_datamunge__bayes__NUTSOptions,
   _swigc__p_datamunge__bayes__NUTSResult,
+  _swigc__p_datamunge__bayes__RWMOptions,
+  _swigc__p_datamunge__bayes__RWMResult,
+  _swigc__p_datamunge__bayes__RandomWalkMetropolis,
+  _swigc__p_datamunge__image__Image,
   _swigc__p_datamunge__optim__Adam,
   _swigc__p_datamunge__optim__AdamOptions,
   _swigc__p_datamunge__optim__ArbitraryFunction,
@@ -63272,12 +76883,13 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__optim__SeparableFunction,
   _swigc__p_datamunge__optim__SimulatedAnnealing,
   _swigc__p_datamunge__optim__SimulatedAnnealingOptions,
-  _swigc__p_datamunge__plot__BarChart,
+  _swigc__p_datamunge__plot__ABLine,
   _swigc__p_datamunge__plot__DataSeries,
-  _swigc__p_datamunge__plot__LinePlot,
+  _swigc__p_datamunge__plot__LegendEntry,
   _swigc__p_datamunge__plot__Plot,
   _swigc__p_datamunge__plot__RGB,
-  _swigc__p_datamunge__plot__ScatterPlot,
+  _swigc__p_datamunge__plot__RLayout,
+  _swigc__p_datamunge__plot__RPlot,
   _swigc__p_datamunge__stats__ARIMA,
   _swigc__p_datamunge__stats__ARIMAOptions,
   _swigc__p_datamunge__stats__ExponentialSmoothing,
@@ -63291,7 +76903,10 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
   _swigc__p_std__size_t,
   _swigc__p_std__uint64_t,
+  _swigc__p_std__vectorT_datamunge__plot__ABLine_t,
   _swigc__p_std__vectorT_datamunge__plot__DataSeries_t,
+  _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t,
+  _swigc__p_std__vectorT_datamunge__plot__RGB_t,
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_std__size_t_t,

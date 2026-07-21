@@ -1647,14 +1647,51 @@ class DataFrame(object):
     def fill_null_string(self, column_name, value):
         return _datamunge.DataFrame_fill_null_string(self, column_name, value)
 
+    def mutate_numeric(self, *args):
+        r"""
+        dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if
+               present. Always returns a new DataFrame, so it composes into a pipe.
+        """
+        return _datamunge.DataFrame_mutate_numeric(self, *args)
+
+    def mutate_string(self, *args):
+        return _datamunge.DataFrame_mutate_string(self, *args)
+
+    def mutate_string_encoded(self, *args):
+        return _datamunge.DataFrame_mutate_string_encoded(self, *args)
+
+    def rename(self, old_name, new_name):
+        r"""Non-mutating, chainable single-pair rename."""
+        return _datamunge.DataFrame_rename(self, old_name, new_name)
+
     def select(self, selected_columns):
         return _datamunge.DataFrame_select(self, selected_columns)
 
     def select_encoded(self, encoded_columns):
         return _datamunge.DataFrame_select_encoded(self, encoded_columns)
 
+    def relocate(self, *args):
+        r"""
+        dplyr::relocate()-style column reorder: moves `columns` to the front (default) or
+               immediately after the column named `after`.
+        """
+        return _datamunge.DataFrame_relocate(self, *args)
+
+    def relocate_encoded(self, *args):
+        return _datamunge.DataFrame_relocate_encoded(self, *args)
+
     def sort_by(self, column_name, ascending=True):
         return _datamunge.DataFrame_sort_by(self, column_name, ascending)
+
+    def arrange(self, *args):
+        r"""
+        dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when
+               provided it must have the same length as `columns`.
+        """
+        return _datamunge.DataFrame_arrange(self, *args)
+
+    def arrange_encoded(self, *args):
+        return _datamunge.DataFrame_arrange_encoded(self, *args)
 
     def drop_duplicates(self, *args):
         return _datamunge.DataFrame_drop_duplicates(self, *args)
@@ -1662,14 +1699,107 @@ class DataFrame(object):
     def drop_duplicates_encoded(self, encoded_subset):
         return _datamunge.DataFrame_drop_duplicates_encoded(self, encoded_subset)
 
+    def distinct(self, *args):
+        r"""dplyr::distinct() alias for drop_duplicates()."""
+        return _datamunge.DataFrame_distinct(self, *args)
+
+    def distinct_encoded(self, encoded_subset):
+        return _datamunge.DataFrame_distinct_encoded(self, encoded_subset)
+
+    def pull_numeric(self, column_name):
+        r"""
+        dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / "" (string)
+               in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =
+               null, same convention as add_numeric_column's valid_mask) if nulls matter.
+        """
+        return _datamunge.DataFrame_pull_numeric(self, column_name)
+
+    def pull_numeric_valid(self, column_name):
+        return _datamunge.DataFrame_pull_numeric_valid(self, column_name)
+
+    def pull_string(self, column_name):
+        return _datamunge.DataFrame_pull_string(self, column_name)
+
+    def pull_string_valid(self, column_name):
+        return _datamunge.DataFrame_pull_string_valid(self, column_name)
+
+    def n_distinct(self, column_name):
+        r"""
+        Number of distinct values in column_name; a null counts as one additional distinct
+               value if present.
+        """
+        return _datamunge.DataFrame_n_distinct(self, column_name)
+
     def group_by_sum(self, key_columns, value_columns):
         return _datamunge.DataFrame_group_by_sum(self, key_columns, value_columns)
 
     def group_by_sum_encoded(self, encoded_key_columns, encoded_value_columns):
         return _datamunge.DataFrame_group_by_sum_encoded(self, encoded_key_columns, encoded_value_columns)
 
-    def join(self, right, left_key, right_key, left_join=False):
-        return _datamunge.DataFrame_join(self, right, left_key, right_key, left_join)
+    def count(self, *args):
+        r"""dplyr::count()-style grouped row counts, default result column name "n"."""
+        return _datamunge.DataFrame_count(self, *args)
+
+    def count_encoded(self, *args):
+        return _datamunge.DataFrame_count_encoded(self, *args)
+
+    def summarise(self, key_columns, agg_columns, agg_funcs, result_names):
+        r"""
+        General dplyr::summarise()-style aggregation: one output row per distinct
+               combination of `key_columns`, with one output column per (agg_columns[i],
+               agg_funcs[i], result_names[i]) triple -- all three arrays must have the same length.
+               agg_funcs entries are one of "sum", "mean", "min", "max", "median", "stddev",
+               "count", "n_distinct" ("count" ignores the corresponding agg_columns entry, which may
+               be ""); a "" result_names entry defaults to the agg_columns entry (or "n" for count).
+        """
+        return _datamunge.DataFrame_summarise(self, key_columns, agg_columns, agg_funcs, result_names)
+
+    def summarise_encoded(self, encoded_key_columns, encoded_agg_columns, encoded_agg_funcs, encoded_result_names):
+        return _datamunge.DataFrame_summarise_encoded(self, encoded_key_columns, encoded_agg_columns, encoded_agg_funcs, encoded_result_names)
+
+    def pivot_longer(self, *args):
+        r"""
+        dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns
+               (`names_to` holding the source column name, `values_to` holding its value).
+        """
+        return _datamunge.DataFrame_pivot_longer(self, *args)
+
+    def pivot_longer_encoded(self, *args):
+        return _datamunge.DataFrame_pivot_longer_encoded(self, *args)
+
+    def pivot_wider(self, *args):
+        r"""
+        dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new
+               column names, `values_from` supplies their values; `id_columns` defaults to every
+               other column.
+        """
+        return _datamunge.DataFrame_pivot_wider(self, *args)
+
+    def pivot_wider_encoded(self, names_from, values_from, encoded_id_columns):
+        return _datamunge.DataFrame_pivot_wider_encoded(self, names_from, values_from, encoded_id_columns)
+
+    def bind_rows(self, other):
+        r"""
+        dplyr::bind_rows()-style row union: aligns columns by name (unlike concat_rows,
+               which isn't exposed here), null-filling any column present in only one frame.
+        """
+        return _datamunge.DataFrame_bind_rows(self, other)
+
+    def bind_cols(self, other):
+        r"""
+        dplyr::bind_cols()-style column union: both frames must have the same row count and
+               disjoint column names.
+        """
+        return _datamunge.DataFrame_bind_cols(self, other)
+
+    def join(self, *args):
+        r"""
+        :type join_type: string, optional
+        :param join_type: One of "inner" (default), "left", "right", "full", "semi", "anti". Any
+                   column name present in both frames (other than the key column when left_key ==
+                   right_key) is suffixed on both sides so the result never has duplicate names.
+        """
+        return _datamunge.DataFrame_join(self, *args)
 
     def numeric_count(self, column_name):
         return _datamunge.DataFrame_numeric_count(self, column_name)
@@ -1718,6 +1848,72 @@ class DataFrame(object):
 
 # Register DataFrame in _datamunge:
 _datamunge.DataFrame_swigregister(DataFrame)
+class ShapeLayer(object):
+    r"""
+    SWIG-friendly facade for datamunge::gis::ShapeLayer — reads a shapefile (.shp geometry
+           + .dbf attributes) and draws it as a map. Geometry access is flattened into per-shape/
+           per-part coordinate vectors rather than exposing gis::Shape's nested
+           vector<vector<Point2D>> directly, matching this facade layer's usual convention for
+           types SWIG can't bind cleanly.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def read(path):
+        r"""
+        Reads "<path>.shp" and "<path>.dbf" (`path` may already end in one of those
+               extensions, or in neither).
+        """
+        return _datamunge.ShapeLayer_read(path)
+
+    def size(self):
+        return _datamunge.ShapeLayer_size(self)
+
+    def shape_type(self):
+        r"""One of "point", "polyline", "polygon", "multipoint", or "null" (an empty layer)."""
+        return _datamunge.ShapeLayer_shape_type(self)
+
+    def bounds(self):
+        r"""{xmin, ymin, xmax, ymax}, from the shapefile's own declared bounding box."""
+        return _datamunge.ShapeLayer_bounds(self)
+
+    def attributes(self):
+        return _datamunge.ShapeLayer_attributes(self)
+
+    def shape_kind(self, shape_index):
+        return _datamunge.ShapeLayer_shape_kind(self, shape_index)
+
+    def num_parts(self, shape_index):
+        r"""
+        Number of parts (rings for Polygon, lines for PolyLine; 0 for Point/MultiPoint,
+               which use point_x()/point_y() instead).
+        """
+        return _datamunge.ShapeLayer_num_parts(self, shape_index)
+
+    def part_x(self, shape_index, part_index):
+        return _datamunge.ShapeLayer_part_x(self, shape_index, part_index)
+
+    def part_y(self, shape_index, part_index):
+        return _datamunge.ShapeLayer_part_y(self, shape_index, part_index)
+
+    def point_x(self, shape_index):
+        r"""Every point's x/y in a Point or MultiPoint shape (a single element for Point)."""
+        return _datamunge.ShapeLayer_point_x(self, shape_index)
+
+    def point_y(self, shape_index):
+        return _datamunge.ShapeLayer_point_y(self, shape_index)
+
+    def plot(self, *args):
+        return _datamunge.ShapeLayer_plot(self, *args)
+    __swig_destroy__ = _datamunge.delete_ShapeLayer
+
+# Register ShapeLayer in _datamunge:
+_datamunge.ShapeLayer_swigregister(ShapeLayer)
 class GGPlot(object):
     r"""
     SWIG-friendly facade for datamunge::plot::GGPlot — a ggplot2-style grammar-of-graphics
@@ -1785,6 +1981,9 @@ class GGPlot(object):
 
     def save_svg(self, path):
         return _datamunge.GGPlot_save_svg(self, path)
+
+    def show(self, *args):
+        return _datamunge.GGPlot_show(self, *args)
     __swig_destroy__ = _datamunge.delete_GGPlot
 
 # Register GGPlot in _datamunge:
@@ -10142,33 +10341,6 @@ def groebner_basis(generators, order):
            nonzero remainder until no pair produces one.
     """
     return _datamunge.groebner_basis(generators, order)
-ExprOp_Const = _datamunge.ExprOp_Const
-ExprOp_Var = _datamunge.ExprOp_Var
-ExprOp_Add = _datamunge.ExprOp_Add
-ExprOp_Sub = _datamunge.ExprOp_Sub
-ExprOp_Mul = _datamunge.ExprOp_Mul
-ExprOp_Div = _datamunge.ExprOp_Div
-ExprOp_Pow = _datamunge.ExprOp_Pow
-ExprOp_Neg = _datamunge.ExprOp_Neg
-ExprOp_Sin = _datamunge.ExprOp_Sin
-ExprOp_Cos = _datamunge.ExprOp_Cos
-ExprOp_Exp = _datamunge.ExprOp_Exp
-ExprOp_Log = _datamunge.ExprOp_Log
-class ExprNode(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    op = property(_datamunge.ExprNode_op_get, _datamunge.ExprNode_op_set)
-    value = property(_datamunge.ExprNode_value_get, _datamunge.ExprNode_value_set)
-    name = property(_datamunge.ExprNode_name_get, _datamunge.ExprNode_name_set)
-    left = property(_datamunge.ExprNode_left_get, _datamunge.ExprNode_left_set)
-    right = property(_datamunge.ExprNode_right_get, _datamunge.ExprNode_right_set)
-
-    def __init__(self):
-        _datamunge.ExprNode_swiginit(self, _datamunge.new_ExprNode())
-    __swig_destroy__ = _datamunge.delete_ExprNode
-
-# Register ExprNode in _datamunge:
-_datamunge.ExprNode_swigregister(ExprNode)
 class Expr(object):
     r"""
     A symbolic expression tree over +, -, *, /, ^ (power) and sin/cos/exp/log, supporting

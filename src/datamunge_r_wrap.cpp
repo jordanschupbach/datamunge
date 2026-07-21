@@ -1495,114 +1495,115 @@ SWIGINTERN void SWIG_R_Raise(SEXP obj, const char *msg) {
 #define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[28]
 #define SWIGTYPE_p_datamunge__Ridge swig_types[29]
 #define SWIGTYPE_p_datamunge__SVM swig_types[30]
-#define SWIGTYPE_p_datamunge__Tape swig_types[31]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[32]
-#define SWIGTYPE_p_datamunge__Var swig_types[33]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[34]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[35]
-#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[36]
-#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[37]
-#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[38]
-#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[39]
-#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[40]
-#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[41]
-#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[42]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[43]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[44]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[45]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[46]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[47]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[48]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[49]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[50]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[51]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[52]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[53]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[54]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[55]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[56]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[57]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[58]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[59]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[60]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[61]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[62]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[63]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[64]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[65]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[66]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[67]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[68]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[69]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[70]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[71]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[72]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[73]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[74]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[75]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[76]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[77]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[78]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[79]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[80]
-#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[81]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[82]
-#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[83]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[84]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[85]
-#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[86]
-#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[87]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[88]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[89]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[90]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[91]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[92]
-#define SWIGTYPE_p_difference_type swig_types[93]
-#define SWIGTYPE_p_first_type swig_types[94]
-#define SWIGTYPE_p_int swig_types[95]
-#define SWIGTYPE_p_long_long swig_types[96]
-#define SWIGTYPE_p_second_type swig_types[97]
-#define SWIGTYPE_p_short swig_types[98]
-#define SWIGTYPE_p_signed_char swig_types[99]
-#define SWIGTYPE_p_size_type swig_types[100]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[101]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[102]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[103]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[104]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[105]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[106]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[107]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[108]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[109]
-#define SWIGTYPE_p_std__invalid_argument swig_types[110]
-#define SWIGTYPE_p_std__out_of_range swig_types[111]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[112]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[113]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[114]
-#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[115]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[116]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[117]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[118]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t swig_types[119]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[120]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t swig_types[121]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t swig_types[122]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[123]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[124]
-#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[125]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[126]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[127]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[128]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[129]
-#define SWIGTYPE_p_unsigned_char swig_types[130]
-#define SWIGTYPE_p_unsigned_int swig_types[131]
-#define SWIGTYPE_p_unsigned_long_long swig_types[132]
-#define SWIGTYPE_p_unsigned_short swig_types[133]
-#define SWIGTYPE_p_value_type swig_types[134]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[31]
+#define SWIGTYPE_p_datamunge__Tape swig_types[32]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[33]
+#define SWIGTYPE_p_datamunge__Var swig_types[34]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[35]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[36]
+#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[37]
+#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[38]
+#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[39]
+#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[40]
+#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[41]
+#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[42]
+#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[43]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[44]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[45]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[46]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[47]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[48]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[51]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[52]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[53]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[54]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[55]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[56]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[57]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[58]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[59]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[60]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[61]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[62]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[63]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[64]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[65]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[66]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[67]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[68]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[69]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[70]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[71]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[72]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[73]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[74]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[75]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[76]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[77]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[78]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[79]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[80]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[81]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[82]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[83]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[84]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[85]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[86]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[87]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[88]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[89]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[90]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[91]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[92]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[93]
+#define SWIGTYPE_p_difference_type swig_types[94]
+#define SWIGTYPE_p_first_type swig_types[95]
+#define SWIGTYPE_p_int swig_types[96]
+#define SWIGTYPE_p_long_long swig_types[97]
+#define SWIGTYPE_p_second_type swig_types[98]
+#define SWIGTYPE_p_short swig_types[99]
+#define SWIGTYPE_p_signed_char swig_types[100]
+#define SWIGTYPE_p_size_type swig_types[101]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[102]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[103]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[104]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[105]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[106]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[107]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[108]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[109]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[110]
+#define SWIGTYPE_p_std__invalid_argument swig_types[111]
+#define SWIGTYPE_p_std__out_of_range swig_types[112]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[113]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[114]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[115]
+#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[116]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[117]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[118]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[119]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_std__allocatorT_datamunge__plot__ABLine_t_t swig_types[120]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_std__allocatorT_datamunge__plot__DataSeries_t_t swig_types[121]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_std__allocatorT_datamunge__plot__LegendEntry_t_t swig_types[122]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_std__allocatorT_datamunge__plot__RGB_t_t swig_types[123]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[124]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[125]
+#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[126]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[127]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[128]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[129]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[130]
+#define SWIGTYPE_p_unsigned_char swig_types[131]
+#define SWIGTYPE_p_unsigned_int swig_types[132]
+#define SWIGTYPE_p_unsigned_long_long swig_types[133]
+#define SWIGTYPE_p_unsigned_short swig_types[134]
+#define SWIGTYPE_p_value_type swig_types[135]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[136];
-SWIGINTERN swig_module_info swig_module = {swig_types, 135, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[137];
+SWIGINTERN swig_module_info swig_module = {swig_types, 136, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -10992,6 +10993,471 @@ R_swig_DataFrame_fill_null_string ( SEXP self, SEXP column_name, SEXP value)
 
 
 SWIGEXPORT SEXP
+R_swig_DataFrame_mutate_numeric__SWIG_0 ( SEXP self, SEXP column_name, SEXP values, SEXP valid_mask)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::vector< double,std::allocator< double > > *arg3 = 0 ;
+    std::vector< int,std::allocator< int > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_numeric" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res3 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res4 = swig::asptr(valid_mask, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_mutate_numeric" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_numeric((std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_mutate_numeric__SWIG_1 ( SEXP self, SEXP column_name, SEXP values)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::vector< double,std::allocator< double > > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_numeric" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res3 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_numeric" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_numeric((std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_mutate_string__SWIG_0 ( SEXP self, SEXP column_name, SEXP values, SEXP valid_mask)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+    std::vector< int,std::allocator< int > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res3 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res4 = swig::asptr(valid_mask, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_mutate_string" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string((std::string const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_mutate_string__SWIG_1 ( SEXP self, SEXP column_name, SEXP values)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res3 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string((std::string const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_mutate_string_encoded__SWIG_0 ( SEXP self, SEXP column_name, SEXP encoded_values, SEXP valid_mask)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::vector< int,std::allocator< int > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(encoded_values, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res4 = swig::asptr(valid_mask, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_mutate_string_encoded" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_mutate_string_encoded__SWIG_1 ( SEXP self, SEXP column_name, SEXP encoded_values)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_mutate_string_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(encoded_values, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_mutate_string_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->mutate_string_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_rename ( SEXP self, SEXP old_name, SEXP new_name)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_rename" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(old_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_rename" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_rename" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(new_name, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_rename" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_rename" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->rename((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_DataFrame_select ( SEXP self, SEXP selected_columns)
 {
   {
@@ -11067,6 +11533,216 @@ R_swig_DataFrame_select_encoded ( SEXP self, SEXP encoded_columns)
       arg2 = ptr;
     }
     result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->select_encoded((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_relocate__SWIG_0 ( SEXP self, SEXP columns, SEXP after)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(after, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_relocate" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_relocate__SWIG_1 ( SEXP self, SEXP columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_relocate_encoded__SWIG_0 ( SEXP self, SEXP encoded_columns, SEXP after)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(after, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_relocate_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_relocate_encoded__SWIG_1 ( SEXP self, SEXP encoded_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_relocate_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_relocate_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->relocate_encoded((std::string const &)*arg2);
     r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     vmaxset(r_vmax);
@@ -11159,6 +11835,216 @@ R_swig_DataFrame_sort_by__SWIG_1 ( SEXP self, SEXP column_name)
       arg2 = ptr;
     }
     result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->sort_by((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_arrange__SWIG_0 ( SEXP self, SEXP columns, SEXP ascending)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    std::vector< int,std::allocator< int > > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res3 = swig::asptr(ascending, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_arrange" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< int,std::allocator< int > > const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_arrange__SWIG_1 ( SEXP self, SEXP columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_arrange_encoded__SWIG_0 ( SEXP self, SEXP encoded_columns, SEXP ascending)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::vector< int,std::allocator< int > > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+      res3 = swig::asptr(ascending, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_arrange_encoded" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange_encoded" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange_encoded((std::string const &)*arg2,(std::vector< int,std::allocator< int > > const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_arrange_encoded__SWIG_1 ( SEXP self, SEXP encoded_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_arrange_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_arrange_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->arrange_encoded((std::string const &)*arg2);
     r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
     if (SWIG_IsNewObj(res2)) delete arg2;
     vmaxset(r_vmax);
@@ -11294,6 +12180,351 @@ R_swig_DataFrame_drop_duplicates_encoded ( SEXP self, SEXP encoded_subset)
 
 
 SWIGEXPORT SEXP
+R_swig_DataFrame_distinct__SWIG_0 ( SEXP self, SEXP subset)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_distinct" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(subset, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_distinct" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_distinct" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_distinct__SWIG_1 ( SEXP self)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_distinct" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_distinct_encoded ( SEXP self, SEXP encoded_subset)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_distinct_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_subset, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_distinct_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_distinct_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->distinct_encoded((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pull_numeric ( SEXP self, SEXP column_name, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_numeric" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_numeric" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = ((datamunge::DataFrame const *)arg1)->pull_numeric((std::string const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pull_numeric_valid ( SEXP self, SEXP column_name, SEXP s_swig_copy)
+{
+  {
+    std::vector< int,std::allocator< int > > result;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_numeric_valid" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_numeric_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_numeric_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = ((datamunge::DataFrame const *)arg1)->pull_numeric_valid((std::string const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pull_string ( SEXP self, SEXP column_name, SEXP s_swig_copy)
+{
+  {
+    std::vector< std::string,std::allocator< std::string > > result;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_string" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_string" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_string" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = ((datamunge::DataFrame const *)arg1)->pull_string((std::string const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pull_string_valid ( SEXP self, SEXP column_name, SEXP s_swig_copy)
+{
+  {
+    std::vector< int,std::allocator< int > > result;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pull_string_valid" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pull_string_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pull_string_valid" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = ((datamunge::DataFrame const *)arg1)->pull_string_valid((std::string const &)*arg2);
+    r_ans = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_n_distinct ( SEXP self, SEXP column_name, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_n_distinct" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(column_name, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_n_distinct" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_n_distinct" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = ((datamunge::DataFrame const *)arg1)->n_distinct((std::string const &)*arg2);
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_DataFrame_group_by_sum ( SEXP self, SEXP key_columns, SEXP value_columns)
 {
   {
@@ -11414,7 +12645,1049 @@ R_swig_DataFrame_group_by_sum_encoded ( SEXP self, SEXP encoded_key_columns, SEX
 
 
 SWIGEXPORT SEXP
-R_swig_DataFrame_join__SWIG_0 ( SEXP self, SEXP right, SEXP left_key, SEXP right_key, SEXP left_join)
+R_swig_DataFrame_count__SWIG_0 ( SEXP self, SEXP key_columns, SEXP count_column_name)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(key_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(count_column_name, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_count" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_count__SWIG_1 ( SEXP self, SEXP key_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(key_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_count_encoded__SWIG_0 ( SEXP self, SEXP encoded_key_columns, SEXP count_column_name)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_key_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(count_column_name, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_count_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_count_encoded__SWIG_1 ( SEXP self, SEXP encoded_key_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_count_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_key_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_count_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->count_encoded((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_summarise ( SEXP self, SEXP key_columns, SEXP agg_columns, SEXP agg_funcs, SEXP result_names)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg4 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg5 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_summarise" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(key_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_summarise" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res3 = swig::asptr(agg_columns, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_summarise" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res4 = swig::asptr(agg_funcs, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_summarise" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res5 = swig::asptr(result_names, &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_summarise" "', argument " "5"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise" "', argument " "5"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->summarise((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3,(std::vector< std::string,std::allocator< std::string > > const &)*arg4,(std::vector< std::string,std::allocator< std::string > > const &)*arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_summarise_encoded ( SEXP self, SEXP encoded_key_columns, SEXP encoded_agg_columns, SEXP encoded_agg_funcs, SEXP encoded_result_names)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::string *arg5 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_summarise_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_key_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_summarise_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(encoded_agg_columns, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_summarise_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(encoded_agg_funcs, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_summarise_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string(encoded_result_names, &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_summarise_encoded" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_summarise_encoded" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->summarise_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_longer__SWIG_0 ( SEXP self, SEXP value_columns, SEXP names_to, SEXP values_to)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(value_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(names_to, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(values_to, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_longer" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_longer__SWIG_1 ( SEXP self, SEXP value_columns, SEXP names_to)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(value_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(names_to, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_longer__SWIG_2 ( SEXP self, SEXP value_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res2 = swig::asptr(value_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_longer_encoded__SWIG_0 ( SEXP self, SEXP encoded_value_columns, SEXP names_to, SEXP values_to)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_value_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(names_to, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(values_to, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_longer_encoded__SWIG_1 ( SEXP self, SEXP encoded_value_columns, SEXP names_to)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_value_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(names_to, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_longer_encoded__SWIG_2 ( SEXP self, SEXP encoded_value_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(encoded_value_columns, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_longer_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_longer_encoded((std::string const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_wider__SWIG_0 ( SEXP self, SEXP names_from, SEXP values_from, SEXP id_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::vector< std::string,std::allocator< std::string > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_wider" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(names_from, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(values_from, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+      res4 = swig::asptr(id_columns, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_wider" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "4"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider((std::string const &)*arg2,(std::string const &)*arg3,(std::vector< std::string,std::allocator< std::string > > const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_wider__SWIG_1 ( SEXP self, SEXP names_from, SEXP values_from)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_wider" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(names_from, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(values_from, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider((std::string const &)*arg2,(std::string const &)*arg3);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_pivot_wider_encoded ( SEXP self, SEXP names_from, SEXP values_from, SEXP encoded_id_columns)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(names_from, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider_encoded" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(values_from, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider_encoded" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(encoded_id_columns, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_pivot_wider_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_pivot_wider_encoded" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->pivot_wider_encoded((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_bind_rows ( SEXP self, SEXP other)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_bind_rows" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_bind_rows" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_bind_rows" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->bind_rows((datamunge::DataFrame const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_bind_cols ( SEXP self, SEXP other)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_bind_cols" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    res2 = SWIG_R_ConvertPtr(other, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_bind_cols" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_bind_cols" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->bind_cols((datamunge::DataFrame const &)*arg2);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_join__SWIG_0 ( SEXP self, SEXP right, SEXP left_key, SEXP right_key, SEXP join_type, SEXP left_suffix, SEXP right_suffix)
 {
   {
     datamunge::DataFrame *result = 0 ;
@@ -11422,13 +13695,18 @@ R_swig_DataFrame_join__SWIG_0 ( SEXP self, SEXP right, SEXP left_key, SEXP right
     datamunge::DataFrame *arg2 = 0 ;
     std::string *arg3 = 0 ;
     std::string *arg4 = 0 ;
-    bool arg5 ;
+    std::string *arg5 = 0 ;
+    std::string *arg6 = 0 ;
+    std::string *arg7 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     void *argp2 = 0 ;
     int res2 = 0 ;
     int res3 = SWIG_OLDOBJ ;
     int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    int res6 = SWIG_OLDOBJ ;
+    int res7 = SWIG_OLDOBJ ;
     unsigned int r_nprotect = 0;
     SEXP r_ans = R_NilValue ;
     VMAXTYPE r_vmax = vmaxget() ;
@@ -11468,11 +13746,46 @@ R_swig_DataFrame_join__SWIG_0 ( SEXP self, SEXP right, SEXP left_key, SEXP right
       }
       arg4 = ptr;
     }
-    arg5 = LOGICAL(left_join)[0] ? true : false;
-    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string(join_type, &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res6 = SWIG_AsPtr_std_string(left_suffix, &ptr);
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      arg6 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res7 = SWIG_AsPtr_std_string(right_suffix, &ptr);
+      if (!SWIG_IsOK(res7)) {
+        SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "DataFrame_join" "', argument " "7"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "7"" of type '" "std::string const &""'"); 
+      }
+      arg7 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6,(std::string const &)*arg7);
     r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+    if (SWIG_IsNewObj(res7)) delete arg7;
     vmaxset(r_vmax);
     if(r_nprotect)  Rf_unprotect(r_nprotect);
     
@@ -11480,6 +13793,9 @@ R_swig_DataFrame_join__SWIG_0 ( SEXP self, SEXP right, SEXP left_key, SEXP right
     fail: SWIGUNUSED;
     if (SWIG_IsNewObj(res3)) delete arg3;
     if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+    if (SWIG_IsNewObj(res7)) delete arg7;
   }
   Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
   return R_NilValue;
@@ -11487,7 +13803,194 @@ R_swig_DataFrame_join__SWIG_0 ( SEXP self, SEXP right, SEXP left_key, SEXP right
 
 
 SWIGEXPORT SEXP
-R_swig_DataFrame_join__SWIG_1 ( SEXP self, SEXP right, SEXP left_key, SEXP right_key)
+R_swig_DataFrame_join__SWIG_1 ( SEXP self, SEXP right, SEXP left_key, SEXP right_key, SEXP join_type, SEXP left_suffix)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::string *arg5 = 0 ;
+    std::string *arg6 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    int res6 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_join" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    res2 = SWIG_R_ConvertPtr(right, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(left_key, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(right_key, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string(join_type, &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res6 = SWIG_AsPtr_std_string(left_suffix, &ptr);
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      arg6 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_join__SWIG_2 ( SEXP self, SEXP right, SEXP left_key, SEXP right_key, SEXP join_type)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::DataFrame *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::string *arg5 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataFrame_join" "', argument " "1"" of type '" "datamunge::DataFrame const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    res2 = SWIG_R_ConvertPtr(right, &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string(left_key, &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string(right_key, &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string(join_type, &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DataFrame_join" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    result = (datamunge::DataFrame *)((datamunge::DataFrame const *)arg1)->join((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_DataFrame_join__SWIG_3 ( SEXP self, SEXP right, SEXP left_key, SEXP right_key)
 {
   {
     datamunge::DataFrame *result = 0 ;
@@ -12159,6 +14662,709 @@ R_swig_delete_DataFrame ( SEXP self)
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DataFrame" "', argument " "1"" of type '" "datamunge::DataFrame *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_read ( SEXP path)
+{
+  {
+    datamunge::ShapeLayer *result = 0 ;
+    std::string *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::string *ptr = (std::string *)0;
+      res1 = SWIG_AsPtr_std_string(path, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_read" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_read" "', argument " "1"" of type '" "std::string const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (datamunge::ShapeLayer *)datamunge::ShapeLayer::read((std::string const &)*arg1);
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_size ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_size" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    result = ((datamunge::ShapeLayer const *)arg1)->size();
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_shape_type ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_shape_type" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    result = ((datamunge::ShapeLayer const *)arg1)->shape_type();
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_bounds ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_bounds" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    result = ((datamunge::ShapeLayer const *)arg1)->bounds();
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_attributes ( SEXP self)
+{
+  {
+    datamunge::DataFrame *result = 0 ;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_attributes" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    result = (datamunge::DataFrame *)((datamunge::ShapeLayer const *)arg1)->attributes();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__DataFrame, 0 |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_shape_kind ( SEXP self, SEXP shape_index, SEXP s_swig_copy)
+{
+  {
+    std::string result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_shape_kind" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    ecode2 = SWIG_AsVal_int(shape_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_shape_kind" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::ShapeLayer const *)arg1)->shape_kind(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_From_std_string(static_cast< std::string >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_num_parts ( SEXP self, SEXP shape_index, SEXP s_swig_copy)
+{
+  {
+    std::size_t result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_num_parts" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    ecode2 = SWIG_AsVal_int(shape_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_num_parts" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::ShapeLayer const *)arg1)->num_parts(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_From_int(static_cast< int >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_part_x ( SEXP self, SEXP shape_index, SEXP part_index, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    std::size_t arg2 ;
+    std::size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_part_x" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    ecode2 = SWIG_AsVal_int(shape_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_part_x" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_int(part_index, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ShapeLayer_part_x" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = ((datamunge::ShapeLayer const *)arg1)->part_x(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_part_y ( SEXP self, SEXP shape_index, SEXP part_index, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    std::size_t arg2 ;
+    std::size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_part_y" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    ecode2 = SWIG_AsVal_int(shape_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_part_y" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_int(part_index, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ShapeLayer_part_y" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = ((datamunge::ShapeLayer const *)arg1)->part_y(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_point_x ( SEXP self, SEXP shape_index, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_point_x" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    ecode2 = SWIG_AsVal_int(shape_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_point_x" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::ShapeLayer const *)arg1)->point_x(SWIG_STD_MOVE(arg2));
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_point_y ( SEXP self, SEXP shape_index, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_point_y" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    ecode2 = SWIG_AsVal_int(shape_index, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShapeLayer_point_y" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::ShapeLayer const *)arg1)->point_y(SWIG_STD_MOVE(arg2));
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_plot__SWIG_0 ( SEXP self, SEXP fill_color, SEXP border_color, SEXP width, SEXP height, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    datamunge::plot::RGB arg3 ;
+    std::size_t arg4 ;
+    std::size_t arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    int val5 ;
+    int ecode5 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(fill_color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(border_color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    ecode4 = SWIG_AsVal_int(width, &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "ShapeLayer_plot" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    ecode5 = SWIG_AsVal_int(height, &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "ShapeLayer_plot" "', argument " "5"" of type '" "std::size_t""'");
+    } 
+    arg5 = static_cast< std::size_t >(val5);
+    result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_plot__SWIG_1 ( SEXP self, SEXP fill_color, SEXP border_color, SEXP width, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    datamunge::plot::RGB arg3 ;
+    std::size_t arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(fill_color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(border_color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    ecode4 = SWIG_AsVal_int(width, &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "ShapeLayer_plot" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_plot__SWIG_2 ( SEXP self, SEXP fill_color, SEXP border_color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(fill_color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    {
+      res3 = SWIG_R_ConvertPtr(border_color, &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_plot__SWIG_3 ( SEXP self, SEXP fill_color, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    {
+      res2 = SWIG_R_ConvertPtr(fill_color, &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShapeLayer_plot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = ((datamunge::ShapeLayer const *)arg1)->plot(SWIG_STD_MOVE(arg2));
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_ShapeLayer_plot__SWIG_4 ( SEXP self, SEXP s_swig_copy)
+{
+  {
+    datamunge::plot::RPlot result;
+    datamunge::ShapeLayer *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShapeLayer_plot" "', argument " "1"" of type '" "datamunge::ShapeLayer const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
+    result = ((datamunge::ShapeLayer const *)arg1)->plot();
+    r_ans = SWIG_R_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_delete_ShapeLayer ( SEXP self)
+{
+  {
+    datamunge::ShapeLayer *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__ShapeLayer, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ShapeLayer" "', argument " "1"" of type '" "datamunge::ShapeLayer *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::ShapeLayer * >(argp1);
     delete arg1;
     r_ans = R_NilValue;
     vmaxset(r_vmax);
@@ -14022,6 +17228,79 @@ R_swig_GGPlot_save_svg ( SEXP self, SEXP path)
     return r_ans;
     fail: SWIGUNUSED;
     if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_show__SWIG_0 ( SEXP self, SEXP title_hint)
+{
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string(title_hint, &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::GGPlot const *)arg1)->show((std::string const &)*arg2);
+    r_ans = R_NilValue;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_GGPlot_show__SWIG_1 ( SEXP self)
+{
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    ((datamunge::GGPlot const *)arg1)->show();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
   }
   Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
   return R_NilValue;
@@ -81253,6 +84532,7 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__RandomForestClassifier = {"_p_dat
 SWIGINTERN swig_type_info _swigt__p_datamunge__RandomForestRegressor = {"_p_datamunge__RandomForestRegressor", "datamunge::RandomForestRegressor *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Ridge = {"_p_datamunge__Ridge", "datamunge::Ridge *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__SVM = {"_p_datamunge__SVM", "datamunge::SVM *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__ShapeLayer = {"_p_datamunge__ShapeLayer", "datamunge::ShapeLayer *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Tape = {"_p_datamunge__Tape", "datamunge::Tape *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor", "datamunge::Tensor *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)0, 0};
@@ -81393,6 +84673,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__RandomForestRegressor,
   &_swigt__p_datamunge__Ridge,
   &_swigt__p_datamunge__SVM,
+  &_swigt__p_datamunge__ShapeLayer,
   &_swigt__p_datamunge__Tape,
   &_swigt__p_datamunge__Tensor,
   &_swigt__p_datamunge__Var,
@@ -81530,6 +84811,7 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__RandomForestClassifier[] = {  {&_
 SWIGINTERN swig_cast_info _swigc__p_datamunge__RandomForestRegressor[] = {  {&_swigt__p_datamunge__RandomForestRegressor, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Ridge[] = {  {&_swigt__p_datamunge__Ridge, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__SVM[] = {  {&_swigt__p_datamunge__SVM, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__ShapeLayer[] = {  {&_swigt__p_datamunge__ShapeLayer, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Tape[] = {  {&_swigt__p_datamunge__Tape, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamunge__Tensor, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
@@ -81667,6 +84949,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__RandomForestRegressor,
   _swigc__p_datamunge__Ridge,
   _swigc__p_datamunge__SVM,
+  _swigc__p_datamunge__ShapeLayer,
   _swigc__p_datamunge__Tape,
   _swigc__p_datamunge__Tensor,
   _swigc__p_datamunge__Var,
@@ -82220,9 +85503,16 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GBMClassifier_n_trees", (DL_FUNC) &R_swig_GBMClassifier_n_trees, 2},
    {"R_swig_RPlot_text__SWIG_1", (DL_FUNC) &R_swig_RPlot_text__SWIG_1, 6},
    {"R_swig_DataSeries_Kind_Scatter_get", (DL_FUNC) &R_swig_DataSeries_Kind_Scatter_get, 1},
+   {"R_swig_ShapeLayer_plot__SWIG_0", (DL_FUNC) &R_swig_ShapeLayer_plot__SWIG_0, 6},
+   {"R_swig_ShapeLayer_part_x", (DL_FUNC) &R_swig_ShapeLayer_part_x, 4},
    {"R_swig_RPlot_text__SWIG_2", (DL_FUNC) &R_swig_RPlot_text__SWIG_2, 5},
    {"R_swig_Polynomial_scale", (DL_FUNC) &R_swig_Polynomial_scale, 3},
+   {"R_swig_ShapeLayer_plot__SWIG_1", (DL_FUNC) &R_swig_ShapeLayer_plot__SWIG_1, 5},
+   {"R_swig_ShapeLayer_part_y", (DL_FUNC) &R_swig_ShapeLayer_part_y, 4},
    {"R_swig_GaussianProcessRegression_summary", (DL_FUNC) &R_swig_GaussianProcessRegression_summary, 2},
+   {"R_swig_ShapeLayer_plot__SWIG_2", (DL_FUNC) &R_swig_ShapeLayer_plot__SWIG_2, 4},
+   {"R_swig_ShapeLayer_plot__SWIG_3", (DL_FUNC) &R_swig_ShapeLayer_plot__SWIG_3, 3},
+   {"R_swig_ShapeLayer_plot__SWIG_4", (DL_FUNC) &R_swig_ShapeLayer_plot__SWIG_4, 2},
    {"R_swig_SVM_predict_frame", (DL_FUNC) &R_swig_SVM_predict_frame, 2},
    {"R_swig_GLM_plot_scale_location", (DL_FUNC) &R_swig_GLM_plot_scale_location, 2},
    {"R_swig_GLM_residuals", (DL_FUNC) &R_swig_GLM_residuals, 2},
@@ -82254,6 +85544,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_AgglomerativeClustering_num_merges", (DL_FUNC) &R_swig_AgglomerativeClustering_num_merges, 2},
    {"R_swig_MAP_optimize", (DL_FUNC) &R_swig_MAP_optimize, 4},
    {"R_swig_Tape_size", (DL_FUNC) &R_swig_Tape_size, 2},
+   {"R_swig_ShapeLayer_read", (DL_FUNC) &R_swig_ShapeLayer_read, 1},
    {"R_swig_ARIMAOptions_coefficient_bound_get", (DL_FUNC) &R_swig_ARIMAOptions_coefficient_bound_get, 2},
    {"R_swig_Ridge_formula_text", (DL_FUNC) &R_swig_Ridge_formula_text, 2},
    {"R_swig_SizeVector_back", (DL_FUNC) &R_swig_SizeVector_back, 2},
@@ -82304,8 +85595,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVectorVector___nonzero__", (DL_FUNC) &R_swig_IVectorVector___nonzero__, 2},
    {"R_swig_HyperDual_subtract_scalar", (DL_FUNC) &R_swig_HyperDual_subtract_scalar, 3},
    {"R_swig_SVector_assign", (DL_FUNC) &R_swig_SVector_assign, 3},
-   {"R_swig_ARIMA_bic", (DL_FUNC) &R_swig_ARIMA_bic, 2},
    {"R_swig_LMM_log_likelihood", (DL_FUNC) &R_swig_LMM_log_likelihood, 2},
+   {"R_swig_ARIMA_bic", (DL_FUNC) &R_swig_ARIMA_bic, 2},
    {"R_swig_new_GradientDescentOptions", (DL_FUNC) &R_swig_new_GradientDescentOptions, 0},
    {"R_swig_ImportanceSamplingResult_samples_set", (DL_FUNC) &R_swig_ImportanceSamplingResult_samples_set, 2},
    {"R_swig_GLM_confidence_interval_upper__SWIG_0", (DL_FUNC) &R_swig_GLM_confidence_interval_upper__SWIG_0, 3},
@@ -82526,6 +85817,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_AdamOptions", (DL_FUNC) &R_swig_new_AdamOptions, 0},
    {"R_swig_HMCResult_samples_set", (DL_FUNC) &R_swig_HMCResult_samples_set, 2},
    {"R_swig_delete_AgglomerativeClustering", (DL_FUNC) &R_swig_delete_AgglomerativeClustering, 1},
+   {"R_swig_GGPlot_show__SWIG_0", (DL_FUNC) &R_swig_GGPlot_show__SWIG_0, 2},
+   {"R_swig_GGPlot_show__SWIG_1", (DL_FUNC) &R_swig_GGPlot_show__SWIG_1, 1},
    {"R_swig_Tensor_mean_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_mean_axis__SWIG_0, 3},
    {"R_swig_DEOptions_population_size_get", (DL_FUNC) &R_swig_DEOptions_population_size_get, 2},
    {"R_swig_Tensor_mean_axis__SWIG_1", (DL_FUNC) &R_swig_Tensor_mean_axis__SWIG_1, 2},
@@ -82566,7 +85859,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GGPlot_geom_bar__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_bar__SWIG_1, 2},
    {"R_swig_Expr_multiply", (DL_FUNC) &R_swig_Expr_multiply, 3},
    {"R_swig_ExponentialSmoothingOptions_phi_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_phi_set, 2},
+   {"R_swig_DataFrame_relocate_encoded__SWIG_0", (DL_FUNC) &R_swig_DataFrame_relocate_encoded__SWIG_0, 3},
    {"R_swig_KMeans_cluster_center", (DL_FUNC) &R_swig_KMeans_cluster_center, 3},
+   {"R_swig_DataFrame_relocate_encoded__SWIG_1", (DL_FUNC) &R_swig_DataFrame_relocate_encoded__SWIG_1, 2},
    {"R_swig_GAOptions_elite_count_set", (DL_FUNC) &R_swig_GAOptions_elite_count_set, 2},
    {"R_swig_AdamOptions_epsilon_set", (DL_FUNC) &R_swig_AdamOptions_epsilon_set, 2},
    {"R_swig_GibbsResult_final_step_sizes_get", (DL_FUNC) &R_swig_GibbsResult_final_step_sizes_get, 1},
@@ -82613,8 +85908,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_RPlot_polygon__SWIG_1", (DL_FUNC) &R_swig_RPlot_polygon__SWIG_1, 5},
    {"R_swig_RPlot_polygon__SWIG_2", (DL_FUNC) &R_swig_RPlot_polygon__SWIG_2, 4},
    {"R_swig_SeparableFunction_num_functions", (DL_FUNC) &R_swig_SeparableFunction_num_functions, 2},
-   {"R_swig_SeasonalType_SeasonalType_Multiplicative_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_Multiplicative_get, 1},
    {"R_swig_Tensor_argmin_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_argmin_axis__SWIG_0, 3},
+   {"R_swig_SeasonalType_SeasonalType_Multiplicative_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_Multiplicative_get, 1},
    {"R_swig_SimulatedAnnealingOptions_max_iterations_set", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_max_iterations_set, 2},
    {"R_swig_XGBoostClassifier_plot_training_deviance", (DL_FUNC) &R_swig_XGBoostClassifier_plot_training_deviance, 2},
    {"R_swig_Tensor_argmin_axis__SWIG_1", (DL_FUNC) &R_swig_Tensor_argmin_axis__SWIG_1, 2},
@@ -82644,6 +85939,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SquareFreeFactorVector_get_allocator", (DL_FUNC) &R_swig_SquareFreeFactorVector_get_allocator, 2},
    {"R_swig_new_SGD__SWIG_0", (DL_FUNC) &R_swig_new_SGD__SWIG_0, 1},
    {"R_swig_DVectorVector_pop", (DL_FUNC) &R_swig_DVectorVector_pop, 2},
+   {"R_swig_ShapeLayer_size", (DL_FUNC) &R_swig_ShapeLayer_size, 2},
    {"R_swig_new_SGD__SWIG_1", (DL_FUNC) &R_swig_new_SGD__SWIG_1, 0},
    {"R_swig_GaussianProcessRegression_rmse", (DL_FUNC) &R_swig_GaussianProcessRegression_rmse, 2},
    {"R_swig_XGBoostClassifier_confusion_matrix", (DL_FUNC) &R_swig_XGBoostClassifier_confusion_matrix, 1},
@@ -82665,8 +85961,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_AgglomerativeClustering_merge_cluster_b", (DL_FUNC) &R_swig_AgglomerativeClustering_merge_cluster_b, 3},
    {"R_swig_new_ABLine", (DL_FUNC) &R_swig_new_ABLine, 0},
    {"R_swig_delete_DVector", (DL_FUNC) &R_swig_delete_DVector, 1},
+   {"R_swig_ShapeLayer_bounds", (DL_FUNC) &R_swig_ShapeLayer_bounds, 2},
    {"R_swig_ARIMA_aic", (DL_FUNC) &R_swig_ARIMA_aic, 2},
    {"R_swig_HypothesisTestResult_conf_int_upper_set", (DL_FUNC) &R_swig_HypothesisTestResult_conf_int_upper_set, 2},
+   {"R_swig_DataFrame_rename", (DL_FUNC) &R_swig_DataFrame_rename, 3},
    {"R_swig_IVector___setitem__", (DL_FUNC) &R_swig_IVector___setitem__, 3},
    {"R_swig_LM_confidence_interval_lower__SWIG_0", (DL_FUNC) &R_swig_LM_confidence_interval_lower__SWIG_0, 3},
    {"R_swig_LM_confidence_interval_lower__SWIG_1", (DL_FUNC) &R_swig_LM_confidence_interval_lower__SWIG_1, 2},
@@ -82682,8 +85980,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_GLMM__SWIG_0", (DL_FUNC) &R_swig_new_GLMM__SWIG_0, 9},
    {"R_swig_IVectorVector___setslice__", (DL_FUNC) &R_swig_IVectorVector___setslice__, 4},
    {"R_swig_Var_tanh", (DL_FUNC) &R_swig_Var_tanh, 2},
+   {"R_swig_DataFrame_relocate__SWIG_0", (DL_FUNC) &R_swig_DataFrame_relocate__SWIG_0, 3},
    {"R_swig_new_GLMM__SWIG_1", (DL_FUNC) &R_swig_new_GLMM__SWIG_1, 8},
    {"R_swig_Dual_cos", (DL_FUNC) &R_swig_Dual_cos, 2},
+   {"R_swig_DataFrame_relocate__SWIG_1", (DL_FUNC) &R_swig_DataFrame_relocate__SWIG_1, 2},
    {"R_swig_new_GLMM__SWIG_2", (DL_FUNC) &R_swig_new_GLMM__SWIG_2, 7},
    {"R_swig_Alternative_Alternative_TwoSided_get", (DL_FUNC) &R_swig_Alternative_Alternative_TwoSided_get, 1},
    {"R_swig_new_GLMM__SWIG_3", (DL_FUNC) &R_swig_new_GLMM__SWIG_3, 6},
@@ -82714,18 +86014,19 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DEOptions_seed_set", (DL_FUNC) &R_swig_DEOptions_seed_set, 2},
    {"R_swig_MultivariatePolynomialVector_assign", (DL_FUNC) &R_swig_MultivariatePolynomialVector_assign, 3},
    {"R_swig_wilcoxon_signed_rank_test__SWIG_2", (DL_FUNC) &R_swig_wilcoxon_signed_rank_test__SWIG_2, 2},
+   {"R_swig_DataFrame_pull_numeric", (DL_FUNC) &R_swig_DataFrame_pull_numeric, 3},
    {"R_swig_ImportanceSampling_sample", (DL_FUNC) &R_swig_ImportanceSampling_sample, 5},
    {"R_swig_new_MultivariatePolynomialVector__SWIG_0", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_0, 0},
    {"R_swig_new_MultivariatePolynomialVector__SWIG_1", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_1, 1},
    {"R_swig_new_MultivariatePolynomialVector__SWIG_2", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_2, 1},
-   {"R_swig_ARIMAOptions_de_max_generations_set", (DL_FUNC) &R_swig_ARIMAOptions_de_max_generations_set, 2},
    {"R_swig_INLAMixedModel_random_effect_std_devs", (DL_FUNC) &R_swig_INLAMixedModel_random_effect_std_devs, 2},
    {"R_swig_LM_coefficients", (DL_FUNC) &R_swig_LM_coefficients, 2},
+   {"R_swig_ARIMAOptions_de_max_generations_set", (DL_FUNC) &R_swig_ARIMAOptions_de_max_generations_set, 2},
    {"R_swig_new_ARIMA__SWIG_0", (DL_FUNC) &R_swig_new_ARIMA__SWIG_0, 2},
    {"R_swig_new_MultivariatePolynomialVector__SWIG_3", (DL_FUNC) &R_swig_new_MultivariatePolynomialVector__SWIG_3, 2},
    {"R_swig_RPlot_abline_v__SWIG_0", (DL_FUNC) &R_swig_RPlot_abline_v__SWIG_0, 5},
-   {"R_swig_new_ARIMA__SWIG_1", (DL_FUNC) &R_swig_new_ARIMA__SWIG_1, 1},
    {"R_swig_ARIMAOptions_seed_get", (DL_FUNC) &R_swig_ARIMAOptions_seed_get, 2},
+   {"R_swig_new_ARIMA__SWIG_1", (DL_FUNC) &R_swig_new_ARIMA__SWIG_1, 1},
    {"R_swig_f_test_variance__SWIG_0", (DL_FUNC) &R_swig_f_test_variance__SWIG_0, 5},
    {"R_swig_SquareFreeFactorVector_swap", (DL_FUNC) &R_swig_SquareFreeFactorVector_swap, 2},
    {"R_swig_INLAMixedModel_num_groups", (DL_FUNC) &R_swig_INLAMixedModel_num_groups, 2},
@@ -82775,6 +86076,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_GLMM", (DL_FUNC) &R_swig_delete_GLMM, 1},
    {"R_swig_NaiveBayesClassifier_observations", (DL_FUNC) &R_swig_NaiveBayesClassifier_observations, 2},
    {"R_swig_GGPlot_geom_col__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_col__SWIG_1, 2},
+   {"R_swig_DataFrame_bind_cols", (DL_FUNC) &R_swig_DataFrame_bind_cols, 2},
    {"R_swig_GLMM_bic", (DL_FUNC) &R_swig_GLMM_bic, 2},
    {"R_swig_RGB_r_get", (DL_FUNC) &R_swig_RGB_r_get, 2},
    {"R_swig_RWMOptions_num_samples_set", (DL_FUNC) &R_swig_RWMOptions_num_samples_set, 2},
@@ -82813,19 +86115,23 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ARIMA_fitted_values", (DL_FUNC) &R_swig_ARIMA_fitted_values, 2},
    {"R_swig_DecisionTreeClassifier_leaf_count", (DL_FUNC) &R_swig_DecisionTreeClassifier_leaf_count, 2},
    {"R_swig_Lasso_lambda_path", (DL_FUNC) &R_swig_Lasso_lambda_path, 2},
+   {"R_swig_ShapeLayer_point_x", (DL_FUNC) &R_swig_ShapeLayer_point_x, 3},
    {"R_swig_Dual_multiply", (DL_FUNC) &R_swig_Dual_multiply, 3},
    {"R_swig_GAOptions_tournament_size_get", (DL_FUNC) &R_swig_GAOptions_tournament_size_get, 2},
+   {"R_swig_ShapeLayer_point_y", (DL_FUNC) &R_swig_ShapeLayer_point_y, 3},
    {"R_swig_HMCOptions_target_accept_rate_get", (DL_FUNC) &R_swig_HMCOptions_target_accept_rate_get, 2},
    {"R_swig_GaussianProcessRegression_print_summary", (DL_FUNC) &R_swig_GaussianProcessRegression_print_summary, 1},
    {"R_swig_GaussianProcessRegression_length_scale", (DL_FUNC) &R_swig_GaussianProcessRegression_length_scale, 2},
-   {"R_swig_TrendType_TrendType_Additive_get", (DL_FUNC) &R_swig_TrendType_TrendType_Additive_get, 1},
    {"R_swig_DecisionTreeClassifier_node_count", (DL_FUNC) &R_swig_DecisionTreeClassifier_node_count, 2},
+   {"R_swig_TrendType_TrendType_Additive_get", (DL_FUNC) &R_swig_TrendType_TrendType_Additive_get, 1},
    {"R_swig_Polynomial_multiply", (DL_FUNC) &R_swig_Polynomial_multiply, 3},
    {"R_swig_PolynomialVector_pop", (DL_FUNC) &R_swig_PolynomialVector_pop, 2},
    {"R_swig_GaussianProcessRegression_predictor_names", (DL_FUNC) &R_swig_GaussianProcessRegression_predictor_names, 2},
    {"R_swig_GradientDescentOptions_momentum_set", (DL_FUNC) &R_swig_GradientDescentOptions_momentum_set, 2},
    {"R_swig_Tensor_outer", (DL_FUNC) &R_swig_Tensor_outer, 2},
    {"R_swig_NUTSOptions_num_warmup_get", (DL_FUNC) &R_swig_NUTSOptions_num_warmup_get, 2},
+   {"R_swig_DataFrame_arrange__SWIG_0", (DL_FUNC) &R_swig_DataFrame_arrange__SWIG_0, 3},
+   {"R_swig_DataFrame_arrange__SWIG_1", (DL_FUNC) &R_swig_DataFrame_arrange__SWIG_1, 2},
    {"R_swig_GaussianProcessRegression_noise_ratio_was_selected", (DL_FUNC) &R_swig_GaussianProcessRegression_noise_ratio_was_selected, 2},
    {"R_swig_LMM_rank", (DL_FUNC) &R_swig_LMM_rank, 2},
    {"R_swig_Plot_y_max", (DL_FUNC) &R_swig_Plot_y_max, 2},
@@ -82909,6 +86215,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_HypothesisTestResult_alternative_set", (DL_FUNC) &R_swig_HypothesisTestResult_alternative_set, 2},
    {"R_swig_Lasso_observations", (DL_FUNC) &R_swig_Lasso_observations, 2},
    {"R_swig_delete_DVectorPair", (DL_FUNC) &R_swig_delete_DVectorPair, 1},
+   {"R_swig_DataFrame_mutate_string__SWIG_0", (DL_FUNC) &R_swig_DataFrame_mutate_string__SWIG_0, 4},
+   {"R_swig_DataFrame_mutate_string__SWIG_1", (DL_FUNC) &R_swig_DataFrame_mutate_string__SWIG_1, 3},
    {"R_swig_ARIMAOptions_d_get", (DL_FUNC) &R_swig_ARIMAOptions_d_get, 2},
    {"R_swig_LM_has_intercept", (DL_FUNC) &R_swig_LM_has_intercept, 2},
    {"R_swig_SVector_clear", (DL_FUNC) &R_swig_SVector_clear, 1},
@@ -82957,6 +86265,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataSeries_Kind_Polygon_get", (DL_FUNC) &R_swig_DataSeries_Kind_Polygon_get, 1},
    {"R_swig_RWMOptions_initial_step_size_get", (DL_FUNC) &R_swig_RWMOptions_initial_step_size_get, 2},
    {"R_swig_Tensor_argmin", (DL_FUNC) &R_swig_Tensor_argmin, 2},
+   {"R_swig_DataFrame_pull_string_valid", (DL_FUNC) &R_swig_DataFrame_pull_string_valid, 3},
    {"R_swig_LM_predict", (DL_FUNC) &R_swig_LM_predict, 3},
    {"R_swig_DVectorVector_get_allocator", (DL_FUNC) &R_swig_DVectorVector_get_allocator, 2},
    {"R_swig_new_SizeVector__SWIG_0", (DL_FUNC) &R_swig_new_SizeVector__SWIG_0, 0},
@@ -82982,15 +86291,15 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector_front", (DL_FUNC) &R_swig_IVector_front, 2},
    {"R_swig_RPlot_lines__SWIG_2", (DL_FUNC) &R_swig_RPlot_lines__SWIG_2, 5},
    {"R_swig_DVectorVector___len__", (DL_FUNC) &R_swig_DVectorVector___len__, 2},
-   {"R_swig_ARIMA_seasonal_ar_coefficients", (DL_FUNC) &R_swig_ARIMA_seasonal_ar_coefficients, 2},
    {"R_swig_RPlot_lines__SWIG_3", (DL_FUNC) &R_swig_RPlot_lines__SWIG_3, 4},
+   {"R_swig_ARIMA_seasonal_ar_coefficients", (DL_FUNC) &R_swig_ARIMA_seasonal_ar_coefficients, 2},
    {"R_swig_DEOptions_mutation_strategy_set", (DL_FUNC) &R_swig_DEOptions_mutation_strategy_set, 2},
    {"R_swig_RWMResult_samples_set", (DL_FUNC) &R_swig_RWMResult_samples_set, 2},
    {"R_swig_KNNRegressor_observations", (DL_FUNC) &R_swig_KNNRegressor_observations, 2},
    {"R_swig_Plot_x_tick_label_list", (DL_FUNC) &R_swig_Plot_x_tick_label_list, 2},
    {"R_swig_new_RandomForestClassifier__SWIG_0", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_0, 11},
-   {"R_swig_SeasonalType_SeasonalType_None_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_None_get, 1},
    {"R_swig_new_RandomForestClassifier__SWIG_1", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_1, 10},
+   {"R_swig_SeasonalType_SeasonalType_None_get", (DL_FUNC) &R_swig_SeasonalType_SeasonalType_None_get, 1},
    {"R_swig_new_RandomForestClassifier__SWIG_2", (DL_FUNC) &R_swig_new_RandomForestClassifier__SWIG_2, 9},
    {"R_swig_SizeVector_assign", (DL_FUNC) &R_swig_SizeVector_assign, 3},
    {"R_swig_GLM_observations", (DL_FUNC) &R_swig_GLM_observations, 2},
@@ -83023,9 +86332,12 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SquareFreeFactor_multiplicity_set", (DL_FUNC) &R_swig_SquareFreeFactor_multiplicity_set, 2},
    {"R_swig_KernelRegression_rmse", (DL_FUNC) &R_swig_KernelRegression_rmse, 2},
    {"R_swig_ImportanceSamplingResult_log_evidence_get", (DL_FUNC) &R_swig_ImportanceSamplingResult_log_evidence_get, 2},
+   {"R_swig_ShapeLayer_shape_kind", (DL_FUNC) &R_swig_ShapeLayer_shape_kind, 3},
    {"R_swig_DVectorVector___setslice__", (DL_FUNC) &R_swig_DVectorVector___setslice__, 4},
    {"R_swig_SizeVector___len__", (DL_FUNC) &R_swig_SizeVector___len__, 2},
+   {"R_swig_DataFrame_count__SWIG_0", (DL_FUNC) &R_swig_DataFrame_count__SWIG_0, 3},
    {"R_swig_DataFrame_numeric_at", (DL_FUNC) &R_swig_DataFrame_numeric_at, 4},
+   {"R_swig_DataFrame_count__SWIG_1", (DL_FUNC) &R_swig_DataFrame_count__SWIG_1, 2},
    {"R_swig_poly_extended_gcd", (DL_FUNC) &R_swig_poly_extended_gcd, 3},
    {"R_swig_HyperDual_subtract", (DL_FUNC) &R_swig_HyperDual_subtract, 3},
    {"R_swig_delete_KMeans", (DL_FUNC) &R_swig_delete_KMeans, 1},
@@ -83042,14 +86354,16 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_KernelRegression_predict", (DL_FUNC) &R_swig_KernelRegression_predict, 3},
    {"R_swig_GLM_predict_frame__SWIG_2", (DL_FUNC) &R_swig_GLM_predict_frame__SWIG_2, 2},
    {"R_swig_DataSeries_filled_set", (DL_FUNC) &R_swig_DataSeries_filled_set, 2},
-   {"R_swig_ARIMA_forecast_with_intervals", (DL_FUNC) &R_swig_ARIMA_forecast_with_intervals, 3},
    {"R_swig_Plot_title", (DL_FUNC) &R_swig_Plot_title, 3},
+   {"R_swig_ARIMA_forecast_with_intervals", (DL_FUNC) &R_swig_ARIMA_forecast_with_intervals, 3},
    {"R_swig_RWMOptions_num_warmup_set", (DL_FUNC) &R_swig_RWMOptions_num_warmup_set, 2},
    {"R_swig_DVector_reserve", (DL_FUNC) &R_swig_DVector_reserve, 2},
    {"R_swig_ABLine_value_get", (DL_FUNC) &R_swig_ABLine_value_get, 2},
    {"R_swig_IVector___delslice__", (DL_FUNC) &R_swig_IVector___delslice__, 3},
    {"R_swig_Lasso_lambda", (DL_FUNC) &R_swig_Lasso_lambda, 2},
+   {"R_swig_DataFrame_arrange_encoded__SWIG_0", (DL_FUNC) &R_swig_DataFrame_arrange_encoded__SWIG_0, 3},
    {"R_swig_HypothesisTestResult_parameter2_get", (DL_FUNC) &R_swig_HypothesisTestResult_parameter2_get, 2},
+   {"R_swig_DataFrame_arrange_encoded__SWIG_1", (DL_FUNC) &R_swig_DataFrame_arrange_encoded__SWIG_1, 2},
    {"R_swig_delete_GeneticAlgorithm", (DL_FUNC) &R_swig_delete_GeneticAlgorithm, 1},
    {"R_swig_ExponentialSmoothing_alpha", (DL_FUNC) &R_swig_ExponentialSmoothing_alpha, 2},
    {"R_swig_chi_squared_goodness_of_fit__SWIG_0", (DL_FUNC) &R_swig_chi_squared_goodness_of_fit__SWIG_0, 3},
@@ -83069,8 +86383,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_NUTSOptions_max_tree_depth_get", (DL_FUNC) &R_swig_NUTSOptions_max_tree_depth_get, 2},
    {"R_swig_GaussianProcessRegression_predict", (DL_FUNC) &R_swig_GaussianProcessRegression_predict, 3},
    {"R_swig_new_GBMRegressor__SWIG_0", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_0, 9},
-   {"R_swig_new_ARIMAOptions", (DL_FUNC) &R_swig_new_ARIMAOptions, 0},
+   {"R_swig_DataFrame_mutate_string_encoded__SWIG_0", (DL_FUNC) &R_swig_DataFrame_mutate_string_encoded__SWIG_0, 4},
    {"R_swig_new_GBMRegressor__SWIG_1", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_1, 8},
+   {"R_swig_new_ARIMAOptions", (DL_FUNC) &R_swig_new_ARIMAOptions, 0},
+   {"R_swig_DataFrame_mutate_string_encoded__SWIG_1", (DL_FUNC) &R_swig_DataFrame_mutate_string_encoded__SWIG_1, 3},
    {"R_swig_Var_cos", (DL_FUNC) &R_swig_Var_cos, 2},
    {"R_swig_new_GBMRegressor__SWIG_2", (DL_FUNC) &R_swig_new_GBMRegressor__SWIG_2, 7},
    {"R_swig_GGPlot_geom_point__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_point__SWIG_0, 4},
@@ -83098,6 +86414,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_PolynomialVector_size", (DL_FUNC) &R_swig_PolynomialVector_size, 2},
    {"R_swig_PAdjustMethod_PAdjustMethod_BH_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_BH_get, 1},
    {"R_swig_new_GradientDescent__SWIG_1", (DL_FUNC) &R_swig_new_GradientDescent__SWIG_1, 0},
+   {"R_swig_DataFrame_pull_string", (DL_FUNC) &R_swig_DataFrame_pull_string, 3},
    {"R_swig_RandomForestClassifier_max_features_used", (DL_FUNC) &R_swig_RandomForestClassifier_max_features_used, 2},
    {"R_swig_ImportanceSamplingOptions_num_samples_set", (DL_FUNC) &R_swig_ImportanceSamplingOptions_num_samples_set, 2},
    {"R_swig_GGPlot_scale_color_manual", (DL_FUNC) &R_swig_GGPlot_scale_color_manual, 3},
@@ -83121,6 +86438,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_NUTSOptions_initial_step_size_get", (DL_FUNC) &R_swig_NUTSOptions_initial_step_size_get, 2},
    {"R_swig_HyperDual_tan", (DL_FUNC) &R_swig_HyperDual_tan, 2},
    {"R_swig_LMM_p_values", (DL_FUNC) &R_swig_LMM_p_values, 2},
+   {"R_swig_DataFrame_n_distinct", (DL_FUNC) &R_swig_DataFrame_n_distinct, 3},
    {"R_swig_LMM_random_effect_std_devs", (DL_FUNC) &R_swig_LMM_random_effect_std_devs, 2},
    {"R_swig_Tensor_reshape", (DL_FUNC) &R_swig_Tensor_reshape, 2},
    {"R_swig_Plot_grid_color", (DL_FUNC) &R_swig_Plot_grid_color, 3},
@@ -83139,8 +86457,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector___setitem__", (DL_FUNC) &R_swig_DVector___setitem__, 3},
    {"R_swig_AgglomerativeClustering_observations", (DL_FUNC) &R_swig_AgglomerativeClustering_observations, 2},
    {"R_swig_GLM_pearson_residuals", (DL_FUNC) &R_swig_GLM_pearson_residuals, 2},
-   {"R_swig_ExponentialSmoothingOptions_gamma_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_gamma_get, 2},
    {"R_swig_XGBoostRegressor_n_trees", (DL_FUNC) &R_swig_XGBoostRegressor_n_trees, 2},
+   {"R_swig_ExponentialSmoothingOptions_gamma_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_gamma_get, 2},
    {"R_swig_RWMOptions_target_accept_rate_get", (DL_FUNC) &R_swig_RWMOptions_target_accept_rate_get, 2},
    {"R_swig_DataSeries_stroke_width_get", (DL_FUNC) &R_swig_DataSeries_stroke_width_get, 2},
    {"R_swig_new_LBFGS__SWIG_0", (DL_FUNC) &R_swig_new_LBFGS__SWIG_0, 1},
@@ -83196,8 +86514,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ImportanceSamplingOptions_seed_set", (DL_FUNC) &R_swig_ImportanceSamplingOptions_seed_set, 2},
    {"R_swig_LM_sigma", (DL_FUNC) &R_swig_LM_sigma, 2},
    {"R_swig_KernelRegression_cv_mean_squared_error", (DL_FUNC) &R_swig_KernelRegression_cv_mean_squared_error, 2},
-   {"R_swig_ARIMA_ar_coefficients", (DL_FUNC) &R_swig_ARIMA_ar_coefficients, 2},
    {"R_swig_Ridge_cv_mean_squared_error", (DL_FUNC) &R_swig_Ridge_cv_mean_squared_error, 2},
+   {"R_swig_ARIMA_ar_coefficients", (DL_FUNC) &R_swig_ARIMA_ar_coefficients, 2},
    {"R_swig_LDA_proportion_of_trace", (DL_FUNC) &R_swig_LDA_proportion_of_trace, 2},
    {"R_swig_LM_plot_scale_location", (DL_FUNC) &R_swig_LM_plot_scale_location, 2},
    {"R_swig_GAOptions_mutation_rate_set", (DL_FUNC) &R_swig_GAOptions_mutation_rate_set, 2},
@@ -83208,19 +86526,22 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_Lasso__SWIG_0", (DL_FUNC) &R_swig_new_Lasso__SWIG_0, 7},
    {"R_swig_delete_PSOOptions", (DL_FUNC) &R_swig_delete_PSOOptions, 1},
    {"R_swig_Var_add_scalar", (DL_FUNC) &R_swig_Var_add_scalar, 3},
-   {"R_swig_ExponentialSmoothingOptions_alpha_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_alpha_get, 2},
    {"R_swig_GBMClassifier_feature_importance", (DL_FUNC) &R_swig_GBMClassifier_feature_importance, 2},
    {"R_swig_new_AgglomerativeClustering__SWIG_0", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_0, 5},
    {"R_swig_Plot_y_min", (DL_FUNC) &R_swig_Plot_y_min, 2},
    {"R_swig_new_Lasso__SWIG_1", (DL_FUNC) &R_swig_new_Lasso__SWIG_1, 6},
+   {"R_swig_ExponentialSmoothingOptions_alpha_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_alpha_get, 2},
    {"R_swig_PolyExtendedGcdResult_t_get", (DL_FUNC) &R_swig_PolyExtendedGcdResult_t_get, 1},
    {"R_swig_SquareFreeFactorVector___delitem__", (DL_FUNC) &R_swig_SquareFreeFactorVector___delitem__, 2},
    {"R_swig_LMM_fitted_values", (DL_FUNC) &R_swig_LMM_fitted_values, 2},
+   {"R_swig_DataFrame_pivot_longer__SWIG_0", (DL_FUNC) &R_swig_DataFrame_pivot_longer__SWIG_0, 4},
    {"R_swig_new_AgglomerativeClustering__SWIG_1", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_1, 4},
    {"R_swig_new_Lasso__SWIG_2", (DL_FUNC) &R_swig_new_Lasso__SWIG_2, 5},
+   {"R_swig_DataFrame_pivot_longer__SWIG_1", (DL_FUNC) &R_swig_DataFrame_pivot_longer__SWIG_1, 3},
    {"R_swig_new_AgglomerativeClustering__SWIG_2", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_2, 3},
    {"R_swig_new_Lasso__SWIG_3", (DL_FUNC) &R_swig_new_Lasso__SWIG_3, 4},
    {"R_swig_Lasso_r_squared", (DL_FUNC) &R_swig_Lasso_r_squared, 2},
+   {"R_swig_DataFrame_pivot_longer__SWIG_2", (DL_FUNC) &R_swig_DataFrame_pivot_longer__SWIG_2, 2},
    {"R_swig_new_AgglomerativeClustering__SWIG_3", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_3, 2},
    {"R_swig_new_Lasso__SWIG_4", (DL_FUNC) &R_swig_new_Lasso__SWIG_4, 3},
    {"R_swig_ElasticNet_intercept", (DL_FUNC) &R_swig_ElasticNet_intercept, 2},
@@ -83235,6 +86556,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_AgglomerativeClustering__SWIG_6", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_6, 3},
    {"R_swig_new_AgglomerativeClustering__SWIG_7", (DL_FUNC) &R_swig_new_AgglomerativeClustering__SWIG_7, 2},
    {"R_swig_KMeans_iterations_used", (DL_FUNC) &R_swig_KMeans_iterations_used, 2},
+   {"R_swig_DataFrame_pivot_wider_encoded", (DL_FUNC) &R_swig_DataFrame_pivot_wider_encoded, 4},
    {"R_swig_DecisionTreeRegressor_node_count", (DL_FUNC) &R_swig_DecisionTreeRegressor_node_count, 2},
    {"R_swig_GLMM_print_summary", (DL_FUNC) &R_swig_GLMM_print_summary, 1},
    {"R_swig_NUTSOptions_seed_set", (DL_FUNC) &R_swig_NUTSOptions_seed_set, 2},
@@ -83345,8 +86667,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_HypothesisTestResult_estimate1_get", (DL_FUNC) &R_swig_HypothesisTestResult_estimate1_get, 2},
    {"R_swig_GibbsResult_accept_rates_get", (DL_FUNC) &R_swig_GibbsResult_accept_rates_get, 1},
    {"R_swig_RandomForestClassifier_predictor_names", (DL_FUNC) &R_swig_RandomForestClassifier_predictor_names, 2},
-   {"R_swig_ARIMAOptions_seasonal_period_set", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_period_set, 2},
    {"R_swig_delete_DataFrame", (DL_FUNC) &R_swig_delete_DataFrame, 1},
+   {"R_swig_ARIMAOptions_seasonal_period_set", (DL_FUNC) &R_swig_ARIMAOptions_seasonal_period_set, 2},
    {"R_swig_AdamOptions_step_size_get", (DL_FUNC) &R_swig_AdamOptions_step_size_get, 2},
    {"R_swig_IVectorVector___delslice__", (DL_FUNC) &R_swig_IVectorVector___delslice__, 3},
    {"R_swig_delete_GBMRegressor", (DL_FUNC) &R_swig_delete_GBMRegressor, 1},
@@ -83390,6 +86712,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_ElasticNet_has_intercept", (DL_FUNC) &R_swig_ElasticNet_has_intercept, 2},
    {"R_swig_GAOptions_elite_count_get", (DL_FUNC) &R_swig_GAOptions_elite_count_get, 2},
    {"R_swig_new_Ridge__SWIG_1", (DL_FUNC) &R_swig_new_Ridge__SWIG_1, 6},
+   {"R_swig_DataFrame_distinct_encoded", (DL_FUNC) &R_swig_DataFrame_distinct_encoded, 2},
    {"R_swig_AdamOptions_epsilon_get", (DL_FUNC) &R_swig_AdamOptions_epsilon_get, 2},
    {"R_swig_new_RealRootIntervals", (DL_FUNC) &R_swig_new_RealRootIntervals, 0},
    {"R_swig_new_Ridge__SWIG_2", (DL_FUNC) &R_swig_new_Ridge__SWIG_2, 5},
@@ -83450,6 +86773,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DataFrame_to_string__SWIG_1", (DL_FUNC) &R_swig_DataFrame_to_string__SWIG_1, 2},
    {"R_swig_Dual_subtract_scalar", (DL_FUNC) &R_swig_Dual_subtract_scalar, 3},
    {"R_swig_LMM_predict", (DL_FUNC) &R_swig_LMM_predict, 3},
+   {"R_swig_ShapeLayer_attributes", (DL_FUNC) &R_swig_ShapeLayer_attributes, 1},
    {"R_swig_Tensor_set", (DL_FUNC) &R_swig_Tensor_set, 3},
    {"R_swig_PolynomialVector_back", (DL_FUNC) &R_swig_PolynomialVector_back, 2},
    {"R_swig_LegendEntry_label_get", (DL_FUNC) &R_swig_LegendEntry_label_get, 2},
@@ -83462,8 +86786,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_DVector__SWIG_1", (DL_FUNC) &R_swig_new_DVector__SWIG_1, 1},
    {"R_swig_SVector_resize__SWIG_0", (DL_FUNC) &R_swig_SVector_resize__SWIG_0, 2},
    {"R_swig_LM_standard_errors", (DL_FUNC) &R_swig_LM_standard_errors, 2},
+   {"R_swig_DataFrame_count_encoded__SWIG_0", (DL_FUNC) &R_swig_DataFrame_count_encoded__SWIG_0, 3},
    {"R_swig_new_DVector__SWIG_2", (DL_FUNC) &R_swig_new_DVector__SWIG_2, 1},
    {"R_swig_SVector_resize__SWIG_1", (DL_FUNC) &R_swig_SVector_resize__SWIG_1, 3},
+   {"R_swig_DataFrame_count_encoded__SWIG_1", (DL_FUNC) &R_swig_DataFrame_count_encoded__SWIG_1, 2},
    {"R_swig_new_DVector__SWIG_3", (DL_FUNC) &R_swig_new_DVector__SWIG_3, 2},
    {"R_swig_MultivariatePolynomialVector___setslice__", (DL_FUNC) &R_swig_MultivariatePolynomialVector___setslice__, 4},
    {"R_swig_KernelRegression_bandwidth_was_selected", (DL_FUNC) &R_swig_KernelRegression_bandwidth_was_selected, 2},
@@ -83476,6 +86802,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_LDA", (DL_FUNC) &R_swig_delete_LDA, 1},
    {"R_swig_Tensor_min_axis__SWIG_0", (DL_FUNC) &R_swig_Tensor_min_axis__SWIG_0, 3},
    {"R_swig_Tensor_min_axis__SWIG_1", (DL_FUNC) &R_swig_Tensor_min_axis__SWIG_1, 2},
+   {"R_swig_DataFrame_bind_rows", (DL_FUNC) &R_swig_DataFrame_bind_rows, 2},
    {"R_swig_DataSeries_Kind_Bar_get", (DL_FUNC) &R_swig_DataSeries_Kind_Bar_get, 1},
    {"R_swig_real_roots__SWIG_0", (DL_FUNC) &R_swig_real_roots__SWIG_0, 3},
    {"R_swig_real_roots__SWIG_1", (DL_FUNC) &R_swig_real_roots__SWIG_1, 2},
@@ -83484,8 +86811,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Tensor_prod", (DL_FUNC) &R_swig_Tensor_prod, 2},
    {"R_swig_Lasso_plot_predicted_vs_actual", (DL_FUNC) &R_swig_Lasso_plot_predicted_vs_actual, 2},
    {"R_swig_GBMClassifier_summary", (DL_FUNC) &R_swig_GBMClassifier_summary, 2},
-   {"R_swig_ExponentialSmoothingOptions_de_max_generations_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_max_generations_get, 2},
    {"R_swig_ExponentialSmoothingOptions_de_max_generations_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_max_generations_set, 2},
+   {"R_swig_ExponentialSmoothingOptions_de_max_generations_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_max_generations_get, 2},
    {"R_swig_Var_log", (DL_FUNC) &R_swig_Var_log, 2},
    {"R_swig_Plot_x_label", (DL_FUNC) &R_swig_Plot_x_label, 3},
    {"R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1", (DL_FUNC) &R_swig_XGBoostClassifier_plot_decision_regions__SWIG_1, 4},
@@ -83703,8 +87030,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SVector_back", (DL_FUNC) &R_swig_SVector_back, 2},
    {"R_swig_new_NUTS__SWIG_0", (DL_FUNC) &R_swig_new_NUTS__SWIG_0, 1},
    {"R_swig_SquareFreeFactorVector_empty", (DL_FUNC) &R_swig_SquareFreeFactorVector_empty, 2},
-   {"R_swig_ARIMAOptions_de_population_size_set", (DL_FUNC) &R_swig_ARIMAOptions_de_population_size_set, 2},
    {"R_swig_LM_f_statistic", (DL_FUNC) &R_swig_LM_f_statistic, 2},
+   {"R_swig_ARIMAOptions_de_population_size_set", (DL_FUNC) &R_swig_ARIMAOptions_de_population_size_set, 2},
    {"R_swig_new_NUTS__SWIG_1", (DL_FUNC) &R_swig_new_NUTS__SWIG_1, 0},
    {"R_swig_GGPlot_geom_density__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_density__SWIG_0, 3},
    {"R_swig_GGPlot_geom_density__SWIG_1", (DL_FUNC) &R_swig_GGPlot_geom_density__SWIG_1, 2},
@@ -83718,6 +87045,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector_pop_back", (DL_FUNC) &R_swig_IVector_pop_back, 1},
    {"R_swig_SizeVector___getitem__", (DL_FUNC) &R_swig_SizeVector___getitem__, 3},
    {"R_swig_KernelRegression_plot_cv_curve", (DL_FUNC) &R_swig_KernelRegression_plot_cv_curve, 2},
+   {"R_swig_DataFrame_summarise_encoded", (DL_FUNC) &R_swig_DataFrame_summarise_encoded, 5},
    {"R_swig_ExponentialSmoothingOptions_beta_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_beta_set, 2},
    {"R_swig_SimulatedAnnealingOptions_step_std_dev_get", (DL_FUNC) &R_swig_SimulatedAnnealingOptions_step_std_dev_get, 2},
    {"R_swig_Expr_log", (DL_FUNC) &R_swig_Expr_log, 2},
@@ -83756,11 +87084,13 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Var_sqrt", (DL_FUNC) &R_swig_Var_sqrt, 2},
    {"R_swig_GLM_save_diagnostic_plots", (DL_FUNC) &R_swig_GLM_save_diagnostic_plots, 2},
    {"R_swig_PSOOptions_ring_neighbors_set", (DL_FUNC) &R_swig_PSOOptions_ring_neighbors_set, 2},
-   {"R_swig_DataFrame_join__SWIG_0", (DL_FUNC) &R_swig_DataFrame_join__SWIG_0, 5},
+   {"R_swig_DataFrame_join__SWIG_0", (DL_FUNC) &R_swig_DataFrame_join__SWIG_0, 7},
    {"R_swig_DVector_append", (DL_FUNC) &R_swig_DVector_append, 2},
    {"R_swig_GLMM_standard_errors", (DL_FUNC) &R_swig_GLMM_standard_errors, 2},
    {"R_swig_XGBoostClassifier_plot_classification", (DL_FUNC) &R_swig_XGBoostClassifier_plot_classification, 5},
-   {"R_swig_DataFrame_join__SWIG_1", (DL_FUNC) &R_swig_DataFrame_join__SWIG_1, 4},
+   {"R_swig_DataFrame_join__SWIG_1", (DL_FUNC) &R_swig_DataFrame_join__SWIG_1, 6},
+   {"R_swig_DataFrame_join__SWIG_2", (DL_FUNC) &R_swig_DataFrame_join__SWIG_2, 5},
+   {"R_swig_DataFrame_join__SWIG_3", (DL_FUNC) &R_swig_DataFrame_join__SWIG_3, 4},
    {"R_swig_LM_coefficient_names", (DL_FUNC) &R_swig_LM_coefficient_names, 2},
    {"R_swig_new_HMCOptions", (DL_FUNC) &R_swig_new_HMCOptions, 0},
    {"R_swig_GLM_coefficient_names", (DL_FUNC) &R_swig_GLM_coefficient_names, 2},
@@ -83797,6 +87127,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_HypothesisTestResult_p_value_set", (DL_FUNC) &R_swig_HypothesisTestResult_p_value_set, 2},
    {"R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted", (DL_FUNC) &R_swig_DecisionTreeRegressor_plot_residuals_vs_fitted, 2},
    {"R_swig_INLAMixedModel_family", (DL_FUNC) &R_swig_INLAMixedModel_family, 2},
+   {"R_swig_DataFrame_pivot_wider__SWIG_0", (DL_FUNC) &R_swig_DataFrame_pivot_wider__SWIG_0, 4},
+   {"R_swig_DataFrame_pivot_wider__SWIG_1", (DL_FUNC) &R_swig_DataFrame_pivot_wider__SWIG_1, 3},
    {"R_swig_XGBoostClassifier_predict", (DL_FUNC) &R_swig_XGBoostClassifier_predict, 3},
    {"R_swig_delete_SGDOptions", (DL_FUNC) &R_swig_delete_SGDOptions, 1},
    {"R_swig_delete_SquareFreeFactorVector", (DL_FUNC) &R_swig_delete_SquareFreeFactorVector, 1},
@@ -83827,9 +87159,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SGDOptions_step_size_get", (DL_FUNC) &R_swig_SGDOptions_step_size_get, 2},
    {"R_swig_GAOptions_population_size_get", (DL_FUNC) &R_swig_GAOptions_population_size_get, 2},
    {"R_swig_LBFGSOptions_max_line_search_trials_get", (DL_FUNC) &R_swig_LBFGSOptions_max_line_search_trials_get, 2},
-   {"R_swig_ExponentialSmoothingOptions_de_population_size_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_population_size_get, 2},
    {"R_swig_ExponentialSmoothingOptions_de_population_size_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_population_size_set, 2},
+   {"R_swig_ExponentialSmoothingOptions_de_population_size_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_de_population_size_get, 2},
    {"R_swig_delete_PolyExtendedGcdResult", (DL_FUNC) &R_swig_delete_PolyExtendedGcdResult, 1},
+   {"R_swig_delete_ShapeLayer", (DL_FUNC) &R_swig_delete_ShapeLayer, 1},
    {"R_swig_new_NUTSOptions", (DL_FUNC) &R_swig_new_NUTSOptions, 0},
    {"R_swig_refine_root__SWIG_0", (DL_FUNC) &R_swig_refine_root__SWIG_0, 5},
    {"R_swig_Tensor_equal", (DL_FUNC) &R_swig_Tensor_equal, 2},
@@ -83913,8 +87246,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_MultivariatePolynomial_multiply", (DL_FUNC) &R_swig_MultivariatePolynomial_multiply, 3},
    {"R_swig_IVector_reserve", (DL_FUNC) &R_swig_IVector_reserve, 2},
    {"R_swig_PSOOptions_tolerance_set", (DL_FUNC) &R_swig_PSOOptions_tolerance_set, 2},
-   {"R_swig_ExponentialSmoothingOptions_seasonal_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_get, 2},
    {"R_swig_INLAMixedModel_residual_std_dev", (DL_FUNC) &R_swig_INLAMixedModel_residual_std_dev, 2},
+   {"R_swig_ExponentialSmoothingOptions_seasonal_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_get, 2},
    {"R_swig_PAdjustMethod_PAdjustMethod_Bonferroni_get", (DL_FUNC) &R_swig_PAdjustMethod_PAdjustMethod_Bonferroni_get, 1},
    {"R_swig_KNNClassifier_training_accuracy", (DL_FUNC) &R_swig_KNNClassifier_training_accuracy, 2},
    {"R_swig_RandomForestClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_RandomForestClassifier_plot_decision_regions__SWIG_0, 5},
@@ -83924,8 +87257,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_GBMRegressor_predictor_names", (DL_FUNC) &R_swig_GBMRegressor_predictor_names, 2},
    {"R_swig_PolynomialVector_empty", (DL_FUNC) &R_swig_PolynomialVector_empty, 2},
    {"R_swig_DataFrame_group_by_sum_encoded", (DL_FUNC) &R_swig_DataFrame_group_by_sum_encoded, 3},
+   {"R_swig_DataFrame_distinct__SWIG_0", (DL_FUNC) &R_swig_DataFrame_distinct__SWIG_0, 2},
    {"R_swig_DVectorVector_push_back", (DL_FUNC) &R_swig_DVectorVector_push_back, 2},
    {"R_swig_NaiveBayesClassifier_confusion_matrix", (DL_FUNC) &R_swig_NaiveBayesClassifier_confusion_matrix, 1},
+   {"R_swig_DataFrame_distinct__SWIG_1", (DL_FUNC) &R_swig_DataFrame_distinct__SWIG_1, 1},
    {"R_swig_GradientDescentOptions_step_size_set", (DL_FUNC) &R_swig_GradientDescentOptions_step_size_set, 2},
    {"R_swig_GGPlot_geom_smooth__SWIG_0", (DL_FUNC) &R_swig_GGPlot_geom_smooth__SWIG_0, 3},
    {"R_swig_delete_LBFGS", (DL_FUNC) &R_swig_delete_LBFGS, 1},
@@ -83939,10 +87274,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_INLAMixedModel_random_effects_mean_for_group", (DL_FUNC) &R_swig_INLAMixedModel_random_effects_mean_for_group, 3},
    {"R_swig_SizeVector_size", (DL_FUNC) &R_swig_SizeVector_size, 2},
    {"R_swig_RandomForestRegressor_rmse", (DL_FUNC) &R_swig_RandomForestRegressor_rmse, 2},
-   {"R_swig_ARIMA_seasonal_ma_coefficients", (DL_FUNC) &R_swig_ARIMA_seasonal_ma_coefficients, 2},
    {"R_swig_HyperDual_sin", (DL_FUNC) &R_swig_HyperDual_sin, 2},
    {"R_swig_KMeans_predict", (DL_FUNC) &R_swig_KMeans_predict, 3},
    {"R_swig_Plot_axis_color", (DL_FUNC) &R_swig_Plot_axis_color, 3},
+   {"R_swig_ARIMA_seasonal_ma_coefficients", (DL_FUNC) &R_swig_ARIMA_seasonal_ma_coefficients, 2},
    {"R_swig_GAOptions_tolerance_get", (DL_FUNC) &R_swig_GAOptions_tolerance_get, 2},
    {"R_swig_KNNClassifier_classes", (DL_FUNC) &R_swig_KNNClassifier_classes, 2},
    {"R_swig_ExponentialSmoothing_gamma", (DL_FUNC) &R_swig_ExponentialSmoothing_gamma, 2},
@@ -83958,8 +87293,9 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_new_RWMOptions", (DL_FUNC) &R_swig_new_RWMOptions, 0},
    {"R_swig_Tensor_exp", (DL_FUNC) &R_swig_Tensor_exp, 1},
    {"R_swig_multivariate_reduce", (DL_FUNC) &R_swig_multivariate_reduce, 4},
-   {"R_swig_ARIMAOptions_seed_set", (DL_FUNC) &R_swig_ARIMAOptions_seed_set, 2},
    {"R_swig_DecisionTreeRegressor_fitted_values", (DL_FUNC) &R_swig_DecisionTreeRegressor_fitted_values, 2},
+   {"R_swig_ARIMAOptions_seed_set", (DL_FUNC) &R_swig_ARIMAOptions_seed_set, 2},
+   {"R_swig_ShapeLayer_num_parts", (DL_FUNC) &R_swig_ShapeLayer_num_parts, 3},
    {"R_swig_Plot_x_tick_labels", (DL_FUNC) &R_swig_Plot_x_tick_labels, 3},
    {"R_swig_RandomForestRegressor_n_trees", (DL_FUNC) &R_swig_RandomForestRegressor_n_trees, 2},
    {"R_swig_IVector_resize__SWIG_0", (DL_FUNC) &R_swig_IVector_resize__SWIG_0, 2},
@@ -83984,8 +87320,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_PSOOptions_inertia_weight_set", (DL_FUNC) &R_swig_PSOOptions_inertia_weight_set, 2},
    {"R_swig_Tensor_softmax", (DL_FUNC) &R_swig_Tensor_softmax, 1},
    {"R_swig_descartes_negative_root_bound", (DL_FUNC) &R_swig_descartes_negative_root_bound, 2},
-   {"R_swig_ExponentialSmoothingOptions_seasonal_period_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_period_get, 2},
    {"R_swig_ExponentialSmoothingOptions_seasonal_period_set", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_period_set, 2},
+   {"R_swig_ExponentialSmoothingOptions_seasonal_period_get", (DL_FUNC) &R_swig_ExponentialSmoothingOptions_seasonal_period_get, 2},
    {"R_swig_PolyExtendedGcdResult_gcd_set", (DL_FUNC) &R_swig_PolyExtendedGcdResult_gcd_set, 2},
    {"R_swig_Dual_divide", (DL_FUNC) &R_swig_Dual_divide, 3},
    {"R_swig_spearman_correlation_test__SWIG_0", (DL_FUNC) &R_swig_spearman_correlation_test__SWIG_0, 4},
@@ -84027,13 +87363,14 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_Plot_width", (DL_FUNC) &R_swig_Plot_width, 2},
    {"R_swig_SizeVector___setslice__", (DL_FUNC) &R_swig_SizeVector___setslice__, 4},
    {"R_swig_AdamOptions_beta2_get", (DL_FUNC) &R_swig_AdamOptions_beta2_get, 2},
-   {"R_swig_delete_ARIMA", (DL_FUNC) &R_swig_delete_ARIMA, 1},
    {"R_swig_KMeans_inertia", (DL_FUNC) &R_swig_KMeans_inertia, 2},
+   {"R_swig_delete_ARIMA", (DL_FUNC) &R_swig_delete_ARIMA, 1},
    {"R_swig_Tensor_squeeze_axis", (DL_FUNC) &R_swig_Tensor_squeeze_axis, 2},
    {"R_swig_AdamOptions_tolerance_set", (DL_FUNC) &R_swig_AdamOptions_tolerance_set, 2},
    {"R_swig_Tensor_sigmoid", (DL_FUNC) &R_swig_Tensor_sigmoid, 1},
    {"R_swig_AdamOptions_max_iterations_set", (DL_FUNC) &R_swig_AdamOptions_max_iterations_set, 2},
    {"R_swig_ImportanceSamplingOptions_seed_get", (DL_FUNC) &R_swig_ImportanceSamplingOptions_seed_get, 2},
+   {"R_swig_ShapeLayer_shape_type", (DL_FUNC) &R_swig_ShapeLayer_shape_type, 2},
    {"R_swig_GBMClassifier_observations", (DL_FUNC) &R_swig_GBMClassifier_observations, 2},
    {"R_swig_PSOOptions_cognitive_coefficient_set", (DL_FUNC) &R_swig_PSOOptions_cognitive_coefficient_set, 2},
    {"R_swig_PSOOptions_final_inertia_weight_set", (DL_FUNC) &R_swig_PSOOptions_final_inertia_weight_set, 2},
@@ -84080,9 +87417,12 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_MultivariatePolynomialVector_capacity", (DL_FUNC) &R_swig_MultivariatePolynomialVector_capacity, 2},
    {"R_swig_new_ElasticNet__SWIG_6", (DL_FUNC) &R_swig_new_ElasticNet__SWIG_6, 2},
    {"R_swig_HypothesisTestResult_method_get", (DL_FUNC) &R_swig_HypothesisTestResult_method_get, 2},
+   {"R_swig_DataFrame_pivot_longer_encoded__SWIG_0", (DL_FUNC) &R_swig_DataFrame_pivot_longer_encoded__SWIG_0, 4},
    {"R_swig_NUTSOptions_num_warmup_set", (DL_FUNC) &R_swig_NUTSOptions_num_warmup_set, 2},
+   {"R_swig_DataFrame_pivot_longer_encoded__SWIG_1", (DL_FUNC) &R_swig_DataFrame_pivot_longer_encoded__SWIG_1, 3},
    {"R_swig_GBMClassifier_print_summary", (DL_FUNC) &R_swig_GBMClassifier_print_summary, 1},
    {"R_swig_Tensor_add_scalar", (DL_FUNC) &R_swig_Tensor_add_scalar, 2},
+   {"R_swig_DataFrame_pivot_longer_encoded__SWIG_2", (DL_FUNC) &R_swig_DataFrame_pivot_longer_encoded__SWIG_2, 2},
    {"R_swig_RationalFunction_subtract", (DL_FUNC) &R_swig_RationalFunction_subtract, 3},
    {"R_swig_delete_SeparableFunction", (DL_FUNC) &R_swig_delete_SeparableFunction, 1},
    {"R_swig_DataFrame_add_string_column__SWIG_0", (DL_FUNC) &R_swig_DataFrame_add_string_column__SWIG_0, 4},
@@ -84158,9 +87498,11 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_INLAMixedModel_formula_text", (DL_FUNC) &R_swig_INLAMixedModel_formula_text, 2},
    {"R_swig_DVectorVector_capacity", (DL_FUNC) &R_swig_DVectorVector_capacity, 2},
    {"R_swig_RPlot_pie__SWIG_1", (DL_FUNC) &R_swig_RPlot_pie__SWIG_1, 3},
-   {"R_swig_delete_ExponentialSmoothingOptions", (DL_FUNC) &R_swig_delete_ExponentialSmoothingOptions, 1},
+   {"R_swig_DataFrame_pull_numeric_valid", (DL_FUNC) &R_swig_DataFrame_pull_numeric_valid, 3},
    {"R_swig_RPlot_curve__SWIG_2", (DL_FUNC) &R_swig_RPlot_curve__SWIG_2, 5},
+   {"R_swig_DataFrame_summarise", (DL_FUNC) &R_swig_DataFrame_summarise, 5},
    {"R_swig_RPlot_pie__SWIG_2", (DL_FUNC) &R_swig_RPlot_pie__SWIG_2, 2},
+   {"R_swig_delete_ExponentialSmoothingOptions", (DL_FUNC) &R_swig_delete_ExponentialSmoothingOptions, 1},
    {"R_swig_NUTSResult_num_divergences_set", (DL_FUNC) &R_swig_NUTSResult_num_divergences_set, 2},
    {"R_swig_RPlot_curve__SWIG_3", (DL_FUNC) &R_swig_RPlot_curve__SWIG_3, 4},
    {"R_swig_DEOptions_crossover_rate_set", (DL_FUNC) &R_swig_DEOptions_crossover_rate_set, 2},
@@ -84196,8 +87538,10 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_delete_IVectorVector", (DL_FUNC) &R_swig_delete_IVectorVector, 1},
    {"R_swig_MultivariatePolynomial_coefficients", (DL_FUNC) &R_swig_MultivariatePolynomial_coefficients, 2},
    {"R_swig_KNNRegressor_r_squared", (DL_FUNC) &R_swig_KNNRegressor_r_squared, 2},
+   {"R_swig_DataFrame_mutate_numeric__SWIG_0", (DL_FUNC) &R_swig_DataFrame_mutate_numeric__SWIG_0, 4},
    {"R_swig_RWMOptions_initial_step_size_set", (DL_FUNC) &R_swig_RWMOptions_initial_step_size_set, 2},
    {"R_swig_IVectorVector_pop_back", (DL_FUNC) &R_swig_IVectorVector_pop_back, 1},
+   {"R_swig_DataFrame_mutate_numeric__SWIG_1", (DL_FUNC) &R_swig_DataFrame_mutate_numeric__SWIG_1, 3},
    {"R_swig_KernelRegression_summary", (DL_FUNC) &R_swig_KernelRegression_summary, 2},
    {"R_swig_DVector___getitem__", (DL_FUNC) &R_swig_DVector___getitem__, 3},
    {"R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_0", (DL_FUNC) &R_swig_DecisionTreeClassifier_plot_decision_regions__SWIG_0, 5},

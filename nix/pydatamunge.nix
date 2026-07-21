@@ -12,7 +12,17 @@ buildPythonPackage rec {
   pname = "pydatamunge";
   version = "0.0.1";
   pyproject = true;
-  src = lib.cleanSource ../.;
+  src = lib.cleanSourceWith {
+    src = ../.;
+    filter =
+      path: type:
+      let
+        base = builtins.baseNameOf path;
+      in
+      !(
+        base == ".git" || base == "build" || base == "dist" || base == "node_modules" || base == "result"
+      );
+  };
   build-system = [ setuptools ];
   meta = {
     description = "Python bindings to the datamunge library.";

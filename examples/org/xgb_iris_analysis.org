@@ -1,0 +1,728 @@
+#+title: XGBoost for Iris Species
+#+subtitle: A literate C++ study using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a regularized, second-order gradient boosting classifier -- the
+XGBoost algorithm (Chen & Guestrin, 2016) -- to Fisher's (1936) iris data
+using =datamunge='s C++ =stats::XGBoostClassifier=, and report it as a
+literate program: every fragment below is a real, compiled, executed chunk
+of the single C++ binary that produced every number and figure in this
+document. Using the same 100-round budget as the classic gradient boosting
+companion report but a Newton (second-order) update instead of a plain
+gradient step, this model reaches a training deviance of 0.0288 -- more
+than three times lower than the companion GBM report's 0.0900 at the same
+round count. A sweep over the L2 regularization parameter $\lambda$
+produces a clean, textbook regularization curve: training accuracy holds
+at 99.33-100.00% for $\lambda$ up to about 10, then collapses to 96.67% by
+$\lambda = 50$, with training deviance rising more than 3.6-fold over the
+same range -- a sharper, cleaner illustration of over-regularization than
+any hyperparameter sweep in this project's other five reports produced. We
+derive the second-order Taylor approximation to the loss, the closed-form
+regularized leaf weight, the regularized split-gain criterion, and
+gain-based feature importance from first principles, connect each to the
+corresponding library call, and close by placing this method directly
+against its closest relative, the classic gradient boosting companion
+report.
+#+end_abstract
+
+* Introduction
+
+This project has now fit five classifiers to the same 150 iris flowers --
+[[file:lda_iris_analysis.org][=lda_iris_analysis.org=]],
+[[file:svm_iris_analysis.org][=svm_iris_analysis.org=]],
+[[file:dt_iris_analysis.org][=dt_iris_analysis.org=]],
+[[file:rf_iris_analysis.org][=rf_iris_analysis.org=]], and
+[[file:gbm_iris_analysis.org][=gbm_iris_analysis.org=]] -- and this report
+adds a sixth that is, in one specific sense, the smallest possible step
+away from the fifth: XGBoost fits the same kind of thing (an additive
+ensemble of shallow trees, one per class per round, each correcting the
+last) that the GBM companion report already covers, but changes /how/ each
+round's trees are fit and /what/ keeps them from overfitting. Where
+classic gradient boosting takes one gradient-descent step per round,
+XGBoost takes a full Newton step -- using both the gradient /and/ the
+curvature (Hessian) of the loss -- and where classic gradient boosting's
+only real defense against overfitting is a small learning rate, XGBoost
+adds three more knobs (L2, L1, and a minimum-gain threshold) directly
+inside the formula that decides both how a leaf is weighted and whether a
+split is worth making at all.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.8) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the second-order Taylor approximation to the loss, the
+resulting closed-form regularized leaf weight, the regularized split-gain
+criterion, and gain-based feature importance, each tied to the specific
+library call that implements it. §3 describes the program chunk by chunk.
+§4 reports the fitted model, its training deviance curve, feature
+importance, a sweep over the L2 regularization parameter, and a
+side-by-side look at the decision boundary under light versus heavy
+regularization. §5 compares this report directly against its closest
+relative, the classic gradient boosting report, and places all six methods
+in this project side by side. §6 concludes.
+
+* Background: Regularized, Second-Order Boosting
+
+** Setup and notation
+
+As in the other classification companion reports: $n = 150$ flowers,
+$p = 4$ measurements $x_i \in \mathbb{R}^4$, and $y_i \in \{1, \dots, K\}$,
+$K = 3$, labeling one of the three species.
+
+** Second-order (Newton) boosting
+
+The GBM companion report's §2.2 fits each round's trees to the /negative
+gradient/ of the loss -- a first-order, steepest-descent approximation.
+XGBoost instead expands the loss to /second/ order around the current
+prediction $F(x)$: for a new tree $f$,
+$L(y, F+f) \approx L(y,F) + g f(x) + \tfrac12 h f(x)^2$, where $g$ is the
+gradient and $h$ is the /Hessian/ (second derivative) of the loss with
+respect to the current prediction. This quadratic is exactly solvable in
+closed form for the best value of $f(x)$ at every leaf, which is what
+turns "fit a tree to point downhill" (GBM) into "fit a tree using the
+locally-optimal Newton step, including curvature information" (XGBoost) --
+the same distinction between gradient descent and Newton's method that
+appears throughout numerical optimization, applied here to fitting each
+round's tree rather than to a single parameter update.
+
+** Gradient and Hessian for multiclass softmax
+
+As in the GBM companion report, =datamunge= maintains one score $F_k(x)$
+per class and converts them to probabilities by softmax
+$p_k(x) = \exp(F_k(x)) / \sum_j \exp(F_j(x))$. The gradient of the
+multinomial deviance with respect to $F_k(x_i)$ is
+$g_{ik} = p_{ik} - y_{ik}$ -- the same one-hot-minus-probability quantity
+the GBM report calls a pseudo-residual -- and the Hessian is
+$h_{ik} = p_{ik}(1 - p_{ik})$, the standard diagonal approximation to the
+true (dense, $K \times K$) softmax Hessian, used here because computing the
+exact cross-class Hessian for every row would be far more expensive for
+comparatively little practical benefit. Both are computed fresh every
+round from the /current/ ensemble's predictions, exactly as in GBM.
+
+** The regularized objective and the optimal leaf weight
+
+For a leaf whose rows have accumulated gradient $G = \sum_i g_i$ and
+Hessian $H = \sum_i h_i$, the second-order approximation reduces the
+leaf's contribution to the loss to a simple quadratic in its weight $w$:
+$G w + \tfrac12 (H + \lambda) w^2 + \alpha |w|$, where $\lambda$
+(=XGBoostClassifierOptions::lambda=) is an L2 penalty directly on the leaf
+weight and $\alpha$ (=alpha=) is an L1 penalty. Minimizing this quadratic
+gives a closed-form optimal weight,
+
+\[
+w^* = -\frac{\mathrm{softthresh}(G, \alpha)}{H + \lambda} , \qquad
+\mathrm{softthresh}(G, \alpha) = \mathrm{sign}(G) \max(|G| - \alpha, 0) ,
+\]
+
+matching =detail::XGBoostTree='s =leaf_weight()= exactly. Larger $\lambda$
+shrinks every leaf's weight toward zero regardless of how much data
+supports it (smoothing the whole tree); nonzero $\alpha$ can drive a
+leaf's weight to /exactly/ zero once $|G| \leq \alpha$ (a sparsifying
+effect L2 alone cannot produce). This report's primary model uses the
+library default $\lambda = 1$, $\alpha = 0$; §4.4 sweeps $\lambda$
+directly.
+
+** The regularized split gain and gamma
+
+Candidate splits are scored by how much they improve the same regularized
+objective. Writing $\mathrm{score}(G,H) = \mathrm{softthresh}(G,\alpha)^2 /
+(H + \lambda)$ (twice the negated optimal loss at a node), a candidate
+split into left/right children is scored by
+
+\[
+\mathrm{Gain} = \tfrac12 \big(\mathrm{score}(G_L,H_L) +
+\mathrm{score}(G_R,H_R) - \mathrm{score}(G,H)\big) - \gamma ,
+\]
+
+matching =detail::XGBoostTree='s split search exactly. $\gamma$
+(=gamma=, default 0 here) is a flat minimum-improvement threshold: a split
+that doesn't clear it is refused outright, regardless of how many rows it
+would affect -- a third, structural form of regularization (pruning by
+required gain) alongside $\lambda$'s leaf-weight shrinkage and $\alpha$'s
+leaf-weight sparsification.
+
+** Row and column subsampling
+
+=subsample= and =colsample_bytree= (both left at their default of 1.0 in
+this report's primary model) optionally restrict each tree to a random
+subset of rows or predictors respectively -- the same bagging-flavored
+randomness the random forest companion report's bootstrap sampling and
+=max_features= use, layered on top of boosting rather than replacing it.
+
+** Feature importance
+
+=feature_importance()= sums the regularized gain (§2.5, /not/ Gini,
+entropy, or plain SSE decrease) contributed by every split on each
+predictor across every tree in every round, normalized to sum to 1. This
+differs subtly from the GBM companion report's SSE-based importance:
+XGBoost's importance already has $\lambda$, $\alpha$, and $\gamma$'s
+regularization baked directly into every split's credited gain, so a
+predictor's importance here reflects its /regularized/ usefulness, not
+just how much raw variance it happened to explain.
+
+** Prediction
+
+As in the GBM companion report, a new point's final class scores after all
+$M$ rounds are converted to probabilities by softmax, in
+=predict_detail()='s =probability= field -- the same confidence semantics
+as GBM's, since both methods produce an additive ensemble of scores read
+out the same way; §4.7 compares the actual numbers the two reports produce
+for the identical four flowers.
+
+** What we will report
+
+Given the fit, we report the model's own summary (feature importance,
+training accuracy, and the deviance trajectory), a confusion matrix, a
+classification plot marking misclassified points directly, the training
+deviance curve, a sweep over $\lambda$, and -- reduced to two predictors
+purely for visualization, the same caveat every companion report makes
+about its own 2-D view -- a side-by-side decision-region comparison under
+light versus heavy L2 regularization.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven
+=stats::XGBoostClassifier= for every model in this report (built
+internally from the regularized =detail::XGBoostTree=, distinct from the
+plain =DecisionTreeRegressor= the GBM companion report's trees use), and
+=plot::RPlot=/=plot::RLayout= for every figure. No external plotting or
+statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and shared constants
+
+The primary model uses every library default: 100 rounds, learning rate
+0.3 (three times the GBM companion report's default), =max_depth= 6
+(twice as deep as GBM's default 3), $\lambda = 1$, $\alpha = 0$,
+$\gamma = 0$.
+
+#+name: xgb-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/xgboost_classifier.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::XGBoostClassifier;
+using datamunge::stats::XGBoostClassifierOptions;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kSpecies =
+    {"setosa", "versicolor", "virginica"};
+static const std::vector<RGB> kSpeciesColor = {
+    {37, 99, 235},   // setosa     - blue
+    {22, 163, 74},   // versicolor - green
+    {220, 38, 38},   // virginica  - red
+};
+static const std::string kFormula =
+    "Species ~ Sepal.Length + Sepal.Width"
+    " + Petal.Length + Petal.Width";
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The same petal-length/petal-width view every companion report opens with.
+
+#+name: xgb-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+#+end_src
+
+#+name: xgb-eda-scatter
+#+begin_src c++ :eval no
+    auto scatter = RPlot::create();
+    for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+        const auto subset = iris.filter([&](const DataFrame::Row& r) {
+            return r.get_string("Species") == kSpecies[k];
+        });
+        scatter.points(subset.numeric_column("Petal.Length").values(),
+                        subset.numeric_column("Petal.Width").values(),
+                        kSpecies[k], kSpeciesColor[k], 6.0);
+    }
+    scatter.title("Iris: Petal Length vs Petal Width")
+        .x_label("Petal.Length (cm)")
+        .y_label("Petal.Width (cm)")
+        .background({250, 250, 252});
+    scatter.save_svg("build/org/xgb_iris_eda_scatter.svg");
+    std::cout << "wrote xgb_iris_eda_scatter.svg\n";
+#+end_src
+
+*** Fitting the model
+
+=print_summary= writes gain-based feature importance, training accuracy,
+and the deviance trajectory from first round to last -- everything derived
+in §2.
+
+#+name: xgb-fit
+#+begin_src c++ :eval no
+    XGBoostClassifier model(iris, kFormula);
+    std::cout << "\n";
+    model.print_summary(std::cout);
+#+end_src
+
+*** Training diagnostics
+
+#+name: xgb-confusion
+#+begin_src c++ :eval no
+    std::cout << "\nConfusion matrix (rows = actual, cols = predicted):\n";
+    const auto cm = model.confusion_matrix();
+    std::cout << std::setw(14) << "";
+    for (const auto& c : model.classes()) std::cout << std::setw(12) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < cm.rows(); ++i) {
+        std::cout << std::setw(14) << model.classes()[i];
+        for (std::size_t j = 0; j < cm.cols(); ++j)
+            std::cout << std::setw(12) << cm(i, j);
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Training deviance curve
+
+#+name: xgb-deviance-plot
+#+begin_src c++ :eval no
+    {
+        auto dev_plot = model.plot_training_deviance();
+        dev_plot.background({250, 250, 252});
+        dev_plot.save_svg("build/org/xgb_iris_deviance.svg");
+        std::cout << "wrote xgb_iris_deviance.svg\n";
+    }
+#+end_src
+
+*** Classification plot
+
+#+name: xgb-classification-plot
+#+begin_src c++ :eval no
+    {
+        auto cls_plot =
+            model.plot_classification(iris, "Petal.Length", "Petal.Width");
+        cls_plot.background({250, 250, 252});
+        cls_plot.save_svg("build/org/xgb_iris_classification.svg");
+        std::cout << "wrote xgb_iris_classification.svg\n";
+    }
+#+end_src
+
+*** Feature importance
+
+#+name: xgb-importance
+#+begin_src c++ :eval no
+    {
+        const auto importance = model.feature_importance();
+        const auto& names = model.predictor_names();
+        std::vector<double> heights(importance.begin(), importance.end());
+        auto imp_plot = RPlot::barplot(heights, names, "importance",
+                                        {37, 99, 235});
+        imp_plot.title("Feature Importance (gain)")
+            .x_label("predictor").y_label("normalized importance")
+            .background({250, 250, 252});
+        imp_plot.save_svg("build/org/xgb_iris_importance.svg");
+        std::cout << "wrote xgb_iris_importance.svg\n";
+    }
+#+end_src
+
+*** Lambda sensitivity
+
+Refit at six values of $\lambda$ spanning four orders of magnitude,
+holding =n_trees= fixed at 100, tracking both final training deviance and
+training accuracy -- the direct analogue of the SVM companion report's
+cost sweep, but for L2 regularization strength instead of margin
+tolerance.
+
+#+name: xgb-lambda-sensitivity
+#+begin_src c++ :eval no
+    {
+        const std::vector<double> lambdas =
+            {0.01, 0.1, 1.0, 10.0, 50.0, 100.0};
+        std::vector<double> log_lambda, accs, devs;
+        std::cout << "\nLambda sensitivity (n_trees=100):\n";
+        std::cout << std::setw(10) << "lambda" << std::setw(12) << "accuracy"
+                   << std::setw(12) << "deviance\n";
+        for (const double lam : lambdas) {
+            XGBoostClassifierOptions opts;
+            opts.lambda = lam;
+            XGBoostClassifier m(iris, kFormula, opts);
+            const double acc = m.training_accuracy() * 100.0;
+            const double dev = m.training_deviance().back();
+            log_lambda.push_back(std::log10(lam));
+            accs.push_back(acc);
+            devs.push_back(dev);
+            std::cout << std::setw(10) << std::fixed << std::setprecision(2)
+                       << lam << std::setw(11) << acc << "%"
+                       << std::setw(12) << std::setprecision(4) << dev
+                       << "\n";
+        }
+        auto acc_plot = RPlot::plot(log_lambda, accs, "b", "accuracy",
+                                     {37, 99, 235});
+        acc_plot.title("Training Accuracy vs Lambda")
+            .x_label("log10(lambda)").y_label("training accuracy (%)")
+            .background({250, 250, 252});
+        auto dev_plot2 = RPlot::plot(log_lambda, devs, "b", "deviance",
+                                      {220, 38, 38});
+        dev_plot2.title("Final Deviance vs Lambda")
+            .x_label("log10(lambda)").y_label("training deviance")
+            .background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(acc_plot);
+        layout.add(dev_plot2);
+        layout.save_svg("build/org/xgb_iris_lambda_sensitivity.svg");
+        std::cout << "wrote xgb_iris_lambda_sensitivity.svg\n";
+    }
+#+end_src
+
+*** Decision regions: light versus heavy regularization
+
+As in the decision-tree, random-forest, and GBM companion reports,
+=plot_decision_regions= only accepts a model with /exactly/ two
+predictors, so we fit two separate 2-predictor models purely to draw this
+figure -- one at the library default $\lambda = 1$, one heavily
+regularized at $\lambda = 50$ -- to see §2.4's shrinkage effect directly on
+a boundary rather than only in a table of numbers.
+
+#+name: xgb-decision-regions
+#+begin_src c++ :eval no
+    {
+        XGBoostClassifier light(iris, "Species ~ Petal.Length + Petal.Width");
+        XGBoostClassifierOptions heavy_opts;
+        heavy_opts.lambda = 50.0;
+        XGBoostClassifier heavy(iris, "Species ~ Petal.Length + Petal.Width",
+                                 heavy_opts);
+
+        auto light_plot = light.plot_decision_regions("Petal.Length",
+                                                        "Petal.Width");
+        light_plot.title("lambda = 1 (default)").background({250, 250, 252});
+        auto heavy_plot = heavy.plot_decision_regions("Petal.Length",
+                                                        "Petal.Width");
+        heavy_plot.title("lambda = 50").background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(light_plot);
+        layout.add(heavy_plot);
+        layout.save_svg("build/org/xgb_iris_decision_regions.svg");
+        std::cout << "wrote xgb_iris_decision_regions.svg\n";
+        std::cout << "lambda=1 (default):   training accuracy="
+                   << std::fixed << std::setprecision(2)
+                   << light.training_accuracy() * 100.0
+                   << "%  deviance=" << std::setprecision(4)
+                   << light.training_deviance().back() << "\n";
+        std::cout << "lambda=50 (heavy L2): training accuracy="
+                   << std::setprecision(2)
+                   << heavy.training_accuracy() * 100.0
+                   << "%  deviance=" << std::setprecision(4)
+                   << heavy.training_deviance().back() << "\n";
+    }
+#+end_src
+
+*** Predicting new flowers
+
+The same four flowers used throughout this project's other worked
+examples: one unambiguous example of each species, plus one deliberately
+chosen near the versicolor/virginica boundary.
+
+#+name: xgb-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Sepal.Length",
+                        std::vector<double>{5.1, 6.0, 6.5, 6.2});
+    newdata.add_column("Sepal.Width",
+                        std::vector<double>{3.5, 2.7, 3.0, 2.8});
+    newdata.add_column("Petal.Length",
+                        std::vector<double>{1.4, 4.5, 5.5, 4.8});
+    newdata.add_column("Petal.Width",
+                        std::vector<double>{0.2, 1.5, 2.0, 1.8});
+
+    const auto prediction = model.predict_detail(newdata);
+    std::cout << "\nPredictions for new flowers:\n";
+    std::cout << std::setw(14) << "predicted";
+    for (const auto& c : model.classes())
+        std::cout << std::setw(14) << ("P(" + c + ")");
+    std::cout << "\n";
+    for (std::size_t i = 0; i < prediction.class_label.size(); ++i) {
+        std::cout << std::setw(14) << prediction.class_label[i];
+        for (const double p : prediction.probability[i])
+            std::cout << std::setw(14) << std::fixed
+                       << std::setprecision(4) << p;
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/xgb_iris_analysis.cpp <<'CPP'
+<<xgb-includes>>
+
+int main() {
+<<xgb-load-data>>
+
+<<xgb-eda-scatter>>
+
+<<xgb-fit>>
+
+<<xgb-confusion>>
+
+<<xgb-deviance-plot>>
+
+<<xgb-classification-plot>>
+
+<<xgb-importance>>
+
+<<xgb-lambda-sensitivity>>
+
+<<xgb-decision-regions>>
+
+<<xgb-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/xgb_iris_analysis.cpp -o build/org/xgb_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/xgb_iris_analysis
+#+end_src
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by species :width 100%
+[[file:../../build/org/xgb_iris_eda_scatter.svg]]
+
+The same picture as every companion report: /setosa/ fully separated,
+/versicolor/ and /virginica/ overlapping only in a thin band near petal
+length 4.7-5.0cm.
+
+** The fitted model
+
+#+begin_example
+Feature importance (gain):
+  Sepal.Length: 0.0128
+  Sepal.Width: 0.0130
+  Petal.Length: 0.6196
+  Petal.Width: 0.3545
+
+Training accuracy: 100.00%  (150 observations)
+Training deviance: 0.4929 (round 1) -> 0.0288 (round 100)
+#+end_example
+
+Compare this deviance trajectory directly against the GBM companion
+report's: XGBoost starts /lower/ after round 1 (0.4929 versus GBM's
+1.0354) and finishes more than three times lower after round 100 (0.0288
+versus 0.0900) -- the combined effect of a Newton step instead of a
+gradient step (§2.2) and a higher default learning rate (0.3 versus GBM's
+0.1). As with the GBM companion report, training accuracy reaches a
+perfect 100.00% with no built-in held-out check comparable to the random
+forest companion report's out-of-bag accuracy; §5 returns to this.
+
+| Predictor        | Normalized importance |
+|-------------------+------------------------|
+| =Sepal.Length=    |                 0.0128 |
+| =Sepal.Width=     |                 0.0130 |
+| =Petal.Length=    |                 0.6196 |
+| =Petal.Width=     |                 0.3545 |
+
+#+ATTR_HTML: :alt Bar chart of normalized feature importance by predictor :width 100%
+[[file:../../build/org/xgb_iris_importance.svg]]
+
+Petal measurements dominate again, as in every companion report; both
+sepal measurements get small nonzero gain-based credit, similar in
+magnitude to the GBM companion report's SSE-based importance for the same
+two predictors, even though the two importance measures are computed from
+different quantities (§2.7).
+
+** Classification performance
+
+|            | pred. setosa | pred. versicolor | pred. virginica |
+|------------+--------------+-------------------+------------------|
+| setosa     |           50 |                 0 |                0 |
+| versicolor |            0 |                50 |                0 |
+| virginica  |            0 |                 0 |               50 |
+
+Zero training errors, matching the perfect training accuracy §4.2 already
+reported.
+
+#+ATTR_HTML: :alt Petal length vs width scatter with no points misclassified :width 100%
+[[file:../../build/org/xgb_iris_classification.svg]]
+
+As with the GBM and random forest companion reports' equivalent figures,
+no black "misclassified" markers appear anywhere.
+
+** Training deviance
+
+#+ATTR_HTML: :alt Line plot of training multinomial deviance against boosting iteration :width 100%
+[[file:../../build/org/xgb_iris_deviance.svg]]
+
+The curve drops sharply within the first 10-15 rounds and is essentially
+flat well before round 50 -- visibly steeper in its initial descent than
+the GBM companion report's equivalent curve, consistent with §4.2's
+round-1 and round-100 comparison above.
+
+** Lambda sensitivity
+
+#+ATTR_HTML: :alt Line plots of training accuracy and final deviance against log10(lambda) :width 100%
+[[file:../../build/org/xgb_iris_lambda_sensitivity.svg]]
+
+| Lambda | Accuracy | Final deviance |
+|--------+----------+-----------------|
+|   0.01 |   99.33% |          0.0270 |
+|   0.10 |   99.33% |          0.0267 |
+|   1.00 |  100.00% |          0.0288 |
+|  10.00 |  100.00% |          0.0411 |
+|  50.00 |   96.67% |          0.0692 |
+| 100.00 |   96.67% |          0.0980 |
+
+This is the cleanest regularization curve in this project: training
+accuracy is essentially flat (99.33-100.00%) for every $\lambda$ up to 10,
+then drops sharply to 96.67% by $\lambda = 50$ and stays there; final
+deviance rises steadily throughout, but especially steeply once $\lambda$
+crosses roughly 10, more than tripling from $\lambda = 1$'s 0.0288 to
+$\lambda = 100$'s 0.0980. This is §2.4's leaf-weight shrinkage made
+directly visible: once $\lambda$ is large enough, every leaf's weight $w^*
+= -G/(H+\lambda)$ is pulled so far toward zero that the trees can no
+longer fit even this small, well-separated dataset well, regardless of how
+many rounds or how deep the trees are allowed to grow.
+
+** Decision regions: light versus heavy regularization
+
+#+ATTR_HTML: :alt Side-by-side decision regions at lambda=1 and lambda=50 :width 100%
+[[file:../../build/org/xgb_iris_decision_regions.svg]]
+
+The 2-predictor models used for this figure reach 99.33% ($\lambda = 1$)
+and 96.67% ($\lambda = 50$) training accuracy, matching the pattern in
+§4.4's full sweep. The heavily-regularized boundary on the right is
+visibly simpler and smoother in the versicolor/virginica overlap than the
+lightly-regularized one on the left -- shrinking every leaf's weight
+toward zero doesn't just hurt accuracy in the abstract, it concretely
+simplifies the boundary the ensemble is willing to draw, the same
+qualitative story the SVM companion report's cost sweep tells about margin
+width, applied here to boosted trees instead of a kernel margin.
+
+** Predicting new flowers
+
+#+ATTR_LATEX: :font \small
+| Sepal.L / Sepal.W / Petal.L / Petal.W | predicted  | setosa | versicolor | virginica |
+|----------------------------------------+------------+--------+------------+-----------|
+| 5.1 / 3.5 / 1.4 / 0.2                  | setosa     | 0.9953 |     0.0040 |    0.0007 |
+| 6.0 / 2.7 / 4.5 / 1.5                  | versicolor | 0.0009 |     0.9969 |    0.0022 |
+| 6.5 / 3.0 / 5.5 / 2.0                  | virginica  | 0.0005 |     0.0023 |    0.9972 |
+| 6.2 / 2.8 / 4.8 / 1.8                  | virginica  | 0.0021 |     0.0315 |    0.9664 |
+
+Every posterior here is noticeably closer to certainty than the GBM
+companion report's equivalent table: the three unambiguous flowers score
+99.5-99.7% for their true species (against GBM's 92-93%), and even the
+deliberately ambiguous fourth flower scores 96.64% /virginica/ here versus
+GBM's 87.73% for the identical measurements. That is a direct consequence
+of §4.2's much lower training deviance -- a model that fits its training
+data this much more tightly produces sharper probabilities everywhere,
+including, notably, on the one case in this report's own test set that
+every other companion report treats as genuinely close. §5 discusses
+whether that extra confidence should be trusted.
+
+* Discussion
+
+**XGBoost versus classic gradient boosting, directly.** These two reports
+share almost everything -- the same additive, sequential, one-tree-per-
+class-per-round structure, the same softmax/multinomial-deviance loss, the
+same missing built-in held-out check -- and differ in exactly the ways §2
+predicted: a Newton step instead of a gradient step, three explicit
+regularization knobs ($\lambda$, $\alpha$, $\gamma$) built directly into
+the leaf-weight and split-gain formulas instead of relying on learning
+rate and tree depth alone, and gain-based rather than SSE-based feature
+importance. On this small, clean dataset, the practical upshot is that
+XGBoost reaches a substantially lower training deviance in the same number
+of rounds -- but, per §4.7, that same tighter fit also means its
+confidence on the one genuinely ambiguous flower in this project's
+recurring four-flower test set is the highest of any of the six methods
+in this project, which is worth treating as a caution rather than a
+straightforward improvement.
+
+**Is XGBoost's extra confidence deserved?** Every method in this project
+that has a resubstitution-only accuracy figure (LDA, SVM, the single
+decision tree, GBM, and this report) has had to caveat it as potentially
+optimistic; only the random forest companion report's out-of-bag estimate
+actually checks that optimism against anything. XGBoost's characteristic
+behavior -- converging to a tighter fit, faster, than plain gradient
+boosting -- makes that caveat /more/ pressing here, not less: a model that
+fits its own training data even more confidently, with no held-out check
+at all in this configuration, is exactly the situation where a
+practitioner should reach for cross-validation before trusting the
+headline accuracy figure, regardless of how clean the deviance curve
+looks.
+
+**Six methods, one dataset, one recurring lesson.** Every one of this
+project's six classifier reports lands in the 95-100% range on these 150
+flowers, and every method's genuine errors (where it reports any at all)
+fall in the same /versicolor//virginica/ overlap. That convergence, one
+more time, is evidence about the /data/ -- a small region of real
+biological similarity between two species -- and not a ranking of the six
+methods against each other; each report in this series has, in its own
+way, arrived at the same conclusion from a completely different
+mathematical starting point.
+
+* Conclusion
+
+A 100-round, regularized, second-order gradient boosting classifier, fit
+with =datamunge='s C++ =stats::XGBoostClassifier=, reaches a training
+deviance of 0.0288 on Fisher's three iris species -- more than three times
+lower than the classic gradient boosting companion report's 0.0900 at the
+same round budget -- and a sweep over its L2 regularization parameter
+produces this project's cleanest over-regularization curve, with training
+accuracy holding steady up to $\lambda \approx 10$ before collapsing by
+$\lambda = 50$. Read against its closest relative, this report's real
+contribution is isolating exactly what changes between "boosting" and
+"regularized, second-order boosting": the leaf-weight and split-gain
+formulas gain three explicit regularization terms, and the resulting model
+converges faster and more confidently -- confidence that, absent any
+built-in held-out check, is exactly what should be verified rather than
+simply trusted. As with its companions, this entire report is reproducible
+end to end via =just org-example xgb_iris_analysis=, which re-executes
+§3.3.8's assembly block -- and therefore every number and figure above --
+from the =datamunge= source tree.
+
+* References
+
+- Chen, T., & Guestrin, C. (2016). "XGBoost: A Scalable Tree Boosting
+  System." /Proceedings of the 22nd ACM SIGKDD International Conference on
+  Knowledge Discovery and Data Mining/, 785--794.
+- Friedman, J. H. (2001). "Greedy function approximation: A gradient
+  boosting machine." /Annals of Statistics/, 29(5), 1189--1232.
+- Breiman, L., Friedman, J. H., Olshen, R. A., & Stone, C. J. (1984).
+  /Classification and Regression Trees/. Wadsworth.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 10 ("Boosting and Additive Trees").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

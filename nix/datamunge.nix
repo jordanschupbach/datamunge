@@ -27,6 +27,7 @@ let
     buildInputs = [
       pkgs.clang
       pkgs.arrow-cpp
+      pkgs.xorg.libX11.dev
     ];
 
     cmakeFlags = [

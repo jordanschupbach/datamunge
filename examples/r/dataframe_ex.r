@@ -37,7 +37,7 @@ cat(DataFrame_to_string(grouped), "\n\n")
 targets <- DataFrame_empty()
 DataFrame_add_string_column_encoded(targets, "region", encode_strings(c("west", "east", "south")))
 DataFrame_add_numeric_column(targets, "target", c(18.0, 12.0, 25.0))
-joined <- DataFrame_join(grouped, targets, "region", "region", TRUE)
+joined <- DataFrame_join(grouped, targets, "region", "region", "left")
 cat("joined with targets\n")
 cat(DataFrame_to_string(joined), "\n\n")
 
@@ -46,3 +46,49 @@ cat("sales count =", DataFrame_numeric_count(cleaned, "sales"), "\n")
 cat("sales nulls =", DataFrame_numeric_null_count(cleaned, "sales"), "\n")
 cat("sales sum =", DataFrame_numeric_sum(cleaned, "sales"), "\n")
 cat("sales mean =", DataFrame_numeric_mean(cleaned, "sales"), "\n")
+
+# Tibble/dplyr-style piping: the $ accessor (see R/zzz_dataframe_api.R) makes every verb
+# chainable since each one returns a new DataFrame, e.g. `df$mutate(...)$arrange(...)`.
+# `cleaned` above was built with DataFrame_empty()/flat calls; from here on we use the more
+# idiomatic `DataFrame()` + `$` form.
+sales2 <- DataFrame()
+sales2$add_column("region", c("west", "west", "east", "south", "south", "south"))
+sales2$add_column("product", c("widget", "widget", "widget", "gizmo", "gizmo", "gizmo"))
+sales2$add_column("sales", c(10.0, 10.0, 14.0, 8.0, NA, 11.0))
+sales2$add_column("quarter", c("Q1", "Q1", "Q1", "Q2", "Q2", NA))
+
+cleaned2 <- sales2$distinct(c("region", "product", "sales", "quarter"))
+cleaned2$fill_null("quarter", "unknown")
+cleaned2$fill_null("sales", 0.0)
+
+piped <- cleaned2$mutate("tax", cleaned2$pull("sales") * 0.1)$
+  rename("quarter", "period")$
+  arrange(c("region", "sales"), c(TRUE, FALSE))$
+  relocate(c("region", "sales"))$
+  select(c("region", "sales", "tax", "period"))
+cat("piped (mutate + arrange + rename + relocate + select)\n")
+cat(piped$to_string(), "\n\n")
+
+summarised <- cleaned2$group_by(c("region"))$summarise(
+  total_sales = c("sales", "sum"),
+  avg_sales = c("sales", "mean"),
+  n_products = c("product", "n_distinct")
+)
+cat("group_by(region)$summarise(sum, mean, n_distinct)\n")
+cat(summarised$to_string(), "\n\n")
+
+right_join <- cleaned2$group_by_sum("region", "sales")$join(targets, "region", "region", JoinType$Right)
+cat("right join with targets\n")
+cat(right_join$to_string(), "\n\n")
+
+longer <- cleaned2$pivot_longer(c("sales"), "metric", "value")
+cat("pivot_longer(sales)\n")
+cat(longer$to_string(), "\n\n")
+
+new_region <- DataFrame()
+new_region$add_column("region", c("north"))
+new_region$add_column("product", c("widget"))
+new_region$add_column("sales", c(6.0))
+bound <- cleaned2$select(c("region", "product", "sales"))$bind_rows(new_region)
+cat("bind_rows with a new region\n")
+cat(bound$to_string(), "\n")

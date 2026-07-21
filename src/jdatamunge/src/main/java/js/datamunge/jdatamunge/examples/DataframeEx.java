@@ -41,7 +41,7 @@ public class DataframeEx {
     var targets = new DataFrame();
     targets.add_string_column("region", new SVector(new String[] {"west", "east", "south"}));
     targets.add_numeric_column("target", new DVector(new double[] {18.0, 12.0, 25.0}));
-    var joined = grouped.join(targets, "region", "region", true);
+    var joined = grouped.join(targets, "region", "region", "left");
     System.out.println("joined with targets");
     System.out.println(joined.to_string());
     System.out.println();

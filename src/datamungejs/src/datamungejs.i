@@ -25,6 +25,18 @@
 
 %feature("director") datamunge::Callback;
 
+// gis::Shape's `std::vector<std::vector<Point2D>>` field has no proven SWIG container
+// template in this codebase (unlike DVectorVector for vector<vector<double>>), so -- unlike
+// this file's other raw impl classes, which are left unignored and just bind alongside their
+// facade -- the raw gis:: types need to be ignored in favor of the datamunge::ShapeLayer facade.
+%ignore datamunge::gis::ShapeType;
+%ignore datamunge::gis::Shape;
+%ignore datamunge::gis::ShapefileData;
+%ignore datamunge::gis::ShapeLayer;
+%ignore datamunge::gis::to_string;
+%ignore datamunge::gis::read_shp;
+%ignore datamunge::gis::read_dbf;
+
 %{
   #include "datamunge/datamunge.hpp"
 %}
