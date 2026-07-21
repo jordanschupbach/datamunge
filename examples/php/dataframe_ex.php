@@ -44,7 +44,7 @@ print($grouped->to_string() . "\n\n");
 $targets = new DataFrame();
 $targets->add_string_column("region", svector(array("west", "east", "south")));
 $targets->add_numeric_column("target", dvector(array(18.0, 12.0, 25.0)));
-$joined = $grouped->join($targets, "region", "region", true);
+$joined = $grouped->join($targets, "region", "region", "left");
 print("joined with targets\n");
 print($joined->to_string() . "\n\n");
 

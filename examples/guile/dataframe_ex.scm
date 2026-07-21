@@ -26,7 +26,7 @@
 (define targets (DataFrame-empty))
 (DataFrame-add-string-column targets "region" (list "west" "east" "south"))
 (DataFrame-add-numeric-column targets "target" (list 18.0 12.0 25.0))
-(define joined (DataFrame-join grouped targets "region" "region" #t))
+(define joined (DataFrame-join grouped targets "region" "region" "left"))
 (format #t "joined with targets\n")
 (format #t "~a\n\n" (DataFrame-to-string joined))
 

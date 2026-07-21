@@ -1,0 +1,641 @@
+#+title: A Random Forest Classifier for Iris Species
+#+subtitle: A literate C++ study using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a bagged ensemble of 100 CART decision trees -- a random forest --
+to Fisher's (1936) iris data using =datamunge='s C++
+=stats::RandomForestClassifier=, and report it as a literate program: every
+fragment below is a real, compiled, executed chunk of the single C++ binary
+that produced every number and figure in this document. The forest reaches
+100.00% /training/ accuracy -- a textbook overfitting warning sign -- but
+its out-of-bag estimate, computed without holding out any data at all, is a
+much more credible 95.33%, resolving the exact "every accuracy figure here
+is optimistic" caveat every one of this project's other classifier reports
+has had to raise. Feature importance, averaged across all 100 trees, gives
+both sepal measurements small but /nonzero/ credit (8.52% and 1.80%) where
+the companion decision-tree report's single tree gave them exactly zero --
+a direct, visible consequence of randomly restricting each split to a
+feature subset. We derive bootstrap aggregating, random feature selection,
+out-of-bag estimation, and ensemble feature importance from first
+principles, connect each to the corresponding library call, and close by
+placing this fourth classification method alongside its three companions
+on the same 150 flowers.
+#+end_abstract
+
+* Introduction
+
+This project now has three companion reports fitting three different
+classifiers to the same 150 iris flowers --
+[[file:lda_iris_analysis.org][=lda_iris_analysis.org=]],
+[[file:svm_iris_analysis.org][=svm_iris_analysis.org=]], and
+[[file:dt_iris_analysis.org][=dt_iris_analysis.org=]] -- and the decision
+tree report's own discussion ends by naming this one as its natural
+sequel: a single tree is fast to fit and easy to read, but is also a
+notoriously /high-variance/ method, meaning a small change to the training
+data can produce a visibly different tree. A random forest's answer to
+that instability is almost embarrassingly simple -- fit /many/ trees on
+randomized variations of the data and let them vote -- and yet it is one of
+the most reliably strong off-the-shelf classifiers in practice. This report
+fits exactly that ensemble, using =datamunge='s own
+=DecisionTreeClassifier= as its building block, and spends real attention
+on the one diagnostic a single tree can't offer at all: an accuracy
+estimate that doesn't require pretending the training data is also test
+data.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.8) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives bootstrap aggregating, random feature selection at each split,
+out-of-bag error estimation, and ensemble feature importance, each tied to
+the specific library call that implements it. §3 describes the program
+chunk by chunk. §4 reports the fitted forest, its training-versus-OOB
+accuracy gap, feature importance, a tree-count sweep, and the decision-
+region picture this method produces. §5 places all four companion reports'
+methods side by side. §6 concludes.
+
+* Background: Random Forests
+
+** Setup and notation
+
+As in the companion reports: $n = 150$ flowers, $p = 4$ measurements
+$x_i \in \mathbb{R}^4$, and $y_i \in \{1, \dots, K\}$, $K = 3$, labeling
+one of the three species.
+
+** Bootstrap aggregating
+
+The decision-tree companion report's real limitation is variance: a
+greedy, single tree fit on the full training set is exactly one particular
+tree among many that could have resulted from a slightly different
+sample. /Bagging/ (bootstrap aggregating; Breiman, 1996) addresses this
+directly: draw $B$ bootstrap samples -- each one $n$ rows drawn /with
+replacement/ from the original $n$ training rows -- fit one full decision
+tree per sample, and predict a new point by majority vote across all $B$
+trees. If each tree's prediction were independent noise around the true
+answer, averaging $B$ of them would shrink prediction variance by a factor
+of $B$; in reality the trees are correlated (they're fit on overlapping
+data), so the benefit is real but smaller than that best case, which is
+exactly the motivation for §2.3. This is
+=RandomForestClassifierOptions::n_trees= and =bootstrap= in
+=datamunge=, fit fresh per tree inside =RandomForestClassifier::fit=.
+
+** Random feature selection
+
+Bagging alone still leaves correlated trees: if one predictor is
+overwhelmingly the best splitter (as =Petal.Length= is here, per the
+decision-tree companion report), nearly every bootstrap sample will
+produce a tree whose root splits on it, and highly correlated trees don't
+reduce variance nearly as much as independent ones would. The "random" in
+random forest fixes this by restricting /each individual split/, not just
+each tree, to a random subset of =max_features= predictors -- drawn fresh
+at every node -- so a tree is sometimes forced to split on a weaker
+predictor simply because the current best one wasn't offered as a
+candidate this time. =datamunge= defaults =max_features= for
+classification to $\lfloor\sqrt{p}\rfloor$, at least 1 -- with $p=4$
+predictors here, that's 2, confirmed directly in §4.2's =Call:= line. This
+single mechanism is the entire difference between a random forest and
+plain bagged trees, and is exactly why §4.3's feature importance looks
+different from the single-tree companion report's.
+
+** Out-of-bag estimation
+
+Because each tree trains on an $n$-row sample drawn /with replacement/
+from $n$ rows, a given row has probability $(1 - 1/n)^n \approx e^{-1}
+\approx 36.8\%$ of never being drawn into any one tree's bootstrap sample
+-- that row is /out-of-bag/ for that tree. Averaged over all $n$ rows and
+$B$ trees, roughly a third of the ensemble never saw any given training
+row during fitting, which is enough to do something a single tree cannot:
+for each row, take a majority vote using /only/ the trees that didn't
+train on it, and compare that vote to the row's true label. The resulting
+=oob_accuracy()= is a near-unbiased estimate of test-set accuracy,
+computed entirely from the training data, without ever holding out a
+separate validation split. §4.2 reports it directly alongside (optimistic)
+training accuracy, and the gap between the two is this report's headline
+number.
+
+** Ensemble feature importance
+
+Exactly as in the decision-tree companion report, every split anywhere in
+the forest credits its weighted impurity decrease to whichever predictor
+it split on; =RandomForestClassifier::feature_importance()= simply
+averages that per-tree credit across all $B$ trees and renormalizes to sum
+to 1. Because §2.3's random feature restriction forces even a weak
+predictor to occasionally be the /only/ available choice at some split, a
+predictor that a single tree would never touch (and therefore score
+/exactly/ zero, as both sepal measurements did in the decision-tree
+companion report) typically earns some small but nonzero credit here --
+§4.3 confirms this happens on this exact data.
+
+** Prediction
+
+A new point is classified by running it down every tree in the forest and
+taking a majority vote; =predict_detail()='s =vote_share= field reports,
+per class, what fraction of the $B$ trees voted for it. This is a fourth
+distinct notion of "confidence" alongside the three companion reports'
+Bayes posterior (LDA), one-vs-one vote out of very few pairs (SVM), and
+single-leaf empirical frequency (a lone decision tree): with $B=100$ trees
+here, =vote_share= can take up to 101 distinct values between 0 and 1,
+far finer-grained than a single tree's leaf-count fractions or an SVM's
+out-of-3 vote, without requiring any distributional assumption the way
+LDA's posterior does.
+
+** What we will report
+
+Given the fit, we report the forest's own summary (training /and/
+out-of-bag accuracy side by side, plus feature importance), a confusion
+matrix, a classification plot marking misclassified points directly,
+feature importance, a sweep over the number of trees, and -- reduced to
+two predictors purely for visualization, the same caveat every companion
+report makes about its own 2-D view -- the forest's decision regions.
+
+* Data and Methods
+
+** The data
+
+As in all three companion reports: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven
+=stats::RandomForestClassifier= for every model in this report (itself
+built internally from =stats::DecisionTreeClassifier=, the companion
+report's own class), and =plot::RPlot=/=plot::RLayout= for every figure.
+No external plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and shared constants
+
+The primary forest uses every library default: 100 trees, Gini splitting,
+=max_depth= 10, and =max_features= left at 0 (auto).
+
+#+name: rf-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/random_forest_classifier.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::RandomForestClassifier;
+using datamunge::stats::RandomForestClassifierOptions;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kSpecies =
+    {"setosa", "versicolor", "virginica"};
+static const std::vector<RGB> kSpeciesColor = {
+    {37, 99, 235},   // setosa     - blue
+    {22, 163, 74},   // versicolor - green
+    {220, 38, 38},   // virginica  - red
+};
+static const std::string kFormula =
+    "Species ~ Sepal.Length + Sepal.Width"
+    " + Petal.Length + Petal.Width";
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The same petal-length/petal-width view every companion report opens with.
+
+#+name: rf-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+#+end_src
+
+#+name: rf-eda-scatter
+#+begin_src c++ :eval no
+    auto scatter = RPlot::create();
+    for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+        const auto subset = iris.filter([&](const DataFrame::Row& r) {
+            return r.get_string("Species") == kSpecies[k];
+        });
+        scatter.points(subset.numeric_column("Petal.Length").values(),
+                        subset.numeric_column("Petal.Width").values(),
+                        kSpecies[k], kSpeciesColor[k], 6.0);
+    }
+    scatter.title("Iris: Petal Length vs Petal Width")
+        .x_label("Petal.Length (cm)")
+        .y_label("Petal.Width (cm)")
+        .background({250, 250, 252});
+    scatter.save_svg("build/org/rf_iris_eda_scatter.svg");
+    std::cout << "wrote rf_iris_eda_scatter.svg\n";
+#+end_src
+
+*** Fitting the forest
+
+=print_summary= writes training accuracy /and/ out-of-bag accuracy
+side by side, plus feature importance -- everything derived in §2.
+
+#+name: rf-fit
+#+begin_src c++ :eval no
+    RandomForestClassifier model(iris, kFormula);
+    std::cout << "\n";
+    model.print_summary(std::cout);
+#+end_src
+
+*** Training diagnostics
+
+#+name: rf-confusion
+#+begin_src c++ :eval no
+    std::cout << "\nConfusion matrix (rows = actual, cols = predicted):\n";
+    const auto cm = model.confusion_matrix();
+    std::cout << std::setw(14) << "";
+    for (const auto& c : model.classes()) std::cout << std::setw(12) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < cm.rows(); ++i) {
+        std::cout << std::setw(14) << model.classes()[i];
+        for (std::size_t j = 0; j < cm.cols(); ++j)
+            std::cout << std::setw(12) << cm(i, j);
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Classification plot
+
+#+name: rf-classification-plot
+#+begin_src c++ :eval no
+    {
+        auto cls_plot =
+            model.plot_classification(iris, "Petal.Length", "Petal.Width");
+        cls_plot.background({250, 250, 252});
+        cls_plot.save_svg("build/org/rf_iris_classification.svg");
+        std::cout << "wrote rf_iris_classification.svg\n";
+    }
+#+end_src
+
+*** Feature importance
+
+#+name: rf-importance
+#+begin_src c++ :eval no
+    {
+        const auto importance = model.feature_importance();
+        const auto& names = model.predictor_names();
+        std::vector<double> heights(importance.begin(), importance.end());
+        auto imp_plot = RPlot::barplot(heights, names, "importance",
+                                        {37, 99, 235});
+        imp_plot.title("Feature Importance (averaged over trees)")
+            .x_label("predictor").y_label("normalized importance")
+            .background({250, 250, 252});
+        imp_plot.save_svg("build/org/rf_iris_importance.svg");
+        std::cout << "wrote rf_iris_importance.svg\n";
+    }
+#+end_src
+
+*** Number-of-trees sensitivity
+
+Refit at =n_trees= 1 through 400, tracking training accuracy alongside
+out-of-bag accuracy -- watching the gap this report's abstract opens with
+either persist or close as the ensemble grows.
+
+#+name: rf-ntrees-sensitivity
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::size_t> tree_counts =
+            {1, 5, 10, 25, 50, 100, 200, 400};
+        std::vector<double> tree_x, oob_accs, train_accs;
+        std::cout << "\nn_trees sensitivity:\n";
+        std::cout << std::setw(10) << "n_trees" << std::setw(12) << "train"
+                   << std::setw(10) << "OOB\n";
+        for (const auto nt : tree_counts) {
+            RandomForestClassifierOptions opts;
+            opts.n_trees = nt;
+            RandomForestClassifier m(iris, kFormula, opts);
+            const double train_acc = m.training_accuracy() * 100.0;
+            const double oob_acc = m.oob_accuracy() * 100.0;
+            tree_x.push_back(static_cast<double>(nt));
+            train_accs.push_back(train_acc);
+            oob_accs.push_back(oob_acc);
+            std::cout << std::setw(10) << nt << std::setw(11) << std::fixed
+                       << std::setprecision(2) << train_acc << "%"
+                       << std::setw(9) << oob_acc << "%\n";
+        }
+        auto oob_plot = RPlot::plot(tree_x, oob_accs, "b", "OOB accuracy",
+                                     {220, 38, 38});
+        oob_plot.line(tree_x, train_accs, "training accuracy",
+                      {37, 99, 235}, 2.0);
+        oob_plot.title("Accuracy vs Number of Trees")
+            .x_label("n_trees").y_label("accuracy (%)")
+            .background({250, 250, 252});
+        oob_plot.save_svg("build/org/rf_iris_ntrees_sensitivity.svg");
+        std::cout << "wrote rf_iris_ntrees_sensitivity.svg\n";
+    }
+#+end_src
+
+*** Decision regions
+
+As in the decision-tree companion report, =plot_decision_regions= only
+accepts a model with /exactly/ two predictors, so we fit a second, separate
+forest on only =Petal.Length= and =Petal.Width= purely to draw this
+figure.
+
+#+name: rf-decision-regions
+#+begin_src c++ :eval no
+    {
+        RandomForestClassifier boundary_model(
+            iris, "Species ~ Petal.Length + Petal.Width");
+        auto region = boundary_model.plot_decision_regions(
+            "Petal.Length", "Petal.Width");
+        region.background({250, 250, 252});
+        region.save_svg("build/org/rf_iris_decision_regions.svg");
+        std::cout << "wrote rf_iris_decision_regions.svg\n";
+        std::cout << "boundary_model training accuracy: "
+                   << std::fixed << std::setprecision(2)
+                   << boundary_model.training_accuracy() * 100.0
+                   << "%  OOB accuracy: "
+                   << boundary_model.oob_accuracy() * 100.0 << "%\n";
+    }
+#+end_src
+
+*** Predicting new flowers
+
+The same four flowers used throughout this project's other worked
+examples: one unambiguous example of each species, plus one deliberately
+chosen near the versicolor/virginica boundary.
+
+#+name: rf-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Sepal.Length",
+                        std::vector<double>{5.1, 6.0, 6.5, 6.2});
+    newdata.add_column("Sepal.Width",
+                        std::vector<double>{3.5, 2.7, 3.0, 2.8});
+    newdata.add_column("Petal.Length",
+                        std::vector<double>{1.4, 4.5, 5.5, 4.8});
+    newdata.add_column("Petal.Width",
+                        std::vector<double>{0.2, 1.5, 2.0, 1.8});
+
+    const auto prediction = model.predict_detail(newdata);
+    std::cout << "\nPredictions for new flowers (vote share across "
+               << model.n_trees() << " trees):\n";
+    std::cout << std::setw(14) << "predicted";
+    for (const auto& c : model.classes())
+        std::cout << std::setw(14) << ("share(" + c + ")");
+    std::cout << "\n";
+    for (std::size_t i = 0; i < prediction.class_label.size(); ++i) {
+        std::cout << std::setw(14) << prediction.class_label[i];
+        for (const double v : prediction.vote_share[i])
+            std::cout << std::setw(14) << std::fixed
+                       << std::setprecision(4) << v;
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/rf_iris_analysis.cpp <<'CPP'
+<<rf-includes>>
+
+int main() {
+<<rf-load-data>>
+
+<<rf-eda-scatter>>
+
+<<rf-fit>>
+
+<<rf-confusion>>
+
+<<rf-classification-plot>>
+
+<<rf-importance>>
+
+<<rf-ntrees-sensitivity>>
+
+<<rf-decision-regions>>
+
+<<rf-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/rf_iris_analysis.cpp -o build/org/rf_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/rf_iris_analysis
+#+end_src
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by species :width 100%
+[[file:../../build/org/rf_iris_eda_scatter.svg]]
+
+The same picture as every companion report: /setosa/ fully separated,
+/versicolor/ and /virginica/ overlapping only in a thin band near petal
+length 4.7-5.0cm.
+
+** The fitted forest
+
+#+begin_example
+Trees: 100  (max_features per split: 2 of 4)
+
+Feature importance:
+  Sepal.Length: 0.0852
+  Sepal.Width: 0.0180
+  Petal.Length: 0.4673
+  Petal.Width: 0.4296
+
+Training accuracy: 100.00%
+Out-of-bag accuracy: 95.33%  (150 observations)
+#+end_example
+
+This report's headline number is right there in two adjacent lines:
+/training/ accuracy is a perfect 100.00% -- every one of the 150 training
+rows agrees with its own forest's prediction -- while /out-of-bag/
+accuracy, computed per §2.4 without the forest ever "cheating" by voting
+with a tree that trained on that exact row, is a noticeably lower 95.33%.
+That gap is not a bug; it is the entire reason §2.4's out-of-bag machinery
+exists, and it is a more honest estimate of how this forest would perform
+on flowers it has never seen than the training figure both companion
+report authors (LDA and SVM) had to caveat as merely "optimistic."
+
+| Predictor        | Normalized importance |
+|-------------------+------------------------|
+| =Sepal.Length=    |                 0.0852 |
+| =Sepal.Width=     |                 0.0180 |
+| =Petal.Length=    |                 0.4673 |
+| =Petal.Width=     |                 0.4296 |
+
+#+ATTR_HTML: :alt Bar chart of normalized feature importance by predictor :width 100%
+[[file:../../build/org/rf_iris_importance.svg]]
+
+Petal measurements still dominate, matching every companion report, but
+per §2.5 neither sepal measurement is credited /exactly/ zero the way they
+were in the decision-tree companion report's single tree -- =max_features=
+= 2 (confirmed in the =Call:= line above) means many of the forest's
+individual splits never had a petal measurement available to choose from
+at all, so some small fraction of the ensemble's decisions genuinely rest
+on sepal measurements.
+
+** Classification performance
+
+|            | pred. setosa | pred. versicolor | pred. virginica |
+|------------+--------------+-------------------+------------------|
+| setosa     |           50 |                 0 |                0 |
+| versicolor |            0 |                50 |                0 |
+| virginica  |            0 |                 0 |               50 |
+
+Zero training errors -- exactly what 100.00% training accuracy already
+said, and exactly the overfitting signature §4.2 warned about. (This
+confusion matrix, unlike every companion report's, is /not/ the number to
+judge this model by; §4.2's 95.33% out-of-bag figure is.)
+
+#+ATTR_HTML: :alt Petal length vs width scatter with no points misclassified :width 100%
+[[file:../../build/org/rf_iris_classification.svg]]
+
+No black "misclassified" markers appear anywhere in this figure, for the
+same reason the confusion matrix above has an empty off-diagonal: the
+forest fits its own training data perfectly, which is precisely why the
+training accuracy figure alone would be misleading without §4.2's
+out-of-bag number alongside it.
+
+** Number-of-trees sensitivity
+
+#+ATTR_HTML: :alt Line plot of training and out-of-bag accuracy against number of trees :width 100%
+[[file:../../build/org/rf_iris_ntrees_sensitivity.svg]]
+
+| =n_trees= | Training | OOB |
+|-----------+----------+-------|
+|         1 |   98.00% | 94.55% |
+|         5 |  100.00% | 94.85% |
+|        10 |  100.00% | 93.24% |
+|        25 |  100.00% | 96.00% |
+|        50 |  100.00% | 95.33% |
+|       100 |  100.00% | 95.33% |
+|       200 |  100.00% | 96.00% |
+|       400 |  100.00% | 96.00% |
+
+Training accuracy saturates almost immediately -- already 100.00% by 5
+trees -- and stays there regardless of how many more trees are added,
+underscoring §4.2's point that it stops being an informative number very
+early. Out-of-bag accuracy is considerably noisier at small tree counts
+(dipping to 93.24% at just 10 trees) before settling into the 95-96% range
+by around 25-50 trees and staying there through 400: exactly the variance-
+reduction-through-averaging behavior §2.2 predicts, and exactly why a
+production random forest is rarely fit with fewer than a few dozen trees
+even though training accuracy alone would suggest far fewer are "enough."
+
+** Decision regions
+
+#+ATTR_HTML: :alt Random forest decision regions over petal length and petal width :width 100%
+[[file:../../build/org/rf_iris_decision_regions.svg]]
+
+The 2-predictor forest used for this figure reaches 99.33% training
+accuracy but only 94.00% out-of-bag -- a larger gap than the primary
+4-predictor model's, consistent with throwing away two (admittedly minor,
+per §4.2) informative predictors. Visually, the boundary is immediately
+distinguishable from the decision-tree companion report's clean rectangles
+over the same two measurements: averaging 100 separately-bootstrapped
+trees' rectangular partitions produces a finely fragmented, almost
+speckled boundary rather than a small number of sharp cuts -- the direct
+visual signature of an ensemble rather than one tree.
+
+** Predicting new flowers
+
+#+ATTR_LATEX: :font \small
+| Sepal.L / Sepal.W / Petal.L / Petal.W | predicted  | setosa | versicolor | virginica |
+|----------------------------------------+------------+--------+------------+-----------|
+| 5.1 / 3.5 / 1.4 / 0.2                  | setosa     | 1.0000 |     0.0000 |    0.0000 |
+| 6.0 / 2.7 / 4.5 / 1.5                  | versicolor | 0.0000 |     0.9800 |    0.0200 |
+| 6.5 / 3.0 / 5.5 / 2.0                  | virginica  | 0.0000 |     0.0000 |    1.0000 |
+| 6.2 / 2.8 / 4.8 / 1.8                  | virginica  | 0.0000 |     0.0700 |    0.9300 |
+
+The fourth, deliberately ambiguous flower gets a 93.00%/7.00% vote split
+across the 100 trees -- a far finer-grained number than the SVM companion
+report's coarse 2-out-of-3 vote for the identical flower, and closer in
+spirit to LDA's continuously-valued 81.16%/18.84% posterior for the same
+case than either the SVM vote or the single-tree companion report's
+thirds-only leaf frequencies could offer.
+
+* Discussion
+
+**Four methods on one dataset.** With this report, four genuinely
+different classifiers have now been fit to the identical 150 flowers:
+LDA's single global eigenproblem, SVM's convex quadratic program, one
+greedy decision tree, and this greedy tree's bagged, decorrelated
+ensemble. All four land within a couple of points of each other on
+accuracy (LDA 98.00%, SVM 97.33%, single tree 97.33%, this forest's OOB
+95.33%), because -- as every report in this series has now said in its own
+words -- the one genuine difficulty in this data is a single overlapping
+region between /versicolor/ and /virginica/ that no amount of additional
+modeling sophistication removes, since it reflects real biological
+similarity between those two species, not a shortcoming of any one method.
+
+**Why the forest's own accuracy figure looks lower.** It would be a
+mistake to read 95.33% as "the random forest is worse than the other three
+methods": it is the only figure among all four reports computed the way a
+genuine test-set accuracy would be, rather than by asking a model to grade
+its own training data. Read that way, the single tree's 97.33%
+/training/ accuracy and this forest's 95.33% /out-of-bag/ accuracy are not
+directly comparable at all -- the fairer comparison is the forest's own
+100.00% training figure (matching or beating every companion report) against
+its 95.33% out-of-bag figure, and that gap is the real, quantified cost of
+the single tree's overfitting risk that the decision-tree report could only
+describe qualitatively.
+
+**Interpretability, once more.** The decision-tree companion report's
+entire fitted model fit in eight lines a person could read end to end;
+this report's model is 100 such trees, and no single one of them is "the"
+model the way the lone tree was. That trade -- give up a single readable
+structure in exchange for a materially more reliable accuracy estimate and
+(per §4.2) less brittle, better-distributed feature importance -- is the
+central trade this whole report has been making explicit.
+
+* Conclusion
+
+A 100-tree random forest, fit with =datamunge='s C++
+=stats::RandomForestClassifier=, reaches 100.00% training accuracy but a
+more trustworthy 95.33% out-of-bag accuracy on Fisher's three iris
+species -- resolving, with an honest number rather than a caveat, the
+resubstitution-accuracy limitation every other report in this series has
+had to flag. Random feature selection at each split gives both sepal
+measurements small but nonzero importance where a single tree gave them
+none, and a number-of-trees sweep shows out-of-bag accuracy stabilizing by
+roughly 25-50 trees even as training accuracy saturates almost
+immediately. Placed alongside its three companions, this report completes
+a four-way comparison spanning a global eigenproblem, a convex program, one
+greedy tree, and this bagged ensemble of many -- four different roads that
+all arrive within a couple of points of each other on the same 150
+flowers. As with its companions, this entire report is reproducible end to
+end via =just org-example rf_iris_analysis=, which re-executes §3.3.8's
+assembly block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Breiman, L. (1996). "Bagging predictors." /Machine Learning/, 24(2),
+  123--140.
+- Breiman, L. (2001). "Random forests." /Machine Learning/, 45(1), 5--32.
+- Breiman, L., Friedman, J. H., Olshen, R. A., & Stone, C. J. (1984).
+  /Classification and Regression Trees/. Wadsworth. (CART, the base
+  learner every tree in this forest is.)
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 15 ("Random Forests"). Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

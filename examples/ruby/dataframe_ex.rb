@@ -50,7 +50,7 @@ puts
 targets = Datamunge::DataFrame.new
 targets.add_string_column_encoded("region", DataFrameEx.encode_strings(%w[west east south]))
 targets.add_numeric_column("target", DataFrameEx.dvector([18, 12, 25]))
-joined = grouped.join(targets, "region", "region", true)
+joined = grouped.join(targets, "region", "region", "left")
 puts "joined with targets"
 puts joined.to_string
 puts

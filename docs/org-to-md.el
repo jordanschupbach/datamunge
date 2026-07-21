@@ -20,6 +20,9 @@
 
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-use-babel t)
+;; Batch exports never collide with an interactive editor session; skip Emacs's
+;; lock-file dance so a stale/concurrent lock can't abort a src-block execution.
+(setq create-lockfiles nil)
 
 ;; Keep this conservative; add languages as needed by docs.
 (org-babel-do-load-languages

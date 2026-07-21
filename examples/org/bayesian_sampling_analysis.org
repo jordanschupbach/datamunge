@@ -1,0 +1,634 @@
+#+title: Gradient-Free Bayesian Sampling: Random-Walk Metropolis, Metropolis-within-Gibbs, and Importance Sampling
+#+subtitle: A literate C++ study of black-box MCMC and importance sampling using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a correlated bivariate Gaussian target -- deliberately unnormalized,
+with a known true mean $(2,-1)$ and a known true log-normalizing constant
+$\approx1.6941$ -- using three gradient-free =datamunge= C++ =bayes=
+methods, and report it as a literate program: every fragment below is a
+real, compiled, executed chunk of the single C++ binary that produced
+every number and figure in this document. Random-walk Metropolis (RWM)
+recovers the mean as $(1.9704, -0.9578)$ with an acceptance rate of
+$0.2332$, essentially exactly its 0.234 theoretical target (Roberts,
+Gelman & Gilks 1997); Metropolis-within-Gibbs recovers $(2.0274,
+-0.9646)$ with per-coordinate acceptance rates $(0.4346, 0.4410)$
+against its own, different theoretical target of 0.44 (Roberts &
+Rosenthal 2001); and self-normalized importance sampling against a
+wider, uncorrelated Gaussian proposal recovers $(2.0127, -0.9650)$ with
+an effective sample size of 3708 out of 5000 draws and an estimated
+log-normalizer of $1.6856$, within 0.0085 of the true value with zero
+Markov-chain machinery at all. A direct scatter overlay shows RWM and
+Metropolis-within-Gibbs converging to visually identical elliptical
+posterior shapes despite entirely different proposal mechanisms (a
+joint multivariate step versus one coordinate at a time), and a
+weight-tiered scatter of the importance-sampling proposal draws reveals
+a genuine, non-obvious structural fact: the top 5% of importance weights
+concentrate almost exactly along the target's correlated major axis,
+visualizing precisely how self-normalized weights correct for a
+circular proposal's mismatch with an elliptical target. We derive the
+Metropolis-Hastings acceptance rule, coordinate-wise
+Metropolis-within-Gibbs updating, and the self-normalized importance-sampling estimator
+(including its effective-sample-size diagnostic), tying every derivation
+to the exact library call that implements it.
+#+end_abstract
+
+* Introduction
+
+The [[file:bayesian_modeling_analysis.org][Bayesian modeling companion
+report]] characterized a posterior using Hamiltonian Monte Carlo and the
+No-U-Turn Sampler -- both of which require the log-posterior's exact
+*gradient*, obtained there via reverse-mode automatic differentiation.
+That gradient is not always available: a black-box simulation model, a
+posterior evaluated by an external program, a discontinuous or
+non-differentiable log-density, or simply a caller in a language
+without access to this library's C++-only autodiff facade all need a
+sampler that works from log-density *evaluations alone*. This report
+covers =datamunge='s three gradient-free =bayes= tools: random-walk
+Metropolis (RWM), the classical Metropolis-Hastings baseline;
+Metropolis-within-Gibbs, which updates one coordinate at a time instead
+of the whole parameter vector jointly; and importance sampling, which
+produces a weighted i.i.d. sample in one shot with no Markov chain, no
+warmup, and no mixing to check at all.
+
+As in the Bayesian modeling companion report, this report's target has a
+*known answer*: a deliberately unnormalized correlated bivariate
+Gaussian log-density with true mean $(2,-1)$ and a true log-normalizing
+constant computable in closed form ($\approx1.6941$), so every method's
+posterior-mean estimate and (for importance sampling) log-evidence
+estimate can be checked directly against ground truth. §4.1-4.2 fit RWM
+and Metropolis-within-Gibbs and visualize both together to show they
+converge to the identical target shape despite proposing very
+differently; §4.3 fits importance sampling and visualizes which
+proposal draws end up mattering most.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.6) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives the Metropolis-Hastings acceptance rule, coordinate-wise
+Metropolis-within-Gibbs, and the self-normalized importance-sampling
+estimator, each tied to the specific library call that implements it.
+§3 describes the program chunk by chunk. §4 reports the results of all
+three methods alongside three figures. §5 discusses what the RWM/Gibbs
+overlay and the weight-tiered scatter each reveal. §6 concludes.
+
+* Background: Random-Walk Metropolis, Metropolis-within-Gibbs, and Importance Sampling
+
+** The shared target: an unnormalized log-density
+
+All three methods in this report take an =optim::ArbitraryFunction=
+(the base evaluate-only interface every optimizer and sampler in this
+project shares) rather than the =optim::DifferentiableFunction= HMC and
+NUTS require -- no gradient method, just a single =evaluate()= returning
+the log-density (up to an additive constant) at a point. This report's
+target is a deliberately *unnormalized* correlated bivariate Gaussian --
+its =evaluate()= omits the $-\tfrac{1}{2}\log((2\pi)^d|\Sigma|)$
+normalizing term entirely -- specifically so that §4.3's
+importance-sampling log-evidence estimate has a known, independently-computable
+target to check against, exactly the same "validate against a
+closed-form answer" device the Bayesian modeling companion report's conjugate
+model used for MAP/HMC/NUTS.
+
+** Random-walk Metropolis
+
+=bayes::RandomWalkMetropolis= is the classical Metropolis-Hastings
+algorithm: propose $x' = x + \epsilon\,z$ for $z\sim N(0, I)$, and accept
+the proposal with probability
+
+$$\alpha = \min\!\left(1,\ \exp\bigl(\ell(x') - \ell(x)\bigr)\right)$$
+
+where $\ell$ is the log-density. Because the proposal is symmetric, the
+Hastings correction term cancels and the acceptance probability depends
+only on the log-density difference. Like HMC/NUTS, =RandomWalkMetropolis=
+adapts its step size $\epsilon$ during =num_warmup= iterations via the
+same dual-averaging scheme -- but targets a *different* theoretical
+acceptance rate, 0.234, the asymptotically optimal rate for a joint,
+multivariate random-walk proposal in high dimensions (Roberts, Gelman &
+Gilks 1997), as opposed to HMC/NUTS's 0.8 (trajectory-based proposals)
+or Metropolis-within-Gibbs's own 0.44 below. RWM needs no gradient at
+all, at the cost of the classic random-walk inefficiency: because the
+proposal ignores the target's local geometry entirely, it can take
+many more iterations than HMC/NUTS to explore a given posterior to the
+same precision.
+
+** Metropolis-within-Gibbs
+
+=bayes::GibbsSampler= updates one coordinate $x_i$ at a time via a
+scalar random-walk Metropolis step, holding every other coordinate
+fixed, evaluated against the *same joint log-density* -- mathematically
+equivalent to a Metropolis step targeting the exact full conditional
+$p(x_i \mid x_{-i})$, since the joint-density ratio with everything else
+held fixed *is* the full-conditional-density ratio by definition. This
+is "Metropolis-within-Gibbs" in the sense BUGS/JAGS use the term: the
+standard fallback whenever a full conditional isn't conjugate or
+directly sampleable in closed form, not classical Gibbs sampling via
+model-specific conditional samplers (which a generic engine driven only
+by a joint log-density evaluation cannot provide, since it would need
+to know each conditional's actual distributional family). Each
+coordinate adapts its own step size independently during warmup,
+targeting 0.44 -- the asymptotically optimal acceptance rate for a
+*scalar* random-walk proposal (Roberts & Rosenthal 2001), distinct from
+RWM's joint-proposal optimum of 0.234. Updating one coordinate at a time
+rather than proposing the whole vector jointly can mix substantially
+better when parameters live on very different scales or are only weakly
+correlated -- though, as §4.2 shows, on a target that is only
+*moderately* correlated (this report's bivariate Gaussian, correlation
+0.5) the two methods produce visually indistinguishable results.
+
+** Self-normalized importance sampling
+
+=bayes::ImportanceSampling= takes an entirely different approach: rather
+than constructing a Markov chain that eventually visits the target's
+high-density regions, it draws i.i.d. samples directly from a tractable
+*proposal* distribution $q$ (here a multivariate Gaussian
+$N(\text{proposal\_mean}, \text{proposal\_covariance})$) and reweights
+them to correct for $q$ differing from the target $p$. For each draw
+$x_i \sim q$, the importance weight is $w_i \propto p(x_i)/q(x_i)$;
+self-normalizing (dividing by $\sum_j w_j$) gives weights that sum to 1
+and require only the target's *unnormalized* density, exactly this
+report's =UnnormalizedGaussian::evaluate()=. The weighted sample then
+estimates any posterior expectation as $\hat{E}[f(x)] = \sum_i
+\hat{w}_i\,f(x_i)$ -- this report's =weighted_mean_of()= helper applied
+to each coordinate. Because it produces an i.i.d.-weighted sample in one
+shot, importance sampling needs no warmup and has no chain-mixing
+diagnostics to check at all -- but its accuracy depends entirely on how
+well $q$ covers $p$'s mass, which =effective_sample_size= (defined as
+$1/\sum_i \hat{w}_i^2$, the "effective" number of independent draws the
+weighted sample is worth) is the standard diagnostic for: low relative
+to the number of proposal draws signals a proposal that is too narrow,
+poorly located, or lighter-tailed than the target. A useful byproduct
+of the same weights is =log_evidence=, the standard log-mean-exp
+importance-sampling estimator of the target's log-normalizing constant
+$\log\!\int p(x)\,dx$ -- directly comparable to, e.g., a Laplace
+approximation's marginal likelihood, and this report's only method that
+estimates that normalizing constant at all (RWM and
+Metropolis-within-Gibbs, like HMC/NUTS, never need it).
+
+** What we will report
+
+§4.1 fits RWM and reports its posterior mean and acceptance rate against
+the known truth, with a scatter figure showing the target's correlated
+elliptical shape directly. §4.2 fits Metropolis-within-Gibbs the same
+way and overlays both methods' samples on one figure. §4.3 fits
+importance sampling, reports its posterior mean, effective sample size,
+and log-evidence estimate against the known truth, and visualizes which
+proposal draws carry the most weight.
+
+* Data and Methods
+
+** The data
+
+This report uses a single synthetic target: a correlated bivariate
+Gaussian log-density with mean $(2, -1)$ and covariance matrix
+$\Sigma=\left(\begin{smallmatrix}1 & 0.5\\0.5 & 1\end{smallmatrix}\right)$,
+deliberately unnormalized so its known true log-normalizing constant
+provides a ground-truth check for §4.3's importance-sampling estimate -- the same
+"construct a target with a known answer" device used throughout this
+project's Bayesian reports rather than real, truth-unknown data.
+
+** Software
+
+All computation uses =datamunge='s C++ =bayes= module --
+=bayes::RandomWalkMetropolis=, =bayes::GibbsSampler=, and
+=bayes::ImportanceSampling= -- together with =optim::ArbitraryFunction=
+(the plain evaluate-only interface all three take, requiring no
+gradient) and =plot::RPlot= for visualization.
+
+** Program, presented as a literate whole
+
+*** Includes and helpers
+
+#+name: bsamp-includes
+#+begin_src c++ :eval no
+#include <datamunge/bayes/bayes.hpp>
+#include <datamunge/optim/function_types.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+
+using datamunge::bayes::GibbsOptions;
+using datamunge::bayes::GibbsSampler;
+using datamunge::bayes::ImportanceSampling;
+using datamunge::bayes::ImportanceSamplingOptions;
+using datamunge::bayes::RandomWalkMetropolis;
+using datamunge::bayes::RWMOptions;
+using datamunge::optim::ArbitraryFunction;
+using datamunge::plot::RPlot;
+
+namespace {
+
+class UnnormalizedGaussian : public ArbitraryFunction {
+  public:
+    double evaluate(const std::vector<double>& x) override {
+        const double dx = x[0] - 2.0;
+        const double dy = x[1] + 1.0;
+        const double quad = (dx * dx - dx * dy + dy * dy) / 0.75;
+        return -0.5 * quad;
+    }
+};
+
+double mean_of(const std::vector<std::vector<double>>& samples,
+               std::size_t dim) {
+    double s = 0.0;
+    for (const auto& row : samples) s += row[dim];
+    return s / static_cast<double>(samples.size());
+}
+
+double weighted_mean_of(const std::vector<std::vector<double>>& samples,
+                         const std::vector<double>& weights, std::size_t dim) {
+    double s = 0.0;
+    for (std::size_t i = 0; i < samples.size(); ++i) {
+        s += weights[i] * samples[i][dim];
+    }
+    return s;
+}
+
+std::vector<double> column(const std::vector<std::vector<double>>& samples,
+                            std::size_t dim) {
+    std::vector<double> out;
+    out.reserve(samples.size());
+    for (const auto& row : samples) out.push_back(row[dim]);
+    return out;
+}
+
+} // namespace
+#+end_src
+
+This mirrors the reference example
+(=examples/cpp/source/bayes_sampling_ex.cpp=), extended below with three
+=RPlot= visualizations. The =Sigma^-1= comment in the reference example
+records the algebra behind =UnnormalizedGaussian::evaluate()=: for
+$\Sigma=\left(\begin{smallmatrix}1 & 0.5\\0.5 & 1\end{smallmatrix}\right)$,
+$\Sigma^{-1} = \tfrac{1}{0.75}
+\left(\begin{smallmatrix}1 & -0.5\\-0.5 & 1\end{smallmatrix}\right)$,
+giving the quadratic form computed directly in code.
+
+*** Random-walk Metropolis
+
+#+name: bsamp-rwm
+#+begin_src c++ :eval no
+    std::cout << "Target: correlated bivariate Gaussian, true mean (2, -1),"
+                 " true log-normalizer ~1.6941\n\n";
+
+    UnnormalizedGaussian target;
+
+    std::cout << "=== Random-Walk Metropolis ===\n";
+    RWMOptions rwm_options;
+    rwm_options.num_samples = 4000;
+    rwm_options.num_warmup = 1000;
+    const auto rwm_result =
+        RandomWalkMetropolis(rwm_options).sample(target, {0.0, 0.0});
+    std::cout << "posterior mean estimate: ("
+              << mean_of(rwm_result.samples, 0) << ", "
+              << mean_of(rwm_result.samples, 1) << ") (true: (2, -1))\n";
+    std::cout << "acceptance rate: " << rwm_result.accept_rate
+              << " (target 0.234)\n\n";
+#+end_src
+
+*** Metropolis-within-Gibbs, and visualizing both against each other
+
+#+name: bsamp-gibbs
+#+begin_src c++ :eval no
+    std::cout << "=== Metropolis-within-Gibbs ===\n";
+    GibbsOptions gibbs_options;
+    gibbs_options.num_samples = 4000;
+    gibbs_options.num_warmup = 1000;
+    const auto gibbs_result =
+        GibbsSampler(gibbs_options).sample(target, {0.0, 0.0});
+    std::cout << "posterior mean estimate: ("
+              << mean_of(gibbs_result.samples, 0) << ", "
+              << mean_of(gibbs_result.samples, 1) << ") (true: (2, -1))\n";
+    std::cout << "per-coordinate acceptance rates: ("
+              << gibbs_result.accept_rates[0]
+              << ", " << gibbs_result.accept_rates[1] << ") (target 0.44)\n\n";
+#+end_src
+
+#+name: bsamp-mcmc-figures
+#+begin_src c++ :eval no
+    {
+        auto plot = RPlot::create();
+        plot.points(column(rwm_result.samples, 0),
+                    column(rwm_result.samples, 1),
+                    "RWM samples", {96, 165, 250}, 3.0);
+        plot.points({2.0}, {-1.0}, "true mean", {220, 38, 38}, 10.0);
+        plot.legend({"RWM samples", "true mean"},
+                    {{96, 165, 250}, {220, 38, 38}});
+        plot.title("Random-Walk Metropolis samples")
+            .x_label("x0")
+            .y_label("x1");
+        plot.save_svg("build/org/bsamp_rwm_scatter.svg");
+        std::cout << "wrote bsamp_rwm_scatter.svg\n";
+    }
+    {
+        auto plot = RPlot::create();
+        plot.points(column(rwm_result.samples, 0),
+                    column(rwm_result.samples, 1),
+                    "RWM", {96, 165, 250}, 2.5);
+        plot.points(column(gibbs_result.samples, 0),
+                    column(gibbs_result.samples, 1),
+                    "Metropolis-within-Gibbs", {34, 197, 94}, 2.5);
+        plot.points({2.0}, {-1.0}, "true mean", {220, 38, 38}, 10.0);
+        plot.legend({"RWM", "Metropolis-within-Gibbs", "true mean"},
+                    {{96, 165, 250}, {34, 197, 94}, {220, 38, 38}});
+        plot.title("RWM vs. Metropolis-within-Gibbs:"
+                    " same target, two proposal mechanisms")
+            .x_label("x0")
+            .y_label("x1");
+        plot.save_svg("build/org/bsamp_rwm_vs_gibbs.svg");
+        std::cout << "wrote bsamp_rwm_vs_gibbs.svg\n";
+    }
+#+end_src
+
+*** Importance sampling
+
+#+name: bsamp-importance
+#+begin_src c++ :eval no
+    std::cout << "\n=== Importance Sampling ===\n";
+    ImportanceSamplingOptions is_options;
+    is_options.num_samples = 5000;
+    const std::vector<double> proposal_mean = {2.0, -1.0};
+    const std::vector<std::vector<double>> proposal_covariance = {{1.5, 0.0},
+                                                                    {0.0, 1.5}};
+    const auto is_result =
+        ImportanceSampling(is_options).sample(target, proposal_mean,
+                                               proposal_covariance);
+
+    std::cout << "posterior mean estimate: ("
+              << weighted_mean_of(is_result.samples,
+                                   is_result.normalized_weights, 0)
+              << ", "
+              << weighted_mean_of(is_result.samples,
+                                   is_result.normalized_weights, 1)
+              << ") (true: (2, -1))\n";
+    std::cout << "effective sample size: "
+              << is_result.effective_sample_size << " / "
+              << is_options.num_samples << "\n";
+    std::cout << "estimated log-normalizer: " << is_result.log_evidence
+              << " (true: ~1.6941)\n";
+#+end_src
+
+*** Visualizing the importance weights
+
+#+name: bsamp-importance-figure
+#+begin_src c++ :eval no
+    {
+        std::vector<double> sorted_weights = is_result.normalized_weights;
+        std::sort(sorted_weights.begin(), sorted_weights.end());
+        const auto top5_idx =
+            static_cast<std::size_t>(0.95 * sorted_weights.size());
+        const double top5_cutoff = sorted_weights[top5_idx];
+
+        std::vector<double> low_x, low_y, high_x, high_y;
+        for (std::size_t i = 0; i < is_result.samples.size(); ++i) {
+            if (is_result.normalized_weights[i] >= top5_cutoff) {
+                high_x.push_back(is_result.samples[i][0]);
+                high_y.push_back(is_result.samples[i][1]);
+            } else {
+                low_x.push_back(is_result.samples[i][0]);
+                low_y.push_back(is_result.samples[i][1]);
+            }
+        }
+        auto plot = RPlot::create();
+        plot.points(low_x, low_y, "bottom 95% weight", {209, 213, 219}, 2.5);
+        plot.points(high_x, high_y, "top 5% weight", {220, 38, 38}, 4.0);
+        plot.legend({"bottom 95% weight", "top 5% weight"},
+                    {{209, 213, 219}, {220, 38, 38}});
+        plot.title("Importance sampling: proposal draws by weight tier")
+            .x_label("x0")
+            .y_label("x1");
+        plot.save_svg("build/org/bsamp_importance_weights.svg");
+        std::cout << "wrote bsamp_importance_weights.svg\n";
+    }
+#+end_src
+
+Because =RPlot::points()= sets one marker size and color for its whole
+series rather than per point, this figure splits the 5000 proposal draws
+into two series by weight tier (top 5% vs. the rest) rather than
+attempting a continuous per-point color/size gradient.
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/bsamp_analysis.cpp <<'CPP'
+<<bsamp-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<bsamp-rwm>>
+
+<<bsamp-gibbs>>
+
+<<bsamp-mcmc-figures>>
+
+<<bsamp-importance>>
+
+<<bsamp-importance-figure>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/bsamp_analysis.cpp -o build/org/bsamp_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bsamp_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Random-walk Metropolis
+
+#+begin_example
+Target: correlated bivariate Gaussian, true mean (2, -1), true log-normalizer ~1.6941
+
+=== Random-Walk Metropolis ===
+posterior mean estimate: (1.9704, -0.9578) (true: (2, -1))
+acceptance rate: 0.2332 (target 0.234)
+#+end_example
+
+RWM's posterior mean estimate, $(1.9704, -0.9578)$, sits within about
+0.04 of the true $(2, -1)$ on each coordinate -- well within the sampling
+noise expected from 4000 post-warmup draws of a distribution with unit
+marginal variance. The realized acceptance rate, $0.2332$, matches its
+0.234 theoretical target (§2.2) to three decimal places, confirming the
+dual-averaging step-size adaptation found essentially the
+textbook-optimal step size for this two-dimensional target.
+
+#+ATTR_HTML: :alt Scatter plot of Random-Walk Metropolis samples with the true mean marked :width 100%
+[[file:../../build/org/bsamp_rwm_scatter.svg]]
+
+The scatter plot makes the target's structure directly visible: an
+elliptical cloud tilted along the diagonal, exactly the shape a
+positively-correlated ($\rho=0.5$) bivariate Gaussian produces, centered
+almost exactly on the true mean (the red marker).
+
+** Metropolis-within-Gibbs
+
+#+begin_example
+=== Metropolis-within-Gibbs ===
+posterior mean estimate: (2.0274, -0.9646) (true: (2, -1))
+per-coordinate acceptance rates: (0.4346, 0.4410) (target 0.44)
+#+end_example
+
+Metropolis-within-Gibbs's posterior mean, $(2.0274, -0.9646)$, is
+similarly close to the truth, and its two per-coordinate acceptance
+rates ($0.4346$ and $0.4410$) both land close to their own 0.44
+theoretical target (§2.3) -- a different optimum from RWM's 0.234, since
+each coordinate here is updated via its own scalar (not joint)
+random-walk proposal.
+
+#+ATTR_HTML: :alt Scatter plot overlaying Random-Walk Metropolis and Metropolis-within-Gibbs samples :width 100%
+[[file:../../build/org/bsamp_rwm_vs_gibbs.svg]]
+
+Overlaying both methods' samples on one figure shows them converging to
+the same elliptical shape and the same center, despite proposing in
+entirely different ways -- RWM moves the whole two-dimensional vector at
+once, while Metropolis-within-Gibbs updates one coordinate at a time
+holding the other fixed. On this target's moderate correlation
+($\rho=0.5$), neither approach shows a visible mixing advantage over the
+other; §5 discusses when that would change.
+
+** Importance sampling
+
+#+begin_example
+=== Importance Sampling ===
+posterior mean estimate: (2.0127, -0.9650) (true: (2, -1))
+effective sample size: 3708.1542 / 5000
+estimated log-normalizer: 1.6856 (true: ~1.6941)
+#+end_example
+
+Importance sampling's posterior mean, $(2.0127, -0.9650)$, is again
+close to the truth, obtained with no Markov chain, no warmup, and no
+mixing diagnostics at all -- just 5000 i.i.d. draws from a wider,
+uncorrelated $N((2,-1), 1.5I)$ proposal, reweighted. The effective
+sample size, $3708$ out of $5000$ raw draws ($74.2\%$), signals a
+reasonably well-matched proposal: not every draw is wasted, though the
+proposal's lack of correlation (unlike the target's $\rho=0.5$) does
+cost some efficiency relative to a perfectly-matched proposal, where the
+effective sample size would approach the full 5000. The estimated
+log-normalizing constant, $1.6856$, differs from the true value
+($\approx1.6941$) by only $0.0085$ -- a genuine, non-trivial estimation
+task (unlike RWM/Gibbs, which never need or estimate this quantity at
+all) recovered to within less than 1% relative error from a single batch
+of weighted draws.
+
+#+ATTR_HTML: :alt Scatter plot of importance-sampling proposal draws colored by weight tier :width 100%
+[[file:../../build/org/bsamp_importance_weights.svg]]
+
+This figure reveals something the summary numbers alone do not: the top
+5% of importance weights (red) are not scattered randomly across the
+high-density region -- they concentrate almost exactly along the
+target's correlated major axis, forming a visibly narrow diagonal band
+running through the wider gray cloud of lower-weight draws. This is a
+direct visualization of what an importance weight $w_i \propto
+p(x_i)/q(x_i)$ actually measures: because the proposal $q$ is circular
+(uncorrelated) while the target $p$ is elliptical (correlated), a
+proposal draw that happens to land along the target's true correlated
+ridge is *far* more probable under $p$ than under $q$ would predict from
+its distance from the mean alone, earning it a disproportionately large
+weight. Draws off that ridge -- plausible under the circular proposal but
+comparatively unlikely under the true correlated target -- are
+correspondingly downweighted.
+
+* Discussion
+
+**Both MCMC methods matched their own distinct theoretical
+acceptance-rate optimum, not a single shared number.** RWM's realized rate
+($0.2332$) and Metropolis-within-Gibbs's two realized rates ($0.4346$,
+$0.4410$) each closely tracked a *different* target (0.234 vs. 0.44)
+because each is the asymptotically optimal rate for a structurally
+different proposal -- a joint multivariate step versus a sequence of
+scalar steps. This is worth remembering when reading acceptance-rate
+diagnostics across different samplers in general: there is no single
+universal "good" acceptance rate, and the [[file:bayesian_modeling_analysis.org][Bayesian
+modeling companion report]]'s own HMC/NUTS target a third value (0.8)
+again for a structurally different reason (a trajectory-based
+proposal, not a random walk at all).
+
+**On this report's moderately-correlated target, RWM and
+Metropolis-within-Gibbs showed no visible efficiency difference -- but that is a
+property of this specific target, not a general result.** §2.3 notes
+that coordinate-wise updating can mix substantially better than a joint
+proposal when parameters are only weakly correlated or live on very
+different scales; this report's target ($\rho=0.5$, both coordinates
+unit-scaled) is specifically the kind of moderately-correlated,
+similar-scale case where the two approaches are expected to perform comparably,
+which §4.2's overlay confirms directly rather than merely asserting.
+Extending this comparison to a target with $\rho$ close to $\pm1$, or
+with wildly different per-coordinate scales, would be the natural next
+experiment to make the coordinate-wise method's real advantage (or, for
+extreme correlation, its real disadvantage relative to a joint proposal
+that can move diagonally in one step) directly visible.
+
+**A diagnostic number and a diagnostic figure can tell genuinely
+different stories from the same data.** The effective-sample-size number
+alone ($3708/5000$) correctly signals "a reasonably good but imperfect
+proposal," but only the weight-tiered scatter plot reveals *why* it is
+imperfect: not a location problem (the proposal is centered exactly at
+the true mean) but a *shape* problem (the proposal is circular while the
+target is elliptical), visible directly as the top-weight draws'
+concentration along the correlated ridge. A caller relying only on the
+=effective_sample_size= number would know something was slightly off but
+not what to fix; the figure makes the fix -- give the proposal the
+target's correlation structure, not just its mean -- immediately obvious.
+
+* Conclusion
+
+Fitting a correlated bivariate Gaussian target with known truth using
+=datamunge='s C++ =bayes::RandomWalkMetropolis=, =bayes::GibbsSampler=,
+and =bayes::ImportanceSampling= recovers the true posterior mean to
+within sampling noise by all three methods, with each MCMC method's
+realized acceptance rate matching its own distinct theoretical optimum
+and importance sampling's log-evidence estimate landing within 1%
+relative error of the true log-normalizing constant. Visualizing RWM
+against Metropolis-within-Gibbs directly confirms they converge to the
+identical target shape despite fundamentally different proposal
+mechanisms, and visualizing the importance-sampling draws by weight tier
+surfaces a genuine structural insight -- that the highest-weight draws
+concentrate along the target's correlated axis -- that the summary
+statistics alone do not reveal. As with its companions, this entire
+report is reproducible end to end via
+=just org-example bayesian_sampling_analysis=, which re-executes
+§3.3.6's assembly block -- and therefore every number and figure above --
+from the =datamunge= source tree.
+
+* References
+
+- Metropolis, N., Rosenbluth, A. W., Rosenbluth, M. N., Teller, A. H., &
+  Teller, E. (1953). "Equation of State Calculations by Fast Computing
+  Machines." /The Journal of Chemical Physics/, 21(6), 1087--1092.
+- Hastings, W. K. (1970). "Monte Carlo Sampling Methods Using Markov
+  Chains and Their Applications." /Biometrika/, 57(1), 97--109.
+- Geman, S., & Geman, D. (1984). "Stochastic Relaxation, Gibbs
+  Distributions, and the Bayesian Restoration of Images." /IEEE
+  Transactions on Pattern Analysis and Machine Intelligence/, 6(6),
+  721--741.
+- Roberts, G. O., Gelman, A., & Gilks, W. R. (1997). "Weak Convergence
+  and Optimal Scaling of Random Walk Metropolis Algorithms." /The
+  Annals of Applied Probability/, 7(1), 110--120.
+- Roberts, G. O., & Rosenthal, J. S. (2001). "Optimal Scaling for
+  Various Metropolis-Hastings Algorithms." /Statistical Science/,
+  16(4), 351--367.
+- Kong, A. (1992). "A Note on Importance Sampling Using Standardized
+  Weights." /University of Chicago, Dept. of Statistics, Technical
+  Report 348/.
+- Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., &
+  Rubin, D. B. (2013). /Bayesian Data Analysis/, 3rd ed., ch. 10-11.
+  Chapman & Hall/CRC.
+- Nesterov, Y. (2009). "Primal-Dual Subgradient Methods for Convex
+  Problems." /Mathematical Programming/, 120(1), 221--259.

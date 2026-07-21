@@ -13,9 +13,9 @@ extern
 #ifdef __cplusplus
   "C"
 #endif
-  void cgo_panic__datamunge_cd205fa85b728fed(const char*);
+  void cgo_panic__datamunge_c5abddb9d33fe5ef(const char*);
 static void _swig_gopanic(const char *p) {
-  cgo_panic__datamunge_cd205fa85b728fed(p);
+  cgo_panic__datamunge_c5abddb9d33fe5ef(p);
 }
 
 
@@ -402,7 +402,7 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
 extern "C" {
 #endif
 
-void _wrap_Swig_free_datamunge_cd205fa85b728fed(void *_swig_go_0) {
+void _wrap_Swig_free_datamunge_c5abddb9d33fe5ef(void *_swig_go_0) {
   void *arg1 = 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -412,7 +412,7 @@ void _wrap_Swig_free_datamunge_cd205fa85b728fed(void *_swig_go_0) {
 }
 
 
-void *_wrap_Swig_malloc_datamunge_cd205fa85b728fed(intgo _swig_go_0) {
+void *_wrap_Swig_malloc_datamunge_c5abddb9d33fe5ef(intgo _swig_go_0) {
   int arg1 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -425,7 +425,7 @@ void *_wrap_Swig_malloc_datamunge_cd205fa85b728fed(intgo _swig_go_0) {
 }
 
 
-std::pair< int,int > *_wrap_new_IPair__SWIG_0_datamunge_cd205fa85b728fed() {
+std::pair< int,int > *_wrap_new_IPair__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::pair< int,int > *result = 0 ;
   std::pair< int,int > *_swig_go_result;
   
@@ -436,7 +436,7 @@ std::pair< int,int > *_wrap_new_IPair__SWIG_0_datamunge_cd205fa85b728fed() {
 }
 
 
-std::pair< int,int > *_wrap_new_IPair__SWIG_1_datamunge_cd205fa85b728fed(intgo _swig_go_0, intgo _swig_go_1) {
+std::pair< int,int > *_wrap_new_IPair__SWIG_1_datamunge_c5abddb9d33fe5ef(intgo _swig_go_0, intgo _swig_go_1) {
   int arg1 ;
   int arg2 ;
   std::pair< int,int > *result = 0 ;
@@ -451,7 +451,7 @@ std::pair< int,int > *_wrap_new_IPair__SWIG_1_datamunge_cd205fa85b728fed(intgo _
 }
 
 
-std::pair< int,int > *_wrap_new_IPair__SWIG_2_datamunge_cd205fa85b728fed(std::pair< int,int > *_swig_go_0) {
+std::pair< int,int > *_wrap_new_IPair__SWIG_2_datamunge_c5abddb9d33fe5ef(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   std::pair< int,int > *result = 0 ;
   std::pair< int,int > *_swig_go_result;
@@ -464,7 +464,7 @@ std::pair< int,int > *_wrap_new_IPair__SWIG_2_datamunge_cd205fa85b728fed(std::pa
 }
 
 
-void _wrap_IPair_first_set_datamunge_cd205fa85b728fed(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
+void _wrap_IPair_first_set_datamunge_c5abddb9d33fe5ef(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
   std::pair< int,int > *arg1 = 0 ;
   int arg2 ;
   
@@ -476,7 +476,7 @@ void _wrap_IPair_first_set_datamunge_cd205fa85b728fed(std::pair< int,int > *_swi
 }
 
 
-intgo _wrap_IPair_first_get_datamunge_cd205fa85b728fed(std::pair< int,int > *_swig_go_0) {
+intgo _wrap_IPair_first_get_datamunge_c5abddb9d33fe5ef(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
@@ -489,7 +489,7 @@ intgo _wrap_IPair_first_get_datamunge_cd205fa85b728fed(std::pair< int,int > *_sw
 }
 
 
-void _wrap_IPair_second_set_datamunge_cd205fa85b728fed(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
+void _wrap_IPair_second_set_datamunge_c5abddb9d33fe5ef(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
   std::pair< int,int > *arg1 = 0 ;
   int arg2 ;
   
@@ -501,7 +501,7 @@ void _wrap_IPair_second_set_datamunge_cd205fa85b728fed(std::pair< int,int > *_sw
 }
 
 
-intgo _wrap_IPair_second_get_datamunge_cd205fa85b728fed(std::pair< int,int > *_swig_go_0) {
+intgo _wrap_IPair_second_get_datamunge_c5abddb9d33fe5ef(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
@@ -514,7 +514,7 @@ intgo _wrap_IPair_second_get_datamunge_cd205fa85b728fed(std::pair< int,int > *_s
 }
 
 
-void _wrap_delete_IPair_datamunge_cd205fa85b728fed(std::pair< int,int > *_swig_go_0) {
+void _wrap_delete_IPair_datamunge_c5abddb9d33fe5ef(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   
   arg1 = *(std::pair< int,int > **)&_swig_go_0; 
@@ -524,7 +524,7 @@ void _wrap_delete_IPair_datamunge_cd205fa85b728fed(std::pair< int,int > *_swig_g
 }
 
 
-std::pair< double,double > *_wrap_new_DPair__SWIG_0_datamunge_cd205fa85b728fed() {
+std::pair< double,double > *_wrap_new_DPair__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::pair< double,double > *result = 0 ;
   std::pair< double,double > *_swig_go_result;
   
@@ -535,7 +535,7 @@ std::pair< double,double > *_wrap_new_DPair__SWIG_0_datamunge_cd205fa85b728fed()
 }
 
 
-std::pair< double,double > *_wrap_new_DPair__SWIG_1_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1) {
+std::pair< double,double > *_wrap_new_DPair__SWIG_1_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1) {
   double arg1 ;
   double arg2 ;
   std::pair< double,double > *result = 0 ;
@@ -550,7 +550,7 @@ std::pair< double,double > *_wrap_new_DPair__SWIG_1_datamunge_cd205fa85b728fed(d
 }
 
 
-std::pair< double,double > *_wrap_new_DPair__SWIG_2_datamunge_cd205fa85b728fed(std::pair< double,double > *_swig_go_0) {
+std::pair< double,double > *_wrap_new_DPair__SWIG_2_datamunge_c5abddb9d33fe5ef(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   std::pair< double,double > *result = 0 ;
   std::pair< double,double > *_swig_go_result;
@@ -563,7 +563,7 @@ std::pair< double,double > *_wrap_new_DPair__SWIG_2_datamunge_cd205fa85b728fed(s
 }
 
 
-void _wrap_DPair_first_set_datamunge_cd205fa85b728fed(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
+void _wrap_DPair_first_set_datamunge_c5abddb9d33fe5ef(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
   std::pair< double,double > *arg1 = 0 ;
   double arg2 ;
   
@@ -575,7 +575,7 @@ void _wrap_DPair_first_set_datamunge_cd205fa85b728fed(std::pair< double,double >
 }
 
 
-double _wrap_DPair_first_get_datamunge_cd205fa85b728fed(std::pair< double,double > *_swig_go_0) {
+double _wrap_DPair_first_get_datamunge_c5abddb9d33fe5ef(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -588,7 +588,7 @@ double _wrap_DPair_first_get_datamunge_cd205fa85b728fed(std::pair< double,double
 }
 
 
-void _wrap_DPair_second_set_datamunge_cd205fa85b728fed(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
+void _wrap_DPair_second_set_datamunge_c5abddb9d33fe5ef(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
   std::pair< double,double > *arg1 = 0 ;
   double arg2 ;
   
@@ -600,7 +600,7 @@ void _wrap_DPair_second_set_datamunge_cd205fa85b728fed(std::pair< double,double 
 }
 
 
-double _wrap_DPair_second_get_datamunge_cd205fa85b728fed(std::pair< double,double > *_swig_go_0) {
+double _wrap_DPair_second_get_datamunge_c5abddb9d33fe5ef(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -613,7 +613,7 @@ double _wrap_DPair_second_get_datamunge_cd205fa85b728fed(std::pair< double,doubl
 }
 
 
-void _wrap_delete_DPair_datamunge_cd205fa85b728fed(std::pair< double,double > *_swig_go_0) {
+void _wrap_delete_DPair_datamunge_c5abddb9d33fe5ef(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   
   arg1 = *(std::pair< double,double > **)&_swig_go_0; 
@@ -623,7 +623,7 @@ void _wrap_delete_DPair_datamunge_cd205fa85b728fed(std::pair< double,double > *_
 }
 
 
-std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair__SWIG_0_datamunge_cd205fa85b728fed() {
+std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::pair< std::vector< double >,std::vector< double > > *result = 0 ;
   std::pair< std::vector< double >,std::vector< double > > *_swig_go_result;
   
@@ -634,7 +634,7 @@ std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair_
 }
 
 
-std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > arg1 ;
   std::vector< double > arg2 ;
   std::vector< double > *argp1 ;
@@ -663,7 +663,7 @@ std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair_
 }
 
 
-std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair__SWIG_2_datamunge_cd205fa85b728fed(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
+std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair__SWIG_2_datamunge_c5abddb9d33fe5ef(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
   std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
   std::pair< std::vector< double >,std::vector< double > > *result = 0 ;
   std::pair< std::vector< double >,std::vector< double > > *_swig_go_result;
@@ -676,7 +676,7 @@ std::pair< std::vector< double >,std::vector< double > > *_wrap_new_DVectorPair_
 }
 
 
-void _wrap_DVectorPair_first_set_datamunge_cd205fa85b728fed(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
+void _wrap_DVectorPair_first_set_datamunge_c5abddb9d33fe5ef(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
@@ -688,7 +688,7 @@ void _wrap_DVectorPair_first_set_datamunge_cd205fa85b728fed(std::pair< std::vect
 }
 
 
-std::vector< double > *_wrap_DVectorPair_first_get_datamunge_cd205fa85b728fed(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
+std::vector< double > *_wrap_DVectorPair_first_get_datamunge_c5abddb9d33fe5ef(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
   std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -701,7 +701,7 @@ std::vector< double > *_wrap_DVectorPair_first_get_datamunge_cd205fa85b728fed(st
 }
 
 
-void _wrap_DVectorPair_second_set_datamunge_cd205fa85b728fed(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
+void _wrap_DVectorPair_second_set_datamunge_c5abddb9d33fe5ef(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
@@ -713,7 +713,7 @@ void _wrap_DVectorPair_second_set_datamunge_cd205fa85b728fed(std::pair< std::vec
 }
 
 
-std::vector< double > *_wrap_DVectorPair_second_get_datamunge_cd205fa85b728fed(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
+std::vector< double > *_wrap_DVectorPair_second_get_datamunge_c5abddb9d33fe5ef(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
   std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -726,7 +726,7 @@ std::vector< double > *_wrap_DVectorPair_second_get_datamunge_cd205fa85b728fed(s
 }
 
 
-void _wrap_delete_DVectorPair_datamunge_cd205fa85b728fed(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
+void _wrap_delete_DVectorPair_datamunge_c5abddb9d33fe5ef(std::pair< std::vector< double >,std::vector< double > > *_swig_go_0) {
   std::pair< std::vector< double >,std::vector< double > > *arg1 = 0 ;
   
   arg1 = *(std::pair< std::vector< double >,std::vector< double > > **)&_swig_go_0; 
@@ -736,7 +736,7 @@ void _wrap_delete_DVectorPair_datamunge_cd205fa85b728fed(std::pair< std::vector<
 }
 
 
-std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_0_datamunge_cd205fa85b728fed() {
+std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::pair< std::string,std::string > *result = 0 ;
   std::pair< std::string,std::string > *_swig_go_result;
   
@@ -747,7 +747,7 @@ std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_0_datamunge_cd205fa8
 }
 
 
-std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_1_datamunge_cd205fa85b728fed(_gostring_ _swig_go_0, _gostring_ _swig_go_1) {
+std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_1_datamunge_c5abddb9d33fe5ef(_gostring_ _swig_go_0, _gostring_ _swig_go_1) {
   std::string arg1 ;
   std::string arg2 ;
   std::pair< std::string,std::string > *result = 0 ;
@@ -762,7 +762,7 @@ std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_1_datamunge_cd205fa8
 }
 
 
-std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_2_datamunge_cd205fa85b728fed(std::pair< std::string,std::string > *_swig_go_0) {
+std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_2_datamunge_c5abddb9d33fe5ef(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::pair< std::string,std::string > *result = 0 ;
   std::pair< std::string,std::string > *_swig_go_result;
@@ -775,7 +775,7 @@ std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_2_datamunge_cd205fa8
 }
 
 
-void _wrap_SPair_first_set_datamunge_cd205fa85b728fed(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_SPair_first_set_datamunge_c5abddb9d33fe5ef(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -790,7 +790,7 @@ void _wrap_SPair_first_set_datamunge_cd205fa85b728fed(std::pair< std::string,std
 }
 
 
-_gostring_ _wrap_SPair_first_get_datamunge_cd205fa85b728fed(std::pair< std::string,std::string > *_swig_go_0) {
+_gostring_ _wrap_SPair_first_get_datamunge_c5abddb9d33fe5ef(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -803,7 +803,7 @@ _gostring_ _wrap_SPair_first_get_datamunge_cd205fa85b728fed(std::pair< std::stri
 }
 
 
-void _wrap_SPair_second_set_datamunge_cd205fa85b728fed(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_SPair_second_set_datamunge_c5abddb9d33fe5ef(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -818,7 +818,7 @@ void _wrap_SPair_second_set_datamunge_cd205fa85b728fed(std::pair< std::string,st
 }
 
 
-_gostring_ _wrap_SPair_second_get_datamunge_cd205fa85b728fed(std::pair< std::string,std::string > *_swig_go_0) {
+_gostring_ _wrap_SPair_second_get_datamunge_c5abddb9d33fe5ef(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -831,7 +831,7 @@ _gostring_ _wrap_SPair_second_get_datamunge_cd205fa85b728fed(std::pair< std::str
 }
 
 
-void _wrap_delete_SPair_datamunge_cd205fa85b728fed(std::pair< std::string,std::string > *_swig_go_0) {
+void _wrap_delete_SPair_datamunge_c5abddb9d33fe5ef(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   
   arg1 = *(std::pair< std::string,std::string > **)&_swig_go_0; 
@@ -841,7 +841,7 @@ void _wrap_delete_SPair_datamunge_cd205fa85b728fed(std::pair< std::string,std::s
 }
 
 
-std::vector< int > *_wrap_new_IVector__SWIG_0_datamunge_cd205fa85b728fed() {
+std::vector< int > *_wrap_new_IVector__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::vector< int > *result = 0 ;
   std::vector< int > *_swig_go_result;
   
@@ -852,7 +852,7 @@ std::vector< int > *_wrap_new_IVector__SWIG_0_datamunge_cd205fa85b728fed() {
 }
 
 
-std::vector< int > *_wrap_new_IVector__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0) {
+std::vector< int > *_wrap_new_IVector__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0) {
   std::vector< int >::size_type arg1 ;
   std::vector< int > *result = 0 ;
   std::vector< int > *_swig_go_result;
@@ -865,7 +865,7 @@ std::vector< int > *_wrap_new_IVector__SWIG_1_datamunge_cd205fa85b728fed(long lo
 }
 
 
-std::vector< int > *_wrap_new_IVector__SWIG_2_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0) {
+std::vector< int > *_wrap_new_IVector__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int > *result = 0 ;
   std::vector< int > *_swig_go_result;
@@ -878,7 +878,7 @@ std::vector< int > *_wrap_new_IVector__SWIG_2_datamunge_cd205fa85b728fed(std::ve
 }
 
 
-long long _wrap_IVector_size_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0) {
+long long _wrap_IVector_size_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::size_type result;
   long long _swig_go_result;
@@ -891,7 +891,7 @@ long long _wrap_IVector_size_datamunge_cd205fa85b728fed(std::vector< int > *_swi
 }
 
 
-long long _wrap_IVector_capacity_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0) {
+long long _wrap_IVector_capacity_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::size_type result;
   long long _swig_go_result;
@@ -904,7 +904,7 @@ long long _wrap_IVector_capacity_datamunge_cd205fa85b728fed(std::vector< int > *
 }
 
 
-void _wrap_IVector_reserve_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0, long long _swig_go_1) {
+void _wrap_IVector_reserve_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0, long long _swig_go_1) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::size_type arg2 ;
   
@@ -916,7 +916,7 @@ void _wrap_IVector_reserve_datamunge_cd205fa85b728fed(std::vector< int > *_swig_
 }
 
 
-bool _wrap_IVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0) {
+bool _wrap_IVector_isEmpty_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -929,7 +929,7 @@ bool _wrap_IVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< int > *_swig_
 }
 
 
-void _wrap_IVector_clear_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0) {
+void _wrap_IVector_clear_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   
   arg1 = *(std::vector< int > **)&_swig_go_0; 
@@ -939,7 +939,7 @@ void _wrap_IVector_clear_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go
 }
 
 
-void _wrap_IVector_add_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
+void _wrap_IVector_add_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::value_type *arg2 = 0 ;
   
@@ -952,7 +952,7 @@ void _wrap_IVector_add_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0
 }
 
 
-intgo _wrap_IVector_get_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
+intgo _wrap_IVector_get_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
   std::vector< int > *arg1 = 0 ;
   int arg2 ;
   std::vector< int >::value_type *result = 0 ;
@@ -971,7 +971,7 @@ intgo _wrap_IVector_get_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_
 }
 
 
-void _wrap_IVector_set_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+void _wrap_IVector_set_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
   std::vector< int > *arg1 = 0 ;
   int arg2 ;
   std::vector< int >::value_type *arg3 = 0 ;
@@ -990,7 +990,7 @@ void _wrap_IVector_set_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0
 }
 
 
-void _wrap_delete_IVector_datamunge_cd205fa85b728fed(std::vector< int > *_swig_go_0) {
+void _wrap_delete_IVector_datamunge_c5abddb9d33fe5ef(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   
   arg1 = *(std::vector< int > **)&_swig_go_0; 
@@ -1000,7 +1000,7 @@ void _wrap_delete_IVector_datamunge_cd205fa85b728fed(std::vector< int > *_swig_g
 }
 
 
-std::vector< double > *_wrap_new_DVector__SWIG_0_datamunge_cd205fa85b728fed() {
+std::vector< double > *_wrap_new_DVector__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
   
@@ -1011,7 +1011,7 @@ std::vector< double > *_wrap_new_DVector__SWIG_0_datamunge_cd205fa85b728fed() {
 }
 
 
-std::vector< double > *_wrap_new_DVector__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0) {
+std::vector< double > *_wrap_new_DVector__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0) {
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -1024,7 +1024,7 @@ std::vector< double > *_wrap_new_DVector__SWIG_1_datamunge_cd205fa85b728fed(long
 }
 
 
-std::vector< double > *_wrap_new_DVector__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+std::vector< double > *_wrap_new_DVector__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -1037,7 +1037,7 @@ std::vector< double > *_wrap_new_DVector__SWIG_2_datamunge_cd205fa85b728fed(std:
 }
 
 
-long long _wrap_DVector_size_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+long long _wrap_DVector_size_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::size_type result;
   long long _swig_go_result;
@@ -1050,7 +1050,7 @@ long long _wrap_DVector_size_datamunge_cd205fa85b728fed(std::vector< double > *_
 }
 
 
-long long _wrap_DVector_capacity_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+long long _wrap_DVector_capacity_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::size_type result;
   long long _swig_go_result;
@@ -1063,7 +1063,7 @@ long long _wrap_DVector_capacity_datamunge_cd205fa85b728fed(std::vector< double 
 }
 
 
-void _wrap_DVector_reserve_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, long long _swig_go_1) {
+void _wrap_DVector_reserve_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, long long _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::size_type arg2 ;
   
@@ -1075,7 +1075,7 @@ void _wrap_DVector_reserve_datamunge_cd205fa85b728fed(std::vector< double > *_sw
 }
 
 
-bool _wrap_DVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+bool _wrap_DVector_isEmpty_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -1088,7 +1088,7 @@ bool _wrap_DVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< double > *_sw
 }
 
 
-void _wrap_DVector_clear_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+void _wrap_DVector_clear_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   
   arg1 = *(std::vector< double > **)&_swig_go_0; 
@@ -1098,7 +1098,7 @@ void _wrap_DVector_clear_datamunge_cd205fa85b728fed(std::vector< double > *_swig
 }
 
 
-void _wrap_DVector_add_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1) {
+void _wrap_DVector_add_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::value_type *arg2 = 0 ;
   
@@ -1110,7 +1110,7 @@ void _wrap_DVector_add_datamunge_cd205fa85b728fed(std::vector< double > *_swig_g
 }
 
 
-double _wrap_DVector_get_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, intgo _swig_go_1) {
+double _wrap_DVector_get_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, intgo _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   int arg2 ;
   std::vector< double >::value_type *result = 0 ;
@@ -1129,7 +1129,7 @@ double _wrap_DVector_get_datamunge_cd205fa85b728fed(std::vector< double > *_swig
 }
 
 
-void _wrap_DVector_set_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, intgo _swig_go_1, double _swig_go_2) {
+void _wrap_DVector_set_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, intgo _swig_go_1, double _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   int arg2 ;
   std::vector< double >::value_type *arg3 = 0 ;
@@ -1147,7 +1147,7 @@ void _wrap_DVector_set_datamunge_cd205fa85b728fed(std::vector< double > *_swig_g
 }
 
 
-void _wrap_delete_DVector_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+void _wrap_delete_DVector_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   
   arg1 = *(std::vector< double > **)&_swig_go_0; 
@@ -1157,7 +1157,7 @@ void _wrap_delete_DVector_datamunge_cd205fa85b728fed(std::vector< double > *_swi
 }
 
 
-std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_0_datamunge_cd205fa85b728fed() {
+std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::vector< std::vector< double > > *result = 0 ;
   std::vector< std::vector< double > > *_swig_go_result;
   
@@ -1168,7 +1168,7 @@ std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_0_datamunge_
 }
 
 
-std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0) {
+std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0) {
   std::vector< std::vector< double > >::size_type arg1 ;
   std::vector< std::vector< double > > *result = 0 ;
   std::vector< std::vector< double > > *_swig_go_result;
@@ -1181,7 +1181,7 @@ std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_1_datamunge_
 }
 
 
-std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_2_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0) {
+std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   std::vector< std::vector< double > > *result = 0 ;
   std::vector< std::vector< double > > *_swig_go_result;
@@ -1194,7 +1194,7 @@ std::vector< std::vector< double > > *_wrap_new_DVectorVector__SWIG_2_datamunge_
 }
 
 
-long long _wrap_DVectorVector_size_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0) {
+long long _wrap_DVectorVector_size_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   std::vector< std::vector< double > >::size_type result;
   long long _swig_go_result;
@@ -1207,7 +1207,7 @@ long long _wrap_DVectorVector_size_datamunge_cd205fa85b728fed(std::vector< std::
 }
 
 
-long long _wrap_DVectorVector_capacity_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0) {
+long long _wrap_DVectorVector_capacity_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   std::vector< std::vector< double > >::size_type result;
   long long _swig_go_result;
@@ -1220,7 +1220,7 @@ long long _wrap_DVectorVector_capacity_datamunge_cd205fa85b728fed(std::vector< s
 }
 
 
-void _wrap_DVectorVector_reserve_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0, long long _swig_go_1) {
+void _wrap_DVectorVector_reserve_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, long long _swig_go_1) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   std::vector< std::vector< double > >::size_type arg2 ;
   
@@ -1232,7 +1232,7 @@ void _wrap_DVectorVector_reserve_datamunge_cd205fa85b728fed(std::vector< std::ve
 }
 
 
-bool _wrap_DVectorVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0) {
+bool _wrap_DVectorVector_isEmpty_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -1245,7 +1245,7 @@ bool _wrap_DVectorVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< std::ve
 }
 
 
-void _wrap_DVectorVector_clear_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0) {
+void _wrap_DVectorVector_clear_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::vector< double > > **)&_swig_go_0; 
@@ -1255,7 +1255,7 @@ void _wrap_DVectorVector_clear_datamunge_cd205fa85b728fed(std::vector< std::vect
 }
 
 
-void _wrap_DVectorVector_add_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
+void _wrap_DVectorVector_add_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   std::vector< std::vector< double > >::value_type *arg2 = 0 ;
   
@@ -1267,7 +1267,7 @@ void _wrap_DVectorVector_add_datamunge_cd205fa85b728fed(std::vector< std::vector
 }
 
 
-std::vector< double > *_wrap_DVectorVector_get_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0, intgo _swig_go_1) {
+std::vector< double > *_wrap_DVectorVector_get_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, intgo _swig_go_1) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::vector< double > >::value_type *result = 0 ;
@@ -1286,7 +1286,7 @@ std::vector< double > *_wrap_DVectorVector_get_datamunge_cd205fa85b728fed(std::v
 }
 
 
-void _wrap_DVectorVector_set_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0, intgo _swig_go_1, std::vector< double > *_swig_go_2) {
+void _wrap_DVectorVector_set_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, intgo _swig_go_1, std::vector< double > *_swig_go_2) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::vector< double > >::value_type *arg3 = 0 ;
@@ -1304,7 +1304,7 @@ void _wrap_DVectorVector_set_datamunge_cd205fa85b728fed(std::vector< std::vector
 }
 
 
-void _wrap_delete_DVectorVector_datamunge_cd205fa85b728fed(std::vector< std::vector< double > > *_swig_go_0) {
+void _wrap_delete_DVectorVector_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0) {
   std::vector< std::vector< double > > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::vector< double > > **)&_swig_go_0; 
@@ -1314,7 +1314,7 @@ void _wrap_delete_DVectorVector_datamunge_cd205fa85b728fed(std::vector< std::vec
 }
 
 
-std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_0_datamunge_cd205fa85b728fed() {
+std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::vector< std::size_t > *result = 0 ;
   std::vector< std::size_t > *_swig_go_result;
   
@@ -1325,7 +1325,7 @@ std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_0_datamunge_cd205fa85b728
 }
 
 
-std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0) {
+std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0) {
   std::vector< std::size_t >::size_type arg1 ;
   std::vector< std::size_t > *result = 0 ;
   std::vector< std::size_t > *_swig_go_result;
@@ -1338,7 +1338,7 @@ std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_1_datamunge_cd205fa85b728
 }
 
 
-std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_2_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< std::size_t > *result = 0 ;
   std::vector< std::size_t > *_swig_go_result;
@@ -1351,7 +1351,7 @@ std::vector< std::size_t > *_wrap_new_SizeVector__SWIG_2_datamunge_cd205fa85b728
 }
 
 
-long long _wrap_SizeVector_size_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+long long _wrap_SizeVector_size_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< std::size_t >::size_type result;
   long long _swig_go_result;
@@ -1364,7 +1364,7 @@ long long _wrap_SizeVector_size_datamunge_cd205fa85b728fed(std::vector< std::siz
 }
 
 
-long long _wrap_SizeVector_capacity_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+long long _wrap_SizeVector_capacity_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< std::size_t >::size_type result;
   long long _swig_go_result;
@@ -1377,7 +1377,7 @@ long long _wrap_SizeVector_capacity_datamunge_cd205fa85b728fed(std::vector< std:
 }
 
 
-void _wrap_SizeVector_reserve_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, long long _swig_go_1) {
+void _wrap_SizeVector_reserve_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, long long _swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< std::size_t >::size_type arg2 ;
   
@@ -1389,7 +1389,7 @@ void _wrap_SizeVector_reserve_datamunge_cd205fa85b728fed(std::vector< std::size_
 }
 
 
-bool _wrap_SizeVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+bool _wrap_SizeVector_isEmpty_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -1402,7 +1402,7 @@ bool _wrap_SizeVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< std::size_
 }
 
 
-void _wrap_SizeVector_clear_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+void _wrap_SizeVector_clear_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::size_t > **)&_swig_go_0; 
@@ -1412,7 +1412,7 @@ void _wrap_SizeVector_clear_datamunge_cd205fa85b728fed(std::vector< std::size_t 
 }
 
 
-void _wrap_SizeVector_add_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, long long _swig_go_1) {
+void _wrap_SizeVector_add_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, long long _swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< std::size_t >::value_type *arg2 = 0 ;
   
@@ -1424,7 +1424,7 @@ void _wrap_SizeVector_add_datamunge_cd205fa85b728fed(std::vector< std::size_t > 
 }
 
 
-long long _wrap_SizeVector_get_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, intgo _swig_go_1) {
+long long _wrap_SizeVector_get_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, intgo _swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::size_t >::value_type *result = 0 ;
@@ -1443,7 +1443,7 @@ long long _wrap_SizeVector_get_datamunge_cd205fa85b728fed(std::vector< std::size
 }
 
 
-void _wrap_SizeVector_set_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, intgo _swig_go_1, long long _swig_go_2) {
+void _wrap_SizeVector_set_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, intgo _swig_go_1, long long _swig_go_2) {
   std::vector< std::size_t > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::size_t >::value_type *arg3 = 0 ;
@@ -1461,7 +1461,7 @@ void _wrap_SizeVector_set_datamunge_cd205fa85b728fed(std::vector< std::size_t > 
 }
 
 
-void _wrap_delete_SizeVector_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+void _wrap_delete_SizeVector_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::size_t > **)&_swig_go_0; 
@@ -1471,7 +1471,7 @@ void _wrap_delete_SizeVector_datamunge_cd205fa85b728fed(std::vector< std::size_t
 }
 
 
-std::vector< std::string > *_wrap_new_SVector__SWIG_0_datamunge_cd205fa85b728fed() {
+std::vector< std::string > *_wrap_new_SVector__SWIG_0_datamunge_c5abddb9d33fe5ef() {
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
   
@@ -1482,7 +1482,7 @@ std::vector< std::string > *_wrap_new_SVector__SWIG_0_datamunge_cd205fa85b728fed
 }
 
 
-std::vector< std::string > *_wrap_new_SVector__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0) {
+std::vector< std::string > *_wrap_new_SVector__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0) {
   std::vector< std::string >::size_type arg1 ;
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
@@ -1495,7 +1495,7 @@ std::vector< std::string > *_wrap_new_SVector__SWIG_1_datamunge_cd205fa85b728fed
 }
 
 
-std::vector< std::string > *_wrap_new_SVector__SWIG_2_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0) {
+std::vector< std::string > *_wrap_new_SVector__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
@@ -1508,7 +1508,7 @@ std::vector< std::string > *_wrap_new_SVector__SWIG_2_datamunge_cd205fa85b728fed
 }
 
 
-long long _wrap_SVector_size_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0) {
+long long _wrap_SVector_size_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::size_type result;
   long long _swig_go_result;
@@ -1521,7 +1521,7 @@ long long _wrap_SVector_size_datamunge_cd205fa85b728fed(std::vector< std::string
 }
 
 
-long long _wrap_SVector_capacity_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0) {
+long long _wrap_SVector_capacity_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::size_type result;
   long long _swig_go_result;
@@ -1534,7 +1534,7 @@ long long _wrap_SVector_capacity_datamunge_cd205fa85b728fed(std::vector< std::st
 }
 
 
-void _wrap_SVector_reserve_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0, long long _swig_go_1) {
+void _wrap_SVector_reserve_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0, long long _swig_go_1) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::size_type arg2 ;
   
@@ -1546,7 +1546,7 @@ void _wrap_SVector_reserve_datamunge_cd205fa85b728fed(std::vector< std::string >
 }
 
 
-bool _wrap_SVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0) {
+bool _wrap_SVector_isEmpty_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -1559,7 +1559,7 @@ bool _wrap_SVector_isEmpty_datamunge_cd205fa85b728fed(std::vector< std::string >
 }
 
 
-void _wrap_SVector_clear_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0) {
+void _wrap_SVector_clear_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::string > **)&_swig_go_0; 
@@ -1569,7 +1569,7 @@ void _wrap_SVector_clear_datamunge_cd205fa85b728fed(std::vector< std::string > *
 }
 
 
-void _wrap_SVector_add_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_SVector_add_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0, _gostring_ _swig_go_1) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::value_type *arg2 = 0 ;
   
@@ -1584,7 +1584,7 @@ void _wrap_SVector_add_datamunge_cd205fa85b728fed(std::vector< std::string > *_s
 }
 
 
-_gostring_ _wrap_SVector_get_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0, intgo _swig_go_1) {
+_gostring_ _wrap_SVector_get_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0, intgo _swig_go_1) {
   std::vector< std::string > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::string >::value_type *result = 0 ;
@@ -1603,7 +1603,7 @@ _gostring_ _wrap_SVector_get_datamunge_cd205fa85b728fed(std::vector< std::string
 }
 
 
-void _wrap_SVector_set_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_SVector_set_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2) {
   std::vector< std::string > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::string >::value_type *arg3 = 0 ;
@@ -1624,7 +1624,7 @@ void _wrap_SVector_set_datamunge_cd205fa85b728fed(std::vector< std::string > *_s
 }
 
 
-void _wrap_delete_SVector_datamunge_cd205fa85b728fed(std::vector< std::string > *_swig_go_0) {
+void _wrap_delete_SVector_datamunge_c5abddb9d33fe5ef(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::string > **)&_swig_go_0; 
@@ -1634,13 +1634,13 @@ void _wrap_delete_SVector_datamunge_cd205fa85b728fed(std::vector< std::string > 
 }
 
 
-void _wrap_hello_datamunge_cd205fa85b728fed() {
+void _wrap_hello_datamunge_c5abddb9d33fe5ef() {
   datamunge::hello();
   
 }
 
 
-void _wrap_delete_Callback_datamunge_cd205fa85b728fed(datamunge::Callback *_swig_go_0) {
+void _wrap_delete_Callback_datamunge_c5abddb9d33fe5ef(datamunge::Callback *_swig_go_0) {
   datamunge::Callback *arg1 = 0 ;
   
   arg1 = *(datamunge::Callback **)&_swig_go_0; 
@@ -1650,7 +1650,7 @@ void _wrap_delete_Callback_datamunge_cd205fa85b728fed(datamunge::Callback *_swig
 }
 
 
-double _wrap_Callback_call_datamunge_cd205fa85b728fed(datamunge::Callback *_swig_go_0, double _swig_go_1) {
+double _wrap_Callback_call_datamunge_c5abddb9d33fe5ef(datamunge::Callback *_swig_go_0, double _swig_go_1) {
   datamunge::Callback *arg1 = 0 ;
   double arg2 ;
   double result;
@@ -1665,7 +1665,7 @@ double _wrap_Callback_call_datamunge_cd205fa85b728fed(datamunge::Callback *_swig
 }
 
 
-datamunge::Callback *_wrap_new_Callback_datamunge_cd205fa85b728fed() {
+datamunge::Callback *_wrap_new_Callback_datamunge_c5abddb9d33fe5ef() {
   datamunge::Callback *result = 0 ;
   datamunge::Callback *_swig_go_result;
   
@@ -1676,7 +1676,7 @@ datamunge::Callback *_wrap_new_Callback_datamunge_cd205fa85b728fed() {
 }
 
 
-double _wrap_call_with_callback_datamunge_cd205fa85b728fed(double _swig_go_0, datamunge::Callback *_swig_go_1) {
+double _wrap_call_with_callback_datamunge_c5abddb9d33fe5ef(double _swig_go_0, datamunge::Callback *_swig_go_1) {
   double arg1 ;
   datamunge::Callback *arg2 = 0 ;
   double result;
@@ -1691,7 +1691,7 @@ double _wrap_call_with_callback_datamunge_cd205fa85b728fed(double _swig_go_0, da
 }
 
 
-std::vector< double > *_wrap_map_dvector_with_callback_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, datamunge::Callback *_swig_go_1) {
+std::vector< double > *_wrap_map_dvector_with_callback_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, datamunge::Callback *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   datamunge::Callback *arg2 = 0 ;
   std::vector< double > result;
@@ -1706,7 +1706,7 @@ std::vector< double > *_wrap_map_dvector_with_callback_datamunge_cd205fa85b728fe
 }
 
 
-std::vector< double > *_wrap_make_dvector_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
+std::vector< double > *_wrap_make_dvector_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
   double arg1 ;
   double arg2 ;
   double arg3 ;
@@ -1723,7 +1723,7 @@ std::vector< double > *_wrap_make_dvector_datamunge_cd205fa85b728fed(double _swi
 }
 
 
-double _wrap_sum_dvector_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+double _wrap_sum_dvector_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -1736,7 +1736,7 @@ double _wrap_sum_dvector_datamunge_cd205fa85b728fed(std::vector< double > *_swig
 }
 
 
-std::pair< double,double > *_wrap_make_dpair_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1) {
+std::pair< double,double > *_wrap_make_dpair_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1) {
   double arg1 ;
   double arg2 ;
   std::pair< double,double > result;
@@ -1751,7 +1751,7 @@ std::pair< double,double > *_wrap_make_dpair_datamunge_cd205fa85b728fed(double _
 }
 
 
-double _wrap_sum_dpair_datamunge_cd205fa85b728fed(std::pair< double,double > *_swig_go_0) {
+double _wrap_sum_dpair_datamunge_c5abddb9d33fe5ef(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -1764,7 +1764,7 @@ double _wrap_sum_dpair_datamunge_cd205fa85b728fed(std::pair< double,double > *_s
 }
 
 
-datamunge::DataFrame *_wrap_new_DataFrame_datamunge_cd205fa85b728fed() {
+datamunge::DataFrame *_wrap_new_DataFrame_datamunge_c5abddb9d33fe5ef() {
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
   
@@ -1775,7 +1775,7 @@ datamunge::DataFrame *_wrap_new_DataFrame_datamunge_cd205fa85b728fed() {
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_empty_datamunge_cd205fa85b728fed() {
+datamunge::DataFrame *_wrap_DataFrame_empty_datamunge_c5abddb9d33fe5ef() {
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
   
@@ -1786,7 +1786,7 @@ datamunge::DataFrame *_wrap_DataFrame_empty_datamunge_cd205fa85b728fed() {
 }
 
 
-long long _wrap_DataFrame_nrows_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0) {
+long long _wrap_DataFrame_nrows_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0) {
   datamunge::DataFrame *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -1799,7 +1799,7 @@ long long _wrap_DataFrame_nrows_datamunge_cd205fa85b728fed(datamunge::DataFrame 
 }
 
 
-long long _wrap_DataFrame_ncols_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0) {
+long long _wrap_DataFrame_ncols_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0) {
   datamunge::DataFrame *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -1812,7 +1812,7 @@ long long _wrap_DataFrame_ncols_datamunge_cd205fa85b728fed(datamunge::DataFrame 
 }
 
 
-std::vector< std::size_t > *_wrap_DataFrame_shape_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0) {
+std::vector< std::size_t > *_wrap_DataFrame_shape_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::size_t > result;
   std::vector< std::size_t > *_swig_go_result;
@@ -1825,7 +1825,7 @@ std::vector< std::size_t > *_wrap_DataFrame_shape_datamunge_cd205fa85b728fed(dat
 }
 
 
-std::vector< std::string > *_wrap_DataFrame_columns_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0) {
+std::vector< std::string > *_wrap_DataFrame_columns_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -1838,7 +1838,7 @@ std::vector< std::string > *_wrap_DataFrame_columns_datamunge_cd205fa85b728fed(d
 }
 
 
-void _wrap_DataFrame_add_numeric_column__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< double > *_swig_go_2, std::vector< int > *_swig_go_3) {
+void _wrap_DataFrame_add_numeric_column__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< double > *_swig_go_2, std::vector< int > *_swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::vector< double > *arg3 = 0 ;
@@ -1857,7 +1857,7 @@ void _wrap_DataFrame_add_numeric_column__SWIG_0_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_DataFrame_add_numeric_column__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< double > *_swig_go_2) {
+void _wrap_DataFrame_add_numeric_column__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< double > *_swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::vector< double > *arg3 = 0 ;
@@ -1874,7 +1874,7 @@ void _wrap_DataFrame_add_numeric_column__SWIG_1_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_DataFrame_add_string_column__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< std::string > *_swig_go_2, std::vector< int > *_swig_go_3) {
+void _wrap_DataFrame_add_string_column__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< std::string > *_swig_go_2, std::vector< int > *_swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::vector< std::string > *arg3 = 0 ;
@@ -1893,7 +1893,7 @@ void _wrap_DataFrame_add_string_column__SWIG_0_datamunge_cd205fa85b728fed(datamu
 }
 
 
-void _wrap_DataFrame_add_string_column__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< std::string > *_swig_go_2) {
+void _wrap_DataFrame_add_string_column__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< std::string > *_swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::vector< std::string > *arg3 = 0 ;
@@ -1910,7 +1910,7 @@ void _wrap_DataFrame_add_string_column__SWIG_1_datamunge_cd205fa85b728fed(datamu
 }
 
 
-void _wrap_DataFrame_add_string_column_encoded__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, std::vector< int > *_swig_go_3) {
+void _wrap_DataFrame_add_string_column_encoded__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, std::vector< int > *_swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -1932,7 +1932,7 @@ void _wrap_DataFrame_add_string_column_encoded__SWIG_0_datamunge_cd205fa85b728fe
 }
 
 
-void _wrap_DataFrame_add_string_column_encoded__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_DataFrame_add_string_column_encoded__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -1952,7 +1952,7 @@ void _wrap_DataFrame_add_string_column_encoded__SWIG_1_datamunge_cd205fa85b728fe
 }
 
 
-void _wrap_DataFrame_fill_null_numeric_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
+void _wrap_DataFrame_fill_null_numeric_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -1969,7 +1969,7 @@ void _wrap_DataFrame_fill_null_numeric_datamunge_cd205fa85b728fed(datamunge::Dat
 }
 
 
-void _wrap_DataFrame_fill_null_string_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_DataFrame_fill_null_string_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -1989,7 +1989,7 @@ void _wrap_DataFrame_fill_null_string_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_Xselect_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::DataFrame *_wrap_DataFrame_Xselect_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -2004,7 +2004,7 @@ datamunge::DataFrame *_wrap_DataFrame_Xselect_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_select_encoded_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::DataFrame *_wrap_DataFrame_select_encoded_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -2022,7 +2022,7 @@ datamunge::DataFrame *_wrap_DataFrame_select_encoded_datamunge_cd205fa85b728fed(
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_sort_by__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2) {
+datamunge::DataFrame *_wrap_DataFrame_sort_by__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   bool arg3 ;
@@ -2042,7 +2042,7 @@ datamunge::DataFrame *_wrap_DataFrame_sort_by__SWIG_0_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_sort_by__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::DataFrame *_wrap_DataFrame_sort_by__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -2060,7 +2060,7 @@ datamunge::DataFrame *_wrap_DataFrame_sort_by__SWIG_1_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_drop_duplicates__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::DataFrame *_wrap_DataFrame_drop_duplicates__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -2075,7 +2075,7 @@ datamunge::DataFrame *_wrap_DataFrame_drop_duplicates__SWIG_0_datamunge_cd205fa8
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_drop_duplicates__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0) {
+datamunge::DataFrame *_wrap_DataFrame_drop_duplicates__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0) {
   datamunge::DataFrame *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -2088,7 +2088,7 @@ datamunge::DataFrame *_wrap_DataFrame_drop_duplicates__SWIG_1_datamunge_cd205fa8
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_drop_duplicates_encoded_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::DataFrame *_wrap_DataFrame_drop_duplicates_encoded_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -2106,7 +2106,7 @@ datamunge::DataFrame *_wrap_DataFrame_drop_duplicates_encoded_datamunge_cd205fa8
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_group_by_sum_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< std::string > *_swig_go_2) {
+datamunge::DataFrame *_wrap_DataFrame_group_by_sum_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< std::string > *_swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::vector< std::string > *arg3 = 0 ;
@@ -2123,7 +2123,7 @@ datamunge::DataFrame *_wrap_DataFrame_group_by_sum_datamunge_cd205fa85b728fed(da
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_group_by_sum_encoded_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::DataFrame *_wrap_DataFrame_group_by_sum_encoded_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -2146,7 +2146,7 @@ datamunge::DataFrame *_wrap_DataFrame_group_by_sum_encoded_datamunge_cd205fa85b7
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_join__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4) {
+datamunge::DataFrame *_wrap_DataFrame_join__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -2173,7 +2173,7 @@ datamunge::DataFrame *_wrap_DataFrame_join__SWIG_0_datamunge_cd205fa85b728fed(da
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_join__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::DataFrame *_wrap_DataFrame_join__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -2198,7 +2198,7 @@ datamunge::DataFrame *_wrap_DataFrame_join__SWIG_1_datamunge_cd205fa85b728fed(da
 }
 
 
-long long _wrap_DataFrame_numeric_count_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+long long _wrap_DataFrame_numeric_count_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t result;
@@ -2216,7 +2216,7 @@ long long _wrap_DataFrame_numeric_count_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-long long _wrap_DataFrame_numeric_null_count_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+long long _wrap_DataFrame_numeric_null_count_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t result;
@@ -2234,7 +2234,7 @@ long long _wrap_DataFrame_numeric_null_count_datamunge_cd205fa85b728fed(datamung
 }
 
 
-double _wrap_DataFrame_numeric_sum_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+double _wrap_DataFrame_numeric_sum_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double result;
@@ -2252,7 +2252,7 @@ double _wrap_DataFrame_numeric_sum_datamunge_cd205fa85b728fed(datamunge::DataFra
 }
 
 
-double _wrap_DataFrame_numeric_mean_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+double _wrap_DataFrame_numeric_mean_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double result;
@@ -2270,7 +2270,7 @@ double _wrap_DataFrame_numeric_mean_datamunge_cd205fa85b728fed(datamunge::DataFr
 }
 
 
-double _wrap_DataFrame_numeric_min_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+double _wrap_DataFrame_numeric_min_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double result;
@@ -2288,7 +2288,7 @@ double _wrap_DataFrame_numeric_min_datamunge_cd205fa85b728fed(datamunge::DataFra
 }
 
 
-double _wrap_DataFrame_numeric_max_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+double _wrap_DataFrame_numeric_max_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double result;
@@ -2306,7 +2306,7 @@ double _wrap_DataFrame_numeric_max_datamunge_cd205fa85b728fed(datamunge::DataFra
 }
 
 
-_gostring_ _wrap_DataFrame_to_string__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, long long _swig_go_1) {
+_gostring_ _wrap_DataFrame_to_string__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, long long _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::size_t arg2 ;
   std::string result;
@@ -2321,7 +2321,7 @@ _gostring_ _wrap_DataFrame_to_string__SWIG_0_datamunge_cd205fa85b728fed(datamung
 }
 
 
-_gostring_ _wrap_DataFrame_to_string__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0) {
+_gostring_ _wrap_DataFrame_to_string__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -2334,7 +2334,7 @@ _gostring_ _wrap_DataFrame_to_string__SWIG_1_datamunge_cd205fa85b728fed(datamung
 }
 
 
-bool _wrap_DataFrame_is_numeric_column_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+bool _wrap_DataFrame_is_numeric_column_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   bool result;
@@ -2352,7 +2352,7 @@ bool _wrap_DataFrame_is_numeric_column_datamunge_cd205fa85b728fed(datamunge::Dat
 }
 
 
-bool _wrap_DataFrame_is_null_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+bool _wrap_DataFrame_is_null_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -2372,7 +2372,7 @@ bool _wrap_DataFrame_is_null_datamunge_cd205fa85b728fed(datamunge::DataFrame *_s
 }
 
 
-double _wrap_DataFrame_numeric_at_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+double _wrap_DataFrame_numeric_at_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -2392,7 +2392,7 @@ double _wrap_DataFrame_numeric_at_datamunge_cd205fa85b728fed(datamunge::DataFram
 }
 
 
-_gostring_ _wrap_DataFrame_string_at_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+_gostring_ _wrap_DataFrame_string_at_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -2412,7 +2412,7 @@ _gostring_ _wrap_DataFrame_string_at_datamunge_cd205fa85b728fed(datamunge::DataF
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_iris_datamunge_cd205fa85b728fed() {
+datamunge::DataFrame *_wrap_DataFrame_iris_datamunge_c5abddb9d33fe5ef() {
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
   
@@ -2423,7 +2423,7 @@ datamunge::DataFrame *_wrap_DataFrame_iris_datamunge_cd205fa85b728fed() {
 }
 
 
-datamunge::DataFrame *_wrap_DataFrame_penguins_datamunge_cd205fa85b728fed() {
+datamunge::DataFrame *_wrap_DataFrame_penguins_datamunge_c5abddb9d33fe5ef() {
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
   
@@ -2434,7 +2434,7 @@ datamunge::DataFrame *_wrap_DataFrame_penguins_datamunge_cd205fa85b728fed() {
 }
 
 
-void _wrap_delete_DataFrame_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0) {
+void _wrap_delete_DataFrame_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0) {
   datamunge::DataFrame *arg1 = 0 ;
   
   arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
@@ -2444,7 +2444,821 @@ void _wrap_delete_DataFrame_datamunge_cd205fa85b728fed(datamunge::DataFrame *_sw
 }
 
 
-datamunge::LM *_wrap_new_LM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::GGPlot *_wrap_new_GGPlot__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, _gostring_ _swig_go_4, _gostring_ _swig_go_5) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  std::string *arg6 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  
+  std::string arg5_str(_swig_go_4.p, _swig_go_4.n);
+  arg5 = &arg5_str;
+  
+  
+  std::string arg6_str(_swig_go_5.p, _swig_go_5.n);
+  arg6 = &arg6_str;
+  
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+  *(datamunge::GGPlot **)&_swig_go_result = (datamunge::GGPlot *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_new_GGPlot__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, _gostring_ _swig_go_4) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  
+  std::string arg5_str(_swig_go_4.p, _swig_go_4.n);
+  arg5 = &arg5_str;
+  
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+  *(datamunge::GGPlot **)&_swig_go_result = (datamunge::GGPlot *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_new_GGPlot__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::GGPlot **)&_swig_go_result = (datamunge::GGPlot *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_new_GGPlot__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::GGPlot **)&_swig_go_result = (datamunge::GGPlot *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_new_GGPlot__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::GGPlot **)&_swig_go_result = (datamunge::GGPlot *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1, double _swig_go_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  arg3 = (double)_swig_go_2; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_point__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_point();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1, double _swig_go_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  arg3 = (double)_swig_go_2; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2),arg3);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_line__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_line();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_bar__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_bar__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_bar();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_col__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_col__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_col();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_histogram__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, long long _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_histogram__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, long long _swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::size_t arg2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_histogram__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_histogram();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_boxplot__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_boxplot__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_boxplot();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_smooth__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_smooth__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_smooth();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_area__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_area__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_area();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_ribbon__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::plot::RGB arg4 ;
+  datamunge::plot::RGB *argp4 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg4 = (datamunge::plot::RGB)*argp4;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_ribbon__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_density__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::plot::RGB arg2 ;
+  datamunge::plot::RGB *argp2 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  argp2 = (datamunge::plot::RGB *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg2 = (datamunge::plot::RGB)*argp2;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(arg2));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_geom_density__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->geom_density();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_facet_wrap__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::size_t arg3 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  arg3 = (size_t)_swig_go_2; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_facet_wrap__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_theme_minimal_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->theme_minimal();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_theme_bw_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->theme_bw();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_theme_classic_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->theme_classic();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_scale_color_manual_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, std::vector< datamunge::plot::RGB > *_swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  arg2 = *(std::vector< datamunge::plot::RGB > **)&_swig_go_1; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_labs__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_labs__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_labs__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2);
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::GGPlot *_wrap_GGPlot_labs__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  datamunge::GGPlot *result = 0 ;
+  datamunge::GGPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  result = (datamunge::GGPlot *) &(arg1)->labs();
+  *(datamunge::GGPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_GGPlot_save_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  ((datamunge::GGPlot const *)arg1)->save((std::string const &)*arg2);
+  
+}
+
+
+void _wrap_GGPlot_save_svg_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  ((datamunge::GGPlot const *)arg1)->save_svg((std::string const &)*arg2);
+  
+}
+
+
+void _wrap_GGPlot_show__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  ((datamunge::GGPlot const *)arg1)->show((std::string const &)*arg2);
+  
+}
+
+
+void _wrap_GGPlot_show__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  ((datamunge::GGPlot const *)arg1)->show();
+  
+}
+
+
+void _wrap_delete_GGPlot_datamunge_c5abddb9d33fe5ef(datamunge::GGPlot *_swig_go_0) {
+  datamunge::GGPlot *arg1 = 0 ;
+  
+  arg1 = *(datamunge::GGPlot **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+datamunge::LM *_wrap_new_LM__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -2467,7 +3281,7 @@ datamunge::LM *_wrap_new_LM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFr
 }
 
 
-datamunge::LM *_wrap_new_LM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::LM *_wrap_new_LM__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::LM *result = 0 ;
@@ -2485,7 +3299,7 @@ datamunge::LM *_wrap_new_LM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFr
 }
 
 
-_gostring_ _wrap_LM_formula_text_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+_gostring_ _wrap_LM_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -2498,7 +3312,7 @@ _gostring_ _wrap_LM_formula_text_datamunge_cd205fa85b728fed(datamunge::LM *_swig
 }
 
 
-bool _wrap_LM_has_intercept_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+bool _wrap_LM_has_intercept_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -2511,7 +3325,7 @@ bool _wrap_LM_has_intercept_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0
 }
 
 
-long long _wrap_LM_observations_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+long long _wrap_LM_observations_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -2524,7 +3338,7 @@ long long _wrap_LM_observations_datamunge_cd205fa85b728fed(datamunge::LM *_swig_
 }
 
 
-long long _wrap_LM_rank_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+long long _wrap_LM_rank_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -2537,7 +3351,7 @@ long long _wrap_LM_rank_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
 }
 
 
-long long _wrap_LM_degrees_of_freedom_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+long long _wrap_LM_degrees_of_freedom_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -2550,7 +3364,7 @@ long long _wrap_LM_degrees_of_freedom_datamunge_cd205fa85b728fed(datamunge::LM *
 }
 
 
-std::vector< double > *_wrap_LM_coefficients_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2563,7 +3377,7 @@ std::vector< double > *_wrap_LM_coefficients_datamunge_cd205fa85b728fed(datamung
 }
 
 
-std::vector< std::string > *_wrap_LM_coefficient_names_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< std::string > *_wrap_LM_coefficient_names_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -2576,7 +3390,7 @@ std::vector< std::string > *_wrap_LM_coefficient_names_datamunge_cd205fa85b728fe
 }
 
 
-std::vector< double > *_wrap_LM_fitted_values_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2589,7 +3403,7 @@ std::vector< double > *_wrap_LM_fitted_values_datamunge_cd205fa85b728fed(datamun
 }
 
 
-std::vector< double > *_wrap_LM_residuals_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_residuals_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2602,7 +3416,7 @@ std::vector< double > *_wrap_LM_residuals_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_LM_standard_errors_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_standard_errors_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2615,7 +3429,7 @@ std::vector< double > *_wrap_LM_standard_errors_datamunge_cd205fa85b728fed(datam
 }
 
 
-std::vector< double > *_wrap_LM_t_values_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_t_values_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2628,7 +3442,7 @@ std::vector< double > *_wrap_LM_t_values_datamunge_cd205fa85b728fed(datamunge::L
 }
 
 
-std::vector< double > *_wrap_LM_p_values_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_p_values_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2641,7 +3455,7 @@ std::vector< double > *_wrap_LM_p_values_datamunge_cd205fa85b728fed(datamunge::L
 }
 
 
-double _wrap_LM_r_squared_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+double _wrap_LM_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -2654,7 +3468,7 @@ double _wrap_LM_r_squared_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) 
 }
 
 
-double _wrap_LM_adjusted_r_squared_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+double _wrap_LM_adjusted_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -2667,7 +3481,7 @@ double _wrap_LM_adjusted_r_squared_datamunge_cd205fa85b728fed(datamunge::LM *_sw
 }
 
 
-double _wrap_LM_sigma_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+double _wrap_LM_sigma_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -2680,7 +3494,7 @@ double _wrap_LM_sigma_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
 }
 
 
-double _wrap_LM_f_statistic_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+double _wrap_LM_f_statistic_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -2693,7 +3507,7 @@ double _wrap_LM_f_statistic_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0
 }
 
 
-double _wrap_LM_f_p_value_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+double _wrap_LM_f_p_value_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -2706,7 +3520,7 @@ double _wrap_LM_f_p_value_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) 
 }
 
 
-std::vector< double > *_wrap_LM_confidence_interval_lower__SWIG_0_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0, double _swig_go_1) {
+std::vector< double > *_wrap_LM_confidence_interval_lower__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0, double _swig_go_1) {
   datamunge::LM *arg1 = 0 ;
   double arg2 ;
   std::vector< double > result;
@@ -2721,7 +3535,7 @@ std::vector< double > *_wrap_LM_confidence_interval_lower__SWIG_0_datamunge_cd20
 }
 
 
-std::vector< double > *_wrap_LM_confidence_interval_lower__SWIG_1_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_confidence_interval_lower__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2734,7 +3548,7 @@ std::vector< double > *_wrap_LM_confidence_interval_lower__SWIG_1_datamunge_cd20
 }
 
 
-std::vector< double > *_wrap_LM_confidence_interval_upper__SWIG_0_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0, double _swig_go_1) {
+std::vector< double > *_wrap_LM_confidence_interval_upper__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0, double _swig_go_1) {
   datamunge::LM *arg1 = 0 ;
   double arg2 ;
   std::vector< double > result;
@@ -2749,7 +3563,7 @@ std::vector< double > *_wrap_LM_confidence_interval_upper__SWIG_0_datamunge_cd20
 }
 
 
-std::vector< double > *_wrap_LM_confidence_interval_upper__SWIG_1_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_confidence_interval_upper__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2762,7 +3576,7 @@ std::vector< double > *_wrap_LM_confidence_interval_upper__SWIG_1_datamunge_cd20
 }
 
 
-std::vector< double > *_wrap_LM_leverage_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_leverage_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2775,7 +3589,7 @@ std::vector< double > *_wrap_LM_leverage_datamunge_cd205fa85b728fed(datamunge::L
 }
 
 
-std::vector< double > *_wrap_LM_standardized_residuals_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_standardized_residuals_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2788,7 +3602,7 @@ std::vector< double > *_wrap_LM_standardized_residuals_datamunge_cd205fa85b728fe
 }
 
 
-std::vector< double > *_wrap_LM_studentized_residuals_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_studentized_residuals_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2801,7 +3615,7 @@ std::vector< double > *_wrap_LM_studentized_residuals_datamunge_cd205fa85b728fed
 }
 
 
-std::vector< double > *_wrap_LM_cooks_distance_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+std::vector< double > *_wrap_LM_cooks_distance_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -2814,7 +3628,7 @@ std::vector< double > *_wrap_LM_cooks_distance_datamunge_cd205fa85b728fed(datamu
 }
 
 
-_gostring_ _wrap_LM_summary_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+_gostring_ _wrap_LM_summary_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -2827,7 +3641,7 @@ _gostring_ _wrap_LM_summary_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0
 }
 
 
-void _wrap_LM_print_summary_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+void _wrap_LM_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
@@ -2837,7 +3651,7 @@ void _wrap_LM_print_summary_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0
 }
 
 
-std::vector< double > *_wrap_LM_predict_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_LM_predict_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::LM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -2852,7 +3666,7 @@ std::vector< double > *_wrap_LM_predict_datamunge_cd205fa85b728fed(datamunge::LM
 }
 
 
-datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
+datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
   datamunge::LM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -2874,7 +3688,7 @@ datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(
 }
 
 
-datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2) {
+datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2) {
   datamunge::LM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -2894,7 +3708,7 @@ datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(
 }
 
 
-datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::LM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -2909,7 +3723,7 @@ datamunge::DataFrame *_wrap_LM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(
 }
 
 
-datamunge::DataFrame *_wrap_LM_anova_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+datamunge::DataFrame *_wrap_LM_anova_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -2922,59 +3736,59 @@ datamunge::DataFrame *_wrap_LM_anova_datamunge_cd205fa85b728fed(datamunge::LM *_
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_LM_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_LM_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_LM_plot_normal_qq_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_LM_plot_normal_qq_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_LM_plot_scale_location_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_LM_plot_scale_location_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_scale_location();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_LM_plot_residuals_vs_leverage_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_LM_plot_residuals_vs_leverage_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
   
   result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_LM_save_diagnostic_plots_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_LM_save_diagnostic_plots_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::LM *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -2989,7 +3803,7 @@ void _wrap_LM_save_diagnostic_plots_datamunge_cd205fa85b728fed(datamunge::LM *_s
 }
 
 
-void _wrap_delete_LM_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
+void _wrap_delete_LM_datamunge_c5abddb9d33fe5ef(datamunge::LM *_swig_go_0) {
   datamunge::LM *arg1 = 0 ;
   
   arg1 = *(datamunge::LM **)&_swig_go_0; 
@@ -2999,7 +3813,7 @@ void _wrap_delete_LM_datamunge_cd205fa85b728fed(datamunge::LM *_swig_go_0) {
 }
 
 
-datamunge::LMM *_wrap_new_LMM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5, long long _swig_go_6) {
+datamunge::LMM *_wrap_new_LMM__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   bool arg3 ;
@@ -3027,7 +3841,7 @@ datamunge::LMM *_wrap_new_LMM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::LMM *_wrap_new_LMM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5) {
+datamunge::LMM *_wrap_new_LMM__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   bool arg3 ;
@@ -3053,7 +3867,7 @@ datamunge::LMM *_wrap_new_LMM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::LMM *_wrap_new_LMM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::LMM *_wrap_new_LMM__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   bool arg3 ;
@@ -3077,7 +3891,7 @@ datamunge::LMM *_wrap_new_LMM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::LMM *_wrap_new_LMM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3) {
+datamunge::LMM *_wrap_new_LMM__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   bool arg3 ;
@@ -3099,7 +3913,7 @@ datamunge::LMM *_wrap_new_LMM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::LMM *_wrap_new_LMM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2) {
+datamunge::LMM *_wrap_new_LMM__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   bool arg3 ;
@@ -3119,7 +3933,7 @@ datamunge::LMM *_wrap_new_LMM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::LMM *_wrap_new_LMM__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::LMM *_wrap_new_LMM__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::LMM *result = 0 ;
@@ -3137,7 +3951,7 @@ datamunge::LMM *_wrap_new_LMM__SWIG_5_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-_gostring_ _wrap_LMM_formula_text_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+_gostring_ _wrap_LMM_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -3150,7 +3964,7 @@ _gostring_ _wrap_LMM_formula_text_datamunge_cd205fa85b728fed(datamunge::LMM *_sw
 }
 
 
-_gostring_ _wrap_LMM_group_variable_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+_gostring_ _wrap_LMM_group_variable_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -3163,7 +3977,7 @@ _gostring_ _wrap_LMM_group_variable_datamunge_cd205fa85b728fed(datamunge::LMM *_
 }
 
 
-bool _wrap_LMM_has_random_intercept_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+bool _wrap_LMM_has_random_intercept_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -3176,7 +3990,7 @@ bool _wrap_LMM_has_random_intercept_datamunge_cd205fa85b728fed(datamunge::LMM *_
 }
 
 
-std::vector< std::string > *_wrap_LMM_random_effect_names_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< std::string > *_wrap_LMM_random_effect_names_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -3189,7 +4003,7 @@ std::vector< std::string > *_wrap_LMM_random_effect_names_datamunge_cd205fa85b72
 }
 
 
-bool _wrap_LMM_is_reml_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+bool _wrap_LMM_is_reml_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -3202,7 +4016,7 @@ bool _wrap_LMM_is_reml_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
 }
 
 
-long long _wrap_LMM_observations_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+long long _wrap_LMM_observations_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -3215,7 +4029,7 @@ long long _wrap_LMM_observations_datamunge_cd205fa85b728fed(datamunge::LMM *_swi
 }
 
 
-long long _wrap_LMM_num_groups_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+long long _wrap_LMM_num_groups_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -3228,7 +4042,7 @@ long long _wrap_LMM_num_groups_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_
 }
 
 
-long long _wrap_LMM_rank_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+long long _wrap_LMM_rank_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -3241,7 +4055,7 @@ long long _wrap_LMM_rank_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) 
 }
 
 
-std::vector< double > *_wrap_LMM_coefficients_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< double > *_wrap_LMM_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3254,7 +4068,7 @@ std::vector< double > *_wrap_LMM_coefficients_datamunge_cd205fa85b728fed(datamun
 }
 
 
-std::vector< std::string > *_wrap_LMM_coefficient_names_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< std::string > *_wrap_LMM_coefficient_names_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -3267,7 +4081,7 @@ std::vector< std::string > *_wrap_LMM_coefficient_names_datamunge_cd205fa85b728f
 }
 
 
-std::vector< double > *_wrap_LMM_standard_errors_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< double > *_wrap_LMM_standard_errors_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3280,7 +4094,7 @@ std::vector< double > *_wrap_LMM_standard_errors_datamunge_cd205fa85b728fed(data
 }
 
 
-std::vector< double > *_wrap_LMM_z_values_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< double > *_wrap_LMM_z_values_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3293,7 +4107,7 @@ std::vector< double > *_wrap_LMM_z_values_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_LMM_p_values_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< double > *_wrap_LMM_p_values_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3306,7 +4120,7 @@ std::vector< double > *_wrap_LMM_p_values_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_LMM_fitted_values_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< double > *_wrap_LMM_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3319,7 +4133,7 @@ std::vector< double > *_wrap_LMM_fitted_values_datamunge_cd205fa85b728fed(datamu
 }
 
 
-std::vector< double > *_wrap_LMM_residuals_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< double > *_wrap_LMM_residuals_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3332,7 +4146,7 @@ std::vector< double > *_wrap_LMM_residuals_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-double _wrap_LMM_residual_variance_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+double _wrap_LMM_residual_variance_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -3345,7 +4159,7 @@ double _wrap_LMM_residual_variance_datamunge_cd205fa85b728fed(datamunge::LMM *_s
 }
 
 
-double _wrap_LMM_residual_std_dev_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+double _wrap_LMM_residual_std_dev_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -3358,7 +4172,7 @@ double _wrap_LMM_residual_std_dev_datamunge_cd205fa85b728fed(datamunge::LMM *_sw
 }
 
 
-std::vector< double > *_wrap_LMM_random_effect_std_devs_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< double > *_wrap_LMM_random_effect_std_devs_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3371,7 +4185,7 @@ std::vector< double > *_wrap_LMM_random_effect_std_devs_datamunge_cd205fa85b728f
 }
 
 
-double _wrap_LMM_random_effect_correlation_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+double _wrap_LMM_random_effect_correlation_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::LMM *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -3388,7 +4202,7 @@ double _wrap_LMM_random_effect_correlation_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-std::vector< std::string > *_wrap_LMM_group_labels_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+std::vector< std::string > *_wrap_LMM_group_labels_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -3401,7 +4215,7 @@ std::vector< std::string > *_wrap_LMM_group_labels_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< double > *_wrap_LMM_random_effects_for_group_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0, long long _swig_go_1) {
+std::vector< double > *_wrap_LMM_random_effects_for_group_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0, long long _swig_go_1) {
   datamunge::LMM *arg1 = 0 ;
   std::size_t arg2 ;
   std::vector< double > result;
@@ -3416,7 +4230,7 @@ std::vector< double > *_wrap_LMM_random_effects_for_group_datamunge_cd205fa85b72
 }
 
 
-double _wrap_LMM_log_likelihood_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+double _wrap_LMM_log_likelihood_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -3429,7 +4243,7 @@ double _wrap_LMM_log_likelihood_datamunge_cd205fa85b728fed(datamunge::LMM *_swig
 }
 
 
-double _wrap_LMM_deviance_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+double _wrap_LMM_deviance_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -3442,7 +4256,7 @@ double _wrap_LMM_deviance_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0)
 }
 
 
-double _wrap_LMM_aic_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+double _wrap_LMM_aic_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -3455,7 +4269,7 @@ double _wrap_LMM_aic_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
 }
 
 
-double _wrap_LMM_bic_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+double _wrap_LMM_bic_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -3468,7 +4282,7 @@ double _wrap_LMM_bic_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
 }
 
 
-_gostring_ _wrap_LMM_summary_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+_gostring_ _wrap_LMM_summary_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -3481,7 +4295,7 @@ _gostring_ _wrap_LMM_summary_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go
 }
 
 
-void _wrap_LMM_print_summary_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+void _wrap_LMM_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   
   arg1 = *(datamunge::LMM **)&_swig_go_0; 
@@ -3491,7 +4305,7 @@ void _wrap_LMM_print_summary_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go
 }
 
 
-std::vector< double > *_wrap_LMM_predict_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_LMM_predict_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::LMM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -3506,7 +4320,7 @@ std::vector< double > *_wrap_LMM_predict_datamunge_cd205fa85b728fed(datamunge::L
 }
 
 
-void _wrap_delete_LMM_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
+void _wrap_delete_LMM_datamunge_c5abddb9d33fe5ef(datamunge::LMM *_swig_go_0) {
   datamunge::LMM *arg1 = 0 ;
   
   arg1 = *(datamunge::LMM **)&_swig_go_0; 
@@ -3516,7 +4330,7 @@ void _wrap_delete_LMM_datamunge_cd205fa85b728fed(datamunge::LMM *_swig_go_0) {
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7, long long _swig_go_8) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7, long long _swig_go_8) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -3551,7 +4365,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -3584,7 +4398,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -3615,7 +4429,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4, long long _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -3644,7 +4458,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3, double _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -3671,7 +4485,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -3696,7 +4510,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_5_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -3719,7 +4533,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_6_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-datamunge::GLMM *_wrap_new_GLMM__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::GLMM *_wrap_new_GLMM__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::GLMM *result = 0 ;
@@ -3737,7 +4551,7 @@ datamunge::GLMM *_wrap_new_GLMM__SWIG_7_datamunge_cd205fa85b728fed(datamunge::Da
 }
 
 
-_gostring_ _wrap_GLMM_formula_text_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+_gostring_ _wrap_GLMM_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -3750,7 +4564,7 @@ _gostring_ _wrap_GLMM_formula_text_datamunge_cd205fa85b728fed(datamunge::GLMM *_
 }
 
 
-_gostring_ _wrap_GLMM_family_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+_gostring_ _wrap_GLMM_family_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -3763,7 +4577,7 @@ _gostring_ _wrap_GLMM_family_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_g
 }
 
 
-_gostring_ _wrap_GLMM_group_variable_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+_gostring_ _wrap_GLMM_group_variable_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -3776,7 +4590,7 @@ _gostring_ _wrap_GLMM_group_variable_datamunge_cd205fa85b728fed(datamunge::GLMM 
 }
 
 
-bool _wrap_GLMM_has_random_intercept_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+bool _wrap_GLMM_has_random_intercept_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -3789,7 +4603,7 @@ bool _wrap_GLMM_has_random_intercept_datamunge_cd205fa85b728fed(datamunge::GLMM 
 }
 
 
-std::vector< std::string > *_wrap_GLMM_random_effect_names_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< std::string > *_wrap_GLMM_random_effect_names_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -3802,7 +4616,7 @@ std::vector< std::string > *_wrap_GLMM_random_effect_names_datamunge_cd205fa85b7
 }
 
 
-long long _wrap_GLMM_observations_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+long long _wrap_GLMM_observations_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -3815,7 +4629,7 @@ long long _wrap_GLMM_observations_datamunge_cd205fa85b728fed(datamunge::GLMM *_s
 }
 
 
-long long _wrap_GLMM_num_groups_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+long long _wrap_GLMM_num_groups_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -3828,7 +4642,7 @@ long long _wrap_GLMM_num_groups_datamunge_cd205fa85b728fed(datamunge::GLMM *_swi
 }
 
 
-long long _wrap_GLMM_rank_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+long long _wrap_GLMM_rank_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -3841,7 +4655,7 @@ long long _wrap_GLMM_rank_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0
 }
 
 
-long long _wrap_GLMM_iterations_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+long long _wrap_GLMM_iterations_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -3854,7 +4668,7 @@ long long _wrap_GLMM_iterations_datamunge_cd205fa85b728fed(datamunge::GLMM *_swi
 }
 
 
-std::vector< double > *_wrap_GLMM_coefficients_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< double > *_wrap_GLMM_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3867,7 +4681,7 @@ std::vector< double > *_wrap_GLMM_coefficients_datamunge_cd205fa85b728fed(datamu
 }
 
 
-std::vector< std::string > *_wrap_GLMM_coefficient_names_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< std::string > *_wrap_GLMM_coefficient_names_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -3880,7 +4694,7 @@ std::vector< std::string > *_wrap_GLMM_coefficient_names_datamunge_cd205fa85b728
 }
 
 
-std::vector< double > *_wrap_GLMM_standard_errors_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< double > *_wrap_GLMM_standard_errors_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3893,7 +4707,7 @@ std::vector< double > *_wrap_GLMM_standard_errors_datamunge_cd205fa85b728fed(dat
 }
 
 
-std::vector< double > *_wrap_GLMM_z_values_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< double > *_wrap_GLMM_z_values_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3906,7 +4720,7 @@ std::vector< double > *_wrap_GLMM_z_values_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-std::vector< double > *_wrap_GLMM_p_values_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< double > *_wrap_GLMM_p_values_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3919,7 +4733,7 @@ std::vector< double > *_wrap_GLMM_p_values_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-std::vector< double > *_wrap_GLMM_fitted_values_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< double > *_wrap_GLMM_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3932,7 +4746,7 @@ std::vector< double > *_wrap_GLMM_fitted_values_datamunge_cd205fa85b728fed(datam
 }
 
 
-std::vector< double > *_wrap_GLMM_random_effect_std_devs_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< double > *_wrap_GLMM_random_effect_std_devs_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -3945,7 +4759,7 @@ std::vector< double > *_wrap_GLMM_random_effect_std_devs_datamunge_cd205fa85b728
 }
 
 
-double _wrap_GLMM_random_effect_correlation_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+double _wrap_GLMM_random_effect_correlation_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::GLMM *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -3962,7 +4776,7 @@ double _wrap_GLMM_random_effect_correlation_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-std::vector< std::string > *_wrap_GLMM_group_labels_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+std::vector< std::string > *_wrap_GLMM_group_labels_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -3975,7 +4789,7 @@ std::vector< std::string > *_wrap_GLMM_group_labels_datamunge_cd205fa85b728fed(d
 }
 
 
-std::vector< double > *_wrap_GLMM_random_effects_for_group_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0, long long _swig_go_1) {
+std::vector< double > *_wrap_GLMM_random_effects_for_group_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0, long long _swig_go_1) {
   datamunge::GLMM *arg1 = 0 ;
   std::size_t arg2 ;
   std::vector< double > result;
@@ -3990,7 +4804,7 @@ std::vector< double > *_wrap_GLMM_random_effects_for_group_datamunge_cd205fa85b7
 }
 
 
-double _wrap_GLMM_deviance_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+double _wrap_GLMM_deviance_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -4003,7 +4817,7 @@ double _wrap_GLMM_deviance_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_
 }
 
 
-double _wrap_GLMM_aic_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+double _wrap_GLMM_aic_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -4016,7 +4830,7 @@ double _wrap_GLMM_aic_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
 }
 
 
-double _wrap_GLMM_bic_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+double _wrap_GLMM_bic_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -4029,7 +4843,7 @@ double _wrap_GLMM_bic_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
 }
 
 
-_gostring_ _wrap_GLMM_summary_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+_gostring_ _wrap_GLMM_summary_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -4042,7 +4856,7 @@ _gostring_ _wrap_GLMM_summary_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_
 }
 
 
-void _wrap_GLMM_print_summary_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+void _wrap_GLMM_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   
   arg1 = *(datamunge::GLMM **)&_swig_go_0; 
@@ -4052,7 +4866,7 @@ void _wrap_GLMM_print_summary_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_
 }
 
 
-std::vector< double > *_wrap_GLMM_predict_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_GLMM_predict_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GLMM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -4067,7 +4881,7 @@ std::vector< double > *_wrap_GLMM_predict_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-void _wrap_delete_GLMM_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
+void _wrap_delete_GLMM_datamunge_c5abddb9d33fe5ef(datamunge::GLMM *_swig_go_0) {
   datamunge::GLMM *arg1 = 0 ;
   
   arg1 = *(datamunge::GLMM **)&_swig_go_0; 
@@ -4077,7 +4891,533 @@ void _wrap_delete_GLMM_datamunge_cd205fa85b728fed(datamunge::GLMM *_swig_go_0) {
 }
 
 
-datamunge::LDA *_wrap_new_LDA__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< double > *_swig_go_2) {
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, double _swig_go_4, long long _swig_go_5, double _swig_go_6, long long _swig_go_7, long long _swig_go_8, long long _swig_go_9) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  std::size_t arg10 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  arg5 = (double)_swig_go_4; 
+  arg6 = (size_t)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  arg8 = (size_t)_swig_go_7; 
+  arg9 = (size_t)_swig_go_8; 
+  arg10 = (size_t)_swig_go_9; 
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),SWIG_STD_MOVE(arg10));
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, double _swig_go_4, long long _swig_go_5, double _swig_go_6, long long _swig_go_7, long long _swig_go_8) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  std::size_t arg9 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  arg5 = (double)_swig_go_4; 
+  arg6 = (size_t)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  arg8 = (size_t)_swig_go_7; 
+  arg9 = (size_t)_swig_go_8; 
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, double _swig_go_4, long long _swig_go_5, double _swig_go_6, long long _swig_go_7) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  std::size_t arg8 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  arg5 = (double)_swig_go_4; 
+  arg6 = (size_t)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  arg8 = (size_t)_swig_go_7; 
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8));
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, double _swig_go_4, long long _swig_go_5, double _swig_go_6) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  double arg7 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  arg5 = (double)_swig_go_4; 
+  arg6 = (size_t)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7);
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, double _swig_go_4, long long _swig_go_5) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  std::size_t arg6 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  arg5 = (double)_swig_go_4; 
+  arg6 = (size_t)_swig_go_5; 
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6));
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, double _swig_go_4) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  double arg5 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  arg5 = (double)_swig_go_4; 
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  std::string arg4_str(_swig_go_3.p, _swig_go_3.n);
+  arg4 = &arg4_str;
+  
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  std::string arg3_str(_swig_go_2.p, _swig_go_2.n);
+  arg3 = &arg3_str;
+  
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::INLAMixedModel *_wrap_new_INLAMixedModel__SWIG_8_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::DataFrame *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  datamunge::INLAMixedModel *result = 0 ;
+  datamunge::INLAMixedModel *_swig_go_result;
+  
+  arg1 = *(datamunge::DataFrame **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+  *(datamunge::INLAMixedModel **)&_swig_go_result = (datamunge::INLAMixedModel *)result; 
+  return _swig_go_result;
+}
+
+
+_gostring_ _wrap_INLAMixedModel_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  _gostring_ _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->formula_text();
+  _swig_go_result = Swig_AllocateString((&result)->data(), (&result)->length()); 
+  return _swig_go_result;
+}
+
+
+_gostring_ _wrap_INLAMixedModel_family_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  _gostring_ _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->family();
+  _swig_go_result = Swig_AllocateString((&result)->data(), (&result)->length()); 
+  return _swig_go_result;
+}
+
+
+_gostring_ _wrap_INLAMixedModel_group_variable_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  _gostring_ _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_variable();
+  _swig_go_result = Swig_AllocateString((&result)->data(), (&result)->length()); 
+  return _swig_go_result;
+}
+
+
+std::vector< std::string > *_wrap_INLAMixedModel_random_effect_names_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  std::vector< std::string > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_names();
+  *(std::vector< std::string > **)&_swig_go_result = new std::vector< std::string >(result); 
+  return _swig_go_result;
+}
+
+
+long long _wrap_INLAMixedModel_observations_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->observations();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+long long _wrap_INLAMixedModel_num_groups_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->num_groups();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_INLAMixedModel_fixed_effects_mean_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_mean();
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_INLAMixedModel_fixed_effects_sd_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_sd();
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< std::string > *_wrap_INLAMixedModel_coefficient_names_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  std::vector< std::string > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->coefficient_names();
+  *(std::vector< std::string > **)&_swig_go_result = new std::vector< std::string >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_INLAMixedModel_random_effect_std_devs_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_std_devs();
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+double _wrap_INLAMixedModel_residual_std_dev_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->residual_std_dev();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< std::string > *_wrap_INLAMixedModel_group_labels_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::vector< std::string > result;
+  std::vector< std::string > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->group_labels();
+  *(std::vector< std::string > **)&_swig_go_result = new std::vector< std::string >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_INLAMixedModel_random_effects_mean_for_group_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0, long long _swig_go_1) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_mean_for_group(SWIG_STD_MOVE(arg2));
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_INLAMixedModel_random_effects_sd_for_group_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0, long long _swig_go_1) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_sd_for_group(SWIG_STD_MOVE(arg2));
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+double _wrap_INLAMixedModel_log_marginal_likelihood_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = (double)((datamunge::INLAMixedModel const *)arg1)->log_marginal_likelihood();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+_gostring_ _wrap_INLAMixedModel_summary_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  std::string result;
+  _gostring_ _swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->summary();
+  _swig_go_result = Swig_AllocateString((&result)->data(), (&result)->length()); 
+  return _swig_go_result;
+}
+
+
+void _wrap_INLAMixedModel_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  ((datamunge::INLAMixedModel const *)arg1)->print_summary();
+  
+}
+
+
+std::vector< double > *_wrap_INLAMixedModel_predict_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  datamunge::DataFrame *arg2 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
+  
+  result = ((datamunge::INLAMixedModel const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_INLAMixedModel_datamunge_c5abddb9d33fe5ef(datamunge::INLAMixedModel *_swig_go_0) {
+  datamunge::INLAMixedModel *arg1 = 0 ;
+  
+  arg1 = *(datamunge::INLAMixedModel **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+datamunge::LDA *_wrap_new_LDA__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, std::vector< double > *_swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::vector< double > *arg3 = 0 ;
@@ -4097,7 +5437,7 @@ datamunge::LDA *_wrap_new_LDA__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::LDA *_wrap_new_LDA__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::LDA *_wrap_new_LDA__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::LDA *result = 0 ;
@@ -4115,7 +5455,7 @@ datamunge::LDA *_wrap_new_LDA__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-std::vector< std::string > *_wrap_LDA_classes_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+std::vector< std::string > *_wrap_LDA_classes_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -4128,7 +5468,7 @@ std::vector< std::string > *_wrap_LDA_classes_datamunge_cd205fa85b728fed(datamun
 }
 
 
-std::vector< std::string > *_wrap_LDA_predictor_names_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+std::vector< std::string > *_wrap_LDA_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -4141,7 +5481,7 @@ std::vector< std::string > *_wrap_LDA_predictor_names_datamunge_cd205fa85b728fed
 }
 
 
-long long _wrap_LDA_observations_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+long long _wrap_LDA_observations_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4154,7 +5494,7 @@ long long _wrap_LDA_observations_datamunge_cd205fa85b728fed(datamunge::LDA *_swi
 }
 
 
-long long _wrap_LDA_num_discriminants_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+long long _wrap_LDA_num_discriminants_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4167,7 +5507,7 @@ long long _wrap_LDA_num_discriminants_datamunge_cd205fa85b728fed(datamunge::LDA 
 }
 
 
-std::vector< double > *_wrap_LDA_priors_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+std::vector< double > *_wrap_LDA_priors_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -4180,7 +5520,7 @@ std::vector< double > *_wrap_LDA_priors_datamunge_cd205fa85b728fed(datamunge::LD
 }
 
 
-datamunge::DataFrame *_wrap_LDA_group_means_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+datamunge::DataFrame *_wrap_LDA_group_means_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -4193,7 +5533,7 @@ datamunge::DataFrame *_wrap_LDA_group_means_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DataFrame *_wrap_LDA_scaling_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+datamunge::DataFrame *_wrap_LDA_scaling_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -4206,7 +5546,7 @@ datamunge::DataFrame *_wrap_LDA_scaling_datamunge_cd205fa85b728fed(datamunge::LD
 }
 
 
-std::vector< double > *_wrap_LDA_proportion_of_trace_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+std::vector< double > *_wrap_LDA_proportion_of_trace_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -4219,7 +5559,7 @@ std::vector< double > *_wrap_LDA_proportion_of_trace_datamunge_cd205fa85b728fed(
 }
 
 
-double _wrap_LDA_training_accuracy_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+double _wrap_LDA_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -4232,7 +5572,7 @@ double _wrap_LDA_training_accuracy_datamunge_cd205fa85b728fed(datamunge::LDA *_s
 }
 
 
-datamunge::DataFrame *_wrap_LDA_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+datamunge::DataFrame *_wrap_LDA_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -4245,7 +5585,7 @@ datamunge::DataFrame *_wrap_LDA_confusion_matrix_datamunge_cd205fa85b728fed(data
 }
 
 
-_gostring_ _wrap_LDA_summary_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+_gostring_ _wrap_LDA_summary_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -4258,7 +5598,7 @@ _gostring_ _wrap_LDA_summary_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go
 }
 
 
-void _wrap_LDA_print_summary_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+void _wrap_LDA_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   
   arg1 = *(datamunge::LDA **)&_swig_go_0; 
@@ -4268,7 +5608,7 @@ void _wrap_LDA_print_summary_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go
 }
 
 
-std::vector< std::string > *_wrap_LDA_predict_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_LDA_predict_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::LDA *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -4283,7 +5623,7 @@ std::vector< std::string > *_wrap_LDA_predict_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::DataFrame *_wrap_LDA_predict_frame_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_LDA_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::LDA *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -4298,20 +5638,20 @@ datamunge::DataFrame *_wrap_LDA_predict_frame_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_LDA_plot_discriminants_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_LDA_plot_discriminants_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::LDA **)&_swig_go_0; 
   
   result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_LDA_save_discriminant_plot_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_LDA_save_discriminant_plot_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::LDA *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -4326,7 +5666,7 @@ void _wrap_LDA_save_discriminant_plot_datamunge_cd205fa85b728fed(datamunge::LDA 
 }
 
 
-void _wrap_delete_LDA_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
+void _wrap_delete_LDA_datamunge_c5abddb9d33fe5ef(datamunge::LDA *_swig_go_0) {
   datamunge::LDA *arg1 = 0 ;
   
   arg1 = *(datamunge::LDA **)&_swig_go_0; 
@@ -4336,7 +5676,7 @@ void _wrap_delete_LDA_datamunge_cd205fa85b728fed(datamunge::LDA *_swig_go_0) {
 }
 
 
-datamunge::SVM *_wrap_new_SVM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, intgo _swig_go_6, bool _swig_go_7) {
+datamunge::SVM *_wrap_new_SVM__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, intgo _swig_go_6, bool _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -4369,7 +5709,7 @@ datamunge::SVM *_wrap_new_SVM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::SVM *_wrap_new_SVM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, intgo _swig_go_6) {
+datamunge::SVM *_wrap_new_SVM__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, intgo _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -4400,7 +5740,7 @@ datamunge::SVM *_wrap_new_SVM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::SVM *_wrap_new_SVM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5) {
+datamunge::SVM *_wrap_new_SVM__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -4429,7 +5769,7 @@ datamunge::SVM *_wrap_new_SVM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::SVM *_wrap_new_SVM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4) {
+datamunge::SVM *_wrap_new_SVM__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, double _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -4456,7 +5796,7 @@ datamunge::SVM *_wrap_new_SVM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::SVM *_wrap_new_SVM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
+datamunge::SVM *_wrap_new_SVM__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -4481,7 +5821,7 @@ datamunge::SVM *_wrap_new_SVM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::SVM *_wrap_new_SVM__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::SVM *_wrap_new_SVM__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -4504,7 +5844,7 @@ datamunge::SVM *_wrap_new_SVM__SWIG_5_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::SVM *_wrap_new_SVM__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::SVM *_wrap_new_SVM__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::SVM *result = 0 ;
@@ -4522,7 +5862,7 @@ datamunge::SVM *_wrap_new_SVM__SWIG_6_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-std::vector< std::string > *_wrap_SVM_classes_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+std::vector< std::string > *_wrap_SVM_classes_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -4535,7 +5875,7 @@ std::vector< std::string > *_wrap_SVM_classes_datamunge_cd205fa85b728fed(datamun
 }
 
 
-std::vector< std::string > *_wrap_SVM_predictor_names_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+std::vector< std::string > *_wrap_SVM_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -4548,7 +5888,7 @@ std::vector< std::string > *_wrap_SVM_predictor_names_datamunge_cd205fa85b728fed
 }
 
 
-long long _wrap_SVM_observations_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+long long _wrap_SVM_observations_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4561,7 +5901,7 @@ long long _wrap_SVM_observations_datamunge_cd205fa85b728fed(datamunge::SVM *_swi
 }
 
 
-long long _wrap_SVM_num_support_vectors_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+long long _wrap_SVM_num_support_vectors_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4574,7 +5914,7 @@ long long _wrap_SVM_num_support_vectors_datamunge_cd205fa85b728fed(datamunge::SV
 }
 
 
-double _wrap_SVM_training_accuracy_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+double _wrap_SVM_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -4587,7 +5927,7 @@ double _wrap_SVM_training_accuracy_datamunge_cd205fa85b728fed(datamunge::SVM *_s
 }
 
 
-datamunge::DataFrame *_wrap_SVM_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+datamunge::DataFrame *_wrap_SVM_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -4600,7 +5940,7 @@ datamunge::DataFrame *_wrap_SVM_confusion_matrix_datamunge_cd205fa85b728fed(data
 }
 
 
-_gostring_ _wrap_SVM_summary_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+_gostring_ _wrap_SVM_summary_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -4613,7 +5953,7 @@ _gostring_ _wrap_SVM_summary_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go
 }
 
 
-void _wrap_SVM_print_summary_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+void _wrap_SVM_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   
   arg1 = *(datamunge::SVM **)&_swig_go_0; 
@@ -4623,7 +5963,7 @@ void _wrap_SVM_print_summary_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go
 }
 
 
-std::vector< std::string > *_wrap_SVM_predict_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_SVM_predict_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::SVM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -4638,7 +5978,7 @@ std::vector< std::string > *_wrap_SVM_predict_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::DataFrame *_wrap_SVM_predict_frame_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_SVM_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::SVM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -4653,7 +5993,7 @@ datamunge::DataFrame *_wrap_SVM_predict_frame_datamunge_cd205fa85b728fed(datamun
 }
 
 
-void _wrap_delete_SVM_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
+void _wrap_delete_SVM_datamunge_c5abddb9d33fe5ef(datamunge::SVM *_swig_go_0) {
   datamunge::SVM *arg1 = 0 ;
   
   arg1 = *(datamunge::SVM **)&_swig_go_0; 
@@ -4663,7 +6003,7 @@ void _wrap_delete_SVM_datamunge_cd205fa85b728fed(datamunge::SVM *_swig_go_0) {
 }
 
 
-datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, _gostring_ _swig_go_5) {
+datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, _gostring_ _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -4692,7 +6032,7 @@ datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_0_data
 }
 
 
-datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -4716,7 +6056,7 @@ datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_1_data
 }
 
 
-datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -4738,7 +6078,7 @@ datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_2_data
 }
 
 
-datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -4758,7 +6098,7 @@ datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_3_data
 }
 
 
-datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::DecisionTreeClassifier *result = 0 ;
@@ -4776,7 +6116,7 @@ datamunge::DecisionTreeClassifier *_wrap_new_DecisionTreeClassifier__SWIG_4_data
 }
 
 
-std::vector< std::string > *_wrap_DecisionTreeClassifier_classes_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_DecisionTreeClassifier_classes_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -4789,7 +6129,7 @@ std::vector< std::string > *_wrap_DecisionTreeClassifier_classes_datamunge_cd205
 }
 
 
-std::vector< std::string > *_wrap_DecisionTreeClassifier_predictor_names_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_DecisionTreeClassifier_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -4802,7 +6142,7 @@ std::vector< std::string > *_wrap_DecisionTreeClassifier_predictor_names_datamun
 }
 
 
-long long _wrap_DecisionTreeClassifier_observations_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+long long _wrap_DecisionTreeClassifier_observations_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4815,7 +6155,7 @@ long long _wrap_DecisionTreeClassifier_observations_datamunge_cd205fa85b728fed(d
 }
 
 
-long long _wrap_DecisionTreeClassifier_node_count_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+long long _wrap_DecisionTreeClassifier_node_count_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4828,7 +6168,7 @@ long long _wrap_DecisionTreeClassifier_node_count_datamunge_cd205fa85b728fed(dat
 }
 
 
-long long _wrap_DecisionTreeClassifier_leaf_count_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+long long _wrap_DecisionTreeClassifier_leaf_count_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4841,7 +6181,7 @@ long long _wrap_DecisionTreeClassifier_leaf_count_datamunge_cd205fa85b728fed(dat
 }
 
 
-long long _wrap_DecisionTreeClassifier_depth_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+long long _wrap_DecisionTreeClassifier_depth_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -4854,7 +6194,7 @@ long long _wrap_DecisionTreeClassifier_depth_datamunge_cd205fa85b728fed(datamung
 }
 
 
-std::vector< double > *_wrap_DecisionTreeClassifier_feature_importance_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+std::vector< double > *_wrap_DecisionTreeClassifier_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -4867,7 +6207,7 @@ std::vector< double > *_wrap_DecisionTreeClassifier_feature_importance_datamunge
 }
 
 
-double _wrap_DecisionTreeClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+double _wrap_DecisionTreeClassifier_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -4880,7 +6220,7 @@ double _wrap_DecisionTreeClassifier_training_accuracy_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::DataFrame *_wrap_DecisionTreeClassifier_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+datamunge::DataFrame *_wrap_DecisionTreeClassifier_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -4893,7 +6233,7 @@ datamunge::DataFrame *_wrap_DecisionTreeClassifier_confusion_matrix_datamunge_cd
 }
 
 
-_gostring_ _wrap_DecisionTreeClassifier_summary_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+_gostring_ _wrap_DecisionTreeClassifier_summary_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -4906,7 +6246,7 @@ _gostring_ _wrap_DecisionTreeClassifier_summary_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_DecisionTreeClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+void _wrap_DecisionTreeClassifier_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
@@ -4916,7 +6256,7 @@ void _wrap_DecisionTreeClassifier_print_summary_datamunge_cd205fa85b728fed(datam
 }
 
 
-std::vector< std::string > *_wrap_DecisionTreeClassifier_predict_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_DecisionTreeClassifier_predict_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -4931,7 +6271,7 @@ std::vector< std::string > *_wrap_DecisionTreeClassifier_predict_datamunge_cd205
 }
 
 
-datamunge::DataFrame *_wrap_DecisionTreeClassifier_predict_frame_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_DecisionTreeClassifier_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -4946,13 +6286,13 @@ datamunge::DataFrame *_wrap_DecisionTreeClassifier_predict_frame_datamunge_cd205
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_DecisionTreeClassifier_plot_classification_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_classification_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -4966,18 +6306,18 @@ datamunge::plot::ScatterPlot *_wrap_DecisionTreeClassifier_plot_classification_d
   
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
   
@@ -4991,17 +6331,17 @@ datamunge::plot::ScatterPlot *_wrap_DecisionTreeClassifier_plot_decision_regions
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::plot::RPlot *_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
   
@@ -5014,12 +6354,12 @@ datamunge::plot::ScatterPlot *_wrap_DecisionTreeClassifier_plot_decision_regions
   
   
   result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_DecisionTreeClassifier_datamunge_cd205fa85b728fed(datamunge::DecisionTreeClassifier *_swig_go_0) {
+void _wrap_delete_DecisionTreeClassifier_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeClassifier *_swig_go_0) {
   datamunge::DecisionTreeClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::DecisionTreeClassifier **)&_swig_go_0; 
@@ -5029,7 +6369,7 @@ void _wrap_delete_DecisionTreeClassifier_datamunge_cd205fa85b728fed(datamunge::D
 }
 
 
-datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5053,7 +6393,7 @@ datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_0_datamu
 }
 
 
-datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5075,7 +6415,7 @@ datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_1_datamu
 }
 
 
-datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5095,7 +6435,7 @@ datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_2_datamu
 }
 
 
-datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::DecisionTreeRegressor *result = 0 ;
@@ -5113,7 +6453,7 @@ datamunge::DecisionTreeRegressor *_wrap_new_DecisionTreeRegressor__SWIG_3_datamu
 }
 
 
-std::vector< std::string > *_wrap_DecisionTreeRegressor_predictor_names_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+std::vector< std::string > *_wrap_DecisionTreeRegressor_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -5126,7 +6466,7 @@ std::vector< std::string > *_wrap_DecisionTreeRegressor_predictor_names_datamung
 }
 
 
-long long _wrap_DecisionTreeRegressor_observations_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+long long _wrap_DecisionTreeRegressor_observations_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -5139,7 +6479,7 @@ long long _wrap_DecisionTreeRegressor_observations_datamunge_cd205fa85b728fed(da
 }
 
 
-long long _wrap_DecisionTreeRegressor_node_count_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+long long _wrap_DecisionTreeRegressor_node_count_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -5152,7 +6492,7 @@ long long _wrap_DecisionTreeRegressor_node_count_datamunge_cd205fa85b728fed(data
 }
 
 
-long long _wrap_DecisionTreeRegressor_leaf_count_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+long long _wrap_DecisionTreeRegressor_leaf_count_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -5165,7 +6505,7 @@ long long _wrap_DecisionTreeRegressor_leaf_count_datamunge_cd205fa85b728fed(data
 }
 
 
-long long _wrap_DecisionTreeRegressor_depth_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+long long _wrap_DecisionTreeRegressor_depth_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -5178,7 +6518,7 @@ long long _wrap_DecisionTreeRegressor_depth_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-std::vector< double > *_wrap_DecisionTreeRegressor_feature_importance_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+std::vector< double > *_wrap_DecisionTreeRegressor_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -5191,7 +6531,7 @@ std::vector< double > *_wrap_DecisionTreeRegressor_feature_importance_datamunge_
 }
 
 
-std::vector< double > *_wrap_DecisionTreeRegressor_fitted_values_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+std::vector< double > *_wrap_DecisionTreeRegressor_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -5204,7 +6544,7 @@ std::vector< double > *_wrap_DecisionTreeRegressor_fitted_values_datamunge_cd205
 }
 
 
-double _wrap_DecisionTreeRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+double _wrap_DecisionTreeRegressor_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -5217,7 +6557,7 @@ double _wrap_DecisionTreeRegressor_r_squared_datamunge_cd205fa85b728fed(datamung
 }
 
 
-double _wrap_DecisionTreeRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+double _wrap_DecisionTreeRegressor_rmse_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -5230,7 +6570,7 @@ double _wrap_DecisionTreeRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::De
 }
 
 
-_gostring_ _wrap_DecisionTreeRegressor_summary_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+_gostring_ _wrap_DecisionTreeRegressor_summary_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -5243,7 +6583,7 @@ _gostring_ _wrap_DecisionTreeRegressor_summary_datamunge_cd205fa85b728fed(datamu
 }
 
 
-void _wrap_DecisionTreeRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+void _wrap_DecisionTreeRegressor_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::DecisionTreeRegressor **)&_swig_go_0; 
@@ -5253,7 +6593,7 @@ void _wrap_DecisionTreeRegressor_print_summary_datamunge_cd205fa85b728fed(datamu
 }
 
 
-std::vector< double > *_wrap_DecisionTreeRegressor_predict_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_DecisionTreeRegressor_predict_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -5268,33 +6608,33 @@ std::vector< double > *_wrap_DecisionTreeRegressor_predict_datamunge_cd205fa85b7
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_DecisionTreeRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_DecisionTreeRegressor_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeRegressor **)&_swig_go_0; 
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_DecisionTreeRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_DecisionTreeRegressor_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::DecisionTreeRegressor **)&_swig_go_0; 
   
   result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_DecisionTreeRegressor_datamunge_cd205fa85b728fed(datamunge::DecisionTreeRegressor *_swig_go_0) {
+void _wrap_delete_DecisionTreeRegressor_datamunge_c5abddb9d33fe5ef(datamunge::DecisionTreeRegressor *_swig_go_0) {
   datamunge::DecisionTreeRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::DecisionTreeRegressor **)&_swig_go_0; 
@@ -5304,7 +6644,7 @@ void _wrap_delete_DecisionTreeRegressor_datamunge_cd205fa85b728fed(datamunge::De
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7, bool _swig_go_8, double _swig_go_9, long long _swig_go_10) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7, bool _swig_go_8, double _swig_go_9, long long _swig_go_10) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5343,7 +6683,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_0_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7, bool _swig_go_8, double _swig_go_9) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7, bool _swig_go_8, double _swig_go_9) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5380,7 +6720,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_1_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7, bool _swig_go_8) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7, bool _swig_go_8) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5415,7 +6755,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_2_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, _gostring_ _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5448,7 +6788,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_3_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5476,7 +6816,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_4_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5502,7 +6842,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_5_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5526,7 +6866,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_6_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5548,7 +6888,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_7_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_8_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_8_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5568,7 +6908,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_8_data
 }
 
 
-datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_9_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_9_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::RandomForestClassifier *result = 0 ;
@@ -5586,7 +6926,7 @@ datamunge::RandomForestClassifier *_wrap_new_RandomForestClassifier__SWIG_9_data
 }
 
 
-std::vector< std::string > *_wrap_RandomForestClassifier_classes_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_RandomForestClassifier_classes_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -5599,7 +6939,7 @@ std::vector< std::string > *_wrap_RandomForestClassifier_classes_datamunge_cd205
 }
 
 
-std::vector< std::string > *_wrap_RandomForestClassifier_predictor_names_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_RandomForestClassifier_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -5612,7 +6952,7 @@ std::vector< std::string > *_wrap_RandomForestClassifier_predictor_names_datamun
 }
 
 
-long long _wrap_RandomForestClassifier_observations_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+long long _wrap_RandomForestClassifier_observations_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -5625,7 +6965,7 @@ long long _wrap_RandomForestClassifier_observations_datamunge_cd205fa85b728fed(d
 }
 
 
-long long _wrap_RandomForestClassifier_n_trees_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+long long _wrap_RandomForestClassifier_n_trees_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -5638,7 +6978,7 @@ long long _wrap_RandomForestClassifier_n_trees_datamunge_cd205fa85b728fed(datamu
 }
 
 
-long long _wrap_RandomForestClassifier_max_features_used_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+long long _wrap_RandomForestClassifier_max_features_used_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -5651,7 +6991,7 @@ long long _wrap_RandomForestClassifier_max_features_used_datamunge_cd205fa85b728
 }
 
 
-std::vector< double > *_wrap_RandomForestClassifier_feature_importance_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+std::vector< double > *_wrap_RandomForestClassifier_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -5664,7 +7004,7 @@ std::vector< double > *_wrap_RandomForestClassifier_feature_importance_datamunge
 }
 
 
-double _wrap_RandomForestClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+double _wrap_RandomForestClassifier_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -5677,7 +7017,7 @@ double _wrap_RandomForestClassifier_training_accuracy_datamunge_cd205fa85b728fed
 }
 
 
-double _wrap_RandomForestClassifier_oob_accuracy_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+double _wrap_RandomForestClassifier_oob_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -5690,7 +7030,7 @@ double _wrap_RandomForestClassifier_oob_accuracy_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::DataFrame *_wrap_RandomForestClassifier_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+datamunge::DataFrame *_wrap_RandomForestClassifier_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -5703,7 +7043,7 @@ datamunge::DataFrame *_wrap_RandomForestClassifier_confusion_matrix_datamunge_cd
 }
 
 
-_gostring_ _wrap_RandomForestClassifier_summary_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+_gostring_ _wrap_RandomForestClassifier_summary_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -5716,7 +7056,7 @@ _gostring_ _wrap_RandomForestClassifier_summary_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_RandomForestClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+void _wrap_RandomForestClassifier_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
@@ -5726,7 +7066,7 @@ void _wrap_RandomForestClassifier_print_summary_datamunge_cd205fa85b728fed(datam
 }
 
 
-std::vector< std::string > *_wrap_RandomForestClassifier_predict_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_RandomForestClassifier_predict_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -5741,7 +7081,7 @@ std::vector< std::string > *_wrap_RandomForestClassifier_predict_datamunge_cd205
 }
 
 
-datamunge::DataFrame *_wrap_RandomForestClassifier_predict_frame_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_RandomForestClassifier_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -5756,13 +7096,13 @@ datamunge::DataFrame *_wrap_RandomForestClassifier_predict_frame_datamunge_cd205
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_RandomForestClassifier_plot_classification_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_classification_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -5776,18 +7116,18 @@ datamunge::plot::ScatterPlot *_wrap_RandomForestClassifier_plot_classification_d
   
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
   
@@ -5801,17 +7141,17 @@ datamunge::plot::ScatterPlot *_wrap_RandomForestClassifier_plot_decision_regions
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::plot::RPlot *_wrap_RandomForestClassifier_plot_decision_regions__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
   
@@ -5824,12 +7164,12 @@ datamunge::plot::ScatterPlot *_wrap_RandomForestClassifier_plot_decision_regions
   
   
   result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_RandomForestClassifier_datamunge_cd205fa85b728fed(datamunge::RandomForestClassifier *_swig_go_0) {
+void _wrap_delete_RandomForestClassifier_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestClassifier *_swig_go_0) {
   datamunge::RandomForestClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::RandomForestClassifier **)&_swig_go_0; 
@@ -5839,7 +7179,7 @@ void _wrap_delete_RandomForestClassifier_datamunge_cd205fa85b728fed(datamunge::R
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, bool _swig_go_7, double _swig_go_8, long long _swig_go_9) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, bool _swig_go_7, double _swig_go_8, long long _swig_go_9) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5873,7 +7213,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_0_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, bool _swig_go_7, double _swig_go_8) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, bool _swig_go_7, double _swig_go_8) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5905,7 +7245,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_1_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, bool _swig_go_7) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, bool _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5935,7 +7275,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_2_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5963,7 +7303,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_3_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -5989,7 +7329,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_4_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -6013,7 +7353,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_5_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -6035,7 +7375,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_6_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -6055,7 +7395,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_7_datamu
 }
 
 
-datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_8_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_8_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::RandomForestRegressor *result = 0 ;
@@ -6073,7 +7413,7 @@ datamunge::RandomForestRegressor *_wrap_new_RandomForestRegressor__SWIG_8_datamu
 }
 
 
-std::vector< std::string > *_wrap_RandomForestRegressor_predictor_names_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+std::vector< std::string > *_wrap_RandomForestRegressor_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -6086,7 +7426,7 @@ std::vector< std::string > *_wrap_RandomForestRegressor_predictor_names_datamung
 }
 
 
-long long _wrap_RandomForestRegressor_observations_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+long long _wrap_RandomForestRegressor_observations_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -6099,7 +7439,7 @@ long long _wrap_RandomForestRegressor_observations_datamunge_cd205fa85b728fed(da
 }
 
 
-long long _wrap_RandomForestRegressor_n_trees_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+long long _wrap_RandomForestRegressor_n_trees_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -6112,7 +7452,7 @@ long long _wrap_RandomForestRegressor_n_trees_datamunge_cd205fa85b728fed(datamun
 }
 
 
-long long _wrap_RandomForestRegressor_max_features_used_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+long long _wrap_RandomForestRegressor_max_features_used_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -6125,7 +7465,7 @@ long long _wrap_RandomForestRegressor_max_features_used_datamunge_cd205fa85b728f
 }
 
 
-std::vector< double > *_wrap_RandomForestRegressor_feature_importance_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+std::vector< double > *_wrap_RandomForestRegressor_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6138,7 +7478,7 @@ std::vector< double > *_wrap_RandomForestRegressor_feature_importance_datamunge_
 }
 
 
-std::vector< double > *_wrap_RandomForestRegressor_fitted_values_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+std::vector< double > *_wrap_RandomForestRegressor_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6151,7 +7491,7 @@ std::vector< double > *_wrap_RandomForestRegressor_fitted_values_datamunge_cd205
 }
 
 
-double _wrap_RandomForestRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+double _wrap_RandomForestRegressor_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6164,7 +7504,7 @@ double _wrap_RandomForestRegressor_r_squared_datamunge_cd205fa85b728fed(datamung
 }
 
 
-double _wrap_RandomForestRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+double _wrap_RandomForestRegressor_rmse_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6177,7 +7517,7 @@ double _wrap_RandomForestRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::Ra
 }
 
 
-double _wrap_RandomForestRegressor_oob_r_squared_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+double _wrap_RandomForestRegressor_oob_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6190,7 +7530,7 @@ double _wrap_RandomForestRegressor_oob_r_squared_datamunge_cd205fa85b728fed(data
 }
 
 
-double _wrap_RandomForestRegressor_oob_rmse_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+double _wrap_RandomForestRegressor_oob_rmse_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6203,7 +7543,7 @@ double _wrap_RandomForestRegressor_oob_rmse_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-_gostring_ _wrap_RandomForestRegressor_summary_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+_gostring_ _wrap_RandomForestRegressor_summary_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -6216,7 +7556,7 @@ _gostring_ _wrap_RandomForestRegressor_summary_datamunge_cd205fa85b728fed(datamu
 }
 
 
-void _wrap_RandomForestRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+void _wrap_RandomForestRegressor_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::RandomForestRegressor **)&_swig_go_0; 
@@ -6226,7 +7566,7 @@ void _wrap_RandomForestRegressor_print_summary_datamunge_cd205fa85b728fed(datamu
 }
 
 
-std::vector< double > *_wrap_RandomForestRegressor_predict_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_RandomForestRegressor_predict_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -6241,33 +7581,33 @@ std::vector< double > *_wrap_RandomForestRegressor_predict_datamunge_cd205fa85b7
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_RandomForestRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_RandomForestRegressor_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestRegressor **)&_swig_go_0; 
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_RandomForestRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_RandomForestRegressor_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::RandomForestRegressor **)&_swig_go_0; 
   
   result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_RandomForestRegressor_datamunge_cd205fa85b728fed(datamunge::RandomForestRegressor *_swig_go_0) {
+void _wrap_delete_RandomForestRegressor_datamunge_c5abddb9d33fe5ef(datamunge::RandomForestRegressor *_swig_go_0) {
   datamunge::RandomForestRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::RandomForestRegressor **)&_swig_go_0; 
@@ -6277,7 +7617,7 @@ void _wrap_delete_RandomForestRegressor_datamunge_cd205fa85b728fed(datamunge::Ra
 }
 
 
-datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6, long long _swig_go_7) {
+datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6, long long _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6307,7 +7647,7 @@ datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_0_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6) {
+datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6335,7 +7675,7 @@ datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_1_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
+datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6361,7 +7701,7 @@ datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_2_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4) {
+datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6385,7 +7725,7 @@ datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_3_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3) {
+datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6407,7 +7747,7 @@ datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_4_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
+datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6427,7 +7767,7 @@ datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_5_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::ElasticNet *result = 0 ;
@@ -6445,7 +7785,7 @@ datamunge::ElasticNet *_wrap_new_ElasticNet__SWIG_6_datamunge_cd205fa85b728fed(d
 }
 
 
-_gostring_ _wrap_ElasticNet_formula_text_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+_gostring_ _wrap_ElasticNet_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -6458,7 +7798,7 @@ _gostring_ _wrap_ElasticNet_formula_text_datamunge_cd205fa85b728fed(datamunge::E
 }
 
 
-bool _wrap_ElasticNet_has_intercept_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+bool _wrap_ElasticNet_has_intercept_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -6471,7 +7811,7 @@ bool _wrap_ElasticNet_has_intercept_datamunge_cd205fa85b728fed(datamunge::Elasti
 }
 
 
-std::vector< std::string > *_wrap_ElasticNet_predictor_names_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+std::vector< std::string > *_wrap_ElasticNet_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -6484,7 +7824,7 @@ std::vector< std::string > *_wrap_ElasticNet_predictor_names_datamunge_cd205fa85
 }
 
 
-long long _wrap_ElasticNet_observations_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+long long _wrap_ElasticNet_observations_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -6497,7 +7837,7 @@ long long _wrap_ElasticNet_observations_datamunge_cd205fa85b728fed(datamunge::El
 }
 
 
-double _wrap_ElasticNet_alpha_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+double _wrap_ElasticNet_alpha_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6510,7 +7850,7 @@ double _wrap_ElasticNet_alpha_datamunge_cd205fa85b728fed(datamunge::ElasticNet *
 }
 
 
-double _wrap_ElasticNet_lambda_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+double _wrap_ElasticNet_lambda_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6523,7 +7863,7 @@ double _wrap_ElasticNet_lambda_datamunge_cd205fa85b728fed(datamunge::ElasticNet 
 }
 
 
-bool _wrap_ElasticNet_lambda_was_selected_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+bool _wrap_ElasticNet_lambda_was_selected_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -6536,7 +7876,7 @@ bool _wrap_ElasticNet_lambda_was_selected_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_ElasticNet_lambda_path_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+std::vector< double > *_wrap_ElasticNet_lambda_path_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6549,7 +7889,7 @@ std::vector< double > *_wrap_ElasticNet_lambda_path_datamunge_cd205fa85b728fed(d
 }
 
 
-std::vector< double > *_wrap_ElasticNet_cv_mean_squared_error_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+std::vector< double > *_wrap_ElasticNet_cv_mean_squared_error_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6562,7 +7902,7 @@ std::vector< double > *_wrap_ElasticNet_cv_mean_squared_error_datamunge_cd205fa8
 }
 
 
-std::vector< double > *_wrap_ElasticNet_coefficients_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+std::vector< double > *_wrap_ElasticNet_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6575,7 +7915,7 @@ std::vector< double > *_wrap_ElasticNet_coefficients_datamunge_cd205fa85b728fed(
 }
 
 
-double _wrap_ElasticNet_intercept_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+double _wrap_ElasticNet_intercept_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6588,7 +7928,7 @@ double _wrap_ElasticNet_intercept_datamunge_cd205fa85b728fed(datamunge::ElasticN
 }
 
 
-long long _wrap_ElasticNet_non_zero_coefficients_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+long long _wrap_ElasticNet_non_zero_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -6601,7 +7941,7 @@ long long _wrap_ElasticNet_non_zero_coefficients_datamunge_cd205fa85b728fed(data
 }
 
 
-std::vector< double > *_wrap_ElasticNet_fitted_values_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+std::vector< double > *_wrap_ElasticNet_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6614,7 +7954,7 @@ std::vector< double > *_wrap_ElasticNet_fitted_values_datamunge_cd205fa85b728fed
 }
 
 
-std::vector< double > *_wrap_ElasticNet_residuals_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+std::vector< double > *_wrap_ElasticNet_residuals_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6627,7 +7967,7 @@ std::vector< double > *_wrap_ElasticNet_residuals_datamunge_cd205fa85b728fed(dat
 }
 
 
-double _wrap_ElasticNet_r_squared_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+double _wrap_ElasticNet_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6640,7 +7980,7 @@ double _wrap_ElasticNet_r_squared_datamunge_cd205fa85b728fed(datamunge::ElasticN
 }
 
 
-double _wrap_ElasticNet_rmse_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+double _wrap_ElasticNet_rmse_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6653,7 +7993,7 @@ double _wrap_ElasticNet_rmse_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_
 }
 
 
-_gostring_ _wrap_ElasticNet_summary_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+_gostring_ _wrap_ElasticNet_summary_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -6666,7 +8006,7 @@ _gostring_ _wrap_ElasticNet_summary_datamunge_cd205fa85b728fed(datamunge::Elasti
 }
 
 
-void _wrap_ElasticNet_print_summary_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+void _wrap_ElasticNet_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
@@ -6676,7 +8016,7 @@ void _wrap_ElasticNet_print_summary_datamunge_cd205fa85b728fed(datamunge::Elasti
 }
 
 
-std::vector< double > *_wrap_ElasticNet_predict_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_ElasticNet_predict_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::ElasticNet *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -6691,59 +8031,59 @@ std::vector< double > *_wrap_ElasticNet_predict_datamunge_cd205fa85b728fed(datam
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ElasticNet_plot_coefficient_path_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_ElasticNet_plot_coefficient_path_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ElasticNet_plot_cv_curve_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_ElasticNet_plot_cv_curve_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ElasticNet_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_ElasticNet_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ElasticNet_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_ElasticNet_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
   
   result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_ElasticNet_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_swig_go_0) {
+void _wrap_delete_ElasticNet_datamunge_c5abddb9d33fe5ef(datamunge::ElasticNet *_swig_go_0) {
   datamunge::ElasticNet *arg1 = 0 ;
   
   arg1 = *(datamunge::ElasticNet **)&_swig_go_0; 
@@ -6753,7 +8093,7 @@ void _wrap_delete_ElasticNet_datamunge_cd205fa85b728fed(datamunge::ElasticNet *_
 }
 
 
-datamunge::Ridge *_wrap_new_Ridge__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5, long long _swig_go_6) {
+datamunge::Ridge *_wrap_new_Ridge__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6781,7 +8121,7 @@ datamunge::Ridge *_wrap_new_Ridge__SWIG_0_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Ridge *_wrap_new_Ridge__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5) {
+datamunge::Ridge *_wrap_new_Ridge__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6807,7 +8147,7 @@ datamunge::Ridge *_wrap_new_Ridge__SWIG_1_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Ridge *_wrap_new_Ridge__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::Ridge *_wrap_new_Ridge__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6831,7 +8171,7 @@ datamunge::Ridge *_wrap_new_Ridge__SWIG_2_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Ridge *_wrap_new_Ridge__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3) {
+datamunge::Ridge *_wrap_new_Ridge__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6853,7 +8193,7 @@ datamunge::Ridge *_wrap_new_Ridge__SWIG_3_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Ridge *_wrap_new_Ridge__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
+datamunge::Ridge *_wrap_new_Ridge__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -6873,7 +8213,7 @@ datamunge::Ridge *_wrap_new_Ridge__SWIG_4_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Ridge *_wrap_new_Ridge__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::Ridge *_wrap_new_Ridge__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::Ridge *result = 0 ;
@@ -6891,7 +8231,7 @@ datamunge::Ridge *_wrap_new_Ridge__SWIG_5_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-_gostring_ _wrap_Ridge_formula_text_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+_gostring_ _wrap_Ridge_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -6904,7 +8244,7 @@ _gostring_ _wrap_Ridge_formula_text_datamunge_cd205fa85b728fed(datamunge::Ridge 
 }
 
 
-bool _wrap_Ridge_has_intercept_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+bool _wrap_Ridge_has_intercept_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -6917,7 +8257,7 @@ bool _wrap_Ridge_has_intercept_datamunge_cd205fa85b728fed(datamunge::Ridge *_swi
 }
 
 
-std::vector< std::string > *_wrap_Ridge_predictor_names_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+std::vector< std::string > *_wrap_Ridge_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -6930,7 +8270,7 @@ std::vector< std::string > *_wrap_Ridge_predictor_names_datamunge_cd205fa85b728f
 }
 
 
-long long _wrap_Ridge_observations_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+long long _wrap_Ridge_observations_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -6943,7 +8283,7 @@ long long _wrap_Ridge_observations_datamunge_cd205fa85b728fed(datamunge::Ridge *
 }
 
 
-double _wrap_Ridge_lambda_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+double _wrap_Ridge_lambda_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -6956,7 +8296,7 @@ double _wrap_Ridge_lambda_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_
 }
 
 
-bool _wrap_Ridge_lambda_was_selected_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+bool _wrap_Ridge_lambda_was_selected_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -6969,7 +8309,7 @@ bool _wrap_Ridge_lambda_was_selected_datamunge_cd205fa85b728fed(datamunge::Ridge
 }
 
 
-std::vector< double > *_wrap_Ridge_lambda_path_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+std::vector< double > *_wrap_Ridge_lambda_path_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6982,7 +8322,7 @@ std::vector< double > *_wrap_Ridge_lambda_path_datamunge_cd205fa85b728fed(datamu
 }
 
 
-std::vector< double > *_wrap_Ridge_cv_mean_squared_error_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+std::vector< double > *_wrap_Ridge_cv_mean_squared_error_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -6995,7 +8335,7 @@ std::vector< double > *_wrap_Ridge_cv_mean_squared_error_datamunge_cd205fa85b728
 }
 
 
-std::vector< double > *_wrap_Ridge_coefficients_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+std::vector< double > *_wrap_Ridge_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7008,7 +8348,7 @@ std::vector< double > *_wrap_Ridge_coefficients_datamunge_cd205fa85b728fed(datam
 }
 
 
-double _wrap_Ridge_intercept_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+double _wrap_Ridge_intercept_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7021,7 +8361,7 @@ double _wrap_Ridge_intercept_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_
 }
 
 
-std::vector< double > *_wrap_Ridge_fitted_values_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+std::vector< double > *_wrap_Ridge_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7034,7 +8374,7 @@ std::vector< double > *_wrap_Ridge_fitted_values_datamunge_cd205fa85b728fed(data
 }
 
 
-std::vector< double > *_wrap_Ridge_residuals_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+std::vector< double > *_wrap_Ridge_residuals_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7047,7 +8387,7 @@ std::vector< double > *_wrap_Ridge_residuals_datamunge_cd205fa85b728fed(datamung
 }
 
 
-double _wrap_Ridge_r_squared_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+double _wrap_Ridge_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7060,7 +8400,7 @@ double _wrap_Ridge_r_squared_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_
 }
 
 
-double _wrap_Ridge_rmse_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+double _wrap_Ridge_rmse_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7073,7 +8413,7 @@ double _wrap_Ridge_rmse_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0)
 }
 
 
-_gostring_ _wrap_Ridge_summary_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+_gostring_ _wrap_Ridge_summary_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -7086,7 +8426,7 @@ _gostring_ _wrap_Ridge_summary_datamunge_cd205fa85b728fed(datamunge::Ridge *_swi
 }
 
 
-void _wrap_Ridge_print_summary_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+void _wrap_Ridge_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
@@ -7096,7 +8436,7 @@ void _wrap_Ridge_print_summary_datamunge_cd205fa85b728fed(datamunge::Ridge *_swi
 }
 
 
-std::vector< double > *_wrap_Ridge_predict_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_Ridge_predict_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::Ridge *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -7111,59 +8451,59 @@ std::vector< double > *_wrap_Ridge_predict_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Ridge_plot_coefficient_path_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Ridge_plot_coefficient_path_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Ridge_plot_cv_curve_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Ridge_plot_cv_curve_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Ridge_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Ridge_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Ridge_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Ridge_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
   
   result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_Ridge_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0) {
+void _wrap_delete_Ridge_datamunge_c5abddb9d33fe5ef(datamunge::Ridge *_swig_go_0) {
   datamunge::Ridge *arg1 = 0 ;
   
   arg1 = *(datamunge::Ridge **)&_swig_go_0; 
@@ -7173,7 +8513,7 @@ void _wrap_delete_Ridge_datamunge_cd205fa85b728fed(datamunge::Ridge *_swig_go_0)
 }
 
 
-datamunge::Lasso *_wrap_new_Lasso__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5, long long _swig_go_6) {
+datamunge::Lasso *_wrap_new_Lasso__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -7201,7 +8541,7 @@ datamunge::Lasso *_wrap_new_Lasso__SWIG_0_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Lasso *_wrap_new_Lasso__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5) {
+datamunge::Lasso *_wrap_new_Lasso__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4, bool _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -7227,7 +8567,7 @@ datamunge::Lasso *_wrap_new_Lasso__SWIG_1_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Lasso *_wrap_new_Lasso__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::Lasso *_wrap_new_Lasso__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -7251,7 +8591,7 @@ datamunge::Lasso *_wrap_new_Lasso__SWIG_2_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Lasso *_wrap_new_Lasso__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3) {
+datamunge::Lasso *_wrap_new_Lasso__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -7273,7 +8613,7 @@ datamunge::Lasso *_wrap_new_Lasso__SWIG_3_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Lasso *_wrap_new_Lasso__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
+datamunge::Lasso *_wrap_new_Lasso__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -7293,7 +8633,7 @@ datamunge::Lasso *_wrap_new_Lasso__SWIG_4_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Lasso *_wrap_new_Lasso__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::Lasso *_wrap_new_Lasso__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::Lasso *result = 0 ;
@@ -7311,7 +8651,7 @@ datamunge::Lasso *_wrap_new_Lasso__SWIG_5_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-_gostring_ _wrap_Lasso_formula_text_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+_gostring_ _wrap_Lasso_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -7324,7 +8664,7 @@ _gostring_ _wrap_Lasso_formula_text_datamunge_cd205fa85b728fed(datamunge::Lasso 
 }
 
 
-bool _wrap_Lasso_has_intercept_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+bool _wrap_Lasso_has_intercept_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -7337,7 +8677,7 @@ bool _wrap_Lasso_has_intercept_datamunge_cd205fa85b728fed(datamunge::Lasso *_swi
 }
 
 
-std::vector< std::string > *_wrap_Lasso_predictor_names_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+std::vector< std::string > *_wrap_Lasso_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -7350,7 +8690,7 @@ std::vector< std::string > *_wrap_Lasso_predictor_names_datamunge_cd205fa85b728f
 }
 
 
-long long _wrap_Lasso_observations_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+long long _wrap_Lasso_observations_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -7363,7 +8703,7 @@ long long _wrap_Lasso_observations_datamunge_cd205fa85b728fed(datamunge::Lasso *
 }
 
 
-double _wrap_Lasso_lambda_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+double _wrap_Lasso_lambda_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7376,7 +8716,7 @@ double _wrap_Lasso_lambda_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_
 }
 
 
-bool _wrap_Lasso_lambda_was_selected_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+bool _wrap_Lasso_lambda_was_selected_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -7389,7 +8729,7 @@ bool _wrap_Lasso_lambda_was_selected_datamunge_cd205fa85b728fed(datamunge::Lasso
 }
 
 
-std::vector< double > *_wrap_Lasso_lambda_path_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+std::vector< double > *_wrap_Lasso_lambda_path_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7402,7 +8742,7 @@ std::vector< double > *_wrap_Lasso_lambda_path_datamunge_cd205fa85b728fed(datamu
 }
 
 
-std::vector< double > *_wrap_Lasso_cv_mean_squared_error_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+std::vector< double > *_wrap_Lasso_cv_mean_squared_error_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7415,7 +8755,7 @@ std::vector< double > *_wrap_Lasso_cv_mean_squared_error_datamunge_cd205fa85b728
 }
 
 
-std::vector< double > *_wrap_Lasso_coefficients_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+std::vector< double > *_wrap_Lasso_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7428,7 +8768,7 @@ std::vector< double > *_wrap_Lasso_coefficients_datamunge_cd205fa85b728fed(datam
 }
 
 
-double _wrap_Lasso_intercept_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+double _wrap_Lasso_intercept_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7441,7 +8781,7 @@ double _wrap_Lasso_intercept_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_
 }
 
 
-long long _wrap_Lasso_non_zero_coefficients_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+long long _wrap_Lasso_non_zero_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -7454,7 +8794,7 @@ long long _wrap_Lasso_non_zero_coefficients_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-std::vector< double > *_wrap_Lasso_fitted_values_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+std::vector< double > *_wrap_Lasso_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7467,7 +8807,7 @@ std::vector< double > *_wrap_Lasso_fitted_values_datamunge_cd205fa85b728fed(data
 }
 
 
-std::vector< double > *_wrap_Lasso_residuals_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+std::vector< double > *_wrap_Lasso_residuals_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -7480,7 +8820,7 @@ std::vector< double > *_wrap_Lasso_residuals_datamunge_cd205fa85b728fed(datamung
 }
 
 
-double _wrap_Lasso_r_squared_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+double _wrap_Lasso_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7493,7 +8833,7 @@ double _wrap_Lasso_r_squared_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_
 }
 
 
-double _wrap_Lasso_rmse_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+double _wrap_Lasso_rmse_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7506,7 +8846,7 @@ double _wrap_Lasso_rmse_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0)
 }
 
 
-_gostring_ _wrap_Lasso_summary_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+_gostring_ _wrap_Lasso_summary_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -7519,7 +8859,7 @@ _gostring_ _wrap_Lasso_summary_datamunge_cd205fa85b728fed(datamunge::Lasso *_swi
 }
 
 
-void _wrap_Lasso_print_summary_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+void _wrap_Lasso_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
@@ -7529,7 +8869,7 @@ void _wrap_Lasso_print_summary_datamunge_cd205fa85b728fed(datamunge::Lasso *_swi
 }
 
 
-std::vector< double > *_wrap_Lasso_predict_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_Lasso_predict_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::Lasso *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -7544,59 +8884,59 @@ std::vector< double > *_wrap_Lasso_predict_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Lasso_plot_coefficient_path_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Lasso_plot_coefficient_path_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Lasso_plot_cv_curve_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Lasso_plot_cv_curve_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Lasso_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Lasso_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_Lasso_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_Lasso_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
   
   result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_Lasso_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0) {
+void _wrap_delete_Lasso_datamunge_c5abddb9d33fe5ef(datamunge::Lasso *_swig_go_0) {
   datamunge::Lasso *arg1 = 0 ;
   
   arg1 = *(datamunge::Lasso **)&_swig_go_0; 
@@ -7606,7 +8946,7 @@ void _wrap_delete_Lasso_datamunge_cd205fa85b728fed(datamunge::Lasso *_swig_go_0)
 }
 
 
-datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4, bool _swig_go_5) {
+datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4, bool _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -7635,7 +8975,7 @@ datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_0_datamunge_cd205fa85b72
 }
 
 
-datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4) {
+datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -7662,7 +9002,7 @@ datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_1_datamunge_cd205fa85b72
 }
 
 
-datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -7687,7 +9027,7 @@ datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_2_datamunge_cd205fa85b72
 }
 
 
-datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -7707,7 +9047,7 @@ datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_3_datamunge_cd205fa85b72
 }
 
 
-datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::KNNClassifier *result = 0 ;
@@ -7725,7 +9065,7 @@ datamunge::KNNClassifier *_wrap_new_KNNClassifier__SWIG_4_datamunge_cd205fa85b72
 }
 
 
-std::vector< std::string > *_wrap_KNNClassifier_classes_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_KNNClassifier_classes_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -7738,7 +9078,7 @@ std::vector< std::string > *_wrap_KNNClassifier_classes_datamunge_cd205fa85b728f
 }
 
 
-std::vector< std::string > *_wrap_KNNClassifier_predictor_names_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_KNNClassifier_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -7751,7 +9091,7 @@ std::vector< std::string > *_wrap_KNNClassifier_predictor_names_datamunge_cd205f
 }
 
 
-long long _wrap_KNNClassifier_observations_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+long long _wrap_KNNClassifier_observations_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -7764,7 +9104,7 @@ long long _wrap_KNNClassifier_observations_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-long long _wrap_KNNClassifier_k_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+long long _wrap_KNNClassifier_k_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -7777,7 +9117,7 @@ long long _wrap_KNNClassifier_k_datamunge_cd205fa85b728fed(datamunge::KNNClassif
 }
 
 
-double _wrap_KNNClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+double _wrap_KNNClassifier_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -7790,7 +9130,7 @@ double _wrap_KNNClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::DataFrame *_wrap_KNNClassifier_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+datamunge::DataFrame *_wrap_KNNClassifier_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -7803,7 +9143,7 @@ datamunge::DataFrame *_wrap_KNNClassifier_confusion_matrix_datamunge_cd205fa85b7
 }
 
 
-_gostring_ _wrap_KNNClassifier_summary_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+_gostring_ _wrap_KNNClassifier_summary_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -7816,7 +9156,7 @@ _gostring_ _wrap_KNNClassifier_summary_datamunge_cd205fa85b728fed(datamunge::KNN
 }
 
 
-void _wrap_KNNClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+void _wrap_KNNClassifier_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
@@ -7826,7 +9166,7 @@ void _wrap_KNNClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::KNN
 }
 
 
-std::vector< std::string > *_wrap_KNNClassifier_predict_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_KNNClassifier_predict_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::KNNClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -7841,7 +9181,7 @@ std::vector< std::string > *_wrap_KNNClassifier_predict_datamunge_cd205fa85b728f
 }
 
 
-datamunge::DataFrame *_wrap_KNNClassifier_predict_frame_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_KNNClassifier_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::KNNClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -7856,13 +9196,13 @@ datamunge::DataFrame *_wrap_KNNClassifier_predict_frame_datamunge_cd205fa85b728f
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KNNClassifier_plot_classification_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::plot::RPlot *_wrap_KNNClassifier_plot_classification_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::KNNClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -7876,18 +9216,18 @@ datamunge::plot::ScatterPlot *_wrap_KNNClassifier_plot_classification_datamunge_
   
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::plot::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
   
@@ -7901,17 +9241,17 @@ datamunge::plot::ScatterPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_0_
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::plot::RPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::KNNClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
   
@@ -7924,12 +9264,12 @@ datamunge::plot::ScatterPlot *_wrap_KNNClassifier_plot_decision_regions__SWIG_1_
   
   
   result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_KNNClassifier_datamunge_cd205fa85b728fed(datamunge::KNNClassifier *_swig_go_0) {
+void _wrap_delete_KNNClassifier_datamunge_c5abddb9d33fe5ef(datamunge::KNNClassifier *_swig_go_0) {
   datamunge::KNNClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::KNNClassifier **)&_swig_go_0; 
@@ -7939,7 +9279,7 @@ void _wrap_delete_KNNClassifier_datamunge_cd205fa85b728fed(datamunge::KNNClassif
 }
 
 
-datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4, bool _swig_go_5) {
+datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4, bool _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -7968,7 +9308,7 @@ datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_0_datamunge_cd205fa85b728f
 }
 
 
-datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4) {
+datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, bool _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -7995,7 +9335,7 @@ datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_1_datamunge_cd205fa85b728f
 }
 
 
-datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8020,7 +9360,7 @@ datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_2_datamunge_cd205fa85b728f
 }
 
 
-datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8040,7 +9380,7 @@ datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_3_datamunge_cd205fa85b728f
 }
 
 
-datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::KNNRegressor *result = 0 ;
@@ -8058,7 +9398,7 @@ datamunge::KNNRegressor *_wrap_new_KNNRegressor__SWIG_4_datamunge_cd205fa85b728f
 }
 
 
-std::vector< std::string > *_wrap_KNNRegressor_predictor_names_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+std::vector< std::string > *_wrap_KNNRegressor_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -8071,7 +9411,7 @@ std::vector< std::string > *_wrap_KNNRegressor_predictor_names_datamunge_cd205fa
 }
 
 
-long long _wrap_KNNRegressor_observations_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+long long _wrap_KNNRegressor_observations_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -8084,7 +9424,7 @@ long long _wrap_KNNRegressor_observations_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-long long _wrap_KNNRegressor_k_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+long long _wrap_KNNRegressor_k_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -8097,7 +9437,7 @@ long long _wrap_KNNRegressor_k_datamunge_cd205fa85b728fed(datamunge::KNNRegresso
 }
 
 
-std::vector< double > *_wrap_KNNRegressor_fitted_values_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+std::vector< double > *_wrap_KNNRegressor_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -8110,7 +9450,7 @@ std::vector< double > *_wrap_KNNRegressor_fitted_values_datamunge_cd205fa85b728f
 }
 
 
-double _wrap_KNNRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+double _wrap_KNNRegressor_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -8123,7 +9463,7 @@ double _wrap_KNNRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::KNNReg
 }
 
 
-double _wrap_KNNRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+double _wrap_KNNRegressor_rmse_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -8136,7 +9476,7 @@ double _wrap_KNNRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::KNNRegresso
 }
 
 
-_gostring_ _wrap_KNNRegressor_summary_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+_gostring_ _wrap_KNNRegressor_summary_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -8149,7 +9489,7 @@ _gostring_ _wrap_KNNRegressor_summary_datamunge_cd205fa85b728fed(datamunge::KNNR
 }
 
 
-void _wrap_KNNRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+void _wrap_KNNRegressor_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::KNNRegressor **)&_swig_go_0; 
@@ -8159,7 +9499,7 @@ void _wrap_KNNRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::KNNR
 }
 
 
-std::vector< double > *_wrap_KNNRegressor_predict_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_KNNRegressor_predict_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::KNNRegressor *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -8174,33 +9514,33 @@ std::vector< double > *_wrap_KNNRegressor_predict_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KNNRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_KNNRegressor_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNRegressor **)&_swig_go_0; 
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KNNRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_KNNRegressor_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KNNRegressor **)&_swig_go_0; 
   
   result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_KNNRegressor_datamunge_cd205fa85b728fed(datamunge::KNNRegressor *_swig_go_0) {
+void _wrap_delete_KNNRegressor_datamunge_c5abddb9d33fe5ef(datamunge::KNNRegressor *_swig_go_0) {
   datamunge::KNNRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::KNNRegressor **)&_swig_go_0; 
@@ -8210,7 +9550,7 @@ void _wrap_delete_KNNRegressor_datamunge_cd205fa85b728fed(datamunge::KNNRegresso
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5, long long _swig_go_6) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8235,7 +9575,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_0_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8258,7 +9598,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_1_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8279,7 +9619,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_2_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8298,7 +9638,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_3_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8315,7 +9655,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_4_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   datamunge::KMeans *result = 0 ;
@@ -8330,7 +9670,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_5_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5, long long _swig_go_6) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8358,7 +9698,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_6_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4, double _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8384,7 +9724,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_7_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_8_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_8_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8408,7 +9748,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_8_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_9_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_9_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8430,7 +9770,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_9_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_10_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_10_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8450,7 +9790,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_10_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::KMeans *_wrap_new_KMeans__SWIG_11_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::KMeans *_wrap_new_KMeans__SWIG_11_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::KMeans *result = 0 ;
@@ -8468,7 +9808,7 @@ datamunge::KMeans *_wrap_new_KMeans__SWIG_11_datamunge_cd205fa85b728fed(datamung
 }
 
 
-std::vector< std::string > *_wrap_KMeans_feature_names_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+std::vector< std::string > *_wrap_KMeans_feature_names_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -8481,7 +9821,7 @@ std::vector< std::string > *_wrap_KMeans_feature_names_datamunge_cd205fa85b728fe
 }
 
 
-long long _wrap_KMeans_n_clusters_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+long long _wrap_KMeans_n_clusters_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -8494,7 +9834,7 @@ long long _wrap_KMeans_n_clusters_datamunge_cd205fa85b728fed(datamunge::KMeans *
 }
 
 
-long long _wrap_KMeans_observations_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+long long _wrap_KMeans_observations_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -8507,7 +9847,7 @@ long long _wrap_KMeans_observations_datamunge_cd205fa85b728fed(datamunge::KMeans
 }
 
 
-long long _wrap_KMeans_iterations_used_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+long long _wrap_KMeans_iterations_used_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -8520,7 +9860,7 @@ long long _wrap_KMeans_iterations_used_datamunge_cd205fa85b728fed(datamunge::KMe
 }
 
 
-std::vector< std::size_t > *_wrap_KMeans_labels_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+std::vector< std::size_t > *_wrap_KMeans_labels_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   std::vector< std::size_t > result;
   std::vector< std::size_t > *_swig_go_result;
@@ -8533,7 +9873,7 @@ std::vector< std::size_t > *_wrap_KMeans_labels_datamunge_cd205fa85b728fed(datam
 }
 
 
-double _wrap_KMeans_inertia_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+double _wrap_KMeans_inertia_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -8546,7 +9886,7 @@ double _wrap_KMeans_inertia_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_
 }
 
 
-std::vector< double > *_wrap_KMeans_cluster_center_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0, long long _swig_go_1) {
+std::vector< double > *_wrap_KMeans_cluster_center_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0, long long _swig_go_1) {
   datamunge::KMeans *arg1 = 0 ;
   std::size_t arg2 ;
   std::vector< double > result;
@@ -8561,7 +9901,7 @@ std::vector< double > *_wrap_KMeans_cluster_center_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< std::size_t > *_wrap_KMeans_predict_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::size_t > *_wrap_KMeans_predict_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::KMeans *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::size_t > result;
@@ -8576,7 +9916,7 @@ std::vector< std::size_t > *_wrap_KMeans_predict_datamunge_cd205fa85b728fed(data
 }
 
 
-_gostring_ _wrap_KMeans_summary_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+_gostring_ _wrap_KMeans_summary_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -8589,7 +9929,7 @@ _gostring_ _wrap_KMeans_summary_datamunge_cd205fa85b728fed(datamunge::KMeans *_s
 }
 
 
-void _wrap_KMeans_print_summary_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+void _wrap_KMeans_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   
   arg1 = *(datamunge::KMeans **)&_swig_go_0; 
@@ -8599,7 +9939,7 @@ void _wrap_KMeans_print_summary_datamunge_cd205fa85b728fed(datamunge::KMeans *_s
 }
 
 
-void _wrap_delete_KMeans_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_0) {
+void _wrap_delete_KMeans_datamunge_c5abddb9d33fe5ef(datamunge::KMeans *_swig_go_0) {
   datamunge::KMeans *arg1 = 0 ;
   
   arg1 = *(datamunge::KMeans **)&_swig_go_0; 
@@ -8609,7 +9949,7 @@ void _wrap_delete_KMeans_datamunge_cd205fa85b728fed(datamunge::KMeans *_swig_go_
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, _gostring_ _swig_go_4) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, _gostring_ _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8636,7 +9976,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_0_da
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8658,7 +9998,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_1_da
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8675,7 +10015,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_2_da
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   datamunge::AgglomerativeClustering *result = 0 ;
@@ -8690,7 +10030,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_3_da
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, _gostring_ _swig_go_4) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3, _gostring_ _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8720,7 +10060,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_4_da
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8745,7 +10085,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_5_da
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -8765,7 +10105,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_6_da
 }
 
 
-datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::AgglomerativeClustering *result = 0 ;
@@ -8783,7 +10123,7 @@ datamunge::AgglomerativeClustering *_wrap_new_AgglomerativeClustering__SWIG_7_da
 }
 
 
-std::vector< std::string > *_wrap_AgglomerativeClustering_feature_names_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0) {
+std::vector< std::string > *_wrap_AgglomerativeClustering_feature_names_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -8796,7 +10136,7 @@ std::vector< std::string > *_wrap_AgglomerativeClustering_feature_names_datamung
 }
 
 
-long long _wrap_AgglomerativeClustering_observations_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0) {
+long long _wrap_AgglomerativeClustering_observations_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -8809,7 +10149,7 @@ long long _wrap_AgglomerativeClustering_observations_datamunge_cd205fa85b728fed(
 }
 
 
-std::vector< std::size_t > *_wrap_AgglomerativeClustering_labels_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0) {
+std::vector< std::size_t > *_wrap_AgglomerativeClustering_labels_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::vector< std::size_t > result;
   std::vector< std::size_t > *_swig_go_result;
@@ -8822,7 +10162,7 @@ std::vector< std::size_t > *_wrap_AgglomerativeClustering_labels_datamunge_cd205
 }
 
 
-std::vector< std::size_t > *_wrap_AgglomerativeClustering_cut_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
+std::vector< std::size_t > *_wrap_AgglomerativeClustering_cut_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::size_t arg2 ;
   std::vector< std::size_t > result;
@@ -8837,7 +10177,7 @@ std::vector< std::size_t > *_wrap_AgglomerativeClustering_cut_datamunge_cd205fa8
 }
 
 
-long long _wrap_AgglomerativeClustering_num_merges_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0) {
+long long _wrap_AgglomerativeClustering_num_merges_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -8850,7 +10190,7 @@ long long _wrap_AgglomerativeClustering_num_merges_datamunge_cd205fa85b728fed(da
 }
 
 
-long long _wrap_AgglomerativeClustering_merge_cluster_a_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
+long long _wrap_AgglomerativeClustering_merge_cluster_a_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t result;
@@ -8865,7 +10205,7 @@ long long _wrap_AgglomerativeClustering_merge_cluster_a_datamunge_cd205fa85b728f
 }
 
 
-long long _wrap_AgglomerativeClustering_merge_cluster_b_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
+long long _wrap_AgglomerativeClustering_merge_cluster_b_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t result;
@@ -8880,7 +10220,7 @@ long long _wrap_AgglomerativeClustering_merge_cluster_b_datamunge_cd205fa85b728f
 }
 
 
-double _wrap_AgglomerativeClustering_merge_distance_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
+double _wrap_AgglomerativeClustering_merge_distance_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::size_t arg2 ;
   double result;
@@ -8895,7 +10235,7 @@ double _wrap_AgglomerativeClustering_merge_distance_datamunge_cd205fa85b728fed(d
 }
 
 
-long long _wrap_AgglomerativeClustering_merge_size_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
+long long _wrap_AgglomerativeClustering_merge_size_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0, long long _swig_go_1) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t result;
@@ -8910,7 +10250,7 @@ long long _wrap_AgglomerativeClustering_merge_size_datamunge_cd205fa85b728fed(da
 }
 
 
-_gostring_ _wrap_AgglomerativeClustering_summary_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0) {
+_gostring_ _wrap_AgglomerativeClustering_summary_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -8923,7 +10263,7 @@ _gostring_ _wrap_AgglomerativeClustering_summary_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_AgglomerativeClustering_print_summary_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0) {
+void _wrap_AgglomerativeClustering_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   
   arg1 = *(datamunge::AgglomerativeClustering **)&_swig_go_0; 
@@ -8933,7 +10273,7 @@ void _wrap_AgglomerativeClustering_print_summary_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_delete_AgglomerativeClustering_datamunge_cd205fa85b728fed(datamunge::AgglomerativeClustering *_swig_go_0) {
+void _wrap_delete_AgglomerativeClustering_datamunge_c5abddb9d33fe5ef(datamunge::AgglomerativeClustering *_swig_go_0) {
   datamunge::AgglomerativeClustering *arg1 = 0 ;
   
   arg1 = *(datamunge::AgglomerativeClustering **)&_swig_go_0; 
@@ -8943,7 +10283,7 @@ void _wrap_delete_AgglomerativeClustering_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   double arg3 ;
@@ -8967,7 +10307,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_0_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, double _swig_go_2, long long _swig_go_3) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, double _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   double arg3 ;
@@ -8986,7 +10326,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_1_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, double _swig_go_2) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   double arg3 ;
@@ -9003,7 +10343,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_2_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   datamunge::DBSCAN *result = 0 ;
@@ -9018,7 +10358,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_3_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -9045,7 +10385,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_4_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, long long _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -9067,7 +10407,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_5_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -9087,7 +10427,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_6_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::DBSCAN *result = 0 ;
@@ -9105,7 +10445,7 @@ datamunge::DBSCAN *_wrap_new_DBSCAN__SWIG_7_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-std::vector< std::string > *_wrap_DBSCAN_feature_names_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+std::vector< std::string > *_wrap_DBSCAN_feature_names_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -9118,7 +10458,7 @@ std::vector< std::string > *_wrap_DBSCAN_feature_names_datamunge_cd205fa85b728fe
 }
 
 
-long long _wrap_DBSCAN_observations_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+long long _wrap_DBSCAN_observations_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -9131,7 +10471,7 @@ long long _wrap_DBSCAN_observations_datamunge_cd205fa85b728fed(datamunge::DBSCAN
 }
 
 
-long long _wrap_DBSCAN_n_clusters_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+long long _wrap_DBSCAN_n_clusters_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -9144,7 +10484,7 @@ long long _wrap_DBSCAN_n_clusters_datamunge_cd205fa85b728fed(datamunge::DBSCAN *
 }
 
 
-long long _wrap_DBSCAN_n_noise_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+long long _wrap_DBSCAN_n_noise_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -9157,7 +10497,7 @@ long long _wrap_DBSCAN_n_noise_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_sw
 }
 
 
-std::vector< int > *_wrap_DBSCAN_labels_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+std::vector< int > *_wrap_DBSCAN_labels_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   std::vector< int > result;
   std::vector< int > *_swig_go_result;
@@ -9170,7 +10510,7 @@ std::vector< int > *_wrap_DBSCAN_labels_datamunge_cd205fa85b728fed(datamunge::DB
 }
 
 
-_gostring_ _wrap_DBSCAN_summary_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+_gostring_ _wrap_DBSCAN_summary_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -9183,7 +10523,7 @@ _gostring_ _wrap_DBSCAN_summary_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_s
 }
 
 
-void _wrap_DBSCAN_print_summary_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+void _wrap_DBSCAN_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   
   arg1 = *(datamunge::DBSCAN **)&_swig_go_0; 
@@ -9193,7 +10533,7 @@ void _wrap_DBSCAN_print_summary_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_s
 }
 
 
-void _wrap_delete_DBSCAN_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_0) {
+void _wrap_delete_DBSCAN_datamunge_c5abddb9d33fe5ef(datamunge::DBSCAN *_swig_go_0) {
   datamunge::DBSCAN *arg1 = 0 ;
   
   arg1 = *(datamunge::DBSCAN **)&_swig_go_0; 
@@ -9203,7 +10543,7 @@ void _wrap_delete_DBSCAN_datamunge_cd205fa85b728fed(datamunge::DBSCAN *_swig_go_
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7, long long _swig_go_8) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7, long long _swig_go_8) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9235,7 +10575,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_0_datamunge_cd205fa85b72
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9265,7 +10605,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_1_datamunge_cd205fa85b72
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9293,7 +10633,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_2_datamunge_cd205fa85b72
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9319,7 +10659,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_3_datamunge_cd205fa85b72
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9343,7 +10683,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_4_datamunge_cd205fa85b72
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9365,7 +10705,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_5_datamunge_cd205fa85b72
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9385,7 +10725,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_6_datamunge_cd205fa85b72
 }
 
 
-datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::GBMClassifier *result = 0 ;
@@ -9403,7 +10743,7 @@ datamunge::GBMClassifier *_wrap_new_GBMClassifier__SWIG_7_datamunge_cd205fa85b72
 }
 
 
-std::vector< std::string > *_wrap_GBMClassifier_classes_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_GBMClassifier_classes_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -9416,7 +10756,7 @@ std::vector< std::string > *_wrap_GBMClassifier_classes_datamunge_cd205fa85b728f
 }
 
 
-std::vector< std::string > *_wrap_GBMClassifier_predictor_names_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_GBMClassifier_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -9429,7 +10769,7 @@ std::vector< std::string > *_wrap_GBMClassifier_predictor_names_datamunge_cd205f
 }
 
 
-long long _wrap_GBMClassifier_observations_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+long long _wrap_GBMClassifier_observations_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -9442,7 +10782,7 @@ long long _wrap_GBMClassifier_observations_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-long long _wrap_GBMClassifier_n_trees_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+long long _wrap_GBMClassifier_n_trees_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -9455,7 +10795,7 @@ long long _wrap_GBMClassifier_n_trees_datamunge_cd205fa85b728fed(datamunge::GBMC
 }
 
 
-std::vector< double > *_wrap_GBMClassifier_feature_importance_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+std::vector< double > *_wrap_GBMClassifier_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -9468,7 +10808,7 @@ std::vector< double > *_wrap_GBMClassifier_feature_importance_datamunge_cd205fa8
 }
 
 
-double _wrap_GBMClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+double _wrap_GBMClassifier_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -9481,7 +10821,7 @@ double _wrap_GBMClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::DataFrame *_wrap_GBMClassifier_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+datamunge::DataFrame *_wrap_GBMClassifier_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -9494,7 +10834,7 @@ datamunge::DataFrame *_wrap_GBMClassifier_confusion_matrix_datamunge_cd205fa85b7
 }
 
 
-std::vector< double > *_wrap_GBMClassifier_training_deviance_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+std::vector< double > *_wrap_GBMClassifier_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -9507,7 +10847,7 @@ std::vector< double > *_wrap_GBMClassifier_training_deviance_datamunge_cd205fa85
 }
 
 
-_gostring_ _wrap_GBMClassifier_summary_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+_gostring_ _wrap_GBMClassifier_summary_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -9520,7 +10860,7 @@ _gostring_ _wrap_GBMClassifier_summary_datamunge_cd205fa85b728fed(datamunge::GBM
 }
 
 
-void _wrap_GBMClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+void _wrap_GBMClassifier_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
@@ -9530,7 +10870,7 @@ void _wrap_GBMClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::GBM
 }
 
 
-std::vector< std::string > *_wrap_GBMClassifier_predict_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_GBMClassifier_predict_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GBMClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -9545,7 +10885,7 @@ std::vector< std::string > *_wrap_GBMClassifier_predict_datamunge_cd205fa85b728f
 }
 
 
-datamunge::DataFrame *_wrap_GBMClassifier_predict_frame_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_GBMClassifier_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GBMClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -9560,13 +10900,13 @@ datamunge::DataFrame *_wrap_GBMClassifier_predict_frame_datamunge_cd205fa85b728f
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GBMClassifier_plot_classification_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::plot::RPlot *_wrap_GBMClassifier_plot_classification_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::GBMClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -9580,18 +10920,18 @@ datamunge::plot::ScatterPlot *_wrap_GBMClassifier_plot_classification_datamunge_
   
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::plot::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   
@@ -9605,17 +10945,17 @@ datamunge::plot::ScatterPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_0_
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::plot::RPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::GBMClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   
@@ -9628,25 +10968,25 @@ datamunge::plot::ScatterPlot *_wrap_GBMClassifier_plot_decision_regions__SWIG_1_
   
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GBMClassifier_plot_training_deviance_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GBMClassifier_plot_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
   
   result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_GBMClassifier_datamunge_cd205fa85b728fed(datamunge::GBMClassifier *_swig_go_0) {
+void _wrap_delete_GBMClassifier_datamunge_c5abddb9d33fe5ef(datamunge::GBMClassifier *_swig_go_0) {
   datamunge::GBMClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::GBMClassifier **)&_swig_go_0; 
@@ -9656,7 +10996,7 @@ void _wrap_delete_GBMClassifier_datamunge_cd205fa85b728fed(datamunge::GBMClassif
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7, long long _swig_go_8) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7, long long _swig_go_8) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9688,7 +11028,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_0_datamunge_cd205fa85b728f
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6, double _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9718,7 +11058,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_1_datamunge_cd205fa85b728f
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, long long _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9746,7 +11086,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_2_datamunge_cd205fa85b728f
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9772,7 +11112,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_3_datamunge_cd205fa85b728f
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9796,7 +11136,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_4_datamunge_cd205fa85b728f
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9818,7 +11158,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_5_datamunge_cd205fa85b728f
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -9838,7 +11178,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_6_datamunge_cd205fa85b728f
 }
 
 
-datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::GBMRegressor *result = 0 ;
@@ -9856,7 +11196,7 @@ datamunge::GBMRegressor *_wrap_new_GBMRegressor__SWIG_7_datamunge_cd205fa85b728f
 }
 
 
-std::vector< std::string > *_wrap_GBMRegressor_predictor_names_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+std::vector< std::string > *_wrap_GBMRegressor_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -9869,7 +11209,7 @@ std::vector< std::string > *_wrap_GBMRegressor_predictor_names_datamunge_cd205fa
 }
 
 
-long long _wrap_GBMRegressor_observations_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+long long _wrap_GBMRegressor_observations_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -9882,7 +11222,7 @@ long long _wrap_GBMRegressor_observations_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-long long _wrap_GBMRegressor_n_trees_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+long long _wrap_GBMRegressor_n_trees_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -9895,7 +11235,7 @@ long long _wrap_GBMRegressor_n_trees_datamunge_cd205fa85b728fed(datamunge::GBMRe
 }
 
 
-std::vector< double > *_wrap_GBMRegressor_feature_importance_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+std::vector< double > *_wrap_GBMRegressor_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -9908,7 +11248,7 @@ std::vector< double > *_wrap_GBMRegressor_feature_importance_datamunge_cd205fa85
 }
 
 
-std::vector< double > *_wrap_GBMRegressor_fitted_values_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+std::vector< double > *_wrap_GBMRegressor_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -9921,7 +11261,7 @@ std::vector< double > *_wrap_GBMRegressor_fitted_values_datamunge_cd205fa85b728f
 }
 
 
-double _wrap_GBMRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+double _wrap_GBMRegressor_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -9934,7 +11274,7 @@ double _wrap_GBMRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::GBMReg
 }
 
 
-double _wrap_GBMRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+double _wrap_GBMRegressor_rmse_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -9947,7 +11287,7 @@ double _wrap_GBMRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::GBMRegresso
 }
 
 
-std::vector< double > *_wrap_GBMRegressor_training_deviance_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+std::vector< double > *_wrap_GBMRegressor_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -9960,7 +11300,7 @@ std::vector< double > *_wrap_GBMRegressor_training_deviance_datamunge_cd205fa85b
 }
 
 
-_gostring_ _wrap_GBMRegressor_summary_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+_gostring_ _wrap_GBMRegressor_summary_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -9973,7 +11313,7 @@ _gostring_ _wrap_GBMRegressor_summary_datamunge_cd205fa85b728fed(datamunge::GBMR
 }
 
 
-void _wrap_GBMRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+void _wrap_GBMRegressor_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
@@ -9983,7 +11323,7 @@ void _wrap_GBMRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::GBMR
 }
 
 
-std::vector< double > *_wrap_GBMRegressor_predict_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_GBMRegressor_predict_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GBMRegressor *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -9998,46 +11338,46 @@ std::vector< double > *_wrap_GBMRegressor_predict_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GBMRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GBMRegressor_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GBMRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GBMRegressor_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GBMRegressor_plot_training_deviance_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GBMRegressor_plot_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
   
   result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_GBMRegressor_datamunge_cd205fa85b728fed(datamunge::GBMRegressor *_swig_go_0) {
+void _wrap_delete_GBMRegressor_datamunge_c5abddb9d33fe5ef(datamunge::GBMRegressor *_swig_go_0) {
   datamunge::GBMRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::GBMRegressor **)&_swig_go_0; 
@@ -10047,7 +11387,7 @@ void _wrap_delete_GBMRegressor_datamunge_cd205fa85b728fed(datamunge::GBMRegresso
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11, long long _swig_go_12) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11, long long _swig_go_12) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10087,7 +11427,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_0_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10125,7 +11465,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_1_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10161,7 +11501,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_2_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10195,7 +11535,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_3_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10227,7 +11567,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_4_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10257,7 +11597,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_5_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10285,7 +11625,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_6_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10311,7 +11651,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_7_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_8_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_8_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10335,7 +11675,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_8_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_9_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_9_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10357,7 +11697,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_9_datamunge_cd20
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_10_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_10_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10377,7 +11717,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_10_datamunge_cd2
 }
 
 
-datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_11_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_11_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::XGBoostClassifier *result = 0 ;
@@ -10395,7 +11735,7 @@ datamunge::XGBoostClassifier *_wrap_new_XGBoostClassifier__SWIG_11_datamunge_cd2
 }
 
 
-std::vector< std::string > *_wrap_XGBoostClassifier_classes_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_XGBoostClassifier_classes_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -10408,7 +11748,7 @@ std::vector< std::string > *_wrap_XGBoostClassifier_classes_datamunge_cd205fa85b
 }
 
 
-std::vector< std::string > *_wrap_XGBoostClassifier_predictor_names_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_XGBoostClassifier_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -10421,7 +11761,7 @@ std::vector< std::string > *_wrap_XGBoostClassifier_predictor_names_datamunge_cd
 }
 
 
-long long _wrap_XGBoostClassifier_observations_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+long long _wrap_XGBoostClassifier_observations_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -10434,7 +11774,7 @@ long long _wrap_XGBoostClassifier_observations_datamunge_cd205fa85b728fed(datamu
 }
 
 
-long long _wrap_XGBoostClassifier_n_trees_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+long long _wrap_XGBoostClassifier_n_trees_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -10447,7 +11787,7 @@ long long _wrap_XGBoostClassifier_n_trees_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_XGBoostClassifier_feature_importance_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+std::vector< double > *_wrap_XGBoostClassifier_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -10460,7 +11800,7 @@ std::vector< double > *_wrap_XGBoostClassifier_feature_importance_datamunge_cd20
 }
 
 
-double _wrap_XGBoostClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+double _wrap_XGBoostClassifier_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -10473,7 +11813,7 @@ double _wrap_XGBoostClassifier_training_accuracy_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::DataFrame *_wrap_XGBoostClassifier_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+datamunge::DataFrame *_wrap_XGBoostClassifier_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -10486,7 +11826,7 @@ datamunge::DataFrame *_wrap_XGBoostClassifier_confusion_matrix_datamunge_cd205fa
 }
 
 
-std::vector< double > *_wrap_XGBoostClassifier_training_deviance_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+std::vector< double > *_wrap_XGBoostClassifier_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -10499,7 +11839,7 @@ std::vector< double > *_wrap_XGBoostClassifier_training_deviance_datamunge_cd205
 }
 
 
-_gostring_ _wrap_XGBoostClassifier_summary_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+_gostring_ _wrap_XGBoostClassifier_summary_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -10512,7 +11852,7 @@ _gostring_ _wrap_XGBoostClassifier_summary_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-void _wrap_XGBoostClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+void _wrap_XGBoostClassifier_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
@@ -10522,7 +11862,7 @@ void _wrap_XGBoostClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-std::vector< std::string > *_wrap_XGBoostClassifier_predict_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_XGBoostClassifier_predict_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -10537,7 +11877,7 @@ std::vector< std::string > *_wrap_XGBoostClassifier_predict_datamunge_cd205fa85b
 }
 
 
-datamunge::DataFrame *_wrap_XGBoostClassifier_predict_frame_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_XGBoostClassifier_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -10552,13 +11892,13 @@ datamunge::DataFrame *_wrap_XGBoostClassifier_predict_frame_datamunge_cd205fa85b
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_XGBoostClassifier_plot_classification_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_classification_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -10572,18 +11912,18 @@ datamunge::plot::ScatterPlot *_wrap_XGBoostClassifier_plot_classification_datamu
   
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   
@@ -10597,17 +11937,17 @@ datamunge::plot::ScatterPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWI
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   
@@ -10620,25 +11960,25 @@ datamunge::plot::ScatterPlot *_wrap_XGBoostClassifier_plot_decision_regions__SWI
   
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_XGBoostClassifier_plot_training_deviance_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_XGBoostClassifier_plot_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_XGBoostClassifier_datamunge_cd205fa85b728fed(datamunge::XGBoostClassifier *_swig_go_0) {
+void _wrap_delete_XGBoostClassifier_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostClassifier *_swig_go_0) {
   datamunge::XGBoostClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::XGBoostClassifier **)&_swig_go_0; 
@@ -10648,7 +11988,7 @@ void _wrap_delete_XGBoostClassifier_datamunge_cd205fa85b728fed(datamunge::XGBoos
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11, long long _swig_go_12) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11, long long _swig_go_12) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10688,7 +12028,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_0_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10, double _swig_go_11) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10726,7 +12066,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_1_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9, double _swig_go_10) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10762,7 +12102,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_2_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8, long long _swig_go_9) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10796,7 +12136,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_3_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7, double _swig_go_8) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10828,7 +12168,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_4_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6, double _swig_go_7) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10858,7 +12198,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_5_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_6_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_6_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5, double _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10886,7 +12226,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_6_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_7_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_7_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4, double _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10912,7 +12252,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_7_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_8_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_8_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10936,7 +12276,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_8_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_9_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_9_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10958,7 +12298,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_9_datamunge_cd205f
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_10_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_10_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, long long _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::size_t arg3 ;
@@ -10978,7 +12318,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_10_datamunge_cd205
 }
 
 
-datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_11_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_11_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::XGBoostRegressor *result = 0 ;
@@ -10996,7 +12336,7 @@ datamunge::XGBoostRegressor *_wrap_new_XGBoostRegressor__SWIG_11_datamunge_cd205
 }
 
 
-std::vector< std::string > *_wrap_XGBoostRegressor_predictor_names_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+std::vector< std::string > *_wrap_XGBoostRegressor_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -11009,7 +12349,7 @@ std::vector< std::string > *_wrap_XGBoostRegressor_predictor_names_datamunge_cd2
 }
 
 
-long long _wrap_XGBoostRegressor_observations_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+long long _wrap_XGBoostRegressor_observations_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -11022,7 +12362,7 @@ long long _wrap_XGBoostRegressor_observations_datamunge_cd205fa85b728fed(datamun
 }
 
 
-long long _wrap_XGBoostRegressor_n_trees_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+long long _wrap_XGBoostRegressor_n_trees_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -11035,7 +12375,7 @@ long long _wrap_XGBoostRegressor_n_trees_datamunge_cd205fa85b728fed(datamunge::X
 }
 
 
-std::vector< double > *_wrap_XGBoostRegressor_feature_importance_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+std::vector< double > *_wrap_XGBoostRegressor_feature_importance_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11048,7 +12388,7 @@ std::vector< double > *_wrap_XGBoostRegressor_feature_importance_datamunge_cd205
 }
 
 
-std::vector< double > *_wrap_XGBoostRegressor_fitted_values_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+std::vector< double > *_wrap_XGBoostRegressor_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11061,7 +12401,7 @@ std::vector< double > *_wrap_XGBoostRegressor_fitted_values_datamunge_cd205fa85b
 }
 
 
-double _wrap_XGBoostRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+double _wrap_XGBoostRegressor_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11074,7 +12414,7 @@ double _wrap_XGBoostRegressor_r_squared_datamunge_cd205fa85b728fed(datamunge::XG
 }
 
 
-double _wrap_XGBoostRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+double _wrap_XGBoostRegressor_rmse_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11087,7 +12427,7 @@ double _wrap_XGBoostRegressor_rmse_datamunge_cd205fa85b728fed(datamunge::XGBoost
 }
 
 
-std::vector< double > *_wrap_XGBoostRegressor_training_deviance_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+std::vector< double > *_wrap_XGBoostRegressor_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11100,7 +12440,7 @@ std::vector< double > *_wrap_XGBoostRegressor_training_deviance_datamunge_cd205f
 }
 
 
-_gostring_ _wrap_XGBoostRegressor_summary_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+_gostring_ _wrap_XGBoostRegressor_summary_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -11113,7 +12453,7 @@ _gostring_ _wrap_XGBoostRegressor_summary_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-void _wrap_XGBoostRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+void _wrap_XGBoostRegressor_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
@@ -11123,7 +12463,7 @@ void _wrap_XGBoostRegressor_print_summary_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_XGBoostRegressor_predict_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_XGBoostRegressor_predict_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -11138,46 +12478,46 @@ std::vector< double > *_wrap_XGBoostRegressor_predict_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_XGBoostRegressor_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_XGBoostRegressor_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_XGBoostRegressor_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_XGBoostRegressor_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_XGBoostRegressor_plot_training_deviance_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_XGBoostRegressor_plot_training_deviance_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
   
   result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_XGBoostRegressor_datamunge_cd205fa85b728fed(datamunge::XGBoostRegressor *_swig_go_0) {
+void _wrap_delete_XGBoostRegressor_datamunge_c5abddb9d33fe5ef(datamunge::XGBoostRegressor *_swig_go_0) {
   datamunge::XGBoostRegressor *arg1 = 0 ;
   
   arg1 = *(datamunge::XGBoostRegressor **)&_swig_go_0; 
@@ -11187,7 +12527,7 @@ void _wrap_delete_XGBoostRegressor_datamunge_cd205fa85b728fed(datamunge::XGBoost
 }
 
 
-datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, long long _swig_go_4, bool _swig_go_5) {
+datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, long long _swig_go_4, bool _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -11216,7 +12556,7 @@ datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_0_datamunge_cd205f
 }
 
 
-datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, long long _swig_go_4) {
+datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -11243,7 +12583,7 @@ datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_1_datamunge_cd205f
 }
 
 
-datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
+datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -11268,7 +12608,7 @@ datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_2_datamunge_cd205f
 }
 
 
-datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -11291,7 +12631,7 @@ datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_3_datamunge_cd205f
 }
 
 
-datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::KernelRegression *result = 0 ;
@@ -11309,7 +12649,7 @@ datamunge::KernelRegression *_wrap_new_KernelRegression__SWIG_4_datamunge_cd205f
 }
 
 
-std::vector< std::string > *_wrap_KernelRegression_predictor_names_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+std::vector< std::string > *_wrap_KernelRegression_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -11322,7 +12662,7 @@ std::vector< std::string > *_wrap_KernelRegression_predictor_names_datamunge_cd2
 }
 
 
-long long _wrap_KernelRegression_observations_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+long long _wrap_KernelRegression_observations_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -11335,7 +12675,7 @@ long long _wrap_KernelRegression_observations_datamunge_cd205fa85b728fed(datamun
 }
 
 
-double _wrap_KernelRegression_bandwidth_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+double _wrap_KernelRegression_bandwidth_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11348,7 +12688,7 @@ double _wrap_KernelRegression_bandwidth_datamunge_cd205fa85b728fed(datamunge::Ke
 }
 
 
-bool _wrap_KernelRegression_bandwidth_was_selected_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+bool _wrap_KernelRegression_bandwidth_was_selected_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -11361,7 +12701,7 @@ bool _wrap_KernelRegression_bandwidth_was_selected_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< double > *_wrap_KernelRegression_bandwidth_grid_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+std::vector< double > *_wrap_KernelRegression_bandwidth_grid_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11374,7 +12714,7 @@ std::vector< double > *_wrap_KernelRegression_bandwidth_grid_datamunge_cd205fa85
 }
 
 
-std::vector< double > *_wrap_KernelRegression_cv_mean_squared_error_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+std::vector< double > *_wrap_KernelRegression_cv_mean_squared_error_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11387,7 +12727,7 @@ std::vector< double > *_wrap_KernelRegression_cv_mean_squared_error_datamunge_cd
 }
 
 
-std::vector< double > *_wrap_KernelRegression_fitted_values_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+std::vector< double > *_wrap_KernelRegression_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11400,7 +12740,7 @@ std::vector< double > *_wrap_KernelRegression_fitted_values_datamunge_cd205fa85b
 }
 
 
-double _wrap_KernelRegression_r_squared_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+double _wrap_KernelRegression_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11413,7 +12753,7 @@ double _wrap_KernelRegression_r_squared_datamunge_cd205fa85b728fed(datamunge::Ke
 }
 
 
-double _wrap_KernelRegression_rmse_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+double _wrap_KernelRegression_rmse_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11426,7 +12766,7 @@ double _wrap_KernelRegression_rmse_datamunge_cd205fa85b728fed(datamunge::KernelR
 }
 
 
-_gostring_ _wrap_KernelRegression_summary_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+_gostring_ _wrap_KernelRegression_summary_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -11439,7 +12779,7 @@ _gostring_ _wrap_KernelRegression_summary_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-void _wrap_KernelRegression_print_summary_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+void _wrap_KernelRegression_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
@@ -11449,7 +12789,7 @@ void _wrap_KernelRegression_print_summary_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_KernelRegression_predict_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_KernelRegression_predict_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -11464,78 +12804,78 @@ std::vector< double > *_wrap_KernelRegression_predict_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KernelRegression_plot_fit__SWIG_0_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
+datamunge::plot::RPlot *_wrap_KernelRegression_plot_fit__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KernelRegression_plot_fit__SWIG_1_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::plot::RPlot *_wrap_KernelRegression_plot_fit__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::KernelRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KernelRegression_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_KernelRegression_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KernelRegression_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_KernelRegression_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_KernelRegression_plot_cv_curve_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_KernelRegression_plot_cv_curve_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
   
   result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_KernelRegression_datamunge_cd205fa85b728fed(datamunge::KernelRegression *_swig_go_0) {
+void _wrap_delete_KernelRegression_datamunge_c5abddb9d33fe5ef(datamunge::KernelRegression *_swig_go_0) {
   datamunge::KernelRegression *arg1 = 0 ;
   
   arg1 = *(datamunge::KernelRegression **)&_swig_go_0; 
@@ -11545,7 +12885,7 @@ void _wrap_delete_KernelRegression_datamunge_cd205fa85b728fed(datamunge::KernelR
 }
 
 
-datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6) {
+datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -11573,7 +12913,7 @@ datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_
 }
 
 
-datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
+datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4, long long _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -11599,7 +12939,7 @@ datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_
 }
 
 
-datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4) {
+datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -11623,7 +12963,7 @@ datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_
 }
 
 
-datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3) {
+datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -11645,7 +12985,7 @@ datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_
 }
 
 
-datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
+datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -11665,7 +13005,7 @@ datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_
 }
 
 
-datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_5_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_5_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::GaussianProcessRegression *result = 0 ;
@@ -11683,7 +13023,7 @@ datamunge::GaussianProcessRegression *_wrap_new_GaussianProcessRegression__SWIG_
 }
 
 
-std::vector< std::string > *_wrap_GaussianProcessRegression_predictor_names_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+std::vector< std::string > *_wrap_GaussianProcessRegression_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -11696,7 +13036,7 @@ std::vector< std::string > *_wrap_GaussianProcessRegression_predictor_names_data
 }
 
 
-long long _wrap_GaussianProcessRegression_observations_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+long long _wrap_GaussianProcessRegression_observations_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -11709,7 +13049,7 @@ long long _wrap_GaussianProcessRegression_observations_datamunge_cd205fa85b728fe
 }
 
 
-double _wrap_GaussianProcessRegression_length_scale_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+double _wrap_GaussianProcessRegression_length_scale_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11722,7 +13062,7 @@ double _wrap_GaussianProcessRegression_length_scale_datamunge_cd205fa85b728fed(d
 }
 
 
-double _wrap_GaussianProcessRegression_signal_variance_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+double _wrap_GaussianProcessRegression_signal_variance_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11735,7 +13075,7 @@ double _wrap_GaussianProcessRegression_signal_variance_datamunge_cd205fa85b728fe
 }
 
 
-double _wrap_GaussianProcessRegression_noise_variance_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+double _wrap_GaussianProcessRegression_noise_variance_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11748,7 +13088,7 @@ double _wrap_GaussianProcessRegression_noise_variance_datamunge_cd205fa85b728fed
 }
 
 
-double _wrap_GaussianProcessRegression_log_marginal_likelihood_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+double _wrap_GaussianProcessRegression_log_marginal_likelihood_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11761,7 +13101,7 @@ double _wrap_GaussianProcessRegression_log_marginal_likelihood_datamunge_cd205fa
 }
 
 
-bool _wrap_GaussianProcessRegression_length_scale_was_selected_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+bool _wrap_GaussianProcessRegression_length_scale_was_selected_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -11774,7 +13114,7 @@ bool _wrap_GaussianProcessRegression_length_scale_was_selected_datamunge_cd205fa
 }
 
 
-bool _wrap_GaussianProcessRegression_noise_ratio_was_selected_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+bool _wrap_GaussianProcessRegression_noise_ratio_was_selected_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -11787,7 +13127,7 @@ bool _wrap_GaussianProcessRegression_noise_ratio_was_selected_datamunge_cd205fa8
 }
 
 
-std::vector< double > *_wrap_GaussianProcessRegression_length_scale_grid_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+std::vector< double > *_wrap_GaussianProcessRegression_length_scale_grid_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11800,7 +13140,7 @@ std::vector< double > *_wrap_GaussianProcessRegression_length_scale_grid_datamun
 }
 
 
-std::vector< double > *_wrap_GaussianProcessRegression_length_scale_profile_log_likelihood_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+std::vector< double > *_wrap_GaussianProcessRegression_length_scale_profile_log_likelihood_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11813,7 +13153,7 @@ std::vector< double > *_wrap_GaussianProcessRegression_length_scale_profile_log_
 }
 
 
-std::vector< double > *_wrap_GaussianProcessRegression_fitted_values_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+std::vector< double > *_wrap_GaussianProcessRegression_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -11826,7 +13166,7 @@ std::vector< double > *_wrap_GaussianProcessRegression_fitted_values_datamunge_c
 }
 
 
-double _wrap_GaussianProcessRegression_r_squared_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+double _wrap_GaussianProcessRegression_r_squared_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11839,7 +13179,7 @@ double _wrap_GaussianProcessRegression_r_squared_datamunge_cd205fa85b728fed(data
 }
 
 
-double _wrap_GaussianProcessRegression_rmse_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+double _wrap_GaussianProcessRegression_rmse_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -11852,7 +13192,7 @@ double _wrap_GaussianProcessRegression_rmse_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-_gostring_ _wrap_GaussianProcessRegression_summary_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+_gostring_ _wrap_GaussianProcessRegression_summary_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -11865,7 +13205,7 @@ _gostring_ _wrap_GaussianProcessRegression_summary_datamunge_cd205fa85b728fed(da
 }
 
 
-void _wrap_GaussianProcessRegression_print_summary_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+void _wrap_GaussianProcessRegression_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
@@ -11875,7 +13215,7 @@ void _wrap_GaussianProcessRegression_print_summary_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< double > *_wrap_GaussianProcessRegression_predict_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_GaussianProcessRegression_predict_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -11890,7 +13230,7 @@ std::vector< double > *_wrap_GaussianProcessRegression_predict_datamunge_cd205fa
 }
 
 
-datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
+datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -11912,7 +13252,7 @@ datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_0_data
 }
 
 
-datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2) {
+datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -11932,7 +13272,7 @@ datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_1_data
 }
 
 
-datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -11947,13 +13287,13 @@ datamunge::DataFrame *_wrap_GaussianProcessRegression_predict_frame__SWIG_2_data
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_0_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2, double _swig_go_3) {
+datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2, double _swig_go_3) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
   double arg4 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -11961,83 +13301,83 @@ datamunge::plot::ScatterPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_0_d
   arg4 = (double)_swig_go_3; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_1_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
+datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1, long long _swig_go_2) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::size_t arg3 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_2_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_fit__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GaussianProcessRegression_plot_predicted_vs_actual_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_predicted_vs_actual_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GaussianProcessRegression_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GaussianProcessRegression_plot_length_scale_profile_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GaussianProcessRegression_plot_length_scale_profile_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
   
   result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_GaussianProcessRegression_datamunge_cd205fa85b728fed(datamunge::GaussianProcessRegression *_swig_go_0) {
+void _wrap_delete_GaussianProcessRegression_datamunge_c5abddb9d33fe5ef(datamunge::GaussianProcessRegression *_swig_go_0) {
   datamunge::GaussianProcessRegression *arg1 = 0 ;
   
   arg1 = *(datamunge::GaussianProcessRegression **)&_swig_go_0; 
@@ -12047,7 +13387,7 @@ void _wrap_delete_GaussianProcessRegression_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3) {
+datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2, double _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -12069,7 +13409,7 @@ datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_0_datamung
 }
 
 
-datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
+datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, double _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   double arg3 ;
@@ -12089,7 +13429,7 @@ datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_1_datamung
 }
 
 
-datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::NaiveBayesClassifier *result = 0 ;
@@ -12107,7 +13447,7 @@ datamunge::NaiveBayesClassifier *_wrap_new_NaiveBayesClassifier__SWIG_2_datamung
 }
 
 
-std::vector< std::string > *_wrap_NaiveBayesClassifier_classes_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_NaiveBayesClassifier_classes_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -12120,7 +13460,7 @@ std::vector< std::string > *_wrap_NaiveBayesClassifier_classes_datamunge_cd205fa
 }
 
 
-std::vector< std::string > *_wrap_NaiveBayesClassifier_predictor_names_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+std::vector< std::string > *_wrap_NaiveBayesClassifier_predictor_names_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -12133,7 +13473,7 @@ std::vector< std::string > *_wrap_NaiveBayesClassifier_predictor_names_datamunge
 }
 
 
-long long _wrap_NaiveBayesClassifier_observations_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+long long _wrap_NaiveBayesClassifier_observations_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -12146,7 +13486,7 @@ long long _wrap_NaiveBayesClassifier_observations_datamunge_cd205fa85b728fed(dat
 }
 
 
-std::vector< double > *_wrap_NaiveBayesClassifier_class_priors_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+std::vector< double > *_wrap_NaiveBayesClassifier_class_priors_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12159,7 +13499,7 @@ std::vector< double > *_wrap_NaiveBayesClassifier_class_priors_datamunge_cd205fa
 }
 
 
-double _wrap_NaiveBayesClassifier_training_accuracy_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+double _wrap_NaiveBayesClassifier_training_accuracy_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -12172,7 +13512,7 @@ double _wrap_NaiveBayesClassifier_training_accuracy_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::DataFrame *_wrap_NaiveBayesClassifier_confusion_matrix_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+datamunge::DataFrame *_wrap_NaiveBayesClassifier_confusion_matrix_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   datamunge::DataFrame *result = 0 ;
   datamunge::DataFrame *_swig_go_result;
@@ -12185,7 +13525,7 @@ datamunge::DataFrame *_wrap_NaiveBayesClassifier_confusion_matrix_datamunge_cd20
 }
 
 
-_gostring_ _wrap_NaiveBayesClassifier_summary_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+_gostring_ _wrap_NaiveBayesClassifier_summary_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -12198,7 +13538,7 @@ _gostring_ _wrap_NaiveBayesClassifier_summary_datamunge_cd205fa85b728fed(datamun
 }
 
 
-void _wrap_NaiveBayesClassifier_print_summary_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+void _wrap_NaiveBayesClassifier_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
@@ -12208,7 +13548,7 @@ void _wrap_NaiveBayesClassifier_print_summary_datamunge_cd205fa85b728fed(datamun
 }
 
 
-std::vector< std::string > *_wrap_NaiveBayesClassifier_predict_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< std::string > *_wrap_NaiveBayesClassifier_predict_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< std::string > result;
@@ -12223,7 +13563,7 @@ std::vector< std::string > *_wrap_NaiveBayesClassifier_predict_datamunge_cd205fa
 }
 
 
-datamunge::DataFrame *_wrap_NaiveBayesClassifier_predict_frame_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_NaiveBayesClassifier_predict_frame_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -12238,13 +13578,13 @@ datamunge::DataFrame *_wrap_NaiveBayesClassifier_predict_frame_datamunge_cd205fa
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_NaiveBayesClassifier_plot_classification_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_classification_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::string *arg4 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
   arg2 = *(datamunge::DataFrame **)&_swig_go_1; 
@@ -12258,18 +13598,18 @@ datamunge::plot::ScatterPlot *_wrap_NaiveBayesClassifier_plot_classification_dat
   
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
+datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, long long _swig_go_3) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   std::size_t arg4 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
   
@@ -12283,17 +13623,17 @@ datamunge::plot::ScatterPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__
   arg4 = (size_t)_swig_go_3; 
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::plot::RPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
   
@@ -12306,12 +13646,12 @@ datamunge::plot::ScatterPlot *_wrap_NaiveBayesClassifier_plot_decision_regions__
   
   
   result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_NaiveBayesClassifier_datamunge_cd205fa85b728fed(datamunge::NaiveBayesClassifier *_swig_go_0) {
+void _wrap_delete_NaiveBayesClassifier_datamunge_c5abddb9d33fe5ef(datamunge::NaiveBayesClassifier *_swig_go_0) {
   datamunge::NaiveBayesClassifier *arg1 = 0 ;
   
   arg1 = *(datamunge::NaiveBayesClassifier **)&_swig_go_0; 
@@ -12321,7 +13661,7 @@ void _wrap_delete_NaiveBayesClassifier_datamunge_cd205fa85b728fed(datamunge::Nai
 }
 
 
-datamunge::GLM *_wrap_new_GLM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, long long _swig_go_4, double _swig_go_5) {
+datamunge::GLM *_wrap_new_GLM__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, long long _swig_go_4, double _swig_go_5) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -12353,7 +13693,7 @@ datamunge::GLM *_wrap_new_GLM__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::GLM *_wrap_new_GLM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, long long _swig_go_4) {
+datamunge::GLM *_wrap_new_GLM__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, long long _swig_go_4) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -12383,7 +13723,7 @@ datamunge::GLM *_wrap_new_GLM__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::GLM *_wrap_new_GLM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+datamunge::GLM *_wrap_new_GLM__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -12411,7 +13751,7 @@ datamunge::GLM *_wrap_new_GLM__SWIG_2_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::GLM *_wrap_new_GLM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+datamunge::GLM *_wrap_new_GLM__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -12434,7 +13774,7 @@ datamunge::GLM *_wrap_new_GLM__SWIG_3_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-datamunge::GLM *_wrap_new_GLM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::GLM *_wrap_new_GLM__SWIG_4_datamunge_c5abddb9d33fe5ef(datamunge::DataFrame *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::DataFrame *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::GLM *result = 0 ;
@@ -12452,7 +13792,7 @@ datamunge::GLM *_wrap_new_GLM__SWIG_4_datamunge_cd205fa85b728fed(datamunge::Data
 }
 
 
-_gostring_ _wrap_GLM_formula_text_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+_gostring_ _wrap_GLM_formula_text_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -12465,7 +13805,7 @@ _gostring_ _wrap_GLM_formula_text_datamunge_cd205fa85b728fed(datamunge::GLM *_sw
 }
 
 
-_gostring_ _wrap_GLM_family_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+_gostring_ _wrap_GLM_family_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -12478,7 +13818,7 @@ _gostring_ _wrap_GLM_family_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_
 }
 
 
-bool _wrap_GLM_has_intercept_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+bool _wrap_GLM_has_intercept_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -12491,7 +13831,7 @@ bool _wrap_GLM_has_intercept_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go
 }
 
 
-long long _wrap_GLM_observations_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+long long _wrap_GLM_observations_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -12504,7 +13844,7 @@ long long _wrap_GLM_observations_datamunge_cd205fa85b728fed(datamunge::GLM *_swi
 }
 
 
-long long _wrap_GLM_rank_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+long long _wrap_GLM_rank_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -12517,7 +13857,7 @@ long long _wrap_GLM_rank_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) 
 }
 
 
-long long _wrap_GLM_degrees_of_freedom_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+long long _wrap_GLM_degrees_of_freedom_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -12530,7 +13870,7 @@ long long _wrap_GLM_degrees_of_freedom_datamunge_cd205fa85b728fed(datamunge::GLM
 }
 
 
-std::vector< double > *_wrap_GLM_coefficients_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12543,7 +13883,7 @@ std::vector< double > *_wrap_GLM_coefficients_datamunge_cd205fa85b728fed(datamun
 }
 
 
-std::vector< std::string > *_wrap_GLM_coefficient_names_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< std::string > *_wrap_GLM_coefficient_names_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< std::string > result;
   std::vector< std::string > *_swig_go_result;
@@ -12556,7 +13896,7 @@ std::vector< std::string > *_wrap_GLM_coefficient_names_datamunge_cd205fa85b728f
 }
 
 
-std::vector< double > *_wrap_GLM_fitted_values_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12569,7 +13909,7 @@ std::vector< double > *_wrap_GLM_fitted_values_datamunge_cd205fa85b728fed(datamu
 }
 
 
-std::vector< double > *_wrap_GLM_linear_predictors_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_linear_predictors_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12582,7 +13922,7 @@ std::vector< double > *_wrap_GLM_linear_predictors_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< double > *_wrap_GLM_residuals_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_residuals_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12595,7 +13935,7 @@ std::vector< double > *_wrap_GLM_residuals_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-std::vector< double > *_wrap_GLM_pearson_residuals_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_pearson_residuals_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12608,7 +13948,7 @@ std::vector< double > *_wrap_GLM_pearson_residuals_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< double > *_wrap_GLM_standardized_residuals_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_standardized_residuals_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12621,7 +13961,7 @@ std::vector< double > *_wrap_GLM_standardized_residuals_datamunge_cd205fa85b728f
 }
 
 
-std::vector< double > *_wrap_GLM_leverage_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_leverage_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12634,7 +13974,7 @@ std::vector< double > *_wrap_GLM_leverage_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< double > *_wrap_GLM_standard_errors_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_standard_errors_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12647,7 +13987,7 @@ std::vector< double > *_wrap_GLM_standard_errors_datamunge_cd205fa85b728fed(data
 }
 
 
-std::vector< double > *_wrap_GLM_test_statistics_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_test_statistics_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12660,7 +14000,7 @@ std::vector< double > *_wrap_GLM_test_statistics_datamunge_cd205fa85b728fed(data
 }
 
 
-std::vector< double > *_wrap_GLM_p_values_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_p_values_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12673,7 +14013,7 @@ std::vector< double > *_wrap_GLM_p_values_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-double _wrap_GLM_deviance_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+double _wrap_GLM_deviance_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -12686,7 +14026,7 @@ double _wrap_GLM_deviance_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0)
 }
 
 
-double _wrap_GLM_null_deviance_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+double _wrap_GLM_null_deviance_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -12699,7 +14039,7 @@ double _wrap_GLM_null_deviance_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_
 }
 
 
-double _wrap_GLM_dispersion_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+double _wrap_GLM_dispersion_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -12712,7 +14052,7 @@ double _wrap_GLM_dispersion_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_
 }
 
 
-double _wrap_GLM_aic_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+double _wrap_GLM_aic_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -12725,7 +14065,7 @@ double _wrap_GLM_aic_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
 }
 
 
-std::vector< double > *_wrap_GLM_confidence_interval_lower__SWIG_0_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0, double _swig_go_1) {
+std::vector< double > *_wrap_GLM_confidence_interval_lower__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0, double _swig_go_1) {
   datamunge::GLM *arg1 = 0 ;
   double arg2 ;
   std::vector< double > result;
@@ -12740,7 +14080,7 @@ std::vector< double > *_wrap_GLM_confidence_interval_lower__SWIG_0_datamunge_cd2
 }
 
 
-std::vector< double > *_wrap_GLM_confidence_interval_lower__SWIG_1_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_confidence_interval_lower__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12753,7 +14093,7 @@ std::vector< double > *_wrap_GLM_confidence_interval_lower__SWIG_1_datamunge_cd2
 }
 
 
-std::vector< double > *_wrap_GLM_confidence_interval_upper__SWIG_0_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0, double _swig_go_1) {
+std::vector< double > *_wrap_GLM_confidence_interval_upper__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0, double _swig_go_1) {
   datamunge::GLM *arg1 = 0 ;
   double arg2 ;
   std::vector< double > result;
@@ -12768,7 +14108,7 @@ std::vector< double > *_wrap_GLM_confidence_interval_upper__SWIG_0_datamunge_cd2
 }
 
 
-std::vector< double > *_wrap_GLM_confidence_interval_upper__SWIG_1_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+std::vector< double > *_wrap_GLM_confidence_interval_upper__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::vector< double > result;
   std::vector< double > *_swig_go_result;
@@ -12781,7 +14121,7 @@ std::vector< double > *_wrap_GLM_confidence_interval_upper__SWIG_1_datamunge_cd2
 }
 
 
-_gostring_ _wrap_GLM_summary_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+_gostring_ _wrap_GLM_summary_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -12794,7 +14134,7 @@ _gostring_ _wrap_GLM_summary_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go
 }
 
 
-void _wrap_GLM_print_summary_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+void _wrap_GLM_print_summary_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
@@ -12804,7 +14144,7 @@ void _wrap_GLM_print_summary_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go
 }
 
 
-std::vector< double > *_wrap_GLM_predict_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+std::vector< double > *_wrap_GLM_predict_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GLM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::vector< double > result;
@@ -12819,7 +14159,7 @@ std::vector< double > *_wrap_GLM_predict_datamunge_cd205fa85b728fed(datamunge::G
 }
 
 
-datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
+datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2, double _swig_go_3) {
   datamunge::GLM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -12841,7 +14181,7 @@ datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_0_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2) {
+datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1, _gostring_ _swig_go_2) {
   datamunge::GLM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -12861,7 +14201,7 @@ datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_1_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
+datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0, datamunge::DataFrame *_swig_go_1) {
   datamunge::GLM *arg1 = 0 ;
   datamunge::DataFrame *arg2 = 0 ;
   datamunge::DataFrame *result = 0 ;
@@ -12876,59 +14216,59 @@ datamunge::DataFrame *_wrap_GLM_predict_frame__SWIG_2_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GLM_plot_residuals_vs_fitted_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GLM_plot_residuals_vs_fitted_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GLM_plot_normal_qq_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GLM_plot_normal_qq_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GLM_plot_scale_location_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GLM_plot_scale_location_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_GLM_plot_residuals_vs_leverage_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+datamunge::plot::RPlot *_wrap_GLM_plot_residuals_vs_leverage_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
   
   result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-void _wrap_GLM_save_diagnostic_plots_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_GLM_save_diagnostic_plots_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::GLM *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -12943,7 +14283,7 @@ void _wrap_GLM_save_diagnostic_plots_datamunge_cd205fa85b728fed(datamunge::GLM *
 }
 
 
-void _wrap_delete_GLM_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
+void _wrap_delete_GLM_datamunge_c5abddb9d33fe5ef(datamunge::GLM *_swig_go_0) {
   datamunge::GLM *arg1 = 0 ;
   
   arg1 = *(datamunge::GLM **)&_swig_go_0; 
@@ -12953,7 +14293,7 @@ void _wrap_delete_GLM_datamunge_cd205fa85b728fed(datamunge::GLM *_swig_go_0) {
 }
 
 
-datamunge::Tensor *_wrap_new_Tensor__SWIG_0_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::Tensor *_wrap_new_Tensor__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, _gostring_ _swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -12971,7 +14311,7 @@ datamunge::Tensor *_wrap_new_Tensor__SWIG_0_datamunge_cd205fa85b728fed(std::vect
 }
 
 
-datamunge::Tensor *_wrap_new_Tensor__SWIG_1_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+datamunge::Tensor *_wrap_new_Tensor__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -12984,7 +14324,7 @@ datamunge::Tensor *_wrap_new_Tensor__SWIG_1_datamunge_cd205fa85b728fed(std::vect
 }
 
 
-datamunge::Tensor *_wrap_Tensor_zeros_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_zeros_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -12997,7 +14337,7 @@ datamunge::Tensor *_wrap_Tensor_zeros_datamunge_cd205fa85b728fed(std::vector< st
 }
 
 
-datamunge::Tensor *_wrap_Tensor_ones_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_ones_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0) {
   std::vector< std::size_t > *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13010,7 +14350,7 @@ datamunge::Tensor *_wrap_Tensor_ones_datamunge_cd205fa85b728fed(std::vector< std
 }
 
 
-datamunge::Tensor *_wrap_Tensor_full_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, double _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_full_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, double _swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   double arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13025,7 +14365,7 @@ datamunge::Tensor *_wrap_Tensor_full_datamunge_cd205fa85b728fed(std::vector< std
 }
 
 
-datamunge::Tensor *_wrap_Tensor_from_values_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_from_values_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13040,7 +14380,7 @@ datamunge::Tensor *_wrap_Tensor_from_values_datamunge_cd205fa85b728fed(std::vect
 }
 
 
-datamunge::Tensor *_wrap_Tensor_from_bool_values_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, std::vector< int > *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_from_bool_values_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, std::vector< int > *_swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< int > *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13055,7 +14395,7 @@ datamunge::Tensor *_wrap_Tensor_from_bool_values_datamunge_cd205fa85b728fed(std:
 }
 
 
-datamunge::Tensor *_wrap_Tensor_from_string_values_datamunge_cd205fa85b728fed(std::vector< std::size_t > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_from_string_values_datamunge_c5abddb9d33fe5ef(std::vector< std::size_t > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
   std::vector< std::size_t > *arg1 = 0 ;
   std::vector< std::string > *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13070,7 +14410,7 @@ datamunge::Tensor *_wrap_Tensor_from_string_values_datamunge_cd205fa85b728fed(st
 }
 
 
-datamunge::Tensor *_wrap_Tensor_arange__SWIG_0_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_arange__SWIG_0_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
   double arg1 ;
   double arg2 ;
   double arg3 ;
@@ -13087,7 +14427,7 @@ datamunge::Tensor *_wrap_Tensor_arange__SWIG_0_datamunge_cd205fa85b728fed(double
 }
 
 
-datamunge::Tensor *_wrap_Tensor_arange__SWIG_1_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_arange__SWIG_1_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1) {
   double arg1 ;
   double arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13102,7 +14442,7 @@ datamunge::Tensor *_wrap_Tensor_arange__SWIG_1_datamunge_cd205fa85b728fed(double
 }
 
 
-datamunge::Tensor *_wrap_Tensor_eye_datamunge_cd205fa85b728fed(long long _swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_eye_datamunge_c5abddb9d33fe5ef(long long _swig_go_0) {
   std::size_t arg1 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13115,7 +14455,7 @@ datamunge::Tensor *_wrap_Tensor_eye_datamunge_cd205fa85b728fed(long long _swig_g
 }
 
 
-long long _wrap_Tensor_ndim_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+long long _wrap_Tensor_ndim_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -13128,7 +14468,7 @@ long long _wrap_Tensor_ndim_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_
 }
 
 
-std::vector< std::size_t > *_wrap_Tensor_shape_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+std::vector< std::size_t > *_wrap_Tensor_shape_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   std::vector< std::size_t > result;
   std::vector< std::size_t > *_swig_go_result;
@@ -13141,7 +14481,7 @@ std::vector< std::size_t > *_wrap_Tensor_shape_datamunge_cd205fa85b728fed(datamu
 }
 
 
-long long _wrap_Tensor_size_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+long long _wrap_Tensor_size_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -13154,7 +14494,7 @@ long long _wrap_Tensor_size_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_
 }
 
 
-_gostring_ _wrap_Tensor_dtype_name_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+_gostring_ _wrap_Tensor_dtype_name_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -13167,7 +14507,7 @@ _gostring_ _wrap_Tensor_dtype_name_datamunge_cd205fa85b728fed(datamunge::Tensor 
 }
 
 
-double _wrap_Tensor_at_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
+double _wrap_Tensor_at_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   double result;
@@ -13182,7 +14522,7 @@ double _wrap_Tensor_at_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0,
 }
 
 
-void _wrap_Tensor_set_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1, double _swig_go_2) {
+void _wrap_Tensor_set_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1, double _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   double arg3 ;
@@ -13196,7 +14536,7 @@ void _wrap_Tensor_set_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, 
 }
 
 
-_gostring_ _wrap_Tensor_string_at_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
+_gostring_ _wrap_Tensor_string_at_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   std::string result;
@@ -13211,7 +14551,7 @@ _gostring_ _wrap_Tensor_string_at_datamunge_cd205fa85b728fed(datamunge::Tensor *
 }
 
 
-void _wrap_Tensor_set_string_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_Tensor_set_string_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1, _gostring_ _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   std::string *arg3 = 0 ;
@@ -13228,7 +14568,7 @@ void _wrap_Tensor_set_string_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig
 }
 
 
-double _wrap_Tensor_at_flat_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+double _wrap_Tensor_at_flat_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   double result;
@@ -13243,7 +14583,7 @@ double _wrap_Tensor_at_flat_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_
 }
 
 
-void _wrap_Tensor_set_flat_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, double _swig_go_2) {
+void _wrap_Tensor_set_flat_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, double _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -13257,7 +14597,7 @@ void _wrap_Tensor_set_flat_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_g
 }
 
 
-_gostring_ _wrap_Tensor_string_at_flat_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+_gostring_ _wrap_Tensor_string_at_flat_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   std::string result;
@@ -13272,7 +14612,7 @@ _gostring_ _wrap_Tensor_string_at_flat_datamunge_cd205fa85b728fed(datamunge::Ten
 }
 
 
-void _wrap_Tensor_set_string_flat_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_Tensor_set_string_flat_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   std::string *arg3 = 0 ;
@@ -13289,7 +14629,7 @@ void _wrap_Tensor_set_string_flat_datamunge_cd205fa85b728fed(datamunge::Tensor *
 }
 
 
-datamunge::Tensor *_wrap_Tensor_reshape_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_reshape_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13304,7 +14644,7 @@ datamunge::Tensor *_wrap_Tensor_reshape_datamunge_cd205fa85b728fed(datamunge::Te
 }
 
 
-datamunge::Tensor *_wrap_Tensor_flatten_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_flatten_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13317,7 +14657,7 @@ datamunge::Tensor *_wrap_Tensor_flatten_datamunge_cd205fa85b728fed(datamunge::Te
 }
 
 
-datamunge::Tensor *_wrap_Tensor_transpose__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_transpose__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13332,7 +14672,7 @@ datamunge::Tensor *_wrap_Tensor_transpose__SWIG_0_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::Tensor *_wrap_Tensor_transpose__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_transpose__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13345,7 +14685,7 @@ datamunge::Tensor *_wrap_Tensor_transpose__SWIG_1_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::Tensor *_wrap_Tensor_squeeze_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_squeeze_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13358,7 +14698,7 @@ datamunge::Tensor *_wrap_Tensor_squeeze_datamunge_cd205fa85b728fed(datamunge::Te
 }
 
 
-datamunge::Tensor *_wrap_Tensor_squeeze_axis_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_squeeze_axis_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13373,7 +14713,7 @@ datamunge::Tensor *_wrap_Tensor_squeeze_axis_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::Tensor *_wrap_Tensor_expand_dims_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_expand_dims_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13388,7 +14728,7 @@ datamunge::Tensor *_wrap_Tensor_expand_dims_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::Tensor *_wrap_Tensor_slice__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
+datamunge::Tensor *_wrap_Tensor_slice__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, long long _swig_go_4) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -13409,7 +14749,7 @@ datamunge::Tensor *_wrap_Tensor_slice__SWIG_0_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::Tensor *_wrap_Tensor_slice__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::Tensor *_wrap_Tensor_slice__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -13428,7 +14768,7 @@ datamunge::Tensor *_wrap_Tensor_slice__SWIG_1_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::Tensor *_wrap_Tensor_index_select_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, std::vector< std::size_t > *_swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_index_select_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, std::vector< std::size_t > *_swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   std::vector< std::size_t > *arg3 = 0 ;
@@ -13445,7 +14785,7 @@ datamunge::Tensor *_wrap_Tensor_index_select_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::Tensor *_wrap_Tensor_concatenate2_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1, long long _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_concatenate2_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1, long long _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   std::size_t arg3 ;
@@ -13462,7 +14802,7 @@ datamunge::Tensor *_wrap_Tensor_concatenate2_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::Tensor *_wrap_Tensor_stack2_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1, long long _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_stack2_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1, long long _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   std::size_t arg3 ;
@@ -13479,7 +14819,7 @@ datamunge::Tensor *_wrap_Tensor_stack2_datamunge_cd205fa85b728fed(datamunge::Ten
 }
 
 
-datamunge::Tensor *_wrap_Tensor_add_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_add_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13494,7 +14834,7 @@ datamunge::Tensor *_wrap_Tensor_add_datamunge_cd205fa85b728fed(datamunge::Tensor
 }
 
 
-datamunge::Tensor *_wrap_Tensor_subtract_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_subtract_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13509,7 +14849,7 @@ datamunge::Tensor *_wrap_Tensor_subtract_datamunge_cd205fa85b728fed(datamunge::T
 }
 
 
-datamunge::Tensor *_wrap_Tensor_multiply_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_multiply_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13524,7 +14864,7 @@ datamunge::Tensor *_wrap_Tensor_multiply_datamunge_cd205fa85b728fed(datamunge::T
 }
 
 
-datamunge::Tensor *_wrap_Tensor_divide_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_divide_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13539,7 +14879,7 @@ datamunge::Tensor *_wrap_Tensor_divide_datamunge_cd205fa85b728fed(datamunge::Ten
 }
 
 
-datamunge::Tensor *_wrap_Tensor_power_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_power_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13554,7 +14894,7 @@ datamunge::Tensor *_wrap_Tensor_power_datamunge_cd205fa85b728fed(datamunge::Tens
 }
 
 
-datamunge::Tensor *_wrap_Tensor_add_scalar_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_add_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   double arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13569,7 +14909,7 @@ datamunge::Tensor *_wrap_Tensor_add_scalar_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-datamunge::Tensor *_wrap_Tensor_subtract_scalar_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_subtract_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   double arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13584,7 +14924,7 @@ datamunge::Tensor *_wrap_Tensor_subtract_scalar_datamunge_cd205fa85b728fed(datam
 }
 
 
-datamunge::Tensor *_wrap_Tensor_multiply_scalar_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_multiply_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   double arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13599,7 +14939,7 @@ datamunge::Tensor *_wrap_Tensor_multiply_scalar_datamunge_cd205fa85b728fed(datam
 }
 
 
-datamunge::Tensor *_wrap_Tensor_divide_scalar_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_divide_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   double arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13614,7 +14954,7 @@ datamunge::Tensor *_wrap_Tensor_divide_scalar_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::Tensor *_wrap_Tensor_power_scalar_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_power_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, double _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   double arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13629,7 +14969,7 @@ datamunge::Tensor *_wrap_Tensor_power_scalar_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::Tensor *_wrap_Tensor_negate_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_negate_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13642,7 +14982,7 @@ datamunge::Tensor *_wrap_Tensor_negate_datamunge_cd205fa85b728fed(datamunge::Ten
 }
 
 
-datamunge::Tensor *_wrap_Tensor_abs_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_abs_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13655,7 +14995,7 @@ datamunge::Tensor *_wrap_Tensor_abs_datamunge_cd205fa85b728fed(datamunge::Tensor
 }
 
 
-datamunge::Tensor *_wrap_Tensor_sqrt_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_sqrt_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13668,7 +15008,7 @@ datamunge::Tensor *_wrap_Tensor_sqrt_datamunge_cd205fa85b728fed(datamunge::Tenso
 }
 
 
-datamunge::Tensor *_wrap_Tensor_exp_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_exp_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13681,7 +15021,7 @@ datamunge::Tensor *_wrap_Tensor_exp_datamunge_cd205fa85b728fed(datamunge::Tensor
 }
 
 
-datamunge::Tensor *_wrap_Tensor_log_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+datamunge::Tensor *_wrap_Tensor_log_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *result = 0 ;
   datamunge::Tensor *_swig_go_result;
@@ -13694,7 +15034,7 @@ datamunge::Tensor *_wrap_Tensor_log_datamunge_cd205fa85b728fed(datamunge::Tensor
 }
 
 
-datamunge::Tensor *_wrap_Tensor_apply_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Callback *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_apply_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Callback *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Callback *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13709,7 +15049,7 @@ datamunge::Tensor *_wrap_Tensor_apply_datamunge_cd205fa85b728fed(datamunge::Tens
 }
 
 
-datamunge::Tensor *_wrap_Tensor_equal_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_equal_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13724,7 +15064,7 @@ datamunge::Tensor *_wrap_Tensor_equal_datamunge_cd205fa85b728fed(datamunge::Tens
 }
 
 
-datamunge::Tensor *_wrap_Tensor_not_equal_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_not_equal_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13739,7 +15079,7 @@ datamunge::Tensor *_wrap_Tensor_not_equal_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Tensor *_wrap_Tensor_less_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_less_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13754,7 +15094,7 @@ datamunge::Tensor *_wrap_Tensor_less_datamunge_cd205fa85b728fed(datamunge::Tenso
 }
 
 
-datamunge::Tensor *_wrap_Tensor_less_equal_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_less_equal_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13769,7 +15109,7 @@ datamunge::Tensor *_wrap_Tensor_less_equal_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-datamunge::Tensor *_wrap_Tensor_greater_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_greater_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13784,7 +15124,7 @@ datamunge::Tensor *_wrap_Tensor_greater_datamunge_cd205fa85b728fed(datamunge::Te
 }
 
 
-datamunge::Tensor *_wrap_Tensor_greater_equal_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_greater_equal_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -13799,7 +15139,7 @@ datamunge::Tensor *_wrap_Tensor_greater_equal_datamunge_cd205fa85b728fed(datamun
 }
 
 
-double _wrap_Tensor_sum_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+double _wrap_Tensor_sum_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -13812,7 +15152,7 @@ double _wrap_Tensor_sum_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0
 }
 
 
-double _wrap_Tensor_mean_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+double _wrap_Tensor_mean_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -13825,7 +15165,7 @@ double _wrap_Tensor_mean_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_
 }
 
 
-double _wrap_Tensor_max_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+double _wrap_Tensor_max_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -13838,7 +15178,7 @@ double _wrap_Tensor_max_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0
 }
 
 
-double _wrap_Tensor_min_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+double _wrap_Tensor_min_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -13851,7 +15191,7 @@ double _wrap_Tensor_min_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0
 }
 
 
-double _wrap_Tensor_prod_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+double _wrap_Tensor_prod_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -13864,7 +15204,7 @@ double _wrap_Tensor_prod_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_
 }
 
 
-long long _wrap_Tensor_argmax_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+long long _wrap_Tensor_argmax_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -13877,7 +15217,7 @@ long long _wrap_Tensor_argmax_datamunge_cd205fa85b728fed(datamunge::Tensor *_swi
 }
 
 
-long long _wrap_Tensor_argmin_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+long long _wrap_Tensor_argmin_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -13890,7 +15230,7 @@ long long _wrap_Tensor_argmin_datamunge_cd205fa85b728fed(datamunge::Tensor *_swi
 }
 
 
-bool _wrap_Tensor_all_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+bool _wrap_Tensor_all_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -13903,7 +15243,7 @@ bool _wrap_Tensor_all_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) 
 }
 
 
-bool _wrap_Tensor_any_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+bool _wrap_Tensor_any_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -13916,7 +15256,7 @@ bool _wrap_Tensor_any_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) 
 }
 
 
-datamunge::Tensor *_wrap_Tensor_sum_axis__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_sum_axis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   bool arg3 ;
@@ -13933,7 +15273,7 @@ datamunge::Tensor *_wrap_Tensor_sum_axis__SWIG_0_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::Tensor *_wrap_Tensor_sum_axis__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_sum_axis__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13948,7 +15288,7 @@ datamunge::Tensor *_wrap_Tensor_sum_axis__SWIG_1_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::Tensor *_wrap_Tensor_mean_axis__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_mean_axis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   bool arg3 ;
@@ -13965,7 +15305,7 @@ datamunge::Tensor *_wrap_Tensor_mean_axis__SWIG_0_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::Tensor *_wrap_Tensor_mean_axis__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_mean_axis__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -13980,7 +15320,7 @@ datamunge::Tensor *_wrap_Tensor_mean_axis__SWIG_1_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::Tensor *_wrap_Tensor_max_axis__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_max_axis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   bool arg3 ;
@@ -13997,7 +15337,7 @@ datamunge::Tensor *_wrap_Tensor_max_axis__SWIG_0_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::Tensor *_wrap_Tensor_max_axis__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_max_axis__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -14012,7 +15352,7 @@ datamunge::Tensor *_wrap_Tensor_max_axis__SWIG_1_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::Tensor *_wrap_Tensor_min_axis__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_min_axis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   bool arg3 ;
@@ -14029,7 +15369,7 @@ datamunge::Tensor *_wrap_Tensor_min_axis__SWIG_0_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::Tensor *_wrap_Tensor_min_axis__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_min_axis__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -14044,7 +15384,7 @@ datamunge::Tensor *_wrap_Tensor_min_axis__SWIG_1_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::Tensor *_wrap_Tensor_prod_axis__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_prod_axis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   bool arg3 ;
@@ -14061,7 +15401,7 @@ datamunge::Tensor *_wrap_Tensor_prod_axis__SWIG_0_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::Tensor *_wrap_Tensor_prod_axis__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_prod_axis__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -14076,7 +15416,7 @@ datamunge::Tensor *_wrap_Tensor_prod_axis__SWIG_1_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::Tensor *_wrap_Tensor_argmax_axis__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_argmax_axis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   bool arg3 ;
@@ -14093,7 +15433,7 @@ datamunge::Tensor *_wrap_Tensor_argmax_axis__SWIG_0_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::Tensor *_wrap_Tensor_argmax_axis__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_argmax_axis__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -14108,7 +15448,7 @@ datamunge::Tensor *_wrap_Tensor_argmax_axis__SWIG_1_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::Tensor *_wrap_Tensor_argmin_axis__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
+datamunge::Tensor *_wrap_Tensor_argmin_axis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1, bool _swig_go_2) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   bool arg3 ;
@@ -14125,7 +15465,7 @@ datamunge::Tensor *_wrap_Tensor_argmin_axis__SWIG_0_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::Tensor *_wrap_Tensor_argmin_axis__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_argmin_axis__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   datamunge::Tensor *result = 0 ;
@@ -14140,7 +15480,7 @@ datamunge::Tensor *_wrap_Tensor_argmin_axis__SWIG_1_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::Tensor *_wrap_Tensor_matmul_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_matmul_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -14155,7 +15495,7 @@ datamunge::Tensor *_wrap_Tensor_matmul_datamunge_cd205fa85b728fed(datamunge::Ten
 }
 
 
-double _wrap_Tensor_dot_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+double _wrap_Tensor_dot_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   double result;
@@ -14170,7 +15510,7 @@ double _wrap_Tensor_dot_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0
 }
 
 
-datamunge::Tensor *_wrap_Tensor_outer_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_outer_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   datamunge::Tensor *arg2 = 0 ;
   datamunge::Tensor *result = 0 ;
@@ -14185,7 +15525,180 @@ datamunge::Tensor *_wrap_Tensor_outer_datamunge_cd205fa85b728fed(datamunge::Tens
 }
 
 
-_gostring_ _wrap_Tensor_to_string__SWIG_0_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
+datamunge::Tensor *_wrap_Tensor_from_image_datamunge_c5abddb9d33fe5ef(datamunge::image::Image *_swig_go_0) {
+  datamunge::image::Image *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::image::Image **)&_swig_go_0; 
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::from_image((datamunge::image::Image const &)*arg1);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_conv2d__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1, datamunge::Tensor *_swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  int arg5 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  arg2 = *(datamunge::Tensor **)&_swig_go_1; 
+  arg3 = *(datamunge::Tensor **)&_swig_go_2; 
+  arg4 = (int)_swig_go_3; 
+  arg5 = (int)_swig_go_4; 
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4,arg5);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_conv2d__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1, datamunge::Tensor *_swig_go_2, intgo _swig_go_3) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  int arg4 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  arg2 = *(datamunge::Tensor **)&_swig_go_1; 
+  arg3 = *(datamunge::Tensor **)&_swig_go_2; 
+  arg4 = (int)_swig_go_3; 
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_conv2d__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, datamunge::Tensor *_swig_go_1, datamunge::Tensor *_swig_go_2) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *arg2 = 0 ;
+  datamunge::Tensor *arg3 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  arg2 = *(datamunge::Tensor **)&_swig_go_1; 
+  arg3 = *(datamunge::Tensor **)&_swig_go_2; 
+  
+  result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_max_pool2d__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  arg2 = (int)_swig_go_1; 
+  arg3 = (int)_swig_go_2; 
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2,arg3);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_max_pool2d__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, intgo _swig_go_1) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  arg2 = (int)_swig_go_1; 
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_avg_pool2d__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  arg2 = (int)_swig_go_1; 
+  arg3 = (int)_swig_go_2; 
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2,arg3);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_avg_pool2d__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, intgo _swig_go_1) {
+  datamunge::Tensor *arg1 = 0 ;
+  int arg2 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  arg2 = (int)_swig_go_1; 
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2);
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_relu_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->relu();
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_sigmoid_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sigmoid();
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::Tensor *_wrap_Tensor_softmax_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
+  datamunge::Tensor *arg1 = 0 ;
+  datamunge::Tensor *result = 0 ;
+  datamunge::Tensor *_swig_go_result;
+  
+  arg1 = *(datamunge::Tensor **)&_swig_go_0; 
+  
+  result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->softmax();
+  *(datamunge::Tensor **)&_swig_go_result = (datamunge::Tensor *)result; 
+  return _swig_go_result;
+}
+
+
+_gostring_ _wrap_Tensor_to_string__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0, long long _swig_go_1) {
   datamunge::Tensor *arg1 = 0 ;
   std::size_t arg2 ;
   std::string result;
@@ -14200,7 +15713,7 @@ _gostring_ _wrap_Tensor_to_string__SWIG_0_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-_gostring_ _wrap_Tensor_to_string__SWIG_1_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+_gostring_ _wrap_Tensor_to_string__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   std::string result;
   _gostring_ _swig_go_result;
@@ -14213,7 +15726,7 @@ _gostring_ _wrap_Tensor_to_string__SWIG_1_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-void _wrap_delete_Tensor_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_0) {
+void _wrap_delete_Tensor_datamunge_c5abddb9d33fe5ef(datamunge::Tensor *_swig_go_0) {
   datamunge::Tensor *arg1 = 0 ;
   
   arg1 = *(datamunge::Tensor **)&_swig_go_0; 
@@ -14223,7 +15736,7 @@ void _wrap_delete_Tensor_datamunge_cd205fa85b728fed(datamunge::Tensor *_swig_go_
 }
 
 
-datamunge::Dual *_wrap_new_Dual__SWIG_0_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1) {
+datamunge::Dual *_wrap_new_Dual__SWIG_0_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1) {
   double arg1 ;
   double arg2 ;
   datamunge::Dual *result = 0 ;
@@ -14238,7 +15751,7 @@ datamunge::Dual *_wrap_new_Dual__SWIG_0_datamunge_cd205fa85b728fed(double _swig_
 }
 
 
-datamunge::Dual *_wrap_new_Dual__SWIG_1_datamunge_cd205fa85b728fed(double _swig_go_0) {
+datamunge::Dual *_wrap_new_Dual__SWIG_1_datamunge_c5abddb9d33fe5ef(double _swig_go_0) {
   double arg1 ;
   datamunge::Dual *result = 0 ;
   datamunge::Dual *_swig_go_result;
@@ -14251,7 +15764,7 @@ datamunge::Dual *_wrap_new_Dual__SWIG_1_datamunge_cd205fa85b728fed(double _swig_
 }
 
 
-double _wrap_Dual_value_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+double _wrap_Dual_value_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -14264,7 +15777,7 @@ double _wrap_Dual_value_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) 
 }
 
 
-double _wrap_Dual_derivative_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+double _wrap_Dual_derivative_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -14277,7 +15790,7 @@ double _wrap_Dual_derivative_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_g
 }
 
 
-datamunge::Dual *_wrap_Dual_add_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
+datamunge::Dual *_wrap_Dual_add_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   datamunge::Dual *arg2 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14292,7 +15805,7 @@ datamunge::Dual *_wrap_Dual_add_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-datamunge::Dual *_wrap_Dual_subtract_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
+datamunge::Dual *_wrap_Dual_subtract_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   datamunge::Dual *arg2 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14307,7 +15820,7 @@ datamunge::Dual *_wrap_Dual_subtract_datamunge_cd205fa85b728fed(datamunge::Dual 
 }
 
 
-datamunge::Dual *_wrap_Dual_multiply_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
+datamunge::Dual *_wrap_Dual_multiply_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   datamunge::Dual *arg2 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14322,7 +15835,7 @@ datamunge::Dual *_wrap_Dual_multiply_datamunge_cd205fa85b728fed(datamunge::Dual 
 }
 
 
-datamunge::Dual *_wrap_Dual_divide_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
+datamunge::Dual *_wrap_Dual_divide_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, datamunge::Dual *_swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   datamunge::Dual *arg2 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14337,7 +15850,7 @@ datamunge::Dual *_wrap_Dual_divide_datamunge_cd205fa85b728fed(datamunge::Dual *_
 }
 
 
-datamunge::Dual *_wrap_Dual_negate_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_negate_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14350,7 +15863,7 @@ datamunge::Dual *_wrap_Dual_negate_datamunge_cd205fa85b728fed(datamunge::Dual *_
 }
 
 
-datamunge::Dual *_wrap_Dual_add_scalar_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, double _swig_go_1) {
+datamunge::Dual *_wrap_Dual_add_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, double _swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14365,7 +15878,7 @@ datamunge::Dual *_wrap_Dual_add_scalar_datamunge_cd205fa85b728fed(datamunge::Dua
 }
 
 
-datamunge::Dual *_wrap_Dual_subtract_scalar_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, double _swig_go_1) {
+datamunge::Dual *_wrap_Dual_subtract_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, double _swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14380,7 +15893,7 @@ datamunge::Dual *_wrap_Dual_subtract_scalar_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::Dual *_wrap_Dual_multiply_scalar_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, double _swig_go_1) {
+datamunge::Dual *_wrap_Dual_multiply_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, double _swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14395,7 +15908,7 @@ datamunge::Dual *_wrap_Dual_multiply_scalar_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::Dual *_wrap_Dual_divide_scalar_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, double _swig_go_1) {
+datamunge::Dual *_wrap_Dual_divide_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, double _swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14410,7 +15923,7 @@ datamunge::Dual *_wrap_Dual_divide_scalar_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Dual *_wrap_Dual_pow_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0, double _swig_go_1) {
+datamunge::Dual *_wrap_Dual_pow_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0, double _swig_go_1) {
   datamunge::Dual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Dual > result;
@@ -14425,7 +15938,7 @@ datamunge::Dual *_wrap_Dual_pow_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-datamunge::Dual *_wrap_Dual_exp_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_exp_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14438,7 +15951,7 @@ datamunge::Dual *_wrap_Dual_exp_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-datamunge::Dual *_wrap_Dual_log_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_log_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14451,7 +15964,7 @@ datamunge::Dual *_wrap_Dual_log_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-datamunge::Dual *_wrap_Dual_sqrt_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_sqrt_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14464,7 +15977,7 @@ datamunge::Dual *_wrap_Dual_sqrt_datamunge_cd205fa85b728fed(datamunge::Dual *_sw
 }
 
 
-datamunge::Dual *_wrap_Dual_sin_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_sin_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14477,7 +15990,7 @@ datamunge::Dual *_wrap_Dual_sin_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-datamunge::Dual *_wrap_Dual_cos_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_cos_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14490,7 +16003,7 @@ datamunge::Dual *_wrap_Dual_cos_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-datamunge::Dual *_wrap_Dual_tan_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_tan_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14503,7 +16016,7 @@ datamunge::Dual *_wrap_Dual_tan_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-datamunge::Dual *_wrap_Dual_tanh_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_tanh_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14516,7 +16029,7 @@ datamunge::Dual *_wrap_Dual_tanh_datamunge_cd205fa85b728fed(datamunge::Dual *_sw
 }
 
 
-datamunge::Dual *_wrap_Dual_abs_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+datamunge::Dual *_wrap_Dual_abs_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   SwigValueWrapper< datamunge::Dual > result;
   datamunge::Dual *_swig_go_result;
@@ -14529,7 +16042,7 @@ datamunge::Dual *_wrap_Dual_abs_datamunge_cd205fa85b728fed(datamunge::Dual *_swi
 }
 
 
-void _wrap_delete_Dual_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
+void _wrap_delete_Dual_datamunge_c5abddb9d33fe5ef(datamunge::Dual *_swig_go_0) {
   datamunge::Dual *arg1 = 0 ;
   
   arg1 = *(datamunge::Dual **)&_swig_go_0; 
@@ -14539,7 +16052,7 @@ void _wrap_delete_Dual_datamunge_cd205fa85b728fed(datamunge::Dual *_swig_go_0) {
 }
 
 
-datamunge::HyperDual *_wrap_new_HyperDual__SWIG_0_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3) {
+datamunge::HyperDual *_wrap_new_HyperDual__SWIG_0_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3) {
   double arg1 ;
   double arg2 ;
   double arg3 ;
@@ -14558,7 +16071,7 @@ datamunge::HyperDual *_wrap_new_HyperDual__SWIG_0_datamunge_cd205fa85b728fed(dou
 }
 
 
-datamunge::HyperDual *_wrap_new_HyperDual__SWIG_1_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
+datamunge::HyperDual *_wrap_new_HyperDual__SWIG_1_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
   double arg1 ;
   double arg2 ;
   double arg3 ;
@@ -14575,7 +16088,7 @@ datamunge::HyperDual *_wrap_new_HyperDual__SWIG_1_datamunge_cd205fa85b728fed(dou
 }
 
 
-datamunge::HyperDual *_wrap_new_HyperDual__SWIG_2_datamunge_cd205fa85b728fed(double _swig_go_0, double _swig_go_1) {
+datamunge::HyperDual *_wrap_new_HyperDual__SWIG_2_datamunge_c5abddb9d33fe5ef(double _swig_go_0, double _swig_go_1) {
   double arg1 ;
   double arg2 ;
   datamunge::HyperDual *result = 0 ;
@@ -14590,7 +16103,7 @@ datamunge::HyperDual *_wrap_new_HyperDual__SWIG_2_datamunge_cd205fa85b728fed(dou
 }
 
 
-datamunge::HyperDual *_wrap_new_HyperDual__SWIG_3_datamunge_cd205fa85b728fed(double _swig_go_0) {
+datamunge::HyperDual *_wrap_new_HyperDual__SWIG_3_datamunge_c5abddb9d33fe5ef(double _swig_go_0) {
   double arg1 ;
   datamunge::HyperDual *result = 0 ;
   datamunge::HyperDual *_swig_go_result;
@@ -14603,7 +16116,7 @@ datamunge::HyperDual *_wrap_new_HyperDual__SWIG_3_datamunge_cd205fa85b728fed(dou
 }
 
 
-double _wrap_HyperDual_value_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+double _wrap_HyperDual_value_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -14616,7 +16129,7 @@ double _wrap_HyperDual_value_datamunge_cd205fa85b728fed(datamunge::HyperDual *_s
 }
 
 
-double _wrap_HyperDual_eps1_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+double _wrap_HyperDual_eps1_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -14629,7 +16142,7 @@ double _wrap_HyperDual_eps1_datamunge_cd205fa85b728fed(datamunge::HyperDual *_sw
 }
 
 
-double _wrap_HyperDual_eps2_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+double _wrap_HyperDual_eps2_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -14642,7 +16155,7 @@ double _wrap_HyperDual_eps2_datamunge_cd205fa85b728fed(datamunge::HyperDual *_sw
 }
 
 
-double _wrap_HyperDual_eps1eps2_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+double _wrap_HyperDual_eps1eps2_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -14655,7 +16168,7 @@ double _wrap_HyperDual_eps1eps2_datamunge_cd205fa85b728fed(datamunge::HyperDual 
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_add_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_add_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   datamunge::HyperDual *arg2 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14670,7 +16183,7 @@ datamunge::HyperDual *_wrap_HyperDual_add_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_subtract_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_subtract_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   datamunge::HyperDual *arg2 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14685,7 +16198,7 @@ datamunge::HyperDual *_wrap_HyperDual_subtract_datamunge_cd205fa85b728fed(datamu
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_multiply_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_multiply_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   datamunge::HyperDual *arg2 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14700,7 +16213,7 @@ datamunge::HyperDual *_wrap_HyperDual_multiply_datamunge_cd205fa85b728fed(datamu
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_divide_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_divide_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, datamunge::HyperDual *_swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   datamunge::HyperDual *arg2 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14715,7 +16228,7 @@ datamunge::HyperDual *_wrap_HyperDual_divide_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_negate_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_negate_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14728,7 +16241,7 @@ datamunge::HyperDual *_wrap_HyperDual_negate_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_add_scalar_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_add_scalar_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14743,7 +16256,7 @@ datamunge::HyperDual *_wrap_HyperDual_add_scalar_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_subtract_scalar_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_subtract_scalar_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14758,7 +16271,7 @@ datamunge::HyperDual *_wrap_HyperDual_subtract_scalar_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_multiply_scalar_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_multiply_scalar_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14773,7 +16286,7 @@ datamunge::HyperDual *_wrap_HyperDual_multiply_scalar_datamunge_cd205fa85b728fed
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_divide_scalar_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_divide_scalar_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14788,7 +16301,7 @@ datamunge::HyperDual *_wrap_HyperDual_divide_scalar_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_pow_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
+datamunge::HyperDual *_wrap_HyperDual_pow_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0, double _swig_go_1) {
   datamunge::HyperDual *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::HyperDual > result;
@@ -14803,7 +16316,7 @@ datamunge::HyperDual *_wrap_HyperDual_pow_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_exp_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_exp_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14816,7 +16329,7 @@ datamunge::HyperDual *_wrap_HyperDual_exp_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_log_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_log_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14829,7 +16342,7 @@ datamunge::HyperDual *_wrap_HyperDual_log_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_sqrt_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_sqrt_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14842,7 +16355,7 @@ datamunge::HyperDual *_wrap_HyperDual_sqrt_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_sin_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_sin_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14855,7 +16368,7 @@ datamunge::HyperDual *_wrap_HyperDual_sin_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_cos_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_cos_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14868,7 +16381,7 @@ datamunge::HyperDual *_wrap_HyperDual_cos_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_tan_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_tan_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14881,7 +16394,7 @@ datamunge::HyperDual *_wrap_HyperDual_tan_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::HyperDual *_wrap_HyperDual_tanh_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+datamunge::HyperDual *_wrap_HyperDual_tanh_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   SwigValueWrapper< datamunge::HyperDual > result;
   datamunge::HyperDual *_swig_go_result;
@@ -14894,7 +16407,7 @@ datamunge::HyperDual *_wrap_HyperDual_tanh_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-void _wrap_delete_HyperDual_datamunge_cd205fa85b728fed(datamunge::HyperDual *_swig_go_0) {
+void _wrap_delete_HyperDual_datamunge_c5abddb9d33fe5ef(datamunge::HyperDual *_swig_go_0) {
   datamunge::HyperDual *arg1 = 0 ;
   
   arg1 = *(datamunge::HyperDual **)&_swig_go_0; 
@@ -14904,7 +16417,7 @@ void _wrap_delete_HyperDual_datamunge_cd205fa85b728fed(datamunge::HyperDual *_sw
 }
 
 
-datamunge::Tape *_wrap_new_Tape_datamunge_cd205fa85b728fed() {
+datamunge::Tape *_wrap_new_Tape_datamunge_c5abddb9d33fe5ef() {
   datamunge::Tape *result = 0 ;
   datamunge::Tape *_swig_go_result;
   
@@ -14915,7 +16428,7 @@ datamunge::Tape *_wrap_new_Tape_datamunge_cd205fa85b728fed() {
 }
 
 
-long long _wrap_Tape_size_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_0) {
+long long _wrap_Tape_size_datamunge_c5abddb9d33fe5ef(datamunge::Tape *_swig_go_0) {
   datamunge::Tape *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -14928,7 +16441,7 @@ long long _wrap_Tape_size_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_0
 }
 
 
-double _wrap_Tape_value_at_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_0, long long _swig_go_1) {
+double _wrap_Tape_value_at_datamunge_c5abddb9d33fe5ef(datamunge::Tape *_swig_go_0, long long _swig_go_1) {
   datamunge::Tape *arg1 = 0 ;
   std::size_t arg2 ;
   double result;
@@ -14943,7 +16456,7 @@ double _wrap_Tape_value_at_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_
 }
 
 
-std::vector< double > *_wrap_Tape_backward_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_0, datamunge::Var *_swig_go_1) {
+std::vector< double > *_wrap_Tape_backward_datamunge_c5abddb9d33fe5ef(datamunge::Tape *_swig_go_0, datamunge::Var *_swig_go_1) {
   datamunge::Tape *arg1 = 0 ;
   datamunge::Var *arg2 = 0 ;
   std::vector< double > result;
@@ -14958,7 +16471,7 @@ std::vector< double > *_wrap_Tape_backward_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-void _wrap_delete_Tape_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_0) {
+void _wrap_delete_Tape_datamunge_c5abddb9d33fe5ef(datamunge::Tape *_swig_go_0) {
   datamunge::Tape *arg1 = 0 ;
   
   arg1 = *(datamunge::Tape **)&_swig_go_0; 
@@ -14968,7 +16481,7 @@ void _wrap_delete_Tape_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_0) {
 }
 
 
-datamunge::Var *_wrap_new_Var_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_go_0, double _swig_go_1) {
+datamunge::Var *_wrap_new_Var_datamunge_c5abddb9d33fe5ef(datamunge::Tape *_swig_go_0, double _swig_go_1) {
   datamunge::Tape *arg1 = 0 ;
   double arg2 ;
   datamunge::Var *result = 0 ;
@@ -14983,7 +16496,7 @@ datamunge::Var *_wrap_new_Var_datamunge_cd205fa85b728fed(datamunge::Tape *_swig_
 }
 
 
-double _wrap_Var_value_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+double _wrap_Var_value_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -14996,7 +16509,7 @@ double _wrap_Var_value_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
 }
 
 
-long long _wrap_Var_index_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+long long _wrap_Var_index_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -15009,7 +16522,7 @@ long long _wrap_Var_index_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0)
 }
 
 
-datamunge::Var *_wrap_Var_add_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
+datamunge::Var *_wrap_Var_add_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   datamunge::Var *arg2 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15024,7 +16537,7 @@ datamunge::Var *_wrap_Var_add_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-datamunge::Var *_wrap_Var_subtract_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
+datamunge::Var *_wrap_Var_subtract_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   datamunge::Var *arg2 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15039,7 +16552,7 @@ datamunge::Var *_wrap_Var_subtract_datamunge_cd205fa85b728fed(datamunge::Var *_s
 }
 
 
-datamunge::Var *_wrap_Var_multiply_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
+datamunge::Var *_wrap_Var_multiply_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   datamunge::Var *arg2 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15054,7 +16567,7 @@ datamunge::Var *_wrap_Var_multiply_datamunge_cd205fa85b728fed(datamunge::Var *_s
 }
 
 
-datamunge::Var *_wrap_Var_divide_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
+datamunge::Var *_wrap_Var_divide_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, datamunge::Var *_swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   datamunge::Var *arg2 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15069,7 +16582,7 @@ datamunge::Var *_wrap_Var_divide_datamunge_cd205fa85b728fed(datamunge::Var *_swi
 }
 
 
-datamunge::Var *_wrap_Var_negate_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_negate_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15082,7 +16595,7 @@ datamunge::Var *_wrap_Var_negate_datamunge_cd205fa85b728fed(datamunge::Var *_swi
 }
 
 
-datamunge::Var *_wrap_Var_add_scalar_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, double _swig_go_1) {
+datamunge::Var *_wrap_Var_add_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, double _swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15097,7 +16610,7 @@ datamunge::Var *_wrap_Var_add_scalar_datamunge_cd205fa85b728fed(datamunge::Var *
 }
 
 
-datamunge::Var *_wrap_Var_subtract_scalar_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, double _swig_go_1) {
+datamunge::Var *_wrap_Var_subtract_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, double _swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15112,7 +16625,7 @@ datamunge::Var *_wrap_Var_subtract_scalar_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Var *_wrap_Var_multiply_scalar_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, double _swig_go_1) {
+datamunge::Var *_wrap_Var_multiply_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, double _swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15127,7 +16640,7 @@ datamunge::Var *_wrap_Var_multiply_scalar_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::Var *_wrap_Var_divide_scalar_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, double _swig_go_1) {
+datamunge::Var *_wrap_Var_divide_scalar_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, double _swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15142,7 +16655,7 @@ datamunge::Var *_wrap_Var_divide_scalar_datamunge_cd205fa85b728fed(datamunge::Va
 }
 
 
-datamunge::Var *_wrap_Var_pow_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0, double _swig_go_1) {
+datamunge::Var *_wrap_Var_pow_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0, double _swig_go_1) {
   datamunge::Var *arg1 = 0 ;
   double arg2 ;
   SwigValueWrapper< datamunge::Var > result;
@@ -15157,7 +16670,7 @@ datamunge::Var *_wrap_Var_pow_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-datamunge::Var *_wrap_Var_exp_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_exp_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15170,7 +16683,7 @@ datamunge::Var *_wrap_Var_exp_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-datamunge::Var *_wrap_Var_log_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_log_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15183,7 +16696,7 @@ datamunge::Var *_wrap_Var_log_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-datamunge::Var *_wrap_Var_sqrt_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_sqrt_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15196,7 +16709,7 @@ datamunge::Var *_wrap_Var_sqrt_datamunge_cd205fa85b728fed(datamunge::Var *_swig_
 }
 
 
-datamunge::Var *_wrap_Var_sin_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_sin_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15209,7 +16722,7 @@ datamunge::Var *_wrap_Var_sin_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-datamunge::Var *_wrap_Var_cos_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_cos_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15222,7 +16735,7 @@ datamunge::Var *_wrap_Var_cos_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-datamunge::Var *_wrap_Var_tan_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_tan_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15235,7 +16748,7 @@ datamunge::Var *_wrap_Var_tan_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-datamunge::Var *_wrap_Var_tanh_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_tanh_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15248,7 +16761,7 @@ datamunge::Var *_wrap_Var_tanh_datamunge_cd205fa85b728fed(datamunge::Var *_swig_
 }
 
 
-datamunge::Var *_wrap_Var_abs_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+datamunge::Var *_wrap_Var_abs_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   SwigValueWrapper< datamunge::Var > result;
   datamunge::Var *_swig_go_result;
@@ -15261,7 +16774,7 @@ datamunge::Var *_wrap_Var_abs_datamunge_cd205fa85b728fed(datamunge::Var *_swig_g
 }
 
 
-void _wrap_delete_Var_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
+void _wrap_delete_Var_datamunge_c5abddb9d33fe5ef(datamunge::Var *_swig_go_0) {
   datamunge::Var *arg1 = 0 ;
   
   arg1 = *(datamunge::Var **)&_swig_go_0; 
@@ -15271,7 +16784,7 @@ void _wrap_delete_Var_datamunge_cd205fa85b728fed(datamunge::Var *_swig_go_0) {
 }
 
 
-void _wrap_RGB_r_set_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
+void _wrap_RGB_r_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
   datamunge::plot::RGB *arg1 = 0 ;
   int arg2 ;
   
@@ -15283,7 +16796,7 @@ void _wrap_RGB_r_set_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0
 }
 
 
-intgo _wrap_RGB_r_get_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0) {
+intgo _wrap_RGB_r_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::RGB *_swig_go_0) {
   datamunge::plot::RGB *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
@@ -15296,7 +16809,7 @@ intgo _wrap_RGB_r_get_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_
 }
 
 
-void _wrap_RGB_g_set_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
+void _wrap_RGB_g_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
   datamunge::plot::RGB *arg1 = 0 ;
   int arg2 ;
   
@@ -15308,7 +16821,7 @@ void _wrap_RGB_g_set_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0
 }
 
 
-intgo _wrap_RGB_g_get_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0) {
+intgo _wrap_RGB_g_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::RGB *_swig_go_0) {
   datamunge::plot::RGB *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
@@ -15321,7 +16834,7 @@ intgo _wrap_RGB_g_get_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_
 }
 
 
-void _wrap_RGB_b_set_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
+void _wrap_RGB_b_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::RGB *_swig_go_0, intgo _swig_go_1) {
   datamunge::plot::RGB *arg1 = 0 ;
   int arg2 ;
   
@@ -15333,7 +16846,7 @@ void _wrap_RGB_b_set_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0
 }
 
 
-intgo _wrap_RGB_b_get_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0) {
+intgo _wrap_RGB_b_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::RGB *_swig_go_0) {
   datamunge::plot::RGB *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
@@ -15346,7 +16859,7 @@ intgo _wrap_RGB_b_get_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_
 }
 
 
-datamunge::plot::RGB *_wrap_new_RGB_datamunge_cd205fa85b728fed() {
+datamunge::plot::RGB *_wrap_new_RGB_datamunge_c5abddb9d33fe5ef() {
   datamunge::plot::RGB *result = 0 ;
   datamunge::plot::RGB *_swig_go_result;
   
@@ -15357,7 +16870,7 @@ datamunge::plot::RGB *_wrap_new_RGB_datamunge_cd205fa85b728fed() {
 }
 
 
-void _wrap_delete_RGB_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_0) {
+void _wrap_delete_RGB_datamunge_c5abddb9d33fe5ef(datamunge::plot::RGB *_swig_go_0) {
   datamunge::plot::RGB *arg1 = 0 ;
   
   arg1 = *(datamunge::plot::RGB **)&_swig_go_0; 
@@ -15367,7 +16880,7 @@ void _wrap_delete_RGB_datamunge_cd205fa85b728fed(datamunge::plot::RGB *_swig_go_
 }
 
 
-intgo _wrap_Kind_Scatter_DataSeries_datamunge_cd205fa85b728fed() {
+intgo _wrap_Kind_Scatter_DataSeries_datamunge_c5abddb9d33fe5ef() {
   datamunge::plot::DataSeries::Kind result;
   intgo _swig_go_result;
   
@@ -15379,7 +16892,7 @@ intgo _wrap_Kind_Scatter_DataSeries_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_Kind_Line_DataSeries_datamunge_cd205fa85b728fed() {
+intgo _wrap_Kind_Line_DataSeries_datamunge_c5abddb9d33fe5ef() {
   datamunge::plot::DataSeries::Kind result;
   intgo _swig_go_result;
   
@@ -15391,7 +16904,7 @@ intgo _wrap_Kind_Line_DataSeries_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_Kind_Bar_DataSeries_datamunge_cd205fa85b728fed() {
+intgo _wrap_Kind_Bar_DataSeries_datamunge_c5abddb9d33fe5ef() {
   datamunge::plot::DataSeries::Kind result;
   intgo _swig_go_result;
   
@@ -15403,7 +16916,55 @@ intgo _wrap_Kind_Bar_DataSeries_datamunge_cd205fa85b728fed() {
 }
 
 
-void _wrap_DataSeries_kind_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, intgo _swig_go_1) {
+intgo _wrap_Kind_Box_DataSeries_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::DataSeries::Kind result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::plot::DataSeries::Kind::Box;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_Kind_Polygon_DataSeries_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::DataSeries::Kind result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::plot::DataSeries::Kind::Polygon;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_Kind_Text_DataSeries_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::DataSeries::Kind result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::plot::DataSeries::Kind::Text;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_Kind_Segment_DataSeries_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::DataSeries::Kind result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::plot::DataSeries::Kind::Segment;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_DataSeries_kind_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, intgo _swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   datamunge::plot::DataSeries::Kind arg2 ;
   
@@ -15415,7 +16976,7 @@ void _wrap_DataSeries_kind_set_datamunge_cd205fa85b728fed(datamunge::plot::DataS
 }
 
 
-intgo _wrap_DataSeries_kind_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+intgo _wrap_DataSeries_kind_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   datamunge::plot::DataSeries::Kind result;
   intgo _swig_go_result;
@@ -15428,7 +16989,7 @@ intgo _wrap_DataSeries_kind_get_datamunge_cd205fa85b728fed(datamunge::plot::Data
 }
 
 
-void _wrap_DataSeries_x_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
+void _wrap_DataSeries_x_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
@@ -15440,7 +17001,7 @@ void _wrap_DataSeries_x_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeri
 }
 
 
-std::vector< double > *_wrap_DataSeries_x_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+std::vector< double > *_wrap_DataSeries_x_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -15453,7 +17014,7 @@ std::vector< double > *_wrap_DataSeries_x_get_datamunge_cd205fa85b728fed(datamun
 }
 
 
-void _wrap_DataSeries_y_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
+void _wrap_DataSeries_y_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, std::vector< double > *_swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   
@@ -15465,7 +17026,7 @@ void _wrap_DataSeries_y_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeri
 }
 
 
-std::vector< double > *_wrap_DataSeries_y_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+std::vector< double > *_wrap_DataSeries_y_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -15478,7 +17039,7 @@ std::vector< double > *_wrap_DataSeries_y_get_datamunge_cd205fa85b728fed(datamun
 }
 
 
-void _wrap_DataSeries_label_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_DataSeries_label_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -15493,7 +17054,7 @@ void _wrap_DataSeries_label_set_datamunge_cd205fa85b728fed(datamunge::plot::Data
 }
 
 
-_gostring_ _wrap_DataSeries_label_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+_gostring_ _wrap_DataSeries_label_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -15506,7 +17067,7 @@ _gostring_ _wrap_DataSeries_label_get_datamunge_cd205fa85b728fed(datamunge::plot
 }
 
 
-void _wrap_DataSeries_color_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+void _wrap_DataSeries_color_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   datamunge::plot::RGB *arg2 = 0 ;
   
@@ -15518,7 +17079,7 @@ void _wrap_DataSeries_color_set_datamunge_cd205fa85b728fed(datamunge::plot::Data
 }
 
 
-datamunge::plot::RGB *_wrap_DataSeries_color_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+datamunge::plot::RGB *_wrap_DataSeries_color_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   datamunge::plot::RGB *result = 0 ;
   datamunge::plot::RGB *_swig_go_result;
@@ -15531,7 +17092,7 @@ datamunge::plot::RGB *_wrap_DataSeries_color_get_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_DataSeries_stroke_width_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
+void _wrap_DataSeries_stroke_width_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   double arg2 ;
   
@@ -15543,7 +17104,7 @@ void _wrap_DataSeries_stroke_width_set_datamunge_cd205fa85b728fed(datamunge::plo
 }
 
 
-double _wrap_DataSeries_stroke_width_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+double _wrap_DataSeries_stroke_width_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -15556,7 +17117,7 @@ double _wrap_DataSeries_stroke_width_get_datamunge_cd205fa85b728fed(datamunge::p
 }
 
 
-void _wrap_DataSeries_marker_size_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
+void _wrap_DataSeries_marker_size_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   double arg2 ;
   
@@ -15568,7 +17129,7 @@ void _wrap_DataSeries_marker_size_set_datamunge_cd205fa85b728fed(datamunge::plot
 }
 
 
-double _wrap_DataSeries_marker_size_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+double _wrap_DataSeries_marker_size_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -15581,7 +17142,7 @@ double _wrap_DataSeries_marker_size_get_datamunge_cd205fa85b728fed(datamunge::pl
 }
 
 
-void _wrap_DataSeries_bar_width_set_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
+void _wrap_DataSeries_bar_width_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, double _swig_go_1) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   double arg2 ;
   
@@ -15593,7 +17154,7 @@ void _wrap_DataSeries_bar_width_set_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-double _wrap_DataSeries_bar_width_get_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+double _wrap_DataSeries_bar_width_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -15606,7 +17167,32 @@ double _wrap_DataSeries_bar_width_get_datamunge_cd205fa85b728fed(datamunge::plot
 }
 
 
-datamunge::plot::DataSeries *_wrap_new_DataSeries_datamunge_cd205fa85b728fed() {
+void _wrap_DataSeries_filled_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0, bool _swig_go_1) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  bool arg2 ;
+  
+  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  arg2 = (bool)_swig_go_1; 
+  
+  if (arg1) (arg1)->filled = arg2;
+  
+}
+
+
+bool _wrap_DataSeries_filled_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
+  datamunge::plot::DataSeries *arg1 = 0 ;
+  bool result;
+  bool _swig_go_result;
+  
+  arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
+  
+  result = (bool) ((arg1)->filled);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::DataSeries *_wrap_new_DataSeries_datamunge_c5abddb9d33fe5ef() {
   datamunge::plot::DataSeries *result = 0 ;
   datamunge::plot::DataSeries *_swig_go_result;
   
@@ -15617,7 +17203,7 @@ datamunge::plot::DataSeries *_wrap_new_DataSeries_datamunge_cd205fa85b728fed() {
 }
 
 
-void _wrap_delete_DataSeries_datamunge_cd205fa85b728fed(datamunge::plot::DataSeries *_swig_go_0) {
+void _wrap_delete_DataSeries_datamunge_c5abddb9d33fe5ef(datamunge::plot::DataSeries *_swig_go_0) {
   datamunge::plot::DataSeries *arg1 = 0 ;
   
   arg1 = *(datamunge::plot::DataSeries **)&_swig_go_0; 
@@ -15627,7 +17213,227 @@ void _wrap_delete_DataSeries_datamunge_cd205fa85b728fed(datamunge::plot::DataSer
 }
 
 
-void _wrap_delete_Plot_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+void _wrap_ABLine_vertical_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0, bool _swig_go_1) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  bool arg2 ;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg2 = (bool)_swig_go_1; 
+  
+  if (arg1) (arg1)->vertical = arg2;
+  
+}
+
+
+bool _wrap_ABLine_vertical_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  bool result;
+  bool _swig_go_result;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  
+  result = (bool) ((arg1)->vertical);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ABLine_value_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0, double _swig_go_1) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->value = arg2;
+  
+}
+
+
+double _wrap_ABLine_value_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->value);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ABLine_slope_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0, double _swig_go_1) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->slope = arg2;
+  
+}
+
+
+double _wrap_ABLine_slope_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->slope);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ABLine_color_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::plot::RGB *arg2 = 0 ;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg2 = *(datamunge::plot::RGB **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->color = *arg2;
+  
+}
+
+
+datamunge::plot::RGB *_wrap_ABLine_color_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  datamunge::plot::RGB *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  
+  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ABLine_stroke_width_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0, double _swig_go_1) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->stroke_width = arg2;
+  
+}
+
+
+double _wrap_ABLine_stroke_width_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->stroke_width);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::ABLine *_wrap_new_ABLine_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::ABLine *result = 0 ;
+  datamunge::plot::ABLine *_swig_go_result;
+  
+  
+  result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+  *(datamunge::plot::ABLine **)&_swig_go_result = (datamunge::plot::ABLine *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_ABLine_datamunge_c5abddb9d33fe5ef(datamunge::plot::ABLine *_swig_go_0) {
+  datamunge::plot::ABLine *arg1 = 0 ;
+  
+  arg1 = *(datamunge::plot::ABLine **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+void _wrap_LegendEntry_label_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::LegendEntry *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  
+  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  if (arg1) (arg1)->label = *arg2;
+  
+}
+
+
+_gostring_ _wrap_LegendEntry_label_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::LegendEntry *_swig_go_0) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  std::string *result = 0 ;
+  _gostring_ _swig_go_result;
+  
+  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  
+  result = (std::string *) & ((arg1)->label);
+  _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
+  return _swig_go_result;
+}
+
+
+void _wrap_LegendEntry_color_set_datamunge_c5abddb9d33fe5ef(datamunge::plot::LegendEntry *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::plot::RGB *arg2 = 0 ;
+  
+  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  arg2 = *(datamunge::plot::RGB **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->color = *arg2;
+  
+}
+
+
+datamunge::plot::RGB *_wrap_LegendEntry_color_get_datamunge_c5abddb9d33fe5ef(datamunge::plot::LegendEntry *_swig_go_0) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  datamunge::plot::RGB *result = 0 ;
+  datamunge::plot::RGB *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  
+  result = (datamunge::plot::RGB *)& ((arg1)->color);
+  *(datamunge::plot::RGB **)&_swig_go_result = (datamunge::plot::RGB *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::LegendEntry *_wrap_new_LegendEntry_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::LegendEntry *result = 0 ;
+  datamunge::plot::LegendEntry *_swig_go_result;
+  
+  
+  result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+  *(datamunge::plot::LegendEntry **)&_swig_go_result = (datamunge::plot::LegendEntry *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_LegendEntry_datamunge_c5abddb9d33fe5ef(datamunge::plot::LegendEntry *_swig_go_0) {
+  datamunge::plot::LegendEntry *arg1 = 0 ;
+  
+  arg1 = *(datamunge::plot::LegendEntry **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+void _wrap_delete_Plot_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   
   arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
@@ -15637,7 +17443,7 @@ void _wrap_delete_Plot_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_g
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_size_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::plot::Plot *_wrap_Plot_size_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -15654,7 +17460,7 @@ datamunge::plot::Plot *_wrap_Plot_size_datamunge_cd205fa85b728fed(datamunge::plo
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_title_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::plot::Plot *_wrap_Plot_title_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string arg2 ;
   datamunge::plot::Plot *result = 0 ;
@@ -15669,7 +17475,7 @@ datamunge::plot::Plot *_wrap_Plot_title_datamunge_cd205fa85b728fed(datamunge::pl
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_x_label_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::plot::Plot *_wrap_Plot_x_label_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string arg2 ;
   datamunge::plot::Plot *result = 0 ;
@@ -15684,7 +17490,7 @@ datamunge::plot::Plot *_wrap_Plot_x_label_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_y_label_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+datamunge::plot::Plot *_wrap_Plot_y_label_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string arg2 ;
   datamunge::plot::Plot *result = 0 ;
@@ -15699,7 +17505,7 @@ datamunge::plot::Plot *_wrap_Plot_y_label_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_background_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::plot::Plot *_wrap_Plot_background_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   datamunge::plot::RGB arg2 ;
   datamunge::plot::RGB *argp2 ;
@@ -15721,7 +17527,7 @@ datamunge::plot::Plot *_wrap_Plot_background_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_axis_color_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::plot::Plot *_wrap_Plot_axis_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   datamunge::plot::RGB arg2 ;
   datamunge::plot::RGB *argp2 ;
@@ -15743,7 +17549,7 @@ datamunge::plot::Plot *_wrap_Plot_axis_color_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+datamunge::plot::Plot *_wrap_Plot_grid_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   datamunge::plot::RGB arg2 ;
   datamunge::plot::RGB *argp2 ;
@@ -15765,7 +17571,7 @@ datamunge::plot::Plot *_wrap_Plot_grid_color_datamunge_cd205fa85b728fed(datamung
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, bool _swig_go_1) {
+datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, bool _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   bool arg2 ;
   datamunge::plot::Plot *result = 0 ;
@@ -15780,7 +17586,7 @@ datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
@@ -15793,7 +17599,7 @@ datamunge::plot::Plot *_wrap_Plot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+datamunge::plot::Plot *_wrap_Plot_x_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
   datamunge::plot::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
@@ -15810,7 +17616,7 @@ datamunge::plot::Plot *_wrap_Plot_x_limits_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-datamunge::plot::Plot *_wrap_Plot_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+datamunge::plot::Plot *_wrap_Plot_y_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
   datamunge::plot::Plot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
@@ -15827,7 +17633,57 @@ datamunge::plot::Plot *_wrap_Plot_y_limits_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-long long _wrap_Plot_width_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+datamunge::plot::Plot *_wrap_Plot_hide_axes__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, bool _swig_go_1) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  datamunge::plot::Plot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  arg2 = (bool)_swig_go_1; 
+  
+  result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::Plot *_wrap_Plot_hide_axes__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  datamunge::plot::Plot *result = 0 ;
+  datamunge::plot::Plot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  
+  result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::Plot *_wrap_Plot_x_tick_labels_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< std::string > arg2 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::Plot *result = 0 ;
+  datamunge::plot::Plot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+long long _wrap_Plot_width_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -15840,7 +17696,7 @@ long long _wrap_Plot_width_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_sw
 }
 
 
-long long _wrap_Plot_height_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+long long _wrap_Plot_height_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -15853,7 +17709,7 @@ long long _wrap_Plot_height_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_s
 }
 
 
-_gostring_ _wrap_Plot_title_text_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+_gostring_ _wrap_Plot_title_text_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -15866,7 +17722,7 @@ _gostring_ _wrap_Plot_title_text_datamunge_cd205fa85b728fed(datamunge::plot::Plo
 }
 
 
-_gostring_ _wrap_Plot_x_label_text_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+_gostring_ _wrap_Plot_x_label_text_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -15879,7 +17735,7 @@ _gostring_ _wrap_Plot_x_label_text_datamunge_cd205fa85b728fed(datamunge::plot::P
 }
 
 
-_gostring_ _wrap_Plot_y_label_text_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+_gostring_ _wrap_Plot_y_label_text_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -15892,7 +17748,7 @@ _gostring_ _wrap_Plot_y_label_text_datamunge_cd205fa85b728fed(datamunge::plot::P
 }
 
 
-std::vector< datamunge::plot::DataSeries > *_wrap_Plot_series_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+std::vector< datamunge::plot::DataSeries > *_wrap_Plot_series_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::vector< datamunge::plot::DataSeries > *result = 0 ;
   std::vector< datamunge::plot::DataSeries > *_swig_go_result;
@@ -15905,7 +17761,7 @@ std::vector< datamunge::plot::DataSeries > *_wrap_Plot_series_datamunge_cd205fa8
 }
 
 
-datamunge::plot::RGB *_wrap_Plot_background_color_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+datamunge::plot::RGB *_wrap_Plot_background_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   datamunge::plot::RGB result;
   datamunge::plot::RGB *_swig_go_result;
@@ -15918,7 +17774,7 @@ datamunge::plot::RGB *_wrap_Plot_background_color_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::plot::RGB *_wrap_Plot_axes_color_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+datamunge::plot::RGB *_wrap_Plot_axes_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   datamunge::plot::RGB result;
   datamunge::plot::RGB *_swig_go_result;
@@ -15931,7 +17787,7 @@ datamunge::plot::RGB *_wrap_Plot_axes_color_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-datamunge::plot::RGB *_wrap_Plot_major_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+datamunge::plot::RGB *_wrap_Plot_major_grid_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   datamunge::plot::RGB result;
   datamunge::plot::RGB *_swig_go_result;
@@ -15944,7 +17800,7 @@ datamunge::plot::RGB *_wrap_Plot_major_grid_color_datamunge_cd205fa85b728fed(dat
 }
 
 
-bool _wrap_Plot_grid_visible_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+bool _wrap_Plot_grid_visible_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -15957,7 +17813,7 @@ bool _wrap_Plot_grid_visible_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_
 }
 
 
-bool _wrap_Plot_has_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+bool _wrap_Plot_has_x_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -15970,7 +17826,7 @@ bool _wrap_Plot_has_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_
 }
 
 
-bool _wrap_Plot_has_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+bool _wrap_Plot_has_y_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -15983,7 +17839,7 @@ bool _wrap_Plot_has_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_
 }
 
 
-double _wrap_Plot_x_min_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+double _wrap_Plot_x_min_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -15996,7 +17852,7 @@ double _wrap_Plot_x_min_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_
 }
 
 
-double _wrap_Plot_x_max_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+double _wrap_Plot_x_max_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -16009,7 +17865,7 @@ double _wrap_Plot_x_max_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_
 }
 
 
-double _wrap_Plot_y_min_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+double _wrap_Plot_y_min_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -16022,7 +17878,7 @@ double _wrap_Plot_y_min_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_
 }
 
 
-double _wrap_Plot_y_max_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+double _wrap_Plot_y_max_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -16035,7 +17891,59 @@ double _wrap_Plot_y_max_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_
 }
 
 
-void _wrap_Plot_save_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+bool _wrap_Plot_axes_hidden_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  bool result;
+  bool _swig_go_result;
+  
+  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  
+  result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< std::string > *_wrap_Plot_x_tick_label_list_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< std::string > *result = 0 ;
+  std::vector< std::string > *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  
+  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+  *(std::vector< std::string > **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< datamunge::plot::ABLine > *_wrap_Plot_reference_lines_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  std::vector< datamunge::plot::ABLine > *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  
+  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+  *(std::vector< datamunge::plot::ABLine > **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< datamunge::plot::LegendEntry > *_wrap_Plot_legend_entries_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
+  datamunge::plot::Plot *arg1 = 0 ;
+  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  std::vector< datamunge::plot::LegendEntry > *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
+  
+  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+  *(std::vector< datamunge::plot::LegendEntry > **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_Plot_save_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -16050,7 +17958,7 @@ void _wrap_Plot_save_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_
 }
 
 
-void _wrap_Plot_save_svg_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_Plot_save_svg_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -16065,7 +17973,7 @@ void _wrap_Plot_save_svg_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig
 }
 
 
-void _wrap_Plot_view__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_Plot_view__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -16080,7 +17988,7 @@ void _wrap_Plot_view__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_
 }
 
 
-void _wrap_Plot_view__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+void _wrap_Plot_view__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   
   arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
@@ -16090,7 +17998,7 @@ void _wrap_Plot_view__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_
 }
 
 
-void _wrap_Plot_show__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_Plot_show__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::plot::Plot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -16105,7 +18013,7 @@ void _wrap_Plot_show__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_
 }
 
 
-void _wrap_Plot_show__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_swig_go_0) {
+void _wrap_Plot_show__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::Plot *_swig_go_0) {
   datamunge::plot::Plot *arg1 = 0 ;
   
   arg1 = *(datamunge::plot::Plot **)&_swig_go_0; 
@@ -16115,7 +18023,7 @@ void _wrap_Plot_show__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::Plot *_
 }
 
 
-datamunge::plot::Plot *_wrap_new_Plot_datamunge_cd205fa85b728fed() {
+datamunge::plot::Plot *_wrap_new_Plot_datamunge_c5abddb9d33fe5ef() {
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
@@ -16126,19 +18034,707 @@ datamunge::plot::Plot *_wrap_new_Plot_datamunge_cd205fa85b728fed() {
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_create_datamunge_cd205fa85b728fed() {
-  datamunge::plot::ScatterPlot result;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+datamunge::plot::RPlot *_wrap_RPlot_create_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
   
   
-  result = datamunge::plot::ScatterPlot::create();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = new datamunge::plot::ScatterPlot(result); 
+  result = datamunge::plot::RPlot::create();
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *argp1 ;
+  std::vector< double > *argp2 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg5 = (datamunge::plot::RGB)*argp5;
+  
+  
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2, _gostring_ _swig_go_3) {
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  std::vector< double > *argp1 ;
+  std::vector< double > *argp2 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, _gostring_ _swig_go_2) {
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::string arg3 ;
+  std::vector< double > *argp1 ;
+  std::vector< double > *argp2 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
+  
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_plot__SWIG_3_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+  std::vector< double > arg1 ;
+  std::vector< double > arg2 ;
+  std::vector< double > *argp1 ;
+  std::vector< double > *argp2 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RGB arg4 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RGB *argp4 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  arg2 = (size_t)_swig_go_1; 
+  (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
+  
+  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg4 = (datamunge::plot::RGB)*argp4;
+  
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2) {
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::string arg3 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  arg2 = (size_t)_swig_go_1; 
+  (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, long long _swig_go_1) {
+  std::vector< double > arg1 ;
+  std::size_t arg2 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  arg2 = (size_t)_swig_go_1; 
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_hist__SWIG_3_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
+  std::vector< double > arg1 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, _gostring_ _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::string arg3 ;
+  datamunge::plot::RGB arg4 ;
+  std::vector< double > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::RGB *argp4 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
+  
+  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg4 = (datamunge::plot::RGB)*argp4;
+  
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, _gostring_ _swig_go_2) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::string arg3 ;
+  std::vector< double > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  (&arg3)->assign(_swig_go_2.p, _swig_go_2.n); 
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::vector< double > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_barplot__SWIG_3_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
+  std::vector< double > arg1 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, std::vector< std::string > *_swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::string > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::vector< std::vector< double > > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< std::vector< double > > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::vector< double > >");
+  }
+  arg1 = (std::vector< std::vector< double > >)*argp1;
+  
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::vector< std::vector< double > > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< std::vector< double > > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::vector< double > >");
+  }
+  arg1 = (std::vector< std::vector< double > >)*argp1;
+  
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_boxplot__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0) {
+  std::vector< std::vector< double > > arg1 ;
+  std::vector< std::vector< double > > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< std::vector< double > > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::vector< double > >");
+  }
+  arg1 = (std::vector< std::vector< double > >)*argp1;
+  
+  
+  result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< datamunge::plot::RGB > *_swig_go_2) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  std::vector< double > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  std::vector< datamunge::plot::RGB > *argp3 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  argp3 = (std::vector< datamunge::plot::RGB > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< datamunge::plot::RGB >");
+  }
+  arg3 = (std::vector< datamunge::plot::RGB >)*argp3;
+  
+  
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+  std::vector< double > arg1 ;
+  std::vector< std::string > arg2 ;
+  std::vector< double > *argp1 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_pie__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
+  std::vector< double > arg1 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4, datamunge::plot::RGB *_swig_go_5) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string arg5 ;
+  datamunge::plot::RGB arg6 ;
+  datamunge::plot::RGB *argp6 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::Callback **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  arg4 = (size_t)_swig_go_3; 
+  (&arg5)->assign(_swig_go_4.p, _swig_go_4.n); 
+  
+  argp6 = (datamunge::plot::RGB *)_swig_go_5;
+  if (argp6 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg6 = (datamunge::plot::RGB)*argp6;
+  
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3, _gostring_ _swig_go_4) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  std::string arg5 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::Callback **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  arg4 = (size_t)_swig_go_3; 
+  (&arg5)->assign(_swig_go_4.p, _swig_go_4.n); 
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2, long long _swig_go_3) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::Callback **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  arg4 = (size_t)_swig_go_3; 
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_curve__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::Callback *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::Callback *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::Callback **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  
+  result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, _gostring_ _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+  std::vector< double > arg1 ;
+  std::string arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, _gostring_ _swig_go_1) {
+  std::vector< double > arg1 ;
+  std::string arg2 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
+  
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_qqnorm__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
+  std::vector< double > arg1 ;
+  std::vector< double > *argp1 ;
+  datamunge::plot::RPlot result;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  argp1 = (std::vector< double > *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg1 = (std::vector< double >)*argp1;
+  
+  
+  result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1));
+  *(datamunge::plot::RPlot **)&_swig_go_result = new datamunge::plot::RPlot(result); 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -16147,10 +18743,10 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_0_datamunge_cd205fa
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   datamunge::plot::RGB *argp5 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16175,14 +18771,14 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_0_datamunge_cd205fa
   
   arg6 = (double)_swig_go_5; 
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -16190,10 +18786,10 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_1_datamunge_cd205fa
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   datamunge::plot::RGB *argp5 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16217,23 +18813,23 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_1_datamunge_cd205fa
   arg5 = (datamunge::plot::RGB)*argp5;
   
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_2_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16250,22 +18846,22 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_2_datamunge_cd205fa
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_3_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_points__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16281,14 +18877,14 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_points__SWIG_3_datamunge_cd205fa
   arg3 = (std::vector< double >)*argp3;
   
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -16297,10 +18893,10 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_0_datamunge_cd205fa85
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   datamunge::plot::RGB *argp5 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16325,14 +18921,14 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_0_datamunge_cd205fa85
   
   arg6 = (double)_swig_go_5; 
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
@@ -16340,10 +18936,10 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_1_datamunge_cd205fa85
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
   datamunge::plot::RGB *argp5 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16367,23 +18963,23 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_1_datamunge_cd205fa85
   arg5 = (datamunge::plot::RGB)*argp5;
   
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_2_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::string arg4 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16400,22 +18996,22 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_2_datamunge_cd205fa85
   
   (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_3_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_line__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< double > arg2 ;
   std::vector< double > arg3 ;
   std::vector< double > *argp2 ;
   std::vector< double > *argp3 ;
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (std::vector< double > *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16431,41 +19027,1163 @@ datamunge::plot::ScatterPlot *_wrap_ScatterPlot_line__SWIG_3_datamunge_cd205fa85
   arg3 = (std::vector< double >)*argp3;
   
   
-  result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::ScatterPlot *_wrap_new_ScatterPlot_datamunge_cd205fa85b728fed() {
-  datamunge::plot::ScatterPlot *result = 0 ;
-  datamunge::plot::ScatterPlot *_swig_go_result;
+datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
   
   
-  result = (datamunge::plot::ScatterPlot *)new datamunge::plot::ScatterPlot();
-  *(datamunge::plot::ScatterPlot **)&_swig_go_result = (datamunge::plot::ScatterPlot *)result; 
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg5 = (datamunge::plot::RGB)*argp5;
+  
+  arg6 = (double)_swig_go_5; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-void _wrap_delete_ScatterPlot_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg5 = (datamunge::plot::RGB)*argp5;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_lines__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg5 = (datamunge::plot::RGB)*argp5;
+  
+  arg6 = (double)_swig_go_5; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg5 = (datamunge::plot::RGB)*argp5;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::string arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_bars__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7, datamunge::plot::RGB *_swig_go_8, double _swig_go_9) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  datamunge::plot::RGB arg9 ;
+  double arg10 ;
+  std::vector< double > *argp8 ;
+  datamunge::plot::RGB *argp9 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  arg4 = (double)_swig_go_3; 
+  arg5 = (double)_swig_go_4; 
+  arg6 = (double)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  
+  argp8 = (std::vector< double > *)_swig_go_7;
+  if (argp8 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg8 = (std::vector< double >)*argp8;
+  
+  
+  argp9 = (datamunge::plot::RGB *)_swig_go_8;
+  if (argp9 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg9 = (datamunge::plot::RGB)*argp9;
+  
+  arg10 = (double)_swig_go_9; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),arg10);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7, datamunge::plot::RGB *_swig_go_8) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  datamunge::plot::RGB arg9 ;
+  std::vector< double > *argp8 ;
+  datamunge::plot::RGB *argp9 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  arg4 = (double)_swig_go_3; 
+  arg5 = (double)_swig_go_4; 
+  arg6 = (double)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  
+  argp8 = (std::vector< double > *)_swig_go_7;
+  if (argp8 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg8 = (std::vector< double >)*argp8;
+  
+  
+  argp9 = (datamunge::plot::RGB *)_swig_go_8;
+  if (argp9 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg9 = (datamunge::plot::RGB)*argp9;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6, std::vector< double > *_swig_go_7) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  std::vector< double > arg8 ;
+  std::vector< double > *argp8 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  arg4 = (double)_swig_go_3; 
+  arg5 = (double)_swig_go_4; 
+  arg6 = (double)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  
+  argp8 = (std::vector< double > *)_swig_go_7;
+  if (argp8 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg8 = (std::vector< double >)*argp8;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_box__SWIG_3_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, double _swig_go_3, double _swig_go_4, double _swig_go_5, double _swig_go_6) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  arg4 = (double)_swig_go_3; 
+  arg5 = (double)_swig_go_4; 
+  arg6 = (double)_swig_go_5; 
+  arg7 = (double)_swig_go_6; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, datamunge::plot::RGB *_swig_go_3, double _swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB arg4 ;
+  double arg5 ;
+  datamunge::plot::RGB *argp4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  
+  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg4 = (datamunge::plot::RGB)*argp4;
+  
+  arg5 = (double)_swig_go_4; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4),arg5);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RGB arg4 ;
+  datamunge::plot::RGB *argp4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  
+  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg4 = (datamunge::plot::RGB)*argp4;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline_h__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2, double _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  arg4 = (double)_swig_go_3; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline_h__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline_h__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline_v__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2, double _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  arg4 = (double)_swig_go_3; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline_v__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RGB arg3 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_abline_v__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, datamunge::plot::RGB *_swig_go_2, double _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  double arg4 ;
+  std::vector< double > *argp2 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  arg4 = (double)_swig_go_3; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),arg4);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, datamunge::plot::RGB *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  datamunge::plot::RGB arg3 ;
+  std::vector< double > *argp2 ;
+  datamunge::plot::RGB *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (datamunge::plot::RGB *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg3 = (datamunge::plot::RGB)*argp3;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_qqline__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > *argp2 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_legend_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< std::string > *_swig_go_1, std::vector< datamunge::plot::RGB > *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< std::string > arg2 ;
+  SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+  std::vector< std::string > *argp2 ;
+  std::vector< datamunge::plot::RGB > *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  argp3 = (std::vector< datamunge::plot::RGB > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< datamunge::plot::RGB >");
+  }
+  arg3 = (std::vector< datamunge::plot::RGB >)*argp3;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_text__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  double arg6 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg5 = (datamunge::plot::RGB)*argp5;
+  
+  arg6 = (double)_swig_go_5; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_text__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RGB arg5 ;
+  datamunge::plot::RGB *argp5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  argp5 = (datamunge::plot::RGB *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg5 = (datamunge::plot::RGB)*argp5;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_text__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2, _gostring_ _swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  std::string arg4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  arg3 = (double)_swig_go_2; 
+  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3, bool _swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RGB arg4 ;
+  bool arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg4 = (datamunge::plot::RGB)*argp4;
+  
+  arg5 = (bool)_swig_go_4; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, datamunge::plot::RGB *_swig_go_3) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  datamunge::plot::RGB arg4 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RGB *argp4 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  argp4 = (datamunge::plot::RGB *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg4 = (datamunge::plot::RGB)*argp4;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_polygon__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4, datamunge::plot::RGB *_swig_go_5, double _swig_go_6) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  datamunge::plot::RGB arg6 ;
+  double arg7 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  std::vector< double > *argp4 ;
+  std::vector< double > *argp5 ;
+  datamunge::plot::RGB *argp6 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  argp4 = (std::vector< double > *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg4 = (std::vector< double >)*argp4;
+  
+  
+  argp5 = (std::vector< double > *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg5 = (std::vector< double >)*argp5;
+  
+  
+  argp6 = (datamunge::plot::RGB *)_swig_go_5;
+  if (argp6 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg6 = (datamunge::plot::RGB)*argp6;
+  
+  arg7 = (double)_swig_go_6; 
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7);
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4, datamunge::plot::RGB *_swig_go_5) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  datamunge::plot::RGB arg6 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  std::vector< double > *argp4 ;
+  std::vector< double > *argp5 ;
+  datamunge::plot::RGB *argp6 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  argp4 = (std::vector< double > *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg4 = (std::vector< double >)*argp4;
+  
+  
+  argp5 = (std::vector< double > *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg5 = (std::vector< double >)*argp5;
+  
+  
+  argp6 = (datamunge::plot::RGB *)_swig_go_5;
+  if (argp6 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
+  }
+  arg6 = (datamunge::plot::RGB)*argp6;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_RPlot_segments__SWIG_2_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< double > *_swig_go_3, std::vector< double > *_swig_go_4) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< double > arg2 ;
+  std::vector< double > arg3 ;
+  std::vector< double > arg4 ;
+  std::vector< double > arg5 ;
+  std::vector< double > *argp2 ;
+  std::vector< double > *argp3 ;
+  std::vector< double > *argp4 ;
+  std::vector< double > *argp5 ;
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< double > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg2 = (std::vector< double >)*argp2;
+  
+  
+  argp3 = (std::vector< double > *)_swig_go_2;
+  if (argp3 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg3 = (std::vector< double >)*argp3;
+  
+  
+  argp4 = (std::vector< double > *)_swig_go_3;
+  if (argp4 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg4 = (std::vector< double >)*argp4;
+  
+  
+  argp5 = (std::vector< double > *)_swig_go_4;
+  if (argp5 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< double >");
+  }
+  arg5 = (std::vector< double >)*argp5;
+  
+  
+  result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+  *(datamunge::plot::RPlot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::RPlot *_wrap_new_RPlot_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::RPlot *result = 0 ;
+  datamunge::plot::RPlot *_swig_go_result;
+  
+  
+  result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+  *(datamunge::plot::RPlot **)&_swig_go_result = (datamunge::plot::RPlot *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_RPlot_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   delete arg1;
   
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_size_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_size_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   arg2 = (size_t)_swig_go_1; 
   arg3 = (size_t)_swig_go_2; 
   
@@ -16476,13 +20194,13 @@ datamunge::plot::Plot *_wrap_ScatterPlot_size_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_title_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_title_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string arg2 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
@@ -16492,13 +20210,13 @@ datamunge::plot::Plot *_wrap_ScatterPlot_title_datamunge_cd205fa85b728fed(datamu
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_x_label_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_x_label_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string arg2 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
@@ -16508,13 +20226,13 @@ datamunge::plot::Plot *_wrap_ScatterPlot_x_label_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_y_label_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_y_label_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string arg2 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
@@ -16524,14 +20242,14 @@ datamunge::plot::Plot *_wrap_ScatterPlot_y_label_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_background_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_background_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   datamunge::plot::RGB arg2 ;
   datamunge::plot::RGB *argp2 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (datamunge::plot::RGB *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16547,14 +20265,14 @@ datamunge::plot::Plot *_wrap_ScatterPlot_background_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_axis_color_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_axis_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   datamunge::plot::RGB arg2 ;
   datamunge::plot::RGB *argp2 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (datamunge::plot::RGB *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16570,14 +20288,14 @@ datamunge::plot::Plot *_wrap_ScatterPlot_axis_color_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_grid_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   datamunge::plot::RGB arg2 ;
   datamunge::plot::RGB *argp2 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   argp2 = (datamunge::plot::RGB *)_swig_go_1;
   if (argp2 == NULL) {
@@ -16593,13 +20311,13 @@ datamunge::plot::Plot *_wrap_ScatterPlot_grid_color_datamunge_cd205fa85b728fed(d
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_show_grid__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, bool _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   bool arg2 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   arg2 = (bool)_swig_go_1; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
@@ -16609,12 +20327,12 @@ datamunge::plot::Plot *_wrap_ScatterPlot_show_grid__SWIG_0_datamunge_cd205fa85b7
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_show_grid__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (datamunge::plot::Plot *) &(swig_b0)->show_grid();
@@ -16623,14 +20341,14 @@ datamunge::plot::Plot *_wrap_ScatterPlot_show_grid__SWIG_1_datamunge_cd205fa85b7
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_x_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
@@ -16641,14 +20359,14 @@ datamunge::plot::Plot *_wrap_ScatterPlot_x_limits_datamunge_cd205fa85b728fed(dat
 }
 
 
-datamunge::plot::Plot *_wrap_ScatterPlot_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_y_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
   datamunge::plot::Plot *result = 0 ;
   datamunge::plot::Plot *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   arg2 = (double)_swig_go_1; 
   arg3 = (double)_swig_go_2; 
   
@@ -16659,12 +20377,65 @@ datamunge::plot::Plot *_wrap_ScatterPlot_y_limits_datamunge_cd205fa85b728fed(dat
 }
 
 
-long long _wrap_ScatterPlot_width_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::Plot *_wrap_RPlot_hide_axes__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, bool _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  bool arg2 ;
+  datamunge::plot::Plot *result = 0 ;
+  datamunge::plot::Plot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  arg2 = (bool)_swig_go_1; 
+  
+  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
+  result = (datamunge::plot::Plot *) &(swig_b0)->hide_axes(arg2);
+  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::Plot *_wrap_RPlot_hide_axes__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  datamunge::plot::Plot *result = 0 ;
+  datamunge::plot::Plot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
+  result = (datamunge::plot::Plot *) &(swig_b0)->hide_axes();
+  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::plot::Plot *_wrap_RPlot_x_tick_labels_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, std::vector< std::string > *_swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< std::string > arg2 ;
+  std::vector< std::string > *argp2 ;
+  datamunge::plot::Plot *result = 0 ;
+  datamunge::plot::Plot *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  argp2 = (std::vector< std::string > *)_swig_go_1;
+  if (argp2 == NULL) {
+    _swig_gopanic("Attempt to dereference null std::vector< std::string >");
+  }
+  arg2 = (std::vector< std::string >)*argp2;
+  
+  
+  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
+  result = (datamunge::plot::Plot *) &(swig_b0)->x_tick_labels(SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::Plot **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+long long _wrap_RPlot_width_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = ((datamunge::plot::Plot const *)swig_b0)->width();
@@ -16673,12 +20444,12 @@ long long _wrap_ScatterPlot_width_datamunge_cd205fa85b728fed(datamunge::plot::Sc
 }
 
 
-long long _wrap_ScatterPlot_height_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+long long _wrap_RPlot_height_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = ((datamunge::plot::Plot const *)swig_b0)->height();
@@ -16687,12 +20458,12 @@ long long _wrap_ScatterPlot_height_datamunge_cd205fa85b728fed(datamunge::plot::S
 }
 
 
-_gostring_ _wrap_ScatterPlot_title_text_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+_gostring_ _wrap_RPlot_title_text_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->title_text();
@@ -16701,12 +20472,12 @@ _gostring_ _wrap_ScatterPlot_title_text_datamunge_cd205fa85b728fed(datamunge::pl
 }
 
 
-_gostring_ _wrap_ScatterPlot_x_label_text_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+_gostring_ _wrap_RPlot_x_label_text_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->x_label_text();
@@ -16715,12 +20486,12 @@ _gostring_ _wrap_ScatterPlot_x_label_text_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-_gostring_ _wrap_ScatterPlot_y_label_text_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+_gostring_ _wrap_RPlot_y_label_text_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->y_label_text();
@@ -16729,12 +20500,12 @@ _gostring_ _wrap_ScatterPlot_y_label_text_datamunge_cd205fa85b728fed(datamunge::
 }
 
 
-std::vector< datamunge::plot::DataSeries > *_wrap_ScatterPlot_series_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+std::vector< datamunge::plot::DataSeries > *_wrap_RPlot_series_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::vector< datamunge::plot::DataSeries > *result = 0 ;
   std::vector< datamunge::plot::DataSeries > *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)swig_b0)->series();
@@ -16743,12 +20514,12 @@ std::vector< datamunge::plot::DataSeries > *_wrap_ScatterPlot_series_datamunge_c
 }
 
 
-datamunge::plot::RGB *_wrap_ScatterPlot_background_color_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RGB *_wrap_RPlot_background_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   datamunge::plot::RGB result;
   datamunge::plot::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = ((datamunge::plot::Plot const *)swig_b0)->background_color();
@@ -16757,12 +20528,12 @@ datamunge::plot::RGB *_wrap_ScatterPlot_background_color_datamunge_cd205fa85b728
 }
 
 
-datamunge::plot::RGB *_wrap_ScatterPlot_axes_color_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RGB *_wrap_RPlot_axes_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   datamunge::plot::RGB result;
   datamunge::plot::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = ((datamunge::plot::Plot const *)swig_b0)->axes_color();
@@ -16771,12 +20542,12 @@ datamunge::plot::RGB *_wrap_ScatterPlot_axes_color_datamunge_cd205fa85b728fed(da
 }
 
 
-datamunge::plot::RGB *_wrap_ScatterPlot_major_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+datamunge::plot::RGB *_wrap_RPlot_major_grid_color_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   datamunge::plot::RGB result;
   datamunge::plot::RGB *_swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = ((datamunge::plot::Plot const *)swig_b0)->major_grid_color();
@@ -16785,12 +20556,12 @@ datamunge::plot::RGB *_wrap_ScatterPlot_major_grid_color_datamunge_cd205fa85b728
 }
 
 
-bool _wrap_ScatterPlot_grid_visible_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+bool _wrap_RPlot_grid_visible_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (bool)((datamunge::plot::Plot const *)swig_b0)->grid_visible();
@@ -16799,12 +20570,12 @@ bool _wrap_ScatterPlot_grid_visible_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-bool _wrap_ScatterPlot_has_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+bool _wrap_RPlot_has_x_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_x_limits();
@@ -16813,12 +20584,12 @@ bool _wrap_ScatterPlot_has_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-bool _wrap_ScatterPlot_has_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+bool _wrap_RPlot_has_y_limits_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_y_limits();
@@ -16827,12 +20598,12 @@ bool _wrap_ScatterPlot_has_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-double _wrap_ScatterPlot_x_min_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+double _wrap_RPlot_x_min_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (double)((datamunge::plot::Plot const *)swig_b0)->x_min();
@@ -16841,12 +20612,12 @@ double _wrap_ScatterPlot_x_min_datamunge_cd205fa85b728fed(datamunge::plot::Scatt
 }
 
 
-double _wrap_ScatterPlot_x_max_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+double _wrap_RPlot_x_max_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (double)((datamunge::plot::Plot const *)swig_b0)->x_max();
@@ -16855,12 +20626,12 @@ double _wrap_ScatterPlot_x_max_datamunge_cd205fa85b728fed(datamunge::plot::Scatt
 }
 
 
-double _wrap_ScatterPlot_y_min_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+double _wrap_RPlot_y_min_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (double)((datamunge::plot::Plot const *)swig_b0)->y_min();
@@ -16869,12 +20640,12 @@ double _wrap_ScatterPlot_y_min_datamunge_cd205fa85b728fed(datamunge::plot::Scatt
 }
 
 
-double _wrap_ScatterPlot_y_max_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+double _wrap_RPlot_y_max_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   double result;
   double _swig_go_result;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   result = (double)((datamunge::plot::Plot const *)swig_b0)->y_max();
@@ -16883,11 +20654,67 @@ double _wrap_ScatterPlot_y_max_datamunge_cd205fa85b728fed(datamunge::plot::Scatt
 }
 
 
-void _wrap_ScatterPlot_save_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+bool _wrap_RPlot_axes_hidden_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  bool result;
+  bool _swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
+  result = (bool)((datamunge::plot::Plot const *)swig_b0)->axes_hidden();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< std::string > *_wrap_RPlot_x_tick_label_list_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< std::string > *result = 0 ;
+  std::vector< std::string > *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
+  result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)swig_b0)->x_tick_label_list();
+  *(std::vector< std::string > **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< datamunge::plot::ABLine > *_wrap_RPlot_reference_lines_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< datamunge::plot::ABLine > *result = 0 ;
+  std::vector< datamunge::plot::ABLine > *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
+  result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)swig_b0)->reference_lines();
+  *(std::vector< datamunge::plot::ABLine > **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< datamunge::plot::LegendEntry > *_wrap_RPlot_legend_entries_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
+  std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+  std::vector< datamunge::plot::LegendEntry > *_swig_go_result;
+  
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
+  
+  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
+  result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)swig_b0)->legend_entries();
+  *(std::vector< datamunge::plot::LegendEntry > **)&_swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_RPlot_save_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
@@ -16899,11 +20726,11 @@ void _wrap_ScatterPlot_save_datamunge_cd205fa85b728fed(datamunge::plot::ScatterP
 }
 
 
-void _wrap_ScatterPlot_save_svg_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+void _wrap_RPlot_save_svg_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
@@ -16915,11 +20742,11 @@ void _wrap_ScatterPlot_save_svg_datamunge_cd205fa85b728fed(datamunge::plot::Scat
 }
 
 
-void _wrap_ScatterPlot_view__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+void _wrap_RPlot_view__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
@@ -16931,10 +20758,10 @@ void _wrap_ScatterPlot_view__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-void _wrap_ScatterPlot_view__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+void _wrap_RPlot_view__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   ((datamunge::plot::Plot const *)swig_b0)->view();
@@ -16942,11 +20769,11 @@ void _wrap_ScatterPlot_view__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-void _wrap_ScatterPlot_show__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+void _wrap_RPlot_show__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
   arg2 = &arg2_str;
@@ -16958,10 +20785,10 @@ void _wrap_ScatterPlot_show__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-void _wrap_ScatterPlot_show__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::ScatterPlot *_swig_go_0) {
-  datamunge::plot::ScatterPlot *arg1 = 0 ;
+void _wrap_RPlot_show__SWIG_1_datamunge_c5abddb9d33fe5ef(datamunge::plot::RPlot *_swig_go_0) {
+  datamunge::plot::RPlot *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::ScatterPlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RPlot **)&_swig_go_0; 
   
   datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
   ((datamunge::plot::Plot const *)swig_b0)->show();
@@ -16969,1393 +20796,105 @@ void _wrap_ScatterPlot_show__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::
 }
 
 
-datamunge::plot::LinePlot *_wrap_LinePlot_create_datamunge_cd205fa85b728fed() {
-  datamunge::plot::LinePlot result;
-  datamunge::plot::LinePlot *_swig_go_result;
+datamunge::plot::RLayout *_wrap_RLayout_create_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1) {
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  datamunge::plot::RLayout result;
+  datamunge::plot::RLayout *_swig_go_result;
   
+  arg1 = (size_t)_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
   
-  result = datamunge::plot::LinePlot::create();
-  *(datamunge::plot::LinePlot **)&_swig_go_result = new datamunge::plot::LinePlot(result); 
+  result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+  *(datamunge::plot::RLayout **)&_swig_go_result = new datamunge::plot::RLayout(result); 
   return _swig_go_result;
 }
 
 
-datamunge::plot::LinePlot *_wrap_LinePlot_line__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  double arg6 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::LinePlot *result = 0 ;
-  datamunge::plot::LinePlot *_swig_go_result;
+datamunge::plot::RLayout *_wrap_RLayout_add_datamunge_c5abddb9d33fe5ef(datamunge::plot::RLayout *_swig_go_0, datamunge::plot::Plot *_swig_go_1) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  datamunge::plot::Plot *arg2 = 0 ;
+  datamunge::plot::RLayout *result = 0 ;
+  datamunge::plot::RLayout *_swig_go_result;
   
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  arg2 = *(datamunge::plot::Plot **)&_swig_go_1; 
   
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
-  
-  
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
-  
-  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
-  
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
-  if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg5 = (datamunge::plot::RGB)*argp5;
-  
-  arg6 = (double)_swig_go_5; 
-  
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  *(datamunge::plot::LinePlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
+  *(datamunge::plot::RLayout **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::LinePlot *_wrap_LinePlot_line__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::LinePlot *result = 0 ;
-  datamunge::plot::LinePlot *_swig_go_result;
+datamunge::plot::RLayout *_wrap_RLayout_size_datamunge_c5abddb9d33fe5ef(datamunge::plot::RLayout *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  datamunge::plot::RLayout *result = 0 ;
+  datamunge::plot::RLayout *_swig_go_result;
   
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  arg3 = (size_t)_swig_go_2; 
   
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
-  
-  
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
-  
-  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
-  
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
-  if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg5 = (datamunge::plot::RGB)*argp5;
-  
-  
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  *(datamunge::plot::LinePlot **)&_swig_go_result = result; 
+  result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+  *(datamunge::plot::RLayout **)&_swig_go_result = result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::LinePlot *_wrap_LinePlot_line__SWIG_2_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::LinePlot *result = 0 ;
-  datamunge::plot::LinePlot *_swig_go_result;
+void _wrap_RLayout_save_datamunge_c5abddb9d33fe5ef(datamunge::plot::RLayout *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
   
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
   
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
   
   
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
+  ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
   
-  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
+}
+
+
+void _wrap_RLayout_save_svg_datamunge_c5abddb9d33fe5ef(datamunge::plot::RLayout *_swig_go_0, _gostring_ _swig_go_1) {
+  datamunge::plot::RLayout *arg1 = 0 ;
+  std::string *arg2 = 0 ;
   
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::LinePlot **)&_swig_go_result = result; 
+  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
+  
+  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
+  arg2 = &arg2_str;
+  
+  
+  ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+  
+}
+
+
+datamunge::plot::RLayout *_wrap_new_RLayout_datamunge_c5abddb9d33fe5ef() {
+  datamunge::plot::RLayout *result = 0 ;
+  datamunge::plot::RLayout *_swig_go_result;
+  
+  
+  result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+  *(datamunge::plot::RLayout **)&_swig_go_result = (datamunge::plot::RLayout *)result; 
   return _swig_go_result;
 }
 
 
-datamunge::plot::LinePlot *_wrap_LinePlot_line__SWIG_3_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::LinePlot *result = 0 ;
-  datamunge::plot::LinePlot *_swig_go_result;
+void _wrap_delete_RLayout_datamunge_c5abddb9d33fe5ef(datamunge::plot::RLayout *_swig_go_0) {
+  datamunge::plot::RLayout *arg1 = 0 ;
   
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
-  
-  
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
-  
-  
-  result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::LinePlot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::LinePlot *_wrap_new_LinePlot_datamunge_cd205fa85b728fed() {
-  datamunge::plot::LinePlot *result = 0 ;
-  datamunge::plot::LinePlot *_swig_go_result;
-  
-  
-  result = (datamunge::plot::LinePlot *)new datamunge::plot::LinePlot();
-  *(datamunge::plot::LinePlot **)&_swig_go_result = (datamunge::plot::LinePlot *)result; 
-  return _swig_go_result;
-}
-
-
-void _wrap_delete_LinePlot_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
+  arg1 = *(datamunge::plot::RLayout **)&_swig_go_0; 
   
   delete arg1;
   
 }
 
 
-datamunge::plot::Plot *_wrap_LinePlot_size_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::size_t arg2 ;
-  std::size_t arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  arg2 = (size_t)_swig_go_1; 
-  arg3 = (size_t)_swig_go_2; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_title_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->title(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_x_label_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->x_label(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_y_label_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->y_label(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_background_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  datamunge::plot::RGB arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg2 = (datamunge::plot::RGB)*argp2;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->background(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_axis_color_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  datamunge::plot::RGB arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg2 = (datamunge::plot::RGB)*argp2;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->axis_color(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  datamunge::plot::RGB arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg2 = (datamunge::plot::RGB)*argp2;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->grid_color(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_show_grid__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  arg2 = (bool)_swig_go_1; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->show_grid(arg2);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_show_grid__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->show_grid();
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  double arg2 ;
-  double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  arg2 = (double)_swig_go_1; 
-  arg3 = (double)_swig_go_2; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->x_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_LinePlot_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  double arg2 ;
-  double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  arg2 = (double)_swig_go_1; 
-  arg3 = (double)_swig_go_2; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->y_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-long long _wrap_LinePlot_width_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::size_t result;
-  long long _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->width();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-long long _wrap_LinePlot_height_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::size_t result;
-  long long _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->height();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-_gostring_ _wrap_LinePlot_title_text_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string *result = 0 ;
-  _gostring_ _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->title_text();
-  _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
-  return _swig_go_result;
-}
-
-
-_gostring_ _wrap_LinePlot_x_label_text_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string *result = 0 ;
-  _gostring_ _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->x_label_text();
-  _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
-  return _swig_go_result;
-}
-
-
-_gostring_ _wrap_LinePlot_y_label_text_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string *result = 0 ;
-  _gostring_ _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->y_label_text();
-  _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
-  return _swig_go_result;
-}
-
-
-std::vector< datamunge::plot::DataSeries > *_wrap_LinePlot_series_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
-  std::vector< datamunge::plot::DataSeries > *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)swig_b0)->series();
-  *(std::vector< datamunge::plot::DataSeries > **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::RGB *_wrap_LinePlot_background_color_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  datamunge::plot::RGB result;
-  datamunge::plot::RGB *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->background_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::RGB *_wrap_LinePlot_axes_color_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  datamunge::plot::RGB result;
-  datamunge::plot::RGB *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->axes_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::RGB *_wrap_LinePlot_major_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  datamunge::plot::RGB result;
-  datamunge::plot::RGB *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->major_grid_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
-  return _swig_go_result;
-}
-
-
-bool _wrap_LinePlot_grid_visible_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  bool result;
-  bool _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->grid_visible();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-bool _wrap_LinePlot_has_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  bool result;
-  bool _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_x_limits();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-bool _wrap_LinePlot_has_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  bool result;
-  bool _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_y_limits();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_LinePlot_x_min_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->x_min();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_LinePlot_x_max_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->x_max();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_LinePlot_y_min_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->y_min();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_LinePlot_y_max_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->y_max();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-void _wrap_LinePlot_save_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->save((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_LinePlot_save_svg_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->save_svg((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_LinePlot_view__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->view((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_LinePlot_view__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->view();
-  
-}
-
-
-void _wrap_LinePlot_show__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->show((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_LinePlot_show__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::LinePlot *_swig_go_0) {
-  datamunge::plot::LinePlot *arg1 = 0 ;
-  
-  arg1 = *(datamunge::plot::LinePlot **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->show();
-  
-}
-
-
-datamunge::plot::BarChart *_wrap_BarChart_create_datamunge_cd205fa85b728fed() {
-  datamunge::plot::BarChart result;
-  datamunge::plot::BarChart *_swig_go_result;
-  
-  
-  result = datamunge::plot::BarChart::create();
-  *(datamunge::plot::BarChart **)&_swig_go_result = new datamunge::plot::BarChart(result); 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::BarChart *_wrap_BarChart_bars__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4, double _swig_go_5) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  double arg6 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::BarChart *result = 0 ;
-  datamunge::plot::BarChart *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
-  
-  
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
-  
-  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
-  
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
-  if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg5 = (datamunge::plot::RGB)*argp5;
-  
-  arg6 = (double)_swig_go_5; 
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-  *(datamunge::plot::BarChart **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::BarChart *_wrap_BarChart_bars__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3, datamunge::plot::RGB *_swig_go_4) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  datamunge::plot::RGB arg5 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::RGB *argp5 ;
-  datamunge::plot::BarChart *result = 0 ;
-  datamunge::plot::BarChart *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
-  
-  
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
-  
-  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
-  
-  argp5 = (datamunge::plot::RGB *)_swig_go_4;
-  if (argp5 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg5 = (datamunge::plot::RGB)*argp5;
-  
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-  *(datamunge::plot::BarChart **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::BarChart *_wrap_BarChart_bars__SWIG_2_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2, _gostring_ _swig_go_3) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::string arg4 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::BarChart *result = 0 ;
-  datamunge::plot::BarChart *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
-  
-  
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
-  
-  (&arg4)->assign(_swig_go_3.p, _swig_go_3.n); 
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-  *(datamunge::plot::BarChart **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::BarChart *_wrap_BarChart_bars__SWIG_3_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, std::vector< double > *_swig_go_1, std::vector< double > *_swig_go_2) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< double > arg2 ;
-  std::vector< double > arg3 ;
-  std::vector< double > *argp2 ;
-  std::vector< double > *argp3 ;
-  datamunge::plot::BarChart *result = 0 ;
-  datamunge::plot::BarChart *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  argp2 = (std::vector< double > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg2 = (std::vector< double >)*argp2;
-  
-  
-  argp3 = (std::vector< double > *)_swig_go_2;
-  if (argp3 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< double >");
-  }
-  arg3 = (std::vector< double >)*argp3;
-  
-  
-  result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::BarChart **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::BarChart *_wrap_new_BarChart_datamunge_cd205fa85b728fed() {
-  datamunge::plot::BarChart *result = 0 ;
-  datamunge::plot::BarChart *_swig_go_result;
-  
-  
-  result = (datamunge::plot::BarChart *)new datamunge::plot::BarChart();
-  *(datamunge::plot::BarChart **)&_swig_go_result = (datamunge::plot::BarChart *)result; 
-  return _swig_go_result;
-}
-
-
-void _wrap_delete_BarChart_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  delete arg1;
-  
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_size_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::size_t arg2 ;
-  std::size_t arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  arg2 = (size_t)_swig_go_1; 
-  arg3 = (size_t)_swig_go_2; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_title_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->title(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_x_label_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->x_label(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_y_label_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  (&arg2)->assign(_swig_go_1.p, _swig_go_1.n); 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->y_label(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_background_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  datamunge::plot::RGB arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg2 = (datamunge::plot::RGB)*argp2;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->background(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_axis_color_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  datamunge::plot::RGB arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg2 = (datamunge::plot::RGB)*argp2;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->axis_color(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, datamunge::plot::RGB *_swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  datamunge::plot::RGB arg2 ;
-  datamunge::plot::RGB *argp2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  argp2 = (datamunge::plot::RGB *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null datamunge::plot::RGB");
-  }
-  arg2 = (datamunge::plot::RGB)*argp2;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->grid_color(SWIG_STD_MOVE(arg2));
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_show_grid__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, bool _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  bool arg2 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  arg2 = (bool)_swig_go_1; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->show_grid(arg2);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_show_grid__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->show_grid();
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  double arg2 ;
-  double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  arg2 = (double)_swig_go_1; 
-  arg3 = (double)_swig_go_2; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->x_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::Plot *_wrap_BarChart_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, double _swig_go_1, double _swig_go_2) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  double arg2 ;
-  double arg3 ;
-  datamunge::plot::Plot *result = 0 ;
-  datamunge::plot::Plot *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  arg2 = (double)_swig_go_1; 
-  arg3 = (double)_swig_go_2; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (datamunge::plot::Plot *) &(swig_b0)->y_limits(arg2,arg3);
-  *(datamunge::plot::Plot **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-long long _wrap_BarChart_width_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::size_t result;
-  long long _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->width();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-long long _wrap_BarChart_height_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::size_t result;
-  long long _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->height();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-_gostring_ _wrap_BarChart_title_text_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string *result = 0 ;
-  _gostring_ _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->title_text();
-  _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
-  return _swig_go_result;
-}
-
-
-_gostring_ _wrap_BarChart_x_label_text_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string *result = 0 ;
-  _gostring_ _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->x_label_text();
-  _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
-  return _swig_go_result;
-}
-
-
-_gostring_ _wrap_BarChart_y_label_text_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string *result = 0 ;
-  _gostring_ _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::string *) &((datamunge::plot::Plot const *)swig_b0)->y_label_text();
-  _swig_go_result = Swig_AllocateString((*result).data(), (*result).length()); 
-  return _swig_go_result;
-}
-
-
-std::vector< datamunge::plot::DataSeries > *_wrap_BarChart_series_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::vector< datamunge::plot::DataSeries > *result = 0 ;
-  std::vector< datamunge::plot::DataSeries > *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (std::vector< datamunge::plot::DataSeries > *) &((datamunge::plot::Plot const *)swig_b0)->series();
-  *(std::vector< datamunge::plot::DataSeries > **)&_swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::RGB *_wrap_BarChart_background_color_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  datamunge::plot::RGB result;
-  datamunge::plot::RGB *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->background_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::RGB *_wrap_BarChart_axes_color_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  datamunge::plot::RGB result;
-  datamunge::plot::RGB *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->axes_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
-  return _swig_go_result;
-}
-
-
-datamunge::plot::RGB *_wrap_BarChart_major_grid_color_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  datamunge::plot::RGB result;
-  datamunge::plot::RGB *_swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = ((datamunge::plot::Plot const *)swig_b0)->major_grid_color();
-  *(datamunge::plot::RGB **)&_swig_go_result = new datamunge::plot::RGB(result); 
-  return _swig_go_result;
-}
-
-
-bool _wrap_BarChart_grid_visible_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  bool result;
-  bool _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->grid_visible();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-bool _wrap_BarChart_has_x_limits_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  bool result;
-  bool _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_x_limits();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-bool _wrap_BarChart_has_y_limits_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  bool result;
-  bool _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (bool)((datamunge::plot::Plot const *)swig_b0)->has_y_limits();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_BarChart_x_min_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->x_min();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_BarChart_x_max_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->x_max();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_BarChart_y_min_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->y_min();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-double _wrap_BarChart_y_max_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  double result;
-  double _swig_go_result;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  result = (double)((datamunge::plot::Plot const *)swig_b0)->y_max();
-  _swig_go_result = result; 
-  return _swig_go_result;
-}
-
-
-void _wrap_BarChart_save_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->save((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_BarChart_save_svg_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->save_svg((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_BarChart_view__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->view((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_BarChart_view__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->view();
-  
-}
-
-
-void _wrap_BarChart_show__SWIG_0_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0, _gostring_ _swig_go_1) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  std::string arg2_str(_swig_go_1.p, _swig_go_1.n);
-  arg2 = &arg2_str;
-  
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->show((std::string const &)*arg2);
-  
-}
-
-
-void _wrap_BarChart_show__SWIG_1_datamunge_cd205fa85b728fed(datamunge::plot::BarChart *_swig_go_0) {
-  datamunge::plot::BarChart *arg1 = 0 ;
-  
-  arg1 = *(datamunge::plot::BarChart **)&_swig_go_0; 
-  
-  datamunge::plot::Plot *swig_b0 = (datamunge::plot::Plot *)arg1;
-  ((datamunge::plot::Plot const *)swig_b0)->show();
-  
-}
-
-
-void _wrap_ARIMAOptions_p_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_p_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18367,7 +20906,7 @@ void _wrap_ARIMAOptions_p_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA
 }
 
 
-long long _wrap_ARIMAOptions_p_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_p_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18380,7 +20919,7 @@ long long _wrap_ARIMAOptions_p_get_datamunge_cd205fa85b728fed(datamunge::stats::
 }
 
 
-void _wrap_ARIMAOptions_d_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_d_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18392,7 +20931,7 @@ void _wrap_ARIMAOptions_d_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA
 }
 
 
-long long _wrap_ARIMAOptions_d_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_d_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18405,7 +20944,7 @@ long long _wrap_ARIMAOptions_d_get_datamunge_cd205fa85b728fed(datamunge::stats::
 }
 
 
-void _wrap_ARIMAOptions_q_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_q_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18417,7 +20956,7 @@ void _wrap_ARIMAOptions_q_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA
 }
 
 
-long long _wrap_ARIMAOptions_q_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_q_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18430,7 +20969,7 @@ long long _wrap_ARIMAOptions_q_get_datamunge_cd205fa85b728fed(datamunge::stats::
 }
 
 
-void _wrap_ARIMAOptions_seasonal_p_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_seasonal_p_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18442,7 +20981,7 @@ void _wrap_ARIMAOptions_seasonal_p_set_datamunge_cd205fa85b728fed(datamunge::sta
 }
 
 
-long long _wrap_ARIMAOptions_seasonal_p_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_seasonal_p_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18455,7 +20994,7 @@ long long _wrap_ARIMAOptions_seasonal_p_get_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-void _wrap_ARIMAOptions_seasonal_d_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_seasonal_d_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18467,7 +21006,7 @@ void _wrap_ARIMAOptions_seasonal_d_set_datamunge_cd205fa85b728fed(datamunge::sta
 }
 
 
-long long _wrap_ARIMAOptions_seasonal_d_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_seasonal_d_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18480,7 +21019,7 @@ long long _wrap_ARIMAOptions_seasonal_d_get_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-void _wrap_ARIMAOptions_seasonal_q_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_seasonal_q_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18492,7 +21031,7 @@ void _wrap_ARIMAOptions_seasonal_q_set_datamunge_cd205fa85b728fed(datamunge::sta
 }
 
 
-long long _wrap_ARIMAOptions_seasonal_q_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_seasonal_q_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18505,7 +21044,7 @@ long long _wrap_ARIMAOptions_seasonal_q_get_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-void _wrap_ARIMAOptions_seasonal_period_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_seasonal_period_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18517,7 +21056,7 @@ void _wrap_ARIMAOptions_seasonal_period_set_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-long long _wrap_ARIMAOptions_seasonal_period_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_seasonal_period_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18530,7 +21069,7 @@ long long _wrap_ARIMAOptions_seasonal_period_get_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_ARIMAOptions_include_mean_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, bool _swig_go_1) {
+void _wrap_ARIMAOptions_include_mean_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, bool _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   bool arg2 ;
   
@@ -18542,7 +21081,7 @@ void _wrap_ARIMAOptions_include_mean_set_datamunge_cd205fa85b728fed(datamunge::s
 }
 
 
-bool _wrap_ARIMAOptions_include_mean_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+bool _wrap_ARIMAOptions_include_mean_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -18555,7 +21094,7 @@ bool _wrap_ARIMAOptions_include_mean_get_datamunge_cd205fa85b728fed(datamunge::s
 }
 
 
-void _wrap_ARIMAOptions_de_population_size_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_de_population_size_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18567,7 +21106,7 @@ void _wrap_ARIMAOptions_de_population_size_set_datamunge_cd205fa85b728fed(datamu
 }
 
 
-long long _wrap_ARIMAOptions_de_population_size_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_de_population_size_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18580,7 +21119,7 @@ long long _wrap_ARIMAOptions_de_population_size_get_datamunge_cd205fa85b728fed(d
 }
 
 
-void _wrap_ARIMAOptions_de_max_generations_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_de_max_generations_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -18592,7 +21131,7 @@ void _wrap_ARIMAOptions_de_max_generations_set_datamunge_cd205fa85b728fed(datamu
 }
 
 
-long long _wrap_ARIMAOptions_de_max_generations_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_de_max_generations_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18605,7 +21144,7 @@ long long _wrap_ARIMAOptions_de_max_generations_get_datamunge_cd205fa85b728fed(d
 }
 
 
-void _wrap_ARIMAOptions_coefficient_bound_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, double _swig_go_1) {
+void _wrap_ARIMAOptions_coefficient_bound_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, double _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   double arg2 ;
   
@@ -18617,7 +21156,7 @@ void _wrap_ARIMAOptions_coefficient_bound_set_datamunge_cd205fa85b728fed(datamun
 }
 
 
-double _wrap_ARIMAOptions_coefficient_bound_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+double _wrap_ARIMAOptions_coefficient_bound_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -18630,7 +21169,7 @@ double _wrap_ARIMAOptions_coefficient_bound_get_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_ARIMAOptions_seed_set_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ARIMAOptions_seed_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::uint64_t arg2 ;
   
@@ -18642,7 +21181,7 @@ void _wrap_ARIMAOptions_seed_set_datamunge_cd205fa85b728fed(datamunge::stats::AR
 }
 
 
-long long _wrap_ARIMAOptions_seed_get_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+long long _wrap_ARIMAOptions_seed_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   std::uint64_t result;
   long long _swig_go_result;
@@ -18655,7 +21194,7 @@ long long _wrap_ARIMAOptions_seed_get_datamunge_cd205fa85b728fed(datamunge::stat
 }
 
 
-datamunge::stats::ARIMAOptions *_wrap_new_ARIMAOptions_datamunge_cd205fa85b728fed() {
+datamunge::stats::ARIMAOptions *_wrap_new_ARIMAOptions_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::ARIMAOptions *result = 0 ;
   datamunge::stats::ARIMAOptions *_swig_go_result;
   
@@ -18666,7 +21205,7 @@ datamunge::stats::ARIMAOptions *_wrap_new_ARIMAOptions_datamunge_cd205fa85b728fe
 }
 
 
-void _wrap_delete_ARIMAOptions_datamunge_cd205fa85b728fed(datamunge::stats::ARIMAOptions *_swig_go_0) {
+void _wrap_delete_ARIMAOptions_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMAOptions *_swig_go_0) {
   datamunge::stats::ARIMAOptions *arg1 = 0 ;
   
   arg1 = *(datamunge::stats::ARIMAOptions **)&_swig_go_0; 
@@ -18676,7 +21215,7 @@ void _wrap_delete_ARIMAOptions_datamunge_cd205fa85b728fed(datamunge::stats::ARIM
 }
 
 
-datamunge::stats::ARIMA *_wrap_new_ARIMA__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, datamunge::stats::ARIMAOptions *_swig_go_1) {
+datamunge::stats::ARIMA *_wrap_new_ARIMA__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, datamunge::stats::ARIMAOptions *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::ARIMAOptions arg2 ;
   datamunge::stats::ARIMAOptions *argp2 ;
@@ -18698,7 +21237,7 @@ datamunge::stats::ARIMA *_wrap_new_ARIMA__SWIG_0_datamunge_cd205fa85b728fed(std:
 }
 
 
-datamunge::stats::ARIMA *_wrap_new_ARIMA__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+datamunge::stats::ARIMA *_wrap_new_ARIMA__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::ARIMA *result = 0 ;
   datamunge::stats::ARIMA *_swig_go_result;
@@ -18711,7 +21250,7 @@ datamunge::stats::ARIMA *_wrap_new_ARIMA__SWIG_1_datamunge_cd205fa85b728fed(std:
 }
 
 
-datamunge::stats::ARIMAOptions *_wrap_ARIMA_options_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+datamunge::stats::ARIMAOptions *_wrap_ARIMA_options_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   datamunge::stats::ARIMAOptions *result = 0 ;
   datamunge::stats::ARIMAOptions *_swig_go_result;
@@ -18724,7 +21263,7 @@ datamunge::stats::ARIMAOptions *_wrap_ARIMA_options_datamunge_cd205fa85b728fed(d
 }
 
 
-std::vector< double > *_wrap_ARIMA_ar_coefficients_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+std::vector< double > *_wrap_ARIMA_ar_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -18737,7 +21276,7 @@ std::vector< double > *_wrap_ARIMA_ar_coefficients_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< double > *_wrap_ARIMA_ma_coefficients_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+std::vector< double > *_wrap_ARIMA_ma_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -18750,7 +21289,7 @@ std::vector< double > *_wrap_ARIMA_ma_coefficients_datamunge_cd205fa85b728fed(da
 }
 
 
-std::vector< double > *_wrap_ARIMA_seasonal_ar_coefficients_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+std::vector< double > *_wrap_ARIMA_seasonal_ar_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -18763,7 +21302,7 @@ std::vector< double > *_wrap_ARIMA_seasonal_ar_coefficients_datamunge_cd205fa85b
 }
 
 
-std::vector< double > *_wrap_ARIMA_seasonal_ma_coefficients_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+std::vector< double > *_wrap_ARIMA_seasonal_ma_coefficients_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -18776,7 +21315,7 @@ std::vector< double > *_wrap_ARIMA_seasonal_ma_coefficients_datamunge_cd205fa85b
 }
 
 
-double _wrap_ARIMA_mean_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+double _wrap_ARIMA_mean_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -18789,7 +21328,7 @@ double _wrap_ARIMA_mean_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swi
 }
 
 
-long long _wrap_ARIMA_observations_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+long long _wrap_ARIMA_observations_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18802,7 +21341,7 @@ long long _wrap_ARIMA_observations_datamunge_cd205fa85b728fed(datamunge::stats::
 }
 
 
-long long _wrap_ARIMA_n_used_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+long long _wrap_ARIMA_n_used_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -18815,7 +21354,7 @@ long long _wrap_ARIMA_n_used_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA 
 }
 
 
-double _wrap_ARIMA_sigma2_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+double _wrap_ARIMA_sigma2_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -18828,7 +21367,7 @@ double _wrap_ARIMA_sigma2_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_s
 }
 
 
-double _wrap_ARIMA_log_likelihood_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+double _wrap_ARIMA_log_likelihood_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -18841,7 +21380,7 @@ double _wrap_ARIMA_log_likelihood_datamunge_cd205fa85b728fed(datamunge::stats::A
 }
 
 
-double _wrap_ARIMA_aic_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+double _wrap_ARIMA_aic_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -18854,7 +21393,7 @@ double _wrap_ARIMA_aic_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig
 }
 
 
-double _wrap_ARIMA_bic_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+double _wrap_ARIMA_bic_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -18867,7 +21406,7 @@ double _wrap_ARIMA_bic_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig
 }
 
 
-std::vector< double > *_wrap_ARIMA_fitted_values_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+std::vector< double > *_wrap_ARIMA_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -18880,7 +21419,7 @@ std::vector< double > *_wrap_ARIMA_fitted_values_datamunge_cd205fa85b728fed(data
 }
 
 
-std::vector< double > *_wrap_ARIMA_residuals_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+std::vector< double > *_wrap_ARIMA_residuals_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -18893,7 +21432,7 @@ std::vector< double > *_wrap_ARIMA_residuals_datamunge_cd205fa85b728fed(datamung
 }
 
 
-std::vector< double > *_wrap_ARIMA_forecast_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0, long long _swig_go_1) {
+std::vector< double > *_wrap_ARIMA_forecast_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::size_t arg2 ;
   std::vector< double > result;
@@ -18908,7 +21447,7 @@ std::vector< double > *_wrap_ARIMA_forecast_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-std::pair< std::vector< double >,std::vector< double > > *_wrap_ARIMA_forecast_with_intervals_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0, long long _swig_go_1) {
+std::pair< std::vector< double >,std::vector< double > > *_wrap_ARIMA_forecast_with_intervals_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   std::size_t arg2 ;
   std::pair< std::vector< double >,std::vector< double > > result;
@@ -18923,7 +21462,7 @@ std::pair< std::vector< double >,std::vector< double > > *_wrap_ARIMA_forecast_w
 }
 
 
-void _wrap_delete_ARIMA_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swig_go_0) {
+void _wrap_delete_ARIMA_datamunge_c5abddb9d33fe5ef(datamunge::stats::ARIMA *_swig_go_0) {
   datamunge::stats::ARIMA *arg1 = 0 ;
   
   arg1 = *(datamunge::stats::ARIMA **)&_swig_go_0; 
@@ -18933,7 +21472,7 @@ void _wrap_delete_ARIMA_datamunge_cd205fa85b728fed(datamunge::stats::ARIMA *_swi
 }
 
 
-intgo _wrap_TrendType_None_datamunge_cd205fa85b728fed() {
+intgo _wrap_TrendType_None_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::TrendType result;
   intgo _swig_go_result;
   
@@ -18945,7 +21484,7 @@ intgo _wrap_TrendType_None_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_TrendType_Additive_datamunge_cd205fa85b728fed() {
+intgo _wrap_TrendType_Additive_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::TrendType result;
   intgo _swig_go_result;
   
@@ -18957,7 +21496,7 @@ intgo _wrap_TrendType_Additive_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_TrendType_AdditiveDamped_datamunge_cd205fa85b728fed() {
+intgo _wrap_TrendType_AdditiveDamped_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::TrendType result;
   intgo _swig_go_result;
   
@@ -18969,7 +21508,7 @@ intgo _wrap_TrendType_AdditiveDamped_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_SeasonalType_None_datamunge_cd205fa85b728fed() {
+intgo _wrap_SeasonalType_None_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::SeasonalType result;
   intgo _swig_go_result;
   
@@ -18981,7 +21520,7 @@ intgo _wrap_SeasonalType_None_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_SeasonalType_Additive_datamunge_cd205fa85b728fed() {
+intgo _wrap_SeasonalType_Additive_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::SeasonalType result;
   intgo _swig_go_result;
   
@@ -18993,7 +21532,7 @@ intgo _wrap_SeasonalType_Additive_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_SeasonalType_Multiplicative_datamunge_cd205fa85b728fed() {
+intgo _wrap_SeasonalType_Multiplicative_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::SeasonalType result;
   intgo _swig_go_result;
   
@@ -19005,7 +21544,7 @@ intgo _wrap_SeasonalType_Multiplicative_datamunge_cd205fa85b728fed() {
 }
 
 
-void _wrap_ExponentialSmoothingOptions_trend_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, intgo _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_trend_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, intgo _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   datamunge::stats::TrendType arg2 ;
   
@@ -19017,7 +21556,7 @@ void _wrap_ExponentialSmoothingOptions_trend_set_datamunge_cd205fa85b728fed(data
 }
 
 
-intgo _wrap_ExponentialSmoothingOptions_trend_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+intgo _wrap_ExponentialSmoothingOptions_trend_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   datamunge::stats::TrendType result;
   intgo _swig_go_result;
@@ -19030,7 +21569,7 @@ intgo _wrap_ExponentialSmoothingOptions_trend_get_datamunge_cd205fa85b728fed(dat
 }
 
 
-void _wrap_ExponentialSmoothingOptions_seasonal_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, intgo _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_seasonal_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, intgo _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   datamunge::stats::SeasonalType arg2 ;
   
@@ -19042,7 +21581,7 @@ void _wrap_ExponentialSmoothingOptions_seasonal_set_datamunge_cd205fa85b728fed(d
 }
 
 
-intgo _wrap_ExponentialSmoothingOptions_seasonal_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+intgo _wrap_ExponentialSmoothingOptions_seasonal_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   datamunge::stats::SeasonalType result;
   intgo _swig_go_result;
@@ -19055,7 +21594,7 @@ intgo _wrap_ExponentialSmoothingOptions_seasonal_get_datamunge_cd205fa85b728fed(
 }
 
 
-void _wrap_ExponentialSmoothingOptions_seasonal_period_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_seasonal_period_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -19067,7 +21606,7 @@ void _wrap_ExponentialSmoothingOptions_seasonal_period_set_datamunge_cd205fa85b7
 }
 
 
-long long _wrap_ExponentialSmoothingOptions_seasonal_period_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+long long _wrap_ExponentialSmoothingOptions_seasonal_period_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -19080,7 +21619,7 @@ long long _wrap_ExponentialSmoothingOptions_seasonal_period_get_datamunge_cd205f
 }
 
 
-void _wrap_ExponentialSmoothingOptions_alpha_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_alpha_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double arg2 ;
   
@@ -19092,7 +21631,7 @@ void _wrap_ExponentialSmoothingOptions_alpha_set_datamunge_cd205fa85b728fed(data
 }
 
 
-double _wrap_ExponentialSmoothingOptions_alpha_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+double _wrap_ExponentialSmoothingOptions_alpha_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19105,7 +21644,7 @@ double _wrap_ExponentialSmoothingOptions_alpha_get_datamunge_cd205fa85b728fed(da
 }
 
 
-void _wrap_ExponentialSmoothingOptions_beta_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_beta_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double arg2 ;
   
@@ -19117,7 +21656,7 @@ void _wrap_ExponentialSmoothingOptions_beta_set_datamunge_cd205fa85b728fed(datam
 }
 
 
-double _wrap_ExponentialSmoothingOptions_beta_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+double _wrap_ExponentialSmoothingOptions_beta_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19130,7 +21669,7 @@ double _wrap_ExponentialSmoothingOptions_beta_get_datamunge_cd205fa85b728fed(dat
 }
 
 
-void _wrap_ExponentialSmoothingOptions_gamma_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_gamma_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double arg2 ;
   
@@ -19142,7 +21681,7 @@ void _wrap_ExponentialSmoothingOptions_gamma_set_datamunge_cd205fa85b728fed(data
 }
 
 
-double _wrap_ExponentialSmoothingOptions_gamma_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+double _wrap_ExponentialSmoothingOptions_gamma_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19155,7 +21694,7 @@ double _wrap_ExponentialSmoothingOptions_gamma_get_datamunge_cd205fa85b728fed(da
 }
 
 
-void _wrap_ExponentialSmoothingOptions_phi_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_phi_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, double _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double arg2 ;
   
@@ -19167,7 +21706,7 @@ void _wrap_ExponentialSmoothingOptions_phi_set_datamunge_cd205fa85b728fed(datamu
 }
 
 
-double _wrap_ExponentialSmoothingOptions_phi_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+double _wrap_ExponentialSmoothingOptions_phi_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19180,7 +21719,7 @@ double _wrap_ExponentialSmoothingOptions_phi_get_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_ExponentialSmoothingOptions_de_population_size_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_de_population_size_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -19192,7 +21731,7 @@ void _wrap_ExponentialSmoothingOptions_de_population_size_set_datamunge_cd205fa8
 }
 
 
-long long _wrap_ExponentialSmoothingOptions_de_population_size_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+long long _wrap_ExponentialSmoothingOptions_de_population_size_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -19205,7 +21744,7 @@ long long _wrap_ExponentialSmoothingOptions_de_population_size_get_datamunge_cd2
 }
 
 
-void _wrap_ExponentialSmoothingOptions_de_max_generations_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_de_max_generations_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::size_t arg2 ;
   
@@ -19217,7 +21756,7 @@ void _wrap_ExponentialSmoothingOptions_de_max_generations_set_datamunge_cd205fa8
 }
 
 
-long long _wrap_ExponentialSmoothingOptions_de_max_generations_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+long long _wrap_ExponentialSmoothingOptions_de_max_generations_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -19230,7 +21769,7 @@ long long _wrap_ExponentialSmoothingOptions_de_max_generations_get_datamunge_cd2
 }
 
 
-void _wrap_ExponentialSmoothingOptions_seed_set_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
+void _wrap_ExponentialSmoothingOptions_seed_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::uint64_t arg2 ;
   
@@ -19242,7 +21781,7 @@ void _wrap_ExponentialSmoothingOptions_seed_set_datamunge_cd205fa85b728fed(datam
 }
 
 
-long long _wrap_ExponentialSmoothingOptions_seed_get_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+long long _wrap_ExponentialSmoothingOptions_seed_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   std::uint64_t result;
   long long _swig_go_result;
@@ -19255,7 +21794,7 @@ long long _wrap_ExponentialSmoothingOptions_seed_get_datamunge_cd205fa85b728fed(
 }
 
 
-datamunge::stats::ExponentialSmoothingOptions *_wrap_new_ExponentialSmoothingOptions_datamunge_cd205fa85b728fed() {
+datamunge::stats::ExponentialSmoothingOptions *_wrap_new_ExponentialSmoothingOptions_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::ExponentialSmoothingOptions *result = 0 ;
   datamunge::stats::ExponentialSmoothingOptions *_swig_go_result;
   
@@ -19266,7 +21805,7 @@ datamunge::stats::ExponentialSmoothingOptions *_wrap_new_ExponentialSmoothingOpt
 }
 
 
-void _wrap_delete_ExponentialSmoothingOptions_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
+void _wrap_delete_ExponentialSmoothingOptions_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothingOptions *_swig_go_0) {
   datamunge::stats::ExponentialSmoothingOptions *arg1 = 0 ;
   
   arg1 = *(datamunge::stats::ExponentialSmoothingOptions **)&_swig_go_0; 
@@ -19276,7 +21815,7 @@ void _wrap_delete_ExponentialSmoothingOptions_datamunge_cd205fa85b728fed(datamun
 }
 
 
-datamunge::stats::ExponentialSmoothing *_wrap_new_ExponentialSmoothing__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, datamunge::stats::ExponentialSmoothingOptions *_swig_go_1) {
+datamunge::stats::ExponentialSmoothing *_wrap_new_ExponentialSmoothing__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, datamunge::stats::ExponentialSmoothingOptions *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::ExponentialSmoothingOptions arg2 ;
   datamunge::stats::ExponentialSmoothingOptions *argp2 ;
@@ -19298,7 +21837,7 @@ datamunge::stats::ExponentialSmoothing *_wrap_new_ExponentialSmoothing__SWIG_0_d
 }
 
 
-datamunge::stats::ExponentialSmoothing *_wrap_new_ExponentialSmoothing__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+datamunge::stats::ExponentialSmoothing *_wrap_new_ExponentialSmoothing__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::ExponentialSmoothing *result = 0 ;
   datamunge::stats::ExponentialSmoothing *_swig_go_result;
@@ -19311,7 +21850,7 @@ datamunge::stats::ExponentialSmoothing *_wrap_new_ExponentialSmoothing__SWIG_1_d
 }
 
 
-datamunge::stats::ExponentialSmoothingOptions *_wrap_ExponentialSmoothing_options_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+datamunge::stats::ExponentialSmoothingOptions *_wrap_ExponentialSmoothing_options_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   datamunge::stats::ExponentialSmoothingOptions *result = 0 ;
   datamunge::stats::ExponentialSmoothingOptions *_swig_go_result;
@@ -19324,7 +21863,7 @@ datamunge::stats::ExponentialSmoothingOptions *_wrap_ExponentialSmoothing_option
 }
 
 
-double _wrap_ExponentialSmoothing_alpha_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_alpha_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19337,7 +21876,7 @@ double _wrap_ExponentialSmoothing_alpha_datamunge_cd205fa85b728fed(datamunge::st
 }
 
 
-double _wrap_ExponentialSmoothing_beta_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_beta_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19350,7 +21889,7 @@ double _wrap_ExponentialSmoothing_beta_datamunge_cd205fa85b728fed(datamunge::sta
 }
 
 
-double _wrap_ExponentialSmoothing_gamma_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_gamma_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19363,7 +21902,7 @@ double _wrap_ExponentialSmoothing_gamma_datamunge_cd205fa85b728fed(datamunge::st
 }
 
 
-double _wrap_ExponentialSmoothing_phi_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_phi_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19376,7 +21915,7 @@ double _wrap_ExponentialSmoothing_phi_datamunge_cd205fa85b728fed(datamunge::stat
 }
 
 
-long long _wrap_ExponentialSmoothing_observations_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+long long _wrap_ExponentialSmoothing_observations_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   std::size_t result;
   long long _swig_go_result;
@@ -19389,7 +21928,7 @@ long long _wrap_ExponentialSmoothing_observations_datamunge_cd205fa85b728fed(dat
 }
 
 
-double _wrap_ExponentialSmoothing_sse_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_sse_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19402,7 +21941,7 @@ double _wrap_ExponentialSmoothing_sse_datamunge_cd205fa85b728fed(datamunge::stat
 }
 
 
-double _wrap_ExponentialSmoothing_sigma2_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_sigma2_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19415,7 +21954,7 @@ double _wrap_ExponentialSmoothing_sigma2_datamunge_cd205fa85b728fed(datamunge::s
 }
 
 
-double _wrap_ExponentialSmoothing_log_likelihood_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_log_likelihood_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19428,7 +21967,7 @@ double _wrap_ExponentialSmoothing_log_likelihood_datamunge_cd205fa85b728fed(data
 }
 
 
-double _wrap_ExponentialSmoothing_aic_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_aic_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19441,7 +21980,7 @@ double _wrap_ExponentialSmoothing_aic_datamunge_cd205fa85b728fed(datamunge::stat
 }
 
 
-double _wrap_ExponentialSmoothing_bic_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+double _wrap_ExponentialSmoothing_bic_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19454,7 +21993,7 @@ double _wrap_ExponentialSmoothing_bic_datamunge_cd205fa85b728fed(datamunge::stat
 }
 
 
-std::vector< double > *_wrap_ExponentialSmoothing_fitted_values_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+std::vector< double > *_wrap_ExponentialSmoothing_fitted_values_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -19467,7 +22006,7 @@ std::vector< double > *_wrap_ExponentialSmoothing_fitted_values_datamunge_cd205f
 }
 
 
-std::vector< double > *_wrap_ExponentialSmoothing_residuals_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+std::vector< double > *_wrap_ExponentialSmoothing_residuals_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -19480,7 +22019,7 @@ std::vector< double > *_wrap_ExponentialSmoothing_residuals_datamunge_cd205fa85b
 }
 
 
-std::vector< double > *_wrap_ExponentialSmoothing_forecast_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0, long long _swig_go_1) {
+std::vector< double > *_wrap_ExponentialSmoothing_forecast_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0, long long _swig_go_1) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   std::size_t arg2 ;
   std::vector< double > result;
@@ -19495,7 +22034,7 @@ std::vector< double > *_wrap_ExponentialSmoothing_forecast_datamunge_cd205fa85b7
 }
 
 
-void _wrap_delete_ExponentialSmoothing_datamunge_cd205fa85b728fed(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
+void _wrap_delete_ExponentialSmoothing_datamunge_c5abddb9d33fe5ef(datamunge::stats::ExponentialSmoothing *_swig_go_0) {
   datamunge::stats::ExponentialSmoothing *arg1 = 0 ;
   
   arg1 = *(datamunge::stats::ExponentialSmoothing **)&_swig_go_0; 
@@ -19505,7 +22044,7 @@ void _wrap_delete_ExponentialSmoothing_datamunge_cd205fa85b728fed(datamunge::sta
 }
 
 
-intgo _wrap_Alternative_TwoSided_datamunge_cd205fa85b728fed() {
+intgo _wrap_Alternative_TwoSided_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::Alternative result;
   intgo _swig_go_result;
   
@@ -19517,7 +22056,7 @@ intgo _wrap_Alternative_TwoSided_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_Alternative_Less_datamunge_cd205fa85b728fed() {
+intgo _wrap_Alternative_Less_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::Alternative result;
   intgo _swig_go_result;
   
@@ -19529,7 +22068,7 @@ intgo _wrap_Alternative_Less_datamunge_cd205fa85b728fed() {
 }
 
 
-intgo _wrap_Alternative_Greater_datamunge_cd205fa85b728fed() {
+intgo _wrap_Alternative_Greater_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::Alternative result;
   intgo _swig_go_result;
   
@@ -19541,7 +22080,7 @@ intgo _wrap_Alternative_Greater_datamunge_cd205fa85b728fed() {
 }
 
 
-void _wrap_HypothesisTestResult_statistic_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_statistic_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19553,7 +22092,7 @@ void _wrap_HypothesisTestResult_statistic_set_datamunge_cd205fa85b728fed(datamun
 }
 
 
-double _wrap_HypothesisTestResult_statistic_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_statistic_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19566,7 +22105,7 @@ double _wrap_HypothesisTestResult_statistic_get_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_HypothesisTestResult_parameter1_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_parameter1_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19578,7 +22117,7 @@ void _wrap_HypothesisTestResult_parameter1_set_datamunge_cd205fa85b728fed(datamu
 }
 
 
-double _wrap_HypothesisTestResult_parameter1_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_parameter1_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19591,7 +22130,7 @@ double _wrap_HypothesisTestResult_parameter1_get_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_HypothesisTestResult_parameter2_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_parameter2_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19603,7 +22142,7 @@ void _wrap_HypothesisTestResult_parameter2_set_datamunge_cd205fa85b728fed(datamu
 }
 
 
-double _wrap_HypothesisTestResult_parameter2_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_parameter2_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19616,7 +22155,7 @@ double _wrap_HypothesisTestResult_parameter2_get_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_HypothesisTestResult_p_value_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_p_value_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19628,7 +22167,7 @@ void _wrap_HypothesisTestResult_p_value_set_datamunge_cd205fa85b728fed(datamunge
 }
 
 
-double _wrap_HypothesisTestResult_p_value_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_p_value_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19641,7 +22180,7 @@ double _wrap_HypothesisTestResult_p_value_get_datamunge_cd205fa85b728fed(datamun
 }
 
 
-void _wrap_HypothesisTestResult_estimate1_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_estimate1_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19653,7 +22192,7 @@ void _wrap_HypothesisTestResult_estimate1_set_datamunge_cd205fa85b728fed(datamun
 }
 
 
-double _wrap_HypothesisTestResult_estimate1_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_estimate1_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19666,7 +22205,7 @@ double _wrap_HypothesisTestResult_estimate1_get_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_HypothesisTestResult_estimate2_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_estimate2_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19678,7 +22217,7 @@ void _wrap_HypothesisTestResult_estimate2_set_datamunge_cd205fa85b728fed(datamun
 }
 
 
-double _wrap_HypothesisTestResult_estimate2_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_estimate2_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19691,7 +22230,7 @@ double _wrap_HypothesisTestResult_estimate2_get_datamunge_cd205fa85b728fed(datam
 }
 
 
-void _wrap_HypothesisTestResult_conf_int_lower_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_conf_int_lower_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19703,7 +22242,7 @@ void _wrap_HypothesisTestResult_conf_int_lower_set_datamunge_cd205fa85b728fed(da
 }
 
 
-double _wrap_HypothesisTestResult_conf_int_lower_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_conf_int_lower_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19716,7 +22255,7 @@ double _wrap_HypothesisTestResult_conf_int_lower_get_datamunge_cd205fa85b728fed(
 }
 
 
-void _wrap_HypothesisTestResult_conf_int_upper_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
+void _wrap_HypothesisTestResult_conf_int_upper_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, double _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double arg2 ;
   
@@ -19728,7 +22267,7 @@ void _wrap_HypothesisTestResult_conf_int_upper_set_datamunge_cd205fa85b728fed(da
 }
 
 
-double _wrap_HypothesisTestResult_conf_int_upper_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+double _wrap_HypothesisTestResult_conf_int_upper_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -19741,7 +22280,7 @@ double _wrap_HypothesisTestResult_conf_int_upper_get_datamunge_cd205fa85b728fed(
 }
 
 
-void _wrap_HypothesisTestResult_has_conf_int_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, bool _swig_go_1) {
+void _wrap_HypothesisTestResult_has_conf_int_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, bool _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   bool arg2 ;
   
@@ -19753,7 +22292,7 @@ void _wrap_HypothesisTestResult_has_conf_int_set_datamunge_cd205fa85b728fed(data
 }
 
 
-bool _wrap_HypothesisTestResult_has_conf_int_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+bool _wrap_HypothesisTestResult_has_conf_int_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -19766,7 +22305,7 @@ bool _wrap_HypothesisTestResult_has_conf_int_get_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_HypothesisTestResult_alternative_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, intgo _swig_go_1) {
+void _wrap_HypothesisTestResult_alternative_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, intgo _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   datamunge::stats::Alternative arg2 ;
   
@@ -19778,7 +22317,7 @@ void _wrap_HypothesisTestResult_alternative_set_datamunge_cd205fa85b728fed(datam
 }
 
 
-intgo _wrap_HypothesisTestResult_alternative_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+intgo _wrap_HypothesisTestResult_alternative_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   datamunge::stats::Alternative result;
   intgo _swig_go_result;
@@ -19791,7 +22330,7 @@ intgo _wrap_HypothesisTestResult_alternative_get_datamunge_cd205fa85b728fed(data
 }
 
 
-void _wrap_HypothesisTestResult_method_set_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_HypothesisTestResult_method_set_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0, _gostring_ _swig_go_1) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -19806,7 +22345,7 @@ void _wrap_HypothesisTestResult_method_set_datamunge_cd205fa85b728fed(datamunge:
 }
 
 
-_gostring_ _wrap_HypothesisTestResult_method_get_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+_gostring_ _wrap_HypothesisTestResult_method_get_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -19819,7 +22358,7 @@ _gostring_ _wrap_HypothesisTestResult_method_get_datamunge_cd205fa85b728fed(data
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_new_HypothesisTestResult_datamunge_cd205fa85b728fed() {
+datamunge::stats::HypothesisTestResult *_wrap_new_HypothesisTestResult_datamunge_c5abddb9d33fe5ef() {
   datamunge::stats::HypothesisTestResult *result = 0 ;
   datamunge::stats::HypothesisTestResult *_swig_go_result;
   
@@ -19830,7 +22369,7 @@ datamunge::stats::HypothesisTestResult *_wrap_new_HypothesisTestResult_datamunge
 }
 
 
-void _wrap_delete_HypothesisTestResult_datamunge_cd205fa85b728fed(datamunge::stats::HypothesisTestResult *_swig_go_0) {
+void _wrap_delete_HypothesisTestResult_datamunge_c5abddb9d33fe5ef(datamunge::stats::HypothesisTestResult *_swig_go_0) {
   datamunge::stats::HypothesisTestResult *arg1 = 0 ;
   
   arg1 = *(datamunge::stats::HypothesisTestResult **)&_swig_go_0; 
@@ -19840,7 +22379,7 @@ void _wrap_delete_HypothesisTestResult_datamunge_cd205fa85b728fed(datamunge::sta
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1, intgo _swig_go_2, double _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1, intgo _swig_go_2, double _swig_go_3) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   datamunge::stats::Alternative arg3 ;
@@ -19859,7 +22398,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_0_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   datamunge::stats::Alternative arg3 ;
@@ -19876,7 +22415,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_1_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   datamunge::stats::HypothesisTestResult result;
@@ -19891,7 +22430,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_2_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_3_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_3_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::HypothesisTestResult result;
   datamunge::stats::HypothesisTestResult *_swig_go_result;
@@ -19904,7 +22443,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_one_sample__SWIG_3_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, bool _swig_go_2, intgo _swig_go_3, double _swig_go_4) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, bool _swig_go_2, intgo _swig_go_3, double _swig_go_4) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   bool arg3 ;
@@ -19925,7 +22464,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_0_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, bool _swig_go_2, intgo _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, bool _swig_go_2, intgo _swig_go_3) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   bool arg3 ;
@@ -19944,7 +22483,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_1_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, bool _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, bool _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   bool arg3 ;
@@ -19961,7 +22500,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_2_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_3_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_3_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -19976,7 +22515,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_two_sample__SWIG_3_datamung
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2, double _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2, double _swig_go_3) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -19995,7 +22534,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_0_datamunge_cd
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20012,7 +22551,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_1_datamunge_cd
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20027,7 +22566,7 @@ datamunge::stats::HypothesisTestResult *_wrap_t_test_paired__SWIG_2_datamunge_cd
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   datamunge::stats::Alternative arg3 ;
@@ -20044,7 +22583,7 @@ datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_0_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20059,7 +22598,7 @@ datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_1_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::HypothesisTestResult result;
   datamunge::stats::HypothesisTestResult *_swig_go_result;
@@ -20072,7 +22611,7 @@ datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_signed_rank_test__SWIG_2_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_rank_sum_test__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_rank_sum_test__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20089,7 +22628,7 @@ datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_rank_sum_test__SWIG_0_dat
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_rank_sum_test__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_rank_sum_test__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20104,7 +22643,7 @@ datamunge::stats::HypothesisTestResult *_wrap_wilcoxon_rank_sum_test__SWIG_1_dat
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1, double _swig_go_2, intgo _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1, double _swig_go_2, intgo _swig_go_3) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
@@ -20123,7 +22662,7 @@ datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_0_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1, double _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1, double _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
@@ -20140,7 +22679,7 @@ datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_1_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, double _swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, double _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   double arg2 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20155,7 +22694,7 @@ datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_2_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_3_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_3_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::HypothesisTestResult result;
   datamunge::stats::HypothesisTestResult *_swig_go_result;
@@ -20168,7 +22707,7 @@ datamunge::stats::HypothesisTestResult *_wrap_ks_test_one_sample_normal__SWIG_3_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_ks_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_ks_test_two_sample__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20185,7 +22724,7 @@ datamunge::stats::HypothesisTestResult *_wrap_ks_test_two_sample__SWIG_0_datamun
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_ks_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_ks_test_two_sample__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20200,7 +22739,7 @@ datamunge::stats::HypothesisTestResult *_wrap_ks_test_two_sample__SWIG_1_datamun
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_chi_squared_goodness_of_fit__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_chi_squared_goodness_of_fit__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20215,7 +22754,7 @@ datamunge::stats::HypothesisTestResult *_wrap_chi_squared_goodness_of_fit__SWIG_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_chi_squared_goodness_of_fit__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+datamunge::stats::HypothesisTestResult *_wrap_chi_squared_goodness_of_fit__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::HypothesisTestResult result;
   datamunge::stats::HypothesisTestResult *_swig_go_result;
@@ -20228,7 +22767,7 @@ datamunge::stats::HypothesisTestResult *_wrap_chi_squared_goodness_of_fit__SWIG_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_chi_squared_test_independence__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, long long _swig_go_1, long long _swig_go_2, bool _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_chi_squared_test_independence__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, long long _swig_go_1, long long _swig_go_2, bool _swig_go_3) {
   std::vector< double > *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20247,7 +22786,7 @@ datamunge::stats::HypothesisTestResult *_wrap_chi_squared_test_independence__SWI
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_chi_squared_test_independence__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_chi_squared_test_independence__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20264,7 +22803,7 @@ datamunge::stats::HypothesisTestResult *_wrap_chi_squared_test_independence__SWI
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_one_way_anova_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_one_way_anova_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20279,7 +22818,7 @@ datamunge::stats::HypothesisTestResult *_wrap_one_way_anova_datamunge_cd205fa85b
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_kruskal_wallis_test_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_kruskal_wallis_test_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< std::size_t > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< std::size_t > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20294,7 +22833,7 @@ datamunge::stats::HypothesisTestResult *_wrap_kruskal_wallis_test_datamunge_cd20
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2, double _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2, double _swig_go_3) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20313,7 +22852,7 @@ datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_0_d
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20330,7 +22869,7 @@ datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_1_d
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20345,7 +22884,7 @@ datamunge::stats::HypothesisTestResult *_wrap_pearson_correlation_test__SWIG_2_d
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_spearman_correlation_test__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_spearman_correlation_test__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20362,7 +22901,7 @@ datamunge::stats::HypothesisTestResult *_wrap_spearman_correlation_test__SWIG_0_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_spearman_correlation_test__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_spearman_correlation_test__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20377,7 +22916,7 @@ datamunge::stats::HypothesisTestResult *_wrap_spearman_correlation_test__SWIG_1_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_0_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2, double _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2, double _swig_go_3) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20396,7 +22935,7 @@ datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_0_datamunge_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_1_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1, intgo _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::Alternative arg3 ;
@@ -20413,7 +22952,7 @@ datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_1_datamunge_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_2_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_2_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, std::vector< double > *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *arg2 = 0 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20428,7 +22967,7 @@ datamunge::stats::HypothesisTestResult *_wrap_f_test_variance__SWIG_2_datamunge_
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_0_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3, bool _swig_go_4, double _swig_go_5) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_0_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3, bool _swig_go_4, double _swig_go_5) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -20451,7 +22990,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_0
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3, bool _swig_go_4) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3, bool _swig_go_4) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -20472,7 +23011,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_1
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_2_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_2_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -20491,7 +23030,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_2
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_3_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, double _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_3_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, double _swig_go_2) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -20508,7 +23047,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_3
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_4_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_4_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20523,7 +23062,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_one_sample__SWIG_4
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_0_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4, bool _swig_go_5, double _swig_go_6) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_0_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4, bool _swig_go_5, double _swig_go_6) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20548,7 +23087,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_0
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4, bool _swig_go_5) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4, bool _swig_go_5) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20571,7 +23110,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_1
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_2_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_2_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20592,7 +23131,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_2
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_3_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_3_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20611,7 +23150,7 @@ datamunge::stats::HypothesisTestResult *_wrap_proportion_test_two_sample__SWIG_3
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_0_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3, double _swig_go_4) {
+datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_0_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3, double _swig_go_4) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -20632,7 +23171,7 @@ datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_0_datamunge_cd
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, double _swig_go_2, intgo _swig_go_3) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -20651,7 +23190,7 @@ datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_1_datamunge_cd
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_2_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, double _swig_go_2) {
+datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_2_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, double _swig_go_2) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   double arg3 ;
@@ -20668,7 +23207,7 @@ datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_2_datamunge_cd
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_3_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1) {
+datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_3_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   datamunge::stats::HypothesisTestResult result;
@@ -20683,7 +23222,7 @@ datamunge::stats::HypothesisTestResult *_wrap_binomial_test__SWIG_3_datamunge_cd
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_fisher_exact_test_2x2__SWIG_0_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4) {
+datamunge::stats::HypothesisTestResult *_wrap_fisher_exact_test_2x2__SWIG_0_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3, intgo _swig_go_4) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20704,7 +23243,7 @@ datamunge::stats::HypothesisTestResult *_wrap_fisher_exact_test_2x2__SWIG_0_data
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_fisher_exact_test_2x2__SWIG_1_datamunge_cd205fa85b728fed(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
+datamunge::stats::HypothesisTestResult *_wrap_fisher_exact_test_2x2__SWIG_1_datamunge_c5abddb9d33fe5ef(long long _swig_go_0, long long _swig_go_1, long long _swig_go_2, long long _swig_go_3) {
   std::size_t arg1 ;
   std::size_t arg2 ;
   std::size_t arg3 ;
@@ -20723,7 +23262,7 @@ datamunge::stats::HypothesisTestResult *_wrap_fisher_exact_test_2x2__SWIG_1_data
 }
 
 
-datamunge::stats::HypothesisTestResult *_wrap_shapiro_francia_test_datamunge_cd205fa85b728fed(std::vector< double > *_swig_go_0) {
+datamunge::stats::HypothesisTestResult *_wrap_shapiro_francia_test_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   datamunge::stats::HypothesisTestResult result;
   datamunge::stats::HypothesisTestResult *_swig_go_result;
@@ -20733,6 +23272,1000 @@ datamunge::stats::HypothesisTestResult *_wrap_shapiro_francia_test_datamunge_cd2
   result = datamunge::stats::shapiro_francia_test((std::vector< double > const &)*arg1);
   *(datamunge::stats::HypothesisTestResult **)&_swig_go_result = new datamunge::stats::HypothesisTestResult(result); 
   return _swig_go_result;
+}
+
+
+intgo _wrap_PAdjustMethod_Bonferroni_datamunge_c5abddb9d33fe5ef() {
+  datamunge::stats::PAdjustMethod result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::stats::PAdjustMethod::Bonferroni;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_PAdjustMethod_Holm_datamunge_c5abddb9d33fe5ef() {
+  datamunge::stats::PAdjustMethod result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::stats::PAdjustMethod::Holm;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_PAdjustMethod_Hochberg_datamunge_c5abddb9d33fe5ef() {
+  datamunge::stats::PAdjustMethod result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::stats::PAdjustMethod::Hochberg;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_PAdjustMethod_Hommel_datamunge_c5abddb9d33fe5ef() {
+  datamunge::stats::PAdjustMethod result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::stats::PAdjustMethod::Hommel;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_PAdjustMethod_BH_datamunge_c5abddb9d33fe5ef() {
+  datamunge::stats::PAdjustMethod result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::stats::PAdjustMethod::BH;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_PAdjustMethod_BY_datamunge_c5abddb9d33fe5ef() {
+  datamunge::stats::PAdjustMethod result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::stats::PAdjustMethod::BY;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+intgo _wrap_PAdjustMethod_None_datamunge_c5abddb9d33fe5ef() {
+  datamunge::stats::PAdjustMethod result;
+  intgo _swig_go_result;
+  
+  
+  result = datamunge::stats::PAdjustMethod::None;
+  
+  _swig_go_result = (intgo)result; 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_p_adjust__SWIG_0_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0, intgo _swig_go_1) {
+  std::vector< double > *arg1 = 0 ;
+  datamunge::stats::PAdjustMethod arg2 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(std::vector< double > **)&_swig_go_0; 
+  arg2 = (datamunge::stats::PAdjustMethod)_swig_go_1; 
+  
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1,arg2);
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_p_adjust__SWIG_1_datamunge_c5abddb9d33fe5ef(std::vector< double > *_swig_go_0) {
+  std::vector< double > *arg1 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(std::vector< double > **)&_swig_go_0; 
+  
+  result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1);
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_westfall_young_adjust_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(std::vector< std::vector< double > > **)&_swig_go_0; 
+  arg2 = *(std::vector< double > **)&_swig_go_1; 
+  
+  result = datamunge::stats::westfall_young_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_romano_wolf_adjust_datamunge_c5abddb9d33fe5ef(std::vector< std::vector< double > > *_swig_go_0, std::vector< double > *_swig_go_1) {
+  std::vector< std::vector< double > > *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(std::vector< std::vector< double > > **)&_swig_go_0; 
+  arg2 = *(std::vector< double > **)&_swig_go_1; 
+  
+  result = datamunge::stats::romano_wolf_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
+void _wrap_RWMOptions_num_samples_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->num_samples = arg2;
+  
+}
+
+
+long long _wrap_RWMOptions_num_samples_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  
+  result =  ((arg1)->num_samples);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_RWMOptions_num_warmup_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->num_warmup = arg2;
+  
+}
+
+
+long long _wrap_RWMOptions_num_warmup_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::size_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  
+  result =  ((arg1)->num_warmup);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_RWMOptions_initial_step_size_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0, double _swig_go_1) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->initial_step_size = arg2;
+  
+}
+
+
+double _wrap_RWMOptions_initial_step_size_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->initial_step_size);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_RWMOptions_target_accept_rate_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0, double _swig_go_1) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->target_accept_rate = arg2;
+  
+}
+
+
+double _wrap_RWMOptions_target_accept_rate_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->target_accept_rate);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_RWMOptions_seed_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  arg2 = (std::uint64_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->seed = arg2;
+  
+}
+
+
+long long _wrap_RWMOptions_seed_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  std::uint64_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  
+  result = (std::uint64_t) ((arg1)->seed);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::RWMOptions *_wrap_new_RWMOptions_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::RWMOptions *result = 0 ;
+  datamunge::bayes::RWMOptions *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::RWMOptions *)new datamunge::bayes::RWMOptions();
+  *(datamunge::bayes::RWMOptions **)&_swig_go_result = (datamunge::bayes::RWMOptions *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_RWMOptions_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0) {
+  datamunge::bayes::RWMOptions *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::RWMOptions **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+void _wrap_RWMResult_samples_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMResult *_swig_go_0, std::vector< std::vector< double > > *_swig_go_1) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = *(datamunge::bayes::RWMResult **)&_swig_go_0; 
+  arg2 = *(std::vector< std::vector< double > > **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->samples = *arg2;
+  
+}
+
+
+std::vector< std::vector< double > > *_wrap_RWMResult_samples_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMResult *_swig_go_0) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  std::vector< std::vector< double > > *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMResult **)&_swig_go_0; 
+  
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  *(std::vector< std::vector< double > > **)&_swig_go_result = (std::vector< std::vector< double > > *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_RWMResult_accept_rate_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMResult *_swig_go_0, double _swig_go_1) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::bayes::RWMResult **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->accept_rate = arg2;
+  
+}
+
+
+double _wrap_RWMResult_accept_rate_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMResult *_swig_go_0) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMResult **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->accept_rate);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_RWMResult_final_step_size_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMResult *_swig_go_0, double _swig_go_1) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::bayes::RWMResult **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->final_step_size = arg2;
+  
+}
+
+
+double _wrap_RWMResult_final_step_size_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMResult *_swig_go_0) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RWMResult **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->final_step_size);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::RWMResult *_wrap_new_RWMResult_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::RWMResult *result = 0 ;
+  datamunge::bayes::RWMResult *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::RWMResult *)new datamunge::bayes::RWMResult();
+  *(datamunge::bayes::RWMResult **)&_swig_go_result = (datamunge::bayes::RWMResult *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_RWMResult_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMResult *_swig_go_0) {
+  datamunge::bayes::RWMResult *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::RWMResult **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+datamunge::bayes::RandomWalkMetropolis *_wrap_new_RandomWalkMetropolis__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RWMOptions *_swig_go_0) {
+  datamunge::bayes::RWMOptions arg1 ;
+  datamunge::bayes::RWMOptions *argp1 ;
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  datamunge::bayes::RandomWalkMetropolis *_swig_go_result;
+  
+  
+  argp1 = (datamunge::bayes::RWMOptions *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::bayes::RWMOptions");
+  }
+  arg1 = (datamunge::bayes::RWMOptions)*argp1;
+  
+  
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis(SWIG_STD_MOVE(arg1));
+  *(datamunge::bayes::RandomWalkMetropolis **)&_swig_go_result = (datamunge::bayes::RandomWalkMetropolis *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::RandomWalkMetropolis *_wrap_new_RandomWalkMetropolis__SWIG_1_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+  datamunge::bayes::RandomWalkMetropolis *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis();
+  *(datamunge::bayes::RandomWalkMetropolis **)&_swig_go_result = (datamunge::bayes::RandomWalkMetropolis *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::RWMResult *_wrap_RandomWalkMetropolis_sample_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RandomWalkMetropolis *_swig_go_0, datamunge::optim::ArbitraryFunction *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  datamunge::bayes::RWMResult result;
+  datamunge::bayes::RWMResult *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::RandomWalkMetropolis **)&_swig_go_0; 
+  arg2 = *(datamunge::optim::ArbitraryFunction **)&_swig_go_1; 
+  arg3 = *(std::vector< double > **)&_swig_go_2; 
+  
+  result = ((datamunge::bayes::RandomWalkMetropolis const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  *(datamunge::bayes::RWMResult **)&_swig_go_result = new datamunge::bayes::RWMResult(result); 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_RandomWalkMetropolis_datamunge_c5abddb9d33fe5ef(datamunge::bayes::RandomWalkMetropolis *_swig_go_0) {
+  datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::RandomWalkMetropolis **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+void _wrap_GibbsOptions_num_samples_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->num_samples = arg2;
+  
+}
+
+
+long long _wrap_GibbsOptions_num_samples_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  
+  result =  ((arg1)->num_samples);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_GibbsOptions_num_warmup_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->num_warmup = arg2;
+  
+}
+
+
+long long _wrap_GibbsOptions_num_warmup_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::size_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  
+  result =  ((arg1)->num_warmup);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_GibbsOptions_initial_step_sizes_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  arg2 = *(std::vector< double > **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->initial_step_sizes = *arg2;
+  
+}
+
+
+std::vector< double > *_wrap_GibbsOptions_initial_step_sizes_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  
+  result = (std::vector< double > *)& ((arg1)->initial_step_sizes);
+  *(std::vector< double > **)&_swig_go_result = (std::vector< double > *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_GibbsOptions_target_accept_rate_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0, double _swig_go_1) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->target_accept_rate = arg2;
+  
+}
+
+
+double _wrap_GibbsOptions_target_accept_rate_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->target_accept_rate);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_GibbsOptions_seed_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  arg2 = (std::uint64_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->seed = arg2;
+  
+}
+
+
+long long _wrap_GibbsOptions_seed_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  std::uint64_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  
+  result = (std::uint64_t) ((arg1)->seed);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::GibbsOptions *_wrap_new_GibbsOptions_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::GibbsOptions *result = 0 ;
+  datamunge::bayes::GibbsOptions *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::GibbsOptions *)new datamunge::bayes::GibbsOptions();
+  *(datamunge::bayes::GibbsOptions **)&_swig_go_result = (datamunge::bayes::GibbsOptions *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_GibbsOptions_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0) {
+  datamunge::bayes::GibbsOptions *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::GibbsOptions **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+void _wrap_GibbsResult_samples_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsResult *_swig_go_0, std::vector< std::vector< double > > *_swig_go_1) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = *(datamunge::bayes::GibbsResult **)&_swig_go_0; 
+  arg2 = *(std::vector< std::vector< double > > **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->samples = *arg2;
+  
+}
+
+
+std::vector< std::vector< double > > *_wrap_GibbsResult_samples_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsResult *_swig_go_0) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  std::vector< std::vector< double > > *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsResult **)&_swig_go_0; 
+  
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  *(std::vector< std::vector< double > > **)&_swig_go_result = (std::vector< std::vector< double > > *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_GibbsResult_accept_rates_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsResult *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = *(datamunge::bayes::GibbsResult **)&_swig_go_0; 
+  arg2 = *(std::vector< double > **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->accept_rates = *arg2;
+  
+}
+
+
+std::vector< double > *_wrap_GibbsResult_accept_rates_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsResult *_swig_go_0) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsResult **)&_swig_go_0; 
+  
+  result = (std::vector< double > *)& ((arg1)->accept_rates);
+  *(std::vector< double > **)&_swig_go_result = (std::vector< double > *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_GibbsResult_final_step_sizes_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsResult *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = *(datamunge::bayes::GibbsResult **)&_swig_go_0; 
+  arg2 = *(std::vector< double > **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->final_step_sizes = *arg2;
+  
+}
+
+
+std::vector< double > *_wrap_GibbsResult_final_step_sizes_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsResult *_swig_go_0) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsResult **)&_swig_go_0; 
+  
+  result = (std::vector< double > *)& ((arg1)->final_step_sizes);
+  *(std::vector< double > **)&_swig_go_result = (std::vector< double > *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::GibbsResult *_wrap_new_GibbsResult_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::GibbsResult *result = 0 ;
+  datamunge::bayes::GibbsResult *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::GibbsResult *)new datamunge::bayes::GibbsResult();
+  *(datamunge::bayes::GibbsResult **)&_swig_go_result = (datamunge::bayes::GibbsResult *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_GibbsResult_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsResult *_swig_go_0) {
+  datamunge::bayes::GibbsResult *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::GibbsResult **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+datamunge::bayes::GibbsSampler *_wrap_new_GibbsSampler__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsOptions *_swig_go_0) {
+  datamunge::bayes::GibbsOptions arg1 ;
+  datamunge::bayes::GibbsOptions *argp1 ;
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  datamunge::bayes::GibbsSampler *_swig_go_result;
+  
+  
+  argp1 = (datamunge::bayes::GibbsOptions *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::bayes::GibbsOptions");
+  }
+  arg1 = (datamunge::bayes::GibbsOptions)*argp1;
+  
+  
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler(SWIG_STD_MOVE(arg1));
+  *(datamunge::bayes::GibbsSampler **)&_swig_go_result = (datamunge::bayes::GibbsSampler *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::GibbsSampler *_wrap_new_GibbsSampler__SWIG_1_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::GibbsSampler *result = 0 ;
+  datamunge::bayes::GibbsSampler *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler();
+  *(datamunge::bayes::GibbsSampler **)&_swig_go_result = (datamunge::bayes::GibbsSampler *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::GibbsResult *_wrap_GibbsSampler_sample_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsSampler *_swig_go_0, datamunge::optim::ArbitraryFunction *_swig_go_1, std::vector< double > *_swig_go_2) {
+  datamunge::bayes::GibbsSampler *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  datamunge::bayes::GibbsResult result;
+  datamunge::bayes::GibbsResult *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::GibbsSampler **)&_swig_go_0; 
+  arg2 = *(datamunge::optim::ArbitraryFunction **)&_swig_go_1; 
+  arg3 = *(std::vector< double > **)&_swig_go_2; 
+  
+  result = ((datamunge::bayes::GibbsSampler const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+  *(datamunge::bayes::GibbsResult **)&_swig_go_result = new datamunge::bayes::GibbsResult(result); 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_GibbsSampler_datamunge_c5abddb9d33fe5ef(datamunge::bayes::GibbsSampler *_swig_go_0) {
+  datamunge::bayes::GibbsSampler *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::GibbsSampler **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+void _wrap_ImportanceSamplingOptions_num_samples_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingOptions **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->num_samples = arg2;
+  
+}
+
+
+long long _wrap_ImportanceSamplingOptions_num_samples_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingOptions *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::size_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingOptions **)&_swig_go_0; 
+  
+  result =  ((arg1)->num_samples);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ImportanceSamplingOptions_seed_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingOptions *_swig_go_0, long long _swig_go_1) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingOptions **)&_swig_go_0; 
+  arg2 = (std::uint64_t)_swig_go_1; 
+  
+  if (arg1) (arg1)->seed = arg2;
+  
+}
+
+
+long long _wrap_ImportanceSamplingOptions_seed_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingOptions *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  std::uint64_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingOptions **)&_swig_go_0; 
+  
+  result = (std::uint64_t) ((arg1)->seed);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::ImportanceSamplingOptions *_wrap_new_ImportanceSamplingOptions_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+  datamunge::bayes::ImportanceSamplingOptions *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::ImportanceSamplingOptions *)new datamunge::bayes::ImportanceSamplingOptions();
+  *(datamunge::bayes::ImportanceSamplingOptions **)&_swig_go_result = (datamunge::bayes::ImportanceSamplingOptions *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_ImportanceSamplingOptions_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingOptions *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingOptions **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+void _wrap_ImportanceSamplingResult_samples_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0, std::vector< std::vector< double > > *_swig_go_1) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *arg2 = 0 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  arg2 = *(std::vector< std::vector< double > > **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->samples = *arg2;
+  
+}
+
+
+std::vector< std::vector< double > > *_wrap_ImportanceSamplingResult_samples_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< std::vector< double > > *result = 0 ;
+  std::vector< std::vector< double > > *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  
+  result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+  *(std::vector< std::vector< double > > **)&_swig_go_result = (std::vector< std::vector< double > > *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ImportanceSamplingResult_normalized_weights_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0, std::vector< double > *_swig_go_1) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< double > *arg2 = 0 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  arg2 = *(std::vector< double > **)&_swig_go_1; 
+  
+  if (arg1) (arg1)->normalized_weights = *arg2;
+  
+}
+
+
+std::vector< double > *_wrap_ImportanceSamplingResult_normalized_weights_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  std::vector< double > *result = 0 ;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  
+  result = (std::vector< double > *)& ((arg1)->normalized_weights);
+  *(std::vector< double > **)&_swig_go_result = (std::vector< double > *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ImportanceSamplingResult_effective_sample_size_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0, double _swig_go_1) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->effective_sample_size = arg2;
+  
+}
+
+
+double _wrap_ImportanceSamplingResult_effective_sample_size_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->effective_sample_size);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_ImportanceSamplingResult_log_evidence_set_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0, double _swig_go_1) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double arg2 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  if (arg1) (arg1)->log_evidence = arg2;
+  
+}
+
+
+double _wrap_ImportanceSamplingResult_log_evidence_get_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  
+  result = (double) ((arg1)->log_evidence);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::ImportanceSamplingResult *_wrap_new_ImportanceSamplingResult_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::ImportanceSamplingResult *result = 0 ;
+  datamunge::bayes::ImportanceSamplingResult *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::ImportanceSamplingResult *)new datamunge::bayes::ImportanceSamplingResult();
+  *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_result = (datamunge::bayes::ImportanceSamplingResult *)result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_ImportanceSamplingResult_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingResult *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+datamunge::bayes::ImportanceSampling *_wrap_new_ImportanceSampling__SWIG_0_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSamplingOptions *_swig_go_0) {
+  datamunge::bayes::ImportanceSamplingOptions arg1 ;
+  datamunge::bayes::ImportanceSamplingOptions *argp1 ;
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  datamunge::bayes::ImportanceSampling *_swig_go_result;
+  
+  
+  argp1 = (datamunge::bayes::ImportanceSamplingOptions *)_swig_go_0;
+  if (argp1 == NULL) {
+    _swig_gopanic("Attempt to dereference null datamunge::bayes::ImportanceSamplingOptions");
+  }
+  arg1 = (datamunge::bayes::ImportanceSamplingOptions)*argp1;
+  
+  
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling(SWIG_STD_MOVE(arg1));
+  *(datamunge::bayes::ImportanceSampling **)&_swig_go_result = (datamunge::bayes::ImportanceSampling *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::ImportanceSampling *_wrap_new_ImportanceSampling__SWIG_1_datamunge_c5abddb9d33fe5ef() {
+  datamunge::bayes::ImportanceSampling *result = 0 ;
+  datamunge::bayes::ImportanceSampling *_swig_go_result;
+  
+  
+  result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling();
+  *(datamunge::bayes::ImportanceSampling **)&_swig_go_result = (datamunge::bayes::ImportanceSampling *)result; 
+  return _swig_go_result;
+}
+
+
+datamunge::bayes::ImportanceSamplingResult *_wrap_ImportanceSampling_sample_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSampling *_swig_go_0, datamunge::optim::ArbitraryFunction *_swig_go_1, std::vector< double > *_swig_go_2, std::vector< std::vector< double > > *_swig_go_3) {
+  datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+  datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+  std::vector< double > *arg3 = 0 ;
+  std::vector< std::vector< double > > *arg4 = 0 ;
+  datamunge::bayes::ImportanceSamplingResult result;
+  datamunge::bayes::ImportanceSamplingResult *_swig_go_result;
+  
+  arg1 = *(datamunge::bayes::ImportanceSampling **)&_swig_go_0; 
+  arg2 = *(datamunge::optim::ArbitraryFunction **)&_swig_go_1; 
+  arg3 = *(std::vector< double > **)&_swig_go_2; 
+  arg4 = *(std::vector< std::vector< double > > **)&_swig_go_3; 
+  
+  result = ((datamunge::bayes::ImportanceSampling const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4);
+  *(datamunge::bayes::ImportanceSamplingResult **)&_swig_go_result = new datamunge::bayes::ImportanceSamplingResult(result); 
+  return _swig_go_result;
+}
+
+
+void _wrap_delete_ImportanceSampling_datamunge_c5abddb9d33fe5ef(datamunge::bayes::ImportanceSampling *_swig_go_0) {
+  datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+  
+  arg1 = *(datamunge::bayes::ImportanceSampling **)&_swig_go_0; 
+  
+  delete arg1;
+  
 }
 
 

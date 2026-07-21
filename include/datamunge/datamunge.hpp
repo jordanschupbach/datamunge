@@ -5,6 +5,7 @@
 #include <datamunge/dstruct/dstruct.hpp>
 #include <datamunge/filter/filter.hpp>
 #include <datamunge/geometry/geometry.hpp>
+#include <datamunge/gis/gis.hpp>
 #include <datamunge/image/imaging.hpp>
 #include <datamunge/linalg/tensor.hpp>
 #include <datamunge/optim/optim.hpp>
@@ -101,17 +102,102 @@ class DataFrame {
   void fill_null_numeric(const std::string& column_name, double value);
   void fill_null_string(const std::string& column_name, const std::string& value);
 
+  /// @brief dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if
+  ///        present. Always returns a new DataFrame, so it composes into a pipe.
+  [[nodiscard]] DataFrame* mutate_numeric(const std::string& column_name, const std::vector<double>& values,
+                                          const std::vector<int>& valid_mask = {}) const;
+  [[nodiscard]] DataFrame* mutate_string(const std::string& column_name, const std::vector<std::string>& values,
+                                         const std::vector<int>& valid_mask = {}) const;
+  [[nodiscard]] DataFrame* mutate_string_encoded(const std::string& column_name, const std::string& encoded_values,
+                                                 const std::vector<int>& valid_mask = {}) const;
+
+  /// @brief Non-mutating, chainable single-pair rename.
+  [[nodiscard]] DataFrame* rename(const std::string& old_name, const std::string& new_name) const;
+
   [[nodiscard]] DataFrame* select(const std::vector<std::string>& selected_columns) const;
   [[nodiscard]] DataFrame* select_encoded(const std::string& encoded_columns) const;
+
+  /// @brief dplyr::relocate()-style column reorder: moves `columns` to the front (default) or
+  ///        immediately after the column named `after`.
+  [[nodiscard]] DataFrame* relocate(const std::vector<std::string>& columns, const std::string& after = "") const;
+  [[nodiscard]] DataFrame* relocate_encoded(const std::string& encoded_columns, const std::string& after = "") const;
+
   [[nodiscard]] DataFrame* sort_by(const std::string& column_name, bool ascending = true) const;
+  /// @brief dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when
+  ///        provided it must have the same length as `columns`.
+  [[nodiscard]] DataFrame* arrange(const std::vector<std::string>& columns, const std::vector<int>& ascending = {}) const;
+  [[nodiscard]] DataFrame* arrange_encoded(const std::string& encoded_columns, const std::vector<int>& ascending = {}) const;
+
   [[nodiscard]] DataFrame* drop_duplicates(const std::vector<std::string>& subset = {}) const;
   [[nodiscard]] DataFrame* drop_duplicates_encoded(const std::string& encoded_subset) const;
+  /// @brief dplyr::distinct() alias for drop_duplicates().
+  [[nodiscard]] DataFrame* distinct(const std::vector<std::string>& subset = {}) const;
+  [[nodiscard]] DataFrame* distinct_encoded(const std::string& encoded_subset) const;
+
+  /// @brief dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / "" (string)
+  ///        in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =
+  ///        null, same convention as add_numeric_column's valid_mask) if nulls matter.
+  [[nodiscard]] std::vector<double> pull_numeric(const std::string& column_name) const;
+  [[nodiscard]] std::vector<int> pull_numeric_valid(const std::string& column_name) const;
+  [[nodiscard]] std::vector<std::string> pull_string(const std::string& column_name) const;
+  [[nodiscard]] std::vector<int> pull_string_valid(const std::string& column_name) const;
+
+  /// @brief Number of distinct values in column_name; a null counts as one additional distinct
+  ///        value if present.
+  [[nodiscard]] std::size_t n_distinct(const std::string& column_name) const;
+
   [[nodiscard]] DataFrame* group_by_sum(const std::vector<std::string>& key_columns,
                                         const std::vector<std::string>& value_columns) const;
   [[nodiscard]] DataFrame* group_by_sum_encoded(const std::string& encoded_key_columns,
                                                 const std::string& encoded_value_columns) const;
-  [[nodiscard]] DataFrame* join(const DataFrame& right, const std::string& left_key,
-                                const std::string& right_key, bool left_join = false) const;
+
+  /// @brief dplyr::count()-style grouped row counts, default result column name "n".
+  [[nodiscard]] DataFrame* count(const std::vector<std::string>& key_columns, const std::string& count_column_name = "n") const;
+  [[nodiscard]] DataFrame* count_encoded(const std::string& encoded_key_columns, const std::string& count_column_name = "n") const;
+
+  /// @brief General dplyr::summarise()-style aggregation: one output row per distinct
+  ///        combination of `key_columns`, with one output column per (agg_columns[i],
+  ///        agg_funcs[i], result_names[i]) triple -- all three arrays must have the same length.
+  ///        agg_funcs entries are one of "sum", "mean", "min", "max", "median", "stddev",
+  ///        "count", "n_distinct" ("count" ignores the corresponding agg_columns entry, which may
+  ///        be ""); a "" result_names entry defaults to the agg_columns entry (or "n" for count).
+  [[nodiscard]] DataFrame* summarise(const std::vector<std::string>& key_columns,
+                                     const std::vector<std::string>& agg_columns,
+                                     const std::vector<std::string>& agg_funcs,
+                                     const std::vector<std::string>& result_names) const;
+  [[nodiscard]] DataFrame* summarise_encoded(const std::string& encoded_key_columns, const std::string& encoded_agg_columns,
+                                             const std::string& encoded_agg_funcs,
+                                             const std::string& encoded_result_names) const;
+
+  /// @brief dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns
+  ///        (`names_to` holding the source column name, `values_to` holding its value).
+  [[nodiscard]] DataFrame* pivot_longer(const std::vector<std::string>& value_columns, const std::string& names_to = "name",
+                                        const std::string& values_to = "value") const;
+  [[nodiscard]] DataFrame* pivot_longer_encoded(const std::string& encoded_value_columns,
+                                                const std::string& names_to = "name",
+                                                const std::string& values_to = "value") const;
+
+  /// @brief dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new
+  ///        column names, `values_from` supplies their values; `id_columns` defaults to every
+  ///        other column.
+  [[nodiscard]] DataFrame* pivot_wider(const std::string& names_from, const std::string& values_from,
+                                       const std::vector<std::string>& id_columns = {}) const;
+  [[nodiscard]] DataFrame* pivot_wider_encoded(const std::string& names_from, const std::string& values_from,
+                                               const std::string& encoded_id_columns) const;
+
+  /// @brief dplyr::bind_rows()-style row union: aligns columns by name (unlike concat_rows,
+  ///        which isn't exposed here), null-filling any column present in only one frame.
+  [[nodiscard]] DataFrame* bind_rows(const DataFrame& other) const;
+  /// @brief dplyr::bind_cols()-style column union: both frames must have the same row count and
+  ///        disjoint column names.
+  [[nodiscard]] DataFrame* bind_cols(const DataFrame& other) const;
+
+  /// @param join_type One of "inner" (default), "left", "right", "full", "semi", "anti". Any
+  ///        column name present in both frames (other than the key column when left_key ==
+  ///        right_key) is suffixed on both sides so the result never has duplicate names.
+  [[nodiscard]] DataFrame* join(const DataFrame& right, const std::string& left_key, const std::string& right_key,
+                                const std::string& join_type = "inner", const std::string& left_suffix = "_x",
+                                const std::string& right_suffix = "_y") const;
 
   [[nodiscard]] std::size_t numeric_count(const std::string& column_name) const;
   [[nodiscard]] std::size_t numeric_null_count(const std::string& column_name) const;
@@ -161,6 +247,7 @@ class DataFrame {
   friend class LMM;
   friend class GLMM;
   friend class INLAMixedModel;
+  friend class ShapeLayer;
 
   explicit DataFrame(dstruct::DataFrame frame);
 
@@ -169,6 +256,44 @@ class DataFrame {
   static std::vector<std::string> split_encoded_strings(const std::string& encoded_values);
 
   dstruct::DataFrame frame_;
+};
+
+/// @brief SWIG-friendly facade for datamunge::gis::ShapeLayer — reads a shapefile (.shp geometry
+///        + .dbf attributes) and draws it as a map. Geometry access is flattened into per-shape/
+///        per-part coordinate vectors rather than exposing gis::Shape's nested
+///        vector<vector<Point2D>> directly, matching this facade layer's usual convention for
+///        types SWIG can't bind cleanly.
+class ShapeLayer {
+ public:
+  /// @brief Reads "<path>.shp" and "<path>.dbf" (`path` may already end in one of those
+  ///        extensions, or in neither).
+  [[nodiscard]] static ShapeLayer* read(const std::string& path);
+
+  [[nodiscard]] std::size_t size() const;
+  /// @brief One of "point", "polyline", "polygon", "multipoint", or "null" (an empty layer).
+  [[nodiscard]] std::string shape_type() const;
+  /// @brief {xmin, ymin, xmax, ymax}, from the shapefile's own declared bounding box.
+  [[nodiscard]] std::vector<double> bounds() const;
+  [[nodiscard]] DataFrame* attributes() const;
+
+  [[nodiscard]] std::string shape_kind(std::size_t shape_index) const;
+  /// @brief Number of parts (rings for Polygon, lines for PolyLine; 0 for Point/MultiPoint,
+  ///        which use point_x()/point_y() instead).
+  [[nodiscard]] std::size_t num_parts(std::size_t shape_index) const;
+  [[nodiscard]] std::vector<double> part_x(std::size_t shape_index, std::size_t part_index) const;
+  [[nodiscard]] std::vector<double> part_y(std::size_t shape_index, std::size_t part_index) const;
+  /// @brief Every point's x/y in a Point or MultiPoint shape (a single element for Point).
+  [[nodiscard]] std::vector<double> point_x(std::size_t shape_index) const;
+  [[nodiscard]] std::vector<double> point_y(std::size_t shape_index) const;
+
+  [[nodiscard]] datamunge::plot::RPlot plot(datamunge::plot::RGB fill_color = {148, 163, 184},
+                                            datamunge::plot::RGB border_color = {51, 65, 85},
+                                            std::size_t width = 800, std::size_t height = 800) const;
+
+ private:
+  explicit ShapeLayer(gis::ShapeLayer layer);
+
+  gis::ShapeLayer layer_;
 };
 
 /// @brief SWIG-friendly facade for datamunge::plot::GGPlot — a ggplot2-style grammar-of-graphics
@@ -202,6 +327,7 @@ class GGPlot {
 
   void save(const std::string& path) const;
   void save_svg(const std::string& path) const;
+  void show(const std::string& title_hint = "") const;
 
  private:
   datamunge::plot::GGPlot impl_;

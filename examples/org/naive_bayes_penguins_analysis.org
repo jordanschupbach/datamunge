@@ -1,0 +1,638 @@
+#+title: Naive Bayes Classification of Palmer Penguins
+#+subtitle: A literate C++ study of mixed numeric and categorical predictors using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a naive Bayes classifier to the Palmer Archipelago penguins data
+using =datamunge='s C++ =stats::NaiveBayesClassifier=, and report it as a
+literate program: every fragment below is a real, compiled, executed chunk
+of the single C++ binary that produced every number and figure in this
+document. Unlike every prior classifier report in this project, the primary
+model here mixes two numeric predictors (bill length and depth, each
+Gaussian-per-class) with two categorical predictors (island and sex, each a
+Laplace-smoothed frequency table per class) in a single formula, reaching
+98.20% training accuracy (6 of 333 misclassified). A reduced model using
+only the two numeric predictors, built purely to visualize a decision
+boundary, drops to 93.09% -- direct, quantified evidence for how much
+=island= alone contributes, since Chinstrap and Gentoo penguins are nearly
+deterministically associated with a single island each in this data. A
+Laplace-smoothing sensitivity sweep across five orders of magnitude shows
+accuracy essentially flat until the smoothing parameter reaches 100, at
+which point it degrades -- an honest report of exactly how much this
+particular hyperparameter matters here. We derive Bayes' theorem, the
+naive conditional-independence assumption, the per-class Gaussian and
+categorical-frequency likelihoods, Laplace smoothing, log-space
+computation, and the genuinely quadratic decision boundary this method
+produces (in contrast to the LDA companion report's linear one), tying
+each to the corresponding library call.
+#+end_abstract
+
+* Introduction
+
+Every classifier this project has fit so far -- LDA, SVM, the decision
+tree, random forest, GBM, XGBoost, the logistic regression in the
+[[file:glm_iris_analysis.org][GLM companion report]], and KNN in the
+[[file:knn_iris_analysis.org][KNN companion report]] -- predicts Fisher's
+iris species from four numeric measurements, each built into a numeric
+design matrix (dummy-encoded where necessary) before fitting. This report
+changes two things at once: it moves to the Palmer Archipelago penguins
+data, already used by this project's
+[[file:lm_penguins_analysis.org][linear regression companion report]], and
+it fits a method, naive Bayes, whose independence assumption lets it model
+numeric and categorical predictors natively side by side -- a categorical
+predictor's levels as one jointly-modeled frequency distribution per class,
+not as separate 0/1 design-matrix columns. §2.7 makes precise why that
+distinction matters and is not just a convenience.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.6) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives Bayes' theorem, the naive independence assumption, the
+per-class Gaussian and categorical likelihoods, Laplace smoothing, and the
+quadratic decision boundary naive Bayes produces, each tied to the specific
+library call that implements it. §3 describes the program chunk by chunk.
+§4 reports the fitted mixed-predictor model, a numeric-only model built for
+visualization, a Laplace-smoothing sensitivity sweep, and predictions for
+three new penguins. §5 discusses what mixing predictor types and the
+smoothing sweep say about this method. §6 concludes.
+
+* Background: Naive Bayes
+
+** Setup and notation
+
+$n = 333$ penguins (of 344 total, after dropping rows with a null value in
+any of the five columns this report uses -- matching R's =na.omit=
+default, per =datamunge='s convention for every model class in this
+project), $y_i \in \{1,2,3\}$ labeling one of three species
+(/Adelie/, /Chinstrap/, /Gentoo/), and, for the primary model, $p = 4$
+predictors of /two different kinds/: =bill_length_mm= and =bill_depth_mm=
+(numeric), =island= and =sex= (categorical) -- the
+[[file:lm_penguins_analysis.org][linear regression companion report]]'s
+same dataset, but here every column keeps its native type instead of being
+folded into one numeric design matrix.
+
+** Bayes' theorem and the naive independence assumption
+
+Bayes' theorem gives the posterior class probability as
+$P(y \mid x) \propto P(y) \, P(x \mid y)$: prior times likelihood. The
+difficulty in general is $P(x \mid y)$, the joint likelihood of all $p$
+predictors together, which would require modeling their full joint
+distribution within each class. Naive Bayes sidesteps this with the
+/naive/ (conditional independence) assumption -- that, given the class,
+every predictor is independent of every other:
+
+\[
+P(x \mid y) = \prod_{j=1}^p P(x_j \mid y) ,
+\]
+
+reducing an intractable joint-distribution estimation problem to $p$
+separate, easy one-dimensional estimation problems, one per predictor,
+each conditioned only on the class. This assumption is essentially always
+literally false (here, for instance, bill length and bill depth are
+correlated within every species, not independent) -- naive Bayes is a
+textbook example of a method that is known to be misspecified yet performs
+well in practice, a point §5 returns to.
+
+** Class priors
+
+$P(y)$ is estimated by the empirical class frequencies in the training
+data, exposed directly by =class_priors()=; §4.2 reports all three for
+this dataset.
+
+** Gaussian likelihood for numeric predictors
+
+For a numeric predictor $x_j$, $P(x_j \mid y)$ is modeled as a Gaussian
+fit separately /within each class/,
+
+\[
+P(x_j \mid y=k) = \mathcal{N}(x_j; \mu_{jk}, \sigma_{jk}^2 + \epsilon) ,
+\]
+
+with $\mu_{jk}$ and $\sigma_{jk}^2$ the sample mean and variance of $x_j$
+among training rows of class $k$ alone (=numeric_mean_= / =numeric_variance_=
+internally), and $\epsilon$ a small variance floor
+(=NaiveBayesClassifierOptions::var_smoothing=, default $10^{-9}$, scaled by
+the largest per-feature variance in the training set) preventing a
+division by zero for any class/predictor combination whose training
+variance happens to be exactly zero -- matching scikit-learn's
+=GaussianNB= =var_smoothing= convention exactly, per the library's own
+documentation.
+
+** Categorical likelihood and Laplace smoothing
+
+For a categorical predictor $x_j$ with observed levels $\ell_1,\dots,\ell_m$,
+$P(x_j \mid y)$ is a per-class frequency table rather than a parametric
+distribution:
+
+\[
+P(x_j = \ell \mid y=k) = \frac{\mathrm{count}(x_j=\ell, y=k) + \alpha}
+{\mathrm{count}(y=k) + \alpha m} ,
+\]
+
+the additive (Laplace, or more generally Lidstone) smoothing formula, with
+$\alpha$ = =laplace_smoothing= (default 1.0). Without $\alpha > 0$, any
+level never observed for a given class in the training data would receive
+exactly zero probability, which -- combined with the product in §2.2 --
+would zero out the /entire/ posterior for that class whenever such a level
+appears, regardless of how strongly every other predictor favors it;
+$\alpha$ guarantees every level/class combination keeps some nonzero
+probability mass. §4.5 sweeps $\alpha$ directly.
+
+** Log-space computation
+
+Multiplying many probabilities together (§2.2's product over $p$
+predictors) underflows in floating point for even moderately large $p$;
+=log_posteriors_for_row= instead accumulates
+$\log P(y) + \sum_j \log P(x_j \mid y)$ and compares sums of
+log-probabilities across classes rather than raw products, mathematically
+identical to §2.2's formula but numerically stable regardless of how many
+predictors or how small any individual likelihood becomes.
+
+** Mixed predictor types as first-class citizens
+
+Every other classifier in this project's =Formula= / =DesignInfo= machinery
+ultimately builds one numeric design matrix, dummy-encoding any categorical
+predictor into a set of 0/1 indicator columns before fitting. Naive Bayes
+does not: because §2.2's independence assumption already treats each
+predictor as its own separate factor in the likelihood, a categorical
+predictor's levels are modeled /jointly/, as one =categorical_log_prob_=
+table per class (§2.5), never split into independent per-level indicator
+features the way dummy encoding would. This is not an implementation
+convenience -- splitting a categorical predictor into per-level indicators
+and then treating those indicators as independent would double-count the
+predictor's information and violate the very assumption the method is
+built on, which is precisely why =NaiveBayesClassifier= rejects formula
+terms other than plain column references (interactions, transforms) at
+construction: those constructs only have a well-defined meaning inside a
+numeric design matrix, not inside this per-feature-independent likelihood
+factorization.
+
+** Decision boundary shape
+
+Because each numeric predictor gets its /own/ per-class variance
+$\sigma_{jk}^2$ (§2.4) rather than a variance pooled across classes, Gaussian
+naive Bayes' decision boundary between two classes is generally
+/quadratic/, even with only two predictors -- in direct contrast to the
+[[file:lda_iris_analysis.org][LDA companion report]], whose shared
+pooled-covariance assumption produces a /linear/ boundary by construction.
+§4.4's decision-region figure shows this curvature directly.
+
+** What we will report
+
+Given the fits, we report exploratory data, the mixed-predictor model's own
+summary (class priors, per-class Gaussian and categorical statistics),
+confusion matrix, a numeric-only model's classification and decision-region
+plots, a Laplace-smoothing sensitivity sweep, and predictions for three new
+penguins.
+
+* Data and Methods
+
+** The data
+
+=datamunge::datasets::penguins()= returns the Palmer Archipelago penguins
+dataset (344 rows: 3 species, 3 islands, bill and flipper measurements,
+body mass, sex, year), matching the
+[[file:lm_penguins_analysis.org][linear regression companion report]]'s
+data exactly. This report drops rows with a null value in any of the five
+columns it uses (=species=, =island=, =sex=, =bill_length_mm=,
+=bill_depth_mm=), leaving 333 rows.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven
+=stats::NaiveBayesClassifier= for every model in this report, and
+=plot::RPlot= for every figure. No external plotting or statistics package
+is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and the exploratory figure
+
+#+name: nb-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/naive_bayes_classifier.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::NaiveBayesClassifier;
+using datamunge::stats::NaiveBayesClassifierOptions;
+using namespace datamunge::plot;
+#+end_src
+
+#+name: nb-load-data
+#+begin_src c++ :eval no
+    auto penguins = datamunge::datasets::penguins().drop_nulls(
+        {"species", "island", "sex", "bill_length_mm", "bill_depth_mm"});
+    std::cout << "penguins: " << penguins.nrows() << " rows x "
+               << penguins.ncols() << " cols\n\n";
+#+end_src
+
+#+name: nb-eda-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> species =
+            {"Adelie", "Chinstrap", "Gentoo"};
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {217, 119, 6}, {22, 163, 74}};
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < species.size(); ++k) {
+            const auto subset = penguins.filter([&](const DataFrame::Row& r) {
+                return r.get_string("species") == species[k];
+            });
+            scatter.points(subset.numeric_column("bill_length_mm").values(),
+                            subset.numeric_column("bill_depth_mm").values(),
+                            species[k], colors[k], 6.0);
+        }
+        scatter.title("Penguins: Bill Length vs Bill Depth")
+            .x_label("bill_length_mm").y_label("bill_depth_mm")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/nb_penguins_eda_scatter.svg");
+        std::cout << "wrote nb_penguins_eda_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting the mixed-predictor model
+
+Two numeric predictors (Gaussian likelihood) and two categorical
+predictors (frequency-table likelihood) in one formula.
+
+#+name: nb-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== Naive Bayes"
+               << " (mixed numeric + categorical predictors) ===\n";
+    NaiveBayesClassifier model(penguins,
+        "species ~ bill_length_mm + bill_depth_mm + island + sex");
+    model.print_summary(std::cout);
+
+    std::cout << "\nConfusion matrix (rows = actual, cols = predicted):\n";
+    const auto cm = model.confusion_matrix();
+    std::cout << std::setw(14) << "";
+    for (const auto& c : model.classes()) std::cout << std::setw(12) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < cm.rows(); ++i) {
+        std::cout << std::setw(14) << model.classes()[i];
+        for (std::size_t j = 0; j < cm.cols(); ++j)
+            std::cout << std::setw(12) << cm(i, j);
+        std::cout << "\n";
+    }
+
+    std::size_t misclassified = 0;
+    const auto predictions = model.predict(penguins);
+    for (std::size_t i = 0; i < penguins.nrows(); ++i)
+        if (predictions[i] != penguins.string_at("species", i))
+            ++misclassified;
+    std::cout << "\n" << misclassified << " of " << penguins.nrows()
+               << " misclassified (" << std::fixed << std::setprecision(2)
+               << (100.0 * static_cast<double>(misclassified)
+                   / static_cast<double>(penguins.nrows()))
+               << "%)\n";
+#+end_src
+
+*** Numeric-only model for visualization
+
+=plot_decision_regions= requires exactly two /numeric/ predictors, so a
+separate, reduced model isolates how much the two bill measurements alone
+can do without =island= or =sex=.
+
+#+name: nb-bill-only
+#+begin_src c++ :eval no
+    std::cout << "\n=== Bill-measurements-only model"
+               << " (for visualization) ===\n";
+    NaiveBayesClassifier bill_only(
+        penguins, "species ~ bill_length_mm + bill_depth_mm");
+    std::cout << "Training accuracy: " << std::fixed << std::setprecision(2)
+               << bill_only.training_accuracy() * 100.0 << "%\n";
+
+    {
+        auto cls_plot = bill_only.plot_classification(
+            penguins, "bill_length_mm", "bill_depth_mm");
+        cls_plot.background({250, 250, 252});
+        cls_plot.save_svg("build/org/nb_penguins_classification.svg");
+        std::cout << "wrote nb_penguins_classification.svg\n";
+    }
+    {
+        auto dr_plot = bill_only.plot_decision_regions(
+            "bill_length_mm", "bill_depth_mm");
+        dr_plot.background({250, 250, 252});
+        dr_plot.save_svg("build/org/nb_penguins_decision_regions.svg");
+        std::cout << "wrote nb_penguins_decision_regions.svg\n";
+    }
+#+end_src
+
+*** Laplace smoothing sensitivity
+
+Isolated to the two purely categorical predictors so the effect is not
+confounded with the Gaussian numeric likelihoods.
+
+#+name: nb-smoothing-sensitivity
+#+begin_src c++ :eval no
+    std::cout << "\n=== Laplace smoothing sensitivity"
+               << " (species ~ island + sex) ===\n";
+    {
+        const std::vector<double> alphas = {0.01, 0.1, 1.0, 10.0, 100.0};
+        std::cout << std::setw(10) << "alpha" << std::setw(14)
+                   << "accuracy\n";
+        for (const double a : alphas) {
+            NaiveBayesClassifierOptions opts;
+            opts.laplace_smoothing = a;
+            NaiveBayesClassifier m(penguins, "species ~ island + sex", opts);
+            std::cout << std::setw(10) << std::fixed << std::setprecision(2)
+                       << a << std::setw(13) << std::setprecision(2)
+                       << m.training_accuracy() * 100.0 << "%\n";
+        }
+    }
+#+end_src
+
+*** Predicting new penguins
+
+Three new penguins, each with both numeric and categorical predictors,
+matching each of the three species' characteristic profile.
+
+#+name: nb-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("bill_length_mm",
+                        std::vector<double>{39.0, 47.0, 50.0});
+    newdata.add_column("bill_depth_mm",
+                        std::vector<double>{18.5, 17.0, 15.0});
+    newdata.add_column("island", std::vector<std::string>{
+        "Torgersen", "Dream", "Biscoe"});
+    newdata.add_column("sex", std::vector<std::string>{
+        "male", "female", "female"});
+    const auto preds = model.predict_detail(newdata);
+    std::cout << "\nPredictions for new penguins:\n";
+    std::cout << std::setw(14) << "predicted";
+    for (const auto& c : model.classes())
+        std::cout << std::setw(14) << ("P(" + c + ")");
+    std::cout << "\n";
+    for (std::size_t i = 0; i < preds.class_label.size(); ++i) {
+        std::cout << std::setw(14) << preds.class_label[i];
+        for (const double p : preds.probability[i])
+            std::cout << std::setw(14) << std::fixed
+                       << std::setprecision(4) << p;
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/nb_penguins_analysis.cpp <<'CPP'
+<<nb-includes>>
+
+int main() {
+<<nb-load-data>>
+
+<<nb-eda-scatter>>
+
+<<nb-fit>>
+
+<<nb-bill-only>>
+
+<<nb-smoothing-sensitivity>>
+
+<<nb-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/nb_penguins_analysis.cpp -o build/org/nb_penguins_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/nb_penguins_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of bill length vs bill depth colored by species :width 100%
+[[file:../../build/org/nb_penguins_eda_scatter.svg]]
+
+/Adelie/ (blue) is well separated from the other two on bill length alone;
+/Chinstrap/ (orange) and /Gentoo/ (green) share a similar bill-length range
+but separate cleanly on bill depth -- /Gentoo/'s bills are visibly
+shallower. This is exactly the structure §4.3's bill-only model exploits,
+and exactly why it still leaves room for =island= to help further.
+
+** The fitted mixed-predictor model
+
+#+begin_example
+Class priors:
+  Adelie: 0.4384
+  Chinstrap: 0.2042
+  Gentoo: 0.3574
+
+Predictors:
+  bill_length_mm (numeric, mean [sd] per class):
+    Adelie=38.824 [2.653] Chinstrap=48.834 [3.315] Gentoo=47.568 [3.093]
+  bill_depth_mm (numeric, mean [sd] per class):
+    Adelie=18.347 [1.215] Chinstrap=18.421 [1.127] Gentoo=14.997 [0.982]
+  island (categorical, levels: Biscoe Dream Torgersen)
+    Adelie:    Biscoe=0.302 Dream=0.376 Torgersen=0.322
+    Chinstrap: Biscoe=0.014 Dream=0.972 Torgersen=0.014
+    Gentoo:    Biscoe=0.984 Dream=0.008 Torgersen=0.008
+  sex (categorical, levels: female male)
+    Adelie:    female=0.500 male=0.500
+    Chinstrap: female=0.500 male=0.500
+    Gentoo:    female=0.488 male=0.512
+
+Training accuracy: 98.20%  (333 observations)
+#+end_example
+
+=island='s frequency table is the single most striking number in this
+report: /Chinstrap/ is observed on Dream 97.2% of the time, and /Gentoo/ on
+Biscoe 98.4% of the time -- §2.5's Laplace smoothing is the only reason
+the remaining, near-zero entries are not literal zeros. =sex=, by
+contrast, carries almost no discriminating information at all (roughly
+50/50 for every species) -- §2.2's independence assumption lets the model
+use each predictor's evidence in proportion to how informative it actually
+is, without either predictor's inclusion hurting the other.
+
+| Predictor        | Type        | Most informative level/statistic |
+|-------------------+-------------+------------------------------------|
+| =bill_length_mm=  | numeric     | Adelie mean 38.8mm vs 47-49mm      |
+| =bill_depth_mm=   | numeric     | Gentoo mean 15.0mm vs 18.3-18.4mm  |
+| =island=          | categorical | Chinstrap 97.2% Dream               |
+| =sex=             | categorical | roughly uninformative (50/50)       |
+
+#+ATTR_LATEX: :font \small
+| actual (row) / predicted (col) | Adelie | Chinstrap | Gentoo |
+|-----------------------------------+--------+-----------+--------|
+| Adelie                             |    145 |         1 |      0 |
+| Chinstrap                          |      5 |        63 |      0 |
+| Gentoo                             |      0 |         0 |    119 |
+
+6 of 333 misclassified (1.80%), all in the /Adelie//Chinstrap/ pair --
+never involving /Gentoo/, consistent with =island= alone nearly
+determining /Gentoo/ membership (98.4% Biscoe).
+
+** Numeric-only model
+
+#+begin_example
+Training accuracy: 93.09%
+#+end_example
+
+Dropping =island= and =sex= costs 5.11 percentage points (98.20% to
+93.09%) -- a direct, quantified measurement of how much the two
+categorical predictors contribute beyond the two bill measurements alone,
+made possible specifically because naive Bayes can fit a model on either
+predictor subset without any extra encoding work (§2.7).
+
+#+ATTR_HTML: :alt Bill length vs depth scatter with misclassified points marked black :width 100%
+[[file:../../build/org/nb_penguins_classification.svg]]
+
+The misclassified points (black) concentrate exactly where §4.1's
+exploratory scatter shows /Adelie/ and /Chinstrap/ overlapping in bill
+length, and secondarily in the thin band between /Chinstrap/ and /Gentoo/
+-- errors this report's full model (§4.2) mostly resolves using =island=.
+
+** Decision regions
+
+#+ATTR_HTML: :alt Naive Bayes decision regions showing curved class boundaries :width 100%
+[[file:../../build/org/nb_penguins_decision_regions.svg]]
+
+The /Gentoo/-versus-/Chinstrap/ boundary (green-red) curves visibly rather
+than running straight -- §2.8's prediction made concrete: each class's own
+independently estimated variance for =bill_depth_mm= (Gentoo's noticeably
+tighter, 0.982 vs Chinstrap's 1.127, per §4.2's table) bends the boundary
+in exactly the direction a shared, pooled-covariance model like the
+[[file:lda_iris_analysis.org][LDA companion report]] could not produce.
+
+** Laplace smoothing sensitivity
+
+#+begin_example
+     alpha     accuracy
+      0.01        70.27%
+      0.10        70.27%
+      1.00        70.27%
+     10.00        70.27%
+    100.00        66.37%
+#+end_example
+
+Trained on =island= and =sex= alone (no numeric predictors, isolating
+§2.5's effect specifically), accuracy is completely flat across four
+orders of magnitude of $\alpha$ and only degrades once $\alpha$ reaches
+100 -- at that point the smoothing term dominates the actual observed
+counts in §2.5's formula for a dataset of this size, washing out the
+genuine near-deterministic island/species association §4.2 already
+revealed. This is an honest report of a hyperparameter that, within any
+reasonable range, does not matter much here -- the categorical evidence in
+this particular data is strong enough that only extreme over-smoothing
+degrades it.
+
+** Predicting new penguins
+
+#+ATTR_LATEX: :font \small
+| =bill_length= / =bill_depth= / island / sex | predicted | P(Adelie) | P(Chinstrap) | P(Gentoo) |
+|--------------------------------------------+-----------+-----------+---------------+-----------|
+| 39.0 / 18.5 / Torgersen / male              | Adelie    |    0.9998 |        0.0002 |    0.0000 |
+| 47.0 / 17.0 / Dream / female                | Chinstrap |    0.0114 |        0.9830 |    0.0055 |
+| 50.0 / 15.0 / Biscoe / female                | Gentoo    |    0.0000 |        0.0001 |    0.9999 |
+
+All three new penguins are classified with high confidence, each
+combining a bill-measurement profile /and/ an island consistent with its
+predicted species -- exactly the kind of case where combining several
+weak-to-moderate signals (§2.2's independence assumption in action) adds
+up to a confident joint posterior even though no single predictor alone
+would be this decisive.
+
+* Discussion
+
+**Mixing predictor types is a genuine capability, not a convenience.**
+Every other classifier in this project would need =island= and =sex=
+dummy-encoded into indicator columns before fitting, an encoding choice
+that is invisible to those methods' own machinery. Naive Bayes' native
+handling (§2.7) is not merely more convenient -- §4.3's controlled
+comparison (98.20% mixed versus 93.09% numeric-only) is only possible
+because adding or dropping a categorical predictor requires no encoding
+decision at all, just a formula change, letting this report isolate
+=island='s contribution cleanly.
+
+**A misspecified assumption that still works.** §2.2 notes that the
+independence assumption is essentially always literally false; here, bill
+length and bill depth are visibly correlated within every species (§4.1).
+That naive Bayes still reaches 98.20% accuracy despite this is the
+well-documented empirical robustness the method is known for (Rish, 2001;
+Zhang, 2004, both cited below) -- correlated predictors mean the assumption
+is wrong, not that the resulting classifier is bad, since what actually
+matters for classification accuracy is getting the /relative ranking/ of
+posterior probabilities right, a weaker requirement than getting the joint
+likelihood exactly right.
+
+**Connection to the wider project.** This report's 98.20% training
+accuracy is the highest resubstitution-style figure any classifier in this
+project has reported, on a three-class problem with a different
+classes-to-predictors structure than the iris reports' four measurements. That is
+partly a property of this particular dataset -- =island= carries close to
+deterministic information for two of three species -- and partly a
+reminder that resubstitution accuracy, the same caveat every report using
+it has raised, is still an optimistic upper bound rather than a validated
+estimate of new-data performance; no report in this series has
+cross-validated any classifier's resubstitution figure against a held-out set,
+this one included.
+
+* Conclusion
+
+Fitting naive Bayes with =datamunge='s C++ =stats::NaiveBayesClassifier=
+to the Palmer penguins data reaches 98.20% training accuracy using two
+numeric and two categorical predictors together, natively, in one formula
+-- the first report in this project to model categorical predictors as
+first-class citizens rather than dummy-encoded columns. Dropping the two
+categorical predictors costs 5.11 accuracy points, a direct measurement of
+their real contribution; a Laplace-smoothing sweep shows this dataset's
+categorical evidence is strong enough to tolerate four orders of magnitude
+of smoothing-parameter variation before degrading; and the fitted decision
+boundary is visibly quadratic, a direct, derived consequence of each
+class's independently estimated variance rather than a modeling choice
+imposed from outside. As with its companions, this entire report is
+reproducible end to end via
+=just org-example naive_bayes_penguins_analysis=, which re-executes
+§3.3.6's assembly block -- and therefore every number and figure above --
+from the =datamunge= source tree.
+
+* References
+
+- Bayes, T. (1763). "An Essay towards Solving a Problem in the Doctrine of
+  Chances." /Philosophical Transactions of the Royal Society of London/,
+  53, 370--418.
+- Rish, I. (2001). "An empirical study of the naive Bayes classifier."
+  /IJCAI Workshop on Empirical Methods in AI/, 3(22), 41--46.
+- Zhang, H. (2004). "The optimality of naive Bayes." /Proceedings of the
+  17th International FLAIRS Conference/, 562--567.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 6.6.3 ("Naive Bayes"). Springer.
+- Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). "Ecological
+  sexual dimorphism and environmental variability within a community of
+  Antarctic penguins (genus /Pygoscelis/)." /PLoS ONE/, 9(3), e90081.
+  (Original data source for the Palmer Archipelago penguins dataset.)
+- Horst, A. M., Hill, A. P., & Gorman, K. B. (2020). /palmerpenguins:
+  Palmer Archipelago (Antarctica) penguin data/. R package.

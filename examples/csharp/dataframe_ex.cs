@@ -32,7 +32,7 @@ class Program {
     var targets = new DataFrame();
     targets.add_string_column("region", new SVector(new string[] { "west", "east", "south" }));
     targets.add_numeric_column("target", new DVector(new double[] { 18.0, 12.0, 25.0 }));
-    var joined = grouped.join(targets, "region", "region", true);
+    var joined = grouped.join(targets, "region", "region", "left");
     Console.WriteLine("joined with targets");
     Console.WriteLine(joined.to_string());
     Console.WriteLine();

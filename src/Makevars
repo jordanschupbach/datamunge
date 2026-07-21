@@ -17,8 +17,10 @@ $(OBJECTS): $(HEADERS)
 
 #  datamunge/datamunge.cpp datamunge/datamunge.cpp
 
-PKG_CPPFLAGS +=  -I$(CURDIR)/../include # $(shell pkg-config --cflags libxml-2.0)
-# PKG_LIBS += $(shell pkg-config --libs libxml-2.0)
+# R builds this binding directly with R CMD SHLIB rather than through CMake, so carry over
+# the X11 support that CMake normally detects for Plot::show().
+PKG_CPPFLAGS += -I$(CURDIR)/../include -DDATAMUNGE_HAVE_X11=1
+PKG_LIBS += -lX11
 
 clean:
 	rm -f ./*.o ./datamunge_r_wrap.o ./datamunger.so ./datamunge/*.o ./datamunge/*.so

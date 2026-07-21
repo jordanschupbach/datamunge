@@ -52,7 +52,7 @@ let () =
   let targets = new_DataFrame C_void in
   ignore (invoke targets "add_string_column" (C_list [C_string "region"; sv ["west"; "east"; "south"]]));
   ignore (invoke targets "add_numeric_column" (C_list [C_string "target"; dv [18.; 12.; 25.]]));
-  let joined = invoke grouped "join" (C_list [targets; C_string "region"; C_string "region"; C_bool true]) in
+  let joined = invoke grouped "join" (C_list [targets; C_string "region"; C_string "region"; C_string "left"]) in
   print_endline "joined with targets";
   print_endline (get_string (invoke joined "to_string" C_void));
   print_newline ();

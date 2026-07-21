@@ -37,7 +37,7 @@ cat(DataFrame_to_string(grouped), "\n\n")
 targets <- DataFrame_empty()
 DataFrame_add_string_column_encoded(targets, "region", encode_strings(c("west", "east", "south")))
 DataFrame_add_numeric_column(targets, "target", c(18.0, 12.0, 25.0))
-joined <- DataFrame_join(grouped, targets, "region", "region", TRUE)
+joined <- DataFrame_join(grouped, targets, "region", "region", "left")
 cat("joined with targets\n")
 cat(DataFrame_to_string(joined), "\n\n")
 

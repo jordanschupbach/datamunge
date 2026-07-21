@@ -290,6 +290,69 @@ std::vector<ResolvedColumn> resolve_factor(const std::string& factor_text, const
             return {col};
         }
 
+        if (fname == "bs") {
+            const auto parts = split_top_level(args, ',');
+            if (parts.empty() || parts.size() > 4)
+                throw std::invalid_argument("Formula: bs() requires between 1 and 4 numeric column names");
+
+            constexpr std::size_t degree = 3;
+            constexpr std::size_t basis_size = 6;
+            std::vector<std::string> columns;
+            std::vector<std::size_t> degrees;
+            std::vector<std::size_t> sizes;
+            std::vector<double> mins;
+            std::vector<double> maxs;
+            columns.reserve(parts.size());
+            degrees.reserve(parts.size());
+            sizes.reserve(parts.size());
+            mins.reserve(parts.size());
+            maxs.reserve(parts.size());
+            for (const auto& raw_column : parts) {
+                const std::string column = trim(raw_column);
+                if (column.empty()) throw std::invalid_argument("Formula: bs() arguments must be column names");
+                require_numeric_column(data, column, "bs");
+                bool has_value = false;
+                double min_value = 0.0;
+                double max_value = 0.0;
+                for (std::size_t row = 0; row < data.nrows(); ++row) {
+                    const auto value = data.optional_double_at(column, row);
+                    if (!value) continue;
+                    if (!has_value) { min_value = max_value = *value; has_value = true; }
+                    else { min_value = std::min(min_value, *value); max_value = std::max(max_value, *value); }
+                }
+                if (!has_value || !(min_value < max_value))
+                    throw std::invalid_argument("Formula: bs() requires '" + column + "' to have at least two distinct values");
+                columns.push_back(column);
+                degrees.push_back(degree);
+                sizes.push_back(basis_size);
+                mins.push_back(min_value);
+                maxs.push_back(max_value);
+            }
+            auto spline = std::make_shared<fda::BSpline>(
+                fda::BSpline::open_uniform(std::move(degrees), std::move(sizes), std::move(mins), std::move(maxs)));
+            std::string label = "bs(";
+            for (std::size_t i = 0; i < columns.size(); ++i) {
+                if (i) label += ",";
+                label += columns[i];
+            }
+            label += ")";
+            std::vector<ResolvedColumn> out;
+            // The tensor basis partitions unity, so retaining every column would be
+            // exactly collinear with a formula intercept.  Like R's bs(), use a
+            // reference basis column and leave it out of the formula expansion.
+            out.reserve(spline->basis_size() - 1);
+            for (std::size_t component = 1; component < spline->basis_size(); ++component) {
+                ResolvedColumn col;
+                col.kind = ResolvedColumnKind::BSpline;
+                col.name = label + "[" + std::to_string(component + 1) + "]";
+                col.bspline_columns = columns;
+                col.bspline = spline;
+                col.bspline_component = component;
+                out.push_back(std::move(col));
+            }
+            return out;
+        }
+
         if (fname == "poly") {
             const auto parts = split_top_level(args, ',');
             if (parts.size() != 2)
@@ -334,7 +397,7 @@ std::vector<ResolvedColumn> resolve_factor(const std::string& factor_text, const
         }
 
         throw std::invalid_argument("Formula: unknown function: " + fname
-                                    + "() (supported: I, poly, log, log10, log2, sqrt, exp, abs)");
+                                    + "() (supported: I, bs, poly, log, log10, log2, sqrt, exp, abs)");
     }
 
     const std::string colname = trim(factor_text);
@@ -437,6 +500,20 @@ bool ResolvedColumn::evaluate(const dstruct::DataFrame& data, std::size_t row, d
             } else {
                 throw std::runtime_error("ResolvedColumn::evaluate: unknown function " + function_name);
             }
+            return true;
+        }
+        case ResolvedColumnKind::BSpline: {
+            std::vector<double> point;
+            point.reserve(bspline_columns.size());
+            for (const auto& column : bspline_columns) {
+                const auto value = data.optional_double_at(column, row);
+                if (!value) return false;
+                point.push_back(*value);
+            }
+            const auto local = bspline->evaluate_point(point);
+            out = 0.0;
+            for (std::size_t i = 0; i < local.indices.size(); ++i)
+                if (local.indices[i] == bspline_component) { out = local.values[i]; break; }
             return true;
         }
         case ResolvedColumnKind::Interaction: {

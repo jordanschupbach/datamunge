@@ -2055,6 +2055,12 @@ Napi::Value _wrap_GGPlot__wrap_GGPlot_labs(const Napi::CallbackInfo &);
 Napi::Value _wrap_GGPlot_save(const Napi::CallbackInfo &);
 // jsnapi_class_method_declaration
 Napi::Value _wrap_GGPlot_save_svg(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_GGPlot_show__SWIG_0(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_GGPlot_show__SWIG_1(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_GGPlot__wrap_GGPlot_show(const Napi::CallbackInfo &);
 virtual ~_exports_GGPlot_templ();
 // jsnapi_class_epilogue_template
 };
@@ -19331,6 +19337,198 @@ Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_save_svg(const Na
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_show__SWIG_0(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::GGPlot *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);{
+      {
+        std::string *ptr = (std::string *)0;
+        res2 = SWIG_AsPtr_std_string(info[0], &ptr);
+        if (!SWIG_IsOK(res2)) {
+          SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        if (!ptr) {
+          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+        }
+        arg2 = ptr;
+      }
+    }
+    
+    
+    
+    
+    
+    ((datamunge::GGPlot const *)arg1)->show((std::string const &)*arg2);
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_overloaded_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot_show__SWIG_1(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  datamunge::GGPlot *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    
+    
+    
+    
+    ((datamunge::GGPlot const *)arg1)->show();
+    
+    
+    
+    jsresult = env.Undefined();
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_function_dispatcher
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_GGPlot_templ<SWIG_OBJ_WRAP>::_wrap_GGPlot__wrap_GGPlot_show(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 1 && static_cast<int>(info.Length()) <= 1) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_GGPlot_show__SWIG_0(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_GGPlot_show__SWIG_0(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  // js_function_dispatch_case
+  if(static_cast<int>(info.Length()) >= 0 && static_cast<int>(info.Length()) <= 0) {
+#ifdef NAPI_CPP_EXCEPTIONS
+    bool tryNext = false;
+    try {
+      jsresult = _wrap_GGPlot_show__SWIG_1(info);
+    } catch (const Napi::TypeError &) {
+      tryNext = true;
+    } catch (const Napi::Error &e) {
+      throw e;
+    }
+    if (!tryNext)
+    return jsresult;
+#else
+    _wrap_GGPlot_show__SWIG_1(info);
+    if (env.IsExceptionPending()) {
+      Napi::Error e = env.GetAndClearPendingException();
+      Napi::Value typeErrorValue;
+      bool isTypeError;
+      Napi::Function typeErrorCons;
+      // Yes, this is ugly
+      // TODO: Fix this in Node.js when the core team grows up
+      NAPI_CHECK_RESULT(env.Global().Get("TypeError"), typeErrorValue);
+      typeErrorCons = typeErrorValue.As<Napi::Function>();
+      NAPI_CHECK_RESULT(e.Value().InstanceOf(typeErrorCons), isTypeError);
+      if (!isTypeError) {
+        // This is not the error you are looking for
+        e.ThrowAsJavaScriptException();
+        SWIG_fail;
+      }
+    } else {
+      return jsresult;
+    }
+#endif
+  }
+  
+  SWIG_Error(SWIG_ERROR, "Illegal arguments for function show.");
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
 #endif
   return Napi::Value();
 }
@@ -119303,6 +119501,14 @@ void _exports_GGPlot_inst::GetMembers(
     "save_svg",
       _exports_GGPlot_templ::InstanceMethod("save_svg",
         &_exports_GGPlot_templ::_wrap_GGPlot_save_svg,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  // jsnapi_register_member_function
+  members.erase("show");
+  members.insert({
+    "show",
+      _exports_GGPlot_templ::InstanceMethod("show",
+        &_exports_GGPlot_templ::_wrap_GGPlot__wrap_GGPlot_show,
         static_cast<napi_property_attributes>(napi_writable | napi_configurable))
     });
   

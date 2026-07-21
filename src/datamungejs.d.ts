@@ -370,6 +370,10 @@ export  class GGPlot {
   save(path: string): void;
 
   save_svg(path: string): void;
+
+  show(title_hint: string): void;
+
+  show(): void;
 }
 
 export  class LM {

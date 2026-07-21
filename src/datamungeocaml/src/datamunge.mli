@@ -13,12 +13,17 @@ type c_enum_type = [
 | `TrendType
 | `SeasonalType
 | `Alternative
+| `PAdjustMethod
 ]
 type c_enum_value = [ 
   `Int of int
 | `Scatter
 | `Line
 | `Bar
+| `Box
+| `Polygon
+| `Text
+| `Segment
 | `None
 | `Additive
 | `AdditiveDamped
@@ -26,6 +31,12 @@ type c_enum_value = [
 | `TwoSided
 | `Less
 | `Greater
+| `Bonferroni
+| `Holm
+| `Hochberg
+| `Hommel
+| `BH
+| `BY
 ]
 
 type c_obj = c_enum_value c_obj_t
@@ -122,6 +133,13 @@ val _delete_DataFrame : c_obj -> c_obj
 val create_datamunge_xxDataFrame_from_ptr : c_obj -> c_obj
 
 
+val new_GGPlot : c_obj -> c_obj
+val _new_GGPlot : c_obj -> c_obj
+val _delete_GGPlot : c_obj -> c_obj
+
+val create_datamunge_xxGGPlot_from_ptr : c_obj -> c_obj
+
+
 val new_LM : c_obj -> c_obj
 val _new_LM : c_obj -> c_obj
 val _delete_LM : c_obj -> c_obj
@@ -141,6 +159,13 @@ val _new_GLMM : c_obj -> c_obj
 val _delete_GLMM : c_obj -> c_obj
 
 val create_datamunge_xxGLMM_from_ptr : c_obj -> c_obj
+
+
+val new_INLAMixedModel : c_obj -> c_obj
+val _new_INLAMixedModel : c_obj -> c_obj
+val _delete_INLAMixedModel : c_obj -> c_obj
+
+val create_datamunge_xxINLAMixedModel_from_ptr : c_obj -> c_obj
 
 
 val new_LDA : c_obj -> c_obj
@@ -309,6 +334,8 @@ val _Tensor_arange : c_obj -> c_obj
 val _Tensor_eye : c_obj -> c_obj
 val _Tensor_concatenate2 : c_obj -> c_obj
 val _Tensor_stack2 : c_obj -> c_obj
+val _Tensor_from_image : c_obj -> c_obj
+val _Tensor_conv2d : c_obj -> c_obj
 val _delete_Tensor : c_obj -> c_obj
 
 val create_datamunge_xxTensor_from_ptr : c_obj -> c_obj
@@ -352,11 +379,29 @@ val create_datamunge_xxplot_xxRGB_from_ptr : c_obj -> c_obj
 val _Scatter : c_obj -> Swig.c_obj
 val _Line : c_obj -> Swig.c_obj
 val _Bar : c_obj -> Swig.c_obj
+val _Box : c_obj -> Swig.c_obj
+val _Polygon : c_obj -> Swig.c_obj
+val _Text : c_obj -> Swig.c_obj
+val _Segment : c_obj -> Swig.c_obj
 val new_DataSeries : c_obj -> c_obj
 val _new_DataSeries : c_obj -> c_obj
 val _delete_DataSeries : c_obj -> c_obj
 
 val create_datamunge_xxplot_xxDataSeries_from_ptr : c_obj -> c_obj
+
+
+val new_ABLine : c_obj -> c_obj
+val _new_ABLine : c_obj -> c_obj
+val _delete_ABLine : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxABLine_from_ptr : c_obj -> c_obj
+
+
+val new_LegendEntry : c_obj -> c_obj
+val _new_LegendEntry : c_obj -> c_obj
+val _delete_LegendEntry : c_obj -> c_obj
+
+val create_datamunge_xxplot_xxLegendEntry_from_ptr : c_obj -> c_obj
 
 
 val _delete_Plot : c_obj -> c_obj
@@ -366,28 +411,27 @@ val _new_Plot : c_obj -> c_obj
 val create_datamunge_xxplot_xxPlot_from_ptr : c_obj -> c_obj
 
 
-val _ScatterPlot_create : c_obj -> c_obj
-val new_ScatterPlot : c_obj -> c_obj
-val _new_ScatterPlot : c_obj -> c_obj
-val _delete_ScatterPlot : c_obj -> c_obj
+val _RPlot_create : c_obj -> c_obj
+val _RPlot_plot : c_obj -> c_obj
+val _RPlot_hist : c_obj -> c_obj
+val _RPlot_barplot : c_obj -> c_obj
+val _RPlot_boxplot : c_obj -> c_obj
+val _RPlot_pie : c_obj -> c_obj
+val _RPlot_curve : c_obj -> c_obj
+val _RPlot_qqnorm : c_obj -> c_obj
+val new_RPlot : c_obj -> c_obj
+val _new_RPlot : c_obj -> c_obj
+val _delete_RPlot : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxScatterPlot_from_ptr : c_obj -> c_obj
+val create_datamunge_xxplot_xxRPlot_from_ptr : c_obj -> c_obj
 
 
-val _LinePlot_create : c_obj -> c_obj
-val new_LinePlot : c_obj -> c_obj
-val _new_LinePlot : c_obj -> c_obj
-val _delete_LinePlot : c_obj -> c_obj
+val _RLayout_create : c_obj -> c_obj
+val new_RLayout : c_obj -> c_obj
+val _new_RLayout : c_obj -> c_obj
+val _delete_RLayout : c_obj -> c_obj
 
-val create_datamunge_xxplot_xxLinePlot_from_ptr : c_obj -> c_obj
-
-
-val _BarChart_create : c_obj -> c_obj
-val new_BarChart : c_obj -> c_obj
-val _new_BarChart : c_obj -> c_obj
-val _delete_BarChart : c_obj -> c_obj
-
-val create_datamunge_xxplot_xxBarChart_from_ptr : c_obj -> c_obj
+val create_datamunge_xxplot_xxRLayout_from_ptr : c_obj -> c_obj
 
 
 val new_ARIMAOptions : c_obj -> c_obj
@@ -451,6 +495,15 @@ val _proportion_test_two_sample : c_obj -> c_obj
 val _binomial_test : c_obj -> c_obj
 val _fisher_exact_test_2x2 : c_obj -> c_obj
 val _shapiro_francia_test : c_obj -> c_obj
+val _Bonferroni : c_obj -> Swig.c_obj
+val _Holm : c_obj -> Swig.c_obj
+val _Hochberg : c_obj -> Swig.c_obj
+val _Hommel : c_obj -> Swig.c_obj
+val _BH : c_obj -> Swig.c_obj
+val _BY : c_obj -> Swig.c_obj
+val _p_adjust : c_obj -> c_obj
+val _westfall_young_adjust : c_obj -> c_obj
+val _romano_wolf_adjust : c_obj -> c_obj
 val _delete_ArbitraryFunction : c_obj -> c_obj
 val new_ArbitraryFunction : c_obj -> c_obj
 val _new_ArbitraryFunction : c_obj -> c_obj
@@ -645,6 +698,69 @@ val _new_NUTS : c_obj -> c_obj
 val _delete_NUTS : c_obj -> c_obj
 
 val create_datamunge_xxbayes_xxNUTS_from_ptr : c_obj -> c_obj
+
+
+val new_RWMOptions : c_obj -> c_obj
+val _new_RWMOptions : c_obj -> c_obj
+val _delete_RWMOptions : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxRWMOptions_from_ptr : c_obj -> c_obj
+
+
+val new_RWMResult : c_obj -> c_obj
+val _new_RWMResult : c_obj -> c_obj
+val _delete_RWMResult : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxRWMResult_from_ptr : c_obj -> c_obj
+
+
+val new_RandomWalkMetropolis : c_obj -> c_obj
+val _new_RandomWalkMetropolis : c_obj -> c_obj
+val _delete_RandomWalkMetropolis : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxRandomWalkMetropolis_from_ptr : c_obj -> c_obj
+
+
+val new_GibbsOptions : c_obj -> c_obj
+val _new_GibbsOptions : c_obj -> c_obj
+val _delete_GibbsOptions : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxGibbsOptions_from_ptr : c_obj -> c_obj
+
+
+val new_GibbsResult : c_obj -> c_obj
+val _new_GibbsResult : c_obj -> c_obj
+val _delete_GibbsResult : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxGibbsResult_from_ptr : c_obj -> c_obj
+
+
+val new_GibbsSampler : c_obj -> c_obj
+val _new_GibbsSampler : c_obj -> c_obj
+val _delete_GibbsSampler : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxGibbsSampler_from_ptr : c_obj -> c_obj
+
+
+val new_ImportanceSamplingOptions : c_obj -> c_obj
+val _new_ImportanceSamplingOptions : c_obj -> c_obj
+val _delete_ImportanceSamplingOptions : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxImportanceSamplingOptions_from_ptr : c_obj -> c_obj
+
+
+val new_ImportanceSamplingResult : c_obj -> c_obj
+val _new_ImportanceSamplingResult : c_obj -> c_obj
+val _delete_ImportanceSamplingResult : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxImportanceSamplingResult_from_ptr : c_obj -> c_obj
+
+
+val new_ImportanceSampling : c_obj -> c_obj
+val _new_ImportanceSampling : c_obj -> c_obj
+val _delete_ImportanceSampling : c_obj -> c_obj
+
+val create_datamunge_xxbayes_xxImportanceSampling_from_ptr : c_obj -> c_obj
 
 
 val enum_to_int : c_enum_type -> c_obj -> Swig.c_obj

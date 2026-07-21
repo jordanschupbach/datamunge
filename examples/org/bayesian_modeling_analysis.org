@@ -1,0 +1,744 @@
+#+title: Bayesian Modeling: MAP, Hamiltonian Monte Carlo, and the No-U-Turn Sampler
+#+subtitle: A literate C++ study of gradient-based Bayesian inference using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit two Bayesian models with =datamunge='s C++ =bayes= module -- a
+Normal-Normal conjugate model with a known closed-form posterior, and a
+Bayesian logistic regression on iris with no closed form at all -- and
+report it as a literate program: every fragment below is a real,
+compiled, executed chunk of the single C++ binary that produced every
+number and figure in this document. On the conjugate model, three
+different inference methods are checked directly against the exact
+posterior $N(2.0767, 0.3156^2)$: L-BFGS-based MAP recovers the posterior
+mode to four decimal places ($\mu=2.0767$); Hamiltonian Monte Carlo (HMC)
+with a hand-tuned trajectory length draws samples with mean $2.0737$ and
+SD $0.3129$; and the No-U-Turn Sampler (NUTS) -- HMC with an
+automatically chosen trajectory length -- draws samples with mean
+$2.0813$ and SD $0.3076$, visually indistinguishable from the exact
+density in a direct histogram overlay. On the iris logistic regression,
+=Petal.Length= nearly perfectly separates versicolor from virginica,
+and the unregularized maximum-likelihood fit responds exactly as
+separation theory predicts: its slope coefficient (9.0020) inflates far
+beyond both the MAP estimate (5.4588) and the NUTS posterior mean
+(5.7351) obtained under a weak $N(0, 10)$ prior -- a real, expected
+regularization effect visible directly in the fitted probability curves,
+not a numerical accident. We derive the Bayesian inference problem, MAP
+estimation via L-BFGS, Hamiltonian dynamics and the leapfrog integrator,
+dual-averaging step-size adaptation, and NUTS's recursive trajectory
+doubling, tying every derivation to the exact library call that
+implements it.
+#+end_abstract
+
+* Introduction
+
+Every classical inference report in this project so far -- including the
+[[file:hypothesis_tests_analysis.org][hypothesis tests companion
+report]] -- has asked a frequentist question: given the data, how
+surprising is a fixed null hypothesis, or what single point estimate
+best explains it? Bayesian inference asks a different question
+entirely: given a *prior* belief about a parameter and the data actually
+observed, what is the full *posterior distribution* over that parameter?
+The answer is not a point estimate or a \(p\)-value but an entire
+probability distribution, and =datamunge='s =bayes= module provides three
+increasingly general ways to characterize it: find its single most
+probable point (MAP), draw correlated samples from it via simulated
+Hamiltonian dynamics (HMC), or draw samples via the same dynamics with
+an automatically tuned trajectory length (NUTS) -- the algorithm behind
+Stan's default sampler.
+
+This report's organizing device is a model with a *known answer*: the
+Normal-Normal conjugate model in §4.1 has an exact, closed-form posterior
+derivable in three lines of algebra, so every one of the three inference
+methods can be checked directly against ground truth rather than only
+against each other. §4.2 then applies the same three methods (MAP and
+NUTS; HMC is dropped there since NUTS strictly dominates it in practice,
+as §2.5 explains) to a real model with no closed form -- Bayesian
+logistic regression -- and compares the result against the frequentist
+maximum-likelihood fit already familiar from the
+[[file:glm_iris_analysis.org][GLM companion report]].
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.6) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives the Bayesian inference problem, MAP estimation, Hamiltonian
+dynamics, the leapfrog integrator, dual-averaging adaptation, and NUTS's
+trajectory doubling, each tied to the specific library call that
+implements it. §3 describes the program chunk by chunk. §4 reports the
+results of both models alongside three figures. §5 discusses what
+checking against a closed-form posterior actually buys us, and what the
+logistic regression's separation behavior means. §6 concludes.
+
+* Background: Bayesian Inference via MAP, HMC, and NUTS
+
+** The Bayesian inference problem
+
+Given data $y$ and a parameter vector $\theta$ with prior density
+$p(\theta)$ and likelihood $p(y\mid\theta)$, Bayes' theorem gives the
+posterior
+
+$$p(\theta \mid y) = \frac{p(y\mid\theta)\,p(\theta)}{p(y)}
+\propto p(y\mid\theta)\,p(\theta)$$
+
+The normalizing constant $p(y) = \int p(y\mid\theta)p(\theta)\,d\theta$
+is, for all but the simplest models, an intractable integral -- this is
+the central computational obstacle of Bayesian inference, and MAP, HMC,
+and NUTS each sidestep it differently. All three work directly with the
+unnormalized *log-posterior density*
+
+$$\ell(\theta) = \log p(y\mid\theta) + \log p(\theta) = \log p(\theta\mid y) + \text{const}$$
+
+which is all that is needed: MAP maximizes it, and HMC/NUTS sample
+proportionally to its exponential without ever computing the
+normalizing constant. In =datamunge=, a model is written declaratively
+as exactly this sum of log-density terms via =bayes::AutodiffModel=,
+which wraps a lambda over =autodiff::Var= (the same reverse-mode
+automatic-differentiation type used throughout the project's
+optimization-based reports) as an =optim::DifferentiableFunction=,
+giving MAP/HMC/NUTS access to both $\ell(\theta)$ and its exact gradient
+$\nabla_\theta\,\ell(\theta)$ via the same =Tape::backward()= mechanism.
+=bayes::distributions.hpp= supplies a small library of log-density
+functions (=normal_lpdf=, =bernoulli_logit_lpmf=, =cauchy_lpdf=,
+=gamma_lpdf=, ...) written in this differentiable style -- writing a
+model is structurally identical to writing a sequence of Stan's
+tilde-notation sampling statements (=parameter distributed as
+distribution(...)=), just as ordinary C++.
+
+** MAP: the posterior mode via L-BFGS
+
+=bayes::MAP= finds $\hat\theta_{\text{MAP}} = \arg\max_\theta\,\ell(\theta)$
+using =optim::LBFGS=, the same quasi-Newton optimizer used for
+maximum-likelihood fitting elsewhere in this project (e.g. GLM's IRLS
+inner loop) -- the only difference is that $\ell(\theta)$ here includes a
+prior term. MAP is the Bayesian analog of Stan's =optimizing()=: fast, a
+single point, and exact for any model whose posterior is genuinely
+unimodal and well-approximated locally by a quadratic (true for the
+Normal-Normal conjugate model in §4.1 by construction, and often a
+reasonable approximation elsewhere) -- but MAP reports no measure of
+posterior *uncertainty* at all, which is the entire reason HMC and NUTS
+exist.
+
+** Hamiltonian Monte Carlo
+
+HMC characterizes the full posterior by drawing correlated samples from
+it. It does so by introducing an auxiliary momentum variable $p$ with
+the same dimension as $\theta$, defining a fictitious physical system
+with Hamiltonian
+
+$$H(\theta, p) = -\ell(\theta) + \frac{1}{2}p^\top M^{-1} p$$
+
+($-\ell(\theta)$ plays the role of potential energy, and the quadratic
+term in $p$ the role of kinetic energy under mass matrix $M$;
+=datamunge='s implementation uses an identity mass matrix). Each
+iteration draws a fresh momentum $p\sim N(0, M)$, simulates Hamiltonian
+dynamics forward using the *leapfrog integrator* -- a symplectic,
+time-reversible discretization that alternates half-step momentum
+updates with full-step position updates,
+
+$$p_{t+\epsilon/2} = p_t + \frac{\epsilon}{2}\nabla_\theta\,\ell(\theta_t), \quad
+\theta_{t+\epsilon} = \theta_t + \epsilon\, M^{-1} p_{t+\epsilon/2}, \quad
+p_{t+\epsilon} = p_{t+\epsilon/2} + \frac{\epsilon}{2}\nabla_\theta\,\ell(\theta_{t+\epsilon})$$
+
+for =num_leapfrog_steps= steps of size $\epsilon$ -- and then accepts or
+rejects the resulting proposal with a Metropolis correction on
+$H(\theta,p)$ that corrects for the leapfrog integrator's small
+discretization error. Because the proposal follows the posterior's own
+gradient rather than a naive random walk, HMC explores a
+high-dimensional posterior far more efficiently than a
+gradient-free Metropolis sampler (the subject of the forthcoming
+Bayesian sampling companion report) -- at the cost of needing a good
+step size $\epsilon$ and trajectory length (=num_leapfrog_steps=
+$\times\ \epsilon$), which =bayes::HMC= tunes only partially: the step
+size adapts automatically during warmup via dual averaging (below), but
+the number of leapfrog steps is a fixed hyperparameter the user must
+choose, exactly the parameter NUTS removes.
+
+** Dual-averaging step-size adaptation
+
+Both =HMC= and =NUTS= adapt $\epsilon$ during the =num_warmup= iterations
+using the Nesterov dual-averaging scheme of Hoffman & Gelman (2014),
+targeting a specified Metropolis acceptance rate (=target_accept_rate=,
+default 0.8 -- the theoretically motivated optimum for HMC-family
+samplers). Too large an $\epsilon$ makes the leapfrog discretization
+error large, rejecting most proposals; too small wastes computation
+taking tiny steps. Dual averaging treats this as a stochastic
+approximation problem, nudging $\log\epsilon$ toward the value whose
+long-run average acceptance rate matches the target, and *freezes*
+$\epsilon$ at the end of warmup -- =final_step_size= in both
+=HMCResult= and =NUTSResult= reports exactly what was found.
+
+** NUTS: automatically choosing the trajectory length
+
+=bayes::NUTS= removes HMC's remaining hand-tuned hyperparameter --
+trajectory length -- by growing the leapfrog trajectory dynamically.
+Starting from the current point, it doubles the trajectory by extending
+either forward or backward in simulated time, building a binary tree of
+leapfrog states, and stops doubling as soon as continuing would make the
+trajectory start turning back on itself -- a "U-turn," detected when the
+angle between the direction of travel and the momentum indicates the
+endpoints are no longer separating. This is the efficient
+slice-sampling formulation (Hoffman & Gelman 2014, Algorithm 3): a slice
+variable restricts the proposal to states within a valid Hamiltonian
+energy band, and the final sample is drawn uniformly from the valid
+leapfrog states the doubling procedure visited. =max_tree_depth= caps
+the doubling at $2^{\text{max\_tree\_depth}}$ leapfrog steps per
+iteration as a safety bound. A trajectory is flagged as a *divergence*
+(=num_divergences= in =NUTSResult=) if the Hamiltonian drifts by more
+than =max_delta_error= from its starting value during any single
+leapfrog step -- a diagnostic signal that the posterior's local geometry
+(typically its curvature) is too extreme for the current step size to
+resolve accurately, worth checking whenever it is nonzero even though a
+handful of divergences out of thousands of iterations rarely
+invalidates the overall fit.
+
+** What we will report
+
+§4.1 fits the Normal-Normal conjugate model with MAP, HMC, and NUTS and
+checks every result against the closed-form posterior directly, with a
+density-histogram overlay and a trace plot as the two supporting
+figures. §4.2 fits Bayesian logistic regression on iris with MAP and
+NUTS and compares the fitted probability curve against the GLM
+companion report's maximum-likelihood fit, with a third figure
+visualizing the resulting shrinkage.
+
+* Data and Methods
+
+** The data
+
+The conjugate model (§4.1) uses ten small simulated measurements
+($y = \{2.1, 1.8, 2.5, 2.0, 1.9, 2.3, 2.2, 1.7, 2.4, 1.95\}$) chosen
+specifically because their exact posterior is a closed-form calculation
+-- the point of this section is validating the inference machinery, not
+studying the data itself. The logistic regression (§4.2) uses the iris
+dataset restricted to versicolor and virginica (100 flowers), already
+used for exactly this classification problem via maximum likelihood in
+the [[file:glm_iris_analysis.org][GLM companion report]], letting this
+report's Bayesian fit be compared directly against that report's
+frequentist one.
+
+** Software
+
+All computation uses =datamunge='s C++ =bayes= module --
+=bayes::AutodiffModel=, =bayes::MAP=, =bayes::HMC=, =bayes::NUTS=, and
+the =normal_lpdf= / =bernoulli_logit_lpmf= log-density helpers from
+=bayes::distributions.hpp= -- together with =autodiff::Tape= and
+=autodiff::Var= for gradients and =stats::GLM= for the frequentist
+comparison fit. Unlike the
+DataFrame-and-formula-based classes used in most other reports in this
+project, a Bayesian model here is written directly as a C++ lambda
+returning an =autodiff::Var= log-density, matching the way Stan models
+are written as a sequence of distribution statements rather than as a
+formula string.
+
+** Program, presented as a literate whole
+
+*** Includes and helpers
+
+#+name: bayes-includes
+#+begin_src c++ :eval no
+#include <datamunge/bayes/bayes.hpp>
+#include <datamunge/datamunge.hpp>
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dstruct.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/glm.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+
+using datamunge::autodiff::Tape;
+using datamunge::autodiff::Var;
+using datamunge::bayes::AutodiffModel;
+using datamunge::bayes::HMC;
+using datamunge::bayes::HMCOptions;
+using datamunge::bayes::MAP;
+using datamunge::bayes::NUTS;
+using datamunge::bayes::NUTSOptions;
+using datamunge::plot::RPlot;
+
+using datamunge::bayes::bernoulli_logit_lpmf;
+using datamunge::bayes::normal_lpdf;
+
+namespace {
+
+void print_vec(const std::vector<double>& v) {
+    std::cout << "[";
+    for (std::size_t i = 0; i < v.size(); ++i) std::cout << (i ? ", " : "") << v[i];
+    std::cout << "]";
+}
+
+double mean_of(const std::vector<std::vector<double>>& samples, std::size_t dim) {
+    double s = 0.0;
+    for (const auto& row : samples) s += row[dim];
+    return s / static_cast<double>(samples.size());
+}
+
+double sd_of(const std::vector<std::vector<double>>& samples, std::size_t dim,
+             double mean) {
+    double s = 0.0;
+    for (const auto& row : samples) {
+        const double d = row[dim] - mean;
+        s += d * d;
+    }
+    return std::sqrt(s / static_cast<double>(samples.size() - 1));
+}
+
+} // namespace
+#+end_src
+
+This mirrors the reference example (=examples/cpp/source/bayes_ex.cpp=),
+extended below with three =RPlot= visualizations.
+
+*** The conjugate model: exact posterior, MAP, HMC, and NUTS
+
+#+name: bayes-conjugate-setup
+#+begin_src c++ :eval no
+    std::cout << "=== Normal-Normal conjugate model:"
+                 " MAP, HMC, NUTS vs. the exact posterior ===\n";
+    const std::vector<double> y{2.1, 1.8, 2.5, 2.0, 1.9, 2.3, 2.2, 1.7, 2.4, 1.95};
+    constexpr double sigma = 1.0, mu0 = 0.0, tau0 = 5.0;
+
+    double sum_y = 0.0;
+    for (const double v : y) sum_y += v;
+    const double n = static_cast<double>(y.size());
+    const double precision_post = 1.0 / (tau0 * tau0) + n / (sigma * sigma);
+    const double exact_mean =
+        (mu0 / (tau0 * tau0) + sum_y / (sigma * sigma)) / precision_post;
+    const double exact_sd = std::sqrt(1.0 / precision_post);
+    std::cout << "Exact posterior: N(" << exact_mean << ", " << exact_sd << "^2)\n\n";
+
+    AutodiffModel conjugate_model([&](Tape&, const std::vector<Var>& params) {
+        Var lp = normal_lpdf(params[0], mu0, tau0);
+        for (const double yi : y) lp = lp + normal_lpdf(yi, params[0], sigma);
+        return lp;
+    });
+#+end_src
+
+The exact posterior mean/SD above come directly from the standard
+conjugate-update formula for a Normal likelihood with known variance and
+a Normal prior (§2.1's normalizing-constant obstacle disappears entirely
+in this special case, since the posterior is available in closed form) --
+this is the ground truth every inference method below is checked
+against.
+
+#+name: bayes-conjugate-fit
+#+begin_src c++ :eval no
+    {
+        std::vector<double> coords{0.0};
+        const double log_post = MAP().optimize(conjugate_model, coords);
+        std::cout << "MAP:  mu = " << coords[0]
+                   << " (log-posterior = " << log_post << ")\n";
+    }
+    std::vector<std::vector<double>> nuts_samples;
+    {
+        HMCOptions options;
+        options.num_warmup = 1000;
+        options.num_samples = 4000;
+        options.num_leapfrog_steps = 15;
+        options.initial_step_size = 0.3;
+        const auto result = HMC(options).sample(conjugate_model, {0.0});
+        const double m = mean_of(result.samples, 0);
+        const double s = sd_of(result.samples, 0, m);
+        std::cout << "HMC:  mu ~ N(" << m << ", " << s << "^2), accept rate = "
+                  << result.accept_rate
+                  << ", step size = " << result.final_step_size << "\n";
+    }
+    {
+        NUTSOptions options;
+        options.num_warmup = 1000;
+        options.num_samples = 4000;
+        options.initial_step_size = 0.3;
+        const auto result = NUTS(options).sample(conjugate_model, {0.0});
+        nuts_samples = result.samples;
+        const double m = mean_of(result.samples, 0);
+        const double s = sd_of(result.samples, 0, m);
+        std::cout << "NUTS: mu ~ N(" << m << ", " << s << "^2), accept rate = "
+                  << result.accept_rate
+                  << ", step size = " << result.final_step_size
+                  << ", divergences = " << result.num_divergences << "\n";
+    }
+#+end_src
+
+*** Visualizing the conjugate posterior
+
+#+name: bayes-conjugate-figures
+#+begin_src c++ :eval no
+    {
+        std::vector<double> mu_samples;
+        mu_samples.reserve(nuts_samples.size());
+        for (const auto& row : nuts_samples) mu_samples.push_back(row[0]);
+
+        constexpr std::size_t bins = 40;
+        double lo = *std::min_element(mu_samples.begin(), mu_samples.end());
+        double hi = *std::max_element(mu_samples.begin(), mu_samples.end());
+        const double bin_width = (hi - lo) / static_cast<double>(bins);
+        std::vector<double> counts(bins, 0.0);
+        for (double v : mu_samples) {
+            auto idx = static_cast<std::ptrdiff_t>((v - lo) / bin_width);
+            idx = std::clamp<std::ptrdiff_t>(idx, 0,
+                                              static_cast<std::ptrdiff_t>(bins) - 1);
+            counts[static_cast<std::size_t>(idx)] += 1.0;
+        }
+        std::vector<double> centers(bins), density(bins);
+        const double norm = static_cast<double>(mu_samples.size()) * bin_width;
+        for (std::size_t i = 0; i < bins; ++i) {
+            centers[i] = lo + (static_cast<double>(i) + 0.5) * bin_width;
+            density[i] = counts[i] / norm;
+        }
+
+        auto plot = RPlot::create();
+        plot.bars(centers, density, "NUTS samples", {96, 165, 250}, bin_width);
+        constexpr std::size_t n_curve = 200;
+        std::vector<double> curve_x(n_curve), curve_y(n_curve);
+        for (std::size_t i = 0; i < n_curve; ++i) {
+            const double x = lo + (hi - lo) * static_cast<double>(i)
+                                       / static_cast<double>(n_curve - 1);
+            const double z = (x - exact_mean) / exact_sd;
+            curve_x[i] = x;
+            curve_y[i] = std::exp(-0.5 * z * z)
+                         / (exact_sd * std::sqrt(2.0 * 3.14159265358979323846));
+        }
+        plot.lines(curve_x, curve_y, "exact posterior", {220, 38, 38}, 2.5);
+        plot.legend({"NUTS samples", "exact posterior"},
+                    {{96, 165, 250}, {220, 38, 38}});
+        plot.title("NUTS posterior samples vs. exact posterior density")
+            .x_label("mu")
+            .y_label("density");
+        plot.save_svg("build/org/bayes_posterior_density.svg");
+        std::cout << "wrote bayes_posterior_density.svg\n";
+    }
+    {
+        std::vector<double> idx(nuts_samples.size()), mu_samples(nuts_samples.size());
+        for (std::size_t i = 0; i < nuts_samples.size(); ++i) {
+            idx[i] = static_cast<double>(i);
+            mu_samples[i] = nuts_samples[i][0];
+        }
+        auto trace = RPlot::plot(idx, mu_samples, "l", "mu");
+        trace.title("NUTS trace plot: mu")
+            .x_label("post-warmup iteration")
+            .y_label("mu");
+        trace.save_svg("build/org/bayes_nuts_trace.svg");
+        std::cout << "wrote bayes_nuts_trace.svg\n";
+    }
+#+end_src
+
+Note that =RPlot::curve()= (used elsewhere in this project to plot a
+mathematical function directly) is a *static factory* method like
+=RPlot::boxplot()= / =RPlot::hist()=, not a chainable instance method like
+=RPlot::lines()= -- calling it on an existing plot object returns a
+*brand-new*, independent =RPlot= rather than adding a series to the one
+already built. This report evaluates the exact posterior density at 200
+points directly and adds it via =RPlot::lines()= instead, exactly the
+technique the [[file:hypothesis_tests_analysis.org][hypothesis tests
+report]]'s own boxplot fix (a genuine library bug, unlike this one) grew
+out of the same kind of careful figure-by-figure verification.
+
+*** Bayesian logistic regression vs. GLM's MLE
+
+#+name: bayes-logistic-setup
+#+begin_src c++ :eval no
+    std::cout << "\n=== Bayesian logistic regression vs. GLM's MLE (iris) ===\n";
+    const auto iris = datamunge::datasets::iris();
+    std::vector<double> is_virginica, petal_length;
+    for (std::size_t i = 0; i < iris.nrows(); ++i) {
+        const auto species = iris.string_at("Species", i);
+        if (species != "versicolor" && species != "virginica") continue;
+        is_virginica.push_back(species == "virginica" ? 1.0 : 0.0);
+        petal_length.push_back(iris.double_at("Petal.Length", i));
+    }
+    datamunge::dstruct::DataFrame df;
+    df.add_column("Petal.Length", petal_length);
+    df.add_column("is_virginica", is_virginica);
+    datamunge::stats::GLMOptions glm_options;
+    glm_options.family = datamunge::stats::GLMFamily::Binomial;
+    const datamunge::stats::GLM glm(df, "is_virginica ~ Petal.Length", glm_options);
+    std::cout << "GLM MLE:        ";
+    print_vec(glm.coefficients());
+    std::cout << "\n";
+#+end_src
+
+#+name: bayes-logistic-fit
+#+begin_src c++ :eval no
+    AutodiffModel logistic_model([&](Tape&, const std::vector<Var>& params) {
+        Var lp = normal_lpdf(params[0], 0.0, 10.0) + normal_lpdf(params[1], 0.0, 10.0);
+        for (std::size_t i = 0; i < petal_length.size(); ++i) {
+            const Var eta = params[0] + params[1] * petal_length[i];
+            lp = lp + bernoulli_logit_lpmf(is_virginica[i], eta);
+        }
+        return lp;
+    });
+    std::vector<double> map_coords{0.0, 0.0};
+    {
+        MAP().optimize(logistic_model, map_coords);
+        std::cout << "Bayes MAP:      ";
+        print_vec(map_coords);
+        std::cout << " (weak Normal(0, 10) priors)\n";
+    }
+    double nuts_mean0 = 0.0, nuts_mean1 = 0.0;
+    {
+        NUTSOptions options;
+        options.num_warmup = 1000;
+        options.num_samples = 3000;
+        options.initial_step_size = 0.05;
+        const auto result = NUTS(options).sample(logistic_model, {0.0, 0.0});
+        nuts_mean0 = mean_of(result.samples, 0);
+        nuts_mean1 = mean_of(result.samples, 1);
+        std::cout << "Bayes NUTS mean: [" << nuts_mean0 << ", " << nuts_mean1
+                  << "] (posterior mean, accept rate = " << result.accept_rate << ")\n";
+    }
+    std::cout << "(Petal.Length nearly separates these two species,\n"
+                 " so the unregularized MLE inflates toward the separating\n"
+                 " boundary; the weak Normal(0, 10) prior visibly pulls the\n"
+                 " Bayesian estimate back -- a real, expected difference,\n"
+                 " not a bug.)\n";
+#+end_src
+
+*** Visualizing the shrinkage
+
+#+name: bayes-logistic-figure
+#+begin_src c++ :eval no
+    {
+        double lo = *std::min_element(petal_length.begin(), petal_length.end());
+        double hi = *std::max_element(petal_length.begin(), petal_length.end());
+        const auto glm_coef = glm.coefficients();
+        constexpr std::size_t n_pts = 200;
+        std::vector<double> xs(n_pts), glm_p(n_pts), map_p(n_pts), nuts_p(n_pts);
+        for (std::size_t i = 0; i < n_pts; ++i) {
+            const double x = lo + (hi - lo) * static_cast<double>(i)
+                                       / static_cast<double>(n_pts - 1);
+            xs[i] = x;
+            glm_p[i] = 1.0 / (1.0 + std::exp(-(glm_coef[0] + glm_coef[1] * x)));
+            map_p[i] = 1.0 / (1.0 + std::exp(-(map_coords[0] + map_coords[1] * x)));
+            nuts_p[i] = 1.0 / (1.0 + std::exp(-(nuts_mean0 + nuts_mean1 * x)));
+        }
+        auto plot = RPlot::create();
+        plot.line(xs, glm_p, "GLM MLE", {220, 38, 38});
+        plot.lines(xs, map_p, "Bayes MAP", {96, 165, 250});
+        plot.lines(xs, nuts_p, "Bayes NUTS mean", {22, 163, 74});
+        plot.legend({"GLM MLE", "Bayes MAP", "Bayes NUTS mean"},
+                    {{220, 38, 38}, {96, 165, 250}, {22, 163, 74}});
+        plot.title("P(virginica) vs. petal length: MLE vs. weakly-regularized Bayes")
+            .x_label("Petal length (cm)")
+            .y_label("P(virginica)");
+        plot.save_svg("build/org/bayes_logistic_curves.svg");
+        std::cout << "wrote bayes_logistic_curves.svg\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/bayes_analysis.cpp <<'CPP'
+<<bayes-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<bayes-conjugate-setup>>
+
+<<bayes-conjugate-fit>>
+
+<<bayes-conjugate-figures>>
+
+<<bayes-logistic-setup>>
+
+<<bayes-logistic-fit>>
+
+<<bayes-logistic-figure>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/bayes_analysis.cpp -o build/org/bayes_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/bayes_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** The conjugate model: MAP, HMC, and NUTS vs. the exact posterior
+
+#+begin_example
+Exact posterior: N(2.0767, 0.3156^2)
+
+MAP:  mu = 2.0767 (log-posterior = -12.1145)
+HMC:  mu ~ N(2.0737, 0.3129^2), accept rate = 0.7898, step size = 0.4452
+NUTS: mu ~ N(2.0813, 0.3076^2), accept rate = 0.8369, step size = 0.4156,
+  divergences = 1
+#+end_example
+
+MAP recovers the exact posterior mode to all four displayed decimal
+places -- expected, since the conjugate posterior is exactly Gaussian
+and L-BFGS finds the mode of a smooth unimodal function essentially
+exactly. Both sampling methods land close to the true mean ($2.0767$)
+and SD ($0.3156$): HMC's $2.0737/0.3129$ and NUTS's $2.0813/0.3076$ each
+differ from the truth by at most about 0.008 in the mean and 0.005 in
+the SD, well within the Monte Carlo error expected from 4000 samples of
+a distribution with SD $\approx0.31$. Both samplers report a healthy
+acceptance rate close to their 0.8 target (dual averaging did its job:
+=final_step_size= landed at $0.4452$ for HMC and $0.4156$ for NUTS, both
+found automatically from the same =initial_step_size=0.3= starting
+point). NUTS reports a single divergence out of 4000 post-warmup
+iterations -- negligible on its own, and unsurprising given this model's
+smooth, well-behaved single-parameter posterior; a much higher
+divergence count would be the diagnostic signal to actually worry about.
+
+#+ATTR_HTML: :alt Histogram of NUTS posterior samples overlaid with the exact closed-form posterior density :width 100%
+[[file:../../build/org/bayes_posterior_density.svg]]
+
+The overlay makes the numerical agreement visually immediate: the
+density histogram built directly from the 4000 NUTS samples tracks the
+exact red posterior curve essentially everywhere, including in both
+tails.
+
+#+ATTR_HTML: :alt Trace plot of the NUTS post-warmup samples for mu :width 100%
+[[file:../../build/org/bayes_nuts_trace.svg]]
+
+The trace plot shows the classic "fuzzy caterpillar" signature of a
+well-mixing chain: the sampled values oscillate rapidly and evenly
+around the posterior mean with no visible trend, drift, or sustained
+excursion to one side -- exactly what NUTS's automatic trajectory-length
+tuning (§2.5) is designed to produce, and a useful visual diagnostic to
+compare against on future models whose posteriors are not available in
+closed form to check against directly.
+
+** Bayesian logistic regression vs. GLM's maximum likelihood
+
+#+begin_example
+GLM MLE:        [-43.7809, 9.0020]
+Bayes MAP:      [-26.5388, 5.4588] (weak Normal(0, 10) priors)
+Bayes NUTS mean: [-27.8953, 5.7351] (posterior mean, accept rate = 0.8450)
+#+end_example
+
+=Petal.Length= alone nearly separates versicolor from virginica, the
+same near-separation the
+[[file:glm_iris_analysis.org][GLM companion report]] discusses for a
+different predictor pair -- and the unregularized MLE responds exactly
+as separation theory predicts, with its slope coefficient (9.0020)
+roughly 60% larger than either Bayesian estimate. The weak
+$N(0,10)$ prior added no strong outside information (a slope of $\pm10$
+is still an enormous log-odds change per centimeter of petal length),
+yet it visibly pulls both the MAP mode (5.4588) and the NUTS posterior
+mean (5.7351) back from the MLE's inflated value. MAP and NUTS agree
+closely with each other (5.4588 vs. 5.7351), consistent with §4.1's
+finding that this posterior's mode and mean are close together for a
+reasonably well-behaved (here, two-dimensional but still smooth and
+unimodal) posterior.
+
+#+ATTR_HTML: :alt Fitted probability curves comparing the GLM maximum-likelihood fit against the Bayes MAP and NUTS posterior-mean fits :width 100%
+[[file:../../build/org/bayes_logistic_curves.svg]]
+
+The fitted curves make the regularization effect directly visible: the
+red MLE curve is noticeably steeper -- closer to a step function -- than
+the blue MAP and green NUTS-mean curves, which sit almost exactly on top
+of each other and rise more gradually through the same crossover region.
+This is the geometric signature of near-separation: with no prior to
+resist it, the MLE's slope grows without real bound as the data get
+closer to perfectly separable, while even a weak prior anchors the
+Bayesian fit to a finite, more conservative estimate.
+
+* Discussion
+
+**Checking against a closed-form posterior is worth the extra
+derivation effort every time it's available.** §4.1's conjugate model
+exists purely as a validation device: because its exact posterior is
+three lines of algebra, every number MAP/HMC/NUTS produced could be
+checked directly, not just against each other. This is a much stronger
+test than the more common practice of checking that multiple samplers
+merely *agree with each other* -- two samplers can agree while both being
+wrong (a shared bug, a shared bias from insufficient warmup, ...), but
+agreement with an independently-derived exact answer rules that out.
+Whenever a model's structure permits a closed-form or otherwise
+independently verifiable posterior (even an approximate one, e.g. a
+large-sample normal approximation to a GLM's likelihood), it is worth
+deriving before trusting a sampler's output on a harder version of the
+same model.
+
+**MAP and posterior-mean estimates coinciding is itself informative, not
+just convenient.** §4.2's Bayes MAP (5.4588) and NUTS posterior mean
+(5.7351) landed close together, which is exactly what should happen
+when a posterior is reasonably close to Gaussian (mode = mean for an
+exact Gaussian, and approximately so for a mildly asymmetric one) --
+the same property that makes MAP a fast, useful proxy for full posterior
+sampling in appropriate models, and a reasonable warning sign to watch
+for divergence between the two on models with heavier-tailed, more
+skewed, or multimodal posteriors, where MAP's single point can badly
+misrepresent the distribution's central tendency.
+
+**Regularization from a prior and regularization from a penalty term are
+the same computation, seen from two different framings.** §4.2's
+weakly-informative $N(0,10)$ prior visibly shrinking the logistic
+regression's coefficients is mathematically identical to adding an
+$L_2$ (ridge) penalty to the negative log-likelihood -- the log-density
+of a Gaussian prior is, up to a constant, exactly a quadratic penalty
+term. This connects directly to the
+[[file:elastic_net_iris_analysis.org][Elastic Net companion report]]'s
+frequentist regularization story: the same numerical phenomenon (a
+penalized/prior-informed fit shrinking coefficients relative to an
+unregularized MLE) is reachable from either the Bayesian or the
+penalized-likelihood framing, and near-separation is one of the clearest
+settings where the practical benefit of doing so -- a finite, interpretable
+coefficient instead of one racing toward $\pm\infty$ -- is visible in a
+single fitted curve.
+
+* Conclusion
+
+Fitting a Normal-Normal conjugate model with =datamunge='s C++
+=bayes::MAP=, =bayes::HMC=, and =bayes::NUTS= reproduces the model's
+exact closed-form posterior to within Monte Carlo error on every metric
+checked -- mean, SD, and (via direct histogram overlay) the full
+density shape -- validating all three inference methods against ground
+truth rather than only against each other. Applying the same MAP and
+NUTS machinery to a real Bayesian logistic regression on iris surfaces a
+genuine, expected regularization effect: near-perfect separation by
+=Petal.Length= inflates the unregularized MLE's slope coefficient well
+beyond both Bayesian estimates under a merely weakly-informative prior,
+visible directly in the fitted probability curves. As with its
+companions, this entire report is reproducible end to end via
+=just org-example bayesian_modeling_analysis=, which re-executes
+§3.3.6's assembly block -- and therefore every number and figure above --
+from the =datamunge= source tree.
+
+* References
+
+- Bayes, T. (1763). "An Essay towards Solving a Problem in the Doctrine
+  of Chances." /Philosophical Transactions of the Royal Society of
+  London/, 53, 370--418.
+- Duane, S., Kennedy, A. D., Pendleton, B. J., & Roweth, D. (1987).
+  "Hybrid Monte Carlo." /Physics Letters B/, 195(2), 216--222.
+- Neal, R. M. (2011). "MCMC Using Hamiltonian Dynamics." In /Handbook of
+  Markov Chain Monte Carlo/, ch. 5. Chapman & Hall/CRC.
+- Hoffman, M. D., & Gelman, A. (2014). "The No-U-Turn Sampler:
+  Adaptively Setting Path Lengths in Hamiltonian Monte Carlo." /Journal
+  of Machine Learning Research/, 15(1), 1593--1623.
+- Nesterov, Y. (2009). "Primal-Dual Subgradient Methods for Convex
+  Problems." /Mathematical Programming/, 120(1), 221--259.
+- Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., &
+  Rubin, D. B. (2013). /Bayesian Data Analysis/, 3rd ed. Chapman &
+  Hall/CRC.
+- Betancourt, M. (2017). "A Conceptual Introduction to Hamiltonian Monte
+  Carlo." arXiv:1701.02434.
+- Carpenter, B., Gelman, A., Hoffman, M. D., Lee, D., Goodrich, B.,
+  Betancourt, M., Brubaker, M., Guo, J., Li, P., & Riddell, A. (2017).
+  "Stan: A Probabilistic Programming Language." /Journal of Statistical
+  Software/, 76(1), 1--32.
+- Anderson, E. (1935). "The Irises of the Gaspe Peninsula." /Bulletin of
+  the American Iris Society/, 59, 2--5. (Original data source.)
+- Fisher, R. A. (1936). "The Use of Multiple Measurements in Taxonomic
+  Problems." /Annals of Eugenics/, 7(2), 179--188. (Popularized the iris
+  dataset.)

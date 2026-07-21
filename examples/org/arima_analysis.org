@@ -1,0 +1,650 @@
+#+title: Time Series Forecasting: SARIMA and Exponential Smoothing
+#+subtitle: A literate C++ study of Box-Jenkins and Holt-Winters methods using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit seasonal ARIMA and exponential smoothing models to simulated time
+series using =datamunge='s C++ =stats::ARIMA= and
+=stats::ExponentialSmoothing=, and report it as a literate program: every
+fragment below is a real, compiled, executed chunk of the single C++
+binary that produced every number and figure in this document. An
+ARIMA(1,1,1) fit to a simulated random walk with drift produces a 6-step
+forecast whose standard error grows from 1.11 to 4.32 -- the textbook
+widening-uncertainty signature of forecasting a non-stationary series. A
+SARIMA(1,0,0)(1,1,0)$_{12}$ model fit to a seasonal series with a linear
+trend correctly extrapolates the seasonal oscillation twelve steps ahead.
+A Holt-Winters model fit to simulated retail-style data (upward trend,
+multiplicative December spike) recovers a near-zero trend-smoothing
+parameter ($\beta \approx 0.0001$, the trend barely needs updating once
+set) alongside a high seasonal-smoothing parameter
+($\gamma \approx 0.80$), and forecasts a proportionally large December
+spike matching the simulation's own seasonal shape. A final comparison
+between simple exponential smoothing and Holt's linear trend model on a
+genuinely flat, trendless series produces a real cautionary finding: Holt's
+trend-smoothing parameter is driven to its numerical boundary
+($\beta \approx 0.9999$), fitting a spurious downward trend to what is
+actually noise, while simple exponential smoothing correctly forecasts a
+flat line. We derive the Box-Jenkins ARIMA and seasonal SARIMA models,
+conditional-sum-of-squares estimation, forecast standard errors via
+psi-weights, and the exponential smoothing family's state-space
+recursions, tying each to the corresponding library call.
+#+end_abstract
+
+* Introduction
+
+Every report in this project so far has modeled /cross-sectional/ data:
+observations assumed independent (or grouped, per the
+[[file:lmm_analysis.org][LMM]] and [[file:glmm_analysis.org][GLMM
+companion reports]]) but never /ordered in time/ in a way the model
+itself needs to respect. This report's subject, time series forecasting,
+inverts that assumption entirely: a time series' defining feature is that
+observation $t$ depends on observations $t-1, t-2, \ldots$, and the whole
+point of fitting a model is to extrapolate that dependence forward, not
+to explain one variable from others. =stats::ARIMA= and
+=stats::ExponentialSmoothing= also depart from every other class in this
+project structurally: neither takes a =DataFrame= or a formula string --
+each takes a single raw =std::vector<double>=, the series itself, with no
+predictors at all.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.6) weaves every named chunk below into one =.cpp=
+file, compiles it, and runs it. Every number and figure from §4 onward is
+that program's literal output.
+
+§2 derives the Box-Jenkins ARIMA and seasonal SARIMA models,
+conditional-sum-of-squares estimation, forecast standard errors, and the exponential
+smoothing family, each tied to the specific library call that implements
+it. §3 describes the program chunk by chunk. §4 reports all four fitted
+models and their forecasts. §5 discusses what the Holt-versus-SES
+comparison reveals about model complexity and genuinely trendless data.
+§6 concludes.
+
+* Background: Box-Jenkins and Exponential Smoothing
+
+** Setup and notation
+
+Every model in this report is fit to a single, ordered numeric sequence
+$y_1, \ldots, y_n$ -- no grouping factor, no predictor matrix, and (unlike
+every regression report in this project) no train/test split via
+leave-one-out or cross-validation, since a time series cannot be randomly
+resampled without destroying the ordering the whole method depends on.
+
+** The ARIMA(p, d, q) model
+
+An ARIMA model composes three ideas into one difference equation. /AR/
+(autoregressive, order $p$) expresses $y_t$ as a linear combination of its
+own $p$ most recent values; /I/ (integrated, order $d$) applies the
+difference operator $(1-B)^d$ (where $B$ is the backshift operator,
+$By_t = y_{t-1}$) $d$ times before fitting, so the model works with a
+/stationary/ series even when the raw data trends or wanders; /MA/ (moving
+average, order $q$) expresses the current shock as a linear combination of
+the $q$ most recent shocks. Combined,
+
+\[
+\phi(B) (1-B)^d y_t = \theta(B) \, \varepsilon_t ,
+\]
+
+with $\phi(B) = 1 - \phi_1 B - \cdots - \phi_p B^p$ (=ar_coefficients()=)
+and $\theta(B) = 1 + \theta_1 B + \cdots + \theta_q B^q$
+(=ma_coefficients()=), matching =ARIMAOptions='s =p=, =d=, =q= directly.
+=include_mean= (default =true=) additionally fits an intercept, but --
+matching R's =arima()= convention exactly, per the library's own
+documentation -- only when $d = 0$ and =seasonal_d= $= 0$, since fitting a
+mean on an already-differenced series would be fitting the mean of the
+/changes/, not a meaningful level.
+
+** The seasonal extension: SARIMA(p,d,q)(P,D,Q)$_s$
+
+A seasonal ARIMA model applies the identical AR/I/MA logic a second time,
+at lag $s$ (the seasonal period) instead of lag 1: a seasonal difference
+$(1-B^s)^D$ removes a repeating seasonal pattern the same way regular
+differencing removes a trend, and seasonal AR/MA polynomials
+$\Phi(B^s)$, $\Theta(B^s)$ (=seasonal_ar_coefficients()=,
+=seasonal_ma_coefficients()=) capture autocorrelation at multiples of the
+seasonal lag. =ARIMA= builds the /combined/ AR and MA polynomials by
+directly multiplying the regular and seasonal polynomials together
+(=combined_ar_=, =combined_ma_= internally) -- setting
+=ARIMAOptions::seasonal_period= to 0 (the default) reduces every seasonal
+polynomial to the identity, making plain ARIMA(p,d,q) exactly the special
+case $P=D=Q=0$ of the general seasonal model, matching R's =arima()= and
+statsmodels' =SARIMAX()='s own unification.
+
+** Conditional sum of squares estimation
+
+Exact ARIMA likelihood requires filtering the /entire/ series (typically
+via a Kalman filter, the subject of a separate companion report); =ARIMA=
+instead uses /conditional sum of squares/ (CSS), R's =arima(method =
+"CSS")=: condition on the first $\max(p + Ps, q + Qs)$ observations
+(=n_used()= reports how many of the =observations()= total actually
+contribute to the fitted residual sum of squares) and minimize the
+residual sum of squares over the remainder with
+=datamunge::optim::DifferentialEvolution=. This is, per the library's own
+documentation, "a standard, textbook ARIMA fitting method" that "will
+differ slightly from exact-ML fits" -- an honestly stated approximation,
+in the same spirit as the [[file:glmm_analysis.org][GLMM companion
+report]]'s PQL caveat relative to exact (RE)ML.
+
+** Forecasting and forecast uncertainty
+
+=forecast()= recurses the fitted difference equation forward the
+requested number of steps and re-integrates through every differencing
+step applied during fitting (=regular_diff_tail_=, =seasonal_diff_tail_=
+internally) to return forecasts on the original, undifferenced scale.
+=forecast_with_intervals()= additionally computes each forecast step's
+standard error from the /psi-weights/ -- the coefficients of the
+equivalent infinite-order moving-average (MA($\infty$)) representation of
+the full, non-stationary model -- so forecast uncertainty grows correctly
+with horizon even though the model itself has only finitely many AR and
+MA parameters. §4.1's figure shows this growth directly.
+
+** Exponential smoothing and the Holt-Winters family
+
+=ExponentialSmoothing= unifies simple exponential smoothing (level only),
+Holt's linear trend (level and trend), and seasonal Holt-Winters (level,
+trend, and a repeating seasonal index) under one class, matching R's
+=HoltWinters()= and statsmodels' =ExponentialSmoothing()=. Which
+components are active is controlled by =TrendType= (=None=, =Additive=,
+or =AdditiveDamped=) and =SeasonalType= (=None=, =Additive=, or
+=Multiplicative=); each active component has its own smoothing parameter
+-- $\alpha$ for the level, $\beta$ for the trend, $\gamma$ for the
+seasonal index, $\phi$ for damping -- each a weight in $(0,1)$ controlling
+how quickly that component's estimate updates in response to new data
+versus how much it retains its previous value. Initial states are set
+once from a classical decomposition of the first one or two seasonal
+cycles and then held fixed; only the smoothing parameters themselves are
+fit, by minimizing one-step-ahead sum of squared errors with
+=DifferentialEvolution=, the same optimizer =ARIMA= uses for its own very
+differently structured parameters.
+
+** Two traditions for the same problem
+
+ARIMA and exponential smoothing solve the same forecasting problem from
+different directions: ARIMA models the /autocorrelation structure/ of the
+(differenced) series explicitly, via AR and MA polynomial coefficients
+with no separate notion of "trend" or "seasonal index" as such (a linear
+trend is instead implied by a unit AR root after differencing);
+exponential smoothing models /level, trend, and seasonal components/
+directly and updates each with its own smoothing recursion, with no
+explicit autocorrelation parameters at all. §4.4's SES-versus-Holt
+comparison and §5's discussion return to what this structural difference
+means when a series' true trend is genuinely absent.
+
+** What we will report
+
+Given the fits, we report the ARIMA(1,1,1) random-walk model's
+coefficients and a forecast with intervals, the seasonal SARIMA model's
+coefficients and forecast, the Holt-Winters retail model's smoothing
+parameters and forecast, and a direct
+simple-exponential-smoothing-versus-Holt comparison on a trendless series.
+
+* Data and Methods
+
+** The data
+
+Unlike every other report in this project, no shared dataset (iris,
+penguins) applies here -- every series in this report is /simulated/ by
+this report's own program, each with a known generating structure
+(a random walk with drift and MA(1) shocks; an AR(1)-plus-seasonal-AR
+process with a linear trend; a multiplicative-seasonal retail-style
+series with a known December spike shape; a short, genuinely flat, noisy
+series), specifically so this report's qualitative claims about each
+model's behavior can be checked against a known ground truth.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=stats::ARIMA= and =stats::ExponentialSmoothing= for every model in this
+report, =std::mt19937_64= and the standard library's distribution types
+for the simulated series, and =plot::RPlot= for every figure. No external
+plotting, statistics, or time-series package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and a small helper
+
+#+name: arima-includes
+#+begin_src c++ :eval no
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/arima.hpp>
+#include <datamunge/stats/exponential_smoothing.hpp>
+
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <vector>
+
+using datamunge::stats::ARIMA;
+using datamunge::stats::ARIMAOptions;
+using datamunge::stats::ExponentialSmoothing;
+using datamunge::stats::ExponentialSmoothingOptions;
+using datamunge::stats::SeasonalType;
+using datamunge::stats::TrendType;
+using namespace datamunge::plot;
+
+namespace {
+
+void print_vector(const std::string& label, const std::vector<double>& v) {
+    std::cout << label << ": ";
+    for (const double x : v) std::cout << x << " ";
+    std::cout << "\n";
+}
+
+std::vector<double> iota_range(double start, std::size_t n) {
+    std::vector<double> r(n);
+    for (std::size_t i = 0; i < n; ++i) r[i] = start + static_cast<double>(i);
+    return r;
+}
+
+} // namespace
+#+end_src
+
+*** ARIMA(1,1,1) on a random walk with drift
+
+The true generating process is an integrated MA(1) with drift
+(=level += 0.3 + 0.4*prev_shock + shock=) -- deliberately not an AR
+process at all, so the fitted ARIMA(1,1,1)'s AR term has no single "true"
+value to recover exactly, only a joint AR/MA approximation to the true
+MA(1) structure.
+
+#+name: arima-rw-fit
+#+begin_src c++ :eval no
+    std::cout << "=== ARIMA(1,1,1) on a simulated random walk"
+               << " with drift ===\n";
+    std::vector<double> rw_y;
+    {
+        std::mt19937_64 rng(42);
+        std::normal_distribution<double> noise(0.0, 1.0);
+        std::vector<double> y(150);
+        double level = 100.0;
+        double prev_shock = 0.0;
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            const double shock = noise(rng);
+            level += 0.3 + 0.4 * prev_shock + shock;
+            y[i] = level;
+            prev_shock = shock;
+        }
+        rw_y = y;
+
+        ARIMAOptions options;
+        options.p = 1;
+        options.d = 1;
+        options.q = 1;
+        options.de_population_size = 80;
+        options.de_max_generations = 400;
+        const ARIMA model(y, options);
+
+        std::cout << "AR coefficient: " << model.ar_coefficients()[0] << "\n";
+        std::cout << "MA coefficient: " << model.ma_coefficients()[0] << "\n";
+        std::cout << "sigma^2: " << model.sigma2() << ", AIC: " << model.aic()
+                   << ", BIC: " << model.bic() << "\n";
+
+        const auto [forecast, se] = model.forecast_with_intervals(6);
+        print_vector("6-step forecast", forecast);
+        print_vector("forecast std. errors", se);
+
+        auto plot = RPlot::create();
+        plot.line(iota_range(1, y.size()), y, "observed", {37, 99, 235}, 1.5);
+        plot.line(iota_range(1, model.fitted_values().size()),
+                   model.fitted_values(), "fitted", {22, 163, 74}, 1.0);
+        std::vector<double> fc_x =
+            iota_range(static_cast<double>(y.size()) + 1, forecast.size());
+        std::vector<double> fc_lo(forecast.size()), fc_hi(forecast.size());
+        for (std::size_t i = 0; i < forecast.size(); ++i) {
+            fc_lo[i] = forecast[i] - 1.96 * se[i];
+            fc_hi[i] = forecast[i] + 1.96 * se[i];
+        }
+        plot.line(fc_x, forecast, "forecast", {220, 38, 38}, 1.5);
+        plot.line(fc_x, fc_lo, "lower 95%", {252, 165, 165}, 1.0);
+        plot.line(fc_x, fc_hi, "upper 95%", {252, 165, 165}, 1.0);
+        plot.title("ARIMA(1,1,1): Random Walk with Drift")
+            .x_label("t").y_label("y").background({250, 250, 252});
+        plot.save_svg("build/org/arima_rw_forecast.svg");
+        std::cout << "wrote arima_rw_forecast.svg\n";
+    }
+#+end_src
+
+*** SARIMA(1,0,0)(1,1,0)$_{12}$ on a seasonal series
+
+The true generating process combines an AR(1) noise component with a
+deterministic linear trend and a sine-wave seasonal shape at period 12 --
+seasonal differencing (=seasonal_d = 1=) should remove the deterministic
+trend and seasonal shape together, leaving the AR(1) noise for the
+regular and seasonal AR terms to capture.
+
+#+name: arima-seasonal-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== SARIMA(1,0,0)(1,1,0)_12 on a seasonal series ===\n";
+    std::vector<double> seasonal_y;
+    {
+        std::mt19937_64 rng(7);
+        std::normal_distribution<double> noise(0.0, 1.0);
+        std::vector<double> s(120);
+        double prev = 0.0;
+        for (std::size_t i = 0; i < s.size(); ++i) {
+            prev = 0.5 * prev + noise(rng);
+            s[i] = 20.0 + 0.2 * static_cast<double>(i) +
+                   5.0 * std::sin(2.0 * 3.14159265358979
+                                  * static_cast<double>(i) / 12.0) + prev;
+        }
+        seasonal_y = s;
+
+        ARIMAOptions options;
+        options.p = 1;
+        options.seasonal_p = 1;
+        options.seasonal_d = 1;
+        options.seasonal_period = 12;
+        options.de_population_size = 100;
+        options.de_max_generations = 500;
+        const ARIMA model(s, options);
+
+        std::cout << "AR coefficient: " << model.ar_coefficients()[0]
+                   << ", seasonal AR coefficient: "
+                   << model.seasonal_ar_coefficients()[0] << "\n";
+        std::cout << "sigma^2: " << model.sigma2()
+                   << ", AIC: " << model.aic() << "\n";
+        const auto sfc = model.forecast(12);
+        print_vector("12-step forecast", sfc);
+
+        auto plot = RPlot::create();
+        plot.line(iota_range(1, s.size()), s, "observed", {37, 99, 235}, 1.5);
+        std::vector<double> fc_x =
+            iota_range(static_cast<double>(s.size()) + 1, sfc.size());
+        plot.line(fc_x, sfc, "forecast", {220, 38, 38}, 1.5);
+        plot.title("SARIMA(1,0,0)(1,1,0)_12: Seasonal Series")
+            .x_label("t").y_label("y").background({250, 250, 252});
+        plot.save_svg("build/org/arima_seasonal_forecast.svg");
+        std::cout << "wrote arima_seasonal_forecast.svg\n";
+    }
+#+end_src
+
+*** Holt-Winters on retail-style seasonal data
+
+A synthetic monthly series with an upward trend and a repeating 12-month
+seasonal shape, roughly evoking retail sales with a holiday spike (the
+true seasonal multiplier peaks at 1.6 in December, versus a low of 0.75
+in February).
+
+#+name: arima-hw-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== Exponential smoothing: Holt-Winters"
+               << " on retail-style seasonal data ===\n";
+    std::vector<double> retail_y;
+    {
+        const std::vector<double> seasonal_shape{
+            0.8, 0.75, 0.9, 0.95, 1.0, 1.05,
+            1.1, 1.05, 1.0, 1.1, 1.3, 1.6};
+        std::mt19937_64 rng(11);
+        std::normal_distribution<double> noise(0.0, 3.0);
+        std::vector<double> y(48);
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            const double level = 100.0 + 2.0 * static_cast<double>(i);
+            y[i] = level * seasonal_shape[i % 12] + noise(rng);
+        }
+        retail_y = y;
+
+        ExponentialSmoothingOptions options;
+        options.trend = TrendType::Additive;
+        options.seasonal = SeasonalType::Multiplicative;
+        options.seasonal_period = 12;
+        options.de_population_size = 60;
+        options.de_max_generations = 300;
+        const ExponentialSmoothing model(y, options);
+
+        std::cout << "alpha=" << model.alpha() << " beta=" << model.beta()
+                   << " gamma=" << model.gamma() << "\n";
+        std::cout << "sigma^2: " << model.sigma2()
+                   << ", AIC: " << model.aic() << "\n";
+        const auto rfc = model.forecast(12);
+        print_vector("12-month forecast", rfc);
+
+        auto plot = RPlot::create();
+        plot.line(iota_range(1, y.size()), y, "observed", {37, 99, 235}, 1.5);
+        plot.line(iota_range(1, model.fitted_values().size()),
+                   model.fitted_values(), "fitted", {22, 163, 74}, 1.0);
+        std::vector<double> fc_x =
+            iota_range(static_cast<double>(y.size()) + 1, rfc.size());
+        plot.line(fc_x, rfc, "forecast", {220, 38, 38}, 1.5);
+        plot.title("Holt-Winters: Retail-Style Seasonal Data")
+            .x_label("month").y_label("sales").background({250, 250, 252});
+        plot.save_svg("build/org/hw_retail_forecast.svg");
+        std::cout << "wrote hw_retail_forecast.svg\n";
+    }
+#+end_src
+
+*** Simple exponential smoothing versus Holt's linear trend
+
+A short, noisy-but-flat series: simple exponential smoothing should
+suffice, and a fitted trend model should recognize there is essentially
+none to extrapolate.
+
+#+name: arima-ses-holt
+#+begin_src c++ :eval no
+    std::cout << "\n=== Simple exponential smoothing"
+               << " vs. Holt's linear trend ===\n";
+    {
+        const std::vector<double> flat{50.2, 49.8, 50.5, 49.6, 50.1,
+                                        50.3, 49.9, 50.0, 50.4, 49.7};
+
+        ExponentialSmoothingOptions ses_options;
+        const ExponentialSmoothing ses(flat, ses_options);
+        std::cout << "SES alpha=" << ses.alpha() << "\n";
+        print_vector("SES 5-step forecast", ses.forecast(5));
+
+        ExponentialSmoothingOptions holt_options;
+        holt_options.trend = TrendType::Additive;
+        const ExponentialSmoothing holt(flat, holt_options);
+        std::cout << "Holt alpha=" << holt.alpha()
+                   << " beta=" << holt.beta() << "\n";
+        print_vector("Holt 5-step forecast", holt.forecast(5));
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/arima_analysis.cpp <<'CPP'
+<<arima-includes>>
+
+int main() {
+    std::cout << std::fixed << std::setprecision(4);
+
+<<arima-rw-fit>>
+
+<<arima-seasonal-fit>>
+
+<<arima-hw-fit>>
+
+<<arima-ses-holt>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/arima_analysis.cpp -o build/org/arima_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/arima_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** ARIMA(1,1,1) on a random walk with drift
+
+#+begin_example
+AR coefficient: 0.3923
+MA coefficient: 0.0842
+sigma^2: 1.2249, AIC: 456.0326, BIC: 465.0242
+6-step forecast: 141.3809 141.0767 140.9574 140.9105 140.8922 140.8850
+forecast std. errors: 1.1068 1.9737 2.6991 3.3136 3.8469 4.3204
+#+end_example
+
+The forecast standard error grows monotonically from 1.11 (one step
+ahead) to 4.32 (six steps ahead) -- almost a fourfold increase over a
+sixfold horizon, exactly the compounding uncertainty §2.5's psi-weight
+derivation predicts for forecasting a differenced (non-stationary)
+series. The fitted AR (0.3923) and MA (0.0842) coefficients do not map
+one-to-one onto the true generating process's single MA(1) parameter
+(0.4), since the true process has no AR component at all -- the fitted
+model instead finds a joint AR/MA combination that approximates the same
+autocorrelation structure, a reminder that individual ARIMA coefficients
+are not always separately interpretable against a known truth the way a
+regression coefficient often is.
+
+#+ATTR_HTML: :alt Observed random walk, fitted values, and a 6-step forecast with widening confidence band :width 100%
+[[file:../../build/org/arima_rw_forecast.svg]]
+
+The fitted (green) line tracks the observed (blue) series almost exactly
+throughout the historical range, and the forecast's confidence band
+(light red) visibly fans out with each additional step -- the same
+widening-uncertainty signature reported numerically above, now visible
+directly.
+
+** SARIMA(1,0,0)(1,1,0)$_{12}$ on a seasonal series
+
+#+begin_example
+AR coefficient: 0.9362, seasonal AR coefficient: -0.4652
+sigma^2: 1.7193, AIC: 327.0823
+12-step forecast: 44.4918 46.4029 48.6067 49.5318 48.9627 45.8077
+                  42.8109 41.2288 37.8530 38.5894 40.1018 42.7816
+#+end_example
+
+#+ATTR_HTML: :alt Observed seasonal series and a 12-step forecast continuing the seasonal pattern :width 100%
+[[file:../../build/org/arima_seasonal_forecast.svg]]
+
+The regular AR coefficient (0.9362) is high, reflecting strong
+period-to-period persistence in the seasonally-differenced series; the forecast
+(red) continues the same rise-and-fall seasonal shape the observed data
+(blue) shows throughout its own history, extrapolating both the
+established upward trend and the annual cycle twelve steps into the
+future without ever being told the period's exact shape in advance --
+only that a period of 12 exists.
+
+** Holt-Winters on retail-style seasonal data
+
+#+begin_example
+alpha=0.0775 beta=0.0001 gamma=0.8043
+sigma^2: 45.7625, AIC: 247.8083
+12-month forecast: 153.7848 151.7529 180.9114 190.3375 203.2951 215.7368
+                   226.5556 219.9283 216.0296 231.2706 279.5029 348.4224
+#+end_example
+
+#+ATTR_HTML: :alt Observed retail-style series, fitted values, and a 12-month forecast showing a December spike :width 100%
+[[file:../../build/org/hw_retail_forecast.svg]]
+
+The fitted smoothing parameters tell a coherent story on their own: a
+small $\alpha$ (0.0775) means the level updates slowly, appropriate for a
+series whose level genuinely does trend smoothly; a $\beta$ essentially at
+zero (0.0001) means the trend, once established, needs almost no further
+adjustment -- consistent with this simulation's genuinely constant
+per-month growth; and a large $\gamma$ (0.8043) means the seasonal index
+adapts quickly, appropriate since the true seasonal shape is fixed and
+repeats exactly, so there is little reason for it to smooth slowly across
+cycles. The forecast's final month (348.42) is more than double several
+mid-year months (approximately 216-231), a proportional jump consistent
+with the true seasonal shape's December multiplier (1.6) being roughly
+double its February multiplier (0.75).
+
+** Simple exponential smoothing versus Holt's linear trend
+
+#+begin_example
+SES alpha=0.0777
+SES 5-step forecast: 50.1126 50.1126 50.1126 50.1126 50.1126
+Holt alpha=0.3792 beta=0.9999
+Holt 5-step forecast: 50.0182 49.9119 49.8056 49.6993 49.5930
+#+end_example
+
+Simple exponential smoothing forecasts a flat 50.1126 at every horizon --
+exactly the correct behavior for a series with no real trend, since SES
+has no trend component to (mis)estimate in the first place. Holt's model,
+given the identical ten data points, drives its trend-smoothing parameter
+$\beta$ to 0.9999 -- effectively its numerical upper boundary -- and
+forecasts a small but steadily /declining/ trend (50.02 down to 49.59
+over five steps) that does not exist in the true generating process.
+§5 discusses why this happened and what it implies about model choice.
+
+* Discussion
+
+**A concrete warning about fitting unnecessary trend.** §4.4's comparison
+is this report's central finding: given a genuinely flat series, adding a
+trend component that the data does not need does not simply produce a
+harmless zero estimate -- it can produce a spurious, confidently-stated
+trend, with $\beta$ pinned at its search boundary as the optimizer tries
+to use the trend term to explain ordinary sampling noise in a ten-point
+series. Ten observations is little enough data that a few points'
+random fluctuation can look, to an SSE-minimizing search, like the start
+of a trend worth tracking closely. Simple exponential smoothing, by
+having no trend parameter to (mis)fit at all, is immune to this
+particular failure mode by construction.
+
+**ARIMA's coefficients versus Holt-Winters' coefficients tell different
+kinds of stories.** §4.1's ARIMA coefficients (0.3923, 0.0842) do not
+individually correspond to any single parameter of the true generating
+process, since ARIMA models autocorrelation structure abstractly rather
+than named components; §4.3's Holt-Winters parameters ($\alpha$, $\beta$,
+$\gamma$), by contrast, each map onto an interpretable question ("how
+fast does the level move," "how fast does the trend move," "how fast does
+the seasonal shape move") that this report could check directly against
+how the simulation was actually built. Neither approach is more "correct"
+-- §2.7 already frames them as two different traditions -- but a
+practitioner choosing between them is also choosing between two very
+different kinds of after-the-fact interpretability.
+
+**Connection to the wider project.** This report's
+simulated-data-with-known-truth approach follows directly from the
+[[file:lmm_analysis.org][LMM]] and [[file:glmm_analysis.org][GLMM
+companion reports]]' own use of simulation to check recovery against a
+known answer; here, uniquely, the check is qualitative (does the forecast
+shape and parameter story make sense) rather than a direct numeric
+comparison against one "true" coefficient, since neither ARIMA's nor
+Holt-Winters' parameters correspond one-to-one with the handful of
+numbers used to generate any of this report's four series.
+
+* Conclusion
+
+Fitting seasonal ARIMA and exponential smoothing models with
+=datamunge='s C++ =stats::ARIMA= and =stats::ExponentialSmoothing= to
+four simulated time series reproduces the Box-Jenkins and Holt-Winters
+traditions' textbook behaviors: forecast uncertainty growing with horizon
+for a differenced random walk, a seasonal ARIMA model correctly
+extrapolating a twelve-month cycle, and Holt-Winters recovering smoothing
+parameters that tell a coherent story about a simulated retail series'
+trend and seasonal structure. The report's most important single result
+is a cautionary one: fitting Holt's linear trend model to a genuinely
+flat series drives its trend parameter to its numerical boundary and
+produces a real, spurious forecasted trend, while simple exponential
+smoothing -- with no trend parameter available to misuse -- correctly
+forecasts a flat line. As with its companions, this entire report is
+reproducible end to end via =just org-example arima_analysis=, which
+re-executes §3.3.6's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Box, G. E. P., Jenkins, G. M., Reinsel, G. C., & Ljung, G. M. (2015).
+  /Time Series Analysis: Forecasting and Control/, 5th ed. Wiley.
+- Holt, C. C. (1957/2004). "Forecasting seasonals and trends by
+  exponentially weighted moving averages." /International Journal of
+  Forecasting/, 20(1), 5--10 (reprint of 1957 Carnegie Institute of
+  Technology report).
+- Winters, P. R. (1960). "Forecasting sales by exponentially weighted
+  moving averages." /Management Science/, 6(3), 324--342.
+- Hyndman, R. J., & Athanasopoulos, G. (2021). /Forecasting: Principles
+  and Practice/, 3rd ed. OTexts.

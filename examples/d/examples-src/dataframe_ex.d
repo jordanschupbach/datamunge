@@ -52,7 +52,7 @@ void main() {
   auto targets = new DataFrame();
   targets.add_string_column("region", sv(["west", "east", "south"]));
   targets.add_numeric_column("target", dv([18, 12, 25]));
-  auto joined = grouped.join(targets, "region", "region", true);
+  auto joined = grouped.join(targets, "region", "region", "left");
   writeln("joined with targets");
   writeln(joined.to_string());
   writeln();

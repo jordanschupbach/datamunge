@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <initializer_list>
@@ -12,6 +13,7 @@
 #include <iomanip>
 #include <type_traits>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -174,6 +176,10 @@ class NullableColumn {
   std::vector<std::uint8_t> valid_;
 };
 
+/// @brief Forward declaration -- see the full definition after DataFrame, since it holds a
+///        DataFrame by value (see DataFrame::group_by()).
+class GroupedDataFrame;
+
 class DataFrame {
  public:
   using size_type = std::size_t;
@@ -184,7 +190,21 @@ class DataFrame {
   using cell_type = std::variant<null_type, double, std::string>;
 
   enum class ColumnType { Numeric, String };
-  enum class JoinType { Inner, Left };
+  enum class JoinType { Inner, Left, Right, Full, Semi, Anti };
+
+  /// @brief Aggregation functions usable with summarise()/GroupedDataFrame::summarise().
+  ///        Median/StdDev/Min/Max/Sum/Mean require a numeric column; Min/Max also work on
+  ///        string columns (lexicographic); Count and NDistinct work on any column (Count
+  ///        ignores AggSpec::column entirely).
+  enum class AggFunc { Sum, Mean, Min, Max, Median, StdDev, Count, NDistinct };
+
+  /// @brief One aggregation to compute per group in summarise(): result_name defaults to
+  ///        `column` (or "n" for Count when both are left empty).
+  struct AggSpec {
+    std::string column;
+    AggFunc func{AggFunc::Sum};
+    std::string result_name;
+  };
 
   struct Row {
     std::unordered_map<std::string, cell_type> values;
@@ -350,6 +370,37 @@ class DataFrame {
     replace_column_impl(column_name, std::move(values));
   }
 
+  /// @brief dplyr::mutate()-style upsert: adds `column_name` if absent, replaces it in place
+  ///        (same type) if present. Unlike add_column()/replace_column(), always succeeds and
+  ///        returns a new DataFrame, so it composes into a pipe: df.mutate(...).filter(...).
+  [[nodiscard]] DataFrame mutate(const std::string& column_name, const std::vector<double>& values) const {
+    return mutate_impl(column_name, numeric_column_type(values));
+  }
+
+  [[nodiscard]] DataFrame mutate(const std::string& column_name, const std::vector<std::optional<double>>& values) const {
+    return mutate_impl(column_name, numeric_column_type(values));
+  }
+
+  [[nodiscard]] DataFrame mutate(const std::string& column_name, const std::vector<std::string>& values) const {
+    return mutate_impl(column_name, string_column_type(values));
+  }
+
+  [[nodiscard]] DataFrame mutate(const std::string& column_name, const std::vector<std::optional<std::string>>& values) const {
+    return mutate_impl(column_name, string_column_type(values));
+  }
+
+  /// @brief Row-wise mutate for C++ callers: `df.mutate_with("z", [](const Row& r){ return
+  ///        r.get_double("x") + r.get_double("y"); })`. Not SWIG-exposable (arbitrary callable).
+  template <typename NumericFn>
+  [[nodiscard]] DataFrame mutate_with(const std::string& column_name, NumericFn fn) const {
+    std::vector<double> values;
+    values.reserve(row_count_);
+    for (size_type row_index = 0; row_index < row_count_; ++row_index) {
+      values.push_back(fn(row(row_index)));
+    }
+    return mutate(column_name, std::move(values));
+  }
+
   bool remove_column(const std::string& column_name) {
     const auto it = columns_.find(column_name);
     if (it == columns_.end()) {
@@ -385,6 +436,21 @@ class DataFrame {
     }
   }
 
+  /// @brief Non-mutating, chainable rename: renames every (old_name, new_name) pair in order.
+  [[nodiscard]] DataFrame rename(const std::vector<std::pair<std::string, std::string>>& mapping) const {
+    DataFrame result = select(column_order_);
+    for (const auto& [old_name, new_name] : mapping) {
+      result.rename_column(old_name, new_name);
+    }
+    return result;
+  }
+
+  /// @brief Single-pair convenience overload of rename(); see the vector<pair> overload for
+  ///        renaming several columns at once.
+  [[nodiscard]] DataFrame rename(const std::string& old_name, const std::string& new_name) const {
+    return rename(std::vector<std::pair<std::string, std::string>>{{old_name, new_name}});
+  }
+
   [[nodiscard]] const numeric_column_type& numeric_column(const std::string& column_name) const {
     return require_column_type<numeric_column_type>(column_name, "numeric");
   }
@@ -399,6 +465,15 @@ class DataFrame {
 
   [[nodiscard]] string_column_type& string_column(const std::string& column_name) {
     return require_column_type<string_column_type>(column_name, "string");
+  }
+
+  /// @brief dplyr::pull()-style column extraction, null-aware (see materialize()).
+  [[nodiscard]] std::vector<std::optional<double>> pull_numeric(const std::string& column_name) const {
+    return numeric_column(column_name).materialize();
+  }
+
+  [[nodiscard]] std::vector<std::optional<std::string>> pull_string(const std::string& column_name) const {
+    return string_column(column_name).materialize();
   }
 
   [[nodiscard]] bool is_null(const std::string& column_name, const size_type row_index) const {
@@ -531,6 +606,46 @@ class DataFrame {
     return result;
   }
 
+  /// @brief dplyr::relocate()-style column reorder: moves `columns` to the front (default) or
+  ///        immediately after the column named `after`.
+  [[nodiscard]] DataFrame relocate(const std::vector<std::string>& columns, const std::string& after = "") const {
+    for (const auto& name : columns) {
+      (void)column_data(name);
+    }
+    if (!after.empty()) {
+      (void)column_data(after);
+    }
+
+    const std::unordered_set<std::string> moving(columns.begin(), columns.end());
+    if (!after.empty() && moving.find(after) != moving.end()) {
+      throw std::invalid_argument("DataFrame::relocate: 'after' column cannot be one of the columns being moved");
+    }
+
+    std::vector<std::string> remaining;
+    remaining.reserve(column_order_.size());
+    for (const auto& name : column_order_) {
+      if (moving.find(name) == moving.end()) {
+        remaining.push_back(name);
+      }
+    }
+
+    std::vector<std::string> new_order;
+    new_order.reserve(column_order_.size());
+    if (after.empty()) {
+      new_order = columns;
+      new_order.insert(new_order.end(), remaining.begin(), remaining.end());
+    } else {
+      for (const auto& name : remaining) {
+        new_order.push_back(name);
+        if (name == after) {
+          new_order.insert(new_order.end(), columns.begin(), columns.end());
+        }
+      }
+    }
+
+    return select(new_order);
+  }
+
   [[nodiscard]] DataFrame head(const size_type count) const { return slice_rows(0, std::min(count, row_count_)); }
 
   [[nodiscard]] DataFrame tail(const size_type count) const {
@@ -594,6 +709,9 @@ class DataFrame {
     return take_rows_impl(kept_indices);
   }
 
+  /// @brief dplyr::distinct() alias for drop_duplicates().
+  [[nodiscard]] DataFrame distinct(const std::vector<std::string>& subset = {}) const { return drop_duplicates(subset); }
+
   [[nodiscard]] DataFrame sort_by(const std::string& column_name, const bool ascending = true) const {
     std::vector<size_type> indices(row_count_);
     for (size_type i = 0; i < row_count_; ++i) {
@@ -619,6 +737,66 @@ class DataFrame {
           });
         },
         data);
+
+    DataFrame result = clone_schema();
+    for (const auto row_index : indices) {
+      result.append_row(row(row_index));
+    }
+    return result;
+  }
+
+  /// @brief dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when
+  ///        provided it must have the same length as `columns`. Nulls always sort last,
+  ///        regardless of direction (matching sort_by()).
+  [[nodiscard]] DataFrame arrange(const std::vector<std::string>& columns, std::vector<bool> ascending = {}) const {
+    if (columns.empty()) {
+      throw std::invalid_argument("DataFrame::arrange requires at least one column");
+    }
+    if (ascending.empty()) {
+      ascending.assign(columns.size(), true);
+    }
+    if (ascending.size() != columns.size()) {
+      throw std::invalid_argument("DataFrame::arrange ascending flags must match column count");
+    }
+    for (const auto& name : columns) {
+      (void)column_data(name);
+    }
+
+    std::vector<size_type> indices(row_count_);
+    for (size_type i = 0; i < row_count_; ++i) {
+      indices[i] = i;
+    }
+
+    std::stable_sort(indices.begin(), indices.end(), [&](const size_type lhs, const size_type rhs) {
+      for (size_type key_index = 0; key_index < columns.size(); ++key_index) {
+        const auto& data = column_data(columns[key_index]);
+        const int cmp = std::visit(
+            [&](const auto& column) -> int {
+              const bool lhs_null = column.is_null(lhs);
+              const bool rhs_null = column.is_null(rhs);
+              if (lhs_null != rhs_null) {
+                return lhs_null ? 1 : -1;
+              }
+              if (lhs_null) {
+                return 0;
+              }
+              const auto& lhs_value = column.at(lhs);
+              const auto& rhs_value = column.at(rhs);
+              if (lhs_value < rhs_value) {
+                return ascending[key_index] ? -1 : 1;
+              }
+              if (rhs_value < lhs_value) {
+                return ascending[key_index] ? 1 : -1;
+              }
+              return 0;
+            },
+            data);
+        if (cmp != 0) {
+          return cmp < 0;
+        }
+      }
+      return false;
+    });
 
     DataFrame result = clone_schema();
     for (const auto row_index : indices) {
@@ -688,6 +866,29 @@ class DataFrame {
     return counts;
   }
 
+  /// @brief Number of distinct values in `column_name`; a null is counted as a single
+  ///        additional distinct value if present (matches dplyr::n_distinct(na.rm = FALSE)).
+  [[nodiscard]] size_type n_distinct(const std::string& column_name) const {
+    const auto& data = column_data(column_name);
+    return std::visit(
+        [](const auto& column) -> size_type {
+          using column_type = std::decay_t<decltype(column)>;
+          using value_type = typename column_type::value_type;
+          std::unordered_set<value_type> seen;
+          bool has_null = false;
+          for (size_type index = 0; index < column.size(); ++index) {
+            const auto value = column.optional_at(index);
+            if (value.has_value()) {
+              seen.insert(*value);
+            } else {
+              has_null = true;
+            }
+          }
+          return seen.size() + (has_null ? 1 : 0);
+        },
+        data);
+  }
+
   [[nodiscard]] DataFrame group_by_count(const std::vector<std::string>& key_columns,
                                          const std::string& count_column_name = "count") const {
     require_group_by_keys(key_columns);
@@ -706,6 +907,13 @@ class DataFrame {
     }
     result.add_column(count_column_name, std::move(counts));
     return result;
+  }
+
+  /// @brief dplyr::count()-style alias for group_by_count(), with the more familiar default
+  ///        result column name "n".
+  [[nodiscard]] DataFrame count(const std::vector<std::string>& key_columns,
+                                const std::string& count_column_name = "n") const {
+    return group_by_count(key_columns, count_column_name);
   }
 
   [[nodiscard]] DataFrame group_by_sum(const std::vector<std::string>& key_columns,
@@ -788,6 +996,218 @@ class DataFrame {
     return result;
   }
 
+  /// @brief General dplyr::summarise()-style aggregation: one output row per distinct
+  ///        combination of `key_columns`, with one output column per AggSpec. See also
+  ///        group_by(), which returns a GroupedDataFrame wrapping this same method.
+  [[nodiscard]] DataFrame summarise(const std::vector<std::string>& key_columns, const std::vector<AggSpec>& specs) const {
+    require_group_by_keys(key_columns);
+    if (specs.empty()) {
+      throw std::invalid_argument("DataFrame::summarise requires at least one aggregation");
+    }
+    for (const auto& spec : specs) {
+      if (spec.func != AggFunc::Count && !has_column(spec.column)) {
+        throw std::out_of_range("DataFrame::summarise missing column: " + spec.column);
+      }
+    }
+
+    const auto groups = build_groups(key_columns);
+    DataFrame result = make_group_result_schema(key_columns);
+
+    std::vector<bool> spec_is_numeric(specs.size(), true);
+    for (size_type spec_index = 0; spec_index < specs.size(); ++spec_index) {
+      const auto& spec = specs[spec_index];
+      spec_is_numeric[spec_index] =
+          spec.func == AggFunc::Count || spec.func == AggFunc::NDistinct || column_type(spec.column) == ColumnType::Numeric;
+    }
+
+    std::vector<std::vector<std::optional<double>>> numeric_cells(specs.size());
+    std::vector<std::vector<std::optional<std::string>>> string_cells(specs.size());
+
+    for (const auto& key : groups.order) {
+      append_group_key_row(result, key_columns, key);
+      const auto& rows = groups.groups.at(key);
+
+      for (size_type spec_index = 0; spec_index < specs.size(); ++spec_index) {
+        const auto& spec = specs[spec_index];
+
+        if (spec.func == AggFunc::Count) {
+          numeric_cells[spec_index].push_back(static_cast<double>(rows.size()));
+          continue;
+        }
+        if (spec.func == AggFunc::NDistinct) {
+          numeric_cells[spec_index].push_back(static_cast<double>(group_n_distinct(spec.column, rows)));
+          continue;
+        }
+        if (spec_is_numeric[spec_index]) {
+          numeric_cells[spec_index].push_back(aggregate_numeric(spec.column, rows, spec.func));
+        } else {
+          string_cells[spec_index].push_back(aggregate_string(spec.column, rows, spec.func));
+        }
+      }
+    }
+
+    for (size_type spec_index = 0; spec_index < specs.size(); ++spec_index) {
+      const auto& spec = specs[spec_index];
+      const std::string default_name = spec.func == AggFunc::Count ? std::string("n") : spec.column;
+      const std::string result_name = spec.result_name.empty() ? default_name : spec.result_name;
+      if (spec_is_numeric[spec_index]) {
+        result.add_column(result_name, std::move(numeric_cells[spec_index]));
+      } else {
+        result.add_column(result_name, std::move(string_cells[spec_index]));
+      }
+    }
+
+    return result;
+  }
+
+  /// @brief dplyr::group_by()-style entry point: returns a lightweight GroupedDataFrame that
+  ///        pairs `key_columns` with a copy of `*this`, deferring aggregation to
+  ///        GroupedDataFrame::summarise()/count(). Defined out-of-line below, after
+  ///        GroupedDataFrame itself is complete.
+  [[nodiscard]] GroupedDataFrame group_by(const std::vector<std::string>& key_columns) const;
+
+  /// @brief dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns
+  ///        (`names_to` holding the source column name, `values_to` holding its value), one row
+  ///        per (original row, pivoted column) pair. All of `value_columns` must share the same
+  ///        column type.
+  [[nodiscard]] DataFrame pivot_longer(const std::vector<std::string>& value_columns, const std::string& names_to = "name",
+                                       const std::string& values_to = "value") const {
+    if (value_columns.empty()) {
+      throw std::invalid_argument("DataFrame::pivot_longer requires at least one value column");
+    }
+    for (const auto& name : value_columns) {
+      (void)column_data(name);
+    }
+
+    const std::unordered_set<std::string> pivoted(value_columns.begin(), value_columns.end());
+    std::vector<std::string> id_columns;
+    for (const auto& name : column_order_) {
+      if (pivoted.find(name) == pivoted.end()) {
+        id_columns.push_back(name);
+      }
+    }
+
+    const bool values_numeric = column_type(value_columns.front()) == ColumnType::Numeric;
+    for (const auto& name : value_columns) {
+      if ((column_type(name) == ColumnType::Numeric) != values_numeric) {
+        throw std::invalid_argument("DataFrame::pivot_longer requires all value columns to share the same type");
+      }
+    }
+
+    DataFrame result;
+    for (const auto& name : id_columns) {
+      append_schema_column(result, name, column_type(name));
+    }
+    append_schema_column(result, names_to, ColumnType::String);
+    append_schema_column(result, values_to, values_numeric ? ColumnType::Numeric : ColumnType::String);
+
+    for (size_type row_index = 0; row_index < row_count_; ++row_index) {
+      for (const auto& value_column : value_columns) {
+        Row out;
+        for (const auto& id_name : id_columns) {
+          out.values[id_name] = value(id_name, row_index);
+        }
+        out.values[names_to] = cell_type(value_column);
+        out.values[values_to] = value(value_column, row_index);
+        result.append_row(out);
+      }
+    }
+
+    return result;
+  }
+
+  /// @brief dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new
+  ///        column names, `values_from` supplies their values, and the remaining columns (or an
+  ///        explicit `id_columns`) define one output row per distinct combination. If a given
+  ///        (id, name) combination has more than one source row, the first occurrence wins.
+  [[nodiscard]] DataFrame pivot_wider(const std::string& names_from, const std::string& values_from,
+                                      const std::vector<std::string>& id_columns = {}) const {
+    (void)column_data(names_from);
+    (void)column_data(values_from);
+    if (column_type(names_from) != ColumnType::String) {
+      throw std::invalid_argument("DataFrame::pivot_wider requires names_from to be a string column");
+    }
+
+    std::vector<std::string> ids = id_columns;
+    if (ids.empty()) {
+      for (const auto& name : column_order_) {
+        if (name != names_from && name != values_from) {
+          ids.push_back(name);
+        }
+      }
+    } else {
+      for (const auto& name : ids) {
+        (void)column_data(name);
+      }
+    }
+
+    const bool values_numeric = column_type(values_from) == ColumnType::Numeric;
+    const auto groups = build_groups(ids);
+
+    std::vector<std::string> new_column_names;
+    std::unordered_set<std::string> seen_names;
+    for (size_type row_index = 0; row_index < row_count_; ++row_index) {
+      const auto name_value = optional_string_at(names_from, row_index);
+      if (!name_value.has_value()) {
+        continue;
+      }
+      if (seen_names.insert(*name_value).second) {
+        new_column_names.push_back(*name_value);
+      }
+    }
+
+    DataFrame result = make_group_result_schema(ids);
+
+    std::vector<std::vector<std::optional<double>>> numeric_cells(new_column_names.size());
+    std::vector<std::vector<std::optional<std::string>>> string_cells(new_column_names.size());
+
+    for (const auto& key : groups.order) {
+      append_group_key_row(result, ids, key);
+      const auto& rows = groups.groups.at(key);
+
+      std::unordered_map<std::string, size_type> row_for_name;
+      for (const auto row_index : rows) {
+        const auto name_value = optional_string_at(names_from, row_index);
+        if (!name_value.has_value() || row_for_name.count(*name_value) > 0) {
+          continue;
+        }
+        row_for_name.emplace(*name_value, row_index);
+      }
+
+      for (size_type column_index = 0; column_index < new_column_names.size(); ++column_index) {
+        const auto found = row_for_name.find(new_column_names[column_index]);
+        if (found == row_for_name.end()) {
+          if (values_numeric) {
+            numeric_cells[column_index].push_back(std::nullopt);
+          } else {
+            string_cells[column_index].push_back(std::nullopt);
+          }
+          continue;
+        }
+        if (values_numeric) {
+          numeric_cells[column_index].push_back(optional_double_at(values_from, found->second));
+        } else {
+          string_cells[column_index].push_back(optional_string_at(values_from, found->second));
+        }
+      }
+    }
+
+    for (size_type column_index = 0; column_index < new_column_names.size(); ++column_index) {
+      if (values_numeric) {
+        result.add_column(new_column_names[column_index], std::move(numeric_cells[column_index]));
+      } else {
+        result.add_column(new_column_names[column_index], std::move(string_cells[column_index]));
+      }
+    }
+
+    return result;
+  }
+
+  /// @param join_type One of Inner/Left/Right/Full/Semi/Anti. Semi/Anti keep only left's rows
+  ///        (matched / unmatched respectively) and never merge in right's columns. For the
+  ///        others, any column name present in both frames (other than the key column when
+  ///        left_key == right_key) is suffixed on both sides (left_suffix/right_suffix) so the
+  ///        output has no duplicate names.
   [[nodiscard]] DataFrame join(const DataFrame& right, const std::string& left_key, const std::string& right_key,
                                const JoinType join_type = JoinType::Inner, const std::string& left_suffix = "_x",
                                const std::string& right_suffix = "_y") const {
@@ -798,36 +1218,55 @@ class DataFrame {
       throw std::out_of_range("DataFrame::join missing right key: " + right_key);
     }
 
-    const auto right_plan = build_join_right_plan(right, right_key, left_key, right_suffix);
-    DataFrame result = make_join_result_schema(right, right_key, left_key, right_suffix);
+    if (join_type == JoinType::Semi || join_type == JoinType::Anti) {
+      const auto right_lookup = right.build_row_lookup(right_key);
+      std::vector<size_type> kept_indices;
+      for (size_type row_index = 0; row_index < row_count_; ++row_index) {
+        const bool matched = right_lookup.find(value(left_key, row_index)) != right_lookup.end();
+        if (matched == (join_type == JoinType::Semi)) {
+          kept_indices.push_back(row_index);
+        }
+      }
+      return take_rows_impl(kept_indices);
+    }
+
+    const bool merged_key = left_key == right_key;
+    const auto [left_plan, right_plan] = build_join_plans(right, left_key, right_key, merged_key, left_suffix, right_suffix);
+
+    DataFrame result;
+    for (const auto& [source_name, output_name] : left_plan) {
+      append_schema_column(result, output_name, column_type(source_name));
+    }
+    for (const auto& [source_name, output_name] : right_plan) {
+      append_schema_column(result, output_name, right.column_type(source_name));
+    }
 
     const auto right_lookup = right.build_row_lookup(right_key);
+    const bool include_unmatched_left = join_type == JoinType::Left || join_type == JoinType::Full;
+    std::vector<bool> right_matched(right.row_count_, false);
 
     for (size_type left_row = 0; left_row < row_count_; ++left_row) {
-      const auto left_value = value(left_key, left_row);
-      const auto match_it = right_lookup.find(left_value);
+      const auto match_it = right_lookup.find(value(left_key, left_row));
       if (match_it == right_lookup.end()) {
-        if (join_type == JoinType::Left) {
-          Row merged = row(left_row);
-          for (const auto& [source_name, output_name] : right_plan) {
-            (void)source_name;
-            merged.values[output_name] = null_type{};
-          }
-          result.append_row(merged);
+        if (include_unmatched_left) {
+          append_join_row(result, left_plan, right_plan, this, left_row, nullptr, 0, merged_key, left_key, right_key);
         }
         continue;
       }
-
       for (const auto right_row : match_it->second) {
-        Row merged = row(left_row);
-        for (const auto& [source_name, output_name] : right_plan) {
-          merged.values[output_name] = right.value(source_name, right_row);
-        }
-        result.append_row(merged);
+        right_matched[right_row] = true;
+        append_join_row(result, left_plan, right_plan, this, left_row, &right, right_row, merged_key, left_key, right_key);
       }
     }
 
-    (void)left_suffix;
+    if (join_type == JoinType::Right || join_type == JoinType::Full) {
+      for (size_type right_row = 0; right_row < right.row_count_; ++right_row) {
+        if (!right_matched[right_row]) {
+          append_join_row(result, left_plan, right_plan, nullptr, 0, &right, right_row, merged_key, left_key, right_key);
+        }
+      }
+    }
+
     return result;
   }
 
@@ -836,6 +1275,64 @@ class DataFrame {
     DataFrame result = select(column_order_);
     for (size_type row_index = 0; row_index < other.nrows(); ++row_index) {
       result.append_row(other.row(row_index));
+    }
+    return result;
+  }
+
+  /// @brief dplyr::bind_rows()-style row union: unlike concat_rows() (which requires identical
+  ///        column order/types), aligns columns by name -- a column present in only one frame is
+  ///        null-filled for the rows coming from the other. A shared column name must have the
+  ///        same type in both frames.
+  [[nodiscard]] DataFrame bind_rows(const DataFrame& other) const {
+    std::vector<std::string> combined_columns = column_order_;
+    for (const auto& name : other.column_order_) {
+      if (!has_column(name)) {
+        combined_columns.push_back(name);
+      }
+    }
+
+    for (const auto& name : combined_columns) {
+      if (has_column(name) && other.has_column(name) && column_type(name) != other.column_type(name)) {
+        throw std::invalid_argument("DataFrame::bind_rows column type mismatch: " + name);
+      }
+    }
+
+    DataFrame result;
+    for (const auto& name : combined_columns) {
+      const auto type = has_column(name) ? column_type(name) : other.column_type(name);
+      append_schema_column(result, name, type);
+    }
+
+    for (size_type row_index = 0; row_index < row_count_; ++row_index) {
+      result.append_row(build_bind_row(combined_columns, this, row_index));
+    }
+    for (size_type row_index = 0; row_index < other.row_count_; ++row_index) {
+      result.append_row(build_bind_row(combined_columns, &other, row_index));
+    }
+
+    return result;
+  }
+
+  /// @brief dplyr::bind_cols()-style column union: both frames must have the same row count and
+  ///        disjoint column names.
+  [[nodiscard]] DataFrame bind_cols(const DataFrame& other) const {
+    if (row_count_ != other.row_count_) {
+      throw std::invalid_argument("DataFrame::bind_cols requires equal row counts");
+    }
+    for (const auto& name : other.column_order_) {
+      if (has_column(name)) {
+        throw std::invalid_argument("DataFrame::bind_cols duplicate column: " + name);
+      }
+    }
+
+    DataFrame result = select(column_order_);
+    for (const auto& name : other.column_order_) {
+      const auto& data = other.column_data(name);
+      std::visit(
+          [&](const auto& values) {
+            result.add_column(name, values);
+          },
+          data);
     }
     return result;
   }
@@ -940,6 +1437,7 @@ class DataFrame {
   };
 
   using row_lookup_type = std::unordered_map<cell_type, std::vector<size_type>, CellHash, CellEqual>;
+  using join_plan_type = std::vector<std::pair<std::string, std::string>>;
 
   template <typename ColumnValues>
   void add_column_impl(const std::string& column_name, ColumnValues&& values) {
@@ -972,6 +1470,17 @@ class DataFrame {
     }
 
     columns_.at(column_name) = column_data_type(std::forward<ColumnValues>(values));
+  }
+
+  template <typename ColumnValues>
+  [[nodiscard]] DataFrame mutate_impl(const std::string& column_name, ColumnValues&& values) const {
+    DataFrame result = select(column_order_);
+    if (result.has_column(column_name)) {
+      result.replace_column(column_name, std::forward<ColumnValues>(values));
+    } else {
+      result.add_column(column_name, std::forward<ColumnValues>(values));
+    }
+    return result;
   }
 
   [[nodiscard]] const column_data_type& column_data(const std::string& column_name) const {
@@ -1066,13 +1575,17 @@ class DataFrame {
   [[nodiscard]] DataFrame clone_schema() const {
     DataFrame result;
     for (const auto& name : column_order_) {
-      if (column_type(name) == ColumnType::Numeric) {
-        result.add_column(name, numeric_column_type{});
-      } else {
-        result.add_column(name, string_column_type{});
-      }
+      append_schema_column(result, name, column_type(name));
     }
     return result;
+  }
+
+  static void append_schema_column(DataFrame& target, const std::string& name, const ColumnType type) {
+    if (type == ColumnType::Numeric) {
+      target.add_column(name, numeric_column_type{});
+    } else {
+      target.add_column(name, string_column_type{});
+    }
   }
 
   [[nodiscard]] DataFrame slice_rows(const size_type begin_index, const size_type end_index) const {
@@ -1114,6 +1627,105 @@ class DataFrame {
     }
   }
 
+  [[nodiscard]] std::optional<double> aggregate_numeric(const std::string& column_name,
+                                                         const std::vector<size_type>& rows, const AggFunc func) const {
+    std::vector<double> values;
+    values.reserve(rows.size());
+    for (const auto row_index : rows) {
+      const auto value = optional_double_at(column_name, row_index);
+      if (value.has_value()) {
+        values.push_back(*value);
+      }
+    }
+    if (values.empty()) {
+      return std::nullopt;
+    }
+
+    switch (func) {
+      case AggFunc::Sum: {
+        double sum = 0.0;
+        for (const auto v : values) sum += v;
+        return sum;
+      }
+      case AggFunc::Mean: {
+        double sum = 0.0;
+        for (const auto v : values) sum += v;
+        return sum / static_cast<double>(values.size());
+      }
+      case AggFunc::Min:
+        return *std::min_element(values.begin(), values.end());
+      case AggFunc::Max:
+        return *std::max_element(values.begin(), values.end());
+      case AggFunc::Median: {
+        std::sort(values.begin(), values.end());
+        const auto mid = values.size() / 2;
+        if (values.size() % 2 == 0) {
+          return (values[mid - 1] + values[mid]) / 2.0;
+        }
+        return values[mid];
+      }
+      case AggFunc::StdDev: {
+        if (values.size() < 2) {
+          return 0.0;
+        }
+        double mean = 0.0;
+        for (const auto v : values) mean += v;
+        mean /= static_cast<double>(values.size());
+        double variance = 0.0;
+        for (const auto v : values) variance += (v - mean) * (v - mean);
+        variance /= static_cast<double>(values.size() - 1);
+        return std::sqrt(variance);
+      }
+      default:
+        throw std::invalid_argument("DataFrame::summarise unsupported aggregation for numeric column");
+    }
+  }
+
+  [[nodiscard]] std::optional<std::string> aggregate_string(const std::string& column_name,
+                                                             const std::vector<size_type>& rows, const AggFunc func) const {
+    std::vector<std::string> values;
+    values.reserve(rows.size());
+    for (const auto row_index : rows) {
+      const auto value = optional_string_at(column_name, row_index);
+      if (value.has_value()) {
+        values.push_back(*value);
+      }
+    }
+    if (values.empty()) {
+      return std::nullopt;
+    }
+
+    switch (func) {
+      case AggFunc::Min:
+        return *std::min_element(values.begin(), values.end());
+      case AggFunc::Max:
+        return *std::max_element(values.begin(), values.end());
+      default:
+        throw std::invalid_argument("DataFrame::summarise: aggregation not supported for string columns");
+    }
+  }
+
+  [[nodiscard]] size_type group_n_distinct(const std::string& column_name, const std::vector<size_type>& rows) const {
+    const auto& data = column_data(column_name);
+    return std::visit(
+        [&](const auto& column) -> size_type {
+          using column_type = std::decay_t<decltype(column)>;
+          using value_type = typename column_type::value_type;
+          std::unordered_set<value_type> seen;
+          bool has_null = false;
+          for (const auto row_index : rows) {
+            const auto value = column.optional_at(row_index);
+            if (value.has_value()) {
+              seen.insert(*value);
+            } else {
+              has_null = true;
+            }
+          }
+          return seen.size() + (has_null ? 1 : 0);
+        },
+        data);
+  }
+
   [[nodiscard]] group_key_type group_key_for_row(const std::vector<std::string>& key_columns,
                                                  const size_type row_index) const {
     group_key_type key;
@@ -1142,11 +1754,7 @@ class DataFrame {
   [[nodiscard]] DataFrame make_group_result_schema(const std::vector<std::string>& key_columns) const {
     DataFrame result;
     for (const auto& column_name : key_columns) {
-      if (column_type(column_name) == ColumnType::Numeric) {
-        result.add_column(column_name, numeric_column_type{});
-      } else {
-        result.add_column(column_name, string_column_type{});
-      }
+      append_schema_column(result, column_name, column_type(column_name));
     }
     return result;
   }
@@ -1168,36 +1776,74 @@ class DataFrame {
     return lookup;
   }
 
-  [[nodiscard]] std::vector<std::pair<std::string, std::string>> build_join_right_plan(
-      const DataFrame& right, const std::string& right_key, const std::string& left_key,
-      const std::string& right_suffix) const {
-    std::vector<std::pair<std::string, std::string>> plan;
-    for (const auto& column_name : right.column_order_) {
-      if (column_name == right_key && left_key == right_key) {
+  /// @brief Computes the output column-name plan for both sides of a join: any column name
+  ///        present on both sides (other than the merged key, when `merged_key` is true) is
+  ///        suffixed on both sides so join() never produces duplicate output names.
+  [[nodiscard]] std::pair<join_plan_type, join_plan_type> build_join_plans(const DataFrame& right,
+                                                                           const std::string& left_key,
+                                                                           const std::string& right_key,
+                                                                           const bool merged_key,
+                                                                           const std::string& left_suffix,
+                                                                           const std::string& right_suffix) const {
+    std::vector<std::string> right_output_names;
+    right_output_names.reserve(right.column_order_.size());
+    for (const auto& name : right.column_order_) {
+      if (merged_key && name == right_key) {
         continue;
       }
-
-      std::string output_name = column_name;
-      if (has_column(output_name)) {
-        output_name += right_suffix;
-      }
-      plan.emplace_back(column_name, std::move(output_name));
+      right_output_names.push_back(name);
     }
-    return plan;
+
+    const std::unordered_set<std::string> right_name_set(right_output_names.begin(), right_output_names.end());
+    const std::unordered_set<std::string> left_name_set(column_order_.begin(), column_order_.end());
+
+    join_plan_type left_plan;
+    left_plan.reserve(column_order_.size());
+    for (const auto& name : column_order_) {
+      const bool collides = right_name_set.find(name) != right_name_set.end();
+      left_plan.emplace_back(name, collides ? name + left_suffix : name);
+    }
+
+    join_plan_type right_plan;
+    right_plan.reserve(right_output_names.size());
+    for (const auto& name : right_output_names) {
+      const bool collides = left_name_set.find(name) != left_name_set.end();
+      right_plan.emplace_back(name, collides ? name + right_suffix : name);
+    }
+
+    return {std::move(left_plan), std::move(right_plan)};
   }
 
-  [[nodiscard]] DataFrame make_join_result_schema(const DataFrame& right, const std::string& right_key,
-                                                  const std::string& left_key,
-                                                  const std::string& right_suffix) const {
-    DataFrame result = clone_schema();
-    for (const auto& [source_name, output_name] : build_join_right_plan(right, right_key, left_key, right_suffix)) {
-      if (right.column_type(source_name) == ColumnType::Numeric) {
-        result.add_column(output_name, numeric_column_type{});
+  /// @brief Appends one merged row to a join result: `left_source`/`right_source` are nullptr
+  ///        for the unmatched side of an outer join (producing nulls), except the merged key
+  ///        column itself, which is filled from whichever side is present.
+  static void append_join_row(DataFrame& result, const join_plan_type& left_plan, const join_plan_type& right_plan,
+                              const DataFrame* left_source, const size_type left_row, const DataFrame* right_source,
+                              const size_type right_row, const bool merged_key, const std::string& left_key,
+                              const std::string& right_key) {
+    Row merged;
+    merged.values.reserve(left_plan.size() + right_plan.size());
+    for (const auto& [source_name, output_name] : left_plan) {
+      if (left_source != nullptr) {
+        merged.values[output_name] = left_source->value(source_name, left_row);
+      } else if (merged_key && source_name == left_key && right_source != nullptr) {
+        merged.values[output_name] = right_source->value(right_key, right_row);
       } else {
-        result.add_column(output_name, string_column_type{});
+        merged.values[output_name] = cell_type(null_type{});
       }
     }
-    return result;
+    for (const auto& [source_name, output_name] : right_plan) {
+      merged.values[output_name] = right_source != nullptr ? right_source->value(source_name, right_row) : cell_type(null_type{});
+    }
+    result.append_row(merged);
+  }
+
+  static Row build_bind_row(const std::vector<std::string>& columns, const DataFrame* source, const size_type row_index) {
+    Row row;
+    for (const auto& name : columns) {
+      row.values[name] = source->has_column(name) ? source->value(name, row_index) : cell_type(null_type{});
+    }
+    return row;
   }
 
   void require_same_schema(const DataFrame& other) const {
@@ -1232,5 +1878,34 @@ class DataFrame {
   std::unordered_map<std::string, column_data_type> columns_;
   size_type row_count_{0};
 };
+
+/// @brief dplyr-style grouped-DataFrame handle returned by DataFrame::group_by(): pairs a copy
+///        of the source DataFrame with a set of key columns, deferring aggregation until
+///        summarise()/count() is called. Holding the source by value (rather than a reference or
+///        pointer) keeps chains like `df.select(...).group_by(...).summarise(...)` safe, since
+///        the intermediate select() result is a temporary that would otherwise dangle.
+class GroupedDataFrame {
+ public:
+  GroupedDataFrame(DataFrame source, std::vector<std::string> keys) : source_(std::move(source)), keys_(std::move(keys)) {}
+
+  [[nodiscard]] DataFrame summarise(const std::vector<DataFrame::AggSpec>& specs) const {
+    return source_.summarise(keys_, specs);
+  }
+
+  [[nodiscard]] DataFrame count(const std::string& count_column_name = "n") const {
+    return source_.count(keys_, count_column_name);
+  }
+
+  [[nodiscard]] const std::vector<std::string>& keys() const { return keys_; }
+
+ private:
+  DataFrame source_;
+  std::vector<std::string> keys_;
+};
+
+inline GroupedDataFrame DataFrame::group_by(const std::vector<std::string>& key_columns) const {
+  require_group_by_keys(key_columns);
+  return GroupedDataFrame(*this, key_columns);
+}
 
 } // namespace datamunge::dstruct

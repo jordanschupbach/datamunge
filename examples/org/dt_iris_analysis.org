@@ -1,0 +1,683 @@
+#+title: A Decision Tree Classifier for Iris Species
+#+subtitle: A literate C++ study using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a CART-style binary decision tree to Fisher's (1936) iris data using
+=datamunge='s C++ =stats::DecisionTreeClassifier=, and report it as a
+literate program: every fragment below is a real, compiled, executed chunk
+of the single C++ binary that produced every number and figure in this
+document. A depth-3 tree separates the three species with 97.33% training
+accuracy using just 9 nodes (5 leaves), splitting exclusively on petal
+measurements -- the tree assigns sepal length and sepal width literally
+zero importance, discovering on its own the same fact both companion
+reports (LDA and SVM, on this same data) establish only by inspecting
+fitted coefficients. A depth sweep shows accuracy and node count both
+saturating by depth 5 (100% training accuracy, 17 nodes), and the axis-
+aligned rectangular decision boundary this method produces looks
+qualitatively different from either companion report's boundary --
+straight-line-but-diagonal for LDA, smoothly curved for a radial-kernel
+SVM. We derive recursive partitioning, the Gini/entropy impurity measures,
+the greedy split-selection rule, and feature importance from first
+principles, connect each to the corresponding library call, and close by
+comparing all three methods' boundaries and notions of "confidence" on the
+same 150 flowers.
+#+end_abstract
+
+* Introduction
+
+The two companion reports in this project --
+[[file:lda_iris_analysis.org][=lda_iris_analysis.org=]] and
+[[file:svm_iris_analysis.org][=svm_iris_analysis.org=]] -- both fit a
+classifier to Fisher's iris data by solving a single global optimization
+problem: an eigenproblem for LDA, a convex quadratic program for SVM. This
+report's method could not be more different. A decision tree is built by a
+sequence of /local/, greedy choices -- at each step, ask the one yes/no
+question about one measurement that most cleanly separates whatever
+flowers remain -- and never revisits an earlier choice once made. That
+simplicity is also decision trees' main selling point: the fitted model is
+not a matrix of coefficients or a set of support vectors but a short,
+literal list of thresholds a person can read top to bottom, and this
+report's own fitted tree, printed in full in §4.2, is exactly that.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.8) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives recursive partitioning, the Gini and entropy impurity measures,
+the greedy split rule that picks each node's question, the stopping rules
+that keep a tree from growing without bound, and feature importance, each
+tied to the specific library call that implements it. §3 describes the
+program chunk by chunk. §4 reports the fitted tree itself, its accuracy,
+feature importance, a depth sweep, and the decision-region picture this
+method is famous for. §5 discusses what a three-way comparison across all
+three companion reports' methods says about this dataset. §6 concludes.
+
+* Background: Decision Tree Classification
+
+** Setup and notation
+
+As in the companion reports: $n = 150$ flowers, $p = 4$ measurements
+$x_i \in \mathbb{R}^4$, and $y_i \in \{1, \dots, K\}$, $K = 3$, labeling
+one of the three species.
+
+** Recursive partitioning
+
+A decision tree partitions $\mathbb{R}^p$ into axis-aligned rectangular
+regions using a sequence of binary questions of the form "is $x_j \leq t$?"
+for some feature $j$ and threshold $t$. CART (Classification and
+Regression Trees; Breiman et al., 1984) builds this sequence top-down and
+/greedily/: starting from the root (every training row), it picks whichever
+single question best separates the data currently at that node, splits the
+data into the two children the answer implies, and recurses on each child
+independently, stopping per the rules in §2.5. This is fundamentally
+different from LDA and SVM: neither the Gini/entropy criterion below nor
+any later split is chosen by solving one optimization problem over the
+whole tree at once -- each split is only ever locally optimal, which is
+both why fitting is fast and interpretable and why a greedy tree can, in
+principle, land somewhere a global optimizer wouldn't.
+
+** Measuring impurity
+
+A node is "impure" when the training rows that reach it don't all share
+one class. Writing $p_k$ for the fraction of a node's rows belonging to
+class $k$, =datamunge= implements both classical impurity measures
+(=SplitCriterion=):
+
+\[
+\text{Gini:} \quad G = 1 - \sum_{k=1}^K p_k^2 , \qquad\qquad
+\text{Entropy:} \quad H = -\sum_{k=1}^K p_k \log_2 p_k .
+\]
+
+Both are zero exactly when a node is /pure/ (every row the same class,
+some $p_k = 1$) and largest when classes are evenly mixed; Gini is the
+default and is what this report uses throughout. This is exactly
+=DecisionTreeClassifier='s private =impurity_of()=, evaluated fresh at
+every node considered during fitting.
+
+** Choosing the best split
+
+For a candidate split of a node's $n$ rows into a left child ($n_L$ rows)
+and right child ($n_R$ rows), the split's quality is its /weighted impurity
+decrease/:
+
+\[
+\Delta = I(\text{parent}) - \frac{n_L}{n} I(\text{left}) - \frac{n_R}{n} I(\text{right}) ,
+\]
+
+where $I$ is whichever impurity measure from §2.3 is in use. At each node,
+CART scans every predictor and every candidate threshold for that
+predictor (the midpoints between consecutive sorted training values) and
+keeps whichever single (feature, threshold) pair maximizes $\Delta$. §4.2's
+fitted tree's very first split -- ~Petal.Length <= 2.45~ -- is exactly the
+single question, out of every question CART considered over all four
+measurements, that most reduced Gini impurity at the root.
+
+** Stopping rules and the bias/variance tradeoff
+
+Left unconstrained, a tree can keep splitting until every leaf is
+perfectly pure, which usually means memorizing the training set rather
+than learning a generalizable rule -- the tree analogue of SVM's small-$C$
+/versus/ large-$C$ tradeoff in the companion report. =datamunge= exposes
+four independent stopping rules (=DecisionTreeClassifierOptions=):
+=max_depth= caps how many splits separate any leaf from the root;
+=min_samples_split= refuses to split a node with fewer rows than that;
+=min_samples_leaf= refuses a split that would leave either child with
+fewer rows than that; and =min_impurity_decrease= refuses a split whose
+best available $\Delta$ doesn't clear that threshold. §4.4 measures the
+first of these directly, sweeping =max_depth= from 1 to 10 and watching
+both training accuracy and tree size grow -- and, eventually, stop
+growing -- together.
+
+** Feature importance
+
+Every time a predictor is chosen as a node's splitting feature, that
+split's $\Delta$ (weighted by how many rows reached that node) is credited
+to the predictor. Summing those credits over the whole tree and
+normalizing to sum to 1 gives =feature_importance()=: a predictor a tree
+never splits on gets importance exactly zero, not merely small -- unlike
+LDA's discriminant coefficients or SVM's kernel weights, which are
+essentially never exactly zero for an unhelpful predictor, a tree performs
+a hard, binary form of feature selection as a side effect of fitting.
+
+** Prediction
+
+Classifying a new row means walking the fitted tree from the root, at each
+internal node following the branch its answer to that node's threshold
+question implies, until reaching a leaf. That leaf's =class_counts=
+(training rows of each class that landed there during fitting) give both
+the predicted label -- the majority class at that leaf -- and, in
+=predict_detail()='s =probability= field, the /empirical/ class
+proportions among those training rows. This is a third distinct notion of
+"confidence," alongside LDA's Bayes posterior and SVM's one-vs-one vote
+count: a tree's probability for a new point is literally "what fraction of
+training flowers that ended up at the same leaf were this species,"
+nothing more model-based than that.
+
+** What we will report
+
+Given the fit, we report the tree itself (§4.2, printed exactly as
+=print_summary= writes it), training accuracy and a confusion matrix, a
+classification plot marking misclassified points directly, feature
+importance, a =max_depth= sweep, and -- reduced to two predictors purely
+for visualization, the same caveat the companion reports make about their
+own 2-D views -- the tree's decision regions, drawn as filled rectangles
+rather than the smooth boundaries LDA and SVM produce.
+
+* Data and Methods
+
+** The data
+
+As in both companion reports: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven
+=stats::DecisionTreeClassifier= for every model in this report, and
+=plot::RPlot=/=plot::RLayout= for every figure -- including the
+classification and decision-region plots, which the classifier itself
+knows how to draw. No external plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and shared constants
+
+We deliberately fit the primary tree at =max_depth = 3=: deep enough to
+separate the classes well (§4.2 confirms 97.33% training accuracy), shallow
+enough that its full structure fits legibly on the page.
+
+#+name: dt-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/decision_tree_classifier.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::DecisionTreeClassifier;
+using datamunge::stats::DecisionTreeClassifierOptions;
+using datamunge::stats::SplitCriterion;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kSpecies =
+    {"setosa", "versicolor", "virginica"};
+static const std::vector<RGB> kSpeciesColor = {
+    {37, 99, 235},   // setosa     - blue
+    {22, 163, 74},   // versicolor - green
+    {220, 38, 38},   // virginica  - red
+};
+static const std::string kFormula =
+    "Species ~ Sepal.Length + Sepal.Width"
+    " + Petal.Length + Petal.Width";
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The same petal-length/petal-width view the companion reports open with --
+still the right first look, since it's the same 150 flowers every time.
+
+#+name: dt-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+#+end_src
+
+#+name: dt-eda-scatter
+#+begin_src c++ :eval no
+    auto scatter = RPlot::create();
+    for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+        const auto subset = iris.filter([&](const DataFrame::Row& r) {
+            return r.get_string("Species") == kSpecies[k];
+        });
+        scatter.points(subset.numeric_column("Petal.Length").values(),
+                        subset.numeric_column("Petal.Width").values(),
+                        kSpecies[k], kSpeciesColor[k], 6.0);
+    }
+    scatter.title("Iris: Petal Length vs Petal Width")
+        .x_label("Petal.Length (cm)")
+        .y_label("Petal.Width (cm)")
+        .background({250, 250, 252});
+    scatter.save_svg("build/org/dt_iris_eda_scatter.svg");
+    std::cout << "wrote dt_iris_eda_scatter.svg\n";
+#+end_src
+
+*** Fitting the tree
+
+=print_summary= writes the whole fitted tree -- every internal node's
+question and every leaf's predicted class -- plus feature importance and
+training accuracy, everything derived in §2.
+
+#+name: dt-fit
+#+begin_src c++ :eval no
+    DecisionTreeClassifierOptions opts;
+    opts.max_depth = 3;
+    DecisionTreeClassifier model(iris, kFormula, opts);
+    std::cout << "\n";
+    model.print_summary(std::cout);
+#+end_src
+
+*** Training diagnostics
+
+#+name: dt-confusion
+#+begin_src c++ :eval no
+    std::cout << "\nConfusion matrix (rows = actual, cols = predicted):\n";
+    const auto cm = model.confusion_matrix();
+    std::cout << std::setw(14) << "";
+    for (const auto& c : model.classes()) std::cout << std::setw(12) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < cm.rows(); ++i) {
+        std::cout << std::setw(14) << model.classes()[i];
+        for (std::size_t j = 0; j < cm.cols(); ++j)
+            std::cout << std::setw(12) << cm(i, j);
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Classification plot
+
+Unlike the companion reports' plain scatters, =plot_classification=
+overlays a distinct marker directly on every misclassified training point,
+using the model itself rather than a separately-computed comparison.
+
+#+name: dt-classification-plot
+#+begin_src c++ :eval no
+    {
+        auto cls_plot =
+            model.plot_classification(iris, "Petal.Length", "Petal.Width");
+        cls_plot.background({250, 250, 252});
+        cls_plot.save_svg("build/org/dt_iris_classification.svg");
+        std::cout << "wrote dt_iris_classification.svg\n";
+    }
+#+end_src
+
+*** Feature importance
+
+#+name: dt-importance
+#+begin_src c++ :eval no
+    {
+        const auto importance = model.feature_importance();
+        const auto& names = model.predictor_names();
+        std::vector<double> heights(importance.begin(), importance.end());
+        auto imp_plot = RPlot::barplot(heights, names, "importance",
+                                        {37, 99, 235});
+        imp_plot.title("Feature Importance (Gini)")
+            .x_label("predictor").y_label("normalized importance")
+            .background({250, 250, 252});
+        imp_plot.save_svg("build/org/dt_iris_importance.svg");
+        std::cout << "wrote dt_iris_importance.svg\n";
+    }
+#+end_src
+
+*** Depth sensitivity
+
+Refit at =max_depth= 1 through 10, watching training accuracy and total
+node count -- both derived in §2.5 -- grow together, then plateau once the
+tree has nothing left worth splitting.
+
+#+name: dt-depth-sensitivity
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::size_t> depths =
+            {1, 2, 3, 4, 5, 6, 8, 10};
+        std::vector<double> depth_x, accs, node_counts;
+        std::cout << "\nDepth sensitivity:\n";
+        std::cout << std::setw(8) << "depth" << std::setw(12) << "accuracy"
+                   << std::setw(10) << "nodes\n";
+        for (const auto d : depths) {
+            DecisionTreeClassifierOptions dopts;
+            dopts.max_depth = d;
+            DecisionTreeClassifier m(iris, kFormula, dopts);
+            const double acc = m.training_accuracy() * 100.0;
+            depth_x.push_back(static_cast<double>(d));
+            accs.push_back(acc);
+            node_counts.push_back(static_cast<double>(m.node_count()));
+            std::cout << std::setw(8) << d << std::setw(11) << std::fixed
+                       << std::setprecision(2) << acc << "%"
+                       << std::setw(10) << m.node_count() << "\n";
+        }
+        auto acc_plot = RPlot::plot(depth_x, accs, "b", "accuracy",
+                                     {37, 99, 235});
+        acc_plot.title("Training Accuracy vs max_depth")
+            .x_label("max_depth").y_label("training accuracy (%)")
+            .background({250, 250, 252});
+        auto node_plot = RPlot::plot(depth_x, node_counts, "b", "nodes",
+                                      {220, 38, 38});
+        node_plot.title("Node Count vs max_depth")
+            .x_label("max_depth").y_label("node count")
+            .background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(acc_plot);
+        layout.add(node_plot);
+        layout.save_svg("build/org/dt_iris_depth_sensitivity.svg");
+        std::cout << "wrote dt_iris_depth_sensitivity.svg\n";
+    }
+#+end_src
+
+*** Decision regions
+
+=plot_decision_regions= only accepts a model with /exactly/ two
+predictors, so -- exactly as the SVM companion report does for its own
+decision-boundary figure -- we fit a second, separate tree on only
+=Petal.Length= and =Petal.Width= purely to draw this figure.
+
+#+name: dt-decision-regions
+#+begin_src c++ :eval no
+    {
+        DecisionTreeClassifierOptions bopts;
+        bopts.max_depth = 3;
+        DecisionTreeClassifier boundary_model(
+            iris, "Species ~ Petal.Length + Petal.Width", bopts);
+        auto region = boundary_model.plot_decision_regions(
+            "Petal.Length", "Petal.Width");
+        region.background({250, 250, 252});
+        region.save_svg("build/org/dt_iris_decision_regions.svg");
+        std::cout << "wrote dt_iris_decision_regions.svg\n";
+        std::cout << "boundary_model training accuracy: "
+                   << std::fixed << std::setprecision(2)
+                   << boundary_model.training_accuracy() * 100.0
+                   << "%\n";
+    }
+#+end_src
+
+*** Predicting new flowers
+
+The same four flowers used throughout this project's other worked
+examples: one unambiguous example of each species, plus one deliberately
+chosen near the versicolor/virginica boundary.
+
+#+name: dt-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Sepal.Length",
+                        std::vector<double>{5.1, 6.0, 6.5, 6.2});
+    newdata.add_column("Sepal.Width",
+                        std::vector<double>{3.5, 2.7, 3.0, 2.8});
+    newdata.add_column("Petal.Length",
+                        std::vector<double>{1.4, 4.5, 5.5, 4.8});
+    newdata.add_column("Petal.Width",
+                        std::vector<double>{0.2, 1.5, 2.0, 1.8});
+
+    const auto prediction = model.predict_detail(newdata);
+    std::cout << "\nPredictions for new flowers:\n";
+    std::cout << std::setw(14) << "predicted";
+    for (const auto& c : model.classes())
+        std::cout << std::setw(14) << ("P(" + c + ")");
+    std::cout << "\n";
+    for (std::size_t i = 0; i < prediction.class_label.size(); ++i) {
+        std::cout << std::setw(14) << prediction.class_label[i];
+        for (const double p : prediction.probability[i])
+            std::cout << std::setw(14) << std::fixed
+                       << std::setprecision(4) << p;
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/dt_iris_analysis.cpp <<'CPP'
+<<dt-includes>>
+
+int main() {
+<<dt-load-data>>
+
+<<dt-eda-scatter>>
+
+<<dt-fit>>
+
+<<dt-confusion>>
+
+<<dt-classification-plot>>
+
+<<dt-importance>>
+
+<<dt-depth-sensitivity>>
+
+<<dt-decision-regions>>
+
+<<dt-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/dt_iris_analysis.cpp -o build/org/dt_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/dt_iris_analysis
+#+end_src
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by species :width 100%
+[[file:../../build/org/dt_iris_eda_scatter.svg]]
+
+As in both companion reports: /setosa/ occupies a fully disjoint corner of
+this space, and /versicolor//virginica/ overlap only in a thin band near
+petal length 4.7-5.0cm. A tree, like LDA and SVM, should therefore be able
+to separate /setosa/ perfectly and struggle only with that one overlap.
+
+** The fitted tree
+
+#+begin_example
+Tree: 9 nodes, 5 leaves, depth 3
+
+Petal.Length <= 2.450?  (n=150, impurity=0.667)
+  * class=setosa  n=50  impurity=0.000
+  Petal.Width <= 1.750?  (n=100, impurity=0.500)
+    Petal.Length <= 4.950?  (n=54, impurity=0.168)
+      * class=versicolor  n=48  impurity=0.041
+      * class=virginica  n=6  impurity=0.444
+    Petal.Length <= 4.850?  (n=46, impurity=0.043)
+      * class=virginica  n=3  impurity=0.444
+      * class=virginica  n=43  impurity=0.000
+#+end_example
+
+The entire model is three questions deep and reads like a field guide:
+/is petal length at most 2.45cm? If so, it's setosa, full stop -- that
+single split makes both children perfectly pure (impurity 0.000 on one
+side) in one step, at the very root, before any other measurement is even
+consulted./ Everything else the tree does is teasing apart
+/versicolor/ from /virginica/ using petal width and then petal length
+again at a finer threshold; every leaf that isn't the root's =setosa= leaf
+draws only on those two measurements.
+
+| Predictor        | Normalized importance |
+|-------------------+------------------------|
+| =Sepal.Length=    |                 0.0000 |
+| =Sepal.Width=     |                 0.0000 |
+| =Petal.Length=    |                 0.5856 |
+| =Petal.Width=     |                 0.4144 |
+
+#+ATTR_HTML: :alt Bar chart of normalized feature importance by predictor :width 100%
+[[file:../../build/org/dt_iris_importance.svg]]
+
+Both sepal measurements get /exactly/ zero importance -- not small, zero
+-- because the greedy split search (§2.4) never once found a sepal-based
+question that beat a petal-based one at any node. Both companion reports
+reach the same practical conclusion (petal measurements dominate) only by
+inspecting the /relative magnitude/ of fitted coefficients; a tree makes
+the same fact structurally explicit by simply never using the other two
+predictors at all.
+
+** Classification performance
+
+|            | pred. setosa | pred. versicolor | pred. virginica |
+|------------+--------------+-------------------+------------------|
+| setosa     |           50 |                 0 |                0 |
+| versicolor |            0 |                47 |                3 |
+| virginica  |            0 |                 1 |               49 |
+
+Training accuracy is 97.33% (146/150), four errors, once again every one
+of them between /versicolor/ and /virginica/ and nowhere near /setosa/ --
+the same pattern both companion reports report on this identical data.
+
+#+ATTR_HTML: :alt Petal length vs width scatter with misclassified points marked :width 100%
+[[file:../../build/org/dt_iris_classification.svg]]
+
+Marking misclassifications directly on the data, rather than only in a
+confusion matrix, makes the pattern visible at a glance: every one of the
+four black points sits exactly in the thin overlap band §4.1 already
+flagged, and nowhere else.
+
+** Depth sensitivity
+
+#+ATTR_HTML: :alt Line plots of training accuracy and node count against max_depth :width 100%
+[[file:../../build/org/dt_iris_depth_sensitivity.svg]]
+
+| =max_depth= | Accuracy | Nodes |
+|-------------+----------+-------|
+|         1 |   66.67% |     3 |
+|         2 |   96.00% |     5 |
+|         3 |   97.33% |     9 |
+|         4 |   99.33% |    15 |
+|         5 |  100.00% |    17 |
+|         6 |  100.00% |    17 |
+|         8 |  100.00% |    17 |
+|        10 |  100.00% |    17 |
+
+A depth-1 stump -- one single question -- already recovers 66.67%: exactly
+the setosa-vs-everything-else split, correctly classifying all 50
+/setosa/ and, by majority vote, half of the remaining 100 flowers. Accuracy
+then climbs steeply through depth 4 and reaches a perfect 100% at depth 5,
+at which point node count /also/ stops growing (17 nodes, unchanged all
+the way to depth 10): the tree has run out of impure nodes worth splitting
+and further depth simply has nothing left to do. This is the same
+underfit-to-fit progression §4.5 of the SVM companion report traces by
+sweeping its cost parameter $C$ instead -- a different hyperparameter, but
+the same shape of curve.
+
+** Decision regions
+
+#+ATTR_HTML: :alt Decision tree regions over petal length and petal width :width 100%
+[[file:../../build/org/dt_iris_decision_regions.svg]]
+
+The 2-predictor tree used for this figure reaches the identical 97.33%
+training accuracy as the primary 4-predictor model above -- not a
+coincidence, since §4.2 already showed the primary tree never used the two
+sepal measurements at all, so dropping them changes nothing about the fit.
+The boundary itself is the method's signature: strictly vertical and
+horizontal cuts, carving the plane into rectangles, in visible contrast to
+LDA's single diagonal line or the SVM companion report's smoothly curved
+RBF boundary on this same pair of measurements.
+
+** Predicting new flowers
+
+| Sepal.L | Sepal.W | Petal.L | Petal.W | predicted  | P(setosa) | P(versicolor) | P(virginica) |
+|---------+---------+---------+---------+------------+-----------+-----------------+---------------|
+|     5.1 |     3.5 |     1.4 |     0.2 | setosa     |    1.0000 |          0.0000 |        0.0000 |
+|     6.0 |     2.7 |     4.5 |     1.5 | versicolor |    0.0000 |          0.9792 |        0.0208 |
+|     6.5 |     3.0 |     5.5 |     2.0 | virginica  |    0.0000 |          0.0000 |        1.0000 |
+|     6.2 |     2.8 |     4.8 |     1.8 | virginica  |    0.0000 |          0.3333 |        0.6667 |
+
+The third flower -- an unambiguous /virginica/ -- lands at a leaf that is
+/entirely/ virginica (probability 1.0000 exactly), while the deliberately
+ambiguous fourth flower lands at a mixed leaf: 2 of that leaf's 3 training
+rows were /virginica/ and 1 was /versicolor/, giving the 0.6667/0.3333
+split shown. Per §2.7, that number is not a modeled degree of confidence
+the way LDA's posterior is -- it is literally the training-label makeup of
+whichever leaf this flower happened to fall into.
+
+* Discussion
+
+**Three methods, three boundary shapes, one dataset.** Read together with
+its companions, this report completes a genuine three-way comparison on
+identical data: LDA draws one straight (diagonal) line, informed by a
+pooled covariance estimate over all four measurements; a radial-kernel SVM
+draws one smooth curve, informed by a kernel function and a handful of
+support vectors; a depth-3 tree draws a small number of straight, axis-
+aligned cuts, informed by nothing more sophisticated than "which single
+threshold on which single measurement helps most, asked repeatedly."
+All three land within a point of each other on training accuracy (98.00%,
+97.33%, 97.33%) and make the exact same species of error -- confusing a
+handful of /versicolor/ and /virginica/ flowers in the one region of
+measurement space where they truly overlap -- because that overlap is a
+property of the /data/, not of any one method's assumptions.
+
+**Three notions of confidence.** The three reports also now span three
+genuinely different answers to "how sure is the model": LDA's Bayes
+posterior is a smooth function of distance to each class's fitted
+Gaussian; an SVM one-vs-one vote is a coarse count out of very few
+pairwise outcomes; a tree's leaf probability is the plain empirical class
+mix of whichever training rows happened to land in the same leaf as the
+new point. None of these is strictly "more correct" than the others, but
+they carry different amounts of information -- a tree's leaf probability
+in particular can only ever take values that were achievable given the
+training rows that actually reached that specific leaf (here, thirds,
+since the relevant leaf held exactly 3 rows), which is a real limitation
+compared to LDA's continuously-valued posterior.
+
+**Interpretability versus the other methods.** §4.2's entire fitted model
+fits in eight lines and can be followed by hand for any new flower;
+neither LDA's coefficient matrix nor SVM's support vectors and kernel
+offer anything comparably direct to read, even though both are fully
+specified by comparably few numbers. That directness is the tree's real
+advantage on a problem this easy -- and per §2.2, also a hint at its
+limits: a greedy method that never revisits a choice can, on harder data
+where the first split isn't nearly as clean as ~Petal.Length <= 2.45~
+turned out to be here, lock in a worse structure than a method that
+solves one problem globally.
+
+**Limitations.** Every accuracy figure in this report is a resubstitution
+estimate, exactly the same caveat both companion reports carry. Trees
+specifically are also known to be high-variance: a small change to the
+training data can produce a visibly different sequence of splits even when
+the final accuracy is similar, which is precisely the instability that
+ensemble methods built on top of many trees exist to address (=datamunge='s
+own =RandomForestClassifier= reuses this exact class internally, drawing a
+random predictor subset at each split via =DecisionTreeClassifierOptions::
+max_features=) -- a natural next report, and out of scope for this one.
+
+* Conclusion
+
+A depth-3 CART decision tree, fit with =datamunge='s C++
+=stats::DecisionTreeClassifier=, separates Fisher's three iris species
+with 97.33% training accuracy in just 9 nodes, splitting exclusively on
+petal measurements and assigning both sepal measurements exactly zero
+importance. A depth sweep traces the same underfit-to-saturate curve the
+SVM companion report traces with its cost parameter, reaching perfect
+training accuracy by depth 5. Read alongside its two companions, this
+report completes a three-way comparison of decision-boundary shape and
+prediction "confidence" on identical data -- diagonal-linear-and-
+probabilistic for LDA, smoothly-curved-and-vote-based for SVM, rectangular-
+and-empirical-frequency-based for this tree -- three different roads to
+the same 97-98% answer. As with its companions, this entire report is
+reproducible end to end via =just org-example dt_iris_analysis=, which
+re-executes §3.3.8's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Breiman, L., Friedman, J. H., Olshen, R. A., & Stone, C. J. (1984).
+  /Classification and Regression Trees/. Wadsworth.
+- Quinlan, J. R. (1986). "Induction of decision trees." /Machine
+  Learning/, 1(1), 81--106. (Entropy-based splitting, §2.3.)
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 9 ("Additive Models, Trees, and
+  Related Methods"). Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

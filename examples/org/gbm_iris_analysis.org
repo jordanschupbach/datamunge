@@ -1,0 +1,715 @@
+#+title: A Gradient Boosted Machine for Iris Species
+#+subtitle: A literate C++ study using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a multinomial gradient boosting classifier -- 100 rounds of shallow
+regression trees, one per class per round -- to Fisher's (1936) iris data
+using =datamunge='s C++ =stats::GBMClassifier=, and report it as a literate
+program: every fragment below is a real, compiled, executed chunk of the
+single C++ binary that produced every number and figure in this document.
+Unlike the random forest companion report's parallel, independent trees,
+gradient boosting fits trees /sequentially/, each one correcting the
+current ensemble's mistakes, and the training multinomial deviance falls
+monotonically from 1.0354 after round 1 to 0.0900 after round 100 -- a
+curve unavailable from any of this project's other four classifier
+reports. The fitted model reaches 100.00% training accuracy with no
+built-in held-out estimate to temper it (unlike the random forest
+companion's out-of-bag accuracy), a real limitation this report is
+explicit about. We derive additive functional gradient descent, the
+multinomial-deviance pseudo-residuals each round's trees target, the
+learning-rate/shrinkage tradeoff, and ensemble feature importance from
+first principles, connect each to the corresponding library call, and
+close by placing bagging and boosting -- this project's two tree-ensemble
+methods -- directly side by side.
+#+end_abstract
+
+* Introduction
+
+This project's tree-based reports so far have gone from one greedy
+decision tree
+([[file:dt_iris_analysis.org][=dt_iris_analysis.org=]]) to a bagged forest
+of 100 independent such trees
+([[file:rf_iris_analysis.org][=rf_iris_analysis.org=]]), voting in
+parallel and never influencing one another. Gradient boosting takes the
+opposite approach to combining many weak trees: fit them one at a time, in
+sequence, and have each new tree target specifically what the ensemble so
+far has gotten wrong. Where bagging's goal is reducing variance by
+averaging decorrelated trees, boosting's goal is reducing /bias/ by
+having each round directly attack the current model's residual error --
+different mechanisms, both arriving at strong ensembles from the same
+building block. This report, together with the two companion reports
+below it (LDA and SVM
+-- [[file:lda_iris_analysis.org][=lda_iris_analysis.org=]] and
+[[file:svm_iris_analysis.org][=svm_iris_analysis.org=]]) -- completes a
+five-method comparison on the same 150 flowers.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.9) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives additive functional gradient descent, the multinomial-deviance
+pseudo-residuals each boosting round targets, the learning-rate/shrinkage
+tradeoff, and ensemble feature importance, each tied to the specific
+library call that implements it. §3 describes the program chunk by chunk.
+§4 reports the fitted model, its training deviance curve, feature
+importance, a learning-rate sweep, and a side-by-side look at the decision
+boundary after 5 rounds versus 100. §5 places bagging and boosting side by
+side and discusses what this method's own summary can and cannot tell us.
+§6 concludes.
+
+* Background: Gradient Boosting
+
+** Setup and notation
+
+As in the other classification companion reports: $n = 150$ flowers,
+$p = 4$ measurements $x_i \in \mathbb{R}^4$, and $y_i \in \{1, \dots, K\}$,
+$K = 3$, labeling one of the three species.
+
+** Additive modeling and functional gradient descent
+
+Rather than fitting one model once (LDA, SVM) or averaging many
+/independent/ models (the random forest companion report), gradient
+boosting builds one model as a running sum,
+$F_k(x) = \sum_{m=1}^{M} \eta \, f_{m,k}(x)$, adding one new shallow tree
+$f_{m,k}$ per round $m$ per class $k$, and never revisiting a tree once
+fit. Each new tree is chosen to point the ensemble's predictions in the
+direction that most reduces the training loss right now -- "gradient
+descent," except each descent step is itself an entire regression tree
+rather than a numeric update to a parameter vector (Friedman, 2001). This
+is exactly why boosting rounds must run in order and why, unlike bagging,
+tree $m+1$ genuinely depends on every tree fit before it.
+
+** Multinomial deviance and pseudo-residuals
+
+For $K$-class classification, =datamunge= maintains one running score
+$F_k(x)$ per class and converts them to probabilities by softmax,
+$p_k(x) = \exp(F_k(x)) / \sum_{j=1}^K \exp(F_j(x))$, and measures fit with
+multinomial deviance (negative log-likelihood),
+$L = -\sum_i \sum_k y_{ik} \log p_k(x_i)$, where $y_{ik}$ is 1 if flower
+$i$ is class $k$ and 0 otherwise. The negative gradient of $L$ with
+respect to $F_k(x_i)$ works out to exactly $y_{ik} - p_k(x_i)$ -- the
+one-hot class indicator minus the model's /current/ predicted probability
+-- which is precisely the =GBMClassifierPrediction=-adjacent quantity each
+round's $K$ trees are fit to (one =DecisionTreeRegressor= per class,
+regressing directly on this pseudo-residual). A flower the model is
+already confident and correct about has a pseudo-residual near zero and
+contributes almost nothing to the next round's trees; a flower the model
+is getting badly wrong has a large pseudo-residual and dominates what the
+next round learns.
+
+** The additive update and the learning rate
+
+After fitting round $m$'s $K$ trees, every class score updates as
+$F_k(x) \leftarrow F_k(x) + \eta \, f_{m,k}(x)$, where
+$\eta$ = =GBMClassifierOptions::learning_rate= (default 0.1) shrinks each
+round's contribution before adding it in. A smaller $\eta$ means any one
+round can only nudge the ensemble a little, so reaching a given training
+deviance needs more rounds (=n_trees=) -- but that slower, more cautious
+path is also usually the one that generalizes better, exactly the same
+"more conservative now, better later" tradeoff the SVM companion report's
+cost parameter and the random forest companion report's tree count both
+embody in their own ways. §4.4 measures this directly by sweeping $\eta$
+at a fixed =n_trees=.
+
+** Stochastic subsampling
+
+=GBMClassifierOptions::subsample= (default 1.0, unmodified in this
+report's primary model) optionally fits each round's trees on a random
+fraction of the training rows rather than all of them -- Friedman's (2002)
+/stochastic/ gradient boosting. Like the random forest companion report's
+bootstrap sampling, this adds randomness across rounds that can reduce
+overfitting and speed up fitting; unlike bagging, it does not, by itself,
+give a free out-of-bag accuracy estimate the way §2.4 of the random forest
+report describes, since boosting's rounds are not independent draws in the
+same sense.
+
+** Monitoring convergence
+
+Because each round is fit specifically to reduce the /current/ training
+loss, =training_deviance()= -- one number per completed round -- should
+fall monotonically on the training set as fitting proceeds, and
+=plot_training_deviance()= draws exactly that curve. No other classifier
+report in this project has an equivalent per-iteration convergence
+diagnostic: LDA and SVM solve one optimization problem in a single step,
+a lone decision tree is grown once, and a random forest's trees are
+independent of each other rather than forming a sequence at all.
+
+** Feature importance
+
+As in the decision-tree and random-forest companion reports, every split
+anywhere in every round's trees credits its impurity decrease to whichever
+predictor it split on. Because each per-class model here is a
+=DecisionTreeRegressor= fit to a continuous pseudo-residual rather than a
+=DecisionTreeClassifier= fit to a class label, the relevant impurity is
+SSE (sum of squared errors) reduction rather than Gini or entropy;
+=feature_importance()= averages that credit across every tree in every
+round and renormalizes to sum to 1.
+
+** Prediction
+
+A new point's final class scores $F_k(x)$ after all $M$ rounds are
+converted to probabilities by the same softmax used during fitting, given
+directly in =predict_detail()='s =probability= field. This is a fifth
+distinct notion of "confidence" across this project's classifier reports
+-- smoothly valued like LDA's Bayes posterior, but built from an additive
+ensemble of trees rather than a Gaussian model, and unlike a single
+decision tree's leaf-frequency probabilities, not constrained to whatever
+fractions happen to be achievable at one particular leaf.
+
+** What we will report
+
+Given the fit, we report the forest's own summary (feature importance,
+training accuracy, and the deviance trajectory), a confusion matrix, a
+classification plot marking misclassified points directly, the training
+deviance curve itself, a sweep over the learning rate, and -- reduced to
+two predictors purely for visualization, the same caveat every companion
+report makes about its own 2-D view -- a side-by-side decision-region
+comparison after 5 boosting rounds versus 100.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven
+=stats::GBMClassifier= for every model in this report (built internally
+from =stats::DecisionTreeRegressor=), and =plot::RPlot=/=plot::RLayout=
+for every figure -- including the deviance curve, classification plot, and
+decision regions, which the classifier itself knows how to draw. No
+external plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and shared constants
+
+The primary model uses every library default: 100 rounds, learning rate
+0.1, and =max_depth= 3 per-round trees.
+
+#+name: gbm-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/gbm_classifier.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::GBMClassifier;
+using datamunge::stats::GBMClassifierOptions;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kSpecies =
+    {"setosa", "versicolor", "virginica"};
+static const std::vector<RGB> kSpeciesColor = {
+    {37, 99, 235},   // setosa     - blue
+    {22, 163, 74},   // versicolor - green
+    {220, 38, 38},   // virginica  - red
+};
+static const std::string kFormula =
+    "Species ~ Sepal.Length + Sepal.Width"
+    " + Petal.Length + Petal.Width";
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The same petal-length/petal-width view every companion report opens with.
+
+#+name: gbm-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n";
+#+end_src
+
+#+name: gbm-eda-scatter
+#+begin_src c++ :eval no
+    auto scatter = RPlot::create();
+    for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+        const auto subset = iris.filter([&](const DataFrame::Row& r) {
+            return r.get_string("Species") == kSpecies[k];
+        });
+        scatter.points(subset.numeric_column("Petal.Length").values(),
+                        subset.numeric_column("Petal.Width").values(),
+                        kSpecies[k], kSpeciesColor[k], 6.0);
+    }
+    scatter.title("Iris: Petal Length vs Petal Width")
+        .x_label("Petal.Length (cm)")
+        .y_label("Petal.Width (cm)")
+        .background({250, 250, 252});
+    scatter.save_svg("build/org/gbm_iris_eda_scatter.svg");
+    std::cout << "wrote gbm_iris_eda_scatter.svg\n";
+#+end_src
+
+*** Fitting the model
+
+=print_summary= writes feature importance, training accuracy, and the
+deviance trajectory from first round to last -- everything derived in §2.
+
+#+name: gbm-fit
+#+begin_src c++ :eval no
+    GBMClassifier model(iris, kFormula);
+    std::cout << "\n";
+    model.print_summary(std::cout);
+#+end_src
+
+*** Training diagnostics
+
+#+name: gbm-confusion
+#+begin_src c++ :eval no
+    std::cout << "\nConfusion matrix (rows = actual, cols = predicted):\n";
+    const auto cm = model.confusion_matrix();
+    std::cout << std::setw(14) << "";
+    for (const auto& c : model.classes()) std::cout << std::setw(12) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < cm.rows(); ++i) {
+        std::cout << std::setw(14) << model.classes()[i];
+        for (std::size_t j = 0; j < cm.cols(); ++j)
+            std::cout << std::setw(12) << cm(i, j);
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Training deviance curve
+
+The one diagnostic no other report in this project can offer: training
+loss, round by round, as the ensemble grows.
+
+#+name: gbm-deviance-plot
+#+begin_src c++ :eval no
+    {
+        auto dev_plot = model.plot_training_deviance();
+        dev_plot.background({250, 250, 252});
+        dev_plot.save_svg("build/org/gbm_iris_deviance.svg");
+        std::cout << "wrote gbm_iris_deviance.svg\n";
+    }
+#+end_src
+
+*** Classification plot
+
+#+name: gbm-classification-plot
+#+begin_src c++ :eval no
+    {
+        auto cls_plot =
+            model.plot_classification(iris, "Petal.Length", "Petal.Width");
+        cls_plot.background({250, 250, 252});
+        cls_plot.save_svg("build/org/gbm_iris_classification.svg");
+        std::cout << "wrote gbm_iris_classification.svg\n";
+    }
+#+end_src
+
+*** Feature importance
+
+#+name: gbm-importance
+#+begin_src c++ :eval no
+    {
+        const auto importance = model.feature_importance();
+        const auto& names = model.predictor_names();
+        std::vector<double> heights(importance.begin(), importance.end());
+        auto imp_plot = RPlot::barplot(heights, names, "importance",
+                                        {37, 99, 235});
+        imp_plot.title("Feature Importance (SSE decrease)")
+            .x_label("predictor").y_label("normalized importance")
+            .background({250, 250, 252});
+        imp_plot.save_svg("build/org/gbm_iris_importance.svg");
+        std::cout << "wrote gbm_iris_importance.svg\n";
+    }
+#+end_src
+
+*** Learning-rate sensitivity
+
+Refit at six learning rates spanning two orders of magnitude, holding
+=n_trees= fixed at 100, tracking both final training deviance and training
+accuracy.
+
+#+name: gbm-lr-sensitivity
+#+begin_src c++ :eval no
+    {
+        const std::vector<double> rates =
+            {0.01, 0.05, 0.1, 0.3, 0.5, 1.0};
+        std::vector<double> rate_x, accs, devs;
+        std::cout << "\nLearning-rate sensitivity (n_trees=100):\n";
+        std::cout << std::setw(10) << "rate" << std::setw(12) << "accuracy"
+                   << std::setw(12) << "deviance\n";
+        for (const double lr : rates) {
+            GBMClassifierOptions opts;
+            opts.learning_rate = lr;
+            GBMClassifier m(iris, kFormula, opts);
+            const double acc = m.training_accuracy() * 100.0;
+            const double dev = m.training_deviance().back();
+            rate_x.push_back(lr);
+            accs.push_back(acc);
+            devs.push_back(dev);
+            std::cout << std::setw(10) << std::fixed << std::setprecision(2)
+                       << lr << std::setw(11) << acc << "%"
+                       << std::setw(12) << std::setprecision(4) << dev
+                       << "\n";
+        }
+        auto acc_plot = RPlot::plot(rate_x, accs, "b", "accuracy",
+                                     {37, 99, 235});
+        acc_plot.title("Training Accuracy vs Learning Rate")
+            .x_label("learning_rate").y_label("training accuracy (%)")
+            .background({250, 250, 252});
+        auto dev_plot2 = RPlot::plot(rate_x, devs, "b", "deviance",
+                                      {220, 38, 38});
+        dev_plot2.title("Final Deviance vs Learning Rate")
+            .x_label("learning_rate").y_label("training deviance")
+            .background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(acc_plot);
+        layout.add(dev_plot2);
+        layout.save_svg("build/org/gbm_iris_lr_sensitivity.svg");
+        std::cout << "wrote gbm_iris_lr_sensitivity.svg\n";
+    }
+#+end_src
+
+*** Decision regions: few rounds versus well-boosted
+
+As in the decision-tree and random-forest companion reports,
+=plot_decision_regions= only accepts a model with /exactly/ two
+predictors, so we fit two separate 2-predictor models purely to draw this
+figure -- one stopped after 5 rounds, one after the usual 100 -- to see
+boosting's defining behavior directly: each additional round should
+sharpen the boundary a little further.
+
+#+name: gbm-decision-regions
+#+begin_src c++ :eval no
+    {
+        GBMClassifierOptions few_opts;
+        few_opts.n_trees = 5;
+        GBMClassifier few(iris, "Species ~ Petal.Length + Petal.Width",
+                           few_opts);
+        GBMClassifier many(iris, "Species ~ Petal.Length + Petal.Width");
+
+        auto few_plot = few.plot_decision_regions("Petal.Length",
+                                                    "Petal.Width");
+        few_plot.title("5 Rounds").background({250, 250, 252});
+        auto many_plot = many.plot_decision_regions("Petal.Length",
+                                                      "Petal.Width");
+        many_plot.title("100 Rounds").background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(few_plot);
+        layout.add(many_plot);
+        layout.save_svg("build/org/gbm_iris_decision_regions.svg");
+        std::cout << "wrote gbm_iris_decision_regions.svg\n";
+        std::cout << "5-round training accuracy: " << std::fixed
+                   << std::setprecision(2)
+                   << few.training_accuracy() * 100.0
+                   << "%  deviance=" << std::setprecision(4)
+                   << few.training_deviance().back() << "\n";
+        std::cout << "100-round training accuracy: "
+                   << std::setprecision(2)
+                   << many.training_accuracy() * 100.0
+                   << "%  deviance=" << std::setprecision(4)
+                   << many.training_deviance().back() << "\n";
+    }
+#+end_src
+
+*** Predicting new flowers
+
+The same four flowers used throughout this project's other worked
+examples: one unambiguous example of each species, plus one deliberately
+chosen near the versicolor/virginica boundary.
+
+#+name: gbm-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Sepal.Length",
+                        std::vector<double>{5.1, 6.0, 6.5, 6.2});
+    newdata.add_column("Sepal.Width",
+                        std::vector<double>{3.5, 2.7, 3.0, 2.8});
+    newdata.add_column("Petal.Length",
+                        std::vector<double>{1.4, 4.5, 5.5, 4.8});
+    newdata.add_column("Petal.Width",
+                        std::vector<double>{0.2, 1.5, 2.0, 1.8});
+
+    const auto prediction = model.predict_detail(newdata);
+    std::cout << "\nPredictions for new flowers:\n";
+    std::cout << std::setw(14) << "predicted";
+    for (const auto& c : model.classes())
+        std::cout << std::setw(14) << ("P(" + c + ")");
+    std::cout << "\n";
+    for (std::size_t i = 0; i < prediction.class_label.size(); ++i) {
+        std::cout << std::setw(14) << prediction.class_label[i];
+        for (const double p : prediction.probability[i])
+            std::cout << std::setw(14) << std::fixed
+                       << std::setprecision(4) << p;
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/gbm_iris_analysis.cpp <<'CPP'
+<<gbm-includes>>
+
+int main() {
+<<gbm-load-data>>
+
+<<gbm-eda-scatter>>
+
+<<gbm-fit>>
+
+<<gbm-confusion>>
+
+<<gbm-deviance-plot>>
+
+<<gbm-classification-plot>>
+
+<<gbm-importance>>
+
+<<gbm-lr-sensitivity>>
+
+<<gbm-decision-regions>>
+
+<<gbm-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/gbm_iris_analysis.cpp -o build/org/gbm_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/gbm_iris_analysis
+#+end_src
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by species :width 100%
+[[file:../../build/org/gbm_iris_eda_scatter.svg]]
+
+The same picture as every companion report: /setosa/ fully separated,
+/versicolor/ and /virginica/ overlapping only in a thin band near petal
+length 4.7-5.0cm.
+
+** The fitted model
+
+#+begin_example
+Feature importance:
+  Sepal.Length: 0.0063
+  Sepal.Width: 0.0312
+  Petal.Length: 0.6656
+  Petal.Width: 0.2969
+
+Training accuracy: 100.00%  (150 observations)
+Training deviance: 1.0354 (round 1) -> 0.0900 (round 100)
+#+end_example
+
+Training deviance falls by more than a factor of 11 from round 1 to round
+100, and training accuracy reaches a perfect 100.00% -- but, unlike the
+random forest companion report, =GBMClassifier= has no built-in
+out-of-bag estimate to check that figure against, since boosting's rounds
+are sequential and dependent rather than independent bootstrap draws.
+§5 returns to what that means for how much this number alone should be
+trusted.
+
+| Predictor        | Normalized importance |
+|-------------------+------------------------|
+| =Sepal.Length=    |                 0.0063 |
+| =Sepal.Width=     |                 0.0312 |
+| =Petal.Length=    |                 0.6656 |
+| =Petal.Width=     |                 0.2969 |
+
+#+ATTR_HTML: :alt Bar chart of normalized feature importance by predictor :width 100%
+[[file:../../build/org/gbm_iris_importance.svg]]
+
+Petal measurements dominate again, as in every companion report; both
+sepal measurements get small nonzero credit, closer to the single decision
+tree's near-zero importance than to the random forest's, since nothing
+here forces any round's trees to consider a restricted feature subset the
+way =max_features= does for a random forest.
+
+** Classification performance
+
+|            | pred. setosa | pred. versicolor | pred. virginica |
+|------------+--------------+-------------------+------------------|
+| setosa     |           50 |                 0 |                0 |
+| versicolor |            0 |                50 |                0 |
+| virginica  |            0 |                 0 |               50 |
+
+Zero training errors, matching the perfect training accuracy §4.2 already
+reported.
+
+#+ATTR_HTML: :alt Petal length vs width scatter with no points misclassified :width 100%
+[[file:../../build/org/gbm_iris_classification.svg]]
+
+As with the random forest companion report's equivalent figure, no black
+"misclassified" markers appear anywhere -- the model fits its own training
+data perfectly, which is exactly why §4.2's caveat about the missing
+out-of-bag check matters.
+
+** Training deviance
+
+#+ATTR_HTML: :alt Line plot of training multinomial deviance against boosting iteration :width 100%
+[[file:../../build/org/gbm_iris_deviance.svg]]
+
+The curve falls steeply over the first 20-30 rounds and flattens
+gradually afterward without ever turning upward -- exactly the monotone
+decrease §2.6 predicts, since every round is fit specifically to reduce
+this exact number. No companion report in this project has an equivalent
+per-iteration view of its own fitting process: LDA and SVM solve one
+problem in a single step, and both the decision tree and random forest
+reports fit their trees once, independently, with nothing analogous to
+"more rounds" to trace a curve against.
+
+** Learning-rate sensitivity
+
+#+ATTR_HTML: :alt Line plots of training accuracy and final deviance against learning rate :width 100%
+[[file:../../build/org/gbm_iris_lr_sensitivity.svg]]
+
+| Learning rate | Accuracy | Final deviance |
+|---------------+----------+-----------------|
+|          0.01 |  100.00% |          0.6371 |
+|          0.05 |  100.00% |          0.1819 |
+|          0.10 |  100.00% |          0.0900 |
+|          0.30 |  100.00% |          0.0286 |
+|          0.50 |  100.00% |          0.0167 |
+|          1.00 |  100.00% |          0.0083 |
+
+At a fixed budget of 100 rounds, every learning rate tested reaches
+100.00% training accuracy, and final deviance falls smoothly as the
+learning rate rises -- a larger $\eta$ makes more effective progress per
+round, so 100 rounds of a large step goes further than 100 rounds of a
+tiny one. Nothing here shows the instability an overly aggressive learning
+rate can cause on harder data (§2.4's usual caveat): this dataset is
+small, clean, and close to linearly separable even for the SVM companion
+report, and =max_depth= 3 trees are shallow enough that even $\eta = 1.0$
+stays well-behaved. A noisier dataset, or deeper per-round trees, is where
+a learning rate this large would more typically start overshooting rather
+than simply converging faster.
+
+** Decision regions: 5 rounds versus 100
+
+#+ATTR_HTML: :alt Side-by-side decision regions after 5 boosting rounds and after 100 :width 100%
+[[file:../../build/org/gbm_iris_decision_regions.svg]]
+
+5 rounds already reaches 98.67% training accuracy (deviance 0.8249); 100
+rounds reaches 99.33% (deviance 0.0995) -- both below the primary
+4-predictor model's 100.00%, since this figure's models see only two of
+the four measurements. The two boundaries look /nearly/ identical at this
+resolution, with the 100-round panel showing a slightly more articulated
+cut near the same versicolor/virginica seam every companion report
+struggles with -- a small but real refinement, consistent with the
+accuracy and deviance both improving only modestly between 5 rounds and
+100 on a boundary that was already most of the way there after the first
+handful of rounds.
+
+** Predicting new flowers
+
+#+ATTR_LATEX: :font \small
+| Sepal.L / Sepal.W / Petal.L / Petal.W | predicted  | setosa | versicolor | virginica |
+|----------------------------------------+------------+--------+------------+-----------|
+| 5.1 / 3.5 / 1.4 / 0.2                  | setosa     | 0.9257 |     0.0372 |    0.0372 |
+| 6.0 / 2.7 / 4.5 / 1.5                  | versicolor | 0.0381 |     0.9237 |    0.0382 |
+| 6.5 / 3.0 / 5.5 / 2.0                  | virginica  | 0.0366 |     0.0373 |    0.9261 |
+| 6.2 / 2.8 / 4.8 / 1.8                  | virginica  | 0.0262 |     0.0964 |    0.8773 |
+
+Even the three unambiguous flowers get posteriors around 0.92-0.93 rather
+than the near-exact 1.0000 the LDA, single-tree, and random-forest
+companion reports all report for their own unambiguous cases -- a direct
+consequence of softmax over finite, shrunk (=learning_rate= = 0.1) additive
+scores never fully saturating to certainty the way a Bayes posterior or a
+majority-vote fraction can. The fourth, deliberately ambiguous flower gets
+87.73% /virginica/ against 9.64% /versicolor/ -- still confidently
+/virginica/, but visibly less certain than the other three, exactly the
+graded signal a genuinely ambiguous case should produce.
+
+* Discussion
+
+**Bagging versus boosting, directly.** This report and the random forest
+companion report share a base learner (a shallow CART tree) and differ in
+exactly one idea: fit many trees independently and average them (bagging),
+or fit trees one at a time, each correcting the last (boosting). That
+single difference explains nearly every contrast between the two reports:
+the random forest's trees can be fit in any order or even in parallel,
+while this report's cannot; the random forest gets a free, near-unbiased
+accuracy estimate from out-of-bag rows, while this report has no
+equivalent without deliberately holding out data; and the random forest's
+feature importance is comparatively evenly spread by design (via
+=max_features=), while this report's tracks even more closely with the
+single decision tree's petal-dominated, near-zero-elsewhere pattern, since
+nothing here restricts what any one round's trees can see.
+
+**The missing safety net.** §4.2 raised this report's central limitation
+directly: 100.00% training accuracy, with nothing in this configuration
+comparable to the random forest's out-of-bag figure to check it against.
+That is not a flaw specific to gradient boosting -- =subsample= < 1
+(§2.5) could in principle support something similar -- but as configured
+here (the library default, =subsample= = 1.0), this report's training
+accuracy carries exactly the same resubstitution-optimism caveat the LDA,
+SVM, and single-decision-tree companion reports all had to raise, and
+which the random forest companion report was the only one able to
+resolve with an actual number instead of a caveat.
+
+**Five methods, one dataset.** Across all five reports in this project,
+every method reaches somewhere in the 95-100% range on these 150 flowers
+(LDA 98.00%, SVM 97.33%, one tree 97.33%, forest 95.33% out-of-bag, this
+model's ungrounded 100.00%), and every method's errors -- where it has
+verifiable held-out-style errors at all -- cluster in the exact same
+/versicolor//virginica/ overlap. Five structurally different algorithms
+converging on the same answer, and the same residual difficulty, is
+itself evidence that this dataset's remaining uncertainty is a property of
+the flowers, not of any one modeling choice.
+
+* Conclusion
+
+A 100-round multinomial gradient boosting classifier, fit with
+=datamunge='s C++ =stats::GBMClassifier=, drives training multinomial
+deviance down by a factor of 11.5 over its 100 rounds and reaches perfect
+training accuracy on Fisher's three iris species, with feature importance
+once again dominated by petal measurements. A learning-rate sweep shows
+faster convergence at higher $\eta$ with no instability on this
+particular (small, clean) dataset, and a direct 5-rounds-versus-100
+comparison shows boosting's defining incremental refinement, even though
+most of the improvement had already happened by round 5. Read against the
+random forest companion report, this report's real contribution is
+showing what bagging and boosting share (the same tree base learner, both
+outperforming a single tree) and where they genuinely differ (parallel and
+self-validating versus sequential and, as configured here, without a
+built-in check on its own confident training accuracy). As with its
+companions, this entire report is reproducible end to end via
+=just org-example gbm_iris_analysis=, which re-executes §3.3.9's assembly
+block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Friedman, J. H. (2001). "Greedy function approximation: A gradient
+  boosting machine." /Annals of Statistics/, 29(5), 1189--1232.
+- Friedman, J. H. (2002). "Stochastic gradient boosting." /Computational
+  Statistics & Data Analysis/, 38(4), 367--378. (Subsampling, §2.5.)
+- Breiman, L., Friedman, J. H., Olshen, R. A., & Stone, C. J. (1984).
+  /Classification and Regression Trees/. Wadsworth. (CART, the base
+  learner every round's trees are.)
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 10 ("Boosting and Additive Trees").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

@@ -55,7 +55,7 @@ printf("%s\n\n", DataFrame_to_string(grouped));
 targets = DataFrame_empty();
 DataFrame_add_string_column(targets, "region", sv({"west", "east", "south"}));
 DataFrame_add_numeric_column(targets, "target", dv([18, 12, 25]));
-joined = DataFrame_join(grouped, targets, "region", "region", true);
+joined = DataFrame_join(grouped, targets, "region", "region", "left");
 printf("joined with targets\n");
 printf("%s\n\n", DataFrame_to_string(joined));
 

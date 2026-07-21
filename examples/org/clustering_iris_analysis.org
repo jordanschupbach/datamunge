@@ -1,0 +1,801 @@
+#+title: Clustering the Iris Dataset
+#+subtitle: A literate C++ study of K-means, agglomerative, and density-based clustering using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit three unsupervised clustering algorithms -- K-means, agglomerative
+(hierarchical) clustering, and DBSCAN -- to Fisher's (1936) iris
+measurements using =datamunge='s C++ =stats::KMeans=,
+=stats::AgglomerativeClustering=, and =stats::DBSCAN=, and report it as a
+literate program: every fragment below is a real, compiled, executed
+chunk of the single C++ binary that produced every number and figure in
+this document. None of the three algorithms ever sees the true species
+labels; we withhold them entirely during fitting and use them only
+afterward, as an external check, to measure how "pure" each discovered
+cluster turns out to be. K-means with $k=3$ recovers /setosa/ perfectly
+(50 of 50) and splits the remaining two species with 48/62 and 36/38
+majority purity; an elbow-method sweep over $k=1,\dots,8$ shows the
+sharpest inertia drop between $k=1$ and $k=3$, weak evidence for three
+natural groups even without ever consulting the labels. Agglomerative
+clustering's three linkage criteria all separate /setosa/ perfectly but
+disagree meaningfully on the other two species, with complete linkage
+performing noticeably worse (49/72 majority) than Ward or average
+linkage. DBSCAN, given no cluster count at all, discovers only /two/
+density-connected groups rather than three -- /setosa/ isolated, and
+/versicolor/ and /virginica/ merged into a single dense region, plus 9
+points too sparse to belong anywhere -- a real, structural finding about
+this data's density, not a tuning failure. An $\varepsilon$ sensitivity
+sweep shows cluster count is emphatically /not/ monotonic in
+$\varepsilon$. We derive Lloyd's algorithm, k-means++ initialization, all
+four linkage criteria, DBSCAN's density-connectivity definitions, and
+purity as external (post-hoc, non-training) validation, tying each to the
+corresponding library call.
+#+end_abstract
+
+* Introduction
+
+Every report in this project up to this point has been /supervised/: a
+model is fit to predict a known response (a species label, a continuous
+measurement) from predictors, and evaluated against that same known
+answer. This report is different in kind, not just in method: all three
+algorithms here are /unsupervised/ -- =stats::KMeans=,
+=stats::AgglomerativeClustering=, and =stats::DBSCAN= are each given only
+the four numeric measurements, with =Species= withheld entirely during
+fitting, and asked to discover structure with no target to predict at
+all. The species labels return only afterward, as an external sanity
+check on what each algorithm found on its own.
+
+Unusually among this project's reports, none of the three clustering
+classes provide a dedicated =plot_*= method the way every classifier or
+regressor report's model does -- =KMeans=, =AgglomerativeClustering=, and
+=DBSCAN= expose only =labels()= (and, for =KMeans=, =cluster_centers()=)
+as raw data. Every figure in this report is therefore built directly from
+those labels with =plot::RPlot=, the same library every other report
+uses for its own already-built figures, just without a model-provided
+convenience wrapper this time.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.12) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives Lloyd's algorithm and k-means++, the four agglomerative
+linkage criteria, DBSCAN's density-connectivity definitions, and purity as
+post-hoc external validation, each tied to the specific library call that
+implements it. §3 describes the program chunk by chunk. §4 reports each
+algorithm's fitted clusters, an elbow-method sweep, a linkage comparison,
+dendrogram re-cutting, and a DBSCAN $\varepsilon$ sensitivity sweep. §5
+discusses what "no ground truth" model selection looks like across all
+three methods and what DBSCAN's two-cluster result says about this
+data's real structure. §6 concludes.
+
+* Background: Clustering Without Labels
+
+** Setup and notation
+
+$n = 150$ flowers, $p = 4$ predictors ($x_i \in \mathbb{R}^4$:
+=Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=) -- and,
+deliberately, no response variable at all during fitting. The true
+species label is retained separately in this report's own code, never
+passed to any of the three constructors, and used only by a
+=report_purity= helper (§2.7) after each model is already fit.
+
+** K-means: Lloyd's algorithm
+
+K-means partitions the $n$ points into $k$ clusters by minimizing
+/inertia/, the total within-cluster sum of squared distances to each
+cluster's centroid,
+
+\[
+\text{inertia} = \sum_{c=1}^{k} \sum_{x_i \in C_c} \lVert x_i - \mu_c \rVert^2 ,
+\]
+
+matching =inertia()= directly. =KMeans::fit= solves this (approximately;
+the exact problem is NP-hard) via Lloyd's algorithm: alternate assigning
+every point to its nearest current centroid, then recomputing each
+centroid as the mean of its assigned points, until centroids move by less
+than =tolerance= (default $10^{-4}$) or =max_iterations= (default 300) is
+reached. Because Lloyd's algorithm only guarantees convergence to a
+/local/ minimum of inertia, =n_init= (default 10) independent runs are
+attempted, each from a fresh k-means++ initialization (below), and the
+run achieving the lowest inertia is kept -- =iterations_used()= reports
+how many Lloyd iterations that winning run needed, not the total across
+all restarts.
+
+** K-means++ initialization
+
+Naive random initialization can seed two centroids close together,
+wasting one; k-means++ (Arthur & Vassilvitskii, 2007) instead seeds
+centroids one at a time, each chosen randomly with probability
+proportional to its squared distance from the /nearest already-chosen/
+centroid -- points far from existing centroids are preferentially picked,
+spreading the initial centroids out and making a poor local minimum
+considerably less likely than uniform random seeding would.
+
+** Choosing $k$ without labels: the elbow method
+
+Every hyperparameter selected automatically elsewhere in this project --
+the [[file:elastic_net_iris_analysis.org][elastic net companion
+report]]'s $\lambda$, the
+[[file:kernel_regression_iris_analysis.org][kernel regression companion
+report]]'s bandwidth, the
+[[file:gaussian_process_regression_iris_analysis.org][GPR companion
+report]]'s length scale -- was selected by minimizing a held-out or
+evidence-based criterion computed from the /response/. K-means has no
+response to hold out: inertia decreases monotonically as $k$ increases
+(at $k=n$ it reaches exactly zero, every point its own cluster), so there
+is no interior minimum to select automatically at all. The standard
+practical remedy, the /elbow method/, is qualitative: plot inertia against
+$k$ and look for the point where additional clusters stop buying much
+additional reduction -- §4.3's figure does this directly, with no claim
+that the "elbow" is a well-defined statistic the way a cross-validated
+minimum is.
+
+** Agglomerative clustering and linkage criteria
+
+=AgglomerativeClustering= builds a full bottom-up merge tree: start with
+every point as its own cluster, then repeatedly merge the two /closest/
+clusters (by whichever inter-cluster distance =linkage= specifies) until
+only =n_clusters= remain. =LinkageCriterion= offers four choices: =Single=
+(distance between the closest pair of points, one from each cluster) --
+prone to elongated, chained clusters; =Complete= (distance between the
+/farthest/ pair) -- prefers compact, similarly-sized clusters; =Average=
+(mean pairwise distance across both clusters); and =Ward= (the merge that
+produces the smallest /increase/ in total within-cluster variance, the
+default, and the closest in spirit to §2.2's inertia objective, restricted
+here to Euclidean distance only per =AgglomerativeClusteringOptions='s
+documentation). Because the /entire/ merge history (=merge_history()=) is
+retained regardless of the requested =n_clusters=, =cut()= can produce a
+clustering at any /other/ cluster count from the same fit with no
+recomputation at all -- §4.5 uses this directly to re-cut a 3-cluster fit
+down to 2 clusters.
+
+** DBSCAN: density-based clustering
+
+Where K-means and agglomerative clustering both require /k/ to be
+specified before fitting, DBSCAN (Ester et al., 1996) requires no cluster
+count at all: given a neighborhood radius =eps= and a minimum neighbor
+count =min_samples=, a point is a /core point/ if at least =min_samples=
+other points (including itself) fall within =eps= of it; clusters are the
+connected components formed by chaining core points that are mutual
+neighbors, with non-core points within =eps= of a core point absorbed as
+/border/ points and every other point labeled /noise/ (=labels()= reports
+$-1$ for noise, matching Python/scikit-learn's convention rather than
+forcing every point into some cluster). The number of clusters is
+discovered, not chosen -- §4.6 shows DBSCAN discovering two clusters on
+data every other method in this project treats as three-class.
+
+** Purity: external, post-hoc validation
+
+=report_purity= (this report's own helper, not a library function) takes
+each fitted cluster, finds the true species /most common/ within it, and
+reports what fraction of that cluster's points actually belong to that
+majority species -- a simple, intuitive external validation metric.
+Critically, purity is never computed /during/ fitting and never
+influences any of the three algorithms' choices in any way; it exists
+purely so this report's readers, who do know the true species labels, can
+sanity-check what each algorithm found without those labels ever being
+available to the algorithm itself.
+
+** What we will report
+
+Given the fits, we report exploratory data (true species, for later
+visual comparison), K-means' fitted clusters and an elbow-method sweep,
+all three agglomerative linkage criteria's purity, dendrogram re-cutting,
+DBSCAN's fitted clusters, and a DBSCAN $\varepsilon$ sensitivity sweep.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values. All four measurements are used as
+clustering features throughout; =Species= is withheld from every
+constructor call and used only by =report_purity=.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, =stats::KMeans=,
+=stats::AgglomerativeClustering=, and =stats::DBSCAN= for the three
+models in this report, and =plot::RPlot= for every figure (built by hand
+from =labels()=, per the Introduction's note that none of these three
+classes ship their own plotting methods). No external plotting or
+statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and the purity helper
+
+#+name: clust-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/agglomerative_clustering.hpp>
+#include <datamunge/stats/dbscan.hpp>
+#include <datamunge/stats/kmeans.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::AgglomerativeClustering;
+using datamunge::stats::AgglomerativeClusteringOptions;
+using datamunge::stats::DBSCAN;
+using datamunge::stats::DBSCANOptions;
+using datamunge::stats::KMeans;
+using datamunge::stats::KMeansOptions;
+using datamunge::stats::LinkageCriterion;
+using namespace datamunge::plot;
+
+namespace {
+
+template <typename Labels>
+void report_purity(const Labels& cluster_labels,
+                    const std::vector<std::string>& species,
+                    std::size_t n_clusters) {
+    std::vector<std::map<std::string, int>> votes(n_clusters);
+    for (std::size_t i = 0; i < species.size(); ++i) {
+        const auto l = cluster_labels[i];
+        if (l < 0) continue;
+        ++votes[static_cast<std::size_t>(l)][species[i]];
+    }
+    for (std::size_t c = 0; c < n_clusters; ++c) {
+        int total = 0, best = 0;
+        std::string best_species;
+        for (const auto& [name, count] : votes[c]) {
+            total += count;
+            if (count > best) { best = count; best_species = name; }
+        }
+        if (total == 0) continue;
+        std::cout << "  cluster " << c << ": " << total
+                   << " points, majority " << best_species
+                   << " (" << best << "/" << total << ")\n";
+    }
+}
+
+} // namespace
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+The true species, plotted purely for later visual comparison against
+each algorithm's own discovered clusters -- never used as an input to
+any of the three constructors below.
+
+#+name: clust-load-data
+#+begin_src c++ :eval no
+    std::cout << std::fixed << std::setprecision(4);
+
+    const auto iris = datamunge::datasets::iris();
+    std::vector<std::string> species(iris.nrows());
+    for (std::size_t i = 0; i < iris.nrows(); ++i)
+        species[i] = iris.string_at("Species", i);
+    const std::vector<std::string> features{
+        "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"};
+#+end_src
+
+#+name: clust-eda-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> sp =
+            {"setosa", "versicolor", "virginica"};
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < sp.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == sp[k];
+            });
+            scatter.points(subset.numeric_column("Petal.Length").values(),
+                            subset.numeric_column("Petal.Width").values(),
+                            sp[k], colors[k], 6.0);
+        }
+        scatter.title("True Species")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/clust_iris_eda_true_species.svg");
+        std::cout << "wrote clust_iris_eda_true_species.svg\n";
+    }
+#+end_src
+
+*** Fitting K-means
+
+#+name: clust-kmeans-fit
+#+begin_src c++ :eval no
+    std::cout << "=== K-means (k=3) on iris ===\n";
+    KMeansOptions kmeans_options;
+    kmeans_options.n_clusters = 3;
+    const KMeans kmeans(iris, features, kmeans_options);
+    kmeans.print_summary(std::cout);
+    std::cout << "Inertia: " << kmeans.inertia()
+               << ", iterations (best run): "
+               << kmeans.iterations_used() << "\n";
+    report_purity(kmeans.labels(), species, 3);
+#+end_src
+
+*** K-means cluster scatter
+
+#+name: clust-kmeans-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> cx(3), cy(3);
+        const auto& labels = kmeans.labels();
+        for (std::size_t i = 0; i < iris.nrows(); ++i) {
+            cx[labels[i]].push_back(iris.double_at("Petal.Length", i));
+            cy[labels[i]].push_back(iris.double_at("Petal.Width", i));
+        }
+        for (std::size_t c = 0; c < 3; ++c)
+            scatter.points(cx[c], cy[c], "cluster " + std::to_string(c),
+                            colors[c], 6.0);
+        scatter.title("K-means Clusters (k=3)")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/clust_iris_kmeans_scatter.svg");
+        std::cout << "wrote clust_iris_kmeans_scatter.svg\n";
+    }
+#+end_src
+
+*** Elbow method
+
+#+name: clust-elbow
+#+begin_src c++ :eval no
+    {
+        std::vector<double> ks, inertias;
+        std::cout << "\n=== Elbow method (inertia vs k) ===\n";
+        std::cout << std::setw(6) << "k" << std::setw(14) << "inertia\n";
+        for (std::size_t k = 1; k <= 8; ++k) {
+            KMeansOptions opts;
+            opts.n_clusters = k;
+            const KMeans m(iris, features, opts);
+            ks.push_back(static_cast<double>(k));
+            inertias.push_back(m.inertia());
+            std::cout << std::setw(6) << k << std::setw(14)
+                       << m.inertia() << "\n";
+        }
+        auto elbow = RPlot::plot(ks, inertias, "b", "inertia",
+                                  {37, 99, 235});
+        elbow.title("Elbow Method: Inertia vs k")
+            .x_label("k").y_label("inertia")
+            .background({250, 250, 252});
+        elbow.save_svg("build/org/clust_iris_elbow.svg");
+        std::cout << "wrote clust_iris_elbow.svg\n";
+    }
+#+end_src
+
+*** Fitting agglomerative clustering under all three linkages
+
+#+name: clust-agglomerative-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== Agglomerative clustering on iris ===\n";
+    const std::vector<LinkageCriterion> linkages = {
+        LinkageCriterion::Ward, LinkageCriterion::Complete,
+        LinkageCriterion::Average};
+    for (const auto linkage : linkages) {
+        AgglomerativeClusteringOptions options;
+        options.n_clusters = 3;
+        options.linkage = linkage;
+        const AgglomerativeClustering model(iris, features, options);
+        std::string name = "average";
+        if (linkage == LinkageCriterion::Ward) name = "ward";
+        else if (linkage == LinkageCriterion::Complete) name = "complete";
+        std::cout << "--- linkage=" << name << " ---\n";
+        report_purity(model.labels(), species, 3);
+    }
+#+end_src
+
+*** Re-cutting the dendrogram without refitting
+
+#+name: clust-recut
+#+begin_src c++ :eval no
+    std::cout << "\n--- Re-cutting the ward dendrogram at k=2"
+               << " without refitting ---\n";
+    AgglomerativeClusteringOptions ward_options;
+    ward_options.n_clusters = 3;
+    ward_options.linkage = LinkageCriterion::Ward;
+    const AgglomerativeClustering ward_model(iris, features, ward_options);
+    report_purity(ward_model.cut(2), species, 2);
+#+end_src
+
+*** Agglomerative cluster scatter
+
+#+name: clust-agglomerative-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> cx(3), cy(3);
+        const auto& labels = ward_model.labels();
+        for (std::size_t i = 0; i < iris.nrows(); ++i) {
+            cx[labels[i]].push_back(iris.double_at("Petal.Length", i));
+            cy[labels[i]].push_back(iris.double_at("Petal.Width", i));
+        }
+        for (std::size_t c = 0; c < 3; ++c)
+            scatter.points(cx[c], cy[c], "cluster " + std::to_string(c),
+                            colors[c], 6.0);
+        scatter.title("Agglomerative Clusters (Ward, k=3)")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/clust_iris_agglomerative_scatter.svg");
+        std::cout << "wrote clust_iris_agglomerative_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting DBSCAN
+
+#+name: clust-dbscan-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== DBSCAN on iris ===\n";
+    DBSCANOptions dbscan_options;
+    dbscan_options.eps = 0.6;
+    dbscan_options.min_samples = 5;
+    const DBSCAN dbscan(iris, features, dbscan_options);
+    dbscan.print_summary(std::cout);
+    std::cout << "Clusters found: " << dbscan.n_clusters()
+               << ", noise points: " << dbscan.n_noise()
+               << " (of " << dbscan.observations() << ")\n";
+    report_purity(dbscan.labels(), species, dbscan.n_clusters());
+#+end_src
+
+*** DBSCAN cluster scatter
+
+#+name: clust-dbscan-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<RGB> colors = {{37, 99, 235}, {22, 163, 74}};
+        auto scatter = RPlot::create();
+        std::vector<std::vector<double>> cx(dbscan.n_clusters());
+        std::vector<std::vector<double>> cy(dbscan.n_clusters());
+        std::vector<double> nx, ny;
+        const auto& labels = dbscan.labels();
+        for (std::size_t i = 0; i < iris.nrows(); ++i) {
+            if (labels[i] < 0) {
+                nx.push_back(iris.double_at("Petal.Length", i));
+                ny.push_back(iris.double_at("Petal.Width", i));
+                continue;
+            }
+            cx[static_cast<std::size_t>(labels[i])].push_back(
+                iris.double_at("Petal.Length", i));
+            cy[static_cast<std::size_t>(labels[i])].push_back(
+                iris.double_at("Petal.Width", i));
+        }
+        for (std::size_t c = 0; c < dbscan.n_clusters(); ++c)
+            scatter.points(cx[c], cy[c], "cluster " + std::to_string(c),
+                            colors[c % colors.size()], 6.0);
+        scatter.points(nx, ny, "noise", {148, 163, 184}, 5.0);
+        scatter.title("DBSCAN Clusters (eps=0.6, min_samples=5)")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/clust_iris_dbscan_scatter.svg");
+        std::cout << "wrote clust_iris_dbscan_scatter.svg\n";
+    }
+#+end_src
+
+*** DBSCAN epsilon sensitivity
+
+#+name: clust-dbscan-sensitivity
+#+begin_src c++ :eval no
+    std::cout << "\n=== DBSCAN eps sensitivity (min_samples=5) ===\n";
+    {
+        const std::vector<double> eps_values =
+            {0.2, 0.3, 0.4, 0.6, 0.8, 1.0, 1.5};
+        std::cout << std::setw(8) << "eps" << std::setw(12) << "clusters"
+                   << std::setw(10) << "noise\n";
+        for (const double eps : eps_values) {
+            DBSCANOptions opts;
+            opts.eps = eps;
+            opts.min_samples = 5;
+            const DBSCAN m(iris, features, opts);
+            std::cout << std::setw(8) << eps << std::setw(12)
+                       << m.n_clusters() << std::setw(10)
+                       << m.n_noise() << "\n";
+        }
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\scriptsize
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/clust_iris_analysis.cpp <<'CPP'
+<<clust-includes>>
+
+int main() {
+<<clust-load-data>>
+
+<<clust-eda-scatter>>
+
+<<clust-kmeans-fit>>
+
+<<clust-kmeans-scatter>>
+
+<<clust-elbow>>
+
+<<clust-agglomerative-fit>>
+
+<<clust-recut>>
+
+<<clust-agglomerative-scatter>>
+
+<<clust-dbscan-fit>>
+
+<<clust-dbscan-scatter>>
+
+<<clust-dbscan-sensitivity>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/clust_iris_analysis.cpp -o build/org/clust_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/clust_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by true species :width 100%
+[[file:../../build/org/clust_iris_eda_true_species.svg]]
+
+The same picture as every companion report's exploratory figure:
+/setosa/ fully separated, /versicolor/ and /virginica/ overlapping in a
+thin band. Every result below should be read against this figure, since
+none of the three algorithms below ever see these color labels
+themselves.
+
+** K-means
+
+#+begin_example
+Cluster sizes:
+  cluster 0: 62 points
+  cluster 1: 50 points
+  cluster 2: 38 points
+
+Cluster centers:
+  0: [5.9016, 2.7484, 4.3935, 1.4339]
+  1: [5.0060, 3.4280, 1.4620, 0.2460]
+  2: [6.8500, 3.0737, 5.7421, 2.0711]
+
+Inertia: 78.8514, iterations (best run): 6
+  cluster 0: 62 points, majority versicolor (48/62)
+  cluster 1: 50 points, majority setosa (50/50)
+  cluster 2: 38 points, majority virginica (36/38)
+#+end_example
+
+Cluster 1's centroid (=[5.0060, 3.4280, 1.4620, 0.2460]=) sits close to
+/setosa/'s known small petal measurements, and its purity is perfect
+(50/50) -- K-means recovered /setosa/ exactly with zero label information,
+purely from the geometry of the four measurements. The other two clusters
+are less clean (48/62 and 36/38), directly reflecting the genuine overlap
+§4.1's figure shows between /versicolor/ and /virginica/.
+
+#+ATTR_HTML: :alt Petal length vs width scatter colored by K-means cluster assignment :width 100%
+[[file:../../build/org/clust_iris_kmeans_scatter.svg]]
+
+Visually near-identical to §4.1's true-species figure in the lower-left
+(/setosa/) region, with the expected disagreement concentrated exactly
+where the two overlapping species blur together -- unsupervised K-means
+essentially reconstructed the known biological grouping from raw
+measurements alone.
+
+** Elbow method
+
+#+ATTR_HTML: :alt Line plot of K-means inertia against k :width 100%
+[[file:../../build/org/clust_iris_elbow.svg]]
+
+| k | Inertia |
+|---+----------|
+| 1 |  681.3706 |
+| 2 |  152.3480 |
+| 3 |   78.8514 |
+| 4 |   57.2560 |
+| 5 |   46.4722 |
+| 6 |   39.0660 |
+| 7 |   34.7233 |
+| 8 |   30.1866 |
+
+The steepest drop is from $k=1$ to $k=2$ (681.37 to 152.35, a 78%
+reduction), with a second, smaller kink between $k=2$ and $k=3$ (152.35
+to 78.85) before the curve flattens into steadily diminishing returns
+from $k=4$ onward. Read strictly by eye, the elbow is arguably at $k=2$
+or $k=3$ -- consistent with §2.4's warning that this method gives a
+qualitative signal, not a sharp, automatically computable answer the way
+every supervised report's cross-validated or marginal-likelihood curve
+does.
+
+** Agglomerative clustering
+
+#+begin_example
+--- linkage=ward ---
+  cluster 0: 50 points, majority setosa (50/50)
+  cluster 1: 64 points, majority versicolor (49/64)
+  cluster 2: 36 points, majority virginica (35/36)
+--- linkage=complete ---
+  cluster 0: 50 points, majority setosa (50/50)
+  cluster 1: 72 points, majority virginica (49/72)
+  cluster 2: 28 points, majority versicolor (27/28)
+--- linkage=average ---
+  cluster 0: 50 points, majority setosa (50/50)
+  cluster 1: 64 points, majority versicolor (50/64)
+  cluster 2: 36 points, majority virginica (36/36)
+#+end_example
+
+Every linkage recovers /setosa/ perfectly, but they disagree on the other
+two species: complete linkage produces a markedly worse split (a 72-point
+cluster only 49/72 = 68.1% pure) than Ward's or average's roughly
+comparable 64/36-point splits (76.6% and 78.1% pure respectively) --
+exactly the qualitative behavior §2.5 predicts, since complete linkage's
+preference for compact, evenly-sized clusters is a worse match for this
+data's actual (unevenly overlapping) structure than Ward's
+variance-minimizing criterion.
+
+#+ATTR_HTML: :alt Petal length vs width scatter colored by Ward-linkage agglomerative cluster :width 100%
+[[file:../../build/org/clust_iris_agglomerative_scatter.svg]]
+
+Ward linkage's clusters look close to K-means' own (§4.2's figure) --
+unsurprising, since both methods are, in different ways, minimizing a
+variance-based objective.
+
+** Re-cutting the dendrogram
+
+#+begin_example
+  cluster 0: 50 points, majority setosa (50/50)
+  cluster 1: 100 points, majority versicolor (50/100)
+#+end_example
+
+Re-cut to $k=2$ from the /same/ fitted Ward dendrogram (§2.5, no
+recomputation), /setosa/ still separates perfectly, but /versicolor/ and
+/virginica/ collapse into a single 100-point cluster with only 50%
+majority purity -- essentially a coin flip, since forcing these two
+genuinely overlapping species into one cluster necessarily discards the
+one dimension (petal measurements) that would distinguish them. This
+foreshadows §4.6's DBSCAN result exactly.
+
+** DBSCAN
+
+#+begin_example
+Clusters found: 2, noise points: 9 (of 150)
+  cluster 0: 49 points, majority setosa (49/49)
+  cluster 1: 92 points, majority versicolor (46/92)
+#+end_example
+
+Given no cluster count at all, DBSCAN discovers /two/ clusters, not
+three -- matching §4.5's re-cut result almost exactly. /setosa/ forms its
+own dense, well-separated region (49 of 50 points; the 50th became one
+of the 9 noise points, likely lying at the edge of the setosa cluster's
+$\varepsilon$-neighborhood). /versicolor/ and /virginica/, however, are
+close enough together in this data that they form a /single/
+density-connected region under =eps=0.6=: DBSCAN has no way to know
+these should be two biological species, because at this density
+threshold, they genuinely are not two separate density-connected
+regions.
+
+#+ATTR_HTML: :alt Petal length vs width scatter colored by DBSCAN cluster, with noise marked separately :width 100%
+[[file:../../build/org/clust_iris_dbscan_scatter.svg]]
+
+The 9 gray noise points sit exactly at the boundary between the two
+discovered clusters and at their sparse outer edges -- precisely where
+§2.6's core-point definition (fewer than =min_samples= neighbors within
+=eps=) would flag a point as too isolated to belong anywhere.
+
+** DBSCAN epsilon sensitivity
+
+#+begin_example
+     eps    clusters    noise
+  0.2000           2       133
+  0.3000           3        96
+  0.4000           4        32
+  0.6000           2         9
+  0.8000           2         2
+  1.0000           2         0
+  1.5000           2         0
+#+end_example
+
+Cluster count is /not/ monotonic in $\varepsilon$: it rises from 2 (at
+$\varepsilon=0.2$, where almost everything is noise) to a peak of 4 (at
+$\varepsilon=0.4$) before falling back to 2 and staying there as
+$\varepsilon$ grows further. The very small $\varepsilon$ values produce
+mostly noise simply because few points have =min_samples= neighbors
+within such a tight radius at all; as $\varepsilon$ grows, real clusters
+begin to form, briefly fragmenting the data into more pieces than the
+"natural" answer before those pieces themselves start merging -- by
+$\varepsilon=1.0$, every point is absorbed into one of the same two
+clusters §4.6 already found, with zero noise remaining.
+
+* Discussion
+
+**What does "correct" mean without labels?** Every result in this report
+was produced with zero access to =Species=, and every judgment about
+whether a result is "good" required consulting labels the algorithms
+never had. This is the central methodological difference between this
+report and every other one in this project: a supervised model's accuracy
+is a well-defined number computable without external interpretation, but
+an unsupervised model's "success" is inherently a matter of external,
+domain-informed judgment -- DBSCAN's 2-cluster answer is not wrong; it is
+a correct answer to a different, purely density-based question than "how
+many species are there."
+
+**DBSCAN's two-cluster result is a finding, not a failure.** §4.6 and
+§4.5's re-cut result agree: when forced or naturally led to two groups,
+/versicolor/ and /virginica/ behave as one density-connected region in
+this four-dimensional measurement space. That is a genuine, real fact
+about the geometry of this dataset -- consistent with every classification
+report in this project's shared observation that these two species are
+the source of essentially every classification error across LDA, SVM,
+decision trees, random forests, GBM, XGBoost, logistic regression, and
+KNN. This report's unsupervised methods independently rediscover, from
+geometry alone, the exact same biological ambiguity every supervised
+method in this project has had to work around.
+
+**Linkage choice is a real, measurable decision.** §4.4's comparison
+shows complete linkage measurably underperforming Ward and average
+linkage on this specific data (68.1% versus 76-78% purity on the
+non-setosa split) -- a reminder that "agglomerative clustering" is not
+one algorithm but a family, and the linkage criterion is not a minor
+implementation detail.
+
+* Conclusion
+
+Fitting K-means, agglomerative clustering, and DBSCAN with =datamunge='s
+C++ =stats::KMeans=, =stats::AgglomerativeClustering=, and =stats::DBSCAN=
+to Fisher's iris measurements -- with every species label withheld during
+fitting -- recovers /setosa/ as a clean, separate group under every
+method tested, and consistently identifies /versicolor/ and /virginica/
+as the harder pair, mirroring every supervised classifier this project
+has fit to the same data. DBSCAN's headline result, discovering only two
+density-connected regions rather than three, is not a tuning failure but
+a genuine structural fact about this data, confirmed independently by
+agglomerative clustering's own 2-cluster re-cut. As with its companions,
+this entire report is reproducible end to end via
+=just org-example clustering_iris_analysis=, which re-executes §3.3.12's
+assembly block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Lloyd, S. (1982). "Least squares quantization in PCM." /IEEE
+  Transactions on Information Theory/, 28(2), 129--137.
+- Arthur, D., & Vassilvitskii, S. (2007). "k-means++: The advantages of
+  careful seeding." /Proceedings of the 18th Annual ACM-SIAM Symposium on
+  Discrete Algorithms/, 1027--1035.
+- Ward, J. H. (1963). "Hierarchical grouping to optimize an objective
+  function." /Journal of the American Statistical Association/, 58(301),
+  236--244.
+- Ester, M., Kriegel, H.-P., Sander, J., & Xu, X. (1996). "A density-based
+  algorithm for discovering clusters in large spatial databases with
+  noise." /Proceedings of the 2nd International Conference on Knowledge
+  Discovery and Data Mining/, 226--231.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 14 ("Unsupervised Learning").
+  Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

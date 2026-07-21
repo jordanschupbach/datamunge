@@ -1,0 +1,639 @@
+#+title: Ordinary Least Squares Regression of Penguin Body Mass
+#+subtitle: A literate C++ study using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit an ordinary-least-squares linear model predicting body mass from bill
+and flipper measurements in the Palmer Archipelago penguins data, using
+=datamunge='s C++ =stats::LM= class, and report it as a literate program:
+every fragment below is a real, compiled, executed chunk of the single C++
+binary that produced every number and figure in this document. Bill length,
+bill depth, flipper length, and species together explain 84.71% of the
+variance in body mass ($R^2 = 0.8471$, adjusted $0.8449$) across 342
+penguins (2 of 344 dropped for missing measurements); every predictor is
+significant at $p < 0.001$, and holding bill and flipper measurements fixed,
+Gentoo penguins are predicted to weigh 934.9g more than Adelie and Chinstrap
+penguins 513.2g less. We derive the least-squares estimator, its sampling
+distribution, the confidence/prediction-interval distinction, and the four
+regression diagnostics from first principles, connect each to the
+corresponding library call, and use the fitted model's own diagnostic plots
+to check whether its assumptions actually hold on this data.
+#+end_abstract
+
+* Introduction
+
+The two companion reports in this project --
+[[file:lda_iris_analysis.org][=lda_iris_analysis.org=]] and
+[[file:svm_iris_analysis.org][=svm_iris_analysis.org=]] -- both answer a
+/classification/ question: which of three species is this flower? This
+report asks a /regression/ question instead: given a few physical
+measurements, how much does this penguin weigh? Ordinary least squares (OLS)
+is the oldest and most interpretable answer to that kind of question, and
+the Palmer Archipelago penguins dataset -- three species, several bill and
+flipper measurements, and a continuous body-mass response -- is a natural
+fit for it.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.8) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the least-squares estimator, its sampling distribution, the
+confidence/prediction-interval distinction, and the four regression
+diagnostics =datamunge= reports, each tied to the specific library call that
+implements it. §3 describes the data and walks through the program chunk by
+chunk. §4 reports the fitted model, its ANOVA decomposition, a coefficient
+plot, fitted-vs-actual and diagnostic figures, and predictions for three new
+penguins. §5 discusses what the diagnostics say about whether OLS's
+assumptions hold here. §6 concludes.
+
+* Background: Ordinary Least Squares
+
+** Setup and notation
+
+We observe $n$ penguins $(x_i, y_i)$, $i = 1, \dots, n$, where
+$y_i \in \mathbb{R}$ is body mass in grams and $x_i \in \mathbb{R}^p$ is a
+row of predictors -- here bill length, bill depth, flipper length, and a
+species indicator, plus an intercept. Stacking rows gives the design matrix
+$X \in \mathbb{R}^{n \times p}$ and response vector $y \in \mathbb{R}^n$.
+The linear model assumes
+
+\[
+y = X\beta + \varepsilon, \qquad \varepsilon_i \overset{\text{iid}}{\sim}
+\mathcal{N}(0, \sigma^2) ,
+\]
+
+and the task is to estimate the unknown coefficient vector $\beta$ and
+noise variance $\sigma^2$ from the data.
+
+** Least-squares estimation
+
+Ordinary least squares picks the $\hat\beta$ that minimizes the residual
+sum of squares $\mathrm{RSS}(\beta) = \lVert y - X\beta \rVert^2$.
+Differentiating and setting the gradient to zero gives the /normal
+equations/ $X^\top X \beta = X^\top y$, so whenever $X$ has full column
+rank,
+
+\[
+\hat\beta = (X^\top X)^{-1} X^\top y .
+\]
+
+Geometrically, the fitted values $\hat y = X\hat\beta = Hy$ are the
+orthogonal projection of $y$ onto the column space of $X$, where
+$H = X(X^\top X)^{-1}X^\top$ is the /hat matrix/ ($H_{ii}$ is exactly the
+/leverage/ of §2.6); the residuals $e = y - \hat y = (I - H)y$ are
+orthogonal to that column space by construction. This is precisely
+=LM::coefficients()=, =LM::fitted_values()=, and =LM::residuals()=.
+
+** Sampling distribution and inference
+
+Under the Gaussian noise assumption, $\hat\beta$ is itself Gaussian:
+$\hat\beta \mid X \sim \mathcal{N}(\beta, \sigma^2 (X^\top X)^{-1})$ --
+exactly =LM::covariance()=. $\sigma^2$ is estimated unbiasedly by
+$\hat\sigma^2 = \mathrm{RSS} / (n - p)$ (=LM::sigma()= squared, with
+$n - p$ = =LM::degrees_of_freedom()=), and each coefficient's standard
+error is the square root of the corresponding diagonal entry of
+$\hat\sigma^2 (X^\top X)^{-1}$ (=LM::standard_errors()=). Dividing each
+coefficient by its standard error gives a $t$-statistic
+(=LM::t_values()=), tested against a $t_{n-p}$ distribution to get the
+per-coefficient $p$-values in =LM::p_values()= -- the classic "is this
+predictor's effect distinguishable from zero" test reported in §4.2.
+
+** Goodness of fit and the ANOVA decomposition
+
+Decomposing total variation, $\mathrm{TSS} = \sum_i (y_i - \bar y)^2$
+splits into explained and unexplained parts, $\mathrm{TSS} =
+\mathrm{ESS} + \mathrm{RSS}$, giving $R^2 = \mathrm{ESS}/\mathrm{TSS} = 1 -
+\mathrm{RSS}/\mathrm{TSS}$ (=LM::r_squared()=) and an adjusted version that
+penalizes additional predictors,
+$\bar R^2 = 1 - (1-R^2)\frac{n-1}{n-p}$ (=LM::adjusted_r_squared()=). The
+overall $F$-test compares a model with only an intercept against the full
+model: $F = \frac{\mathrm{ESS}/(p-1)}{\mathrm{RSS}/(n-p)} \sim F_{p-1,\,n-p}$
+under the null that every slope is zero (=LM::f_statistic()= and
+=LM::f_p_value()=). =LM::anova()= goes further and decomposes $\mathrm{ESS}$
+/sequentially/, term by term, in the order each appears in the formula --
+each row's sum of squares is that term's marginal contribution /given every
+term already added before it/, which is why, unlike the per-coefficient
+$t$-tests above, reordering the formula's right-hand side changes every row
+of the ANOVA table even though it changes nothing else about the fit.
+
+** Categorical predictors
+
+=species= is a three-level factor (Adelie, Chinstrap, Gentoo), handled by
+the same =Formula= machinery the companion reports use for LDA/SVM
+categorical outcomes: one level (alphabetically first, Adelie) becomes the
+reference and is absorbed into the intercept, and the model gets one dummy
+coefficient per remaining level. =speciesChinstrap= and =speciesGentoo= in
+§4.2's table are therefore each read as "difference in mean body mass from
+an Adelie penguin with identical bill and flipper measurements," not as a
+species' mass in isolation.
+
+** Confidence intervals versus prediction intervals
+
+For a new predictor row $x_0$, two different questions have two different
+answers. "What is the /average/ body mass of penguins with these
+measurements?" asks about the mean response $x_0^\top\beta$, estimated by
+$x_0^\top\hat\beta$ with variance $\sigma^2 x_0^\top (X^\top X)^{-1} x_0$ --
+a /confidence interval/. "What will /this one new penguin/ weigh?" asks
+about a single new draw $y_0 = x_0^\top\beta + \varepsilon_0$, which adds
+the new observation's own irreducible noise: $\mathrm{Var}(y_0 -
+x_0^\top\hat\beta) = \sigma^2\big(1 + x_0^\top (X^\top X)^{-1} x_0\big)$ --
+a /prediction interval/, always wider than the confidence interval for the
+same $x_0$. This is exactly the =PredictionInterval::Confidence= versus
+=PredictionInterval::Prediction= choice in =LM::predict()=; §4.7 uses the
+latter, since "how much will this penguin weigh" is a prediction question,
+not a mean-response question.
+
+** Regression diagnostics
+
+Four quantities, each built from the hat matrix and residuals above, check
+whether OLS's assumptions actually hold: /leverage/ $h_{ii} = H_{ii}$
+(=LM::leverage()=) measures how unusual a point's /predictors/ are, since a
+high-leverage point can pull the fit toward itself regardless of its
+response value; /standardized residuals/
+$e_i / (\hat\sigma\sqrt{1-h_{ii}})$ (=LM::standardized_residuals()=)
+rescale residuals to unit variance so they're comparable across points;
+/studentized residuals/ (=LM::studentized_residuals()=) go further and
+refit $\hat\sigma$ with point $i$ excluded, giving a more sensitive outlier
+flag; and /Cook's distance/ (=LM::cooks_distance()=) combines leverage and
+residual size into a single measure of how much removing point $i$ would
+change the fitted coefficients. Plotted against each other, these four
+quantities give the standard four-panel regression checkup (matching R's
+=plot.lm=, and =LM::plot_residuals_vs_fitted()= /
+=plot_normal_qq()= / =plot_scale_location()= /
+=plot_residuals_vs_leverage()= here): residuals-vs-fitted for
+linearity/homoscedasticity, normal Q-Q for normality of the errors,
+scale-location for homoscedasticity again (easier to spot a trend in), and
+residuals-vs-leverage, annotated by Cook's distance, for influential points.
+§4.5 reads all four together.
+
+* Data and Methods
+
+** The data
+
+=datamunge::datasets::penguins()= returns the Palmer Archipelago penguins
+dataset (344 rows, matching the well-known =palmerpenguins::penguins= R
+package): =species= (Adelie, Chinstrap, Gentoo), =island=,
+=bill_length_mm=, =bill_depth_mm=, =flipper_length_mm=, =body_mass_g=,
+=sex= (a handful missing), and =year=. A few rows have missing
+measurements; =LM= drops any row with a null value in a column the formula
+uses before fitting (matching R's =na.omit= default), which §4.2 reports
+explicitly rather than silently.
+
+** Software
+
+Once again, the entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven =stats::LM= for the
+model and every diagnostic in §2, and =plot::RPlot=/=plot::RLayout= for
+every figure -- including the four diagnostic panels, which =LM= itself
+knows how to draw. No external plotting or statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and shared constants
+
+#+name: lm-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/lm.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::LM;
+using datamunge::stats::PredictionInterval;
+using namespace datamunge::plot;
+
+static const std::vector<std::string> kSpecies =
+    {"Adelie", "Chinstrap", "Gentoo"};
+static const std::vector<RGB> kSpeciesColor = {
+    {37, 99, 235},   // Adelie    - blue
+    {22, 163, 74},   // Chinstrap - green
+    {220, 38, 38},   // Gentoo    - red
+};
+static const std::string kFormula =
+    "body_mass_g ~ bill_length_mm + bill_depth_mm"
+    " + flipper_length_mm + species";
+#+end_src
+
+*** Loading the data and an exploratory figure
+
+Flipper length against body mass, colored by species, is the classic first
+view of this dataset: within each species the relationship already looks
+close to linear, and the three species occupy visibly different regions --
+exactly what the model will later capture with the =species= dummy
+coefficients.
+
+#+name: lm-load-data
+#+begin_src c++ :eval no
+    const auto penguins = datamunge::datasets::penguins();
+    std::cout << "penguins: " << penguins.nrows() << " rows x "
+               << penguins.ncols() << " cols\n";
+#+end_src
+
+#+name: lm-eda-scatter
+#+begin_src c++ :eval no
+    auto scatter = RPlot::create();
+    for (std::size_t k = 0; k < kSpecies.size(); ++k) {
+        const auto subset = penguins.filter([&](const DataFrame::Row& r) {
+            return !r.is_null("species") && !r.is_null("flipper_length_mm")
+                && !r.is_null("body_mass_g")
+                && r.get_string("species") == kSpecies[k];
+        });
+        scatter.points(subset.numeric_column("flipper_length_mm").values(),
+                        subset.numeric_column("body_mass_g").values(),
+                        kSpecies[k], kSpeciesColor[k], 5.5);
+    }
+    scatter.title("Penguins: Flipper Length vs Body Mass")
+        .x_label("Flipper length (mm)")
+        .y_label("Body mass (g)")
+        .background({250, 250, 252});
+    scatter.save_svg("build/org/lm_penguins_eda_scatter.svg");
+    std::cout << "wrote lm_penguins_eda_scatter.svg\n";
+#+end_src
+
+*** Fitting the model
+
+=print_summary= writes an R =lm()=-style report -- residual quantiles,
+coefficients with standard errors/$t$/$p$, and the $R^2$/$F$-statistic
+summary from §2.4 -- covering everything derived so far.
+
+#+name: lm-fit
+#+begin_src c++ :eval no
+    LM model(penguins, kFormula);
+    std::cout << "\n";
+    model.print_summary(std::cout);
+#+end_src
+
+*** Sequential ANOVA
+
+One row per term, in formula order, as derived in §2.4.
+
+#+name: lm-anova
+#+begin_src c++ :eval no
+    std::cout << "\nSequential ANOVA:\n";
+    for (const auto& row : model.anova())
+        std::cout << "  " << std::setw(18) << row.term
+                   << " df=" << row.degrees_of_freedom
+                   << " SS=" << std::fixed << std::setprecision(1)
+                   << row.sum_sq
+                   << " F=" << std::setprecision(2) << row.f_value
+                   << " p=" << std::setprecision(4) << row.p_value << "\n";
+#+end_src
+
+*** Fitted vs actual
+
+A direct picture of fit quality: =fitted_values() + residuals()=
+reconstructs each penguin's actual mass, plotted against what the model
+predicted, with a $y = x$ reference line marking a hypothetically perfect
+fit.
+
+#+name: lm-fitted-vs-actual
+#+begin_src c++ :eval no
+    {
+        std::vector<double> actual(model.fitted_values().size());
+        for (std::size_t i = 0; i < actual.size(); ++i)
+            actual[i] = model.fitted_values()[i] + model.residuals()[i];
+
+        auto fv = RPlot::create();
+        fv.points(model.fitted_values(), actual, "penguins",
+                  {37, 99, 235}, 5.0);
+        const double lo = 2700.0, hi = 6500.0;
+        fv.line({lo, hi}, {lo, hi}, "y = x", {150, 150, 150}, 1.5);
+        fv.title("Fitted vs Actual Body Mass")
+            .x_label("fitted (g)")
+            .y_label("actual (g)")
+            .background({250, 250, 252});
+        fv.save_svg("build/org/lm_penguins_fitted_vs_actual.svg");
+        std::cout << "wrote lm_penguins_fitted_vs_actual.svg\n";
+    }
+#+end_src
+
+*** Coefficient plot
+
+A forest plot of every coefficient's estimate and 95% confidence interval
+(§2.6), with a reference line at zero: an interval that crosses zero is a
+predictor whose effect the data can't distinguish from "none," and none do
+here.
+
+#+name: lm-coefficients
+#+begin_src c++ :eval no
+    {
+        const auto& names = model.coefficient_names();
+        const auto& est = model.coefficients();
+        const auto ci = model.confidence_intervals();
+        auto coefplot = RPlot::create();
+        coefplot.x_limits(-7200.0, 2000.0);
+        for (std::size_t i = 0; i < names.size(); ++i) {
+            const double y = static_cast<double>(names.size() - i);
+            coefplot.segments({ci[i].lower}, {y}, {ci[i].upper}, {y},
+                              {37, 99, 235}, 2.0);
+            coefplot.points({est[i]}, {y}, "", {37, 99, 235}, 5.0);
+            coefplot.text(-7100.0, y, names[i], {17, 24, 39}, 12.0);
+        }
+        coefplot.abline_v(0.0, {200, 30, 30}, 1.0);
+        coefplot.title("Coefficient Estimates (95% CI)")
+            .x_label("effect on body_mass_g (g)")
+            .y_label("coefficient index")
+            .background({250, 250, 252});
+        coefplot.save_svg("build/org/lm_penguins_coefficients.svg");
+        std::cout << "wrote lm_penguins_coefficients.svg\n";
+    }
+#+end_src
+
+*** The four regression diagnostics, tiled
+
+=LM= exposes each diagnostic panel from §2.7 as an independent
+=plot::RPlot=, so tiling all four into one =par(mfrow = c(2, 2))=-style
+figure -- exactly what a working statistician does first after any =lm()=
+fit -- is four =RLayout::add= calls.
+
+#+name: lm-diagnostics
+#+begin_src c++ :eval no
+    {
+        auto layout = RLayout::create(2, 2);
+        layout.add(model.plot_residuals_vs_fitted());
+        layout.add(model.plot_normal_qq());
+        layout.add(model.plot_scale_location());
+        layout.add(model.plot_residuals_vs_leverage());
+        layout.save_svg("build/org/lm_penguins_diagnostics.svg");
+        std::cout << "wrote lm_penguins_diagnostics.svg\n";
+    }
+#+end_src
+
+*** Predicting new penguins
+
+Three new penguins -- plausible measurements for one of each species --
+classified with 95% /prediction/ intervals (§2.6), since we want a range
+for what each individual penguin will weigh, not for the species' average.
+
+#+name: lm-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("bill_length_mm",
+                        std::vector<double>{39.0, 50.0, 47.5});
+    newdata.add_column("bill_depth_mm",
+                        std::vector<double>{18.7, 19.0, 15.0});
+    newdata.add_column("flipper_length_mm",
+                        std::vector<double>{181.0, 210.0, 217.0});
+    newdata.add_column("species",
+                        std::vector<std::string>{"Adelie", "Chinstrap",
+                                                  "Gentoo"});
+
+    const auto pred = model.predict(newdata, PredictionInterval::Prediction);
+    std::cout << "\nPredictions with 95% prediction intervals:\n";
+    for (std::size_t i = 0; i < pred.fit.size(); ++i)
+        std::cout << "  fit=" << std::fixed << std::setprecision(1)
+                   << pred.fit[i]
+                   << "  [" << pred.lower[i] << ", " << pred.upper[i]
+                   << "]\n";
+
+    std::cout << "\nR^2 = " << std::setprecision(4) << model.r_squared()
+               << "  adj R^2 = " << model.adjusted_r_squared()
+               << "  sigma = " << std::setprecision(2) << model.sigma()
+               << "  n = " << model.observations() << "\n";
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/lm_penguins_analysis.cpp <<'CPP'
+<<lm-includes>>
+
+int main() {
+<<lm-load-data>>
+
+<<lm-eda-scatter>>
+
+<<lm-fit>>
+
+<<lm-anova>>
+
+<<lm-fitted-vs-actual>>
+
+<<lm-coefficients>>
+
+<<lm-diagnostics>>
+
+<<lm-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/lm_penguins_analysis.cpp -o build/org/lm_penguins_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/lm_penguins_analysis
+#+end_src
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of flipper length vs body mass colored by species :width 100%
+[[file:../../build/org/lm_penguins_eda_scatter.svg]]
+
+The relationship is close to linear within every species, and Gentoo
+penguins occupy a clearly separate, heavier region even at comparable
+flipper lengths to Chinstrap -- an early hint that body mass depends on
+more than flipper length alone, which is exactly why the model also
+includes bill measurements and a species term.
+
+** The fitted model
+
+=datamunge::datasets::penguins()= has 344 rows, but the model reports:
+
+#+begin_example
+Residual standard error: 315.8825 on 336 degrees of freedom
+Multiple R-squared:  0.8471,  Adjusted R-squared:  0.8449
+F-statistic: 372.3747 on 5 and 336 DF,  p-value: 0.000e+00
+#+end_example
+
+336 residual degrees of freedom with 6 fitted parameters means 342
+observations were used -- 2 of the 344 were silently dropped for missing
+=bill_length_mm=/=bill_depth_mm=/=flipper_length_mm=/=species= values,
+exactly as §3.1 said =LM= would do. The coefficient table:
+
+| Term               | Estimate | Std. Error |  t value |    p value |
+|--------------------+----------+------------+----------+------------|
+| (Intercept)          | -4327.33 |     494.87 |  -8.7444 | $< 10^{-3}$ |
+| =bill_length_mm=     |    41.47 |       7.16 |   5.7893 | $< 10^{-3}$ |
+| =bill_depth_mm=      |   140.33 |      18.98 |   7.3950 | $< 10^{-3}$ |
+| =flipper_length_mm=  |    20.24 |       3.11 |   6.5181 | $< 10^{-3}$ |
+| =speciesChinstrap=   |  -513.25 |      82.14 |  -6.2485 | $< 10^{-3}$ |
+| =speciesGentoo=      |   934.89 |     140.78 |   6.6409 | $< 10^{-3}$ |
+
+Every predictor clears $p < 0.001$: none of the four measurements is
+redundant given the other three. Per §2.5, =speciesChinstrap= and
+=speciesGentoo= are both /relative to Adelie/ -- holding bill and flipper
+measurements fixed, a Gentoo penguin is predicted to weigh 934.9g more than
+an otherwise-identical Adelie, and a Chinstrap 513.2g less, which is the
+"more than flipper length alone" gap the EDA scatter already hinted at.
+$R^2 = 0.8471$: the four predictors together explain 84.71% of the
+variance in body mass, with a residual standard error of 315.9g on the
+remaining, unexplained variation.
+
+#+ATTR_HTML: :alt Forest plot of coefficient estimates with 95% confidence intervals :width 100%
+[[file:../../build/org/lm_penguins_coefficients.svg]]
+
+Every interval sits entirely on one side of zero (the red reference line),
+visually confirming the same conclusion as the $p$-values above: every
+term's effect is clearly distinguishable from no effect at all.
+
+** Sequential ANOVA
+
+| Term               | df |          SS |      F |  $p$ |
+|--------------------+----+-------------+--------+------|
+| =bill_length_mm=     |  1 | 77,669,071.8 | 778.39 | $< 10^{-3}$ |
+| =bill_depth_mm=      |  1 | 25,591,769.6 | 256.48 | $< 10^{-3}$ |
+| =flipper_length_mm=  |  1 | 63,735,497.1 | 638.75 | $< 10^{-3}$ |
+| =species=            |  2 | 18,784,685.7 |  94.13 | $< 10^{-3}$ |
+| Residuals            |336 | 33,526,673.2 |        |      |
+
+Per §2.4, each row is that term's marginal contribution /given every term
+already added before it/ in the formula's left-to-right order --
+=bill_length_mm='s row, entered first, is measuring something closer to
+"how much does bill length alone explain," while =species='s row, entered
+last, is measuring only what's left to explain /after/ all three
+continuous measurements are already in the model. That every row still
+clears $p < 0.001$ despite entering last confirms species membership
+carries real information beyond what the three physical measurements alone
+capture -- consistent with the EDA scatter's visibly separated Gentoo
+cluster.
+
+** Fitted vs actual
+
+#+ATTR_HTML: :alt Scatter of fitted vs actual body mass with a y=x reference line :width 100%
+[[file:../../build/org/lm_penguins_fitted_vs_actual.svg]]
+
+Points track the $y=x$ line closely across the whole 2,700-6,500g range
+with no visible curvature or fan-shaped spread, a first, informal check
+that the model isn't systematically over- or under-predicting at either
+extreme -- §4.5's diagnostic panels check this formally.
+
+** Regression diagnostics
+
+#+ATTR_HTML: :alt Four-panel regression diagnostics: residuals vs fitted, normal Q-Q, scale-location, residuals vs leverage :width 100%
+[[file:../../build/org/lm_penguins_diagnostics.svg]]
+
+/Residuals vs Fitted/ (top left) shows no curve or funnel shape -- linearity
+and constant variance both look reasonable. /Normal Q-Q/ (top right) tracks
+the diagonal closely through the middle with only mild tail deviation,
+consistent with approximately normal errors. /Scale-Location/ (bottom
+left) is flat with no trend, the same homoscedasticity conclusion as the
+first panel from a different angle. /Residuals vs Leverage/ (bottom right)
+flags a handful of points in red as having comparatively high Cook's
+distance, but none sit at extreme leverage /and/ extreme residual
+simultaneously -- exactly the combination that would signal a single
+observation is dictating the fit -- so no penguin here looks like it
+should be investigated as a data-entry error or removed.
+
+** Predicting new penguins
+
+#+ATTR_LATEX: :font \small
+| =bill_length_mm= | =bill_depth_mm= | =flipper_length_mm= | species   |    fit |         95% PI |
+|------------------+-----------------+----------------------+-----------+--------+-----------------|
+|             39.0 |            18.7 |                181.0 | Adelie    | 3577.7 | [2951.3, 4204.1] |
+|             50.0 |            19.0 |                210.0 | Chinstrap | 4149.7 | [3519.1, 4780.3] |
+|             47.5 |            15.0 |                217.0 | Gentoo    | 5074.5 | [4450.7, 5698.4] |
+
+Each interval is a /prediction/ interval per §2.6 -- a range for that one
+new penguin's actual mass, not for the species average -- and each is
+roughly $\pm 630$g wide, driven mostly by the residual standard error
+(315.9g) rather than by uncertainty in the coefficients themselves, since
+342 training points pin the coefficients down far more tightly than any
+single new observation's irreducible noise.
+
+* Discussion
+
+**Model fit and what the diagnostics add.** An $R^2$ of 0.8471 says the
+model explains most, but not all, of the variation in body mass -- the
+remaining 15% is individual variation §4.1's four measurements simply
+don't capture (age, sex, precise health, and so on are not in this
+formula). The diagnostic panels in §4.5 are what turn that single $R^2$
+number into a defensible claim rather than a hopeful one: they check the
+/assumptions/ the $t$-tests, $F$-test, and confidence/prediction intervals
+throughout this report all silently rely on (linearity, constant variance,
+approximately normal errors, no single dominating observation), and on
+this data those assumptions hold up reasonably well rather than merely
+being asserted.
+
+**Sequential ANOVA vs the per-coefficient table.** §4.2's $t$-tests and
+§4.3's ANOVA table can look like they're answering the same question twice,
+but they're not: a $t$-test asks whether a term matters /given every other
+term already in the model/ (order-independent), while a sequential ANOVA
+row asks whether a term matters /given only the terms before it/
+(order-dependent). They happen to agree here -- every term is significant
+either way -- but on a dataset with more collinear predictors they can
+disagree sharply, which is exactly why =datamunge= exposes both rather than
+only one.
+
+**Comparison to the classification reports.** Where the LDA and SVM
+companion reports each produce a single class label (with, respectively, a
+posterior probability and a coarse vote count expressing confidence), this
+report's =predict()= call returns a continuous number /with an explicit
+interval attached/ -- and §2.6 is explicit about which of two different
+intervals that number should carry, a distinction that has no real
+classification analogue. That's the qualitative difference between
+predicting a category and predicting a quantity: the uncertainty is native
+to the number itself, not a separate posterior computed alongside it.
+
+**Limitations.** =species= being significant even after all three physical
+measurements are already in the model (§4.3) suggests body mass depends on
+something about species beyond what bill/flipper geometry alone captures --
+plausibly sex, which this formula omits entirely despite being available in
+the raw dataset, and which is well known in the palmerpenguins literature
+to interact with species-level mass differences. A model that included
+=sex= (and possibly a =species:sex= interaction) would very likely improve
+on 84.71% $R^2$; this report deliberately keeps the formula to four terms
+to keep the diagnostics and every plot legible, not because a richer model
+wouldn't fit better.
+
+* Conclusion
+
+An ordinary-least-squares model, fit with =datamunge='s C++ =stats::LM=,
+predicts penguin body mass from bill length, bill depth, flipper length,
+and species with $R^2 = 0.8471$ across 342 penguins, every predictor
+significant at $p < 0.001$. The four regression diagnostics -- derived in
+§2.7 and read together in §4.5 -- support rather than merely assume OLS's
+usual conditions on this data, and the confidence/prediction-interval
+distinction derived in §2.6 is carried all the way through to §4.7's three
+concrete predictions. As with its companions, this entire report is
+reproducible end to end via =just org-example lm_penguins_analysis=, which
+re-executes §3.3.8's assembly block -- and therefore every number and
+figure above -- from the =datamunge= source tree.
+
+* References
+
+- Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). "Ecological
+  sexual dimorphism and environmental variability within a community of
+  Antarctic penguins (genus /Pygoscelis/)." /PLoS ONE/, 9(3), e90081.
+  (Original data source for the Palmer Archipelago penguins dataset.)
+- Horst, A. M., Hill, A. P., & Gorman, K. B. (2020). /palmerpenguins: Palmer
+  Archipelago (Antarctica) Penguin Data/. R package.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 3 ("Linear Methods for Regression").
+  Springer.
+- Cook, R. D. (1977). "Detection of influential observation in linear
+  regression." /Technometrics/, 19(1), 15--18. (Origin of Cook's distance,
+  §2.7.)
+- Chambers, J. M., & Hastie, T. J. (1992). /Statistical Models in S/.
+  Wadsworth & Brooks/Cole. (Reference implementation and =plot.lm= panel
+  layout that =LM='s diagnostic plots deliberately match.)

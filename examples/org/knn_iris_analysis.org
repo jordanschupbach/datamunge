@@ -1,0 +1,727 @@
+#+title: K-Nearest-Neighbors Classification and Regression for Iris
+#+subtitle: A literate C++ study using datamunge
+#+options: toc:t num:t
+#+property: header-args:shell :dir ../.. :results output verbatim :exports both
+#+property: header-args :noweb yes
+
+#+begin_abstract
+We fit a k-nearest-neighbors classifier to Fisher's (1936) iris data using
+=datamunge='s C++ =stats::KNNClassifier=, and report it as a literate
+program: every fragment below is a real, compiled, executed chunk of the
+single C++ binary that produced every number and figure in this document.
+Unlike every other classifier in this project's series, KNN has no
+resubstitution accuracy to report at all -- a training point's nearest
+neighbor is always itself at distance zero -- so every accuracy figure
+here is a genuine leave-one-out estimate, arguably a more honest number
+than any other report's headline accuracy. The default model
+($k=5$, Euclidean distance, uniform voting, standardized predictors)
+reaches 96.67% leave-one-out accuracy (5 of 150 misclassified); a
+distance-metric comparison (Euclidean versus Manhattan) and a voting-scheme
+comparison (uniform versus distance-weighted) both come back /identical/
+on this dataset, an honest finding about this particular problem's
+simplicity rather than a property of the methods in general. A seven-point
+sweep over $k$ shows the classic bias-variance signature only mildly: a dip
+at $k=3$, a peak of 96.67% at $k=5$, then a long, nearly flat plateau at
+96.00% from $k=9$ through $k=49$. We also fit =stats::KNNRegressor= on a
+continuous target for contrast, reaching a leave-one-out $R^2$ of 0.9634.
+We derive the KNN decision rule, both distance metrics, the necessity of
+standardization, uniform and distance-weighted voting, and the
+leave-one-out evaluation KNN requires (unlike every parametric model in
+this project) from first principles, tying each to the corresponding
+library call.
+#+end_abstract
+
+* Introduction
+
+Every classifier this project has fit so far -- LDA, SVM, the decision
+tree, random forest, GBM, XGBoost, and the logistic regression in the
+[[file:glm_iris_analysis.org][GLM companion report]] -- is a /parametric/
+or /model-based/ method: each learns a fixed set of parameters (or a fixed
+tree structure) from the training data, then classifies new points using
+only those learned parameters, with the training data itself discarded
+except as a fitting mechanism. K-nearest-neighbors is qualitatively
+different: it is /lazy/ (also called /instance-based/) -- there is no
+fitting phase beyond storing the (standardized) training data itself, and
+every prediction, including a prediction for a training point, requires
+searching that stored data anew. That difference is not merely
+philosophical; §2.6 shows it forces a genuinely different evaluation
+methodology than every other report in this series uses.
+
+As with its companions, this document is a /literate program/: prose and
+source are interleaved in reading order, and a single "assembling the
+program" step (§3.3.10) weaves every named chunk below into one =.cpp= file,
+compiles it, and runs it. Every number and figure from §4 onward is that
+program's literal output.
+
+§2 derives the KNN decision rule, distance metrics, standardization,
+voting schemes, and the leave-one-out evaluation methodology KNN requires,
+each tied to the specific library call that implements it. §3 describes
+the program chunk by chunk. §4 reports the fitted model, a distance-metric
+comparison, a voting-scheme comparison, a $k$-sensitivity sweep, decision
+regions at both ends of that sweep, a regressor fit for contrast, and
+predictions for four new flowers. §5 discusses what KNN's methodological
+differences mean for comparing it against this project's other six
+classifiers. §6 concludes.
+
+* Background: K-Nearest-Neighbors
+
+** Setup and notation
+
+$n = 150$ flowers, $p = 2$ predictors ($x_i \in \mathbb{R}^2$, =Petal.Length=
+and =Petal.Width=) for the primary model, and $y_i \in \{1,\dots,K\}$,
+$K=3$, labeling one of the three species -- the same setup as every
+classification companion report in this project.
+
+** The decision rule
+
+For a query point $x_0$, KNN finds the $k$ training points closest to
+$x_0$ by some distance metric, then predicts the /majority class/ among
+those $k$ neighbors (or, for =KNNRegressor=, their /average response/).
+There is no likelihood, no objective function minimized during fitting,
+and no coefficients to interpret -- the entire "model" is the stored
+training data plus the rule for turning a neighborhood into a prediction,
+matching =KNNClassifier='s constructor, which does essentially no work
+beyond standardizing and storing =data=.
+
+** Distance metrics
+
+=DistanceMetric::Euclidean= (=metric='s default) uses the ordinary
+straight-line distance,
+$d(x,x') = \sqrt{\sum_j (x_j - x_j')^2}$; =DistanceMetric::Manhattan= uses
+the sum of absolute coordinate differences,
+$d(x,x') = \sum_j |x_j - x_j'|$ -- the same L2-versus-L1 distinction the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]'s
+Ridge-versus-Lasso penalties draw on for a completely different purpose
+(penalizing coefficients rather than measuring distance between points).
+§4.3 compares both directly on this dataset.
+
+** Standardization
+
+Both distance metrics sum contributions from every predictor without
+regard to its natural scale, so a predictor measured in units that happen
+to produce larger raw numbers would dominate the distance calculation
+purely as an artifact of units, not because it is more informative --
+exactly the same rationale the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]'s
+§2.7 gives for standardizing before coordinate descent. With
+=KNNClassifierOptions::standardize= at its default =true=, every predictor
+is centered and scaled to unit variance before any distance is computed,
+so no single measurement can dominate a neighbor search just from having a
+larger numeric range.
+
+** Voting schemes
+
+With =weighted= at its default =false=, every one of the $k$ neighbors
+casts an equal vote for its own class -- =uniform= voting. Setting
+=weighted = true= instead weights each neighbor's vote by $1/d$, so a
+neighbor at distance 0.1 counts far more than one at distance 2.0 --
+/distance-weighted/ voting, which can matter when the $k$ nearest
+neighbors are not all equally close to the query point. =vote_share()= (in
+=KNNClassifierPrediction=) exposes the resulting per-class vote fractions
+directly, which §4.8 reports for four new flowers.
+
+** Leave-one-out evaluation
+
+Every parametric classifier in this project reports /resubstitution/
+accuracy: fit once on all the training data, then check how many of those
+same training points the fitted model gets right. That number is
+meaningless for KNN as an accuracy estimate: a training point's single
+nearest neighbor is always itself, at distance exactly zero, so a naive
+resubstitution check would trivially score 100% regardless of $k$ or any
+other setting. =training_accuracy()= and =confusion_matrix()= instead
+report /leave-one-out/ performance: each training row is classified using
+every /other/ training row as a candidate neighbor, excluding itself --
+implemented via =vote_shares()='s =exclude_row= parameter internally. This
+is not a simplification specific to this report; it is the only accuracy
+number =KNNClassifier= is capable of producing, and, as §5 discusses, it
+is arguably a fairer basis for comparison against this project's other six
+classifiers than their own resubstitution figures.
+
+** Bias and variance as a function of $k$
+
+Small $k$ lets a single noisy or mislabeled training point dictate the
+prediction for any query point near it, producing a decision boundary that
+can wrap tightly around individual points (low bias, high variance,
+directly analogous to the decision-tree companion report's discussion of
+an unpruned tree); large $k$ averages over a wide neighborhood, smoothing
+the boundary at the cost of blurring genuine local structure (high bias,
+low variance) -- as $k \to n$, every prediction converges to the single
+overall majority class regardless of $x_0$. §4.5's sweep and §4.6's
+decision-region comparison examine this trade-off directly on real data,
+including how mild it turns out to be here.
+
+** What we will report
+
+Given the fits, we report exploratory data, the default model's own
+summary, confusion matrix, and classification plot, a distance-metric
+comparison, a voting-scheme comparison, a $k$-sensitivity sweep, decision
+regions at $k=1$ and $k=25$, a regressor fit for contrast, and predictions
+for four new flowers.
+
+* Data and Methods
+
+** The data
+
+As in every companion report: =datamunge::datasets::iris()= returns
+Fisher's 150 flowers -- 50 each of /setosa/, /versicolor/, /virginica/ --
+measured on =Sepal.Length=, =Sepal.Width=, =Petal.Length=, =Petal.Width=
+(cm), with no missing values.
+
+** Software
+
+The entire analysis is one C++ program against =datamunge=:
+=dstruct::DataFrame= for the data, the formula-driven =stats::KNNClassifier=
+and =stats::KNNRegressor= for every model in this report, and
+=plot::RPlot= / =plot::RLayout= for every figure. No external plotting or
+statistics package is used.
+
+** Program, presented as a literate whole
+
+*** Includes, usings, and the exploratory figure
+
+#+name: knn-includes
+#+begin_src c++ :eval no
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/knn_classifier.hpp>
+#include <datamunge/stats/knn_regressor.hpp>
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using datamunge::dstruct::DataFrame;
+using datamunge::stats::DistanceMetric;
+using datamunge::stats::KNNClassifier;
+using datamunge::stats::KNNClassifierOptions;
+using datamunge::stats::KNNRegressor;
+using datamunge::stats::KNNRegressorOptions;
+using namespace datamunge::plot;
+#+end_src
+
+#+name: knn-load-data
+#+begin_src c++ :eval no
+    const auto iris = datamunge::datasets::iris();
+    std::cout << "iris: " << iris.nrows() << " rows x "
+               << iris.ncols() << " cols\n\n";
+#+end_src
+
+#+name: knn-eda-scatter
+#+begin_src c++ :eval no
+    {
+        const std::vector<std::string> species =
+            {"setosa", "versicolor", "virginica"};
+        const std::vector<RGB> colors =
+            {{37, 99, 235}, {22, 163, 74}, {220, 38, 38}};
+        auto scatter = RPlot::create();
+        for (std::size_t k = 0; k < species.size(); ++k) {
+            const auto subset = iris.filter([&](const DataFrame::Row& r) {
+                return r.get_string("Species") == species[k];
+            });
+            scatter.points(subset.numeric_column("Petal.Length").values(),
+                            subset.numeric_column("Petal.Width").values(),
+                            species[k], colors[k], 6.0);
+        }
+        scatter.title("Iris: Petal Length vs Petal Width")
+            .x_label("Petal.Length (cm)").y_label("Petal.Width (cm)")
+            .background({250, 250, 252});
+        scatter.save_svg("build/org/knn_iris_eda_scatter.svg");
+        std::cout << "wrote knn_iris_eda_scatter.svg\n";
+    }
+#+end_src
+
+*** Fitting the default model
+
+$k=5$, Euclidean distance, uniform voting, standardized predictors -- every
+library default.
+
+#+name: knn-fit
+#+begin_src c++ :eval no
+    std::cout << "\n=== KNN classifier"
+               << " (k=5, Euclidean, uniform, standardized) ===\n";
+    KNNClassifier model(iris, "Species ~ Petal.Length + Petal.Width");
+    model.print_summary(std::cout);
+
+    std::cout << "\nConfusion matrix"
+               << " (leave-one-out; rows = actual, cols = predicted):\n";
+    const auto cm = model.confusion_matrix();
+    std::cout << std::setw(14) << "";
+    for (const auto& c : model.classes()) std::cout << std::setw(12) << c;
+    std::cout << "\n";
+    for (std::size_t i = 0; i < cm.rows(); ++i) {
+        std::cout << std::setw(14) << model.classes()[i];
+        for (std::size_t j = 0; j < cm.cols(); ++j)
+            std::cout << std::setw(12) << cm(i, j);
+        std::cout << "\n";
+    }
+
+    std::size_t misclassified = 0;
+    const auto& fitted = model.fitted_classes();
+    for (std::size_t i = 0; i < iris.nrows(); ++i)
+        if (fitted[i] != iris.string_at("Species", i)) ++misclassified;
+    std::cout << "\n" << misclassified << " of " << iris.nrows()
+               << " misclassified (" << std::fixed << std::setprecision(2)
+               << (100.0 * static_cast<double>(misclassified)
+                   / static_cast<double>(iris.nrows()))
+               << "%)\n";
+#+end_src
+
+*** Classification and decision-region plots
+
+#+name: knn-classification-plot
+#+begin_src c++ :eval no
+    {
+        auto cls_plot =
+            model.plot_classification(iris, "Petal.Length", "Petal.Width");
+        cls_plot.background({250, 250, 252});
+        cls_plot.save_svg("build/org/knn_iris_classification.svg");
+        std::cout << "wrote knn_iris_classification.svg\n";
+    }
+
+    {
+        auto dr_plot = model.plot_decision_regions("Petal.Length",
+                                                     "Petal.Width");
+        dr_plot.background({250, 250, 252});
+        dr_plot.save_svg("build/org/knn_iris_decision_regions_k5.svg");
+        std::cout << "wrote knn_iris_decision_regions_k5.svg\n";
+    }
+#+end_src
+
+*** Distance metric comparison
+
+Euclidean versus Manhattan, both at $k=5$.
+
+#+name: knn-metric-comparison
+#+begin_src c++ :eval no
+    std::cout << "\n=== Distance metric comparison (k=5) ===\n";
+    {
+        KNNClassifierOptions manhattan_opts;
+        manhattan_opts.metric = DistanceMetric::Manhattan;
+        KNNClassifier manhattan(iris, "Species ~ Petal.Length + Petal.Width",
+                                 manhattan_opts);
+        std::cout << "Euclidean leave-one-out accuracy: " << std::fixed
+                   << std::setprecision(2)
+                   << model.training_accuracy() * 100.0 << "%\n";
+        std::cout << "Manhattan leave-one-out accuracy: "
+                   << manhattan.training_accuracy() * 100.0 << "%\n";
+    }
+#+end_src
+
+*** Voting scheme comparison
+
+Uniform versus distance-weighted, both at $k=15$ (chosen large enough that
+neighbors are not all equidistant, so weighting has a chance to matter).
+
+#+name: knn-voting-comparison
+#+begin_src c++ :eval no
+    std::cout << "\n=== Voting scheme comparison (k=15) ===\n";
+    {
+        KNNClassifierOptions uniform_opts;
+        uniform_opts.k = 15;
+        KNNClassifier uniform15(iris, "Species ~ Petal.Length + Petal.Width",
+                                 uniform_opts);
+        KNNClassifierOptions weighted_opts;
+        weighted_opts.k = 15;
+        weighted_opts.weighted = true;
+        KNNClassifier weighted15(iris, "Species ~ Petal.Length + Petal.Width",
+                                  weighted_opts);
+        std::cout << "Uniform voting (k=15) leave-one-out accuracy: "
+                   << std::fixed << std::setprecision(2)
+                   << uniform15.training_accuracy() * 100.0 << "%\n";
+        std::cout << "Distance-weighted (k=15) leave-one-out accuracy: "
+                   << weighted15.training_accuracy() * 100.0 << "%\n";
+    }
+#+end_src
+
+*** k sensitivity
+
+Refit at seven values of $k$ spanning nearly the whole odd range up to a
+third of the dataset, tracking leave-one-out accuracy at each.
+
+#+name: knn-k-sensitivity
+#+begin_src c++ :eval no
+    std::cout << "\n=== k sensitivity (leave-one-out accuracy) ===\n";
+    {
+        const std::vector<std::size_t> ks = {1, 3, 5, 9, 15, 25, 49};
+        std::vector<double> k_vals, accs;
+        std::cout << std::setw(8) << "k" << std::setw(14) << "accuracy\n";
+        for (const std::size_t k : ks) {
+            KNNClassifierOptions opts;
+            opts.k = k;
+            KNNClassifier m(iris, "Species ~ Petal.Length + Petal.Width",
+                             opts);
+            const double acc = m.training_accuracy() * 100.0;
+            k_vals.push_back(static_cast<double>(k));
+            accs.push_back(acc);
+            std::cout << std::setw(8) << k << std::setw(13) << std::fixed
+                       << std::setprecision(2) << acc << "%\n";
+        }
+        auto k_plot = RPlot::plot(k_vals, accs, "b",
+                                   "leave-one-out accuracy", {37, 99, 235});
+        k_plot.title("Leave-One-Out Accuracy vs k")
+            .x_label("k").y_label("leave-one-out accuracy (%)")
+            .background({250, 250, 252});
+        k_plot.save_svg("build/org/knn_iris_k_sensitivity.svg");
+        std::cout << "wrote knn_iris_k_sensitivity.svg\n";
+    }
+#+end_src
+
+*** Decision regions at both ends of the sweep
+
+$k=1$ (smallest possible neighborhood) against $k=25$ (a sixth of the
+dataset) on the same two predictors.
+
+#+name: knn-decision-regions-extremes
+#+begin_src c++ :eval no
+    std::cout << "\n=== Decision regions: k=1 vs k=25 ===\n";
+    {
+        KNNClassifierOptions k1_opts;
+        k1_opts.k = 1;
+        KNNClassifier k1(iris, "Species ~ Petal.Length + Petal.Width",
+                          k1_opts);
+        KNNClassifierOptions k25_opts;
+        k25_opts.k = 25;
+        KNNClassifier k25(iris, "Species ~ Petal.Length + Petal.Width",
+                           k25_opts);
+        std::cout << "k=1  leave-one-out accuracy: " << std::fixed
+                   << std::setprecision(2)
+                   << k1.training_accuracy() * 100.0 << "%\n";
+        std::cout << "k=25 leave-one-out accuracy: "
+                   << k25.training_accuracy() * 100.0 << "%\n";
+
+        auto k1_plot = k1.plot_decision_regions("Petal.Length",
+                                                  "Petal.Width");
+        k1_plot.title("k = 1").background({250, 250, 252});
+        auto k25_plot = k25.plot_decision_regions("Petal.Length",
+                                                    "Petal.Width");
+        k25_plot.title("k = 25").background({250, 250, 252});
+        auto layout = RLayout::create(1, 2);
+        layout.add(k1_plot);
+        layout.add(k25_plot);
+        layout.save_svg("build/org/knn_iris_decision_regions_k1_k25.svg");
+        std::cout << "wrote knn_iris_decision_regions_k1_k25.svg\n";
+    }
+#+end_src
+
+*** KNN regressor, for contrast
+
+Same lazy algorithm, same standardize/metric/weighted options, a
+continuous target instead of a class label.
+
+#+name: knn-regressor
+#+begin_src c++ :eval no
+    std::cout << "\n=== KNN regressor (k=5) for contrast ===\n";
+    {
+        KNNRegressor reg(iris,
+            "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width");
+        reg.print_summary(std::cout);
+    }
+#+end_src
+
+*** Predicting new flowers
+
+The same four flowers used throughout this project's other worked
+examples: one unambiguous example of each species, plus one deliberately
+chosen near the versicolor/virginica boundary -- reported with full vote
+shares, not just the winning class.
+
+#+name: knn-predict-new
+#+begin_src c++ :eval no
+    DataFrame newdata;
+    newdata.add_column("Petal.Length",
+                        std::vector<double>{1.4, 4.5, 5.5, 4.8});
+    newdata.add_column("Petal.Width",
+                        std::vector<double>{0.2, 1.5, 2.0, 1.8});
+    const auto preds = model.predict_detail(newdata);
+    std::cout << "\nPredictions for new flowers:\n";
+    std::cout << std::setw(14) << "predicted";
+    for (const auto& c : model.classes())
+        std::cout << std::setw(14) << ("vote(" + c + ")");
+    std::cout << "\n";
+    for (std::size_t i = 0; i < preds.class_label.size(); ++i) {
+        std::cout << std::setw(14) << preds.class_label[i];
+        for (const double v : preds.vote_share[i])
+            std::cout << std::setw(14) << std::fixed
+                       << std::setprecision(3) << v;
+        std::cout << "\n";
+    }
+#+end_src
+
+*** Assembling and running the program
+
+As in the companion reports, this is the only block in this section that
+actually runs: includes at file scope, everything else inside =main=, in
+the order presented, compiled against the installed =datamunge= via
+=pkg-config= and executed. Its own source is the noweb-expanded
+concatenation of every chunk already shown above, so only its result is
+shown here, not the (redundant) expanded source itself.
+
+#+begin_export latex
+\tiny
+#+end_export
+#+begin_src shell :exports results
+mkdir -p build/org
+cat > build/org/knn_iris_analysis.cpp <<'CPP'
+<<knn-includes>>
+
+int main() {
+<<knn-load-data>>
+
+<<knn-eda-scatter>>
+
+<<knn-fit>>
+
+<<knn-classification-plot>>
+
+<<knn-metric-comparison>>
+
+<<knn-voting-comparison>>
+
+<<knn-k-sensitivity>>
+
+<<knn-decision-regions-extremes>>
+
+<<knn-regressor>>
+
+<<knn-predict-new>>
+
+    return 0;
+}
+CPP
+
+c++ -std=c++20 -O2 build/org/knn_iris_analysis.cpp -o build/org/knn_iris_analysis \
+  $(pkg-config --cflags --libs datamunge)
+
+./build/org/knn_iris_analysis
+#+end_src
+#+begin_export latex
+\normalsize
+#+end_export
+
+* Results
+
+** Exploratory data analysis
+
+#+ATTR_HTML: :alt Scatter of petal length vs petal width colored by species :width 100%
+[[file:../../build/org/knn_iris_eda_scatter.svg]]
+
+The same picture as every companion report: /setosa/ fully separated,
+/versicolor/ and /virginica/ overlapping only in a thin band near petal
+length 4.7-5.0cm -- exactly the region where §4.2's five leave-one-out
+misclassifications below fall.
+
+** The fitted model
+
+#+begin_example
+Leave-one-out accuracy: 96.67%  (150 observations)
+
+Confusion matrix (leave-one-out; rows = actual, cols = predicted):
+                    setosa  versicolor   virginica
+        setosa          50           0           0
+    versicolor           0          48           2
+     virginica           0           3          47
+
+5 of 150 misclassified (3.33%)
+#+end_example
+
+Both errors are in the /versicolor//virginica/ overlap, the same pair
+every other classifier report in this project struggles with. 96.67% is
+directly comparable in magnitude to those reports' resubstitution
+figures, but -- per §2.6 -- is measured by a strictly harder standard: no
+training point ever gets to use itself as a neighbor.
+
+#+ATTR_HTML: :alt Petal length vs width scatter with misclassified points marked black :width 100%
+[[file:../../build/org/knn_iris_classification.svg]]
+
+The five black markers sit exactly where §4.1's scatter shows the two
+species overlapping, and nowhere else -- the same "errors cluster in the
+genuine overlap region" pattern every companion report's equivalent figure
+shows.
+
+#+ATTR_HTML: :alt KNN decision regions for k=5 :width 100%
+[[file:../../build/org/knn_iris_decision_regions_k5.svg]]
+
+A speckled, slightly irregular boundary between the /versicolor/ and
+/virginica/ regions, in contrast to the smoother, more geometric
+boundaries the LDA and SVM companion reports' equivalent figures show --
+KNN's boundary is built entirely from local majority votes over the
+training data rather than from any global parametric form, and it looks
+like it.
+
+** Distance metric comparison
+
+#+begin_example
+Euclidean leave-one-out accuracy: 96.67%
+Manhattan leave-one-out accuracy: 96.67%
+#+end_example
+
+Identical to two decimal places. This is a real result, not a rounding
+coincidence hidden by the display precision -- with only two, positively
+correlated predictors and well-separated classes, the two metrics simply
+agree on which training points are "close enough" to matter for almost
+every query point in this particular dataset. §5 discusses what this
+does and does not imply about choosing between the two metrics in general.
+
+** Voting scheme comparison
+
+#+begin_example
+Uniform voting (k=15) leave-one-out accuracy: 96.00%
+Distance-weighted (k=15) leave-one-out accuracy: 96.00%
+#+end_example
+
+Also identical. At $k=15$ on a dataset this size, the 15th-nearest
+neighbor is rarely so much farther away than the 1st-nearest that
+down-weighting it flips enough votes to change the majority class --
+another honest "no difference here" finding rather than a manufactured
+contrast.
+
+** k sensitivity
+
+#+ATTR_HTML: :alt Line plot of leave-one-out accuracy against k :width 100%
+[[file:../../build/org/knn_iris_k_sensitivity.svg]]
+
+| k  | Leave-one-out accuracy |
+|----+--------------------------|
+|  1 |                  96.00% |
+|  3 |                  94.67% |
+|  5 |                  96.67% |
+|  9 |                  96.00% |
+| 15 |                  96.00% |
+| 25 |                  96.00% |
+| 49 |                  96.00% |
+
+The classic bias-variance signature §2.7 predicts is visible, but mild: a
+genuine dip at $k=3$ (94.67%, the sweep's minimum), a peak of 96.67% at
+$k=5$, and then a long, essentially flat plateau at 96.00% all the way out
+to $k=49$ -- a sixth of the training set voting on every query point still
+gets the large-scale species structure right almost every time, since two
+of the three species remain easy to separate regardless of neighborhood
+size. The dip at $k=3$, not $k=1$, is itself informative: it says a
+/small/ neighborhood specifically near the /versicolor//virginica/
+boundary is more error-prone than either the single nearest neighbor or a
+moderately larger one, consistent with those three points sitting close
+to genuinely mixed-label territory.
+
+** Decision regions: k=1 versus k=25
+
+#+ATTR_HTML: :alt Side-by-side decision regions at k=1 and k=25 :width 100%
+[[file:../../build/org/knn_iris_decision_regions_k1_k25.svg]]
+
+Both reach identical 96.00% leave-one-out accuracy (§4.5's table), and the
+two boundaries are visually more alike than the "jagged islands versus
+smooth plateau" caricature of the bias-variance trade-off might suggest --
+$k=1$'s boundary is only subtly more irregular in the
+/versicolor//virginica/ overlap, while $k=25$'s is a touch smoother in the
+same region. The trade-off is real (§2.7, §4.5's $k=3$ dip), but on a
+dataset this well-separated in two dimensions, it shows up as a mild
+texture difference rather than a dramatic one -- a useful corrective to
+how starkly the effect is sometimes illustrated in textbooks using
+harder, noisier data.
+
+** KNN regressor
+
+#+begin_example
+Leave-one-out R-squared: 0.9634
+Leave-one-out RMSE: 0.3367  (150 observations)
+#+end_example
+
+A leave-one-out $R^2$ of 0.9634 sits close to the
+[[file:elastic_net_iris_analysis.org][elastic net companion report]]'s
+in-sample $R^2$ figures (0.96-0.97 across Ridge/Lasso/Elastic Net) on a
+similar formula -- evidence that the same underlying relationship between
+these measurements is easy enough to capture that a purely local,
+non-parametric method matches a linear one here, even though KNN's
+leave-one-out standard is, per §2.6, a harder bar to clear than any
+in-sample regression figure.
+
+** Predicting new flowers
+
+#+ATTR_LATEX: :font \small
+| Petal.Length / Petal.Width | predicted  | vote(setosa) | vote(versicolor) | vote(virginica) |
+|------------------------------+------------+--------------+-------------------+------------------|
+| 1.4 / 0.2                    | setosa     |        1.000 |             0.000 |            0.000 |
+| 4.5 / 1.5                    | versicolor |        0.000 |             1.000 |            0.000 |
+| 5.5 / 2.0                    | virginica  |        0.000 |             0.000 |            1.000 |
+| 4.8 / 1.8                    | virginica  |        0.000 |             0.200 |            0.800 |
+
+The three unambiguous flowers get a unanimous 5-of-5 vote for their true
+species; the deliberately ambiguous fourth flower splits 1-of-5
+/versicolor/ to 4-of-5 /virginica/ -- a vote share, not a smooth
+probability, since every one of the $k=5$ neighbors casts an equal,
+indivisible vote (§2.5's uniform scheme). This is a qualitatively
+different kind of "confidence" than the GLM companion report's
+predicted probabilities: it can only ever take values that are multiples
+of $1/k$, here $0, 0.2, 0.4, 0.6, 0.8, 1.0$.
+
+* Discussion
+
+**KNN's evaluation standard is different in kind, not just in
+number.** Every parametric classifier in this project reports
+resubstitution accuracy -- a number this project's own reports have
+repeatedly flagged as potentially optimistic, since it is checked against
+the same data used to fit the model. KNN cannot produce that number at
+all (§2.6); its leave-one-out accuracy is a strictly harder, more honest
+standard by construction, and 96.67% cleared against that harder standard
+is, if anything, a more informative data point than any single other
+report's resubstitution figure -- closer in spirit to the random forest
+companion report's out-of-bag estimate, this project's other
+methodologically distinct accuracy figure, than to the remaining five
+reports' resubstitution numbers.
+
+**Two "no difference" findings are still real findings.** §4.3 and §4.4's
+identical results across distance metric and voting scheme are not a
+failure to find an interesting story; they are direct evidence that this
+particular dataset, with two well-behaved, positively correlated
+predictors and cleanly separated classes, does not give either choice
+enough traction to matter. A dataset with more predictors, weaker
+correlation, or noisier class boundaries would very plausibly show a real
+gap between Euclidean and Manhattan distance, or between uniform and
+distance-weighted voting -- this report's contribution is showing,
+honestly, that /this/ dataset does not, rather than manufacturing a
+difference that would not replicate.
+
+**Connection to the wider project.** KNN's 96.67% leave-one-out accuracy
+and its errors' exact location (the /versicolor//virginica/ overlap) match
+the pattern every one of this project's other six classifiers
+establishes: every method, regardless of how differently it is built --
+discriminant analysis, margin maximization, recursive partitioning,
+bagging, boosting (twice), maximum likelihood, and now a purely local
+majority vote -- lands in the same 95-100% range with errors in the same
+place. That convergence continues to be evidence about a small region of
+genuine biological similarity between two species, not a ranking of seven
+increasingly different mathematical approaches to the same 150 flowers.
+
+* Conclusion
+
+Fitting a k-nearest-neighbors classifier with =datamunge='s C++
+=stats::KNNClassifier= reaches 96.67% leave-one-out accuracy on Fisher's
+iris data -- a number earned under a strictly harder evaluation standard
+than any other classifier in this project can produce, since KNN has no
+meaningful resubstitution accuracy to fall back on. Distance-metric and
+voting-scheme comparisons both come back identical on this dataset, an
+honest negative result rather than a manufactured contrast, and a
+seven-point $k$ sweep shows the classic bias-variance trade-off in a
+milder form than textbook illustrations often suggest, on data this
+well-separated. A regressor fit for contrast reaches a comparable
+leave-one-out $R^2$ to the elastic net companion report's in-sample
+figures, on a harder evaluation standard. As with its companions, this
+entire report is reproducible end to end via
+=just org-example knn_iris_analysis=, which re-executes §3.3.10's assembly
+block -- and therefore every number and figure above -- from the
+=datamunge= source tree.
+
+* References
+
+- Fix, E., & Hodges, J. L. (1951). "Discriminatory Analysis:
+  Nonparametric Discrimination, Consistency Properties." /USAF School of
+  Aviation Medicine, Randolph Field, Texas/, Report 4.
+- Cover, T., & Hart, P. (1967). "Nearest neighbor pattern
+  classification." /IEEE Transactions on Information Theory/, 13(1),
+  21--27.
+- Hastie, T., Tibshirani, R., & Friedman, J. (2009). /The Elements of
+  Statistical Learning/, 2nd ed., ch. 13 ("Prototype Methods and
+  Nearest-Neighbors"). Springer.
+- Fisher, R. A. (1936). "The use of multiple measurements in taxonomic
+  problems." /Annals of Eugenics/, 7(2), 179--188.

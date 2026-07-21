@@ -1,6 +1,7 @@
 #pragma once
 
 #include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/fda/bspline.hpp>
 #include <datamunge/linalg/dense_matrix.hpp>
 
 #include <cstddef>
@@ -27,7 +28,7 @@ struct ExprNode {
 
 // ---- Resolved design columns ----
 
-enum class ResolvedColumnKind { Numeric, CategoricalDummy, Function, Interaction, Expression };
+enum class ResolvedColumnKind { Numeric, CategoricalDummy, Function, BSpline, Interaction, Expression };
 
 struct ResolvedColumn {
     ResolvedColumnKind           kind{ResolvedColumnKind::Numeric};
@@ -36,6 +37,9 @@ struct ResolvedColumn {
     std::string                  level;             // CategoricalDummy
     std::string                  function_name;     // Function: log, log10, log2, sqrt, exp, abs, poly
     int                          poly_degree{0};    // Function == "poly": this term's power (1..degree)
+    std::vector<std::string>     bspline_columns;    // BSpline input columns
+    std::shared_ptr<fda::BSpline> bspline;           // BSpline basis fixed at model fit time
+    std::size_t                  bspline_component{0};
     std::vector<ResolvedColumn>  interaction_parts; // Interaction
     std::shared_ptr<ExprNode>    expression;        // Expression
 
@@ -82,7 +86,7 @@ struct DesignInfo {
 };
 
 // Parses and resolves R-style model formulas ("y ~ x1 + x2", "y ~ .", "y ~
-// x1 * x2 - 1", "y ~ log(x1) + poly(x2, 2) + I(x1^2)") against a DataFrame's
+// x1 * x2 - 1", "y ~ log(x1) + poly(x2, 2) + bs(x1) + bs(x1, x2) + I(x1^2)") against a DataFrame's
 // schema. Supported grammar:
 //   - '+' / '-' to add/remove terms, '.' for "all other columns"
 //   - '1' / '0' / '-1' to force/remove the intercept
@@ -90,6 +94,9 @@ struct DesignInfo {
 //   - '(' ... ')' grouping
 //   - named single-argument functions: log, log10, log2, sqrt, exp, abs
 //   - poly(x, degree) for raw polynomial terms
+//   - bs(x1, ...): cubic, six-basis-function-per-axis B-spline tensor-product terms
+//     (up to four numeric inputs); one reference column is omitted to avoid collinearity
+//     with the formula intercept
 //   - I(expr) for a literal arithmetic expression (+, -, *, /, ^, parens)
 // String/categorical columns are dummy-encoded with a dropped reference
 // level (the alphabetically-first level), matching R's default treatment

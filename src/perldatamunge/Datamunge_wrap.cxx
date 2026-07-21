@@ -2112,97 +2112,113 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__ElasticNet swig_types[8]
 #define SWIGTYPE_p_datamunge__GBMClassifier swig_types[9]
 #define SWIGTYPE_p_datamunge__GBMRegressor swig_types[10]
-#define SWIGTYPE_p_datamunge__GLM swig_types[11]
-#define SWIGTYPE_p_datamunge__GLMM swig_types[12]
-#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[13]
-#define SWIGTYPE_p_datamunge__HyperDual swig_types[14]
-#define SWIGTYPE_p_datamunge__KMeans swig_types[15]
-#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[16]
-#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[17]
-#define SWIGTYPE_p_datamunge__KernelRegression swig_types[18]
-#define SWIGTYPE_p_datamunge__LDA swig_types[19]
-#define SWIGTYPE_p_datamunge__LM swig_types[20]
-#define SWIGTYPE_p_datamunge__LMM swig_types[21]
-#define SWIGTYPE_p_datamunge__Lasso swig_types[22]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[23]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[24]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[25]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[26]
-#define SWIGTYPE_p_datamunge__SVM swig_types[27]
-#define SWIGTYPE_p_datamunge__Tape swig_types[28]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[29]
-#define SWIGTYPE_p_datamunge__Var swig_types[30]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[31]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[32]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[33]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[34]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[35]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[36]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[37]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[38]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[39]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[40]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[41]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[42]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[43]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[44]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[45]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[46]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[47]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[48]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[49]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[50]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[51]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[52]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[53]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[54]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[55]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[56]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[57]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[58]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[59]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[60]
-#define SWIGTYPE_p_datamunge__plot__BarChart swig_types[61]
-#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[62]
-#define SWIGTYPE_p_datamunge__plot__LinePlot swig_types[63]
-#define SWIGTYPE_p_datamunge__plot__Plot swig_types[64]
-#define SWIGTYPE_p_datamunge__plot__RGB swig_types[65]
-#define SWIGTYPE_p_datamunge__plot__ScatterPlot swig_types[66]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[67]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[68]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[69]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[70]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[71]
-#define SWIGTYPE_p_difference_type swig_types[72]
-#define SWIGTYPE_p_first_type swig_types[73]
-#define SWIGTYPE_p_int swig_types[74]
-#define SWIGTYPE_p_long_long swig_types[75]
-#define SWIGTYPE_p_second_type swig_types[76]
-#define SWIGTYPE_p_short swig_types[77]
-#define SWIGTYPE_p_signed_char swig_types[78]
-#define SWIGTYPE_p_size_t swig_types[79]
-#define SWIGTYPE_p_size_type swig_types[80]
-#define SWIGTYPE_p_std__out_of_range swig_types[81]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[82]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[83]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[84]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[85]
-#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[86]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[87]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[88]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[89]
-#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[90]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[91]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[92]
-#define SWIGTYPE_p_unsigned_char swig_types[93]
-#define SWIGTYPE_p_unsigned_int swig_types[94]
-#define SWIGTYPE_p_unsigned_long_long swig_types[95]
-#define SWIGTYPE_p_unsigned_short swig_types[96]
-#define SWIGTYPE_p_value_type swig_types[97]
+#define SWIGTYPE_p_datamunge__GGPlot swig_types[11]
+#define SWIGTYPE_p_datamunge__GLM swig_types[12]
+#define SWIGTYPE_p_datamunge__GLMM swig_types[13]
+#define SWIGTYPE_p_datamunge__GaussianProcessRegression swig_types[14]
+#define SWIGTYPE_p_datamunge__HyperDual swig_types[15]
+#define SWIGTYPE_p_datamunge__INLAMixedModel swig_types[16]
+#define SWIGTYPE_p_datamunge__KMeans swig_types[17]
+#define SWIGTYPE_p_datamunge__KNNClassifier swig_types[18]
+#define SWIGTYPE_p_datamunge__KNNRegressor swig_types[19]
+#define SWIGTYPE_p_datamunge__KernelRegression swig_types[20]
+#define SWIGTYPE_p_datamunge__LDA swig_types[21]
+#define SWIGTYPE_p_datamunge__LM swig_types[22]
+#define SWIGTYPE_p_datamunge__LMM swig_types[23]
+#define SWIGTYPE_p_datamunge__Lasso swig_types[24]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[25]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[26]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[27]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[28]
+#define SWIGTYPE_p_datamunge__SVM swig_types[29]
+#define SWIGTYPE_p_datamunge__Tape swig_types[30]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[31]
+#define SWIGTYPE_p_datamunge__Var swig_types[32]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[33]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[34]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[35]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[36]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[37]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[38]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[39]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[40]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[41]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[42]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[43]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[44]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[45]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[46]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[47]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[48]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[49]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[50]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[51]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[52]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[53]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[54]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[55]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[56]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[57]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[58]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[59]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[60]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[61]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[62]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[63]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[64]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[65]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[66]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[67]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[68]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[69]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[70]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[71]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[72]
+#define SWIGTYPE_p_datamunge__plot__ABLine swig_types[73]
+#define SWIGTYPE_p_datamunge__plot__DataSeries swig_types[74]
+#define SWIGTYPE_p_datamunge__plot__LegendEntry swig_types[75]
+#define SWIGTYPE_p_datamunge__plot__Plot swig_types[76]
+#define SWIGTYPE_p_datamunge__plot__RGB swig_types[77]
+#define SWIGTYPE_p_datamunge__plot__RLayout swig_types[78]
+#define SWIGTYPE_p_datamunge__plot__RPlot swig_types[79]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[80]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[81]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[82]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[83]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[84]
+#define SWIGTYPE_p_difference_type swig_types[85]
+#define SWIGTYPE_p_first_type swig_types[86]
+#define SWIGTYPE_p_int swig_types[87]
+#define SWIGTYPE_p_long_long swig_types[88]
+#define SWIGTYPE_p_second_type swig_types[89]
+#define SWIGTYPE_p_short swig_types[90]
+#define SWIGTYPE_p_signed_char swig_types[91]
+#define SWIGTYPE_p_size_t swig_types[92]
+#define SWIGTYPE_p_size_type swig_types[93]
+#define SWIGTYPE_p_std__out_of_range swig_types[94]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[95]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[96]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[97]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[98]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t swig_types[99]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__DataSeries_t swig_types[100]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t swig_types[101]
+#define SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t swig_types[102]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[103]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[104]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[105]
+#define SWIGTYPE_p_std__vectorT_std__size_t_t swig_types[106]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[107]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[108]
+#define SWIGTYPE_p_unsigned_char swig_types[109]
+#define SWIGTYPE_p_unsigned_int swig_types[110]
+#define SWIGTYPE_p_unsigned_long_long swig_types[111]
+#define SWIGTYPE_p_unsigned_short swig_types[112]
+#define SWIGTYPE_p_value_type swig_types[113]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[99];
-SWIGINTERN swig_module_info swig_module = {swig_types, 98, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[115];
+SWIGINTERN swig_module_info swig_module = {swig_types, 114, 0, 0, 0, 0};
 #define SWIG_init    boot_Datamunge
 
 #define SWIG_name   "Datamungec::boot_Datamunge"
@@ -11262,6 +11278,3335 @@ XS(_wrap_delete_DataFrame) {
 }
 
 
+XS(_wrap_new_GGPlot__SWIG_0) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::string *arg5 = 0 ;
+    std::string *arg6 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    int res6 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: new_GGPlot(data,x_column,y_column,color_column,fill_column,group_column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res6 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(5), &ptr);
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "new_GGPlot" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "6"" of type '" "std::string const &""'"); 
+      }
+      arg6 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5,(std::string const &)*arg6);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    if (SWIG_IsNewObj(res6)) delete arg6;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GGPlot__SWIG_1) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    std::string *arg5 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int res5 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: new_GGPlot(data,x_column,y_column,color_column,fill_column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res5 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), &ptr);
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "5"" of type '" "std::string const &""'"); 
+      }
+      arg5 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,(std::string const &)*arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    if (SWIG_IsNewObj(res5)) delete arg5;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GGPlot__SWIG_2) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: new_GGPlot(data,x_column,y_column,color_column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GGPlot__SWIG_3) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: new_GGPlot(data,x_column,y_column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GGPlot__SWIG_4) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: new_GGPlot(data,x_column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GGPlot" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::GGPlot *)new datamunge::GGPlot((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GGPlot) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(5), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 5;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_5:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_GGPlot__SWIG_4); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_GGPlot__SWIG_3); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_GGPlot__SWIG_2); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_GGPlot__SWIG_1); return;
+    case 5:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_GGPlot__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_GGPlot'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_point__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: GGPlot_geom_point(self,color,size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_point" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GGPlot_geom_point" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2),arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_point__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_point(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_point" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_point" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_point(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_point__SWIG_2) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_point(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_point" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_point();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_point) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_point__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_point__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_point__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_point'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_line__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: GGPlot_geom_line(self,color,width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_line" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GGPlot_geom_line" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2),arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_line__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_line(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_line" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_line" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_line(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_line__SWIG_2) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_line(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_line" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_line();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_line) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_line__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_line__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_line__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_line'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_bar__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_bar(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_bar" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_bar" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_bar(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_bar__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_bar(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_bar" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_bar();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_bar) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_bar__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_bar__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_bar'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_col__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_col(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_col" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_col" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_col(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_col__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_col(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_col" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_col();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_col) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_col__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_col__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_col'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_histogram__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::size_t arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: GGPlot_geom_histogram(self,bins,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_histogram" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GGPlot_geom_histogram" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_histogram" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_histogram__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_histogram(self,bins);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_histogram" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GGPlot_geom_histogram" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = (datamunge::GGPlot *) &(arg1)->geom_histogram(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_histogram__SWIG_2) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_histogram(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_histogram" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_histogram();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_histogram) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_histogram__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_histogram__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_histogram__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_histogram'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_boxplot__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_boxplot(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_boxplot" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_boxplot" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_boxplot(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_boxplot__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_boxplot(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_boxplot" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_boxplot();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_boxplot) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_boxplot__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_boxplot__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_boxplot'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_smooth__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_smooth(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_smooth" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_smooth" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_smooth(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_smooth__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_smooth(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_smooth" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_smooth();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_smooth) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_smooth__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_smooth__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_smooth'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_area__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_area(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_area" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_area" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_area(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_area__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_area(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_area" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_area();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_area) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_area__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_area__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_area'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_ribbon__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    datamunge::plot::RGB arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    void *argp4 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: GGPlot_geom_ribbon(self,ymin_column,ymax_column,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_ribbon" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_ribbon__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: GGPlot_geom_ribbon(self,ymin_column,ymax_column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_ribbon" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_ribbon" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_ribbon((std::string const &)*arg2,(std::string const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_ribbon) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_ribbon__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_ribbon__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_ribbon'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_geom_density__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    datamunge::plot::RGB arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_geom_density(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_density" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp2) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_geom_density" "', argument " "2"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg2 = *(reinterpret_cast< datamunge::plot::RGB * >(argp2));
+      }
+    }
+    result = (datamunge::GGPlot *) &(arg1)->geom_density(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_density__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_geom_density(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_geom_density" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->geom_density();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_geom_density) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_density__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_geom_density__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_geom_density'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_facet_wrap__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::size_t arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    size_t val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: GGPlot_facet_wrap(self,column,ncol);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_facet_wrap" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ecode3 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GGPlot_facet_wrap" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2,SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_facet_wrap__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_facet_wrap(self,column);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_facet_wrap" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_facet_wrap" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->facet_wrap((std::string const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_facet_wrap) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_facet_wrap__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_facet_wrap__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_facet_wrap'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_theme_minimal) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_theme_minimal(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_theme_minimal" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->theme_minimal();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_theme_bw) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_theme_bw(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_theme_bw" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->theme_bw();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_theme_classic) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_theme_classic(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_theme_classic" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->theme_classic();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_scale_color_manual) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::vector< datamunge::plot::RGB > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_scale_color_manual(self,values);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_scale_color_manual" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::plot::RGB > const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_scale_color_manual" "', argument " "2"" of type '" "std::vector< datamunge::plot::RGB > const &""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< datamunge::plot::RGB > * >(argp2);
+    result = (datamunge::GGPlot *) &(arg1)->scale_color_manual((std::vector< datamunge::plot::RGB > const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_labs__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: GGPlot_labs(self,title,x,y);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "GGPlot_labs" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_labs__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: GGPlot_labs(self,title,x);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2,(std::string const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_labs__SWIG_2) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_labs(self,title);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_labs" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::GGPlot *) &(arg1)->labs((std::string const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_labs__SWIG_3) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::GGPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_labs(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_labs" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    result = (datamunge::GGPlot *) &(arg1)->labs();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__GGPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_labs) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_labs__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_labs__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_labs__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_labs__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_labs'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GGPlot_save) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_save(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_save" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::GGPlot const *)arg1)->save((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_save_svg) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_save_svg(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_save_svg" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::GGPlot const *)arg1)->save_svg((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_show__SWIG_0) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GGPlot_show(self,title_hint);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GGPlot_show" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::GGPlot const *)arg1)->show((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_show__SWIG_1) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GGPlot_show(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GGPlot_show" "', argument " "1"" of type '" "datamunge::GGPlot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    ((datamunge::GGPlot const *)arg1)->show();
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GGPlot_show) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__GGPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_show__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_GGPlot_show__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'GGPlot_show'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_delete_GGPlot) {
+  {
+    datamunge::GGPlot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_GGPlot(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__GGPlot, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GGPlot" "', argument " "1"" of type '" "datamunge::GGPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::GGPlot * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_new_LM__SWIG_0) {
   {
     datamunge::DataFrame *arg1 = 0 ;
@@ -12942,7 +16287,7 @@ XS(_wrap_LM_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -12954,7 +16299,7 @@ XS(_wrap_LM_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -12970,7 +16315,7 @@ XS(_wrap_LM_plot_normal_qq) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -12982,7 +16327,7 @@ XS(_wrap_LM_plot_normal_qq) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_normal_qq();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -12998,7 +16343,7 @@ XS(_wrap_LM_plot_scale_location) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -13010,7 +16355,7 @@ XS(_wrap_LM_plot_scale_location) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_scale_location();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -13026,7 +16371,7 @@ XS(_wrap_LM_plot_residuals_vs_leverage) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -13038,7 +16383,7 @@ XS(_wrap_LM_plot_residuals_vs_leverage) {
     }
     arg1 = reinterpret_cast< datamunge::LM * >(argp1);
     result = ((datamunge::LM const *)arg1)->plot_residuals_vs_leverage();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -17006,6 +20351,2151 @@ XS(_wrap_delete_GLMM) {
 }
 
 
+XS(_wrap_new_INLAMixedModel__SWIG_0) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    std::size_t arg8 ;
+    std::size_t arg9 ;
+    std::size_t arg10 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    double val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    size_t val8 ;
+    int ecode8 = 0 ;
+    size_t val9 ;
+    int ecode9 = 0 ;
+    size_t val10 ;
+    int ecode10 = 0 ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 10) || (items > 10)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family,strategy,fixed_effect_prior_sd,grid_points_per_dim,grid_span,mode_population_size,mode_max_generations,seed);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_INLAMixedModel" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_INLAMixedModel" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    ecode8 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_INLAMixedModel" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    ecode9 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), &val9);
+    if (!SWIG_IsOK(ecode9)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "new_INLAMixedModel" "', argument " "9"" of type '" "std::size_t""'");
+    } 
+    arg9 = static_cast< std::size_t >(val9);
+    ecode10 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(9), &val10);
+    if (!SWIG_IsOK(ecode10)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "new_INLAMixedModel" "', argument " "10"" of type '" "std::size_t""'");
+    } 
+    arg10 = static_cast< std::size_t >(val10);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),SWIG_STD_MOVE(arg10));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_1) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    std::size_t arg8 ;
+    std::size_t arg9 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    double val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    size_t val8 ;
+    int ecode8 = 0 ;
+    size_t val9 ;
+    int ecode9 = 0 ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 9) || (items > 9)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family,strategy,fixed_effect_prior_sd,grid_points_per_dim,grid_span,mode_population_size,mode_max_generations);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_INLAMixedModel" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_INLAMixedModel" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    ecode8 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_INLAMixedModel" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    ecode9 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), &val9);
+    if (!SWIG_IsOK(ecode9)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "new_INLAMixedModel" "', argument " "9"" of type '" "std::size_t""'");
+    } 
+    arg9 = static_cast< std::size_t >(val9);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_2) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    std::size_t arg8 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    double val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    size_t val8 ;
+    int ecode8 = 0 ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 8) || (items > 8)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family,strategy,fixed_effect_prior_sd,grid_points_per_dim,grid_span,mode_population_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_INLAMixedModel" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_INLAMixedModel" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    ecode8 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), &val8);
+    if (!SWIG_IsOK(ecode8)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_INLAMixedModel" "', argument " "8"" of type '" "std::size_t""'");
+    } 
+    arg8 = static_cast< std::size_t >(val8);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7,SWIG_STD_MOVE(arg8));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_3) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    double arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    double val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 7) || (items > 7)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family,strategy,fixed_effect_prior_sd,grid_points_per_dim,grid_span);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_INLAMixedModel" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "new_INLAMixedModel" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6),arg7);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_4) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    std::size_t arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    double val5 ;
+    int ecode5 = 0 ;
+    size_t val6 ;
+    int ecode6 = 0 ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family,strategy,fixed_effect_prior_sd,grid_points_per_dim);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_INLAMixedModel" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "new_INLAMixedModel" "', argument " "6"" of type '" "std::size_t""'");
+    } 
+    arg6 = static_cast< std::size_t >(val6);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5,SWIG_STD_MOVE(arg6));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_5) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    double arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    double val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family,strategy,fixed_effect_prior_sd);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_INLAMixedModel" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_6) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    std::string *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int res4 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family,strategy);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res4 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "4"" of type '" "std::string const &""'"); 
+      }
+      arg4 = ptr;
+    }
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    if (SWIG_IsNewObj(res4)) delete arg4;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_7) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    std::string *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int res3 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula,family);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      res3 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "3"" of type '" "std::string const &""'"); 
+      }
+      arg3 = ptr;
+    }
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    if (SWIG_IsNewObj(res3)) delete arg3;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel__SWIG_8) {
+  {
+    datamunge::DataFrame *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    datamunge::INLAMixedModel *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: new_INLAMixedModel(data,formula);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "1"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::DataFrame * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_INLAMixedModel" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    result = (datamunge::INLAMixedModel *)new datamunge::INLAMixedModel((datamunge::DataFrame const &)*arg1,(std::string const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_INLAMixedModel) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_5;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 5;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_5:
+    
+    if (items == 7) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_6;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 6;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_6:
+    
+    if (items == 8) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_7;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 7;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_7:
+    
+    if (items == 9) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_8;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 8;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_8:
+    
+    if (items == 10) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__DataFrame, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(7), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(8), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(9), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_9;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 9;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_9:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_8); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_7); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_6); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_5); return;
+    case 5:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_4); return;
+    case 6:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_3); return;
+    case 7:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_2); return;
+    case 8:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_1); return;
+    case 9:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_INLAMixedModel__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_INLAMixedModel'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_INLAMixedModel_formula_text) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_formula_text(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_formula_text" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->formula_text();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_family) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_family(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_family" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->family();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_group_variable) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_group_variable(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_group_variable" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->group_variable();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_random_effect_names) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_random_effect_names(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effect_names" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_names();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_observations) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_observations(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_observations" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->observations();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_num_groups) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_num_groups(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_num_groups" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->num_groups();
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_fixed_effects_mean) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_fixed_effects_mean(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_fixed_effects_mean" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_mean();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_fixed_effects_sd) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_fixed_effects_sd(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_fixed_effects_sd" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->fixed_effects_sd();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_coefficient_names) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_coefficient_names(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_coefficient_names" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->coefficient_names();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_random_effect_std_devs) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_random_effect_std_devs(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effect_std_devs" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effect_std_devs();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_residual_std_dev) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_residual_std_dev(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_residual_std_dev" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = (double)((datamunge::INLAMixedModel const *)arg1)->residual_std_dev();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_group_labels) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_group_labels(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_group_labels" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->group_labels();
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        SwigSvFromString(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_random_effects_mean_for_group) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: INLAMixedModel_random_effects_mean_for_group(self,group_index);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effects_mean_for_group" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "INLAMixedModel_random_effects_mean_for_group" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_mean_for_group(SWIG_STD_MOVE(arg2));
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_random_effects_sd_for_group) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: INLAMixedModel_random_effects_sd_for_group(self,group_index);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_random_effects_sd_for_group" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "INLAMixedModel_random_effects_sd_for_group" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = ((datamunge::INLAMixedModel const *)arg1)->random_effects_sd_for_group(SWIG_STD_MOVE(arg2));
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_log_marginal_likelihood) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_log_marginal_likelihood(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_log_marginal_likelihood" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = (double)((datamunge::INLAMixedModel const *)arg1)->log_marginal_likelihood();
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_summary) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_summary(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_summary" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    result = ((datamunge::INLAMixedModel const *)arg1)->summary();
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_print_summary) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: INLAMixedModel_print_summary(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_print_summary" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    ((datamunge::INLAMixedModel const *)arg1)->print_summary();
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_INLAMixedModel_predict) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    datamunge::DataFrame *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: INLAMixedModel_predict(self,newdata);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "INLAMixedModel_predict" "', argument " "1"" of type '" "datamunge::INLAMixedModel const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__DataFrame,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "INLAMixedModel_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "INLAMixedModel_predict" "', argument " "2"" of type '" "datamunge::DataFrame const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
+    result = ((datamunge::INLAMixedModel const *)arg1)->predict((datamunge::DataFrame const &)*arg2);
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_INLAMixedModel) {
+  {
+    datamunge::INLAMixedModel *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_INLAMixedModel(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__INLAMixedModel, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_INLAMixedModel" "', argument " "1"" of type '" "datamunge::INLAMixedModel *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::INLAMixedModel * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_new_LDA__SWIG_0) {
   {
     datamunge::DataFrame *arg1 = 0 ;
@@ -17726,7 +23216,7 @@ XS(_wrap_LDA_plot_discriminants) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -17738,7 +23228,7 @@ XS(_wrap_LDA_plot_discriminants) {
     }
     arg1 = reinterpret_cast< datamunge::LDA * >(argp1);
     result = ((datamunge::LDA const *)arg1)->plot_discriminants();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -20232,7 +25722,7 @@ XS(_wrap_DecisionTreeClassifier_plot_classification) {
     int res3 = SWIG_OLDOBJ ;
     int res4 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -20274,7 +25764,7 @@ XS(_wrap_DecisionTreeClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -20303,7 +25793,7 @@ XS(_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0) {
     size_t val4 ;
     int ecode4 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -20342,7 +25832,7 @@ XS(_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -20368,7 +25858,7 @@ XS(_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1) {
     int res2 = SWIG_OLDOBJ ;
     int res3 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -20402,7 +25892,7 @@ XS(_wrap_DecisionTreeClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::DecisionTreeClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -21393,7 +26883,7 @@ XS(_wrap_DecisionTreeRegressor_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -21405,7 +26895,7 @@ XS(_wrap_DecisionTreeRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
     result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -21421,7 +26911,7 @@ XS(_wrap_DecisionTreeRegressor_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -21433,7 +26923,7 @@ XS(_wrap_DecisionTreeRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::DecisionTreeRegressor * >(argp1);
     result = ((datamunge::DecisionTreeRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -23618,7 +29108,7 @@ XS(_wrap_RandomForestClassifier_plot_classification) {
     int res3 = SWIG_OLDOBJ ;
     int res4 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -23660,7 +29150,7 @@ XS(_wrap_RandomForestClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -23689,7 +29179,7 @@ XS(_wrap_RandomForestClassifier_plot_decision_regions__SWIG_0) {
     size_t val4 ;
     int ecode4 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -23728,7 +29218,7 @@ XS(_wrap_RandomForestClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -23754,7 +29244,7 @@ XS(_wrap_RandomForestClassifier_plot_decision_regions__SWIG_1) {
     int res2 = SWIG_OLDOBJ ;
     int res3 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -23788,7 +29278,7 @@ XS(_wrap_RandomForestClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::RandomForestClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -25792,7 +31282,7 @@ XS(_wrap_RandomForestRegressor_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -25804,7 +31294,7 @@ XS(_wrap_RandomForestRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
     result = ((datamunge::RandomForestRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -25820,7 +31310,7 @@ XS(_wrap_RandomForestRegressor_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -25832,7 +31322,7 @@ XS(_wrap_RandomForestRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::RandomForestRegressor * >(argp1);
     result = ((datamunge::RandomForestRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -27478,7 +32968,7 @@ XS(_wrap_ElasticNet_plot_coefficient_path) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -27490,7 +32980,7 @@ XS(_wrap_ElasticNet_plot_coefficient_path) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_coefficient_path();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -27506,7 +32996,7 @@ XS(_wrap_ElasticNet_plot_cv_curve) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -27518,7 +33008,7 @@ XS(_wrap_ElasticNet_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -27534,7 +33024,7 @@ XS(_wrap_ElasticNet_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -27546,7 +33036,7 @@ XS(_wrap_ElasticNet_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -27562,7 +33052,7 @@ XS(_wrap_ElasticNet_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -27574,7 +33064,7 @@ XS(_wrap_ElasticNet_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::ElasticNet * >(argp1);
     result = ((datamunge::ElasticNet const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -28967,7 +34457,7 @@ XS(_wrap_Ridge_plot_coefficient_path) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -28979,7 +34469,7 @@ XS(_wrap_Ridge_plot_coefficient_path) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_coefficient_path();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -28995,7 +34485,7 @@ XS(_wrap_Ridge_plot_cv_curve) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -29007,7 +34497,7 @@ XS(_wrap_Ridge_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -29023,7 +34513,7 @@ XS(_wrap_Ridge_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -29035,7 +34525,7 @@ XS(_wrap_Ridge_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -29051,7 +34541,7 @@ XS(_wrap_Ridge_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -29063,7 +34553,7 @@ XS(_wrap_Ridge_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::Ridge * >(argp1);
     result = ((datamunge::Ridge const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -30484,7 +35974,7 @@ XS(_wrap_Lasso_plot_coefficient_path) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -30496,7 +35986,7 @@ XS(_wrap_Lasso_plot_coefficient_path) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_coefficient_path();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -30512,7 +36002,7 @@ XS(_wrap_Lasso_plot_cv_curve) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -30524,7 +36014,7 @@ XS(_wrap_Lasso_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -30540,7 +36030,7 @@ XS(_wrap_Lasso_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -30552,7 +36042,7 @@ XS(_wrap_Lasso_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -30568,7 +36058,7 @@ XS(_wrap_Lasso_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -30580,7 +36070,7 @@ XS(_wrap_Lasso_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::Lasso * >(argp1);
     result = ((datamunge::Lasso const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -31581,7 +37071,7 @@ XS(_wrap_KNNClassifier_plot_classification) {
     int res3 = SWIG_OLDOBJ ;
     int res4 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -31623,7 +37113,7 @@ XS(_wrap_KNNClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::KNNClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -31652,7 +37142,7 @@ XS(_wrap_KNNClassifier_plot_decision_regions__SWIG_0) {
     size_t val4 ;
     int ecode4 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -31691,7 +37181,7 @@ XS(_wrap_KNNClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -31717,7 +37207,7 @@ XS(_wrap_KNNClassifier_plot_decision_regions__SWIG_1) {
     int res2 = SWIG_OLDOBJ ;
     int res3 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -31751,7 +37241,7 @@ XS(_wrap_KNNClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::KNNClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -32812,7 +38302,7 @@ XS(_wrap_KNNRegressor_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -32824,7 +38314,7 @@ XS(_wrap_KNNRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
     result = ((datamunge::KNNRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -32840,7 +38330,7 @@ XS(_wrap_KNNRegressor_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -32852,7 +38342,7 @@ XS(_wrap_KNNRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::KNNRegressor * >(argp1);
     result = ((datamunge::KNNRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -39486,7 +44976,7 @@ XS(_wrap_GBMClassifier_plot_classification) {
     int res3 = SWIG_OLDOBJ ;
     int res4 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -39528,7 +45018,7 @@ XS(_wrap_GBMClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::GBMClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -39557,7 +45047,7 @@ XS(_wrap_GBMClassifier_plot_decision_regions__SWIG_0) {
     size_t val4 ;
     int ecode4 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -39596,7 +45086,7 @@ XS(_wrap_GBMClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -39622,7 +45112,7 @@ XS(_wrap_GBMClassifier_plot_decision_regions__SWIG_1) {
     int res2 = SWIG_OLDOBJ ;
     int res3 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -39656,7 +45146,7 @@ XS(_wrap_GBMClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::GBMClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -39780,7 +45270,7 @@ XS(_wrap_GBMClassifier_plot_training_deviance) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -39792,7 +45282,7 @@ XS(_wrap_GBMClassifier_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::GBMClassifier * >(argp1);
     result = ((datamunge::GBMClassifier const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -41407,7 +46897,7 @@ XS(_wrap_GBMRegressor_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -41419,7 +46909,7 @@ XS(_wrap_GBMRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -41435,7 +46925,7 @@ XS(_wrap_GBMRegressor_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -41447,7 +46937,7 @@ XS(_wrap_GBMRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -41463,7 +46953,7 @@ XS(_wrap_GBMRegressor_plot_training_deviance) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -41475,7 +46965,7 @@ XS(_wrap_GBMRegressor_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::GBMRegressor * >(argp1);
     result = ((datamunge::GBMRegressor const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -44206,7 +49696,7 @@ XS(_wrap_XGBoostClassifier_plot_classification) {
     int res3 = SWIG_OLDOBJ ;
     int res4 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -44248,7 +49738,7 @@ XS(_wrap_XGBoostClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -44277,7 +49767,7 @@ XS(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0) {
     size_t val4 ;
     int ecode4 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -44316,7 +49806,7 @@ XS(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -44342,7 +49832,7 @@ XS(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1) {
     int res2 = SWIG_OLDOBJ ;
     int res3 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -44376,7 +49866,7 @@ XS(_wrap_XGBoostClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -44500,7 +49990,7 @@ XS(_wrap_XGBoostClassifier_plot_training_deviance) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -44512,7 +50002,7 @@ XS(_wrap_XGBoostClassifier_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostClassifier * >(argp1);
     result = ((datamunge::XGBoostClassifier const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -47195,7 +52685,7 @@ XS(_wrap_XGBoostRegressor_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -47207,7 +52697,7 @@ XS(_wrap_XGBoostRegressor_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -47223,7 +52713,7 @@ XS(_wrap_XGBoostRegressor_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -47235,7 +52725,7 @@ XS(_wrap_XGBoostRegressor_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -47251,7 +52741,7 @@ XS(_wrap_XGBoostRegressor_plot_training_deviance) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -47263,7 +52753,7 @@ XS(_wrap_XGBoostRegressor_plot_training_deviance) {
     }
     arg1 = reinterpret_cast< datamunge::XGBoostRegressor * >(argp1);
     result = ((datamunge::XGBoostRegressor const *)arg1)->plot_training_deviance();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -48333,7 +53823,7 @@ XS(_wrap_KernelRegression_plot_fit__SWIG_0) {
     size_t val3 ;
     int ecode3 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -48358,7 +53848,7 @@ XS(_wrap_KernelRegression_plot_fit__SWIG_0) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -48381,7 +53871,7 @@ XS(_wrap_KernelRegression_plot_fit__SWIG_1) {
     void *argp2 = 0 ;
     int res2 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 2) || (items > 2)) {
@@ -48401,7 +53891,7 @@ XS(_wrap_KernelRegression_plot_fit__SWIG_1) {
     }
     arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
     result = ((datamunge::KernelRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -48509,7 +53999,7 @@ XS(_wrap_KernelRegression_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -48521,7 +54011,7 @@ XS(_wrap_KernelRegression_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -48537,7 +54027,7 @@ XS(_wrap_KernelRegression_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -48549,7 +54039,7 @@ XS(_wrap_KernelRegression_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -48565,7 +54055,7 @@ XS(_wrap_KernelRegression_plot_cv_curve) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -48577,7 +54067,7 @@ XS(_wrap_KernelRegression_plot_cv_curve) {
     }
     arg1 = reinterpret_cast< datamunge::KernelRegression * >(argp1);
     result = ((datamunge::KernelRegression const *)arg1)->plot_cv_curve();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -50228,7 +55718,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_0) {
     double val4 ;
     int ecode4 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -50258,7 +55748,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_0) {
     } 
     arg4 = static_cast< double >(val4);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3),arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -50286,7 +55776,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_1) {
     size_t val3 ;
     int ecode3 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -50311,7 +55801,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_1) {
     } 
     arg3 = static_cast< std::size_t >(val3);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2,SWIG_STD_MOVE(arg3));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -50334,7 +55824,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_2) {
     void *argp2 = 0 ;
     int res2 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 2) || (items > 2)) {
@@ -50354,7 +55844,7 @@ XS(_wrap_GaussianProcessRegression_plot_fit__SWIG_2) {
     }
     arg2 = reinterpret_cast< datamunge::DataFrame * >(argp2);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_fit((datamunge::DataFrame const &)*arg2);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -50514,7 +56004,7 @@ XS(_wrap_GaussianProcessRegression_plot_predicted_vs_actual) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -50526,7 +56016,7 @@ XS(_wrap_GaussianProcessRegression_plot_predicted_vs_actual) {
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_predicted_vs_actual();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -50542,7 +56032,7 @@ XS(_wrap_GaussianProcessRegression_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -50554,7 +56044,7 @@ XS(_wrap_GaussianProcessRegression_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -50570,7 +56060,7 @@ XS(_wrap_GaussianProcessRegression_plot_length_scale_profile) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -50582,7 +56072,7 @@ XS(_wrap_GaussianProcessRegression_plot_length_scale_profile) {
     }
     arg1 = reinterpret_cast< datamunge::GaussianProcessRegression * >(argp1);
     result = ((datamunge::GaussianProcessRegression const *)arg1)->plot_length_scale_profile();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -51292,7 +56782,7 @@ XS(_wrap_NaiveBayesClassifier_plot_classification) {
     int res3 = SWIG_OLDOBJ ;
     int res4 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -51334,7 +56824,7 @@ XS(_wrap_NaiveBayesClassifier_plot_classification) {
       arg4 = ptr;
     }
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_classification((datamunge::DataFrame const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -51363,7 +56853,7 @@ XS(_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0) {
     size_t val4 ;
     int ecode4 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
@@ -51402,7 +56892,7 @@ XS(_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_0) {
     } 
     arg4 = static_cast< std::size_t >(val4);
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3,SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -51428,7 +56918,7 @@ XS(_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1) {
     int res2 = SWIG_OLDOBJ ;
     int res3 = SWIG_OLDOBJ ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
@@ -51462,7 +56952,7 @@ XS(_wrap_NaiveBayesClassifier_plot_decision_regions__SWIG_1) {
       arg3 = ptr;
     }
     result = ((datamunge::NaiveBayesClassifier const *)arg1)->plot_decision_regions((std::string const &)*arg2,(std::string const &)*arg3);
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     if (SWIG_IsNewObj(res2)) delete arg2;
     if (SWIG_IsNewObj(res3)) delete arg3;
@@ -53688,7 +59178,7 @@ XS(_wrap_GLM_plot_residuals_vs_fitted) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -53700,7 +59190,7 @@ XS(_wrap_GLM_plot_residuals_vs_fitted) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_fitted();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -53716,7 +59206,7 @@ XS(_wrap_GLM_plot_normal_qq) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -53728,7 +59218,7 @@ XS(_wrap_GLM_plot_normal_qq) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_normal_qq();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -53744,7 +59234,7 @@ XS(_wrap_GLM_plot_scale_location) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -53756,7 +59246,7 @@ XS(_wrap_GLM_plot_scale_location) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_scale_location();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -53772,7 +59262,7 @@ XS(_wrap_GLM_plot_residuals_vs_leverage) {
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
@@ -53784,7 +59274,7 @@ XS(_wrap_GLM_plot_residuals_vs_leverage) {
     }
     arg1 = reinterpret_cast< datamunge::GLM * >(argp1);
     result = ((datamunge::GLM const *)arg1)->plot_residuals_vs_leverage();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -58446,6 +63936,847 @@ XS(_wrap_Tensor_outer) {
 }
 
 
+XS(_wrap_Tensor_from_image) {
+  {
+    datamunge::image::Image *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Tensor_from_image(img);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__image__Image,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_from_image" "', argument " "1"" of type '" "datamunge::image::Image const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_from_image" "', argument " "1"" of type '" "datamunge::image::Image const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::image::Image * >(argp1);
+    result = (datamunge::Tensor *)datamunge::Tensor::from_image((datamunge::image::Image const &)*arg1);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_conv2d__SWIG_0) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    datamunge::Tensor *arg2 = 0 ;
+    datamunge::Tensor *arg3 = 0 ;
+    int arg4 ;
+    int arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    int val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: Tensor_conv2d(input,kernel,bias,stride,padding);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::Tensor * >(argp2);
+    res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg3 = reinterpret_cast< datamunge::Tensor * >(argp3);
+    ecode4 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "Tensor_conv2d" "', argument " "4"" of type '" "int""'");
+    } 
+    arg4 = static_cast< int >(val4);
+    ecode5 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "Tensor_conv2d" "', argument " "5"" of type '" "int""'");
+    } 
+    arg5 = static_cast< int >(val5);
+    result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4,arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_conv2d__SWIG_1) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    datamunge::Tensor *arg2 = 0 ;
+    datamunge::Tensor *arg3 = 0 ;
+    int arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    int val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: Tensor_conv2d(input,kernel,bias,stride);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::Tensor * >(argp2);
+    res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg3 = reinterpret_cast< datamunge::Tensor * >(argp3);
+    ecode4 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "Tensor_conv2d" "', argument " "4"" of type '" "int""'");
+    } 
+    arg4 = static_cast< int >(val4);
+    result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3,arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_conv2d__SWIG_2) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    datamunge::Tensor *arg2 = 0 ;
+    datamunge::Tensor *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    void *argp3 = 0 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Tensor_conv2d(input,kernel,bias);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "1"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "2"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::Tensor * >(argp2);
+    res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__Tensor,  0 );
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_conv2d" "', argument " "3"" of type '" "datamunge::Tensor const &""'"); 
+    }
+    arg3 = reinterpret_cast< datamunge::Tensor * >(argp3);
+    result = (datamunge::Tensor *)datamunge::Tensor::conv2d((datamunge::Tensor const &)*arg1,(datamunge::Tensor const &)*arg2,(datamunge::Tensor const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_conv2d) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(1), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__Tensor, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Tensor_conv2d__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Tensor_conv2d__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Tensor_conv2d__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Tensor_conv2d'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Tensor_max_pool2d__SWIG_0) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    int arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Tensor_max_pool2d(self,pool_size,stride);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_max_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_max_pool2d" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    ecode3 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Tensor_max_pool2d" "', argument " "3"" of type '" "int""'");
+    } 
+    arg3 = static_cast< int >(val3);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_max_pool2d__SWIG_1) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Tensor_max_pool2d(self,pool_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_max_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_max_pool2d" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->max_pool2d(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_max_pool2d) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Tensor, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Tensor, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Tensor_max_pool2d__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Tensor_max_pool2d__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Tensor_max_pool2d'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Tensor_avg_pool2d__SWIG_0) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    int arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: Tensor_avg_pool2d(self,pool_size,stride);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_avg_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_avg_pool2d" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    ecode3 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Tensor_avg_pool2d" "', argument " "3"" of type '" "int""'");
+    } 
+    arg3 = static_cast< int >(val3);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_avg_pool2d__SWIG_1) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    int arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Tensor_avg_pool2d(self,pool_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_avg_pool2d" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_avg_pool2d" "', argument " "2"" of type '" "int""'");
+    } 
+    arg2 = static_cast< int >(val2);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->avg_pool2d(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_avg_pool2d) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Tensor, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Tensor, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Tensor_avg_pool2d__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Tensor_avg_pool2d__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Tensor_avg_pool2d'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Tensor_relu) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Tensor_relu(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_relu" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->relu();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_sigmoid) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Tensor_sigmoid(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sigmoid" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->sigmoid();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Tensor_softmax) {
+  {
+    datamunge::Tensor *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::Tensor *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Tensor_softmax(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__Tensor, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_softmax" "', argument " "1"" of type '" "datamunge::Tensor const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Tensor * >(argp1);
+    result = (datamunge::Tensor *)((datamunge::Tensor const *)arg1)->softmax();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__Tensor, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_Tensor_to_string__SWIG_0) {
   {
     datamunge::Tensor *arg1 = 0 ;
@@ -62160,6 +68491,71 @@ XS(_wrap_DataSeries_bar_width_get) {
 }
 
 
+XS(_wrap_DataSeries_filled_set) {
+  {
+    datamunge::plot::DataSeries *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: DataSeries_filled_set(self,filled);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_set" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DataSeries_filled_set" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    if (arg1) (arg1)->filled = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_DataSeries_filled_get) {
+  {
+    datamunge::plot::DataSeries *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: DataSeries_filled_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__DataSeries, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_filled_get" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+    result = (bool) ((arg1)->filled);
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_new_DataSeries) {
   {
     int argvi = 0;
@@ -62194,6 +68590,556 @@ XS(_wrap_delete_DataSeries) {
       SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DataSeries" "', argument " "1"" of type '" "datamunge::plot::DataSeries *""'"); 
     }
     arg1 = reinterpret_cast< datamunge::plot::DataSeries * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_vertical_set) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ABLine_vertical_set(self,vertical);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_vertical_set" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    if (arg1) (arg1)->vertical = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_vertical_get) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ABLine_vertical_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_vertical_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (bool) ((arg1)->vertical);
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_value_set) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ABLine_value_set(self,value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_value_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->value = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_value_get) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ABLine_value_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_value_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (double) ((arg1)->value);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_slope_set) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ABLine_slope_set(self,slope);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_slope_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->slope = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_slope_get) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ABLine_slope_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_slope_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (double) ((arg1)->slope);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_color_set) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    datamunge::plot::RGB *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ABLine_color_set(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::plot::RGB *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+    if (arg1) (arg1)->color = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_color_get) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RGB *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ABLine_color_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (datamunge::plot::RGB *)& ((arg1)->color);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_stroke_width_set) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ABLine_stroke_width_set(self,stroke_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_set" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ABLine_stroke_width_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->stroke_width = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ABLine_stroke_width_get) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ABLine_stroke_width_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_stroke_width_get" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    result = (double) ((arg1)->stroke_width);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_ABLine) {
+  {
+    int argvi = 0;
+    datamunge::plot::ABLine *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_ABLine();");
+    }
+    result = (datamunge::plot::ABLine *)new datamunge::plot::ABLine();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ABLine, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_ABLine) {
+  {
+    datamunge::plot::ABLine *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_ABLine(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ABLine, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ABLine" "', argument " "1"" of type '" "datamunge::plot::ABLine *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::ABLine * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LegendEntry_label_set) {
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: LegendEntry_label_set(self,label);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_set" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_label_set" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LegendEntry_label_set" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    if (arg1) (arg1)->label = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LegendEntry_label_get) {
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::string *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: LegendEntry_label_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_label_get" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    result = (std::string *) & ((arg1)->label);
+    ST(argvi) = SWIG_From_std_string  SWIG_PERL_CALL_ARGS_1(static_cast< std::string >(*result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LegendEntry_color_set) {
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    datamunge::plot::RGB *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: LegendEntry_color_set(self,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_set" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_datamunge__plot__RGB, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::plot::RGB *""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::plot::RGB * >(argp2);
+    if (arg1) (arg1)->color = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_LegendEntry_color_get) {
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RGB *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: LegendEntry_color_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_get" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
+    result = (datamunge::plot::RGB *)& ((arg1)->color);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RGB, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_LegendEntry) {
+  {
+    int argvi = 0;
+    datamunge::plot::LegendEntry *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_LegendEntry();");
+    }
+    result = (datamunge::plot::LegendEntry *)new datamunge::plot::LegendEntry();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LegendEntry, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_LegendEntry) {
+  {
+    datamunge::plot::LegendEntry *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_LegendEntry(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LegendEntry, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LegendEntry" "', argument " "1"" of type '" "datamunge::plot::LegendEntry *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::LegendEntry * >(argp1);
     delete arg1;
     ST(argvi) = &PL_sv_undef;
     
@@ -62760,6 +69706,200 @@ XS(_wrap_Plot_y_limits) {
 }
 
 
+XS(_wrap_Plot_hide_axes__SWIG_0) {
+  {
+    datamunge::plot::Plot *arg1 = 0 ;
+    bool arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    bool val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::plot::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_hide_axes(self,enabled);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    ecode2 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Plot_hide_axes" "', argument " "2"" of type '" "bool""'");
+    } 
+    arg2 = static_cast< bool >(val2);
+    result = (datamunge::plot::Plot *) &(arg1)->hide_axes(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_hide_axes__SWIG_1) {
+  {
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::plot::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_hide_axes(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_hide_axes" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (datamunge::plot::Plot *) &(arg1)->hide_axes();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_hide_axes) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__Plot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Plot_hide_axes__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_Plot_hide_axes__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'Plot_hide_axes'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_Plot_x_tick_labels) {
+  {
+    datamunge::plot::Plot *arg1 = 0 ;
+    std::vector< std::string > arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::plot::Plot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Plot_x_tick_labels(self,labels);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_labels" "', argument " "1"" of type '" "datamunge::plot::Plot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of Plot_x_tick_labels. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "Plot_x_tick_labels. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of Plot_x_tick_labels. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = (datamunge::plot::Plot *) &(arg1)->x_tick_labels(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__Plot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_Plot_width) {
   {
     datamunge::plot::Plot *arg1 = 0 ;
@@ -63208,6 +70348,118 @@ XS(_wrap_Plot_y_max) {
 }
 
 
+XS(_wrap_Plot_axes_hidden) {
+  {
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    bool result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_axes_hidden(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_axes_hidden" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (bool)((datamunge::plot::Plot const *)arg1)->axes_hidden();
+    ST(argvi) = SWIG_From_bool  SWIG_PERL_CALL_ARGS_1(static_cast< bool >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_x_tick_label_list) {
+  {
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::string > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_x_tick_label_list(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_x_tick_label_list" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (std::vector< std::string > *) &((datamunge::plot::Plot const *)arg1)->x_tick_label_list();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__string_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_reference_lines) {
+  {
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< datamunge::plot::ABLine > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_reference_lines(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_reference_lines" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (std::vector< datamunge::plot::ABLine > *) &((datamunge::plot::Plot const *)arg1)->reference_lines();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__ABLine_t, 0 | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Plot_legend_entries) {
+  {
+    datamunge::plot::Plot *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< datamunge::plot::LegendEntry > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: Plot_legend_entries(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__Plot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Plot_legend_entries" "', argument " "1"" of type '" "datamunge::plot::Plot const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::Plot * >(argp1);
+    result = (std::vector< datamunge::plot::LegendEntry > *) &((datamunge::plot::Plot const *)arg1)->legend_entries();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__plot__LegendEntry_t, 0 | 0); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_Plot_save) {
   {
     datamunge::plot::Plot *arg1 = 0 ;
@@ -63588,17 +70840,17 @@ XS(_wrap_new_Plot) {
 }
 
 
-XS(_wrap_ScatterPlot_create) {
+XS(_wrap_RPlot_create) {
   {
     int argvi = 0;
-    datamunge::plot::ScatterPlot result;
+    datamunge::plot::RPlot result;
     dXSARGS;
     
     if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: ScatterPlot_create();");
+      SWIG_croak("Usage: RPlot_create();");
     }
-    result = datamunge::plot::ScatterPlot::create();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::ScatterPlot(result)), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    result = datamunge::plot::RPlot::create();
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -63606,9 +70858,3738 @@ XS(_wrap_ScatterPlot_create) {
 }
 
 
-XS(_wrap_ScatterPlot_points__SWIG_0) {
+XS(_wrap_RPlot_plot__SWIG_0) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    std::vector< double > arg1 ;
+    std::vector< double > arg2 ;
+    std::string arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    std::vector< double > *v1 ;
+    std::vector< double > *v2 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_plot(x,y,type,label,color);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_plot__SWIG_1) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > arg2 ;
+    std::string arg3 ;
+    std::string arg4 ;
+    std::vector< double > *v1 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_plot(x,y,type,label);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_plot__SWIG_2) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > arg2 ;
+    std::string arg3 ;
+    std::vector< double > *v1 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_plot(x,y,type);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_plot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_plot__SWIG_3) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > arg2 ;
+    std::vector< double > *v1 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_plot(x,y);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_plot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_plot. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::plot::RPlot::plot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_plot) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_plot__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_plot__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_plot__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_plot__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_plot'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_hist__SWIG_0) {
+  {
+    std::vector< double > arg1 ;
+    std::size_t arg2 ;
+    std::string arg3 ;
+    datamunge::plot::RGB arg4 ;
+    std::vector< double > *v1 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_hist(data,bins,label,color);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_hist. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+      }
+    }
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hist" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_hist__SWIG_1) {
+  {
+    std::vector< double > arg1 ;
+    std::size_t arg2 ;
+    std::string arg3 ;
+    std::vector< double > *v1 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_hist(data,bins,label);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_hist. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+      }
+    }
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hist" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_hist" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_hist__SWIG_2) {
+  {
+    std::vector< double > arg1 ;
+    std::size_t arg2 ;
+    std::vector< double > *v1 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_hist(data,bins);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_hist. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+      }
+    }
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_hist" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_hist__SWIG_3) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RPlot_hist(data);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_hist. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_hist. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::plot::RPlot::hist(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_hist) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_hist__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_hist__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_hist__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_hist__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_hist'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_barplot__SWIG_0) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< std::string > arg2 ;
+    std::string arg3 ;
+    datamunge::plot::RGB arg4 ;
+    std::vector< double > *v1 ;
+    std::vector< std::string > *v2 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_barplot(heights,names,label,color);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_barplot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_barplot. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_barplot. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_barplot. "
+          "Expected an array of ""std::string");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_barplot__SWIG_1) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< std::string > arg2 ;
+    std::string arg3 ;
+    std::vector< double > *v1 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_barplot(heights,names,label);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_barplot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_barplot. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_barplot. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_barplot. "
+          "Expected an array of ""std::string");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_barplot" "', argument " "3"" of type '" "std::string""'"); 
+      }
+      arg3 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_barplot__SWIG_2) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< std::string > arg2 ;
+    std::vector< double > *v1 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_barplot(heights,names);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_barplot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_barplot. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_barplot. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_barplot. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_barplot__SWIG_3) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RPlot_barplot(heights);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_barplot. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_barplot. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::plot::RPlot::barplot(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_barplot) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(2), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_barplot__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_barplot__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_barplot__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_barplot__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_barplot'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_boxplot__SWIG_0) {
+  {
+    std::vector< std::vector< double > > arg1 ;
+    std::vector< std::string > arg2 ;
+    datamunge::plot::RGB arg3 ;
+    std::vector< std::vector< double > > *v1 ;
+    std::vector< std::string > *v2 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_boxplot(groups,names,color);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            (&arg1)->push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_boxplot. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_boxplot. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_boxplot. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_boxplot. "
+          "Expected an array of ""std::string");
+      }
+    }
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_boxplot__SWIG_1) {
+  {
+    std::vector< std::vector< double > > arg1 ;
+    std::vector< std::string > arg2 ;
+    std::vector< std::vector< double > > *v1 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_boxplot(groups,names);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            (&arg1)->push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_boxplot. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_boxplot. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_boxplot. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_boxplot. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_boxplot__SWIG_2) {
+  {
+    std::vector< std::vector< double > > arg1 ;
+    std::vector< std::vector< double > > *v1 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RPlot_boxplot(groups);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            (&arg1)->push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_boxplot. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_boxplot. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    result = datamunge::plot::RPlot::boxplot(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_boxplot) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::vector< double > >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  std::vector< double >* obj;
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+                      SWIGTYPE_p_std__vectorT_double_t,0) != -1)
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_boxplot__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_boxplot__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_boxplot__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_boxplot'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_pie__SWIG_0) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< std::string > arg2 ;
+    SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+    std::vector< double > *v1 ;
+    std::vector< std::string > *v2 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_pie(values,names,colors);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_pie. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_pie. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_pie. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_pie. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_pie. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_pie. "
+          "Expected an array of ""std::string");
+      }
+    }
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'");
+      } else {
+        arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB > * >(argp3));
+      }
+    }
+    result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_pie__SWIG_1) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< std::string > arg2 ;
+    std::vector< double > *v1 ;
+    std::vector< std::string > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_pie(values,names);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_pie. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_pie. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_pie. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_pie. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_pie. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_pie. "
+          "Expected an array of ""std::string");
+      }
+    }
+    result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_pie__SWIG_2) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RPlot_pie(values);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_pie. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_pie. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_pie. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::plot::RPlot::pie(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_pie) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< std::string >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_std__string_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvPOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_pie__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_pie__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_pie__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_pie'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_curve__SWIG_0) {
+  {
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::size_t arg4 ;
+    std::string arg5 ;
+    datamunge::plot::RGB arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    size_t val4 ;
+    int ecode4 = 0 ;
+    void *argp6 ;
+    int res6 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: RPlot_curve(f,from,to,n,label,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_curve" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_curve" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_curve" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_curve" "', argument " "5"" of type '" "std::string""'"); 
+      }
+      arg5 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp6) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      }
+    }
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_curve__SWIG_1) {
+  {
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::size_t arg4 ;
+    std::string arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    size_t val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_curve(f,from,to,n,label);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_curve" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_curve" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_curve" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_curve" "', argument " "5"" of type '" "std::string""'"); 
+      }
+      arg5 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_curve__SWIG_2) {
+  {
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::size_t arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    size_t val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_curve(f,from,to,n);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_curve" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_curve" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_curve" "', argument " "4"" of type '" "std::size_t""'");
+    } 
+    arg4 = static_cast< std::size_t >(val4);
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3,SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_curve__SWIG_3) {
+  {
+    datamunge::Callback *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_curve(f,from,to);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__Callback,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "1"" of type '" "datamunge::Callback &""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::Callback * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_curve" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_curve" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = datamunge::plot::RPlot::curve(*arg1,arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_curve) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__Callback, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(4), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_curve__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_curve__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_curve__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_curve__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_curve'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_qqnorm__SWIG_0) {
+  {
+    std::vector< double > arg1 ;
+    std::string arg2 ;
+    datamunge::plot::RGB arg3 ;
+    std::vector< double > *v1 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_qqnorm(data,label,color);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_qqnorm. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_qqnorm. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_qqnorm. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqnorm" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_qqnorm__SWIG_1) {
+  {
+    std::vector< double > arg1 ;
+    std::string arg2 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_qqnorm(data,label);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_qqnorm. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_qqnorm. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_qqnorm. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_qqnorm" "', argument " "2"" of type '" "std::string""'"); 
+      }
+      arg2 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_qqnorm__SWIG_2) {
+  {
+    std::vector< double > arg1 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    datamunge::plot::RPlot result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RPlot_qqnorm(data);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg1 = *v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of RPlot_qqnorm. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg1)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "RPlot_qqnorm. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 1 of RPlot_qqnorm. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::plot::RPlot::qqnorm(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RPlot(result)), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_qqnorm) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_qqnorm__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_qqnorm__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_qqnorm__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_qqnorm'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_points__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
@@ -63623,17 +74604,17 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
     double val6 ;
     int ecode6 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 6) || (items > 6)) {
-      SWIG_croak("Usage: ScatterPlot_points(self,x,y,label,color,marker_size);");
+      SWIG_croak("Usage: RPlot_points(self,x,y,label,color,marker_size);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -63641,7 +74622,7 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63651,12 +74632,12 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
@@ -63667,7 +74648,7 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63677,12 +74658,12 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
@@ -63690,7 +74671,7 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -63698,21 +74679,21 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
     {
       res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
     ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
     if (!SWIG_IsOK(ecode6)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "ScatterPlot_points" "', argument " "6"" of type '" "double""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_points" "', argument " "6"" of type '" "double""'");
     } 
     arg6 = static_cast< double >(val6);
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -63726,9 +74707,9 @@ XS(_wrap_ScatterPlot_points__SWIG_0) {
 }
 
 
-XS(_wrap_ScatterPlot_points__SWIG_1) {
+XS(_wrap_RPlot_points__SWIG_1) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
@@ -63740,17 +74721,17 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
     void *argp5 ;
     int res5 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 5) || (items > 5)) {
-      SWIG_croak("Usage: ScatterPlot_points(self,x,y,label,color);");
+      SWIG_croak("Usage: RPlot_points(self,x,y,label,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -63758,7 +74739,7 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63768,12 +74749,12 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
@@ -63784,7 +74765,7 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63794,12 +74775,12 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
@@ -63807,7 +74788,7 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -63815,16 +74796,16 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
     {
       res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -63836,9 +74817,9 @@ XS(_wrap_ScatterPlot_points__SWIG_1) {
 }
 
 
-XS(_wrap_ScatterPlot_points__SWIG_2) {
+XS(_wrap_RPlot_points__SWIG_2) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
@@ -63847,17 +74828,17 @@ XS(_wrap_ScatterPlot_points__SWIG_2) {
     std::vector< double > *v2 ;
     std::vector< double > *v3 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
-      SWIG_croak("Usage: ScatterPlot_points(self,x,y,label);");
+      SWIG_croak("Usage: RPlot_points(self,x,y,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -63865,7 +74846,7 @@ XS(_wrap_ScatterPlot_points__SWIG_2) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63875,12 +74856,12 @@ XS(_wrap_ScatterPlot_points__SWIG_2) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
@@ -63891,7 +74872,7 @@ XS(_wrap_ScatterPlot_points__SWIG_2) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63901,12 +74882,12 @@ XS(_wrap_ScatterPlot_points__SWIG_2) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
@@ -63914,13 +74895,13 @@ XS(_wrap_ScatterPlot_points__SWIG_2) {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_points" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -63932,9 +74913,9 @@ XS(_wrap_ScatterPlot_points__SWIG_2) {
 }
 
 
-XS(_wrap_ScatterPlot_points__SWIG_3) {
+XS(_wrap_RPlot_points__SWIG_3) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     void *argp1 = 0 ;
@@ -63942,17 +74923,17 @@ XS(_wrap_ScatterPlot_points__SWIG_3) {
     std::vector< double > *v2 ;
     std::vector< double > *v3 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: ScatterPlot_points(self,x,y);");
+      SWIG_croak("Usage: RPlot_points(self,x,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_points" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_points" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -63960,7 +74941,7 @@ XS(_wrap_ScatterPlot_points__SWIG_3) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63970,12 +74951,12 @@ XS(_wrap_ScatterPlot_points__SWIG_3) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 2 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
@@ -63986,7 +74967,7 @@ XS(_wrap_ScatterPlot_points__SWIG_3) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -63996,17 +74977,17 @@ XS(_wrap_ScatterPlot_points__SWIG_3) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_points. "
+              "RPlot_points. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_points. "
+        SWIG_croak("Type error in argument 3 of RPlot_points. "
           "Expected an array of ""double");
       }
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->points(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -64016,7 +74997,7 @@ XS(_wrap_ScatterPlot_points__SWIG_3) {
 }
 
 
-XS(_wrap_ScatterPlot_points) {
+XS(_wrap_RPlot_points) {
   dXSARGS;
   
   {
@@ -64029,7 +75010,7 @@ XS(_wrap_ScatterPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -64120,7 +75101,7 @@ XS(_wrap_ScatterPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -64219,7 +75200,7 @@ XS(_wrap_ScatterPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -64327,7 +75308,7 @@ XS(_wrap_ScatterPlot_points) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -64441,24 +75422,24 @@ XS(_wrap_ScatterPlot_points) {
   dispatch:
     switch(_index) {
     case 1:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_points__SWIG_3); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_points__SWIG_3); return;
     case 2:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_points__SWIG_2); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_points__SWIG_2); return;
     case 3:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_points__SWIG_1); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_points__SWIG_1); return;
     case 4:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_points__SWIG_0); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_points__SWIG_0); return;
     }
   }
   
-  croak("No matching function for overloaded 'ScatterPlot_points'");
+  croak("No matching function for overloaded 'RPlot_points'");
   XSRETURN(0);
 }
 
 
-XS(_wrap_ScatterPlot_line__SWIG_0) {
+XS(_wrap_RPlot_line__SWIG_0) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
@@ -64473,17 +75454,17 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
     double val6 ;
     int ecode6 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 6) || (items > 6)) {
-      SWIG_croak("Usage: ScatterPlot_line(self,x,y,label,color,stroke_width);");
+      SWIG_croak("Usage: RPlot_line(self,x,y,label,color,stroke_width);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -64491,7 +75472,7 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64501,12 +75482,12 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
@@ -64517,7 +75498,7 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64527,12 +75508,12 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
@@ -64540,7 +75521,7 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -64548,21 +75529,21 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
     {
       res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
     ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
     if (!SWIG_IsOK(ecode6)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "ScatterPlot_line" "', argument " "6"" of type '" "double""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_line" "', argument " "6"" of type '" "double""'");
     } 
     arg6 = static_cast< double >(val6);
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     
@@ -64576,9 +75557,9 @@ XS(_wrap_ScatterPlot_line__SWIG_0) {
 }
 
 
-XS(_wrap_ScatterPlot_line__SWIG_1) {
+XS(_wrap_RPlot_line__SWIG_1) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
@@ -64590,17 +75571,17 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
     void *argp5 ;
     int res5 = 0 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 5) || (items > 5)) {
-      SWIG_croak("Usage: ScatterPlot_line(self,x,y,label,color);");
+      SWIG_croak("Usage: RPlot_line(self,x,y,label,color);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -64608,7 +75589,7 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64618,12 +75599,12 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
@@ -64634,7 +75615,7 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64644,12 +75625,12 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
@@ -64657,7 +75638,7 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
@@ -64665,16 +75646,16 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
     {
       res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
       if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
       }  
       if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ScatterPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
       } else {
         arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
       }
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -64686,9 +75667,9 @@ XS(_wrap_ScatterPlot_line__SWIG_1) {
 }
 
 
-XS(_wrap_ScatterPlot_line__SWIG_2) {
+XS(_wrap_RPlot_line__SWIG_2) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     std::string arg4 ;
@@ -64697,17 +75678,17 @@ XS(_wrap_ScatterPlot_line__SWIG_2) {
     std::vector< double > *v2 ;
     std::vector< double > *v3 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 4) || (items > 4)) {
-      SWIG_croak("Usage: ScatterPlot_line(self,x,y,label);");
+      SWIG_croak("Usage: RPlot_line(self,x,y,label);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -64715,7 +75696,7 @@ XS(_wrap_ScatterPlot_line__SWIG_2) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64725,12 +75706,12 @@ XS(_wrap_ScatterPlot_line__SWIG_2) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
@@ -64741,7 +75722,7 @@ XS(_wrap_ScatterPlot_line__SWIG_2) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64751,12 +75732,12 @@ XS(_wrap_ScatterPlot_line__SWIG_2) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
@@ -64764,13 +75745,13 @@ XS(_wrap_ScatterPlot_line__SWIG_2) {
       std::string *ptr = (std::string *)0;
       int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
       if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ScatterPlot_line" "', argument " "4"" of type '" "std::string""'"); 
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_line" "', argument " "4"" of type '" "std::string""'"); 
       }
       arg4 = *ptr;
       if (SWIG_IsNewObj(res)) delete ptr;
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -64782,9 +75763,9 @@ XS(_wrap_ScatterPlot_line__SWIG_2) {
 }
 
 
-XS(_wrap_ScatterPlot_line__SWIG_3) {
+XS(_wrap_RPlot_line__SWIG_3) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     std::vector< double > arg2 ;
     std::vector< double > arg3 ;
     void *argp1 = 0 ;
@@ -64792,17 +75773,17 @@ XS(_wrap_ScatterPlot_line__SWIG_3) {
     std::vector< double > *v2 ;
     std::vector< double > *v3 ;
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: ScatterPlot_line(self,x,y);");
+      SWIG_croak("Usage: RPlot_line(self,x,y);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ScatterPlot_line" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_line" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     {
       if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
           SWIGTYPE_p_std__vectorT_double_t,1) != -1){
@@ -64810,7 +75791,7 @@ XS(_wrap_ScatterPlot_line__SWIG_3) {
       } else if (SvROK(ST(1))) {
         AV *av = (AV *)SvRV(ST(1));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64820,12 +75801,12 @@ XS(_wrap_ScatterPlot_line__SWIG_3) {
             (&arg2)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 2 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 2 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 2 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
@@ -64836,7 +75817,7 @@ XS(_wrap_ScatterPlot_line__SWIG_3) {
       } else if (SvROK(ST(2))) {
         AV *av = (AV *)SvRV(ST(2));
         if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
         SV **tv;
         SSize_t len = av_len(av) + 1;
@@ -64846,17 +75827,17 @@ XS(_wrap_ScatterPlot_line__SWIG_3) {
             (&arg3)->push_back((double)SwigSvToNumber(*tv));
           } else {
             SWIG_croak("Type error in argument 3 of "
-              "ScatterPlot_line. "
+              "RPlot_line. "
               "Expected an array of ""double");
           }
         }
       } else {
-        SWIG_croak("Type error in argument 3 of ScatterPlot_line. "
+        SWIG_croak("Type error in argument 3 of RPlot_line. "
           "Expected an array of ""double");
       }
     }
-    result = (datamunge::plot::ScatterPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, 0 | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
     
     XSRETURN(argvi);
     fail:;
@@ -64866,7 +75847,7 @@ XS(_wrap_ScatterPlot_line__SWIG_3) {
 }
 
 
-XS(_wrap_ScatterPlot_line) {
+XS(_wrap_RPlot_line) {
   dXSARGS;
   
   {
@@ -64879,7 +75860,7 @@ XS(_wrap_ScatterPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_1;
@@ -64970,7 +75951,7 @@ XS(_wrap_ScatterPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_2;
@@ -65069,7 +76050,7 @@ XS(_wrap_ScatterPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_3;
@@ -65177,7 +76158,7 @@ XS(_wrap_ScatterPlot_line) {
       int _v = 0;
       {
         void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__ScatterPlot, 0);
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
         _v = SWIG_CheckState(res);
       }
       if (!_v) goto check_4;
@@ -65291,32 +76272,6145 @@ XS(_wrap_ScatterPlot_line) {
   dispatch:
     switch(_index) {
     case 1:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_line__SWIG_3); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_line__SWIG_3); return;
     case 2:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_line__SWIG_2); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_line__SWIG_2); return;
     case 3:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_line__SWIG_1); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_line__SWIG_1); return;
     case 4:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_ScatterPlot_line__SWIG_0); return;
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_line__SWIG_0); return;
     }
   }
   
-  croak("No matching function for overloaded 'ScatterPlot_line'");
+  croak("No matching function for overloaded 'RPlot_line'");
   XSRETURN(0);
 }
 
 
-XS(_wrap_new_ScatterPlot) {
+XS(_wrap_RPlot_lines__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    double arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: RPlot_lines(self,x,y,label,color,stroke_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_lines" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_lines__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_lines(self,x,y,label,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_lines__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::string arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_lines(self,x,y,label);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_lines" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_lines__SWIG_3) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_lines(self,x,y);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_lines" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_lines. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_lines. "
+          "Expected an array of ""double");
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->lines(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_lines) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_lines__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_lines__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_lines__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_lines__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_lines'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_bars__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    double arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: RPlot_bars(self,x,y,label,color,bar_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_bars" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_bars__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_bars(self,x,y,label,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_bars__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::string arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_bars(self,x,y,label);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_bars" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_bars__SWIG_3) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_bars(self,x,y);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_bars" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_bars. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_bars. "
+          "Expected an array of ""double");
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_bars) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_bars__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_bars__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_bars__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_bars__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_bars'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_box__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    std::vector< double > arg8 ;
+    datamunge::plot::RGB arg9 ;
+    double arg10 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    std::vector< double > *v8 ;
+    void *argp9 ;
+    int res9 = 0 ;
+    double val10 ;
+    int ecode10 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 10) || (items > 10)) {
+      SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi,outliers,color,width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_box" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_box" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_box" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_box" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_box" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    {
+      if (SWIG_ConvertPtr(ST(7),(void **) &v8, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg8 = *v8;
+      } else if (SvROK(ST(7))) {
+        AV *av = (AV *)SvRV(ST(7));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 8 of RPlot_box. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg8)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 8 of "
+              "RPlot_box. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 8 of RPlot_box. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res9 = SWIG_ConvertPtr(ST(8), &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res9)) {
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp9) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+      }
+    }
+    ecode10 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(9), &val10);
+    if (!SWIG_IsOK(ecode10)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "RPlot_box" "', argument " "10"" of type '" "double""'");
+    } 
+    arg10 = static_cast< double >(val10);
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9),arg10);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_box__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    std::vector< double > arg8 ;
+    datamunge::plot::RGB arg9 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    std::vector< double > *v8 ;
+    void *argp9 ;
+    int res9 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 9) || (items > 9)) {
+      SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi,outliers,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_box" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_box" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_box" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_box" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_box" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    {
+      if (SWIG_ConvertPtr(ST(7),(void **) &v8, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg8 = *v8;
+      } else if (SvROK(ST(7))) {
+        AV *av = (AV *)SvRV(ST(7));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 8 of RPlot_box. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg8)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 8 of "
+              "RPlot_box. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 8 of RPlot_box. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res9 = SWIG_ConvertPtr(ST(8), &argp9, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res9)) {
+        SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp9) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg9 = *(reinterpret_cast< datamunge::plot::RGB * >(argp9));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8),SWIG_STD_MOVE(arg9));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_box__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    std::vector< double > arg8 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    std::vector< double > *v8 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 8) || (items > 8)) {
+      SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi,outliers);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_box" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_box" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_box" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_box" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_box" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    {
+      if (SWIG_ConvertPtr(ST(7),(void **) &v8, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg8 = *v8;
+      } else if (SvROK(ST(7))) {
+        AV *av = (AV *)SvRV(ST(7));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 8 of RPlot_box. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg8)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 8 of "
+              "RPlot_box. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 8 of RPlot_box. "
+          "Expected an array of ""double");
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7,SWIG_STD_MOVE(arg8));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_box__SWIG_3) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 7) || (items > 7)) {
+      SWIG_croak("Usage: RPlot_box(self,position,whisker_lo,q1,median,q3,whisker_hi);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_box" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_box" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_box" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_box" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_box" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_box" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_box" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    result = (datamunge::plot::RPlot *) &(arg1)->box(arg2,arg3,arg4,arg5,arg6,arg7);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_box) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 7) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 8) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(7),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(7))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(7));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 9) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(7),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(7))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(7));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(8), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+    if (items == 10) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(7),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(7))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(7));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(8), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(9), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_4;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 4;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_4:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_box__SWIG_3); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_box__SWIG_2); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_box__SWIG_1); return;
+    case 4:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_box__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_box'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_abline__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    datamunge::plot::RGB arg4 ;
+    double arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    double val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_abline(self,intercept,slope,color,stroke_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_abline" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    ecode5 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_abline" "', argument " "5"" of type '" "double""'");
+    } 
+    arg5 = static_cast< double >(val5);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4),arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    datamunge::plot::RGB arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_abline(self,intercept,slope,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_abline" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3,SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_abline(self,intercept,slope);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_abline" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline(arg2,arg3);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_abline'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_abline_h__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_abline_h(self,y_value,color,stroke_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_h" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_abline_h" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3),arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline_h__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_abline_h(self,y_value,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_h" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2,SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline_h__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_abline_h(self,y_value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_h" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_h" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_h(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline_h) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline_h__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline_h__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline_h__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_abline_h'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_abline_v__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_abline_v(self,x_value,color,stroke_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_v" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_abline_v" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3),arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline_v__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_abline_v(self,x_value,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_v" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2,SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline_v__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_abline_v(self,x_value);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_abline_v" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_abline_v" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    result = (datamunge::plot::RPlot *) &(arg1)->abline_v(arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_abline_v) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline_v__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline_v__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_abline_v__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_abline_v'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_qqline__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    datamunge::plot::RGB arg3 ;
+    double arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    double val4 ;
+    int ecode4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_qqline(self,data,color,stroke_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_qqline. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_qqline. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_qqline. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    ecode4 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), &val4);
+    if (!SWIG_IsOK(ecode4)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RPlot_qqline" "', argument " "4"" of type '" "double""'");
+    } 
+    arg4 = static_cast< double >(val4);
+    result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),arg4);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_qqline__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    datamunge::plot::RGB arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_qqline(self,data,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_qqline. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_qqline. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_qqline. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg3 = *(reinterpret_cast< datamunge::plot::RGB * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_qqline__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RPlot_qqline(self,data);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_qqline" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_qqline. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_qqline. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_qqline. "
+          "Expected an array of ""double");
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->qqline(SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_qqline) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(2), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(3), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_qqline__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_qqline__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_qqline__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_qqline'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_legend) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< std::string > arg2 ;
+    SwigValueWrapper< std::vector< datamunge::plot::RGB > > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< std::string > *v2 ;
+    void *argp3 ;
+    int res3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_legend(self,labels,colors);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_legend" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_std__string_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_legend. "
+          "Expected an array of ""std::string");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvPOK(*tv)) {
+            (&arg2)->push_back((std::string)SwigSvToString(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_legend. "
+              "Expected an array of ""std::string");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_legend. "
+          "Expected an array of ""std::string");
+      }
+    }
+    {
+      res3 = SWIG_ConvertPtr(ST(2), &argp3, SWIGTYPE_p_std__vectorT_datamunge__plot__RGB_t,  0 );
+      if (!SWIG_IsOK(res3)) {
+        SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'"); 
+      }  
+      if (!argp3) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::plot::RGB >""'");
+      } else {
+        arg3 = *(reinterpret_cast< std::vector< datamunge::plot::RGB > * >(argp3));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->legend(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_text__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    double arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    double val6 ;
+    int ecode6 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: RPlot_text(self,x,y,label,color,font_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_text" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_text" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_text" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
+    if (!SWIG_IsOK(ecode6)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "RPlot_text" "', argument " "6"" of type '" "double""'");
+    } 
+    arg6 = static_cast< double >(val6);
+    result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_text__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::string arg4 ;
+    datamunge::plot::RGB arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    void *argp5 ;
+    int res5 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_text(self,x,y,label,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_text" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_text" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_text" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    {
+      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res5)) {
+        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp5) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_text__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    double arg2 ;
+    double arg3 ;
+    std::string arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    double val3 ;
+    int ecode3 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_text(self,x,y,label);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_text" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_text" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    ecode3 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_text" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    {
+      std::string *ptr = (std::string *)0;
+      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
+      if (!SWIG_IsOK(res) || !ptr) {
+        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_text" "', argument " "4"" of type '" "std::string""'"); 
+      }
+      arg4 = *ptr;
+      if (SWIG_IsNewObj(res)) delete ptr;
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->text(arg2,arg3,SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_text) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(2), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_text__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_text__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_text__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_text'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_polygon__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    datamunge::plot::RGB arg4 ;
+    bool arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    bool val5 ;
+    int ecode5 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_polygon(self,x,y,color,filled);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_polygon. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_polygon. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_polygon. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_polygon. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_polygon. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_polygon. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    ecode5 = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(4), &val5);
+    if (!SWIG_IsOK(ecode5)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "RPlot_polygon" "', argument " "5"" of type '" "bool""'");
+    } 
+    arg5 = static_cast< bool >(val5);
+    result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),arg5);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_polygon__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    datamunge::plot::RGB arg4 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    void *argp4 ;
+    int res4 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: RPlot_polygon(self,x,y,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_polygon. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_polygon. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_polygon. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_polygon. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_polygon. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_polygon. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res4 = SWIG_ConvertPtr(ST(3), &argp4, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res4)) {
+        SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp4) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg4 = *(reinterpret_cast< datamunge::plot::RGB * >(argp4));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_polygon__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RPlot_polygon(self,x,y);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_polygon" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_polygon. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_polygon. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_polygon. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_polygon. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_polygon. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_polygon. "
+          "Expected an array of ""double");
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->polygon(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_polygon) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 3) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 4) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(3), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_bool SWIG_PERL_CALL_ARGS_2(ST(4), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_polygon__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_polygon__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_polygon__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_polygon'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RPlot_segments__SWIG_0) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::vector< double > arg4 ;
+    std::vector< double > arg5 ;
+    datamunge::plot::RGB arg6 ;
+    double arg7 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    std::vector< double > *v4 ;
+    std::vector< double > *v5 ;
+    void *argp6 ;
+    int res6 = 0 ;
+    double val7 ;
+    int ecode7 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 7) || (items > 7)) {
+      SWIG_croak("Usage: RPlot_segments(self,x0,y0,x1,y1,color,stroke_width);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg4 = *v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg4)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 4 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(4),(void **) &v5, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg5 = *v5;
+      } else if (SvROK(ST(4))) {
+        AV *av = (AV *)SvRV(ST(4));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 5 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg5)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 5 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 5 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp6) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      }
+    }
+    ecode7 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), &val7);
+    if (!SWIG_IsOK(ecode7)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "RPlot_segments" "', argument " "7"" of type '" "double""'");
+    } 
+    arg7 = static_cast< double >(val7);
+    result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6),arg7);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_segments__SWIG_1) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::vector< double > arg4 ;
+    std::vector< double > arg5 ;
+    datamunge::plot::RGB arg6 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    std::vector< double > *v4 ;
+    std::vector< double > *v5 ;
+    void *argp6 ;
+    int res6 = 0 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 6) || (items > 6)) {
+      SWIG_croak("Usage: RPlot_segments(self,x0,y0,x1,y1,color);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg4 = *v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg4)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 4 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(4),(void **) &v5, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg5 = *v5;
+      } else if (SvROK(ST(4))) {
+        AV *av = (AV *)SvRV(ST(4));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 5 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg5)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 5 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 5 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      res6 = SWIG_ConvertPtr(ST(5), &argp6, SWIGTYPE_p_datamunge__plot__RGB,  0 );
+      if (!SWIG_IsOK(res6)) {
+        SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'"); 
+      }  
+      if (!argp6) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::plot::RGB""'");
+      } else {
+        arg6 = *(reinterpret_cast< datamunge::plot::RGB * >(argp6));
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),SWIG_STD_MOVE(arg6));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_segments__SWIG_2) {
+  {
+    datamunge::plot::RPlot *arg1 = 0 ;
+    std::vector< double > arg2 ;
+    std::vector< double > arg3 ;
+    std::vector< double > arg4 ;
+    std::vector< double > arg5 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    std::vector< double > *v2 ;
+    std::vector< double > *v3 ;
+    std::vector< double > *v4 ;
+    std::vector< double > *v5 ;
+    int argvi = 0;
+    datamunge::plot::RPlot *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 5) || (items > 5)) {
+      SWIG_croak("Usage: RPlot_segments(self,x0,y0,x1,y1);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_segments" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg2 = *v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg2)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 2 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg3 = *v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg3)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 3 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg4 = *v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg4)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 4 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(4),(void **) &v5, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
+        arg5 = *v5;
+      } else if (SvROK(ST(4))) {
+        AV *av = (AV *)SvRV(ST(4));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 5 of RPlot_segments. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            (&arg5)->push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 5 of "
+              "RPlot_segments. "
+              "Expected an array of ""double");
+          }
+        }
+      } else {
+        SWIG_croak("Type error in argument 5 of RPlot_segments. "
+          "Expected an array of ""double");
+      }
+    }
+    result = (datamunge::plot::RPlot *) &(arg1)->segments(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RPlot_segments) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 5) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(3),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(3))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(3));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(4),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(4))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(4));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 6) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(3),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(3))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(3));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(4),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(4))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(4));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+    if (items == 7) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__RPlot, 0);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(1))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(1));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(2))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(2));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(3),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(3))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(3));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(4),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(4))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(4));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(5), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(6), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_3;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 3;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_3:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_segments__SWIG_2); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_segments__SWIG_1); return;
+    case 3:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_RPlot_segments__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'RPlot_segments'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_new_RPlot) {
   {
     int argvi = 0;
-    datamunge::plot::ScatterPlot *result = 0 ;
+    datamunge::plot::RPlot *result = 0 ;
     dXSARGS;
     
     if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: new_ScatterPlot();");
+      SWIG_croak("Usage: new_RPlot();");
     }
-    result = (datamunge::plot::ScatterPlot *)new datamunge::plot::ScatterPlot();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RPlot *)new datamunge::plot::RPlot();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RPlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -65324,22 +82418,22 @@ XS(_wrap_new_ScatterPlot) {
 }
 
 
-XS(_wrap_delete_ScatterPlot) {
+XS(_wrap_delete_RPlot) {
   {
-    datamunge::plot::ScatterPlot *arg1 = 0 ;
+    datamunge::plot::RPlot *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: delete_ScatterPlot(self);");
+      SWIG_croak("Usage: delete_RPlot(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__ScatterPlot, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RPlot, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ScatterPlot" "', argument " "1"" of type '" "datamunge::plot::ScatterPlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RPlot" "', argument " "1"" of type '" "datamunge::plot::RPlot *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::ScatterPlot * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RPlot * >(argp1);
     delete arg1;
     ST(argvi) = &PL_sv_undef;
     
@@ -65351,137 +82445,37 @@ XS(_wrap_delete_ScatterPlot) {
 }
 
 
-XS(_wrap_LinePlot_create) {
+XS(_wrap_RLayout_create) {
   {
+    std::size_t arg1 ;
+    std::size_t arg2 ;
+    size_t val1 ;
+    int ecode1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
     int argvi = 0;
-    datamunge::plot::LinePlot result;
+    datamunge::plot::RLayout result;
     dXSARGS;
     
-    if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: LinePlot_create();");
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_create(rows,cols);");
     }
-    result = datamunge::plot::LinePlot::create();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::LinePlot(result)), SWIGTYPE_p_datamunge__plot__LinePlot, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
-    XSRETURN(argvi);
-    fail:;
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_LinePlot_line__SWIG_0) {
-  {
-    datamunge::plot::LinePlot *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    std::string arg4 ;
-    datamunge::plot::RGB arg5 ;
-    double arg6 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
-    void *argp5 ;
-    int res5 = 0 ;
-    double val6 ;
-    int ecode6 = 0 ;
-    int argvi = 0;
-    datamunge::plot::LinePlot *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 6) || (items > 6)) {
-      SWIG_croak("Usage: LinePlot_line(self,x,y,label,color,stroke_width);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      std::string *ptr = (std::string *)0;
-      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
-      if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "4"" of type '" "std::string""'"); 
-      }
-      arg4 = *ptr;
-      if (SWIG_IsNewObj(res)) delete ptr;
-    }
-    {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
-      if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
-      }  
-      if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
-      } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
-      }
-    }
-    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
-    if (!SWIG_IsOK(ecode6)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "LinePlot_line" "', argument " "6"" of type '" "double""'");
+    ecode1 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "RLayout_create" "', argument " "1"" of type '" "std::size_t""'");
     } 
-    arg6 = static_cast< double >(val6);
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 | SWIG_SHADOW); argvi++ ;
-    
+    arg1 = static_cast< std::size_t >(val1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RLayout_create" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    result = datamunge::plot::RLayout::create(SWIG_STD_MOVE(arg1),SWIG_STD_MOVE(arg2));
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::RLayout(result)), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
     fail:;
-    
     
     
   }
@@ -65489,105 +82483,36 @@ XS(_wrap_LinePlot_line__SWIG_0) {
 }
 
 
-XS(_wrap_LinePlot_line__SWIG_1) {
+XS(_wrap_RLayout_add) {
   {
-    datamunge::plot::LinePlot *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    std::string arg4 ;
-    datamunge::plot::RGB arg5 ;
+    datamunge::plot::RLayout *arg1 = 0 ;
+    datamunge::plot::Plot *arg2 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
-    void *argp5 ;
-    int res5 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
     int argvi = 0;
-    datamunge::plot::LinePlot *result = 0 ;
+    datamunge::plot::RLayout *result = 0 ;
     dXSARGS;
     
-    if ((items < 5) || (items > 5)) {
-      SWIG_croak("Usage: LinePlot_line(self,x,y,label,color);");
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_add(self,panel);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_add" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__plot__Plot,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::plot::Plot const &""'"); 
     }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_add" "', argument " "2"" of type '" "datamunge::plot::Plot const &""'"); 
     }
-    {
-      std::string *ptr = (std::string *)0;
-      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
-      if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "4"" of type '" "std::string""'"); 
-      }
-      arg4 = *ptr;
-      if (SWIG_IsNewObj(res)) delete ptr;
-    }
-    {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
-      if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
-      }  
-      if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LinePlot_line" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
-      } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
-      }
-    }
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 | SWIG_SHADOW); argvi++ ;
+    arg2 = reinterpret_cast< datamunge::plot::Plot * >(argp2);
+    result = (datamunge::plot::RLayout *) &(arg1)->add((datamunge::plot::Plot const &)*arg2);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 | SWIG_SHADOW); argvi++ ;
     
     
     XSRETURN(argvi);
@@ -65599,682 +82524,149 @@ XS(_wrap_LinePlot_line__SWIG_1) {
 }
 
 
-XS(_wrap_LinePlot_line__SWIG_2) {
+XS(_wrap_RLayout_size) {
   {
-    datamunge::plot::LinePlot *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    std::string arg4 ;
+    datamunge::plot::RLayout *arg1 = 0 ;
+    std::size_t arg2 ;
+    std::size_t arg3 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    size_t val3 ;
+    int ecode3 = 0 ;
     int argvi = 0;
-    datamunge::plot::LinePlot *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 4) || (items > 4)) {
-      SWIG_croak("Usage: LinePlot_line(self,x,y,label);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      std::string *ptr = (std::string *)0;
-      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
-      if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinePlot_line" "', argument " "4"" of type '" "std::string""'"); 
-      }
-      arg4 = *ptr;
-      if (SWIG_IsNewObj(res)) delete ptr;
-    }
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 | SWIG_SHADOW); argvi++ ;
-    
-    
-    XSRETURN(argvi);
-    fail:;
-    
-    
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_LinePlot_line__SWIG_3) {
-  {
-    datamunge::plot::LinePlot *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
-    int argvi = 0;
-    datamunge::plot::LinePlot *result = 0 ;
+    datamunge::plot::RLayout *result = 0 ;
     dXSARGS;
     
     if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: LinePlot_line(self,x,y);");
+      SWIG_croak("Usage: RLayout_size(self,width,height);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LinePlot, 0 |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinePlot_line" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_size" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "LinePlot_line. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of LinePlot_line. "
-          "Expected an array of ""double");
-      }
-    }
-    result = (datamunge::plot::LinePlot *) &(arg1)->line(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, 0 | SWIG_SHADOW); argvi++ ;
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RLayout_size" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(2), &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RLayout_size" "', argument " "3"" of type '" "std::size_t""'");
+    } 
+    arg3 = static_cast< std::size_t >(val3);
+    result = (datamunge::plot::RLayout *) &(arg1)->size(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, 0 | SWIG_SHADOW); argvi++ ;
+    
+    
     
     XSRETURN(argvi);
     fail:;
+    
+    
     
   }
   SWIG_croak_null();
 }
 
 
-XS(_wrap_LinePlot_line) {
-  dXSARGS;
-  
+XS(_wrap_RLayout_save) {
   {
-    unsigned long _index = 0;
-    SWIG_TypeRank _rank = 0; 
-    if (items == 3) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_1;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_1;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_1;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 1;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_1:
-    
-    if (items == 4) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 2;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_2:
-    
-    if (items == 5) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 3;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_3:
-    
-    if (items == 6) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__LinePlot, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
-          _v = SWIG_CheckState(res);
-        }
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 4;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_4:
-    
-  dispatch:
-    switch(_index) {
-    case 1:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LinePlot_line__SWIG_3); return;
-    case 2:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LinePlot_line__SWIG_2); return;
-    case 3:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LinePlot_line__SWIG_1); return;
-    case 4:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_LinePlot_line__SWIG_0); return;
-    }
-  }
-  
-  croak("No matching function for overloaded 'LinePlot_line'");
-  XSRETURN(0);
-}
-
-
-XS(_wrap_new_LinePlot) {
-  {
-    int argvi = 0;
-    datamunge::plot::LinePlot *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: new_LinePlot();");
-    }
-    result = (datamunge::plot::LinePlot *)new datamunge::plot::LinePlot();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__LinePlot, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
-    XSRETURN(argvi);
-    fail:;
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_delete_LinePlot) {
-  {
-    datamunge::plot::LinePlot *arg1 = 0 ;
+    datamunge::plot::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
     int argvi = 0;
     dXSARGS;
     
-    if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: delete_LinePlot(self);");
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_save(self,path);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__LinePlot, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LinePlot" "', argument " "1"" of type '" "datamunge::plot::LinePlot *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save" "', argument " "1"" of type '" "datamunge::plot::RLayout const *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::LinePlot * >(argp1);
-    delete arg1;
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::plot::RLayout const *)arg1)->save((std::string const &)*arg2);
     ST(argvi) = &PL_sv_undef;
     
+    if (SWIG_IsNewObj(res2)) delete arg2;
     XSRETURN(argvi);
     fail:;
     
+    if (SWIG_IsNewObj(res2)) delete arg2;
   }
   SWIG_croak_null();
 }
 
 
-XS(_wrap_BarChart_create) {
+XS(_wrap_RLayout_save_svg) {
+  {
+    datamunge::plot::RLayout *arg1 = 0 ;
+    std::string *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int res2 = SWIG_OLDOBJ ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RLayout_save_svg(self,path);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RLayout_save_svg" "', argument " "1"" of type '" "datamunge::plot::RLayout const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
+    {
+      std::string *ptr = (std::string *)0;
+      res2 = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(1), &ptr);
+      if (!SWIG_IsOK(res2)) {
+        SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RLayout_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RLayout_save_svg" "', argument " "2"" of type '" "std::string const &""'"); 
+      }
+      arg2 = ptr;
+    }
+    ((datamunge::plot::RLayout const *)arg1)->save_svg((std::string const &)*arg2);
+    ST(argvi) = &PL_sv_undef;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+    XSRETURN(argvi);
+    fail:;
+    
+    if (SWIG_IsNewObj(res2)) delete arg2;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RLayout) {
   {
     int argvi = 0;
-    datamunge::plot::BarChart result;
+    datamunge::plot::RLayout *result = 0 ;
     dXSARGS;
     
     if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: BarChart_create();");
+      SWIG_croak("Usage: new_RLayout();");
     }
-    result = datamunge::plot::BarChart::create();
-    ST(argvi) = SWIG_NewPointerObj((new datamunge::plot::BarChart(result)), SWIGTYPE_p_datamunge__plot__BarChart, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    result = (datamunge::plot::RLayout *)new datamunge::plot::RLayout();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__RLayout, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
     XSRETURN(argvi);
     fail:;
   }
@@ -66282,890 +82674,22 @@ XS(_wrap_BarChart_create) {
 }
 
 
-XS(_wrap_BarChart_bars__SWIG_0) {
+XS(_wrap_delete_RLayout) {
   {
-    datamunge::plot::BarChart *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    std::string arg4 ;
-    datamunge::plot::RGB arg5 ;
-    double arg6 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
-    void *argp5 ;
-    int res5 = 0 ;
-    double val6 ;
-    int ecode6 = 0 ;
-    int argvi = 0;
-    datamunge::plot::BarChart *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 6) || (items > 6)) {
-      SWIG_croak("Usage: BarChart_bars(self,x,y,label,color,bar_width);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      std::string *ptr = (std::string *)0;
-      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
-      if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "4"" of type '" "std::string""'"); 
-      }
-      arg4 = *ptr;
-      if (SWIG_IsNewObj(res)) delete ptr;
-    }
-    {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
-      if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
-      }  
-      if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
-      } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
-      }
-    }
-    ecode6 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), &val6);
-    if (!SWIG_IsOK(ecode6)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "BarChart_bars" "', argument " "6"" of type '" "double""'");
-    } 
-    arg6 = static_cast< double >(val6);
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5),arg6);
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 | SWIG_SHADOW); argvi++ ;
-    
-    
-    
-    XSRETURN(argvi);
-    fail:;
-    
-    
-    
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_BarChart_bars__SWIG_1) {
-  {
-    datamunge::plot::BarChart *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    std::string arg4 ;
-    datamunge::plot::RGB arg5 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
-    void *argp5 ;
-    int res5 = 0 ;
-    int argvi = 0;
-    datamunge::plot::BarChart *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 5) || (items > 5)) {
-      SWIG_croak("Usage: BarChart_bars(self,x,y,label,color);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      std::string *ptr = (std::string *)0;
-      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
-      if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "4"" of type '" "std::string""'"); 
-      }
-      arg4 = *ptr;
-      if (SWIG_IsNewObj(res)) delete ptr;
-    }
-    {
-      res5 = SWIG_ConvertPtr(ST(4), &argp5, SWIGTYPE_p_datamunge__plot__RGB,  0 );
-      if (!SWIG_IsOK(res5)) {
-        SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'"); 
-      }  
-      if (!argp5) {
-        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BarChart_bars" "', argument " "5"" of type '" "datamunge::plot::RGB""'");
-      } else {
-        arg5 = *(reinterpret_cast< datamunge::plot::RGB * >(argp5));
-      }
-    }
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4),SWIG_STD_MOVE(arg5));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 | SWIG_SHADOW); argvi++ ;
-    
-    
-    XSRETURN(argvi);
-    fail:;
-    
-    
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_BarChart_bars__SWIG_2) {
-  {
-    datamunge::plot::BarChart *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    std::string arg4 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
-    int argvi = 0;
-    datamunge::plot::BarChart *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 4) || (items > 4)) {
-      SWIG_croak("Usage: BarChart_bars(self,x,y,label);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      std::string *ptr = (std::string *)0;
-      int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), &ptr);
-      if (!SWIG_IsOK(res) || !ptr) {
-        SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BarChart_bars" "', argument " "4"" of type '" "std::string""'"); 
-      }
-      arg4 = *ptr;
-      if (SWIG_IsNewObj(res)) delete ptr;
-    }
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3),SWIG_STD_MOVE(arg4));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 | SWIG_SHADOW); argvi++ ;
-    
-    
-    XSRETURN(argvi);
-    fail:;
-    
-    
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_BarChart_bars__SWIG_3) {
-  {
-    datamunge::plot::BarChart *arg1 = 0 ;
-    std::vector< double > arg2 ;
-    std::vector< double > arg3 ;
-    void *argp1 = 0 ;
-    int res1 = 0 ;
-    std::vector< double > *v2 ;
-    std::vector< double > *v3 ;
-    int argvi = 0;
-    datamunge::plot::BarChart *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 3) || (items > 3)) {
-      SWIG_croak("Usage: BarChart_bars(self,x,y);");
-    }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__BarChart, 0 |  0 );
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BarChart_bars" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
-    }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
-    {
-      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg2 = *v2;
-      } else if (SvROK(ST(1))) {
-        AV *av = (AV *)SvRV(ST(1));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg2)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 2 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 2 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    {
-      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
-          SWIGTYPE_p_std__vectorT_double_t,1) != -1){
-        arg3 = *v3;
-      } else if (SvROK(ST(2))) {
-        AV *av = (AV *)SvRV(ST(2));
-        if (SvTYPE(av) != SVt_PVAV)
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-        SV **tv;
-        SSize_t len = av_len(av) + 1;
-        for (int i=0; i<len; i++) {
-          tv = av_fetch(av, i, 0);
-          if (SvNIOK(*tv)) {
-            (&arg3)->push_back((double)SwigSvToNumber(*tv));
-          } else {
-            SWIG_croak("Type error in argument 3 of "
-              "BarChart_bars. "
-              "Expected an array of ""double");
-          }
-        }
-      } else {
-        SWIG_croak("Type error in argument 3 of BarChart_bars. "
-          "Expected an array of ""double");
-      }
-    }
-    result = (datamunge::plot::BarChart *) &(arg1)->bars(SWIG_STD_MOVE(arg2),SWIG_STD_MOVE(arg3));
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, 0 | SWIG_SHADOW); argvi++ ;
-    
-    XSRETURN(argvi);
-    fail:;
-    
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_BarChart_bars) {
-  dXSARGS;
-  
-  {
-    unsigned long _index = 0;
-    SWIG_TypeRank _rank = 0; 
-    if (items == 3) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_1;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_1;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_1;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 1;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_1:
-    
-    if (items == 4) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_2;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 2;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_2:
-    
-    if (items == 5) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_3;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 3;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_3:
-    
-    if (items == 6) {
-      SWIG_TypeRank _ranki = 0;
-      SWIG_TypeRank _rankm = 0;
-      SWIG_TypeRank _pi = 1;
-      int _v = 0;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__plot__BarChart, 0);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(1),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(1))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(1));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          {
-            /* wrapped vector? */
-            std::vector< double >* v;
-            if (SWIG_ConvertPtr(ST(2),(void **) &v, 
-                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
-              _v = 1;
-            } else if (SvROK(ST(2))) {
-              /* native sequence? */
-              AV *av = (AV *)SvRV(ST(2));
-              if (SvTYPE(av) == SVt_PVAV) {
-                SSize_t len = av_len(av) + 1;
-                if (len == 0) {
-                  /* an empty sequence can be of any type */
-                  _v = 1;
-                } else {
-                  /* check the first element only */
-                  SV **tv = av_fetch(av, 0, 0);
-                  if (SvNIOK(*tv))
-                  _v = 1;
-                  else
-                  _v = 0;
-                }
-              }
-            } else {
-              _v = 0;
-            }
-          }
-        }
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        int res = SWIG_AsPtr_std_string SWIG_PERL_CALL_ARGS_2(ST(3), (std::string**)(0));
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        void *vptr = 0;
-        int res = SWIG_ConvertPtr(ST(4), &vptr, SWIGTYPE_p_datamunge__plot__RGB, SWIG_POINTER_NO_NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      {
-        {
-          int res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(5), NULL);
-          _v = SWIG_CheckState(res);
-        }
-      }
-      if (!_v) goto check_4;
-      _ranki += _v*_pi;
-      _rankm += _pi;
-      _pi *= SWIG_MAXCASTRANK;
-      if (!_index || (_ranki < _rank)) {
-        _rank = _ranki; _index = 4;
-        if (_rank == _rankm) goto dispatch;
-      }
-    }
-  check_4:
-    
-  dispatch:
-    switch(_index) {
-    case 1:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_BarChart_bars__SWIG_3); return;
-    case 2:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_BarChart_bars__SWIG_2); return;
-    case 3:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_BarChart_bars__SWIG_1); return;
-    case 4:
-      PUSHMARK(MARK); SWIG_CALLXS(_wrap_BarChart_bars__SWIG_0); return;
-    }
-  }
-  
-  croak("No matching function for overloaded 'BarChart_bars'");
-  XSRETURN(0);
-}
-
-
-XS(_wrap_new_BarChart) {
-  {
-    int argvi = 0;
-    datamunge::plot::BarChart *result = 0 ;
-    dXSARGS;
-    
-    if ((items < 0) || (items > 0)) {
-      SWIG_croak("Usage: new_BarChart();");
-    }
-    result = (datamunge::plot::BarChart *)new datamunge::plot::BarChart();
-    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__plot__BarChart, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
-    XSRETURN(argvi);
-    fail:;
-  }
-  SWIG_croak_null();
-}
-
-
-XS(_wrap_delete_BarChart) {
-  {
-    datamunge::plot::BarChart *arg1 = 0 ;
+    datamunge::plot::RLayout *arg1 = 0 ;
     void *argp1 = 0 ;
     int res1 = 0 ;
     int argvi = 0;
     dXSARGS;
     
     if ((items < 1) || (items > 1)) {
-      SWIG_croak("Usage: delete_BarChart(self);");
+      SWIG_croak("Usage: delete_RLayout(self);");
     }
-    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__BarChart, SWIG_POINTER_DISOWN |  0 );
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__plot__RLayout, SWIG_POINTER_DISOWN |  0 );
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_BarChart" "', argument " "1"" of type '" "datamunge::plot::BarChart *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RLayout" "', argument " "1"" of type '" "datamunge::plot::RLayout *""'"); 
     }
-    arg1 = reinterpret_cast< datamunge::plot::BarChart * >(argp1);
+    arg1 = reinterpret_cast< datamunge::plot::RLayout * >(argp1);
     delete arg1;
     ST(argvi) = &PL_sv_undef;
     
@@ -78588,6 +94112,456 @@ XS(_wrap_shapiro_francia_test) {
 }
 
 
+XS(_wrap_p_adjust__SWIG_0) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    datamunge::stats::PAdjustMethod arg2 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: p_adjust(p,method);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of p_adjust. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "p_adjust. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of p_adjust. "
+          "Expected an array of ""double");
+      }
+    }
+    ecode2 = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "p_adjust" "', argument " "2"" of type '" "datamunge::stats::PAdjustMethod""'");
+    } 
+    arg2 = static_cast< datamunge::stats::PAdjustMethod >(val2);
+    result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1,arg2);
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_p_adjust__SWIG_1) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: p_adjust(p);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of p_adjust. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "p_adjust. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of p_adjust. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::stats::p_adjust((std::vector< double > const &)*arg1);
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_p_adjust) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_1;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_1:
+    
+    if (items == 2) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        {
+          {
+            /* wrapped vector? */
+            std::vector< double >* v;
+            if (SWIG_ConvertPtr(ST(0),(void **) &v, 
+                SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+              _v = 1;
+            } else if (SvROK(ST(0))) {
+              /* native sequence? */
+              AV *av = (AV *)SvRV(ST(0));
+              if (SvTYPE(av) == SVt_PVAV) {
+                SSize_t len = av_len(av) + 1;
+                if (len == 0) {
+                  /* an empty sequence can be of any type */
+                  _v = 1;
+                } else {
+                  /* check the first element only */
+                  SV **tv = av_fetch(av, 0, 0);
+                  if (SvNIOK(*tv))
+                  _v = 1;
+                  else
+                  _v = 0;
+                }
+              }
+            } else {
+              _v = 0;
+            }
+          }
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      {
+        {
+          int res = SWIG_AsVal_int SWIG_PERL_CALL_ARGS_2(ST(1), NULL);
+          _v = SWIG_CheckState(res);
+        }
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_p_adjust__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_p_adjust__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'p_adjust'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_westfall_young_adjust) {
+  {
+    std::vector< std::vector< double > > *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    std::vector< std::vector< double > > temp1 ;
+    std::vector< std::vector< double > > *v1 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: westfall_young_adjust(resampled_p,sorted_p);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of westfall_young_adjust. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            temp1.push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "westfall_young_adjust. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of westfall_young_adjust. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of westfall_young_adjust. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "westfall_young_adjust. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of westfall_young_adjust. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::stats::westfall_young_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_romano_wolf_adjust) {
+  {
+    std::vector< std::vector< double > > *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    std::vector< std::vector< double > > temp1 ;
+    std::vector< std::vector< double > > *v1 ;
+    std::vector< double > temp2 ;
+    std::vector< double > *v2 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: romano_wolf_adjust(resampled_p,sorted_p);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of romano_wolf_adjust. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            temp1.push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "romano_wolf_adjust. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of romano_wolf_adjust. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(1),(void **) &v2, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg2 = v2;
+      } else if (SvROK(ST(1))) {
+        AV *av = (AV *)SvRV(ST(1));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 2 of romano_wolf_adjust. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp2.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 2 of "
+              "romano_wolf_adjust. "
+              "Expected an array of ""double");
+          }
+        }
+        arg2 = &temp2;
+      } else {
+        SWIG_croak("Type error in argument 2 of romano_wolf_adjust. "
+          "Expected an array of ""double");
+      }
+    }
+    result = datamunge::stats::romano_wolf_adjust((std::vector< std::vector< double > > const &)*arg1,(std::vector< double > const &)*arg2);
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_delete_ArbitraryFunction) {
   {
     datamunge::optim::ArbitraryFunction *arg1 = 0 ;
@@ -87951,6 +103925,2337 @@ XS(_wrap_delete_NUTS) {
 }
 
 
+XS(_wrap_RWMOptions_num_samples_set) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMOptions_num_samples_set(self,num_samples);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_samples_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_num_samples_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_samples = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_num_samples_get) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMOptions_num_samples_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_samples_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result =  ((arg1)->num_samples);
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_num_warmup_set) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMOptions_num_warmup_set(self,num_warmup);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_warmup_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_num_warmup_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_warmup = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_num_warmup_get) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMOptions_num_warmup_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_num_warmup_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result =  ((arg1)->num_warmup);
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_initial_step_size_set) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMOptions_initial_step_size_set(self,initial_step_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_initial_step_size_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_initial_step_size_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->initial_step_size = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_initial_step_size_get) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMOptions_initial_step_size_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_initial_step_size_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result = (double) ((arg1)->initial_step_size);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_target_accept_rate_set) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMOptions_target_accept_rate_set(self,target_accept_rate);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_target_accept_rate_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_target_accept_rate_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->target_accept_rate = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_target_accept_rate_get) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMOptions_target_accept_rate_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_target_accept_rate_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result = (double) ((arg1)->target_accept_rate);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_seed_set) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    std::uint64_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMOptions_seed_set(self,seed);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_seed_set" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    ecode2 = SWIG_AsVal_unsigned_SS_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMOptions_seed_set" "', argument " "2"" of type '" "std::uint64_t""'");
+    } 
+    arg2 = static_cast< std::uint64_t >(val2);
+    if (arg1) (arg1)->seed = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMOptions_seed_get) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::uint64_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMOptions_seed_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMOptions_seed_get" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    result = (std::uint64_t) ((arg1)->seed);
+    ST(argvi) = SWIG_From_unsigned_SS_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< unsigned long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RWMOptions) {
+  {
+    int argvi = 0;
+    datamunge::bayes::RWMOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_RWMOptions();");
+    }
+    result = (datamunge::bayes::RWMOptions *)new datamunge::bayes::RWMOptions();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RWMOptions, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_RWMOptions) {
+  {
+    datamunge::bayes::RWMOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_RWMOptions(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMOptions, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RWMOptions" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMResult_samples_set) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    std::vector< std::vector< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMResult_samples_set(self,samples);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_samples_set" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RWMResult_samples_set" "', argument " "2"" of type '" "std::vector< std::vector< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double > > * >(argp2);
+    if (arg1) (arg1)->samples = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMResult_samples_get) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::vector< double > > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMResult_samples_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_samples_get" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMResult_accept_rate_set) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMResult_accept_rate_set(self,accept_rate);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_accept_rate_set" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMResult_accept_rate_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->accept_rate = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMResult_accept_rate_get) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMResult_accept_rate_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_accept_rate_get" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    result = (double) ((arg1)->accept_rate);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMResult_final_step_size_set) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: RWMResult_final_step_size_set(self,final_step_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_final_step_size_set" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RWMResult_final_step_size_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->final_step_size = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_RWMResult_final_step_size_get) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: RWMResult_final_step_size_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RWMResult_final_step_size_get" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    result = (double) ((arg1)->final_step_size);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RWMResult) {
+  {
+    int argvi = 0;
+    datamunge::bayes::RWMResult *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_RWMResult();");
+    }
+    result = (datamunge::bayes::RWMResult *)new datamunge::bayes::RWMResult();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RWMResult, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_RWMResult) {
+  {
+    datamunge::bayes::RWMResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_RWMResult(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RWMResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RWMResult" "', argument " "1"" of type '" "datamunge::bayes::RWMResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RWMResult * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RandomWalkMetropolis__SWIG_0) {
+  {
+    datamunge::bayes::RWMOptions arg1 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_RandomWalkMetropolis(options);");
+    }
+    {
+      res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__bayes__RWMOptions,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_RandomWalkMetropolis" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_RandomWalkMetropolis" "', argument " "1"" of type '" "datamunge::bayes::RWMOptions""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::bayes::RWMOptions * >(argp1));
+      }
+    }
+    result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RandomWalkMetropolis__SWIG_1) {
+  {
+    int argvi = 0;
+    datamunge::bayes::RandomWalkMetropolis *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_RandomWalkMetropolis();");
+    }
+    result = (datamunge::bayes::RandomWalkMetropolis *)new datamunge::bayes::RandomWalkMetropolis();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_RandomWalkMetropolis) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 0) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__bayes__RWMOptions, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RandomWalkMetropolis__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_RandomWalkMetropolis__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_RandomWalkMetropolis'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_RandomWalkMetropolis_sample) {
+  {
+    datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+    datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    int argvi = 0;
+    datamunge::bayes::RWMResult result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: RandomWalkMetropolis_sample(self,log_posterior,initial_params);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomWalkMetropolis_sample" "', argument " "1"" of type '" "datamunge::bayes::RandomWalkMetropolis const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RandomWalkMetropolis * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RandomWalkMetropolis_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RandomWalkMetropolis_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of RandomWalkMetropolis_sample. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "RandomWalkMetropolis_sample. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of RandomWalkMetropolis_sample. "
+          "Expected an array of ""double");
+      }
+    }
+    result = ((datamunge::bayes::RandomWalkMetropolis const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::bayes::RWMResult(result)), SWIGTYPE_p_datamunge__bayes__RWMResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_RandomWalkMetropolis) {
+  {
+    datamunge::bayes::RandomWalkMetropolis *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_RandomWalkMetropolis(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RandomWalkMetropolis" "', argument " "1"" of type '" "datamunge::bayes::RandomWalkMetropolis *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::RandomWalkMetropolis * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_num_samples_set) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsOptions_num_samples_set(self,num_samples);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_samples_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsOptions_num_samples_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_samples = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_num_samples_get) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsOptions_num_samples_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_samples_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result =  ((arg1)->num_samples);
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_num_warmup_set) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsOptions_num_warmup_set(self,num_warmup);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_warmup_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsOptions_num_warmup_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_warmup = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_num_warmup_get) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsOptions_num_warmup_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_num_warmup_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result =  ((arg1)->num_warmup);
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_initial_step_sizes_set) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsOptions_initial_step_sizes_set(self,initial_step_sizes);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_initial_step_sizes_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsOptions_initial_step_sizes_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->initial_step_sizes = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_initial_step_sizes_get) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsOptions_initial_step_sizes_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_initial_step_sizes_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->initial_step_sizes);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_target_accept_rate_set) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsOptions_target_accept_rate_set(self,target_accept_rate);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_target_accept_rate_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsOptions_target_accept_rate_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->target_accept_rate = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_target_accept_rate_get) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsOptions_target_accept_rate_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_target_accept_rate_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result = (double) ((arg1)->target_accept_rate);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_seed_set) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    std::uint64_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsOptions_seed_set(self,seed);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_seed_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    ecode2 = SWIG_AsVal_unsigned_SS_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsOptions_seed_set" "', argument " "2"" of type '" "std::uint64_t""'");
+    } 
+    arg2 = static_cast< std::uint64_t >(val2);
+    if (arg1) (arg1)->seed = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsOptions_seed_get) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::uint64_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsOptions_seed_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsOptions_seed_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    result = (std::uint64_t) ((arg1)->seed);
+    ST(argvi) = SWIG_From_unsigned_SS_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< unsigned long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GibbsOptions) {
+  {
+    int argvi = 0;
+    datamunge::bayes::GibbsOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_GibbsOptions();");
+    }
+    result = (datamunge::bayes::GibbsOptions *)new datamunge::bayes::GibbsOptions();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsOptions, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_GibbsOptions) {
+  {
+    datamunge::bayes::GibbsOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_GibbsOptions(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsOptions, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsOptions" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsResult_samples_set) {
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    std::vector< std::vector< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsResult_samples_set(self,samples);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_samples_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsResult_samples_set" "', argument " "2"" of type '" "std::vector< std::vector< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double > > * >(argp2);
+    if (arg1) (arg1)->samples = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsResult_samples_get) {
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::vector< double > > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsResult_samples_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_samples_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsResult_accept_rates_set) {
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsResult_accept_rates_set(self,accept_rates);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_accept_rates_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsResult_accept_rates_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->accept_rates = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsResult_accept_rates_get) {
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsResult_accept_rates_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_accept_rates_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->accept_rates);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsResult_final_step_sizes_set) {
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: GibbsResult_final_step_sizes_set(self,final_step_sizes);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_final_step_sizes_set" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsResult_final_step_sizes_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->final_step_sizes = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_GibbsResult_final_step_sizes_get) {
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: GibbsResult_final_step_sizes_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsResult_final_step_sizes_get" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->final_step_sizes);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GibbsResult) {
+  {
+    int argvi = 0;
+    datamunge::bayes::GibbsResult *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_GibbsResult();");
+    }
+    result = (datamunge::bayes::GibbsResult *)new datamunge::bayes::GibbsResult();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsResult, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_GibbsResult) {
+  {
+    datamunge::bayes::GibbsResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_GibbsResult(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsResult" "', argument " "1"" of type '" "datamunge::bayes::GibbsResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsResult * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GibbsSampler__SWIG_0) {
+  {
+    datamunge::bayes::GibbsOptions arg1 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::GibbsSampler *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_GibbsSampler(options);");
+    }
+    {
+      res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__bayes__GibbsOptions,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GibbsSampler" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GibbsSampler" "', argument " "1"" of type '" "datamunge::bayes::GibbsOptions""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::bayes::GibbsOptions * >(argp1));
+      }
+    }
+    result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsSampler, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GibbsSampler__SWIG_1) {
+  {
+    int argvi = 0;
+    datamunge::bayes::GibbsSampler *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_GibbsSampler();");
+    }
+    result = (datamunge::bayes::GibbsSampler *)new datamunge::bayes::GibbsSampler();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__GibbsSampler, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_GibbsSampler) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 0) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__bayes__GibbsOptions, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_GibbsSampler__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_GibbsSampler__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_GibbsSampler'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_GibbsSampler_sample) {
+  {
+    datamunge::bayes::GibbsSampler *arg1 = 0 ;
+    datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    int argvi = 0;
+    datamunge::bayes::GibbsResult result;
+    dXSARGS;
+    
+    if ((items < 3) || (items > 3)) {
+      SWIG_croak("Usage: GibbsSampler_sample(self,log_posterior,initial_params);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsSampler, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampler_sample" "', argument " "1"" of type '" "datamunge::bayes::GibbsSampler const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsSampler * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampler_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "GibbsSampler_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of GibbsSampler_sample. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "GibbsSampler_sample. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of GibbsSampler_sample. "
+          "Expected an array of ""double");
+      }
+    }
+    result = ((datamunge::bayes::GibbsSampler const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::bayes::GibbsResult(result)), SWIGTYPE_p_datamunge__bayes__GibbsResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_GibbsSampler) {
+  {
+    datamunge::bayes::GibbsSampler *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_GibbsSampler(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__GibbsSampler, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsSampler" "', argument " "1"" of type '" "datamunge::bayes::GibbsSampler *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::GibbsSampler * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingOptions_num_samples_set) {
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    std::size_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    size_t val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ImportanceSamplingOptions_num_samples_set(self,num_samples);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_num_samples_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    ecode2 = SWIG_AsVal_size_t SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSamplingOptions_num_samples_set" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    if (arg1) (arg1)->num_samples = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingOptions_num_samples_get) {
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::size_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ImportanceSamplingOptions_num_samples_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_num_samples_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    result =  ((arg1)->num_samples);
+    ST(argvi) = SWIG_From_size_t  SWIG_PERL_CALL_ARGS_1(static_cast< size_t >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingOptions_seed_set) {
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    std::uint64_t arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned long long val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ImportanceSamplingOptions_seed_set(self,seed);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_seed_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    ecode2 = SWIG_AsVal_unsigned_SS_long_SS_long SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSamplingOptions_seed_set" "', argument " "2"" of type '" "std::uint64_t""'");
+    } 
+    arg2 = static_cast< std::uint64_t >(val2);
+    if (arg1) (arg1)->seed = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingOptions_seed_get) {
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::uint64_t result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ImportanceSamplingOptions_seed_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingOptions_seed_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    result = (std::uint64_t) ((arg1)->seed);
+    ST(argvi) = SWIG_From_unsigned_SS_long_SS_long  SWIG_PERL_CALL_ARGS_1(static_cast< unsigned long long >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_ImportanceSamplingOptions) {
+  {
+    int argvi = 0;
+    datamunge::bayes::ImportanceSamplingOptions *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_ImportanceSamplingOptions();");
+    }
+    result = (datamunge::bayes::ImportanceSamplingOptions *)new datamunge::bayes::ImportanceSamplingOptions();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_ImportanceSamplingOptions) {
+  {
+    datamunge::bayes::ImportanceSamplingOptions *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_ImportanceSamplingOptions(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ImportanceSamplingOptions" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_samples_set) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    std::vector< std::vector< double > > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_samples_set(self,samples);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_samples_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSamplingResult_samples_set" "', argument " "2"" of type '" "std::vector< std::vector< double > > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< std::vector< double > > * >(argp2);
+    if (arg1) (arg1)->samples = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_samples_get) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< std::vector< double > > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_samples_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_samples_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (std::vector< std::vector< double > > *)& ((arg1)->samples);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_normalized_weights_set) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    std::vector< double > *arg2 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_normalized_weights_set(self,normalized_weights);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_normalized_weights_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSamplingResult_normalized_weights_set" "', argument " "2"" of type '" "std::vector< double > *""'"); 
+    }
+    arg2 = reinterpret_cast< std::vector< double > * >(argp2);
+    if (arg1) (arg1)->normalized_weights = *arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_normalized_weights_get) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    std::vector< double > *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_normalized_weights_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_normalized_weights_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (std::vector< double > *)& ((arg1)->normalized_weights);
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_effective_sample_size_set) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_effective_sample_size_set(self,effective_sample_size);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_effective_sample_size_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSamplingResult_effective_sample_size_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->effective_sample_size = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_effective_sample_size_get) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_effective_sample_size_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_effective_sample_size_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (double) ((arg1)->effective_sample_size);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_log_evidence_set) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_log_evidence_set(self,log_evidence);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_log_evidence_set" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSamplingResult_log_evidence_set" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    if (arg1) (arg1)->log_evidence = arg2;
+    ST(argvi) = &PL_sv_undef;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_ImportanceSamplingResult_log_evidence_get) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: ImportanceSamplingResult_log_evidence_get(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSamplingResult_log_evidence_get" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    result = (double) ((arg1)->log_evidence);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_ImportanceSamplingResult) {
+  {
+    int argvi = 0;
+    datamunge::bayes::ImportanceSamplingResult *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_ImportanceSamplingResult();");
+    }
+    result = (datamunge::bayes::ImportanceSamplingResult *)new datamunge::bayes::ImportanceSamplingResult();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_ImportanceSamplingResult) {
+  {
+    datamunge::bayes::ImportanceSamplingResult *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_ImportanceSamplingResult(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ImportanceSamplingResult" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingResult *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSamplingResult * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_ImportanceSampling__SWIG_0) {
+  {
+    datamunge::bayes::ImportanceSamplingOptions arg1 ;
+    void *argp1 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    datamunge::bayes::ImportanceSampling *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_ImportanceSampling(options);");
+    }
+    {
+      res1 = SWIG_ConvertPtr(ST(0), &argp1, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions,  0 );
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_ImportanceSampling" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions""'"); 
+      }  
+      if (!argp1) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_ImportanceSampling" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSamplingOptions""'");
+      } else {
+        arg1 = *(reinterpret_cast< datamunge::bayes::ImportanceSamplingOptions * >(argp1));
+      }
+    }
+    result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling(SWIG_STD_MOVE(arg1));
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSampling, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_ImportanceSampling__SWIG_1) {
+  {
+    int argvi = 0;
+    datamunge::bayes::ImportanceSampling *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 0) || (items > 0)) {
+      SWIG_croak("Usage: new_ImportanceSampling();");
+    }
+    result = (datamunge::bayes::ImportanceSampling *)new datamunge::bayes::ImportanceSampling();
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__bayes__ImportanceSampling, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    XSRETURN(argvi);
+    fail:;
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_ImportanceSampling) {
+  dXSARGS;
+  
+  {
+    unsigned long _index = 0;
+    SWIG_TypeRank _rank = 0; 
+    if (items == 0) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 1;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+    if (items == 1) {
+      SWIG_TypeRank _ranki = 0;
+      SWIG_TypeRank _rankm = 0;
+      SWIG_TypeRank _pi = 1;
+      int _v = 0;
+      {
+        void *vptr = 0;
+        int res = SWIG_ConvertPtr(ST(0), &vptr, SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, SWIG_POINTER_NO_NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (!_v) goto check_2;
+      _ranki += _v*_pi;
+      _rankm += _pi;
+      _pi *= SWIG_MAXCASTRANK;
+      if (!_index || (_ranki < _rank)) {
+        _rank = _ranki; _index = 2;
+        if (_rank == _rankm) goto dispatch;
+      }
+    }
+  check_2:
+    
+  dispatch:
+    switch(_index) {
+    case 1:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_ImportanceSampling__SWIG_1); return;
+    case 2:
+      PUSHMARK(MARK); SWIG_CALLXS(_wrap_new_ImportanceSampling__SWIG_0); return;
+    }
+  }
+  
+  croak("No matching function for overloaded 'new_ImportanceSampling'");
+  XSRETURN(0);
+}
+
+
+XS(_wrap_ImportanceSampling_sample) {
+  {
+    datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+    datamunge::optim::ArbitraryFunction *arg2 = 0 ;
+    std::vector< double > *arg3 = 0 ;
+    std::vector< std::vector< double > > *arg4 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    std::vector< double > temp3 ;
+    std::vector< double > *v3 ;
+    std::vector< std::vector< double > > temp4 ;
+    std::vector< std::vector< double > > *v4 ;
+    int argvi = 0;
+    datamunge::bayes::ImportanceSamplingResult result;
+    dXSARGS;
+    
+    if ((items < 4) || (items > 4)) {
+      SWIG_croak("Usage: ImportanceSampling_sample(self,log_target,proposal_mean,proposal_covariance);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSampling, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_sample" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSampling const *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSampling * >(argp1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2, SWIGTYPE_p_datamunge__optim__ArbitraryFunction,  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ImportanceSampling_sample" "', argument " "2"" of type '" "datamunge::optim::ArbitraryFunction &""'"); 
+    }
+    arg2 = reinterpret_cast< datamunge::optim::ArbitraryFunction * >(argp2);
+    {
+      if (SWIG_ConvertPtr(ST(2),(void **) &v3, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg3 = v3;
+      } else if (SvROK(ST(2))) {
+        AV *av = (AV *)SvRV(ST(2));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 3 of ImportanceSampling_sample. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp3.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 3 of "
+              "ImportanceSampling_sample. "
+              "Expected an array of ""double");
+          }
+        }
+        arg3 = &temp3;
+      } else {
+        SWIG_croak("Type error in argument 3 of ImportanceSampling_sample. "
+          "Expected an array of ""double");
+      }
+    }
+    {
+      if (SWIG_ConvertPtr(ST(3),(void **) &v4, 
+          SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t,1) != -1) {
+        arg4 = v4;
+      } else if (SvROK(ST(3))) {
+        AV *av = (AV *)SvRV(ST(3));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 4 of ImportanceSampling_sample. "
+          "Expected an array of " "std::vector< double >");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        std::vector< double >* obj;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SWIG_ConvertPtr(*tv, (void **)&obj, 
+              SWIGTYPE_p_std__vectorT_double_t,0) != -1) {
+            temp4.push_back(*obj);
+          } else {
+            SWIG_croak("Type error in argument 4 of "
+              "ImportanceSampling_sample. "
+              "Expected an array of " "std::vector< double >");
+          }
+        }
+        arg4 = &temp4;
+      } else {
+        SWIG_croak("Type error in argument 4 of ImportanceSampling_sample. "
+          "Expected an array of " "std::vector< double >");
+      }
+    }
+    result = ((datamunge::bayes::ImportanceSampling const *)arg1)->sample(*arg2,(std::vector< double > const &)*arg3,(std::vector< std::vector< double > > const &)*arg4);
+    ST(argvi) = SWIG_NewPointerObj((new datamunge::bayes::ImportanceSamplingResult(result)), SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, SWIG_POINTER_OWN | SWIG_SHADOW); argvi++ ;
+    
+    
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_delete_ImportanceSampling) {
+  {
+    datamunge::bayes::ImportanceSampling *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_ImportanceSampling(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_datamunge__bayes__ImportanceSampling, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ImportanceSampling" "', argument " "1"" of type '" "datamunge::bayes::ImportanceSampling *""'"); 
+    }
+    arg1 = reinterpret_cast< datamunge::bayes::ImportanceSampling * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
@@ -87966,14 +106271,8 @@ static void *_p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__Arbitr
 static void *_p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__DifferentiableFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((datamunge::optim::DifferentiableFunction *)  ((datamunge::optim::DifferentiableSeparableFunction *) x));
 }
-static void *_p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::BarChart *) x));
-}
-static void *_p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::LinePlot *) x));
-}
-static void *_p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::ScatterPlot *) x));
+static void *_p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((datamunge::plot::Plot *)  ((datamunge::plot::RPlot *) x));
 }
 SWIGINTERN swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__AgglomerativeClustering = {"_p_datamunge__AgglomerativeClustering", "datamunge::AgglomerativeClustering *", 0, 0, (void*)"Datamunge::AgglomerativeClustering", 0};
@@ -87986,10 +106285,12 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__Dual = {"_p_datamunge__Dual", "da
 SWIGINTERN swig_type_info _swigt__p_datamunge__ElasticNet = {"_p_datamunge__ElasticNet", "datamunge::ElasticNet *", 0, 0, (void*)"Datamunge::ElasticNet", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GBMClassifier = {"_p_datamunge__GBMClassifier", "datamunge::GBMClassifier *", 0, 0, (void*)"Datamunge::GBMClassifier", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GBMRegressor = {"_p_datamunge__GBMRegressor", "datamunge::GBMRegressor *", 0, 0, (void*)"Datamunge::GBMRegressor", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__GGPlot = {"_p_datamunge__GGPlot", "datamunge::GGPlot *", 0, 0, (void*)"Datamunge::GGPlot", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GLM = {"_p_datamunge__GLM", "datamunge::GLM *", 0, 0, (void*)"Datamunge::GLM", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GLMM = {"_p_datamunge__GLMM", "datamunge::GLMM *", 0, 0, (void*)"Datamunge::GLMM", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__GaussianProcessRegression = {"_p_datamunge__GaussianProcessRegression", "datamunge::GaussianProcessRegression *", 0, 0, (void*)"Datamunge::GaussianProcessRegression", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__HyperDual = {"_p_datamunge__HyperDual", "datamunge::HyperDual *", 0, 0, (void*)"Datamunge::HyperDual", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__INLAMixedModel = {"_p_datamunge__INLAMixedModel", "datamunge::INLAMixedModel *", 0, 0, (void*)"Datamunge::INLAMixedModel", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KMeans = {"_p_datamunge__KMeans", "datamunge::KMeans *", 0, 0, (void*)"Datamunge::KMeans", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KNNClassifier = {"_p_datamunge__KNNClassifier", "datamunge::KNNClassifier *", 0, 0, (void*)"Datamunge::KNNClassifier", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__KNNRegressor = {"_p_datamunge__KNNRegressor", "datamunge::KNNRegressor *", 0, 0, (void*)"Datamunge::KNNRegressor", 0};
@@ -88008,14 +106309,24 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__Tensor = {"_p_datamunge__Tensor",
 SWIGINTERN swig_type_info _swigt__p_datamunge__Var = {"_p_datamunge__Var", "datamunge::Var *", 0, 0, (void*)"Datamunge::Var", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostClassifier = {"_p_datamunge__XGBoostClassifier", "datamunge::XGBoostClassifier *", 0, 0, (void*)"Datamunge::XGBoostClassifier", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__XGBoostRegressor = {"_p_datamunge__XGBoostRegressor", "datamunge::XGBoostRegressor *", 0, 0, (void*)"Datamunge::XGBoostRegressor", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsOptions = {"_p_datamunge__bayes__GibbsOptions", "datamunge::bayes::GibbsOptions *", 0, 0, (void*)"Datamunge::GibbsOptions", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsResult = {"_p_datamunge__bayes__GibbsResult", "datamunge::bayes::GibbsResult *", 0, 0, (void*)"Datamunge::GibbsResult", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__GibbsSampler = {"_p_datamunge__bayes__GibbsSampler", "datamunge::bayes::GibbsSampler *", 0, 0, (void*)"Datamunge::GibbsSampler", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__HMC = {"_p_datamunge__bayes__HMC", "datamunge::bayes::HMC *", 0, 0, (void*)"Datamunge::HMC", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__HMCOptions = {"_p_datamunge__bayes__HMCOptions", "datamunge::bayes::HMCOptions *", 0, 0, (void*)"Datamunge::HMCOptions", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__HMCResult = {"_p_datamunge__bayes__HMCResult", "datamunge::bayes::HMCResult *", 0, 0, (void*)"Datamunge::HMCResult", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSampling = {"_p_datamunge__bayes__ImportanceSampling", "datamunge::bayes::ImportanceSampling *", 0, 0, (void*)"Datamunge::ImportanceSampling", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingOptions = {"_p_datamunge__bayes__ImportanceSamplingOptions", "datamunge::bayes::ImportanceSamplingOptions *", 0, 0, (void*)"Datamunge::ImportanceSamplingOptions", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__ImportanceSamplingResult = {"_p_datamunge__bayes__ImportanceSamplingResult", "datamunge::bayes::ImportanceSamplingResult *", 0, 0, (void*)"Datamunge::ImportanceSamplingResult", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__MAP = {"_p_datamunge__bayes__MAP", "datamunge::bayes::MAP *", 0, 0, (void*)"Datamunge::MAP", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__MAPOptions = {"_p_datamunge__bayes__MAPOptions", "datamunge::bayes::MAPOptions *", 0, 0, (void*)"Datamunge::MAPOptions", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__NUTS = {"_p_datamunge__bayes__NUTS", "datamunge::bayes::NUTS *", 0, 0, (void*)"Datamunge::NUTS", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__NUTSOptions = {"_p_datamunge__bayes__NUTSOptions", "datamunge::bayes::NUTSOptions *", 0, 0, (void*)"Datamunge::NUTSOptions", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__NUTSResult = {"_p_datamunge__bayes__NUTSResult", "datamunge::bayes::NUTSResult *", 0, 0, (void*)"Datamunge::NUTSResult", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__bayes__RWMOptions", "datamunge::bayes::RWMOptions *", 0, 0, (void*)"Datamunge::RWMOptions", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)"Datamunge::RWMResult", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)"Datamunge::RandomWalkMetropolis", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__image__Image = {"_p_datamunge__image__Image", "datamunge::image::Image *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__Adam = {"_p_datamunge__optim__Adam", "datamunge::optim::Adam *", 0, 0, (void*)"Datamunge::Adam", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__AdamOptions = {"_p_datamunge__optim__AdamOptions", "datamunge::optim::AdamOptions *", 0, 0, (void*)"Datamunge::AdamOptions", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__ArbitraryFunction = {"_p_datamunge__optim__ArbitraryFunction", "datamunge::optim::ArbitraryFunction *", 0, 0, (void*)"Datamunge::ArbitraryFunction", 0};
@@ -88036,12 +106347,13 @@ SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SGDOptions = {"_p_datamung
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SeparableFunction = {"_p_datamunge__optim__SeparableFunction", "datamunge::optim::SeparableFunction *", 0, 0, (void*)"Datamunge::SeparableFunction", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealing = {"_p_datamunge__optim__SimulatedAnnealing", "datamunge::optim::SimulatedAnnealing *", 0, 0, (void*)"Datamunge::SimulatedAnnealing", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__optim__SimulatedAnnealingOptions = {"_p_datamunge__optim__SimulatedAnnealingOptions", "datamunge::optim::SimulatedAnnealingOptions *", 0, 0, (void*)"Datamunge::SimulatedAnnealingOptions", 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__BarChart = {"_p_datamunge__plot__BarChart", "datamunge::plot::BarChart *", 0, 0, (void*)"Datamunge::BarChart", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ABLine = {"_p_datamunge__plot__ABLine", "datamunge::plot::ABLine *", 0, 0, (void*)"Datamunge::ABLine", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__DataSeries = {"_p_datamunge__plot__DataSeries", "datamunge::plot::DataSeries *", 0, 0, (void*)"Datamunge::DataSeries", 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__LinePlot = {"_p_datamunge__plot__LinePlot", "datamunge::plot::LinePlot *", 0, 0, (void*)"Datamunge::LinePlot", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__LegendEntry = {"_p_datamunge__plot__LegendEntry", "datamunge::plot::LegendEntry *", 0, 0, (void*)"Datamunge::LegendEntry", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__Plot = {"_p_datamunge__plot__Plot", "datamunge::plot::Plot *", 0, 0, (void*)"Datamunge::Plot", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RGB = {"_p_datamunge__plot__RGB", "datamunge::plot::RGB *", 0, 0, (void*)"Datamunge::RGB", 0};
-SWIGINTERN swig_type_info _swigt__p_datamunge__plot__ScatterPlot = {"_p_datamunge__plot__ScatterPlot", "datamunge::plot::ScatterPlot *", 0, 0, (void*)"Datamunge::ScatterPlot", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RLayout = {"_p_datamunge__plot__RLayout", "datamunge::plot::RLayout *", 0, 0, (void*)"Datamunge::RLayout", 0};
+SWIGINTERN swig_type_info _swigt__p_datamunge__plot__RPlot = {"_p_datamunge__plot__RPlot", "datamunge::plot::RPlot *", 0, 0, (void*)"Datamunge::RPlot", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ARIMA = {"_p_datamunge__stats__ARIMA", "datamunge::stats::ARIMA *", 0, 0, (void*)"Datamunge::ARIMA", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ARIMAOptions = {"_p_datamunge__stats__ARIMAOptions", "datamunge::stats::ARIMAOptions *", 0, 0, (void*)"Datamunge::ARIMAOptions", 0};
 SWIGINTERN swig_type_info _swigt__p_datamunge__stats__ExponentialSmoothing = {"_p_datamunge__stats__ExponentialSmoothing", "datamunge::stats::ExponentialSmoothing *", 0, 0, (void*)"Datamunge::ExponentialSmoothing", 0};
@@ -88061,7 +106373,10 @@ SWIGINTERN swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT
 SWIGINTERN swig_type_info _swigt__p_std__pairT_int_int_t = {"_p_std__pairT_int_int_t", "std::pair< int,int > *", 0, 0, (void*)"Datamunge::IPair", 0};
 SWIGINTERN swig_type_info _swigt__p_std__pairT_std__string_std__string_t = {"_p_std__pairT_std__string_std__string_t", "std::pair< std::string,std::string > *", 0, 0, (void*)"Datamunge::SPair", 0};
 SWIGINTERN swig_type_info _swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t = {"_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t", "std::pair< std::vector< double >,std::vector< double > > *", 0, 0, (void*)"Datamunge::DVectorPair", 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__ABLine_t = {"_p_std__vectorT_datamunge__plot__ABLine_t", "std::vector< datamunge::plot::ABLine > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__DataSeries_t = {"_p_std__vectorT_datamunge__plot__DataSeries_t", "std::vector< datamunge::plot::DataSeries > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__LegendEntry_t = {"_p_std__vectorT_datamunge__plot__LegendEntry_t", "std::vector< datamunge::plot::LegendEntry > *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_std__vectorT_datamunge__plot__RGB_t = {"_p_std__vectorT_datamunge__plot__RGB_t", "std::vector< datamunge::plot::RGB > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *", 0, 0, (void*)"Datamunge::DVector", 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)"Datamunge::IVector", 0};
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t > *", 0, 0, (void*)"Datamunge::SizeVector", 0};
@@ -88089,10 +106404,12 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__ElasticNet,
   &_swigt__p_datamunge__GBMClassifier,
   &_swigt__p_datamunge__GBMRegressor,
+  &_swigt__p_datamunge__GGPlot,
   &_swigt__p_datamunge__GLM,
   &_swigt__p_datamunge__GLMM,
   &_swigt__p_datamunge__GaussianProcessRegression,
   &_swigt__p_datamunge__HyperDual,
+  &_swigt__p_datamunge__INLAMixedModel,
   &_swigt__p_datamunge__KMeans,
   &_swigt__p_datamunge__KNNClassifier,
   &_swigt__p_datamunge__KNNRegressor,
@@ -88111,14 +106428,24 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__Var,
   &_swigt__p_datamunge__XGBoostClassifier,
   &_swigt__p_datamunge__XGBoostRegressor,
+  &_swigt__p_datamunge__bayes__GibbsOptions,
+  &_swigt__p_datamunge__bayes__GibbsResult,
+  &_swigt__p_datamunge__bayes__GibbsSampler,
   &_swigt__p_datamunge__bayes__HMC,
   &_swigt__p_datamunge__bayes__HMCOptions,
   &_swigt__p_datamunge__bayes__HMCResult,
+  &_swigt__p_datamunge__bayes__ImportanceSampling,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingOptions,
+  &_swigt__p_datamunge__bayes__ImportanceSamplingResult,
   &_swigt__p_datamunge__bayes__MAP,
   &_swigt__p_datamunge__bayes__MAPOptions,
   &_swigt__p_datamunge__bayes__NUTS,
   &_swigt__p_datamunge__bayes__NUTSOptions,
   &_swigt__p_datamunge__bayes__NUTSResult,
+  &_swigt__p_datamunge__bayes__RWMOptions,
+  &_swigt__p_datamunge__bayes__RWMResult,
+  &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
+  &_swigt__p_datamunge__image__Image,
   &_swigt__p_datamunge__optim__Adam,
   &_swigt__p_datamunge__optim__AdamOptions,
   &_swigt__p_datamunge__optim__ArbitraryFunction,
@@ -88139,12 +106466,13 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__optim__SeparableFunction,
   &_swigt__p_datamunge__optim__SimulatedAnnealing,
   &_swigt__p_datamunge__optim__SimulatedAnnealingOptions,
-  &_swigt__p_datamunge__plot__BarChart,
+  &_swigt__p_datamunge__plot__ABLine,
   &_swigt__p_datamunge__plot__DataSeries,
-  &_swigt__p_datamunge__plot__LinePlot,
+  &_swigt__p_datamunge__plot__LegendEntry,
   &_swigt__p_datamunge__plot__Plot,
   &_swigt__p_datamunge__plot__RGB,
-  &_swigt__p_datamunge__plot__ScatterPlot,
+  &_swigt__p_datamunge__plot__RLayout,
+  &_swigt__p_datamunge__plot__RPlot,
   &_swigt__p_datamunge__stats__ARIMA,
   &_swigt__p_datamunge__stats__ARIMAOptions,
   &_swigt__p_datamunge__stats__ExponentialSmoothing,
@@ -88164,7 +106492,10 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__pairT_int_int_t,
   &_swigt__p_std__pairT_std__string_std__string_t,
   &_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
+  &_swigt__p_std__vectorT_datamunge__plot__ABLine_t,
   &_swigt__p_std__vectorT_datamunge__plot__DataSeries_t,
+  &_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t,
+  &_swigt__p_std__vectorT_datamunge__plot__RGB_t,
   &_swigt__p_std__vectorT_double_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_size_t_t,
@@ -88189,10 +106520,12 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__Dual[] = {  {&_swigt__p_datamunge
 SWIGINTERN swig_cast_info _swigc__p_datamunge__ElasticNet[] = {  {&_swigt__p_datamunge__ElasticNet, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GBMClassifier[] = {  {&_swigt__p_datamunge__GBMClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GBMRegressor[] = {  {&_swigt__p_datamunge__GBMRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__GGPlot[] = {  {&_swigt__p_datamunge__GGPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GLM[] = {  {&_swigt__p_datamunge__GLM, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GLMM[] = {  {&_swigt__p_datamunge__GLMM, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__GaussianProcessRegression[] = {  {&_swigt__p_datamunge__GaussianProcessRegression, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__HyperDual[] = {  {&_swigt__p_datamunge__HyperDual, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__INLAMixedModel[] = {  {&_swigt__p_datamunge__INLAMixedModel, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KMeans[] = {  {&_swigt__p_datamunge__KMeans, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KNNClassifier[] = {  {&_swigt__p_datamunge__KNNClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__KNNRegressor[] = {  {&_swigt__p_datamunge__KNNRegressor, 0, 0, 0},{0, 0, 0, 0}};
@@ -88211,14 +106544,24 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__Tensor[] = {  {&_swigt__p_datamun
 SWIGINTERN swig_cast_info _swigc__p_datamunge__Var[] = {  {&_swigt__p_datamunge__Var, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostClassifier[] = {  {&_swigt__p_datamunge__XGBoostClassifier, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__XGBoostRegressor[] = {  {&_swigt__p_datamunge__XGBoostRegressor, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsOptions[] = {  {&_swigt__p_datamunge__bayes__GibbsOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsResult[] = {  {&_swigt__p_datamunge__bayes__GibbsResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__GibbsSampler[] = {  {&_swigt__p_datamunge__bayes__GibbsSampler, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__HMC[] = {  {&_swigt__p_datamunge__bayes__HMC, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__HMCOptions[] = {  {&_swigt__p_datamunge__bayes__HMCOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__HMCResult[] = {  {&_swigt__p_datamunge__bayes__HMCResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSampling[] = {  {&_swigt__p_datamunge__bayes__ImportanceSampling, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingOptions[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__ImportanceSamplingResult[] = {  {&_swigt__p_datamunge__bayes__ImportanceSamplingResult, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__MAP[] = {  {&_swigt__p_datamunge__bayes__MAP, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__MAPOptions[] = {  {&_swigt__p_datamunge__bayes__MAPOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__NUTS[] = {  {&_swigt__p_datamunge__bayes__NUTS, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__NUTSOptions[] = {  {&_swigt__p_datamunge__bayes__NUTSOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__NUTSResult[] = {  {&_swigt__p_datamunge__bayes__NUTSResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_datamunge__bayes__RWMOptions, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__image__Image[] = {  {&_swigt__p_datamunge__image__Image, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__Adam[] = {  {&_swigt__p_datamunge__optim__Adam, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__AdamOptions[] = {  {&_swigt__p_datamunge__optim__AdamOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__ArbitraryFunction[] = {  {&_swigt__p_datamunge__optim__ArbitraryFunction, 0, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableFunction, _p_datamunge__optim__DifferentiableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__DifferentiableSeparableFunction, _p_datamunge__optim__DifferentiableSeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},  {&_swigt__p_datamunge__optim__SeparableFunction, _p_datamunge__optim__SeparableFunctionTo_p_datamunge__optim__ArbitraryFunction, 0, 0},{0, 0, 0, 0}};
@@ -88239,12 +106582,13 @@ SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SGDOptions[] = {  {&_swigt
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SeparableFunction[] = {  {&_swigt__p_datamunge__optim__SeparableFunction, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealing[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealing, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__optim__SimulatedAnnealingOptions[] = {  {&_swigt__p_datamunge__optim__SimulatedAnnealingOptions, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__BarChart[] = {  {&_swigt__p_datamunge__plot__BarChart, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ABLine[] = {  {&_swigt__p_datamunge__plot__ABLine, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__DataSeries[] = {  {&_swigt__p_datamunge__plot__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__LinePlot[] = {  {&_swigt__p_datamunge__plot__LinePlot, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__BarChart, _p_datamunge__plot__BarChartTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__LinePlot, _p_datamunge__plot__LinePlotTo_p_datamunge__plot__Plot, 0, 0},  {&_swigt__p_datamunge__plot__ScatterPlot, _p_datamunge__plot__ScatterPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__LegendEntry[] = {  {&_swigt__p_datamunge__plot__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__Plot[] = {  {&_swigt__p_datamunge__plot__Plot, 0, 0, 0},  {&_swigt__p_datamunge__plot__RPlot, _p_datamunge__plot__RPlotTo_p_datamunge__plot__Plot, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RGB[] = {  {&_swigt__p_datamunge__plot__RGB, 0, 0, 0},{0, 0, 0, 0}};
-SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__ScatterPlot[] = {  {&_swigt__p_datamunge__plot__ScatterPlot, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RLayout[] = {  {&_swigt__p_datamunge__plot__RLayout, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_datamunge__plot__RPlot[] = {  {&_swigt__p_datamunge__plot__RPlot, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ARIMA[] = {  {&_swigt__p_datamunge__stats__ARIMA, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ARIMAOptions[] = {  {&_swigt__p_datamunge__stats__ARIMAOptions, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_datamunge__stats__ExponentialSmoothing[] = {  {&_swigt__p_datamunge__stats__ExponentialSmoothing, 0, 0, 0},{0, 0, 0, 0}};
@@ -88264,7 +106608,10 @@ SWIGINTERN swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_int_int_t[] = {  {&_swigt__p_std__pairT_int_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_std__string_std__string_t[] = {  {&_swigt__p_std__pairT_std__string_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t[] = {  {&_swigt__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__ABLine_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__ABLine_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__DataSeries_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__DataSeries_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__LegendEntry_t, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_std__vectorT_datamunge__plot__RGB_t[] = {  {&_swigt__p_std__vectorT_datamunge__plot__RGB_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -88289,10 +106636,12 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__ElasticNet,
   _swigc__p_datamunge__GBMClassifier,
   _swigc__p_datamunge__GBMRegressor,
+  _swigc__p_datamunge__GGPlot,
   _swigc__p_datamunge__GLM,
   _swigc__p_datamunge__GLMM,
   _swigc__p_datamunge__GaussianProcessRegression,
   _swigc__p_datamunge__HyperDual,
+  _swigc__p_datamunge__INLAMixedModel,
   _swigc__p_datamunge__KMeans,
   _swigc__p_datamunge__KNNClassifier,
   _swigc__p_datamunge__KNNRegressor,
@@ -88311,14 +106660,24 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__Var,
   _swigc__p_datamunge__XGBoostClassifier,
   _swigc__p_datamunge__XGBoostRegressor,
+  _swigc__p_datamunge__bayes__GibbsOptions,
+  _swigc__p_datamunge__bayes__GibbsResult,
+  _swigc__p_datamunge__bayes__GibbsSampler,
   _swigc__p_datamunge__bayes__HMC,
   _swigc__p_datamunge__bayes__HMCOptions,
   _swigc__p_datamunge__bayes__HMCResult,
+  _swigc__p_datamunge__bayes__ImportanceSampling,
+  _swigc__p_datamunge__bayes__ImportanceSamplingOptions,
+  _swigc__p_datamunge__bayes__ImportanceSamplingResult,
   _swigc__p_datamunge__bayes__MAP,
   _swigc__p_datamunge__bayes__MAPOptions,
   _swigc__p_datamunge__bayes__NUTS,
   _swigc__p_datamunge__bayes__NUTSOptions,
   _swigc__p_datamunge__bayes__NUTSResult,
+  _swigc__p_datamunge__bayes__RWMOptions,
+  _swigc__p_datamunge__bayes__RWMResult,
+  _swigc__p_datamunge__bayes__RandomWalkMetropolis,
+  _swigc__p_datamunge__image__Image,
   _swigc__p_datamunge__optim__Adam,
   _swigc__p_datamunge__optim__AdamOptions,
   _swigc__p_datamunge__optim__ArbitraryFunction,
@@ -88339,12 +106698,13 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__optim__SeparableFunction,
   _swigc__p_datamunge__optim__SimulatedAnnealing,
   _swigc__p_datamunge__optim__SimulatedAnnealingOptions,
-  _swigc__p_datamunge__plot__BarChart,
+  _swigc__p_datamunge__plot__ABLine,
   _swigc__p_datamunge__plot__DataSeries,
-  _swigc__p_datamunge__plot__LinePlot,
+  _swigc__p_datamunge__plot__LegendEntry,
   _swigc__p_datamunge__plot__Plot,
   _swigc__p_datamunge__plot__RGB,
-  _swigc__p_datamunge__plot__ScatterPlot,
+  _swigc__p_datamunge__plot__RLayout,
+  _swigc__p_datamunge__plot__RPlot,
   _swigc__p_datamunge__stats__ARIMA,
   _swigc__p_datamunge__stats__ARIMAOptions,
   _swigc__p_datamunge__stats__ExponentialSmoothing,
@@ -88364,7 +106724,10 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__pairT_int_int_t,
   _swigc__p_std__pairT_std__string_std__string_t,
   _swigc__p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t,
+  _swigc__p_std__vectorT_datamunge__plot__ABLine_t,
   _swigc__p_std__vectorT_datamunge__plot__DataSeries_t,
+  _swigc__p_std__vectorT_datamunge__plot__LegendEntry_t,
+  _swigc__p_std__vectorT_datamunge__plot__RGB_t,
   _swigc__p_std__vectorT_double_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_size_t_t,
@@ -88505,6 +106868,27 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::DataFrame_iris", _wrap_DataFrame_iris},
 {"Datamungec::DataFrame_penguins", _wrap_DataFrame_penguins},
 {"Datamungec::delete_DataFrame", _wrap_delete_DataFrame},
+{"Datamungec::new_GGPlot", _wrap_new_GGPlot},
+{"Datamungec::GGPlot_geom_point", _wrap_GGPlot_geom_point},
+{"Datamungec::GGPlot_geom_line", _wrap_GGPlot_geom_line},
+{"Datamungec::GGPlot_geom_bar", _wrap_GGPlot_geom_bar},
+{"Datamungec::GGPlot_geom_col", _wrap_GGPlot_geom_col},
+{"Datamungec::GGPlot_geom_histogram", _wrap_GGPlot_geom_histogram},
+{"Datamungec::GGPlot_geom_boxplot", _wrap_GGPlot_geom_boxplot},
+{"Datamungec::GGPlot_geom_smooth", _wrap_GGPlot_geom_smooth},
+{"Datamungec::GGPlot_geom_area", _wrap_GGPlot_geom_area},
+{"Datamungec::GGPlot_geom_ribbon", _wrap_GGPlot_geom_ribbon},
+{"Datamungec::GGPlot_geom_density", _wrap_GGPlot_geom_density},
+{"Datamungec::GGPlot_facet_wrap", _wrap_GGPlot_facet_wrap},
+{"Datamungec::GGPlot_theme_minimal", _wrap_GGPlot_theme_minimal},
+{"Datamungec::GGPlot_theme_bw", _wrap_GGPlot_theme_bw},
+{"Datamungec::GGPlot_theme_classic", _wrap_GGPlot_theme_classic},
+{"Datamungec::GGPlot_scale_color_manual", _wrap_GGPlot_scale_color_manual},
+{"Datamungec::GGPlot_labs", _wrap_GGPlot_labs},
+{"Datamungec::GGPlot_save", _wrap_GGPlot_save},
+{"Datamungec::GGPlot_save_svg", _wrap_GGPlot_save_svg},
+{"Datamungec::GGPlot_show", _wrap_GGPlot_show},
+{"Datamungec::delete_GGPlot", _wrap_delete_GGPlot},
 {"Datamungec::new_LM", _wrap_new_LM},
 {"Datamungec::LM_formula_text", _wrap_LM_formula_text},
 {"Datamungec::LM_has_intercept", _wrap_LM_has_intercept},
@@ -88597,6 +106981,26 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::GLMM_print_summary", _wrap_GLMM_print_summary},
 {"Datamungec::GLMM_predict", _wrap_GLMM_predict},
 {"Datamungec::delete_GLMM", _wrap_delete_GLMM},
+{"Datamungec::new_INLAMixedModel", _wrap_new_INLAMixedModel},
+{"Datamungec::INLAMixedModel_formula_text", _wrap_INLAMixedModel_formula_text},
+{"Datamungec::INLAMixedModel_family", _wrap_INLAMixedModel_family},
+{"Datamungec::INLAMixedModel_group_variable", _wrap_INLAMixedModel_group_variable},
+{"Datamungec::INLAMixedModel_random_effect_names", _wrap_INLAMixedModel_random_effect_names},
+{"Datamungec::INLAMixedModel_observations", _wrap_INLAMixedModel_observations},
+{"Datamungec::INLAMixedModel_num_groups", _wrap_INLAMixedModel_num_groups},
+{"Datamungec::INLAMixedModel_fixed_effects_mean", _wrap_INLAMixedModel_fixed_effects_mean},
+{"Datamungec::INLAMixedModel_fixed_effects_sd", _wrap_INLAMixedModel_fixed_effects_sd},
+{"Datamungec::INLAMixedModel_coefficient_names", _wrap_INLAMixedModel_coefficient_names},
+{"Datamungec::INLAMixedModel_random_effect_std_devs", _wrap_INLAMixedModel_random_effect_std_devs},
+{"Datamungec::INLAMixedModel_residual_std_dev", _wrap_INLAMixedModel_residual_std_dev},
+{"Datamungec::INLAMixedModel_group_labels", _wrap_INLAMixedModel_group_labels},
+{"Datamungec::INLAMixedModel_random_effects_mean_for_group", _wrap_INLAMixedModel_random_effects_mean_for_group},
+{"Datamungec::INLAMixedModel_random_effects_sd_for_group", _wrap_INLAMixedModel_random_effects_sd_for_group},
+{"Datamungec::INLAMixedModel_log_marginal_likelihood", _wrap_INLAMixedModel_log_marginal_likelihood},
+{"Datamungec::INLAMixedModel_summary", _wrap_INLAMixedModel_summary},
+{"Datamungec::INLAMixedModel_print_summary", _wrap_INLAMixedModel_print_summary},
+{"Datamungec::INLAMixedModel_predict", _wrap_INLAMixedModel_predict},
+{"Datamungec::delete_INLAMixedModel", _wrap_delete_INLAMixedModel},
 {"Datamungec::new_LDA", _wrap_new_LDA},
 {"Datamungec::LDA_classes", _wrap_LDA_classes},
 {"Datamungec::LDA_predictor_names", _wrap_LDA_predictor_names},
@@ -89054,6 +107458,13 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::Tensor_matmul", _wrap_Tensor_matmul},
 {"Datamungec::Tensor_dot", _wrap_Tensor_dot},
 {"Datamungec::Tensor_outer", _wrap_Tensor_outer},
+{"Datamungec::Tensor_from_image", _wrap_Tensor_from_image},
+{"Datamungec::Tensor_conv2d", _wrap_Tensor_conv2d},
+{"Datamungec::Tensor_max_pool2d", _wrap_Tensor_max_pool2d},
+{"Datamungec::Tensor_avg_pool2d", _wrap_Tensor_avg_pool2d},
+{"Datamungec::Tensor_relu", _wrap_Tensor_relu},
+{"Datamungec::Tensor_sigmoid", _wrap_Tensor_sigmoid},
+{"Datamungec::Tensor_softmax", _wrap_Tensor_softmax},
 {"Datamungec::Tensor_to_string", _wrap_Tensor_to_string},
 {"Datamungec::delete_Tensor", _wrap_delete_Tensor},
 {"Datamungec::new_Dual", _wrap_new_Dual},
@@ -89152,8 +107563,28 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::DataSeries_marker_size_get", _wrap_DataSeries_marker_size_get},
 {"Datamungec::DataSeries_bar_width_set", _wrap_DataSeries_bar_width_set},
 {"Datamungec::DataSeries_bar_width_get", _wrap_DataSeries_bar_width_get},
+{"Datamungec::DataSeries_filled_set", _wrap_DataSeries_filled_set},
+{"Datamungec::DataSeries_filled_get", _wrap_DataSeries_filled_get},
 {"Datamungec::new_DataSeries", _wrap_new_DataSeries},
 {"Datamungec::delete_DataSeries", _wrap_delete_DataSeries},
+{"Datamungec::ABLine_vertical_set", _wrap_ABLine_vertical_set},
+{"Datamungec::ABLine_vertical_get", _wrap_ABLine_vertical_get},
+{"Datamungec::ABLine_value_set", _wrap_ABLine_value_set},
+{"Datamungec::ABLine_value_get", _wrap_ABLine_value_get},
+{"Datamungec::ABLine_slope_set", _wrap_ABLine_slope_set},
+{"Datamungec::ABLine_slope_get", _wrap_ABLine_slope_get},
+{"Datamungec::ABLine_color_set", _wrap_ABLine_color_set},
+{"Datamungec::ABLine_color_get", _wrap_ABLine_color_get},
+{"Datamungec::ABLine_stroke_width_set", _wrap_ABLine_stroke_width_set},
+{"Datamungec::ABLine_stroke_width_get", _wrap_ABLine_stroke_width_get},
+{"Datamungec::new_ABLine", _wrap_new_ABLine},
+{"Datamungec::delete_ABLine", _wrap_delete_ABLine},
+{"Datamungec::LegendEntry_label_set", _wrap_LegendEntry_label_set},
+{"Datamungec::LegendEntry_label_get", _wrap_LegendEntry_label_get},
+{"Datamungec::LegendEntry_color_set", _wrap_LegendEntry_color_set},
+{"Datamungec::LegendEntry_color_get", _wrap_LegendEntry_color_get},
+{"Datamungec::new_LegendEntry", _wrap_new_LegendEntry},
+{"Datamungec::delete_LegendEntry", _wrap_delete_LegendEntry},
 {"Datamungec::delete_Plot", _wrap_delete_Plot},
 {"Datamungec::Plot_size", _wrap_Plot_size},
 {"Datamungec::Plot_title", _wrap_Plot_title},
@@ -89165,6 +107596,8 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::Plot_show_grid", _wrap_Plot_show_grid},
 {"Datamungec::Plot_x_limits", _wrap_Plot_x_limits},
 {"Datamungec::Plot_y_limits", _wrap_Plot_y_limits},
+{"Datamungec::Plot_hide_axes", _wrap_Plot_hide_axes},
+{"Datamungec::Plot_x_tick_labels", _wrap_Plot_x_tick_labels},
 {"Datamungec::Plot_width", _wrap_Plot_width},
 {"Datamungec::Plot_height", _wrap_Plot_height},
 {"Datamungec::Plot_title_text", _wrap_Plot_title_text},
@@ -89181,24 +107614,45 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::Plot_x_max", _wrap_Plot_x_max},
 {"Datamungec::Plot_y_min", _wrap_Plot_y_min},
 {"Datamungec::Plot_y_max", _wrap_Plot_y_max},
+{"Datamungec::Plot_axes_hidden", _wrap_Plot_axes_hidden},
+{"Datamungec::Plot_x_tick_label_list", _wrap_Plot_x_tick_label_list},
+{"Datamungec::Plot_reference_lines", _wrap_Plot_reference_lines},
+{"Datamungec::Plot_legend_entries", _wrap_Plot_legend_entries},
 {"Datamungec::Plot_save", _wrap_Plot_save},
 {"Datamungec::Plot_save_svg", _wrap_Plot_save_svg},
 {"Datamungec::Plot_view", _wrap_Plot_view},
 {"Datamungec::Plot_show", _wrap_Plot_show},
 {"Datamungec::new_Plot", _wrap_new_Plot},
-{"Datamungec::ScatterPlot_create", _wrap_ScatterPlot_create},
-{"Datamungec::ScatterPlot_points", _wrap_ScatterPlot_points},
-{"Datamungec::ScatterPlot_line", _wrap_ScatterPlot_line},
-{"Datamungec::new_ScatterPlot", _wrap_new_ScatterPlot},
-{"Datamungec::delete_ScatterPlot", _wrap_delete_ScatterPlot},
-{"Datamungec::LinePlot_create", _wrap_LinePlot_create},
-{"Datamungec::LinePlot_line", _wrap_LinePlot_line},
-{"Datamungec::new_LinePlot", _wrap_new_LinePlot},
-{"Datamungec::delete_LinePlot", _wrap_delete_LinePlot},
-{"Datamungec::BarChart_create", _wrap_BarChart_create},
-{"Datamungec::BarChart_bars", _wrap_BarChart_bars},
-{"Datamungec::new_BarChart", _wrap_new_BarChart},
-{"Datamungec::delete_BarChart", _wrap_delete_BarChart},
+{"Datamungec::RPlot_create", _wrap_RPlot_create},
+{"Datamungec::RPlot_plot", _wrap_RPlot_plot},
+{"Datamungec::RPlot_hist", _wrap_RPlot_hist},
+{"Datamungec::RPlot_barplot", _wrap_RPlot_barplot},
+{"Datamungec::RPlot_boxplot", _wrap_RPlot_boxplot},
+{"Datamungec::RPlot_pie", _wrap_RPlot_pie},
+{"Datamungec::RPlot_curve", _wrap_RPlot_curve},
+{"Datamungec::RPlot_qqnorm", _wrap_RPlot_qqnorm},
+{"Datamungec::RPlot_points", _wrap_RPlot_points},
+{"Datamungec::RPlot_line", _wrap_RPlot_line},
+{"Datamungec::RPlot_lines", _wrap_RPlot_lines},
+{"Datamungec::RPlot_bars", _wrap_RPlot_bars},
+{"Datamungec::RPlot_box", _wrap_RPlot_box},
+{"Datamungec::RPlot_abline", _wrap_RPlot_abline},
+{"Datamungec::RPlot_abline_h", _wrap_RPlot_abline_h},
+{"Datamungec::RPlot_abline_v", _wrap_RPlot_abline_v},
+{"Datamungec::RPlot_qqline", _wrap_RPlot_qqline},
+{"Datamungec::RPlot_legend", _wrap_RPlot_legend},
+{"Datamungec::RPlot_text", _wrap_RPlot_text},
+{"Datamungec::RPlot_polygon", _wrap_RPlot_polygon},
+{"Datamungec::RPlot_segments", _wrap_RPlot_segments},
+{"Datamungec::new_RPlot", _wrap_new_RPlot},
+{"Datamungec::delete_RPlot", _wrap_delete_RPlot},
+{"Datamungec::RLayout_create", _wrap_RLayout_create},
+{"Datamungec::RLayout_add", _wrap_RLayout_add},
+{"Datamungec::RLayout_size", _wrap_RLayout_size},
+{"Datamungec::RLayout_save", _wrap_RLayout_save},
+{"Datamungec::RLayout_save_svg", _wrap_RLayout_save_svg},
+{"Datamungec::new_RLayout", _wrap_new_RLayout},
+{"Datamungec::delete_RLayout", _wrap_delete_RLayout},
 {"Datamungec::ARIMAOptions_p_set", _wrap_ARIMAOptions_p_set},
 {"Datamungec::ARIMAOptions_p_get", _wrap_ARIMAOptions_p_get},
 {"Datamungec::ARIMAOptions_d_set", _wrap_ARIMAOptions_d_set},
@@ -89324,6 +107778,9 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::binomial_test", _wrap_binomial_test},
 {"Datamungec::fisher_exact_test_2x2", _wrap_fisher_exact_test_2x2},
 {"Datamungec::shapiro_francia_test", _wrap_shapiro_francia_test},
+{"Datamungec::p_adjust", _wrap_p_adjust},
+{"Datamungec::westfall_young_adjust", _wrap_westfall_young_adjust},
+{"Datamungec::romano_wolf_adjust", _wrap_romano_wolf_adjust},
 {"Datamungec::delete_ArbitraryFunction", _wrap_delete_ArbitraryFunction},
 {"Datamungec::ArbitraryFunction_evaluate", _wrap_ArbitraryFunction_evaluate},
 {"Datamungec::new_ArbitraryFunction", _wrap_new_ArbitraryFunction},
@@ -89573,6 +108030,71 @@ static swig_command_info swig_commands[] = {
 {"Datamungec::new_NUTS", _wrap_new_NUTS},
 {"Datamungec::NUTS_sample", _wrap_NUTS_sample},
 {"Datamungec::delete_NUTS", _wrap_delete_NUTS},
+{"Datamungec::RWMOptions_num_samples_set", _wrap_RWMOptions_num_samples_set},
+{"Datamungec::RWMOptions_num_samples_get", _wrap_RWMOptions_num_samples_get},
+{"Datamungec::RWMOptions_num_warmup_set", _wrap_RWMOptions_num_warmup_set},
+{"Datamungec::RWMOptions_num_warmup_get", _wrap_RWMOptions_num_warmup_get},
+{"Datamungec::RWMOptions_initial_step_size_set", _wrap_RWMOptions_initial_step_size_set},
+{"Datamungec::RWMOptions_initial_step_size_get", _wrap_RWMOptions_initial_step_size_get},
+{"Datamungec::RWMOptions_target_accept_rate_set", _wrap_RWMOptions_target_accept_rate_set},
+{"Datamungec::RWMOptions_target_accept_rate_get", _wrap_RWMOptions_target_accept_rate_get},
+{"Datamungec::RWMOptions_seed_set", _wrap_RWMOptions_seed_set},
+{"Datamungec::RWMOptions_seed_get", _wrap_RWMOptions_seed_get},
+{"Datamungec::new_RWMOptions", _wrap_new_RWMOptions},
+{"Datamungec::delete_RWMOptions", _wrap_delete_RWMOptions},
+{"Datamungec::RWMResult_samples_set", _wrap_RWMResult_samples_set},
+{"Datamungec::RWMResult_samples_get", _wrap_RWMResult_samples_get},
+{"Datamungec::RWMResult_accept_rate_set", _wrap_RWMResult_accept_rate_set},
+{"Datamungec::RWMResult_accept_rate_get", _wrap_RWMResult_accept_rate_get},
+{"Datamungec::RWMResult_final_step_size_set", _wrap_RWMResult_final_step_size_set},
+{"Datamungec::RWMResult_final_step_size_get", _wrap_RWMResult_final_step_size_get},
+{"Datamungec::new_RWMResult", _wrap_new_RWMResult},
+{"Datamungec::delete_RWMResult", _wrap_delete_RWMResult},
+{"Datamungec::new_RandomWalkMetropolis", _wrap_new_RandomWalkMetropolis},
+{"Datamungec::RandomWalkMetropolis_sample", _wrap_RandomWalkMetropolis_sample},
+{"Datamungec::delete_RandomWalkMetropolis", _wrap_delete_RandomWalkMetropolis},
+{"Datamungec::GibbsOptions_num_samples_set", _wrap_GibbsOptions_num_samples_set},
+{"Datamungec::GibbsOptions_num_samples_get", _wrap_GibbsOptions_num_samples_get},
+{"Datamungec::GibbsOptions_num_warmup_set", _wrap_GibbsOptions_num_warmup_set},
+{"Datamungec::GibbsOptions_num_warmup_get", _wrap_GibbsOptions_num_warmup_get},
+{"Datamungec::GibbsOptions_initial_step_sizes_set", _wrap_GibbsOptions_initial_step_sizes_set},
+{"Datamungec::GibbsOptions_initial_step_sizes_get", _wrap_GibbsOptions_initial_step_sizes_get},
+{"Datamungec::GibbsOptions_target_accept_rate_set", _wrap_GibbsOptions_target_accept_rate_set},
+{"Datamungec::GibbsOptions_target_accept_rate_get", _wrap_GibbsOptions_target_accept_rate_get},
+{"Datamungec::GibbsOptions_seed_set", _wrap_GibbsOptions_seed_set},
+{"Datamungec::GibbsOptions_seed_get", _wrap_GibbsOptions_seed_get},
+{"Datamungec::new_GibbsOptions", _wrap_new_GibbsOptions},
+{"Datamungec::delete_GibbsOptions", _wrap_delete_GibbsOptions},
+{"Datamungec::GibbsResult_samples_set", _wrap_GibbsResult_samples_set},
+{"Datamungec::GibbsResult_samples_get", _wrap_GibbsResult_samples_get},
+{"Datamungec::GibbsResult_accept_rates_set", _wrap_GibbsResult_accept_rates_set},
+{"Datamungec::GibbsResult_accept_rates_get", _wrap_GibbsResult_accept_rates_get},
+{"Datamungec::GibbsResult_final_step_sizes_set", _wrap_GibbsResult_final_step_sizes_set},
+{"Datamungec::GibbsResult_final_step_sizes_get", _wrap_GibbsResult_final_step_sizes_get},
+{"Datamungec::new_GibbsResult", _wrap_new_GibbsResult},
+{"Datamungec::delete_GibbsResult", _wrap_delete_GibbsResult},
+{"Datamungec::new_GibbsSampler", _wrap_new_GibbsSampler},
+{"Datamungec::GibbsSampler_sample", _wrap_GibbsSampler_sample},
+{"Datamungec::delete_GibbsSampler", _wrap_delete_GibbsSampler},
+{"Datamungec::ImportanceSamplingOptions_num_samples_set", _wrap_ImportanceSamplingOptions_num_samples_set},
+{"Datamungec::ImportanceSamplingOptions_num_samples_get", _wrap_ImportanceSamplingOptions_num_samples_get},
+{"Datamungec::ImportanceSamplingOptions_seed_set", _wrap_ImportanceSamplingOptions_seed_set},
+{"Datamungec::ImportanceSamplingOptions_seed_get", _wrap_ImportanceSamplingOptions_seed_get},
+{"Datamungec::new_ImportanceSamplingOptions", _wrap_new_ImportanceSamplingOptions},
+{"Datamungec::delete_ImportanceSamplingOptions", _wrap_delete_ImportanceSamplingOptions},
+{"Datamungec::ImportanceSamplingResult_samples_set", _wrap_ImportanceSamplingResult_samples_set},
+{"Datamungec::ImportanceSamplingResult_samples_get", _wrap_ImportanceSamplingResult_samples_get},
+{"Datamungec::ImportanceSamplingResult_normalized_weights_set", _wrap_ImportanceSamplingResult_normalized_weights_set},
+{"Datamungec::ImportanceSamplingResult_normalized_weights_get", _wrap_ImportanceSamplingResult_normalized_weights_get},
+{"Datamungec::ImportanceSamplingResult_effective_sample_size_set", _wrap_ImportanceSamplingResult_effective_sample_size_set},
+{"Datamungec::ImportanceSamplingResult_effective_sample_size_get", _wrap_ImportanceSamplingResult_effective_sample_size_get},
+{"Datamungec::ImportanceSamplingResult_log_evidence_set", _wrap_ImportanceSamplingResult_log_evidence_set},
+{"Datamungec::ImportanceSamplingResult_log_evidence_get", _wrap_ImportanceSamplingResult_log_evidence_get},
+{"Datamungec::new_ImportanceSamplingResult", _wrap_new_ImportanceSamplingResult},
+{"Datamungec::delete_ImportanceSamplingResult", _wrap_delete_ImportanceSamplingResult},
+{"Datamungec::new_ImportanceSampling", _wrap_new_ImportanceSampling},
+{"Datamungec::ImportanceSampling_sample", _wrap_ImportanceSampling_sample},
+{"Datamungec::delete_ImportanceSampling", _wrap_delete_ImportanceSampling},
 {0,0}
 };
 /* -----------------------------------------------------------------------------
@@ -90050,9 +108572,11 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_std__string_t, (void*) "Datamunge::SVector");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__Callback, (void*) "Datamunge::Callback");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__DataFrame, (void*) "Datamunge::DataFrame");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__GGPlot, (void*) "Datamunge::GGPlot");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__LM, (void*) "Datamunge::LM");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__LMM, (void*) "Datamunge::LMM");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__GLMM, (void*) "Datamunge::GLMM");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__INLAMixedModel, (void*) "Datamunge::INLAMixedModel");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__LDA, (void*) "Datamunge::LDA");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__SVM, (void*) "Datamunge::SVM");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__DecisionTreeClassifier, (void*) "Datamunge::DecisionTreeClassifier");
@@ -90096,11 +108620,32 @@ XS(SWIG_init) {
     sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::plot::DataSeries::Kind::Bar)));
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Box", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::plot::DataSeries::Kind::Box)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Polygon", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::plot::DataSeries::Kind::Polygon)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Text", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::plot::DataSeries::Kind::Text)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "DataSeries_Kind_Segment", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::plot::DataSeries::Kind::Segment)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__DataSeries, (void*) "Datamunge::DataSeries");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__ABLine, (void*) "Datamunge::ABLine");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__LegendEntry, (void*) "Datamunge::LegendEntry");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__Plot, (void*) "Datamunge::Plot");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__ScatterPlot, (void*) "Datamunge::ScatterPlot");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__LinePlot, (void*) "Datamunge::LinePlot");
-  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__BarChart, (void*) "Datamunge::BarChart");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RPlot, (void*) "Datamunge::RPlot");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__plot__RLayout, (void*) "Datamunge::RLayout");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__ARIMAOptions, (void*) "Datamunge::ARIMAOptions");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__ARIMA, (void*) "Datamunge::ARIMA");
   /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
@@ -90151,6 +108696,41 @@ XS(SWIG_init) {
     SvREADONLY_on(sv);
   } while(0) /*@SWIG@*/;
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__stats__HypothesisTestResult, (void*) "Datamunge::HypothesisTestResult");
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Bonferroni", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Bonferroni)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Holm", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Holm)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Hochberg", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Hochberg)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_Hommel", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::Hommel)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_BH", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::BH)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_BY", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::BY)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/perl5/perltypemaps.swg,67,%set_constant@*/ do {
+    SV *sv = get_sv((char*) SWIG_prefix "PAdjustMethod_None", TRUE | 0x2 | GV_ADDMULTI);
+    sv_setsv(sv, SWIG_From_int  SWIG_PERL_CALL_ARGS_1(static_cast< int >(datamunge::stats::PAdjustMethod::None)));
+    SvREADONLY_on(sv);
+  } while(0) /*@SWIG@*/;
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__ArbitraryFunction, (void*) "Datamunge::ArbitraryFunction");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__DifferentiableFunction, (void*) "Datamunge::DifferentiableFunction");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__optim__SeparableFunction, (void*) "Datamunge::SeparableFunction");
@@ -90179,6 +108759,15 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__NUTSOptions, (void*) "Datamunge::NUTSOptions");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__NUTSResult, (void*) "Datamunge::NUTSResult");
   SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__NUTS, (void*) "Datamunge::NUTS");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__RWMOptions, (void*) "Datamunge::RWMOptions");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__RWMResult, (void*) "Datamunge::RWMResult");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis, (void*) "Datamunge::RandomWalkMetropolis");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__GibbsOptions, (void*) "Datamunge::GibbsOptions");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__GibbsResult, (void*) "Datamunge::GibbsResult");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__GibbsSampler, (void*) "Datamunge::GibbsSampler");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions, (void*) "Datamunge::ImportanceSamplingOptions");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult, (void*) "Datamunge::ImportanceSamplingResult");
+  SWIG_TypeClientData(SWIGTYPE_p_datamunge__bayes__ImportanceSampling, (void*) "Datamunge::ImportanceSampling");
   ST(0) = &PL_sv_yes;
   XSRETURN(1);
 }
